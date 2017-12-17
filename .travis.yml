@@ -29,7 +29,9 @@ branches:
   only:
   - master
 
-script: coverage run --source=overfiftyfive manage.py test
+script:
+  - cd overfiftyfive
+  - coverage run manage.py test
 
 after_success:
   coveralls

@@ -17,4 +17,4 @@ class TestHomeViews(TestCase):
     def test_get_index_page(self):
         response = self.client.get(reverse('o55_index_master'))
         self.assertIsNotNone(response)
-        self.assertIsEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
