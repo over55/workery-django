@@ -25,7 +25,6 @@ from django.conf.urls.i18n import i18n_patterns
 
 # sitemaps = {
 #     'static': StaticViewSitemap,
-#     # 'pages': PageViewSitemap,
 # }
 
 
