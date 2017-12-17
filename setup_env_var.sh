@@ -38,6 +38,13 @@ echo 'MAILGUN_ACCESS_KEY=<YOU_NEED_TO_PROVIDE>' >> ./overfiftyfive/overfiftyfive
 echo 'MAILGUN_SERVER_NAME=over55london.ca' >> ./overfiftyfive/overfiftyfive/.env;
 echo '' >> ./overfiftyfive/overfiftyfive/.env;
 
+# Step 5: Populate the "" section.
+#----------------#
+# Django-Htmlmin #
+#----------------#
+echo 'HTML_MINIFY=True' >> ./overfiftyfive/overfiftyfive/.env;
+echo 'KEEP_COMMENTS_ON_MINIFYING=False' >> ./overfiftyfive/overfiftyfive/.env;
+
 # Step X: Populate the "App variables" section.
 echo '#--------------------------------#' >> ./overfiftyfive/overfiftyfive/.env;
 echo '# Application Specific Variables #' >> ./overfiftyfive/overfiftyfive/.env;

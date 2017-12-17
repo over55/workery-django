@@ -1,0 +1,35 @@
+language: python
+
+python:
+  - 3.6
+
+services: postgresql
+
+addons:
+  - postgresql: "9.6"
+
+install:
+  - pip install -r requirements.txt
+  - pip install coverage
+  - pip install coveralls
+
+env:
+  - DJANGO=2.0
+
+before_script:
+  - psql -c "CREATE USER django WITH PASSWORD '123password';" -U postgres
+  - psql -c "CREATE DATABASE overfiftyfive_db;" -U postgres
+  - psql -c "GRANT ALL PRIVILEGES ON DATABASE overfiftyfive_db to django;" -U postgres
+  - psql -c "ALTER USER django CREATEDB;" -U postgres
+  - psql -c "ALTER ROLE django SUPERUSER;" -U postgres
+  - python setup_env_var.sh
+  - python overfiftyfive/manage.py migrate --noinput
+
+branches:
+  only:
+  - master
+
+script: coverage run --source=overfiftyfive manage.py test
+
+after_success:
+  coveralls
