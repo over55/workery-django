@@ -30,8 +30,8 @@ branches:
   - master
 
 script:
-  - cd overfiftyfive
-  - coverage run manage.py test
+  - cd overfiftyfive/
+  - coverage run --source=home manage.py test
 
 after_success:
   coveralls

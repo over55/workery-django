@@ -171,6 +171,7 @@ env/pip-selfcheck.json
 #—————————————————————————————
 # Important Note: Make sure this is the name of the virtualenv directory
 # that you set when you where setting up the project.
+coverage.txt
 overfiftyfive/db.sqlite3
 overfiftyfive/db.sqlite3-journal
 overfiftyfive/overfiftyfive/whoosh_index

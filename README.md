@@ -2,7 +2,8 @@
 **This library is currently being developed and is not production quality ready!**
 
 ## Build Status
-TODO
+[![Build Status](https://travis-ci.org/over55/overfiftyfive-django.svg?branch=master)](https://travis-ci.org/over55/overfiftyfive-django)
+[![Coverage Status](https://coveralls.io/repos/github/over55/overfiftyfive-django/badge.svg?branch=master)](https://coveralls.io/github/over55/overfiftyfive-django?branch=master)
 
 ## Overview
 The web app engine which powers the web-application via ...
