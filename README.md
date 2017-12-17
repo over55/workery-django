@@ -34,7 +34,7 @@ The web app engine which powers the web-application via ...
 3. Populate the environment variables for our project.
 
   ```bash
-  ./setup_env_var.sh
+  ./setup_credentials.sh
   ```
 
 4. You need to now modify the environment variables for your project...
