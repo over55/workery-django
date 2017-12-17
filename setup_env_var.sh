@@ -6,47 +6,35 @@
 
 # Step 1: Clear the file.
 clear;
-echo '' > overfiftyfive/overfiftyfive/.env;
+cat > overfiftyfive/overfiftyfive/.env << EOL
+#--------#
+# Django #
+#--------#
+SECRET_KEY=l7y)rwm2(@nye)rloo0=ugdxgqsywkiv&#20dqugj76w)s!!ns
+IS_DEBUG=True
+ALLOWED_HOSTS='*'
+ADMIN_NAME='Bartlomiej Mika'
+ADMIN_EMAIL=bart@mikasoftware.com
 
-# Setup 2: Populate the "Django" section.
-echo '#--------#' >> overfiftyfive/overfiftyfive/.env;
-echo '# Django #' >> overfiftyfive/overfiftyfive/.env;
-echo '#--------#' >> overfiftyfive/overfiftyfive/.env;
-echo 'SECRET_KEY=l7y)rwm2(@nye)rloo0=ugdxgqsywkiv&#20dqugj76w)s!!ns' >> overfiftyfive/overfiftyfive/.env;
-echo 'IS_DEBUG=True' >> overfiftyfive/overfiftyfive/.env;
-echo "ALLOWED_HOSTS='*'" >> overfiftyfive/overfiftyfive/.env;
-echo "ADMIN_NAME='Bartlomiej Mika'" >> overfiftyfive/overfiftyfive/.env;
-echo "ADMIN_EMAIL=bart@mikasoftware.com" >> overfiftyfive/overfiftyfive/.env;
+#----------#
+# Database #
+#----------#
+SKIP
 
-# Step 3: Populate the "Database" section.
-echo '' >> overfiftyfive/overfiftyfive/.env;
-echo '#----------#' >> overfiftyfive/overfiftyfive/.env;
-echo '# Database #' >> overfiftyfive/overfiftyfive/.env;
-echo '#----------#' >> overfiftyfive/overfiftyfive/.env;
-echo 'SKIP' >> overfiftyfive/overfiftyfive/.env;
-echo '' >> overfiftyfive/overfiftyfive/.env;
+#-------#
+# Email #
+#-------#
+DEFAULT_TO_EMAIL=bart@mikasoftware.com
+DEFAULT_FROM_EMAIL=postmaster@mover55london.ca
+EMAIL_BACKEND=django.core.mail.backends.console.EmailBackend
+MAILGUN_ACCESS_KEY=<YOU_NEED_TO_PROVIDE>
+MAILGUN_SERVER_NAME=over55london.ca
 
-# Setp 4: Populate the "Email" section.
-echo '#-------#' >> overfiftyfive/overfiftyfive/.env;
-echo '# Email #' >> overfiftyfive/overfiftyfive/.env;
-echo '#-------#' >> overfiftyfive/overfiftyfive/.env;
-echo 'DEFAULT_TO_EMAIL=bart@mikasoftware.com' >> overfiftyfive/overfiftyfive/.env;
-echo 'DEFAULT_FROM_EMAIL=postmaster@mover55london.ca' >> overfiftyfive/overfiftyfive/.env;
-echo 'EMAIL_BACKEND=django.core.mail.backends.console.EmailBackend' >> overfiftyfive/overfiftyfive/.env;
-echo 'MAILGUN_ACCESS_KEY=<YOU_NEED_TO_PROVIDE>' >> overfiftyfive/overfiftyfive/.env;
-echo 'MAILGUN_SERVER_NAME=over55london.ca' >> overfiftyfive/overfiftyfive/.env;
-echo '' >> overfiftyfive/overfiftyfive/.env;
-
-# Step 5: Populate the "" section.
-#----------------#
-# Django-Htmlmin #
-#----------------#
-echo 'HTML_MINIFY=True' >> overfiftyfive/overfiftyfive/.env;
-echo 'KEEP_COMMENTS_ON_MINIFYING=False' >> overfiftyfive/overfiftyfive/.env;
-
-# Step X: Populate the "App variables" section.
-echo '#--------------------------------#' >> overfiftyfive/overfiftyfive/.env;
-echo '# Application Specific Variables #' >> overfiftyfive/overfiftyfive/.env;
-echo '#--------------------------------#' >> overfiftyfive/overfiftyfive/.env;
-echo 'O55_APP_HTTP_PROTOCOL=http://' >> overfiftyfive/overfiftyfive/.env;
-echo 'O55_APP_HTTP_DOMAIN=127.0.0.1:8080' >> overfiftyfive/overfiftyfive/.env;
+HTML_MINIFY=True
+KEEP_COMMENTS_ON_MINIFYING=False
+#--------------------------------#
+# Application Specific Variables #
+#--------------------------------#
+O55_APP_HTTP_PROTOCOL=http://
+O55_APP_HTTP_DOMAIN=127.0.0.1:8080
+EOL
