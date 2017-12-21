@@ -15,9 +15,9 @@ pip install django-cors-headers           # Enable CORS in Headers
 pip install gunicorn                      # Web-Server Helper
 pip install django-htmlmin                # HTML Minify
 pip install django-trapdoor               # Automatically Exploit Scanners
+pip install psycopg2                      # Postgres SQL ODBC
 
 #TODO: IMPLEMENT...
-# #pip install psycopg2                      # Postgres SQL ODBC
 # pip install django-tenants                # Multi-Tenancy Handler
 # pip install djangorestframework           # RESTful API Endpoint Generator
 # pip install django_filter                 # Filter querysets dynamically

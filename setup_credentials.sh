@@ -19,7 +19,7 @@ ADMIN_EMAIL=bart@mikasoftware.com
 #----------#
 # Database #
 #----------#
-SKIP
+DATABASE_URL=postgres://django:123password@localhost:5432/overfiftyfive_db
 
 #-------#
 # Email #
@@ -38,3 +38,7 @@ KEEP_COMMENTS_ON_MINIFYING=False
 O55_APP_HTTP_PROTOCOL=http://
 O55_APP_HTTP_DOMAIN=127.0.0.1:8080
 EOL
+
+# Developers Note:
+# (1) Useful article about setting up environment variables with travis:
+#     https://stackoverflow.com/a/44850245

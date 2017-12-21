@@ -66,7 +66,6 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-    # 'django_tenants.middleware.main.TenantMainMiddleware',       # Third Party
     'corsheaders.middleware.CorsMiddleware',                     # Third Party
     'trapdoor.middleware.TrapdoorMiddleware',                    # Third Party
     'django.middleware.security.SecurityMiddleware',
@@ -106,10 +105,11 @@ WSGI_APPLICATION = 'overfiftyfive.wsgi.application'
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
+    'default': env.db(), # Raises ImproperlyConfigured exception if DATABASE_URL not in os.environ
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.sqlite3',
+    #     'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    # }
 }
 
 
