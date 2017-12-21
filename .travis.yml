@@ -22,6 +22,7 @@ before_script:
   - psql -c "GRANT ALL PRIVILEGES ON DATABASE overfiftyfive_db to django;" -U postgres
   - psql -c "ALTER USER django CREATEDB;" -U postgres
   - psql -c "ALTER ROLE django SUPERUSER;" -U postgres
+  - psql -U postgres -c "create extension postgis"
   - ./setup_credentials.sh
   - python overfiftyfive/manage.py migrate --noinput
 

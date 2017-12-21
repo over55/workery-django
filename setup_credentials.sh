@@ -19,7 +19,7 @@ ADMIN_EMAIL=bart@mikasoftware.com
 #----------#
 # Database #
 #----------#
-DATABASE_URL=postgres://django:123password@localhost:5432/overfiftyfive_db
+DATABASE_URL=postgis://django:123password@localhost:5432/overfiftyfive_db
 
 #-------#
 # Email #
