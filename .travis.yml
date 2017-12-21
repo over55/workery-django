@@ -10,6 +10,7 @@ addons:
 
 install:
   - pip install -r requirements.txt
+  - pip install gdal
   - pip install coverage
   - pip install coveralls
 
