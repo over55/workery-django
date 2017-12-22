@@ -144,11 +144,11 @@ DATABASES = {
     "default": {
         'CONN_MAX_AGE': 0,
         'ENGINE': 'django_tenants.postgresql_backend',
-        "NAME": env("DB_NAME"),
-        "USER": env("DB_USER"),
-        "PASSWORD": env("DB_PASSWORD"),
-        "HOST": env("DB_HOST"),
-        "PORT": env("DB_PORT"),
+        "NAME": env("DB_NAME", default="overfiftyfive_db"),
+        "USER": env("DB_USER", default="django"),
+        "PASSWORD": env("DB_PASSWORD", default="123password"), # YOU MUST CHANGE IN PROD!
+        "HOST": env("DB_HOST", default="localhost"),
+        "PORT": env("DB_PORT", default="5432"),
     }
 }
 
