@@ -20,6 +20,11 @@ ADMIN_EMAIL=bart@mikasoftware.com
 # Database #
 #----------#
 DATABASE_URL=postgis://django:123password@localhost:5432/overfiftyfive_db
+DB_NAME=overfiftyfive_db
+DB_USER=django
+DB_PASSWORD=123password
+DB_HOST=localhost
+DB_PORT="5432"
 
 #-------#
 # Email #
