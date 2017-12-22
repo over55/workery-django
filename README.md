@@ -8,81 +8,18 @@
 ## Overview
 The web app engine which powers the web-application via ...
 
-## Minimum Requirements
-* Python 3.6
+## System Requirements
+* Python 3.6.x+
+* Postgres 9.6+
+* Redis 3.2.6
 
+## Dependencies
+See [requirements.txt](https://github.com/over55/overfiftyfive-django/blob/master/DEVELOPER_NOTES.md) for more information.
 
-## Installation
-1. Install the library.
+## Build Instructions
+To setup ``overfiftyfive-django`` on your system, then please read any of the following articles:
 
-  ```bash
-  git clone https://github.com/over55/overfiftyfive-django.git
-  ```
-
-2. Create the database.
-
-  ```sql
-  drop database overfiftyfive_db;
-  create database overfiftyfive_db;
-  \c overfiftyfive_db;
-  CREATE USER django WITH PASSWORD '123password';
-  GRANT ALL PRIVILEGES ON DATABASE overfiftyfive_db to django;
-  ALTER USER django CREATEDB;
-  ALTER ROLE django SUPERUSER;
-  CREATE EXTENSION postgis;
-  ```
-3. Populate the environment variables for our project.
-
-  ```bash
-  ./setup_credentials.sh
-  ```
-
-4. You need to now modify the environment variables for your project...
-
-  ```
-  vi ./overfiftyfive/overfiftyfive/.env
-  ```
-
-5. Run in your console:
-
-  ```bash
-  python manage.py makemigrations; \
-  python manage.py migrate_schemas; \
-  python manage.py populate_public; \
-  python manage.py setup_fixtures;
-  ```
-
-6. Usage:
-
-  ```bash
-  sudo python manage.py runserver overfiftyfive.com:80
-  ```
-
-7. In your browser enter ``overfiftyfive.com:80``.
-
-## Usage
-To run the web-app, you’ll need to run the server instance and access the page from your browser.
-
-Start up the web-server:
-
-  ```
-  sudo python manage.py runserver overfiftyfive.ca:80
-  ```
-
-And inside another seperate ``Terminal`` console, please run:
-
-  ```
-  python manage.py rqworker
-  ```
-
-Finally, in your web-browser, load up the following url:
-
-  ```
-  http://academicstoday.ca/
-  ```
-
-Congratulations, you are all setup to run the web-app! Have fun coding!#
-
+* [HOWTO: Setup Over Fifty Five on MacOS for Development](https://github.com/over55/overfiftyfive-django/wiki/Setup-Project-on-MacOS)
 
 ## License
 This library is licensed under the **BSD** license. See [LICENSE](LICENSE) for more information.
