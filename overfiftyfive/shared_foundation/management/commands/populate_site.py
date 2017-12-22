@@ -17,7 +17,7 @@ class Command(BaseCommand):
         # First call; current site fetched from database.
         from django.contrib.sites.models import Site # https://docs.djangoproject.com/en/dev/ref/contrib/sites/#caching-the-current-site-object
         current_site = Site.objects.get_current()
-        current_site.domain = settings.ACADEMICSTODAY_APP_HTTP_DOMAIN
+        current_site.domain = settings.O55_APP_HTTP_DOMAIN
         current_site.save()
 
         self.stdout.write(
