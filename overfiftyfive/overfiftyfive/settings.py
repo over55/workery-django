@@ -41,9 +41,16 @@ ALLOWED_HOSTS = ['*']
 
 SITE_ID = 1
 
+
 # Application definition
 
-INSTALLED_APPS = [
+# This configuration ensures that all authenticated users from the public
+# schema to exist authenticated in the tenant schemas as well. This is
+# important to have "django-tenants" work
+SESSION_COOKIE_DOMAIN = '.' + env("O55_APP_HTTP_DOMAIN")
+
+
+SHARED_APPS = (
     # Django Apps
     'django.contrib.admin',
     'django.contrib.auth',
@@ -59,15 +66,29 @@ INSTALLED_APPS = [
     'django.contrib.gis',        # Geo-Django https://docs.djangoproject.com/en/dev/ref/contrib/gis/
 
     # Third Party Apps
+    'django_tenants',  # (mandatory)
     'trapdoor',
     # . . .
 
-     # Apps
-    'home',
+     # Shared Apps
+    'shared_home',
+    'shared_foundation'
     # . . .
-]
+)
+
+TENANT_APPS = (
+    # The following Django contrib apps must be in TENANT_APPS
+    'django.contrib.contenttypes',
+
+    # Tenant-specific apps
+    # . . .
+)
+
+INSTALLED_APPS = list(SHARED_APPS) + [app for app in TENANT_APPS if app not in SHARED_APPS]
+
 
 MIDDLEWARE = [
+    'django_tenants.middleware.main.TenantMainMiddleware',       # Third Party
     'corsheaders.middleware.CorsMiddleware',                     # Third Party
     'trapdoor.middleware.TrapdoorMiddleware',                    # Third Party
     'django.middleware.security.SecurityMiddleware',
@@ -93,8 +114,10 @@ TEMPLATES = [
             'context_processors': [
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
+                'django.template.context_processors.i18n',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                # 'shared_foundation.context_processors.foundation_constants', # Custom App
             ],
         },
     },
@@ -106,13 +129,38 @@ WSGI_APPLICATION = 'overfiftyfive.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
 
+###########################################
+#TODO: WE WANT TO MAKE IT LOOK LIKE THIS. #
+###########################################
+# DATABASES = {
+#     'default': env.db(), # Raises ImproperlyConfigured exception if DATABASE_URL not in os.environ
+#     # 'default': {
+#     #     'ENGINE': 'django.db.backends.sqlite3',
+#     #     'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+#     # }
+# }
+
 DATABASES = {
-    'default': env.db(), # Raises ImproperlyConfigured exception if DATABASE_URL not in os.environ
-    # 'default': {
-    #     'ENGINE': 'django.db.backends.sqlite3',
-    #     'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    # }
+    "default": {
+        'CONN_MAX_AGE': 0,
+        'ENGINE': 'django_tenants.postgresql_backend',
+        "NAME": env("DB_NAME"),
+        "USER": env("DB_USER"),
+        "PASSWORD": env("DB_PASSWORD"),
+        "HOST": env("DB_HOST"),
+        "PORT": env("DB_PORT"),
+    }
 }
+
+DATABASE_ROUTERS = (
+    'django_tenants.routers.TenantSyncRouter',
+)
+
+ORIGINAL_BACKEND = "django.contrib.gis.db.backends.postgis"
+
+TENANT_MODEL = "shared_foundation.SharedFranchise"
+
+TENANT_DOMAIN_MODEL = "shared_foundation.SharedFranchiseDomain"
 
 
 # Password validation
@@ -190,3 +238,56 @@ CORS_ORIGIN_ALLOW_ALL=True
 
 HTML_MINIFY = env("HTML_MINIFY")
 KEEP_COMMENTS_ON_MINIFYING = env("KEEP_COMMENTS_ON_MINIFYING")
+
+
+########
+# TODO #
+########
+# # Anymail
+# #  https://github.com/anymail/django-anymail
+#
+# ANYMAIL = {
+#     # (exact settings here depend on your ESP...)
+#     "MAILGUN_API_KEY": env("MAILGUN_ACCESS_KEY"),
+#     "MAILGUN_SENDER_DOMAIN": env("MAILGUN_SERVER_NAME"),
+# }
+
+########
+# TODO #
+########
+# # Error Emailing
+# # https://docs.djangoproject.com/en/dev/topics/logging/
+#
+# LOGGING = {
+#     'version': 1,
+#     'disable_existing_loggers': False,
+#     'handlers': {
+#         'console': {
+#             'class': 'logging.StreamHandler',
+#         },
+#         'mail_admins': {
+#             'level': 'ERROR',
+#             'class': 'django.utils.log.AdminEmailHandler',
+#             'include_html': False, # Set to this value to prevent spam
+#         }
+#     },
+#     'loggers': {
+#         'django': {
+#             'handlers': ['console'],
+#             'level': os.getenv('DJANGO_LOG_LEVEL', 'INFO'),
+#         },
+#         'django.request': {
+#             'handlers': ['mail_admins'],
+#             'level': 'ERROR',
+#             'propagate': False,
+#         },
+#     },
+# }
+
+
+# Application Specific Variables #
+#
+
+# Variables define what URL structure to use in our system.
+O55_APP_HTTP_PROTOCOL = env("O55_APP_HTTP_PROTOCOL")
+O55_APP_HTTP_DOMAIN = env("O55_APP_HTTP_DOMAIN")

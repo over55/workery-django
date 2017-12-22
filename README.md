@@ -47,7 +47,7 @@ The web app engine which powers the web-application via ...
 
   ```bash
   python manage.py makemigrations; \
-  python manage.py migrate; \
+  python manage.py migrate_schemas; \
   python manage.py populate_public; \
   python manage.py setup_fixtures;
   ```
@@ -59,6 +59,29 @@ The web app engine which powers the web-application via ...
   ```
 
 7. In your browser enter ``overfiftyfive.com:80``.
+
+## Usage
+To run the web-app, you’ll need to run the server instance and access the page from your browser.
+
+Start up the web-server:
+
+  ```
+  sudo python manage.py runserver overfiftyfive.ca:80
+  ```
+
+And inside another seperate ``Terminal`` console, please run:
+
+  ```
+  python manage.py rqworker
+  ```
+
+Finally, in your web-browser, load up the following url:
+
+  ```
+  http://academicstoday.ca/
+  ```
+
+Congratulations, you are all setup to run the web-app! Have fun coding!#
 
 
 ## License

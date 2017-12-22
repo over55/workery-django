@@ -1,5 +1,5 @@
 from django.conf.urls import include, url
-from home import views
+from shared_home import views
 
 
 urlpatterns = (

@@ -30,13 +30,17 @@ EMAIL_BACKEND=django.core.mail.backends.console.EmailBackend
 MAILGUN_ACCESS_KEY=<YOU_NEED_TO_PROVIDE>
 MAILGUN_SERVER_NAME=over55london.ca
 
+#----------------#
+# Django-Htmlmin #
+#----------------#
 HTML_MINIFY=True
 KEEP_COMMENTS_ON_MINIFYING=False
+
 #--------------------------------#
 # Application Specific Variables #
 #--------------------------------#
 O55_APP_HTTP_PROTOCOL=http://
-O55_APP_HTTP_DOMAIN=127.0.0.1:8080
+O55_APP_HTTP_DOMAIN=overfiftyfive.com
 EOL
 
 # Developers Note:
