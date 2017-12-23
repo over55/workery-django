@@ -6,6 +6,9 @@ from django.urls import reverse
 class TestHomeViews(TenantTestCase):
     """
     Class used to test the "views".
+
+    Console:
+    python manage.py test shared_foundation.tests.test_views
     """
 
     def setUp(self):

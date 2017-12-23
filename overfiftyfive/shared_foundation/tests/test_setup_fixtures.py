@@ -5,6 +5,11 @@ from django.urls import reverse
 
 
 class TestSetupFixturesManagementCommand(TenantTestCase):
+    """
+    Console:
+    python manage.py test shared_foundation.tests.test_setup_fixtures
+    """
+
     def setUp(self):
         super(TestSetupFixturesManagementCommand, self).setUp()
         self.c = TenantClient(self.tenant)
