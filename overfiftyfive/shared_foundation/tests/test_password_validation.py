@@ -1,10 +1,10 @@
-from django.core.management import call_command
 from django.contrib.auth.password_validation import validate_password
+from django.contrib.auth.password_validation import get_password_validators
+from django.core.management import call_command
+from django.urls import reverse
 from django.test import override_settings
 from django_tenants.test.cases import TenantTestCase
 from django_tenants.test.client import TenantClient
-from django.contrib.auth.password_validation import get_password_validators
-from django.urls import reverse
 from shared_foundation.password_validation import *
 
 

@@ -29,9 +29,9 @@ class TestCreateExecutiveManagementCommand(TenantTestCase):
         del self.client
 
     def test_command_with_success(self):
-        call_command('create_executive_account', "bart@overfiftyfive.com", get_random_string(), "Bart", "Mika", verbosity=0)
+        call_command('create_executive_account', "bart@overfiftyfive.com", "123P@$$w0rd", "Bart", "Mika", verbosity=0)
 
-    def test_command_with_duplicate_email_failure(self):
+    def test_command_with_duplicate_email_error(self):
         O55User.objects.create(
             first_name="Bart",
             last_name="Mika",
@@ -46,3 +46,10 @@ class TestCreateExecutiveManagementCommand(TenantTestCase):
         except Exception as e:
             self.assertIsNotNone(e)
             self.assertIn("Email already exists", str(e))
+
+    def test_command_with_bad_password_error(self):
+        try:
+            call_command('create_executive_account', "bart@overfiftyfive.com", "123password", "Bart", "Mika", verbosity=0)
+        except Exception as e:
+            self.assertIsNotNone(e)
+            self.assertIn("Password", str(e))

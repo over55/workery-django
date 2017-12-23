@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from django.conf import settings
 from django.contrib.auth.models import User, Group
+from django.contrib.auth.password_validation import validate_password
 from django.core.management.base import BaseCommand, CommandError
 from django.utils.translation import ugettext_lazy as _
 # from rest_framework.authtoken.models import Token
@@ -18,7 +19,7 @@ class Command(BaseCommand):
     def add_arguments(self, parser):
         """
         Run manually in console:
-        python manage.py create_executive_account "bart@overfiftyfive.com" "123password" "Bart" "Mika"
+        python manage.py create_executive_account "bart@overfiftyfive.com" "123P@$$word" "Bart" "Mika"
         """
         parser.add_argument('email', nargs='+', type=str)
         parser.add_argument('password', nargs='+', type=str)
@@ -35,6 +36,12 @@ class Command(BaseCommand):
         # Defensive Code: Prevent continuing if the email already exists.
         if O55User.objects.filter(email=email).exists():
             raise CommandError(_('Email already exists, please pick another email.'))
+
+        # Defensive Code: Ensure the password inputted is strong.
+        try:
+            validate_password(password)
+        except Exception as e:
+            raise CommandError(e)
 
         # Create the user.
         user = User.objects.create(
