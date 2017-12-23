@@ -1,0 +1,84 @@
+{% extends 'shared_foundation/shared_base.html' %}
+{% load staticfiles i18n foundation_tags %}
+{% block title %}{% trans 'Login | Academics Today' %}{% endblock title %}
+{% block content %}
+<!-- JAVASCRIPT -->
+<script>
+    $(document).ready(function () {
+        // Detect "Enter" button clicked and then auto-click on our submit button.
+        $(document).keypress(function(event){
+            if(event.keyCode == 13){
+                $("#id_login_btn").click();
+            }
+        });
+
+        var token = "{{ request.token }}";
+        if (token != "" && token != undefined) {
+            // window.location = "{% get_app_domain %}";
+        }
+
+    }); // end Document Start
+
+    /**
+     * Function will take the EMAIL and PASSWORD, submit the information to the
+     * server and have either an error returned or an API KEY which
+     */
+    function ajax_login()
+    {
+        api_post_login(
+            $('#id_email').val().toLowerCase(),
+            $('#id_password').val(),
+            function(was_successful) {
+                if (was_successful) {
+                    // Load up our dashboard.
+                    window.location = "{% get_app_domain %}";
+                } else {
+                    alert("Failed logging in, did not receive token.");
+                }
+            },
+            function(xhr, status, error) {
+                alert("Wrong login credentials.");
+                // Convert the error json into string.
+                // var string = JSON.stringify( error );
+                // console.log(string);
+            }
+        ); // End Login
+    }
+</script>
+<!-- end JAVASCRIPT -->
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-4 col-md-offset-4">
+            <div class="login-panel panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">{% trans 'Please Sign In' %}</h3>
+                </div>
+                <div class="panel-body">
+                    <form role="form">
+                        <fieldset>
+                            <div class="form-group">
+                                <input class="form-control" placeholder="{% trans 'E-mail' %}" name="email" type="email" autofocus id="id_email" autocapitalize="off">
+                            </div>
+                            <div class="form-group">
+                                <input class="form-control" placeholder="{% trans 'Password' %}" name="password" type="password" value="" id="id_password" autocapitalize="off">
+                            </div>
+                            <div class="checkbox">
+                                <label>
+                                    <input name="remember" type="checkbox" value="Remember Me">{% trans 'Remember Me' %}
+                                </label>
+                            </div>
+                            <!-- Change this to a button or input when using this as a form -->
+                            <a onclick="ajax_login();" class="btn btn-lg btn-success btn-block">{% trans 'Login' %}</a>
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+            <p>
+                <a href="{% get_app_domain %}{% url 'o55_index_master' %}">{% trans 'Back' %}</a>
+            </p>
+        </div>
+    </div>
+</div>
+{% endblock content %}

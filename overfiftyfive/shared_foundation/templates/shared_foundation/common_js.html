@@ -1,0 +1,9 @@
+{% load foundation_tags %}
+<script>
+    /**
+    *  Returns the exact domain without subdomains.
+    */
+   function get_base_domain_url(append_url) {
+       return "{% get_app_domain %}" + append_url;
+   }
+</script>

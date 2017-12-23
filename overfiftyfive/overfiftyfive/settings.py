@@ -35,7 +35,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = env('SECRET_KEY') # Raises ImproperlyConfigured exception if SECRET_KEY not in os.environ
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = env('DEBUG') # False if not in os.environ
+DEBUG = env('IS_DEBUG') # False if not in os.environ
 
 ALLOWED_HOSTS = ['*']
 
@@ -71,11 +71,14 @@ SHARED_APPS = (
     'rest_framework',
     'rest_framework.authtoken',
     'django_filters',
+    'django_rq',
     # . . .
 
      # Shared Apps
     'shared_home',
-    'shared_foundation'
+    'shared_foundation',
+    'shared_api',
+    'shared_auth',
     # . . .
 )
 
@@ -84,6 +87,7 @@ TENANT_APPS = (
     'django.contrib.contenttypes',
 
     # Tenant-specific apps
+    'tenant_dashboard'
     # . . .
 )
 
@@ -200,6 +204,15 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
+# Custom authentication
+# https://docs.djangoproject.com/en/dev/topics/auth/customizing/
+
+AUTHENTICATION_BACKENDS = (
+    'shared_foundation.backends.UserModelEmailBackend', # Support email as username.
+    'django.contrib.auth.backends.ModelBackend',
+)
+
+
 # Internationalization
 # https://docs.djangoproject.com/en/2.0/topics/i18n/
 
@@ -301,6 +314,43 @@ KEEP_COMMENTS_ON_MINIFYING = env("KEEP_COMMENTS_ON_MINIFYING")
 #         },
 #     },
 # }
+
+
+# Django-REST-Framework
+# https://github.com/encode/django-rest-framework
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.TokenAuthentication',
+    ),
+    'DEFAULT_FILTER_BACKENDS': (
+        'django_filters.rest_framework.DjangoFilterBackend',
+    ),
+    'DEFAULT_RENDERER_CLASSES': [
+        'rest_framework.renderers.JSONRenderer',
+        'rest_framework.renderers.BrowsableAPIRenderer'
+    ],
+    'DEFAULT_PARSER_CLASSES': (
+        'rest_framework.parsers.JSONParser',
+        'rest_framework.parsers.FormParser',
+        'rest_framework.parsers.MultiPartParser',
+    ),
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 100
+}
+
+
+# django-rq
+# https://github.com/ui/django-rq
+
+RQ_QUEUES = {
+    'default': {
+        'HOST': 'localhost',
+        'PORT': 6379,
+        'DB': 0,
+        'DEFAULT_TIMEOUT': 360,
+    }
+}
 
 
 # Application Specific Variables #

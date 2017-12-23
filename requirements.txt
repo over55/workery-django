@@ -1,11 +1,14 @@
 beautifulsoup4==4.6.0
+click==6.7
 coverage==4.4.2
+croniter==0.3.20
 Django==2.0
 django-cors-headers==2.1.0
 django-environ==0.4.4
 django-filter==1.1.0
 django-htmlmin==0.10.0
 django-ipware==1.1.6
+django-rq==1.0.1
 django-tenants==2.0.0
 django-trapdoor==1.0.8
 djangorestframework==3.7.7
@@ -14,6 +17,10 @@ html5lib==1.0.1
 olefile==0.44
 Pillow==4.3.0
 psycopg2==2.7.3.2
+python-dateutil==2.6.1
 pytz==2017.3
+redis==2.10.6
+rq==0.9.2
+rq-scheduler==0.7.0
 six==1.11.0
 webencodings==0.5.1

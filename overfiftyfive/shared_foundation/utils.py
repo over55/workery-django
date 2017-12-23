@@ -9,6 +9,7 @@ from django.contrib.auth.models import User, Group
 from django.core.signing import Signer
 from django.core.validators import RegexValidator
 from django.db.models import Q
+from django.urls import reverse
 from django.utils import crypto
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
@@ -65,3 +66,11 @@ def float_or_none(value):
         return float(value)
     except Exception as e:
         return None
+
+
+def reverse_with_full_domain(reverse_url_id, resolve_url_args=[]):
+    url = settings.O55_APP_HTTP_PROTOCOL
+    url += settings.O55_APP_HTTP_DOMAIN
+    url += reverse(reverse_url_id, args=resolve_url_args)
+    url = url.replace("None","en")
+    return url

@@ -40,7 +40,13 @@ urlpatterns = [
 
 
 urlpatterns += i18n_patterns(
+    # Public specific URLs.
     url(r'^', include('shared_home.urls')),
+    url(r'^', include('shared_api.urls')),
+    url(r'^', include('shared_auth.urls')),
+
+    # Tenant specific URLs.
+    url(r'^', include('tenant_dashboard.urls')),
 )
 
 

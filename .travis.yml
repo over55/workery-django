@@ -39,7 +39,7 @@ branches:
 
 script:
   - cd overfiftyfive/
-  - coverage run --source=shared_home,shared_foundation manage.py test
+  - coverage run --source=shared_home,shared_foundation,shared_api,shared_auth,tenant_dashboard manage.py test
 
 after_success:
   coveralls

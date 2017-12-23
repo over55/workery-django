@@ -1,0 +1,55 @@
+{% load staticfiles i18n foundation_tags %}
+<!DOCTYPE html>
+<html lang="{{ request.language }}">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>{% block title %}{% trans 'Over 55 (London) Inc.' %}{% endblock %}</title>
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"
+      integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+     crossorigin="anonymous"></script>
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+    <!-- CONTENT -->
+    {% block content %}
+    {% endblock %}
+    <!-- /.CONTENT -->
+
+     <!-- Custom JS Library -->
+     {% include "shared_foundation/common_js.html" %}
+     {% include 'shared_api/shared_api_view.html' %}
+     <script>
+         /**
+          * Function will log the user out of the account.
+          */
+         function perform_sign_off() {
+             // Attempt to log out.
+             api_post_logout(
+                 function () {
+                     window.location = "{% get_app_domain %}{% url 'o55_login_master' %}";
+                 }, function() {
+                     alert("Failed logging out.");
+                 }
+             );
+         }
+     </script>
+</body>
+
+</html>

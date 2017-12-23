@@ -4,7 +4,7 @@ from django.contrib.auth.models import User, Group
 from django.contrib.auth.password_validation import validate_password
 from django.core.management.base import BaseCommand, CommandError
 from django.utils.translation import ugettext_lazy as _
-# from rest_framework.authtoken.models import Token
+from rest_framework.authtoken.models import Token
 from shared_foundation import constants
 from shared_foundation.models.o55_user import O55User
 from shared_foundation.utils import (
@@ -58,4 +58,8 @@ class Command(BaseCommand):
         user.set_password(password)
         user.save()
 
+        # Attach our user to the "Executive"
         user.groups.add(constants.EXECUTIVE_GROUP_ID)
+
+        # Generate the private access key.
+        token = Token.objects.create(user=user)

@@ -57,3 +57,7 @@ class TestUtils(TenantTestCase):
         value = float_or_none("123.321")
         self.assertIsNotNone(value)
         self.assertEqual(value, 123.321)
+
+    def test_reverse_with_full_domain(self):
+        value = reverse_with_full_domain("o55_index_master")
+        self.assertIsNone(value)
