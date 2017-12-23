@@ -3,22 +3,23 @@ from django_tenants.test.cases import TenantTestCase
 from django_tenants.test.client import TenantClient
 from django.urls import reverse
 from shared_foundation.models import *
+from shared_foundation.utils import get_unique_username_from_email
 
 
 class TestModelStringFunc(TenantTestCase):
     """
     Console:
-    python manage.py test shared_foundation.tests.test_model_str
+    python manage.py test shared_foundation.tests.test_model_str_func
     """
 
     def setUp(self):
-        super(TestSetupFixturesManagementCommand, self).setUp()
+        super(TestModelStringFunc, self).setUp()
         self.c = TenantClient(self.tenant)
 
     def tearDown(self):
         del self.client
 
-    def test_o55_users(self):
+    def test_o55_user(self):
         user = O55User.objects.create(
             first_name="Bart",
             last_name="Mika",
