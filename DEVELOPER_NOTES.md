@@ -17,6 +17,7 @@ pip install django-htmlmin                # HTML Minify
 pip install django-trapdoor               # Automatically Exploit Scanners
 pip install psycopg2                      # Postgres SQL ODBC
 pip install django-tenants                # Multi-Tenancy Handler
+pip install dateutil                      # Useful extensions to the standard Python datetime features
 
 #TODO: IMPLEMENT...
 # pip install djangorestframework           # RESTful API Endpoint Generator

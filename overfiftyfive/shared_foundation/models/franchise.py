@@ -8,6 +8,7 @@ from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 from django_tenants.models import TenantMixin, DomainMixin
 from shared_foundation import constants
+from shared_foundation.models.o55_user import O55User
 
 
 class SharedFranchiseManager(models.Manager):
@@ -34,6 +35,18 @@ class SharedFranchise(TenantMixin):
     #  FIELDS
     #
 
+    managers = models.ManyToManyField(
+        O55User,
+        help_text=_('The managers who belong to this "Franchise" and are administrators or have executive decision making authority.'),
+        blank=True,
+        related_name="%(app_label)s_%(class)s_managers_related"
+    )
+    frontline_staff = models.ManyToManyField(
+        O55User,
+        help_text=_('The office staff and or volunteers who belong to this "Franchise".'),
+        blank=True,
+        related_name="%(app_label)s_%(class)s_frontline_staff_related"
+    )
     name = models.CharField(
         _("Name"),
         max_length=127,
