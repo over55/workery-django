@@ -11,12 +11,6 @@ from shared_foundation import constants
 from shared_foundation.models.o55_user import O55User
 
 
-class SharedFranchiseManager(models.Manager):
-    def delete_all(self):
-        items = SharedFranchise.objects.all()
-        for item in items.all():
-            item.delete()
-
 
 class SharedFranchise(TenantMixin):
     """
@@ -28,8 +22,6 @@ class SharedFranchise(TenantMixin):
         db_table = 'o55_franchises'
         verbose_name = _('Franchise')
         verbose_name_plural = _('Franchises')
-
-    objects = SharedFranchiseManager()
 
     #
     #  FIELDS
