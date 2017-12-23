@@ -68,6 +68,9 @@ SHARED_APPS = (
     # Third Party Apps
     'django_tenants',  # (mandatory)
     'trapdoor',
+    'rest_framework',
+    'rest_framework.authtoken',
+    'django_filters',
     # . . .
 
      # Shared Apps
@@ -117,7 +120,7 @@ TEMPLATES = [
                 'django.template.context_processors.i18n',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                # 'shared_foundation.context_processors.foundation_constants', # Custom App
+                'shared_foundation.context_processors.foundation_constants', # Custom App
             ],
         },
     },

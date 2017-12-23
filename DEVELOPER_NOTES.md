@@ -17,11 +17,11 @@ pip install django-htmlmin                # HTML Minify
 pip install django-trapdoor               # Automatically Exploit Scanners
 pip install psycopg2                      # Postgres SQL ODBC
 pip install django-tenants                # Multi-Tenancy Handler
-pip install dateutil                      # Useful extensions to the standard Python datetime features
+pip install djangorestframework           # RESTful API Endpoint Generator
+pip install django_filter                 # Filter querysets dynamically
 
 #TODO: IMPLEMENT...
-# pip install djangorestframework           # RESTful API Endpoint Generator
-# pip install django_filter                 # Filter querysets dynamically
+pip install dateutil                      # Useful extensions to the standard Python datetime features
 # pip install django-crispy-forms           # Req: djangorestframework
 # pip install django-rq                     # Redis Queue Library
 # pip install rq-scheduler                  # Redis Queue Scheduler Library
