@@ -18,5 +18,16 @@ class TestModelStringFunc(TenantTestCase):
     def tearDown(self):
         del self.client
 
-    def test_command(self):
-        call_command('setup_fixtures', verbosity=0)
+    def test_o55_users(self):
+        user = O55User.objects.create(
+            first_name="Bart",
+            last_name="Mika",
+            email="bart@overfiftyfive.com",
+            username=get_unique_username_from_email("bart@overfiftyfive.com"),
+            is_active=True,
+            is_superuser=True,
+            is_staff=True
+        )
+        self.assertIsNotNone(user)
+        value = str(user)
+        self.assertIn("bart@overfiftyfive.com", value)
