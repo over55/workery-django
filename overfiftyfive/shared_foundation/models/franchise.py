@@ -76,7 +76,7 @@ class SharedFranchise(TenantMixin):
     #
 
     def __str__(self):
-        return str(self.description)
+        return str(self.name)
 
 
 

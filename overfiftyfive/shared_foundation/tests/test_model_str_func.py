@@ -32,3 +32,13 @@ class TestModelStringFunc(TenantTestCase):
         self.assertIsNotNone(user)
         value = str(user)
         self.assertIn("bart@overfiftyfive.com", value)
+
+    def test_franchise(self):
+        #create your public tenant
+        public_tenant = SharedFranchise(
+            schema_name='public',
+            name='Over 55 (London) Inc.',
+        )
+        self.assertIsNotNone(public_tenant)
+        value = str(public_tenant)
+        self.assertIn("Over 55 (London) Inc.", value)
