@@ -6,7 +6,7 @@ from shared_foundation.utils import *
 
 class TestUtils(TenantTestCase):
     """
-    Run:
+    Console:
     python manage.py test shared_foundation.tests.test_utils
     """
 

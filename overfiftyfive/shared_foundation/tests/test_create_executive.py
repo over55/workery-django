@@ -12,7 +12,7 @@ from shared_foundation.utils import (
 
 class TestCreateExecutiveManagementCommand(TenantTestCase):
     """
-    Run:
+    Console:
     python manage.py test shared_foundation.tests.test_create_executive
     """
     # Fixtures to support our unit tests with sample data.
