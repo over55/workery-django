@@ -26,8 +26,6 @@ class APILoginWithPublicSchemaTestCase(APITestCase, TenantTestCase):
     Console:
     python manage.py test shared_api.tests.test_login_views
     """
-    fixtures = []
-
     @classmethod
     def setUpTestData(cls):
         pass
@@ -37,6 +35,7 @@ class APILoginWithPublicSchemaTestCase(APITestCase, TenantTestCase):
         translation.activate('en')  # Set English
         super(APILoginWithPublicSchemaTestCase, self).setUp()
         self.c = TenantClient(self.tenant)
+        call_command('setup_fixtures', verbosity=0)
         call_command('create_executive_account', TEST_USER_EMAIL, TEST_USER_PASSWORD, "Bart", "Mika", verbosity=0)
 
     @transaction.atomic

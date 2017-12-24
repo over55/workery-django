@@ -3,7 +3,7 @@ from rest_framework.urlpatterns import format_suffix_patterns
 from rest_framework import serializers, viewsets, routers
 from rest_framework.urlpatterns import format_suffix_patterns
 from shared_api.views.login_view import LoginAPIView
-# from shared_api.views.logout_view import LogoutAPIView
+from shared_api.views.logout_view import LogoutAPIView
 # from shared_api.views.obtainauthtoken_view import ObtainAuthTokenAPIView # DEPRECATED
 # from shared_api.views.register_user_view import RegisterUserAPIView
 # from shared_api.views.register_university_view import RegisterUniversityAPIView
@@ -12,8 +12,7 @@ from shared_api.views.login_view import LoginAPIView
 urlpatterns = [
     # # Authentication.
     url(r'^api/login$', LoginAPIView.as_view(), name='o55_login_api_endpoint'),
-    # url(r'^api/logout$', LogoutAPIView.as_view()),
-    # url(r'^api/get_token$', ObtainAuthTokenAPIView.as_view()), # DEPRECATED
+    url(r'^api/logout$', LogoutAPIView.as_view(), name='o55_logout_api_endpoint'),
     # url(r'^api/register/user/$', RegisterUserAPIView.as_view()),
     #
     # # University
