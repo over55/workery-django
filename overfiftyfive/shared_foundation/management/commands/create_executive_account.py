@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 from django.conf import settings
 from django.contrib.auth.models import User, Group
-from django.contrib.auth.password_validation import validate_password
 from django.core.management.base import BaseCommand, CommandError
 from django.utils.translation import ugettext_lazy as _
 from rest_framework.authtoken.models import Token
 from shared_foundation import constants
+from shared_foundation.models.me import SharedMe
 from shared_foundation.models.o55_user import O55User
 from shared_foundation.utils import (
     get_random_string,
@@ -19,7 +19,7 @@ class Command(BaseCommand):
     def add_arguments(self, parser):
         """
         Run manually in console:
-        python manage.py create_executive_account "bart@overfiftyfive.com" "123P@$$word" "Bart" "Mika"
+        python manage.py create_executive_account "bart@overfiftyfive.com" "123password" "Bart" "Mika"
         """
         parser.add_argument('email', nargs='+', type=str)
         parser.add_argument('password', nargs='+', type=str)
@@ -37,12 +37,6 @@ class Command(BaseCommand):
         if O55User.objects.filter(email=email).exists():
             raise CommandError(_('Email already exists, please pick another email.'))
 
-        # Defensive Code: Ensure the password inputted is strong.
-        try:
-            validate_password(password)
-        except Exception as e:
-            raise CommandError(e)
-
         # Create the user.
         user = User.objects.create(
             first_name=first_name,
@@ -58,8 +52,13 @@ class Command(BaseCommand):
         user.set_password(password)
         user.save()
 
-        # Attach our user to the "Executive"
-        user.groups.add(constants.EXECUTIVE_GROUP_ID)
-
         # Generate the private access key.
         token = Token.objects.create(user=user)
+
+        # Create our profile.
+        SharedMe.objects.create(
+            user=user
+        )
+
+        # Attach our user to the "Executive"
+        user.groups.add(constants.EXECUTIVE_GROUP_ID)

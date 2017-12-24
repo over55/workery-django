@@ -31,6 +31,13 @@ class TestCreateExecutiveManagementCommand(TenantTestCase):
     def test_command_with_success(self):
         call_command('create_executive_account', "bart@overfiftyfive.com", "123P@$$w0rd", "Bart", "Mika", verbosity=0)
 
+        # Verify the account works.
+        from django.contrib.auth.hashers import check_password
+        from django.contrib.auth import get_user_model
+        user = get_user_model().objects.filter(email__iexact="bart@overfiftyfive.com")[0]
+        is_authenticated = check_password("123P@$$w0rd", user.password)
+        self.assertTrue(is_authenticated)
+
     def test_command_with_duplicate_email_error(self):
         O55User.objects.create(
             first_name="Bart",
@@ -46,10 +53,3 @@ class TestCreateExecutiveManagementCommand(TenantTestCase):
         except Exception as e:
             self.assertIsNotNone(e)
             self.assertIn("Email already exists", str(e))
-
-    def test_command_with_bad_password_error(self):
-        try:
-            call_command('create_executive_account', "bart@overfiftyfive.com", "123password", "Bart", "Mika", verbosity=0)
-        except Exception as e:
-            self.assertIsNotNone(e)
-            self.assertIn("Password", str(e))

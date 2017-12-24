@@ -15,6 +15,10 @@ urlpatterns = (
     web_views.user_login_master_page,
     name='o55_login_master'),
 
+    url(r'^login/redirector$',
+    web_views.user_login_redirector_master_page,
+    name='o55_login_redirector'),
+
     # url(r'^register/$',
     # web_views.register_user_master_page,
     # name='o55_register_master'),

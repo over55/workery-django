@@ -15,6 +15,7 @@ class Command(BaseCommand):
         # The filename of all the objects to be imported.
         ordered_file_names = [
             'sites.json',
+            'groups.json'
         ]
 
         # Iterate through all the filenames and load them into database.

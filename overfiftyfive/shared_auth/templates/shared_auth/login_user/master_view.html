@@ -12,7 +12,7 @@
             }
         });
 
-        var token = "{{ request.token }}";
+        var token = "{{ request.token }}{% url 'o55_login_redirector' %}";
         if (token != "" && token != undefined) {
             // window.location = "{% get_app_domain %}";
         }
@@ -31,7 +31,7 @@
             function(was_successful) {
                 if (was_successful) {
                     // Load up our dashboard.
-                    window.location = "{% get_app_domain %}";
+                    window.location = "{% get_app_domain %}{% url 'o55_login_redirector' %}";
                 } else {
                     alert("Failed logging in, did not receive token.");
                 }
