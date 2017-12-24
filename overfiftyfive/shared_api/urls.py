@@ -11,7 +11,7 @@ from shared_api.views.login_view import LoginAPIView
 
 urlpatterns = [
     # # Authentication.
-    # url(r'^api/login$', LoginAPIView.as_view()),
+    url(r'^api/login$', LoginAPIView.as_view(), name='o55_login_api_endpoint'),
     # url(r'^api/logout$', LogoutAPIView.as_view()),
     # url(r'^api/get_token$', ObtainAuthTokenAPIView.as_view()), # DEPRECATED
     # url(r'^api/register/user/$', RegisterUserAPIView.as_view()),

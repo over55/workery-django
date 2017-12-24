@@ -6,7 +6,6 @@ from django.utils.translation import ugettext_lazy as _
 from rest_framework.authtoken.models import Token
 from shared_foundation import constants
 from shared_foundation.models.me import SharedMe
-from shared_foundation.models.o55_user import O55User
 from shared_foundation.utils import (
     get_random_string,
     get_unique_username_from_email
@@ -34,7 +33,7 @@ class Command(BaseCommand):
         last_name = options['last_name'][0]
 
         # Defensive Code: Prevent continuing if the email already exists.
-        if O55User.objects.filter(email=email).exists():
+        if User.objects.filter(email=email).exists():
             raise CommandError(_('Email already exists, please pick another email.'))
 
         # Create the user.

@@ -11,7 +11,7 @@ from rest_framework import mixins # See: http://www.django-rest-framework.org/ap
 from rest_framework import authentication, viewsets, permissions, status, parsers, renderers
 from rest_framework.decorators import detail_route, list_route # See: http://www.django-rest-framework.org/api-guide/viewsets/#marking-extra-actions-for-routing
 from rest_framework.response import Response
-from shared_foundation import models
+from shared_foundation.models.me import SharedMe
 from shared_api.serializers.login_serializers import AuthCustomTokenSerializer
 
 
@@ -32,19 +32,18 @@ class LoginAPIView(APIView):
         """
         serializer = AuthCustomTokenSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        user = serializer.validated_data['user']
+        authenticated_user = serializer.validated_data['authenticated_user']
 
-        # Create a session for this User by logging this user in.
-        authenticated_user = authenticate(
-            username=user.email,
-            password=serializer['password'].value
-        )
         login(self.request, authenticated_user)
-        token, created = Token.objects.get_or_create(user=user)
+
+        token, created = Token.objects.get_or_create(user=authenticated_user)
+
+        me = SharedMe.objects.get(user=authenticated_user)
 
         return Response(
             data = {
                 'token': str(token.key),
+                'me': str(me)
             },
             status=status.HTTP_200_OK
         )
