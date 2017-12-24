@@ -67,7 +67,17 @@ class TestCreateExecutiveManagementCommand(TenantTestCase):
             is_staff=True
         )
         try:
-            call_command('create_executive_account', TEST_USER_EMAIL, get_random_string(), "Bart", "Mika", verbosity=0)
+            call_command(
+               'create_executive_account',
+               TEST_USER_EMAIL,
+               TEST_USER_PASSWORD,
+               "Bart",
+               "Mika",
+               TEST_USER_TEL_NUM,
+               TEST_USER_TEL_EX_NUM,
+               TEST_USER_CELL_NUM,
+               verbosity=0
+            )
         except Exception as e:
             self.assertIsNotNone(e)
             self.assertIn("Email already exists", str(e))
