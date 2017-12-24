@@ -46,3 +46,7 @@ def user_login_redirector_master_page(request):
     return HttpResponseRedirect(reverse('o55_index_master', args=[]))
 
     # raise PermissionDenied(_('TODO: WRITE SOMETHING.'))
+
+
+def reset_password_master_page(request):
+    return render(request, 'shared_auth/reset_password/master_view.html',{})

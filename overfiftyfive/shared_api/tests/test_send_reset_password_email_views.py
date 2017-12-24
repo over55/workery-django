@@ -25,15 +25,15 @@ TEST_USER_TEL_EX_NUM = ""
 TEST_USER_CELL_NUM = "123 123-1234"
 
 
-class APILogOutWithPublicSchemaTestCase(APITestCase, TenantTestCase):
+class APISendResetPasswordEmailWithSchemaTestCase(APITestCase, TenantTestCase):
     """
     Console:
-    python manage.py test shared_api.tests.test_logout_views
+    python manage.py test shared_api.tests.test_send_reset_password_email_views
     """
     @transaction.atomic
     def setUp(self):
         translation.activate('en')  # Set English
-        super(APILogOutWithPublicSchemaTestCase, self).setUp()
+        super(APISendResetPasswordEmailWithSchemaTestCase, self).setUp()
         self.c = TenantClient(self.tenant)
         call_command('setup_fixtures', verbosity=0)
         call_command(
@@ -53,21 +53,21 @@ class APILogOutWithPublicSchemaTestCase(APITestCase, TenantTestCase):
         users = User.objects.all()
         for user in users.all():
             user.delete()
-        super(APILogOutWithPublicSchemaTestCase, self).tearDown()
+        super(APISendResetPasswordEmailWithSchemaTestCase, self).tearDown()
 
     @transaction.atomic
-    def test_api_logout(self):
+    def test_api_send_reset_password_email_with_success(self):
         # Log in the the account.
         user = User.objects.get()
         token = Token.objects.get(user_id=user.id)
 
         # Log out.
-        logout_url = reverse('o55_logout_api_endpoint')
+        url = reverse('o55_send_reset_password_email_api_endpoint')
         data = {
             'email_or_username': TEST_USER_EMAIL,
-            'password': TEST_USER_PASSWORD,
+            'tel_or_cell': TEST_USER_TEL_NUM,
         }
-        response = self.c.post(logout_url, json.dumps(data), HTTP_AUTHORIZATION='Token ' + token.key, content_type='application/json')
+        response = self.c.post(url, json.dumps(data), HTTP_AUTHORIZATION='Token ' + token.key, content_type='application/json')
 
         # Confirm.
         self.assertEqual(response.status_code, status.HTTP_200_OK)

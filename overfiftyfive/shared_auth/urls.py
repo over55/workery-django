@@ -19,6 +19,10 @@ urlpatterns = (
     web_views.user_login_redirector_master_page,
     name='o55_login_redirector'),
 
+    url(r'^reset/$',
+    web_views.reset_password_master_page,
+    name='o55_reset_password_master'),
+
     # url(r'^register/$',
     # web_views.register_user_master_page,
     # name='o55_register_master'),

@@ -18,12 +18,15 @@ class Command(BaseCommand):
     def add_arguments(self, parser):
         """
         Run manually in console:
-        python manage.py create_executive_account "bart@overfiftyfive.com" "123password" "Bart" "Mika"
+        python manage.py create_executive_account "bart@overfiftyfive.com" "123password" "Bart" "Mika" "123 123-1234" "" "123 123-1234"
         """
         parser.add_argument('email', nargs='+', type=str)
         parser.add_argument('password', nargs='+', type=str)
         parser.add_argument('first_name', nargs='+', type=str)
         parser.add_argument('last_name', nargs='+', type=str)
+        parser.add_argument('tel_num', nargs='+', type=str)
+        parser.add_argument('tel_ext_num', nargs='+', type=str)
+        parser.add_argument('cell_num', nargs='+', type=str)
 
     def handle(self, *args, **options):
         # Get the user inputs.
@@ -31,6 +34,9 @@ class Command(BaseCommand):
         password = options['password'][0]
         first_name = options['first_name'][0]
         last_name = options['last_name'][0]
+        tel_num = options['tel_num'][0]
+        tel_ext_num = options['tel_ext_num'][0]
+        cell_num = options['cell_num'][0]
 
         # Defensive Code: Prevent continuing if the email already exists.
         if User.objects.filter(email=email).exists():
@@ -56,7 +62,10 @@ class Command(BaseCommand):
 
         # Create our profile.
         SharedMe.objects.create(
-            user=user
+            user=user,
+            tel_num=tel_num,
+            tel_ext_num=tel_ext_num,
+            cell_num=cell_num
         )
 
         # Attach our user to the "Executive"

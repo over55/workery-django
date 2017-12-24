@@ -16,6 +16,9 @@ from shared_foundation import constants
 TEST_USER_EMAIL = "bart@overfiftyfive.com"
 TEST_USER_USERNAME = "bart@overfiftyfive.com"
 TEST_USER_PASSWORD = "123P@$$w0rd"
+TEST_USER_TEL_NUM = "123 123-1234"
+TEST_USER_TEL_EX_NUM = ""
+TEST_USER_CELL_NUM = "123 123-1234"
 
 
 class TestBackends(TenantTestCase):
@@ -29,7 +32,17 @@ class TestBackends(TenantTestCase):
         super(TestBackends, self).setUp()
         self.c = TenantClient(self.tenant)
         call_command('setup_fixtures', verbosity=0)
-        call_command('create_executive_account', TEST_USER_EMAIL, TEST_USER_PASSWORD, "Bart", "Mika", verbosity=0)
+        call_command(
+           'create_executive_account',
+           TEST_USER_EMAIL,
+           TEST_USER_PASSWORD,
+           "Bart",
+           "Mika",
+           TEST_USER_TEL_NUM,
+           TEST_USER_TEL_EX_NUM,
+           TEST_USER_CELL_NUM,
+           verbosity=0
+        )
 
     @transaction.atomic
     def tearDown(self):

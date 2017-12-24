@@ -25,3 +25,7 @@ class TestSharedAuthViews(TenantTestCase):
     def test_user_login_redirector_master_page(self):
         response = self.c.get(reverse('o55_login_redirector'))
         self.assertEqual(response.status_code, 302)
+
+    def test_reset_password_page(self):
+        response = self.c.get(reverse('o55_reset_password_master'))
+        self.assertEqual(response.status_code, 200)
