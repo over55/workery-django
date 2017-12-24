@@ -11,9 +11,6 @@ class UserModelEmailBackend(ModelBackend):
         """Allow users to log in with their email address."""
         try:
             user = get_user_model().objects.filter(email__iexact=username)[0]
-            print(username)
-            print(user)
-            print("------")
             if check_password(password, user.password):
                 return user
             else:

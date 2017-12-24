@@ -1,18 +1,14 @@
 import json
+from django.contrib.auth import authenticate
 from django.core.management import call_command
 from django.db.models import Q
 from django.db import transaction
-from django.test import TestCase
-from django.test import Client
 from django.utils import translation
 from django.urls import reverse
 from django.contrib.auth.models import User, Group
 from django.contrib.auth import authenticate, login, logout
 from django_tenants.test.cases import TenantTestCase
 from django_tenants.test.client import TenantClient
-from rest_framework import status
-from rest_framework.test import APIClient
-from rest_framework.test import APITestCase
 from rest_framework.authtoken.models import Token
 from shared_foundation import constants
 
@@ -22,15 +18,15 @@ TEST_USER_USERNAME = "bart@overfiftyfive.com"
 TEST_USER_PASSWORD = "123P@$$w0rd"
 
 
-class APILogOutWithPublicSchemaTestCase(APITestCase, TenantTestCase):
+class TestBackends(TenantTestCase):
     """
     Console:
-    python manage.py test shared_api.tests.test_logout_views
+    python manage.py test shared_foundation.tests.test_backends
     """
     @transaction.atomic
     def setUp(self):
         translation.activate('en')  # Set English
-        super(APILogOutWithPublicSchemaTestCase, self).setUp()
+        super(TestBackends, self).setUp()
         self.c = TenantClient(self.tenant)
         call_command('setup_fixtures', verbosity=0)
         call_command('create_executive_account', TEST_USER_EMAIL, TEST_USER_PASSWORD, "Bart", "Mika", verbosity=0)
@@ -40,21 +36,18 @@ class APILogOutWithPublicSchemaTestCase(APITestCase, TenantTestCase):
         users = User.objects.all()
         for user in users.all():
             user.delete()
-        super(APILogOutWithPublicSchemaTestCase, self).tearDown()
+        super(TestBackends, self).tearDown()
 
     @transaction.atomic
-    def test_api_logout(self):
-        # Log in the the account.
-        user = User.objects.get()
-        token = Token.objects.get(user_id=user.id)
+    def test_authentication_with_success(self):
+        auth_user = authenticate(username=TEST_USER_EMAIL, password=TEST_USER_PASSWORD)
+        self.assertIsNotNone(auth_user)
 
-        # Log out.
-        logout_url = reverse('o55_logout_api_endpoint')
-        data = {
-            'email_or_username': TEST_USER_EMAIL,
-            'password': TEST_USER_PASSWORD,
-        }
-        response = self.c.post(logout_url, json.dumps(data), HTTP_AUTHORIZATION='Token ' + token.key, content_type='application/json')
+    @transaction.atomic
+    def test_authentication_with_failure(self):
+        auth_user = authenticate(username=TEST_USER_EMAIL, password="Some-bad-password")
+        self.assertIsNone(auth_user)
 
-        # Confirm.
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        # Bad username plus bad password.
+        auth_user = authenticate(username="Some-bad-password", password="Some-bad-password")
+        self.assertIsNone(auth_user)

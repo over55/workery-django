@@ -29,13 +29,14 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^i18n/', include('django.conf.urls.i18n')),
     url('^', include('django.contrib.auth.urls')),
-    # url(r'^', include('shared_api.urls')),
-    #
+    url(r'^', include('shared_api.urls')),
+    url(r'^', include('shared_foundation.urls')),
+    
     #  # Sitemap
     # url(r'^sitemap\.xml$', sitemap, {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap'),
     #
-    # # Django-RQ
-    # url(r'^django-rq/', include('django_rq.urls')),
+    # Django-RQ
+    url(r'^django-rq/', include('django_rq.urls')),
 ]
 
 

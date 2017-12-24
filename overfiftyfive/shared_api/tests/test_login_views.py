@@ -26,10 +26,6 @@ class APILoginWithPublicSchemaTestCase(APITestCase, TenantTestCase):
     Console:
     python manage.py test shared_api.tests.test_login_views
     """
-    @classmethod
-    def setUpTestData(cls):
-        pass
-
     @transaction.atomic
     def setUp(self):
         translation.activate('en')  # Set English

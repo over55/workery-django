@@ -29,7 +29,7 @@ class AuthCustomTokenSerializer(serializers.Serializer):
         if not user.is_active:
             raise exceptions.ValidationError(_('Your account is suspended!'))
 
-        authenticated_user = authenticate(username=user.username, password=password)
+        authenticated_user = authenticate(username=email_or_username, password=password)
 
         if authenticated_user:
             attrs['authenticated_user'] = authenticated_user

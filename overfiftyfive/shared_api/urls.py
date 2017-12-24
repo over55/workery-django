@@ -13,10 +13,6 @@ urlpatterns = [
     # # Authentication.
     url(r'^api/login$', LoginAPIView.as_view(), name='o55_login_api_endpoint'),
     url(r'^api/logout$', LogoutAPIView.as_view(), name='o55_logout_api_endpoint'),
-    # url(r'^api/register/user/$', RegisterUserAPIView.as_view()),
-    #
-    # # University
-    # url(r'^api/register/university/$', RegisterUniversityAPIView.as_view()),
 ]
 
 
