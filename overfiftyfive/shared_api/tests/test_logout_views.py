@@ -35,7 +35,7 @@ class APILogOutWithPublicSchemaTestCase(APITestCase, TenantTestCase):
         translation.activate('en')  # Set English
         super(APILogOutWithPublicSchemaTestCase, self).setUp()
         self.c = TenantClient(self.tenant)
-        call_command('setup_fixtures', verbosity=0)
+        call_command('init_app', verbosity=0)
         call_command(
            'create_executive_account',
            TEST_USER_EMAIL,

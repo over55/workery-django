@@ -26,7 +26,7 @@ class TestCreateExecutiveManagementCommand(TenantTestCase):
     def setUp(self):
         super(TestCreateExecutiveManagementCommand, self).setUp()
         self.c = TenantClient(self.tenant)
-        call_command('setup_fixtures', verbosity=0)
+        call_command('init_app', verbosity=0)
 
     def tearDown(self):
         users = O55User.objects.all()

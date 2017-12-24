@@ -31,7 +31,7 @@ before_script:
   - ./setup_credentials.sh
   - python overfiftyfive/manage.py migrate_schemas --noinput
   - python overfiftyfive/manage.py populate_public
-  - python overfiftyfive/manage.py setup_fixtures
+  - python overfiftyfive/manage.py init_app
 
 branches:
   only:
