@@ -23,12 +23,10 @@ class TestCreateExecutiveManagementCommand(TenantTestCase):
     Console:
     python manage.py test shared_foundation.tests.test_create_executive
     """
-    # Fixtures to support our unit tests with sample data.
-    fixtures = ['sites', 'groups']
-
     def setUp(self):
         super(TestCreateExecutiveManagementCommand, self).setUp()
         self.c = TenantClient(self.tenant)
+        call_command('setup_fixtures', verbosity=0)
 
     def tearDown(self):
         users = O55User.objects.all()
