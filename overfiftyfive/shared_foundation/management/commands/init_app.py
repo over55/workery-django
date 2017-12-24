@@ -19,9 +19,9 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         self.process_site()
         self.process_groups()
-        self.stdout.write(
-            self.style.SUCCESS(_('Successfully initialized application.'))
-        )
+        # self.stdout.write(
+        #     self.style.SUCCESS(_('Successfully initialized application.'))
+        # )
 
     def process_site(self):
         """

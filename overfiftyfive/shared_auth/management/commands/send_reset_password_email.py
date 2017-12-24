@@ -6,9 +6,9 @@ from django.db.models import Q
 from django.template.loader import render_to_string    # HTML to TXT
 from django.urls import reverse
 from django.utils.translation import ugettext_lazy as _
-from shared_foundation import constants
-from shared_foundation import models
-from shared_foundation import utils
+from shared_foundation.constants import *
+from shared_foundation.models import SharedMe
+from shared_foundation.utils import reverse_with_full_domain
 
 
 class Command(BaseCommand):
@@ -20,16 +20,17 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         try:
             for email_or_username in options['email_or_username']:
-                user = User.objects.get(
-                    Q(email__iexact=email_or_username) |
-                    Q(username__iexact=email_or_username)
+                me = SharedMe.objects.get(
+                    Q(user__email__iexact=email_or_username) |
+                    Q(user__username__iexact=email_or_username)
                 )
-                self.begin_processing(user)
+                self.begin_processing(me)
 
-        except User.DoesNotExist:
-            raise CommandError(_('User does not exist with the email or username: %s') % str(email_or_username))
+        except SharedMe.DoesNotExist:
+            raise CommandError(_('Account does not exist with the email or username: %s') % str(email_or_username))
 
-    def begin_processing(self, user):
-        pr_access_code = None
+    def begin_processing(self, me):
+        pr_access_code = me.generate_pr_code()
 
-        print("TODO: CONTINUE DEVELPOING FROM HERE.")
+
+        
