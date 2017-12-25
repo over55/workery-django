@@ -7,7 +7,7 @@ from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 from shared_foundation import constants
 from shared_foundation.models.o55_user import O55User
-from shared_foundation.utils import generate_hash
+from shared_foundation.utils import generate_hash, get_random_string
 
 
 def get_expiry_date(days=2):
@@ -122,7 +122,7 @@ class SharedMe(models.Model):
         """
         Function generates a new password reset code and expiry date.
         """
-        self.pr_access_code = generate_hash()
+        self.pr_access_code = get_random_string(length=127)
         self.pr_expiry_date = get_expiry_date()
         self.save()
         return self.pr_access_code

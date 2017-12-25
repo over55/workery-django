@@ -6,9 +6,9 @@ from shared_auth.views import web_views
 
 urlpatterns = (
     # # EMAIL
-    # url(r'^activate/(.*)/email/$',
-    # email_views.user_activation_email_page,
-    # name='o55_register_user_activation_email_master'),
+    # Email Views
+    # url(r'^activate-email/(.*)/$', email_views.activate_email_page, name='trcag_activate_email'),
+    url(r'^reset-password-email/(.*)/$', email_views.reset_password_email_page, name='o55_reset_password_email'),
 
     # WEB
     url(r'^login/$',
@@ -20,7 +20,15 @@ urlpatterns = (
     name='o55_login_redirector'),
 
     url(r'^reset/$',
-    web_views.reset_password_master_page,
+    web_views.send_reset_password_email_master_page,
+    name='o55_send_reset_password_email_master'),
+
+    url(r'^reset/submitted$',
+    web_views.send_reset_password_email_submitted_page,
+    name='o55_send_reset_password_email_submitted'),
+
+    url(r'^reset/(.*)/$',
+    web_views.rest_password_master_page,
     name='o55_reset_password_master'),
 
     # url(r'^register/$',

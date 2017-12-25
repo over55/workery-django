@@ -43,6 +43,9 @@ class TestSendResetPasswordEmailManagementCommand(TenantTestCase):
 
     def tearDown(self):
         del self.client
+        users = O55User.objects.all():
+        for user in users.all():
+            user.delete()        
 
     def test_command_with_success(self):
         call_command('send_reset_password_email', TEST_USER_EMAIL, verbosity=0)

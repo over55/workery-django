@@ -1,0 +1,66 @@
+{% extends 'shared_foundation/shared_base.html' %}
+{% load staticfiles i18n foundation_tags %}
+{% block title %}{% trans 'Login | Academics Today' %}{% endblock title %}
+{% block content %}
+<!-- JAVASCRIPT -->
+<script>
+    /**
+     * Function will take the EMAIL and PASSWORD, submit the information to the
+     * server and have either an error returned or an API KEY which
+     */
+    function ajax_send_reset_password_email()
+    {
+        api_send_password_reset_email(
+            $('#id_email_or_username').val().toLowerCase(),
+            $('#id_tel_num_or_cell_num').val(),
+            function(was_successful) {
+                if (was_successful) {
+                    // Load up our dashboard.
+                    // window.location = "{% get_app_domain %}{% url 'o55_send_reset_password_email_submitted' %}";
+                } else {
+                    alert("Failed logging in, did not receive token.");
+                }
+            },
+            function(xhr, status, error) {
+                alert("Wrong login credentials.");
+                // Convert the error json into string.
+                // var string = JSON.stringify( error );
+                // console.log(string);
+            }
+        ); // End Login
+    }
+</script>
+<!-- end JAVASCRIPT -->
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-4 col-md-offset-4">
+            <div class="login-panel panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">{% trans 'Please Sign In' %}</h3>
+                </div>
+                <div class="panel-body">
+                    <form role="form">
+                        <fieldset>
+                            <div class="form-group">
+                                <input class="form-control" placeholder="{% trans 'E-mail or Username' %}" name="email_or_username" type="email" autofocus id="id_email_or_username" autocapitalize="off">
+                            </div>
+                            <div class="form-group">
+                                <input class="form-control" placeholder="{% trans 'Telephone # or Cell #' %}" name="telephone_or_cell" type="telephone" value="" id="id_tel_num_or_cell_num" autocapitalize="off">
+                            </div>
+                            <!-- Change this to a button or input when using this as a form -->
+                            <a onclick="ajax_send_reset_password_email();" class="btn btn-lg btn-success btn-block">
+                                {% trans 'Send Password Reset' %}
+                            </a>
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+            <p>
+                <a href="{% get_app_domain %}{% url 'o55_index_master' %}">{% trans 'Back' %}</a>
+            </p>
+        </div>
+    </div>
+</div>
+{% endblock content %}

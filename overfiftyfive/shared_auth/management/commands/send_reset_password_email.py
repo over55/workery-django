@@ -32,5 +32,34 @@ class Command(BaseCommand):
     def begin_processing(self, me):
         pr_access_code = me.generate_pr_code()
 
+        # Generate the links.
+        url = reverse_with_full_domain(
+            reverse_url_id='o55_reset_password_master',
+            resolve_url_args=[pr_access_code]
+        )
+        web_view_extra_url = reverse_with_full_domain(
+            reverse_url_id='o55_reset_password_email',
+            resolve_url_args=[pr_access_code]
+        )
+        subject = "Over55: Password Reset"
+        param = {
+            'url': url,
+            'web_view_extra_url': web_view_extra_url
+        }
 
-        
+        # Plug-in the data into our templates and render the data.
+        text_content = render_to_string('shared_auth/email/reset_password_email.txt', param)
+        html_content = render_to_string('shared_auth/email/reset_password_email.html', param)
+
+        # Generate our address.
+        from_email = settings.DEFAULT_FROM_EMAIL
+        to = [me.user.email]
+
+        # Send the email.
+        msg = EmailMultiAlternatives(subject, text_content, from_email, to)
+        msg.attach_alternative(html_content, "text/html")
+        msg.send()
+
+        self.stdout.write(
+            self.style.SUCCESS(_('O55: Sent welcome email to %s.') % str(me.user.email))
+        )
