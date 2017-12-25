@@ -12,7 +12,7 @@ from rest_framework import authentication, viewsets, permissions, status, parser
 from rest_framework.decorators import detail_route, list_route # See: http://www.django-rest-framework.org/api-guide/viewsets/#marking-extra-actions-for-routing
 from rest_framework.response import Response
 from shared_foundation.models.me import SharedMe
-from shared_api.serializers.login_serializers import AuthCustomTokenSerializer
+from shared_api.serializers.auth_login_serializers import AuthCustomTokenSerializer
 
 
 class LoginAPIView(APIView):

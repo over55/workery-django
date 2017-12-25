@@ -2,9 +2,9 @@ from django.conf.urls import include, url
 from rest_framework.urlpatterns import format_suffix_patterns
 from rest_framework import serializers, viewsets, routers
 from rest_framework.urlpatterns import format_suffix_patterns
-from shared_api.views.login_view import LoginAPIView
-from shared_api.views.logout_view import LogoutAPIView
-from shared_api.views.send_reset_password_email_views import SendResetPasswordEmailAPIView
+from shared_api.views.auth_login_view import LoginAPIView
+from shared_api.views.auth_logout_view import LogoutAPIView
+from shared_api.views.auth_send_reset_password_email_views import SendResetPasswordEmailAPIView
 from shared_api.views.auth_reset_password_views import ResetPasswordAPIView
 # from shared_api.views.register_user_view import RegisterUserAPIView
 # from shared_api.views.register_university_view import RegisterUniversityAPIView

@@ -11,7 +11,7 @@ from rest_framework import authentication, viewsets, permissions, status
 from rest_framework.decorators import detail_route, list_route # See: http://www.django-rest-framework.org/api-guide/viewsets/#marking-extra-actions-for-routing
 from rest_framework.response import Response
 from shared_foundation import models
-from shared_api.serializers.send_password_reset_serializers import SendResetPasswordEmailSerializer
+from shared_api.serializers.auth_send_password_reset_serializers import SendResetPasswordEmailSerializer
 
 
 class SendResetPasswordEmailAPIView(APIView):
