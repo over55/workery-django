@@ -79,7 +79,7 @@ class TestSharedAuthWebViews(TenantTestCase):
         me = SharedMe.objects.get(user__email=TEST_USER_EMAIL)
         url = reverse('o55_reset_password_master', args=['some-bad-pr-access-code'])
         response = self.c.get(url)
-        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+        self.assertEqual(response.status_code, status.HTTP_302_FOUND)
 
     def test_rest_password_master_page_with_expired_pr_access_code(self):
         # Get the user profile.
@@ -96,7 +96,7 @@ class TestSharedAuthWebViews(TenantTestCase):
         response = self.c.get(url)
 
         # Verify the results.
-        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+        self.assertEqual(response.status_code, status.HTTP_302_FOUND)
 
     def test_rest_rest_password_detail_page_with_success(self):
         me = SharedMe.objects.get(user__email=TEST_USER_EMAIL)

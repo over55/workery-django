@@ -16,11 +16,14 @@ def user_login_master_page(request):
 
 def user_login_redirector_master_page(request):
     #TODO: IMPLEMENT/
-    return HttpResponseRedirect(reverse('o55_index_master', args=[]))  #TEST
+    return HttpResponseRedirect(reverse('o55_index_master', args=[]))
 
 
 def send_reset_password_email_master_page(request):
-    return render(request, 'shared_auth/send_reset_password_email/master_view.html',{})
+    return render(request, 'shared_auth/send_reset_password_email/master_view.html',{
+        'has_pr_code_expired': request.GET.get('has_pr_code_expired', False),
+        'has_wrong_pr_access_code': request.GET.get('has_wrong_pr_access_code', False)
+    })
 
 
 def send_reset_password_email_submitted_page(request):
@@ -31,14 +34,13 @@ def rest_password_master_page(request, pr_access_code):
     try:
         me = SharedMe.objects.get(pr_access_code=pr_access_code)
         if me.has_pr_code_expired():
-            # Error message indicating code expired.
-            raise PermissionDenied(_('Password Reset Access code has expired. Please generate another one...'))
+            return HttpResponseRedirect(reverse('o55_send_reset_password_email_master', args=[])+"?has_pr_code_expired=True")
     except SharedMe.DoesNotExist:
         #TODO: In the future, write code for tracking how many attempts are made
         #      and if too many then block the user. For now just keep this in mind.
 
         # Error message indicates wrong password was entered.
-        raise PermissionDenied(_('Wrong access code.'))
+        return HttpResponseRedirect(reverse('o55_send_reset_password_email_master', args=[])+"?has_wrong_pr_access_code=True")
 
     return render(request, 'shared_auth/reset_password/master_view.html',{
         'pr_access_code': pr_access_code
