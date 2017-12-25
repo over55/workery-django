@@ -14,12 +14,9 @@ def user_login_master_page(request):
     return render(request, 'shared_auth/login_user/master_view.html',{})
 
 
-@login_required(login_url='/login/')
 def user_login_redirector_master_page(request):
     #TODO: IMPLEMENT/
-    return HttpResponseRedirect(reverse('o55_index_master', args=[]))
-
-    # raise PermissionDenied(_('TODO: WRITE SOMETHING.'))
+    return HttpResponseRedirect(reverse('o55_index_master', args=[]))  #TEST
 
 
 def send_reset_password_email_master_page(request):
@@ -48,5 +45,5 @@ def rest_password_master_page(request, pr_access_code):
     })
 
 
-def rest_password_detail_page(request, pr_access_code):
+def rest_password_detail_page(request, pr_access_code): #TEST
     return render(request, 'shared_auth/reset_password/detail_view.html',{})
