@@ -19,11 +19,14 @@ class SendResetPasswordEmailAPIView(APIView):
     permission_classes = (permissions.AllowAny,)
 
     def post(self, request, format=None):
+        # Serialize our POST request and return our serializer object,
         serializer = SendResetPasswordEmailSerializer(data=request.data)
 
-        if serializer.is_valid(raise_exception=True):
-            call_command('send_reset_password_email', serializer.validated_data['email_or_username'], verbosity=0)
+        # Apply our validation.
+        serializer.is_valid(raise_exception=True)
 
-            # Return status true that we successfully registered the user.
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        # Send password reset email.
+        call_command('send_reset_password_email', serializer.validated_data['email_or_username'], verbosity=0)
+
+        # Return status true that we successfully registered the user.
+        return Response(serializer.data, status=status.HTTP_200_OK)

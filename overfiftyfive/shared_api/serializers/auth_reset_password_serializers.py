@@ -43,3 +43,11 @@ class ResetPasswordSerializer(serializers.Serializer):
         max_length=255,
         style={'input_type': 'password'}
     )
+
+    def validate(self, clean_data):
+        pr_access_code = clean_data['pr_access_code']
+        try:
+            clean_data['me'] = SharedMe.objects.get(pr_access_code=pr_access_code)
+        except SharedMe.DoesNotExist:
+            raise serializers.ValidationError(_("Password reset access code does not exist."))
+        return clean_data

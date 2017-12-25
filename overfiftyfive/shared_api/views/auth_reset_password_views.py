@@ -19,28 +19,21 @@ class ResetPasswordAPIView(APIView):
 
     def post(self, request, format=None):
         serializer = ResetPasswordSerializer(data=request.data)
-        if serializer.is_valid(raise_exception=True):
-            password = serializer.validated_data['password']
-            pr_access_code = serializer.validated_data['pr_access_code']
 
-            # Update the password if it exists.
-            try:
-                me = SharedMe.objects.get(pr_access_code=pr_access_code)
-                me.user.set_password(password)
-                me.user.save()
+        # Perform validation.
+        serializer.is_valid(raise_exception=True)
 
-                # Security: Remove the "pr_access_code" so it cannot be used again.
-                me.pr_access_code = ''
-                me.save()
+        # Get our validated variables.
+        password = serializer.validated_data['password']
+        me = serializer.validated_data['me']
 
-                # Return status true that we successfully reset password for the user.
-                return Response(None, status=status.HTTP_200_OK)
-            except SharedMe.DoesNotExist:
-                # Return an error based on a D.N.E.
-                return Response(
-                    _("Password reset access code does not exist."),
-                    status=status.HTTP_401_UNAUTHORIZED
-                )
+        # Update the password.
+        me.user.set_password(password)
+        me.user.save()
 
-        # Return error.
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        # Security: Remove the "pr_access_code" so it cannot be used again.
+        me.pr_access_code = ''
+        me.save()
+
+        # Return status true that we successfully reset password for the user.
+        return Response(None, status=status.HTTP_200_OK)

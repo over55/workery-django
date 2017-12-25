@@ -90,7 +90,7 @@ class APIAuthResetPasswordViewslWithSchemaTestCase(APITestCase, TenantTestCase):
         response = self.c.post(url, json.dumps(data), content_type='application/json')
 
         # Confirm.
-        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
     @transaction.atomic
     def test_api_endpoint_with_bad_password(self):
