@@ -39,8 +39,7 @@ class MatchingDuelFieldsValidatorSerializer(serializers.Serializer):
             MatchingDuelFieldsValidator(
                 another_field='password_repeat',
                 message="Inputted passwords fields do not match."
-            ),
-            EnhancedPasswordStrengthFieldValidator()
+            )
         ]
     )
     password_repeat = serializers.CharField(
@@ -67,6 +66,7 @@ class TestMatchingDuelFieldsValidatorWithPublicSchemaTestCase(APITestCase, Tenan
 
     @transaction.atomic
     def test_validation(self):
+        # CASE 1 OF 2: Failure
         data = {
             'password': 'some-bad-email@overfiftyfive.com',
             'password_repeat': '123 123-1234'
@@ -77,3 +77,65 @@ class TestMatchingDuelFieldsValidatorWithPublicSchemaTestCase(APITestCase, Tenan
             s.is_valid(raise_exception=True)
         except Exception as e:
             self.assertIn("Inputted passwords fields do not match", str(e))
+
+        # CASE 2 OF 2: Success
+        data = {
+            'password': 'some-matching-password',
+            'password_repeat': 'some-matching-password'
+        }
+        s = MatchingDuelFieldsValidatorSerializer(data=data)
+        result = s.is_valid(raise_exception=False)
+        self.assertTrue(result)
+
+
+# - - - - - - - - - - - - - - - - - - - - -
+# EnhancedPasswordStrengthFieldValidator
+# - - - - - - - - - - - - - - - - - - - - -
+
+
+class EnhancedPasswordStrengthFieldValidatorSerializer(serializers.Serializer):
+    password = serializers.CharField(
+        required=True,
+        allow_blank=False,
+        max_length=63,
+        style={'input_type': 'password'},
+        validators = [
+            EnhancedPasswordStrengthFieldValidator()
+        ]
+    )
+
+
+class TestEnhancedPasswordStrengthFieldValidatorWithPublicSchemaTestCase(APITestCase, TenantTestCase):
+    @transaction.atomic
+    def setUp(self):
+        translation.activate('en')  # Set English
+        super(TestEnhancedPasswordStrengthFieldValidatorWithPublicSchemaTestCase, self).setUp()
+        self.c = TenantClient(self.tenant)
+
+    @transaction.atomic
+    def tearDown(self):
+        users = User.objects.all()
+        for user in users.all():
+            user.delete()
+        super(TestEnhancedPasswordStrengthFieldValidatorWithPublicSchemaTestCase, self).tearDown()
+
+    @transaction.atomic
+    def test_validation(self):
+        # CASE 1 OF 2: Failure
+        data = {'password': 'some-bad-password',}
+        s = EnhancedPasswordStrengthFieldValidatorSerializer(data=data)
+        result = s.is_valid(raise_exception=False)
+        self.assertFalse(result)
+
+        # CASE 2 OF 2: Success
+        data = {'password': 'qm9pQs6X8cxRxjtvuh4Licd8tLufq8AWqzS4TkA5C6fcASGS$',}
+        s = EnhancedPasswordStrengthFieldValidatorSerializer(data=data)
+        result = s.is_valid(raise_exception=False)
+        self.assertTrue(result)
+
+
+# - - - - - - - - - - - - - - -
+# OnlyTrueBooleanFieldValidator
+# - - - - - - - - - - - - - - -
+
+#TODO: IMP
