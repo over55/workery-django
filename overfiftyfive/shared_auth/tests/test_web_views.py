@@ -14,16 +14,16 @@ TEST_USER_TEL_EX_NUM = ""
 TEST_USER_CELL_NUM = "123 123-1234"
 
 
-class TestSharedAuthViews(TenantTestCase):
+class TestSharedAuthWebViews(TenantTestCase):
     """
-    Class used to test the "views".
+    Class used to test the web views.
 
     Console:
     python manage.py test shared_auth.tests.test_web_views
     """
 
     def setUp(self):
-        super(TestSharedAuthViews, self).setUp()
+        super(TestSharedAuthWebViews, self).setUp()
         self.c = TenantClient(self.tenant)
         call_command('init_app', verbosity=0)
         call_command(

@@ -37,14 +37,14 @@ class Command(BaseCommand):
             reverse_url_id='o55_reset_password_master',
             resolve_url_args=[pr_access_code]
         )
-        web_view_extra_url = reverse_with_full_domain(
+        web_view_url = reverse_with_full_domain(
             reverse_url_id='o55_reset_password_email',
             resolve_url_args=[pr_access_code]
         )
         subject = "Over55: Password Reset"
         param = {
             'url': url,
-            'web_view_extra_url': web_view_extra_url
+            'web_view_url': web_view_url
         }
 
         # Plug-in the data into our templates and render the data.

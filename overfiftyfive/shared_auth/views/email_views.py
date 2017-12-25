@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User, Group
+from django.core.exceptions import PermissionDenied
 from django.shortcuts import render
 from django.views.decorators.http import condition
 from shared_foundation.models import SharedMe
@@ -21,4 +22,4 @@ def reset_password_email_page(request, pr_access_code=None):
         'url': url,
         'web_view_url': web_view_extra_url,
     }
-    return render(request, 'email/activate_email_view.html', param)
+    return render(request, 'shared_auth/email/reset_password_email.html', param)
