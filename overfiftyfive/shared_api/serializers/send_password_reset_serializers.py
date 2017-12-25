@@ -46,31 +46,3 @@ class SendResetPasswordEmailSerializer(serializers.Serializer):
         except SharedMe.DoesNotExist:
             raise serializers.ValidationError("Email with that phone number does not exist.")
         return clean_data
-
-
-class ResetPasswordSerializer(serializers.Serializer):
-    password = serializers.CharField(
-        required=True,
-        allow_blank=False,
-        max_length=63,
-        style={'input_type': 'password'},
-        validators = [
-            MatchingDuelFieldsValidator(
-                another_field='password_repeat',
-                message=_("Inputted passwords fields do not match.")
-            ),
-            EnhancedPasswordStrengthFieldValidator()
-        ]
-    )
-    password_repeat = serializers.CharField(
-        required=True,
-        allow_blank=False,
-        max_length=63,
-        style={'input_type': 'password'}
-    )
-    pr_access_code = serializers.CharField(
-        required=True,
-        allow_blank=False,
-        max_length=255,
-        style={'input_type': 'password'}
-    )
