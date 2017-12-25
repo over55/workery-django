@@ -1,0 +1,45 @@
+{% extends 'shared_foundation/shared_base.html' %}
+{% load staticfiles i18n %}
+
+{% block title %}
+{% trans 'Reset Password | Over 55' %}
+{% endblock title %}
+
+{% block header_content %}
+{% endblock header_content %}
+
+{% block content %}
+<!-- JS -->
+<script>
+    function ajax_reset_password() {
+	    var data = {
+		    'password': $('#id_password').val(),
+			'password_repeat': $('#id_password_repeat').val(),
+            'pr_access_code': '{{ pr_access_code }}'
+		};
+
+		post_reset_password(
+		    data,
+			function(json_results) {
+			    console.log(json_results);
+				window.location = "{% url 'o55_reset_password_detail' pr_access_code %}";
+			},
+			function(error_results) {
+			    console.log(error_results);
+			}
+		);
+	} // end FUNC
+</script>
+<!-- end JS -->
+
+<!-- -->
+<form>
+New Password: <input type="password" name="password" id="id_password" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" /><br>
+New Password (Repeat): <input type="password" name="password_repeat" id="id_password_repeat" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" /><br>
+ <br />
+ <input type="button" value="Update Password" onclick="ajax_reset_password();">
+</form>
+
+<p><a href="{% url 'o55_index_master' %}">Back</a></p>
+
+{% endblock content %}

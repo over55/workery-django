@@ -1,0 +1,16 @@
+{% extends 'shared_foundation/shared_base.html' %}
+{% load staticfiles i18n %}
+
+{% block title %}
+{% trans 'Reset Password | Over 55' %}
+{% endblock title %}
+
+{% block header_content %}
+{% endblock header_content %}
+
+{% block content %}
+
+<p>Password set!</p>
+<p><a href="{% url 'o55_login_master' %}">Go and login now.</a></p>
+
+{% endblock content %}

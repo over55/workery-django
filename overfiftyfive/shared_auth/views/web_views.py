@@ -46,3 +46,7 @@ def rest_password_master_page(request, pr_access_code):
     return render(request, 'shared_auth/reset_password/master_view.html',{
         'pr_access_code': pr_access_code
     })
+
+
+def rest_password_detail_page(request, pr_access_code):
+    return render(request, 'shared_auth/reset_password/detail_view.html',{})

@@ -124,6 +124,26 @@
         });
     }
 
+    function post_reset_password(data, func_callback, func_error_callback)
+    {
+        var url = get_base_domain_url("/api/reset-password?format=json");
+        jQuery.ajax({
+            url: url,
+            data: data,
+            type: "POST",
+            traditional: true, // Note: This allows many-to-many arrays for Django REST Framework
+            success: function(json_results){
+                func_callback(json_results);
+            },
+            error: function(xhr, status, error) {
+                func_error_callback(xhr['responseJSON']);
+            },
+            complete: function(xhr,status) {
+                // Do nothing.
+            }
+        });
+    }
+
     /**
      * data - email, password
      */
