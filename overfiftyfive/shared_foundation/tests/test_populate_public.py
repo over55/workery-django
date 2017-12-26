@@ -15,7 +15,7 @@ class TestPopulatePublicManagementCommand(TenantTestCase):
         self.c = TenantClient(self.tenant)
 
     def tearDown(self):
-        del self.client
+        del self.c
 
     def test_command(self):
         call_command('populate_public', verbosity=0)

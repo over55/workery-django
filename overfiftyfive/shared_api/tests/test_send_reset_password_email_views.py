@@ -53,6 +53,7 @@ class APISendResetPasswordEmailWithSchemaTestCase(APITestCase, TenantTestCase):
         users = User.objects.all()
         for user in users.all():
             user.delete()
+        del self.c
         super(APISendResetPasswordEmailWithSchemaTestCase, self).tearDown()
 
     @transaction.atomic

@@ -52,6 +52,7 @@ class APILoginWithPublicSchemaTestCase(APITestCase, TenantTestCase):
         users = User.objects.all()
         for user in users.all():
             user.delete()
+        del self.c
         super(APILoginWithPublicSchemaTestCase, self).tearDown()
 
     @transaction.atomic

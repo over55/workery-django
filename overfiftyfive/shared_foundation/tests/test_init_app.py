@@ -15,7 +15,7 @@ class TestInitAppManagementCommand(TenantTestCase):
         self.c = TenantClient(self.tenant)
 
     def tearDown(self):
-        del self.client
+        del self.c
 
     def test_command(self):
         # CASE 1 of 2: Run the application for the first time.

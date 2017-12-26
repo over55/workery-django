@@ -32,7 +32,8 @@ class TestCreateExecutiveManagementCommand(TenantTestCase):
         users = O55User.objects.all()
         for user in users.all():
             user.delete()
-        del self.client
+        del self.c
+        super(TestCreateExecutiveManagementCommand, self).tearDown()
 
     def test_command_with_success(self):
         call_command(

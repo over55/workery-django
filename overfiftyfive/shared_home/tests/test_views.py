@@ -16,7 +16,7 @@ class TestHomeViews(TenantTestCase):
         self.c = TenantClient(self.tenant)
 
     def tearDown(self):
-        del self.client
+        del self.c
 
     def test_get_index_page(self):
         response = self.c.get(reverse('o55_index_master'))

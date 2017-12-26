@@ -39,10 +39,11 @@ class TestSharedAuthEmailViews(TenantTestCase):
         )
 
     def tearDown(self):
-        del self.client
+        del self.c
         users = O55User.objects.all()
         for user in users.all():
             user.delete()
+        super(TestSharedAuthEmailViews, self).tearDown()
 
     def test_reset_password_email_page_with_success(self):
         me = SharedMe.objects.get(user__email=TEST_USER_EMAIL)

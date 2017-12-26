@@ -17,7 +17,7 @@ class TestUtils(TenantTestCase):
         self.c = TenantClient(self.tenant)
 
     def tearDown(self):
-        del self.client
+        del self.c
 
     def test_reverse_with_full_domain(self):
         value = reverse_with_full_domain("o55_index_master")

@@ -17,7 +17,7 @@ class TestModelStringFunc(TenantTestCase):
         self.c = TenantClient(self.tenant)
 
     def tearDown(self):
-        del self.client
+        del self.c
 
     def test_o55_user(self):
         user = O55User.objects.create(
