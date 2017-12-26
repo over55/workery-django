@@ -59,9 +59,6 @@ class TestMatchingDuelFieldsValidatorWithPublicSchemaTestCase(APITestCase, Tenan
 
     @transaction.atomic
     def tearDown(self):
-        users = User.objects.all()
-        for user in users.all():
-            user.delete()
         super(TestMatchingDuelFieldsValidatorWithPublicSchemaTestCase, self).tearDown()
 
     @transaction.atomic
@@ -114,9 +111,6 @@ class TestEnhancedPasswordStrengthFieldValidatorWithPublicSchemaTestCase(APITest
 
     @transaction.atomic
     def tearDown(self):
-        users = User.objects.all()
-        for user in users.all():
-            user.delete()
         super(TestEnhancedPasswordStrengthFieldValidatorWithPublicSchemaTestCase, self).tearDown()
 
     @transaction.atomic
@@ -138,4 +132,35 @@ class TestEnhancedPasswordStrengthFieldValidatorWithPublicSchemaTestCase(APITest
 # OnlyTrueBooleanFieldValidator
 # - - - - - - - - - - - - - - -
 
-#TODO: IMP
+class OnlyTrueBooleanFieldValidatorSerializer(serializers.Serializer):
+    is_terms_of_service_signed = serializers.BooleanField(
+        validators = [
+            OnlyTrueBooleanFieldValidator( message="Must sign!")
+        ]
+    )
+
+
+class TestOnlyTrueBooleanFieldValidatorWithPublicSchemaTestCase(APITestCase, TenantTestCase):
+    @transaction.atomic
+    def setUp(self):
+        translation.activate('en')  # Set English
+        super(TestOnlyTrueBooleanFieldValidatorWithPublicSchemaTestCase, self).setUp()
+        self.c = TenantClient(self.tenant)
+
+    @transaction.atomic
+    def tearDown(self):
+        super(TestOnlyTrueBooleanFieldValidatorWithPublicSchemaTestCase, self).tearDown()
+
+    @transaction.atomic
+    def test_validation(self):
+        # CASE 1 OF 2: Failure
+        data = {'is_terms_of_service_signed': False}
+        s = OnlyTrueBooleanFieldValidatorSerializer(data=data)
+        result = s.is_valid(raise_exception=False)
+        self.assertFalse(result)
+
+        # CASE 1 OF 2: Success
+        data = {'is_terms_of_service_signed': True}
+        s = OnlyTrueBooleanFieldValidatorSerializer(data=data)
+        result = s.is_valid(raise_exception=False)
+        self.assertTrue(result)

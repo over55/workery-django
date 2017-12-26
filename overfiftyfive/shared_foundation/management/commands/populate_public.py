@@ -20,7 +20,6 @@ class Command(BaseCommand):
             name='Over 55 (London) Inc.',
         )
         try:
-            # print("Creating Public")
             public_tenant.save()
         except Exception as e:
             print(e)
@@ -31,7 +30,6 @@ class Command(BaseCommand):
         domain.tenant = public_tenant
         domain.is_primary = True
         try:
-            # print("Creating Public Domain")
             domain.save()
         except Exception as e:
             print(e)

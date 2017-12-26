@@ -19,8 +19,6 @@ class SendResetPasswordEmailAPIView(APIView):
     permission_classes = (permissions.AllowAny,)
 
     def post(self, request, format=None):
-        print(request.data)
-        
         # Serialize our POST request and return our serializer object,
         serializer = SendResetPasswordEmailSerializer(data=request.data)
 
