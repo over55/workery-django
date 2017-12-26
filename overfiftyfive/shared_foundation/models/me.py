@@ -5,9 +5,12 @@ from django.contrib.auth.models import User
 from django.db import models
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
+from starterkit.utils import (
+    get_random_string,
+    generate_hash
+)
 from shared_foundation import constants
 from shared_foundation.models.o55_user import O55User
-from shared_foundation.utils import generate_hash, get_random_string
 
 
 def get_expiry_date(days=2):

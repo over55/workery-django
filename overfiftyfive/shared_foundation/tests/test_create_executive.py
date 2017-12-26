@@ -1,13 +1,13 @@
 from django.core.management import call_command
+from starterkit.utils import (
+    get_random_string,
+    get_unique_username_from_email
+)
 from django_tenants.test.cases import TenantTestCase
 from django_tenants.test.client import TenantClient
 from django.urls import reverse
 from shared_foundation import constants
 from shared_foundation.models.o55_user import O55User
-from shared_foundation.utils import (
-    get_random_string,
-    get_unique_username_from_email
-)
 
 
 TEST_USER_EMAIL = "bart@overfiftyfive.com"

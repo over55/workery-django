@@ -9,6 +9,7 @@ django-filter==1.1.0
 django-htmlmin==0.10.0
 django-ipware==1.1.6
 django-rq==1.0.1
+django-starterkit==1.0.0
 django-trapdoor==1.0.8
 djangorestframework==3.7.7
 gunicorn==19.7.1

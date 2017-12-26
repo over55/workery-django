@@ -1,9 +1,9 @@
 from django.core.management import call_command
+from starterkit.utils import get_unique_username_from_email
 from django_tenants.test.cases import TenantTestCase
 from django_tenants.test.client import TenantClient
 from django.urls import reverse
 from shared_foundation.models import *
-from shared_foundation.utils import get_unique_username_from_email
 
 
 class TestModelStringFunc(TenantTestCase):

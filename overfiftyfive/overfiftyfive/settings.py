@@ -66,7 +66,8 @@ SHARED_APPS = (
     'django.contrib.gis',        # Geo-Django https://docs.djangoproject.com/en/dev/ref/contrib/gis/
 
     # Third Party Apps
-    'django_tenants',  # (mandatory)
+    'starterkit',
+    'django_tenants',
     'trapdoor',
     'rest_framework',
     'rest_framework.authtoken',
@@ -190,13 +191,13 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
     {
-        'NAME': 'shared_foundation.password_validation.UppercaseCharacterPasswortValidator',
+        'NAME': 'starterkit.password_validation.UppercaseCharacterPasswortValidator',
         'OPTIONS': {
             'min_occurrence': 1,
         }
     },
     {
-        'NAME': 'shared_foundation.password_validation.SpecialCharacterPasswortValidator',
+        'NAME': 'starterkit.password_validation.SpecialCharacterPasswortValidator',
         'OPTIONS': {
             'min_occurrence': 1,
         }
@@ -208,7 +209,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # https://docs.djangoproject.com/en/dev/topics/auth/customizing/
 
 AUTHENTICATION_BACKENDS = (
-    'shared_foundation.backends.UserModelEmailBackend', # Support email as username.
+    'starterkit.auth.backends.UserModelEmailBackend', # Support email as username.
     'django.contrib.auth.backends.ModelBackend',
 )
 

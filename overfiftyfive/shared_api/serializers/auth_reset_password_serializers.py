@@ -9,12 +9,12 @@ from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 from rest_framework import exceptions, serializers
 from rest_framework.response import Response
-from shared_foundation.models.me import SharedMe
-from shared_foundation import utils
-from shared_api.custom_validation import (
+from starterkit.drf.validation import (
     MatchingDuelFieldsValidator,
     EnhancedPasswordStrengthFieldValidator
 )
+from shared_foundation.models.me import SharedMe
+from shared_foundation import utils
 
 
 class ResetPasswordSerializer(serializers.Serializer):

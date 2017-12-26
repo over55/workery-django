@@ -3,13 +3,13 @@ from django.conf import settings
 from django.contrib.auth.models import User, Group
 from django.core.management.base import BaseCommand, CommandError
 from django.utils.translation import ugettext_lazy as _
-from rest_framework.authtoken.models import Token
-from shared_foundation import constants
-from shared_foundation.models.me import SharedMe
-from shared_foundation.utils import (
+from starterkit.utils import (
     get_random_string,
     get_unique_username_from_email
 )
+from rest_framework.authtoken.models import Token
+from shared_foundation import constants
+from shared_foundation.models.me import SharedMe
 
 
 class Command(BaseCommand):
