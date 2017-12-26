@@ -19,10 +19,7 @@ def user_login_redirector_master_page(request):
     if request.user.is_authenticated:
         franchise = SharedFranchise.objects.get_by_email_or_none(request.user.email)
         if franchise:
-            print("-------------------------------")
-            print("TODO: PLEASE IMPLEMENT THIS!!!!")
-            print("-------------------------------")
-            return HttpResponseRedirect(franchise.reverse('o55_index_master', []))
+            return HttpResponseRedirect(franchise.reverse('o55_tenant_dashboard_master'))
 
     # If any errors occure in the redirector then simply redirect to the
     # homepage.
