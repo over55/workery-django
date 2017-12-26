@@ -4,12 +4,25 @@ from datetime import date, datetime, timedelta
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.db import models
+from django.db.models import Q
+from django.urls import reverse
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 from django_tenants.models import TenantMixin, DomainMixin
 from shared_foundation import constants
 from shared_foundation.models.o55_user import O55User
 
+
+class SharedFranchiseManager(models.Manager):
+    def get_by_email_or_none(self, email):
+        try:
+            return SharedFranchise.objects.get(
+                Q(managers__email=email) |
+                Q(frontline_staff__email=email) |
+                Q(customers__email=email)
+            )
+        except SharedFranchise.DoesNotExist:
+            return None
 
 
 class SharedFranchise(TenantMixin):
@@ -22,6 +35,8 @@ class SharedFranchise(TenantMixin):
         db_table = 'o55_franchises'
         verbose_name = _('Franchise')
         verbose_name_plural = _('Franchises')
+
+    objects = SharedFranchiseManager()
 
     #
     #  FIELDS
@@ -38,6 +53,12 @@ class SharedFranchise(TenantMixin):
         help_text=_('The office staff and or volunteers who belong to this "Franchise".'),
         blank=True,
         related_name="%(app_label)s_%(class)s_frontline_staff_related"
+    )
+    customers = models.ManyToManyField(
+        O55User,
+        help_text=_('The customers who belong to this "Franchise".'),
+        blank=True,
+        related_name="%(app_label)s_%(class)s_customers_related"
     )
     name = models.CharField(
         _("Name"),
@@ -70,6 +91,8 @@ class SharedFranchise(TenantMixin):
     def __str__(self):
         return str(self.name)
 
+    def reverse(self, reverse_id, reverse_args=[]):
+        return settings.O55_APP_HTTP_PROTOCOL + str(self.schema_name) + "." + reverse(reverse_id, args=reverse_args)
 
 
 

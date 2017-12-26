@@ -6,6 +6,7 @@ from django.http import HttpResponseBadRequest, HttpResponseRedirect, JsonRespon
 from django.shortcuts import render
 from django.urls import reverse
 from django.utils.translation import ugettext_lazy as _
+from shared_foundation.models import SharedFranchise
 from shared_foundation.models import SharedMe
 from shared_foundation import utils
 
@@ -15,7 +16,16 @@ def user_login_master_page(request):
 
 
 def user_login_redirector_master_page(request):
-    #TODO: IMPLEMENT/
+    if request.user.is_authenticated:
+        franchise = SharedFranchise.objects.get_by_email_or_none(request.user.email)
+        if franchise:
+            print("-------------------------------")
+            print("TODO: PLEASE IMPLEMENT THIS!!!!")
+            print("-------------------------------")
+            return HttpResponseRedirect(franchise.reverse('o55_index_master', []))
+
+    # If any errors occure in the redirector then simply redirect to the
+    # homepage.
     return HttpResponseRedirect(reverse('o55_index_master', args=[]))
 
 
