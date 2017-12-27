@@ -6,10 +6,11 @@ from shared_foundation.models import SharedFranchise
 from tenant_foundation.models import Staff
 
 
+
 class TestRunHistoricCSVImportForTenantManagementCommand(TenantTestCase):
     """
     Console:
-    python manage.py test tenant_foundation.tests.test_run_historic_csv_import_for_tenant
+    python manage.py test tenant_etl.tests.test_run_historic_csv_import_for_tenant
     """
 
     def setUp(self):
