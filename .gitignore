@@ -171,9 +171,19 @@ env/pip-selfcheck.json
 #—————————————————————————————
 # Important Note: Make sure this is the name of the virtualenv directory
 # that you set when you where setting up the project.
+# Do not share our secret configuration file.
+overfiftyfive/overfiftyfive/.env
+
+# Do not share our converage file.
 coverage.txt
+
+# Do not share your `sqlite3` database related files.
 overfiftyfive/db.sqlite3
 overfiftyfive/db.sqlite3-journal
+
+# Do not share your 'django-haystack' related files.
 overfiftyfive/overfiftyfive/whoosh_index
-overfiftyfive/overfiftyfive/.env
-overfiftyfive/foundation/static
+
+# Do not share real-life production data.
+overfiftyfive/tenant_foundation/static/PROD_*
+overfiftyfive/tenant_foundation/static/prod_*

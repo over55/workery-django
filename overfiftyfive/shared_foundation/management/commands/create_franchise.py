@@ -67,10 +67,7 @@ class Command(BaseCommand):
             alternate_name=alternate_name,
             description=description
         )
-        try:
-            tenant.save()
-        except Exception as e:
-            print(e)
+        tenant.save()
 
         # Add one or more domains for the tenant
         domain = SharedFranchiseDomain()
@@ -78,7 +75,4 @@ class Command(BaseCommand):
         domain.domain = tenant.schema_name + '.' + settings.O55_APP_HTTP_DOMAIN
         domain.tenant = tenant
         domain.is_primary = False
-        try:
-            domain.save()
-        except Exception as e:
-            print(e)
+        domain.save()
