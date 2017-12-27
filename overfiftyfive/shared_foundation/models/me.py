@@ -52,7 +52,7 @@ class SharedMe(AbstractSharedContactPoint, AbstractSharedPostalAddress, Abstract
     objects = SharedMeManager()
 
     #
-    #  FIELDS
+    #  GENERIC FIELDS
     #
 
     user = models.OneToOneField(
@@ -99,6 +99,17 @@ class SharedMe(AbstractSharedContactPoint, AbstractSharedPostalAddress, Abstract
         unique=True,
         blank=True,
         null=True
+    )
+
+    #
+    # EMAIL ACTIVATION FIELD
+    #
+
+    was_email_activated = models.BooleanField(
+        _("Was Email Activated"),
+        help_text=_('Was the email address verified as an existing address?'),
+        default=False,
+        blank=True
     )
 
     #

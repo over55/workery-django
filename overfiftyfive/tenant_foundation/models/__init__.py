@@ -6,3 +6,4 @@ from tenant_foundation.models.abstract_geo_coorindate import AbstractGeoCoordina
 from tenant_foundation.models.opening_hours_specification import OpeningHoursSpecification
 from tenant_foundation.models.customer import Customer
 from tenant_foundation.models.staff import Staff
+from tenant_foundation.models.associate import Associate

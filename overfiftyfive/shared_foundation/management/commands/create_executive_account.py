@@ -86,7 +86,8 @@ class Command(BaseCommand):
             post_office_box_number=post_office_box_number,
             postal_code=postal_code,
             street_address=street_address,
-            street_address_extra=street_address_extra
+            street_address_extra=street_address_extra,
+            was_email_activated=True,
         )
 
         # Attach our user to the "Executive"
