@@ -69,3 +69,12 @@ class AbstractSharedContactPoint(models.Model):
         null=True,
         default='',
     )
+    mobile = models.CharField( # Not standard in Schema.org
+        _("Mobile"),
+        max_length=31,
+        help_text=_('The mobile telephone number.'),
+        db_index=True,
+        validators=[],
+        blank=True,
+        null=True,
+    )

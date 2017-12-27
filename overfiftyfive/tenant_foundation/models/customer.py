@@ -16,6 +16,7 @@ from starterkit.utils import (
 from shared_foundation.constants import *
 from tenant_foundation.models import (
     AbstractBigPk,
+    AbstractContactPoint,
     AbstractGeoCoordinate,
     AbstractPostalAddress
 )
@@ -29,7 +30,7 @@ class CustomerManager(models.Manager):
             item.delete()
 
 
-class Customer(AbstractBigPk, AbstractPostalAddress, AbstractGeoCoordinate):
+class Customer(AbstractBigPk, AbstractContactPoint, AbstractPostalAddress, AbstractGeoCoordinate):
     class Meta:
         app_label = 'tenant_foundation'
         db_table = 'o55_customers'
