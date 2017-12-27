@@ -14,7 +14,11 @@ from starterkit.utils import (
     float_or_none
 )
 from shared_foundation.constants import *
-from tenant_foundation.models import AbstractBigPk
+from tenant_foundation.models import (
+    AbstractBigPk,
+    AbstractGeoCoordinate,
+    AbstractPostalAddress
+)
 from tenant_foundation.utils import *
 
 
@@ -25,7 +29,7 @@ class CustomerManager(models.Manager):
             item.delete()
 
 
-class Customer(AbstractBigPk):
+class Customer(AbstractBigPk, AbstractPostalAddress, AbstractGeoCoordinate):
     class Meta:
         app_label = 'tenant_foundation'
         db_table = 'o55_customers'
@@ -35,8 +39,9 @@ class Customer(AbstractBigPk):
     objects = CustomerManager()
 
     #
-    #  FIELDS
+    #  CUSTOM FIELDS
     #
+
     given_name = models.CharField(
         _("Given Name"),
         max_length=63,
@@ -58,7 +63,6 @@ class Customer(AbstractBigPk):
         blank=True,
         null=True,
     )
-    #TODO: IMPLEMENT . . .
 
     #
     #  SYSTEM FIELDS

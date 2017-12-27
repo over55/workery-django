@@ -36,7 +36,14 @@ class TestTenantCustomerModel(TenantTestCase):
             user=self.user,
             given_name="Aurthor",
             last_name="Clarke",
-            middle_name="C."
+            middle_name="C.",
+            address_country="CA",
+            address_locality="London",
+            address_region="Ontario",
+            post_office_box_number="", # Post Offic #
+            postal_code="N6H 1B4",
+            street_address="78 Riverside Drive",
+            street_address_extra="", # Extra line.
         )
 
     def tearDown(self):
