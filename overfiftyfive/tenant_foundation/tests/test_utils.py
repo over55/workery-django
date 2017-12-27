@@ -1,10 +1,10 @@
+# -*- coding: utf-8 -*-
 from django.core.management import call_command
 from django_tenants.test.cases import TenantTestCase
 from django_tenants.test.client import TenantClient
 from django.urls import reverse
 from shared_foundation.models import SharedFranchise
 from tenant_foundation.utils import *
-
 
 
 class TestTenantUtils(TenantTestCase):

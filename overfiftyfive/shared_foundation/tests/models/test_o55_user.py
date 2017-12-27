@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django.core.management import call_command
 from starterkit.utils import get_unique_username_from_email
 from django_tenants.test.cases import TenantTestCase

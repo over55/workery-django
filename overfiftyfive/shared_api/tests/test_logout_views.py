@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import json
 from django.core.management import call_command
 from django.db.models import Q

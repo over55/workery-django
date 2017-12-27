@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django.core.management import call_command
 from django.urls import reverse
 from django_tenants.test.cases import TenantTestCase

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django.core.management import call_command
 from starterkit.utils import (
     get_random_string,

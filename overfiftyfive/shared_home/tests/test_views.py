@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django_tenants.test.cases import TenantTestCase
 from django_tenants.test.client import TenantClient
 from django.urls import reverse
