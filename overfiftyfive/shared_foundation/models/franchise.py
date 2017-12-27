@@ -92,8 +92,7 @@ class SharedFranchise(TenantMixin):
         return str(self.name)
 
     def reverse(self, reverse_id, reverse_args=[]):
-        return settings.O55_APP_HTTP_PROTOCOL + str(self.schema_name) + "." + reverse(reverse_id, args=reverse_args)
-
+        return settings.O55_APP_HTTP_PROTOCOL + str(self.schema_name) + "." + settings.O55_APP_HTTP_DOMAIN + reverse(reverse_id, args=reverse_args)
 
 
 class SharedFranchiseDomain(DomainMixin):
