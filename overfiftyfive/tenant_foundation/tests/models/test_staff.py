@@ -8,20 +8,20 @@ from starterkit.utils import (
 )
 from shared_foundation.models import O55User
 from shared_foundation.utils import *
-from tenant_foundation.models import Customer
+from tenant_foundation.models import Staff
 
 
 TEST_USER_EMAIL = "acclarke@verfiftyfive.com"
 
 
-class TestTenantCustomerModel(TenantTestCase):
+class TestTenantStaffModel(TenantTestCase):
     """
     Console:
-    python manage.py test tenant_foundation.tests.models.test_customers
+    python manage.py test tenant_foundation.tests.models.test_staff
     """
 
     def setUp(self):
-        super(TestTenantCustomerModel, self).setUp()
+        super(TestTenantStaffModel, self).setUp()
         self.c = TenantClient(self.tenant)
         self.user = O55User.objects.create(
             first_name="Aurthor",
@@ -32,7 +32,7 @@ class TestTenantCustomerModel(TenantTestCase):
             is_superuser=True,
             is_staff=True
         )
-        self.customer = Customer.objects.create(
+        self.staff = Staff.objects.create(
             user=self.user,
             given_name="Aurthor",
             last_name="Clarke",
@@ -40,19 +40,38 @@ class TestTenantCustomerModel(TenantTestCase):
         )
 
     def tearDown(self):
-        Customer.objects.delete_all()
+        Staff.objects.delete_all()
         del self.c
-        self.user = None
-        super(TestTenantCustomerModel, self).tearDown()
+        self.staff = None
+        self.user.delete()
+        super(TestTenantStaffModel, self).tearDown()
 
     def test_str(self):
         # CASE 1 OF 2:
-        value = str(self.customer)
+        value = str(self.staff)
         self.assertIsNotNone(value)
         self.assertEqual("Aurthor C. Clarke", value)
 
         # CASE 2 OF 2:
-        self.customer.middle_name = None
-        value = str(self.customer)
+        self.staff.middle_name = None
+        value = str(self.staff)
         self.assertIsNotNone(value)
         self.assertEqual("Aurthor Clarke", value)
+
+    def test_get_by_email_or_none(self):
+        # CASE 1 OF 2:
+        staff = Staff.objects.get_by_email_or_none(TEST_USER_EMAIL)
+        self.assertIsNotNone(staff)
+
+        # CASE 2 OF 2:
+        staff = Staff.objects.get_by_email_or_none("trudy@overfiftyfive.com")
+        self.assertIsNone(staff)
+
+    def test_get_by_user_or_none(self):
+        # CASE 1 OF 2:
+        staff = Staff.objects.get_by_user_or_none(self.user)
+        self.assertIsNotNone(staff)
+
+        # CASE 2 OF 2:
+        staff = Staff.objects.get_by_user_or_none(None)
+        self.assertIsNone(staff)

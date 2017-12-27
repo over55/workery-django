@@ -18,9 +18,9 @@ from tenant_foundation.models import AbstractBigPk
 from tenant_foundation.utils import *
 
 
-def get_expiry_date(days=2):
-    """Returns the current date plus paramter number of days."""
-    return timezone.now() + timedelta(days=days)
+# def get_expiry_date(days=2):
+#     """Returns the current date plus paramter number of days."""
+#     return timezone.now() + timedelta(days=days)
 
 
 class StaffManager(models.Manager):
