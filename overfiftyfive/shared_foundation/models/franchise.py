@@ -10,6 +10,10 @@ from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 from django_tenants.models import TenantMixin, DomainMixin
 from shared_foundation import constants
+from shared_foundation.models.abstract_thing import AbstractSharedThing
+from shared_foundation.models.abstract_contact_point import AbstractSharedContactPoint
+from shared_foundation.models.abstract_postal_address import AbstractSharedPostalAddress
+from shared_foundation.models.abstract_geo_coorindate import AbstractSharedGeoCoordinate
 from shared_foundation.models.o55_user import O55User
 
 
@@ -25,7 +29,7 @@ class SharedFranchiseManager(models.Manager):
             return None
 
 
-class SharedFranchise(TenantMixin):
+class SharedFranchise(TenantMixin, AbstractSharedThing, AbstractSharedContactPoint, AbstractSharedPostalAddress, AbstractSharedGeoCoordinate):
     """
     Model is the tenant in our system.
     """
@@ -39,7 +43,7 @@ class SharedFranchise(TenantMixin):
     objects = SharedFranchiseManager()
 
     #
-    #  FIELDS
+    #  Custom Fields
     #
 
     managers = models.ManyToManyField(
@@ -60,29 +64,6 @@ class SharedFranchise(TenantMixin):
         blank=True,
         related_name="%(app_label)s_%(class)s_customers_related"
     )
-    name = models.CharField(
-        _("Name"),
-        max_length=127,
-        help_text=_('The official name of this Franchise.'),
-    )
-    alternate_name = models.CharField(
-        _("Alternate Name"),
-        max_length=127,
-        help_text=_('An alias for this Franchise.'),
-        blank=True,
-        null=True,
-    )
-    description = models.TextField(
-        _("Description"),
-        help_text=_('The detailed description about this Franchise.'),
-        blank=True
-    )
-
-    #
-    #  SYSTEM FIELDS
-    #
-    created = models.DateTimeField(auto_now_add=True, db_index=True,)
-    last_modified = models.DateTimeField(auto_now=True, db_index=True,)
 
     #
     #  FUNCTIONS

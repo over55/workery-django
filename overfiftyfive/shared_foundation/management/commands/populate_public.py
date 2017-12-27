@@ -18,6 +18,15 @@ class Command(BaseCommand):
         public_tenant = SharedFranchise(
             schema_name='public',
             name='Over 55 (London) Inc.',
+            alternate_name="Over55",
+            description="Located at the Forks of the Thames in downtown London Ontario, Over 55 is a non profit charitable organization that applies business strategies to achieve philanthropic goals. The net profits realized from the services we provide will help fund our client and community programs. When you use our services and recommended products, you are helping to improve the quality of life of older adults and the elderly in our community.",
+            address_country="CA",
+            address_locality="London",
+            address_region="Ontario",
+            post_office_box_number="", # Post Offic #
+            postal_code="N6H 1B4",
+            street_address="78 Riverside Drive",
+            street_address_extra="", # Extra line.
         )
         try:
             public_tenant.save()

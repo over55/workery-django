@@ -25,18 +25,32 @@ class TestCreateFranchiseTenantManagementCommand(TenantTestCase):
             "Over55",
             "Over55 (London) Inc.",
             "Located at the Forks of the Thames in downtown London Ontario, Over 55 is a non profit charitable organization that applies business strategies to achieve philanthropic goals. The net profits realized from the services we provide will help fund our client and community programs. When you use our services and recommended products, you are helping to improve the quality of life of older adults and the elderly in our community.",
+            "CA",
+            "London",
+            "Ontario",
+            "", # Post Offic #
+            "N6H 1B4",
+            "78 Riverside Drive",
+            "", # Extra line.
             verbosity=0
         )
 
         # Case 2 of 2: Duplicate error
         try:
             call_command(
-            "create_franchise",
-            "london_test",
-            "Over55",
-            "Over55 (London) Inc.",
-            "Located at the Forks of the Thames in downtown London Ontario, Over 55 is a non profit charitable organization that applies business strategies to achieve philanthropic goals. The net profits realized from the services we provide will help fund our client and community programs. When you use our services and recommended products, you are helping to improve the quality of life of older adults and the elderly in our community.",
-            verbosity=0
+                "create_franchise",
+                "london_test",
+                "Over55",
+                "Over55 (London) Inc.",
+                "Located at the Forks of the Thames in downtown London Ontario, Over 55 is a non profit charitable organization that applies business strategies to achieve philanthropic goals. The net profits realized from the services we provide will help fund our client and community programs. When you use our services and recommended products, you are helping to improve the quality of life of older adults and the elderly in our community.",
+                "CA",
+                "London",
+                "Ontario",
+                "", # Post Offic #
+                "N6H 1B4",
+                "78 Riverside Drive",
+                "", # Extra line.
+                verbosity=0
             )
         except Exception as e:
             self.assertIsNotNone(e)
