@@ -10,7 +10,11 @@ from starterkit.utils import (
     generate_hash
 )
 from shared_foundation import constants
-from shared_foundation.models.o55_user import O55User
+from shared_foundation.models import (
+    AbstractSharedPostalAddress,
+    AbstractSharedGeoCoordinate,
+    O55User
+)
 
 
 def get_expiry_date(days=2):
@@ -37,7 +41,7 @@ class SharedMeManager(models.Manager):
             return None
 
 
-class SharedMe(models.Model):
+class SharedMe(AbstractSharedPostalAddress, AbstractSharedGeoCoordinate):
     class Meta:
         app_label = 'shared_foundation'
         db_table = 'o55_mes'
