@@ -39,8 +39,8 @@ class SendResetPasswordEmailSerializer(serializers.Serializer):
                     Q(user__email=clean_data['email_or_username']) |
                     Q(user__username=clean_data['email_or_username'])
                 ) & Q(
-                    Q(tel_num=clean_data['tel_or_cell']) |
-                    Q(cell_num=clean_data['tel_or_cell'])
+                    Q(telephone=clean_data['tel_or_cell']) |
+                    Q(mobile=clean_data['tel_or_cell'])
                 )
             )
         except SharedMe.DoesNotExist:

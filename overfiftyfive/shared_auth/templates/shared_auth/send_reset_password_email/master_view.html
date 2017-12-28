@@ -12,7 +12,7 @@
     {
         api_send_password_reset_email(
             $('#id_email_or_username').val().toLowerCase(),
-            $('#id_tel_num_or_cell_num').val(),
+            $('#id_telephone_or_mobile').val(),
             function(was_successful) {
                 if (was_successful) {
                     // Load up our dashboard.
@@ -47,7 +47,7 @@
                                 <input class="form-control" placeholder="{% trans 'E-mail or Username' %}" name="email_or_username" type="email" autofocus id="id_email_or_username" autocapitalize="off">
                             </div>
                             <div class="form-group">
-                                <input class="form-control" placeholder="{% trans 'Telephone # or Cell #' %}" name="telephone_or_cell" type="telephone" value="" id="id_tel_num_or_cell_num" autocapitalize="off">
+                                <input class="form-control" placeholder="{% trans 'Telephone # or Cell #' %}" name="telephone_or_cell" type="telephone" value="" id="id_telephone_or_mobile" autocapitalize="off">
                             </div>
                             <!-- Change this to a button or input when using this as a form -->
                             <a onclick="ajax_send_reset_password_email();" class="btn btn-lg btn-success btn-block">

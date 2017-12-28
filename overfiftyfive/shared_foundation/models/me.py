@@ -63,27 +63,6 @@ class SharedMe(AbstractSharedContactPoint, AbstractSharedPostalAddress, Abstract
         on_delete=models.CASCADE,
         db_index=True,
     )
-    tel_num = models.CharField(
-        _("Telephone Number"),
-        max_length=16,
-        help_text=_('The telephone number of this person\'s profile.'),
-        blank=True,
-        null=True,
-    )
-    tel_ext_num = models.CharField(
-        _("Telephone Extension Number"),
-        max_length=7,
-        help_text=_('The telephone extension number of this person\'s profile.'),
-        blank=True,
-        null=True,
-    )
-    cell_num = models.CharField(
-        _("Cell Number"),
-        max_length=16,
-        help_text=_('The cell number of this person\'s profile.'),
-        blank=True,
-        null=True,
-    )
 
     #
     #  SYSTEM FIELDS

@@ -8,6 +8,7 @@ from shared_api.views.auth_send_reset_password_email_views import SendResetPassw
 from shared_api.views.auth_reset_password_views import ResetPasswordAPIView
 from shared_api.views.franchise_list_views import SharedFranchiseListAPIView
 from shared_api.views.get_is_unique_views import GetIsUniqueAPIView
+from shared_api.views.auth_register_customer_views import RegisterCustomerAPIView
 
 
 urlpatterns = [
@@ -20,6 +21,7 @@ urlpatterns = [
     url(r'^api/logout$', LogoutAPIView.as_view(), name='o55_logout_api_endpoint'),
     url(r'^api/reset-password$', ResetPasswordAPIView.as_view(), name='o55_reset_password_api_endpoint'),
     url(r'^api/send-reset-password-email$', SendResetPasswordEmailAPIView.as_view(), name='o55_send_reset_password_email_api_endpoint'),
+    url(r'^api/register_customer$', RegisterCustomerAPIView.as_view(), name='o55_register_customer_api_endpoint'),
 
     # Functions.
     url(r'^api/get_is_unique$', GetIsUniqueAPIView.as_view(), name='o55_get_is_unique_api_endpoint'),

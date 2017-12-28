@@ -24,9 +24,9 @@ class Command(BaseCommand):
         parser.add_argument('password', nargs='+', type=str)
         parser.add_argument('first_name', nargs='+', type=str)
         parser.add_argument('last_name', nargs='+', type=str)
-        parser.add_argument('tel_num', nargs='+', type=str)
-        parser.add_argument('tel_ext_num', nargs='+', type=str)
-        parser.add_argument('cell_num', nargs='+', type=str)
+        parser.add_argument('telephone', nargs='+', type=str)
+        parser.add_argument('telephone_extension', nargs='+', type=str)
+        parser.add_argument('mobile', nargs='+', type=str)
         parser.add_argument('address_country', nargs='+', type=str)
         parser.add_argument('address_locality', nargs='+', type=str)
         parser.add_argument('address_region', nargs='+', type=str)
@@ -41,9 +41,9 @@ class Command(BaseCommand):
         password = options['password'][0]
         first_name = options['first_name'][0]
         last_name = options['last_name'][0]
-        tel_num = options['tel_num'][0]
-        tel_ext_num = options['tel_ext_num'][0]
-        cell_num = options['cell_num'][0]
+        telephone = options['telephone'][0]
+        telephone_extension = options['telephone_extension'][0]
+        mobile = options['mobile'][0]
         address_country = options['address_country'][0]
         address_locality = options['address_locality'][0]
         address_region = options['address_region'][0]
@@ -77,9 +77,9 @@ class Command(BaseCommand):
         # Create our profile.
         SharedMe.objects.create(
             user=user,
-            tel_num=tel_num,
-            tel_ext_num=tel_ext_num,
-            cell_num=cell_num,
+            telephone=telephone,
+            telephone_extension=telephone_extension,
+            mobile=mobile,
             address_country=address_country,
             address_locality=address_locality,
             address_region=address_region,
