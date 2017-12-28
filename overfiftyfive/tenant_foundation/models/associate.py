@@ -180,6 +180,25 @@ class Associate(AbstractBigPk, AbstractContactPoint, AbstractPostalAddress, Abst
     )
 
     #
+    #  PERSON FIELDS - http://schema.org/Person
+    #
+
+    # works_for = models.ForeignKey(
+    #     "Organization",
+    #     help_text=_('Organizations that the person works for.'),
+    #     blank=True,
+    #     null=True,
+    #     on_delete=models.CASCADE,
+    # )
+    # affiliation
+    # alumni_of
+    # funder
+    # member_of
+    # sponsor
+    # owns
+    # founder
+
+    #
     #  SYSTEM FIELDS
     #
 
@@ -189,7 +208,6 @@ class Associate(AbstractBigPk, AbstractContactPoint, AbstractPostalAddress, Abst
         blank=True,
         null=True,
         on_delete=models.CASCADE,
-        db_index=True,
     )
     created = models.DateTimeField(auto_now_add=True, db_index=True,)
     last_modified = models.DateTimeField(auto_now=True, db_index=True,)
