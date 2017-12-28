@@ -16,7 +16,11 @@ from starterkit.drf.validation import (
     OnlyTrueBooleanFieldValidator
 )
 from starterkit.utils import get_unique_username_from_email
-from shared_foundation.models import SharedMe
+from shared_foundation.models import (
+    SharedFranchise,
+    SharedMe
+)
+from shared_foundation.constants import *
 
 
 class RegisterCustomerSerializer(serializers.Serializer):
@@ -152,6 +156,7 @@ class RegisterCustomerSerializer(serializers.Serializer):
         user.set_password(cleaned_data['password'])
         user.is_active = True
         user.save()
+        user.groups.add(CUSTOMER_GROUP_ID)
         cleaned_data['user'] = user
 
         me = SharedMe.objects.create(
@@ -168,6 +173,10 @@ class RegisterCustomerSerializer(serializers.Serializer):
             street_address_extra=cleaned_data['street_address_extra'],
         )
         cleaned_data['me'] = me
+
+        # Attach our customer to our tenant.
+        tenant = SharedFranchise.objects.get(schema_name=cleaned_data['schema_name'])
+        tenant.customers.add(user.id)
 
         # Return our validated data.
         return cleaned_data
