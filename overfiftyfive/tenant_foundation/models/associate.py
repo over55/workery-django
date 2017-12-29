@@ -29,6 +29,30 @@ class AssociateManager(models.Manager):
         for item in items.all():
             item.delete()
 
+    def update_or_create(self, defaults=None, **kwargs):
+        """
+        Override the `update_or_create` function to work according to our
+        specification...
+
+        The 'update_or_create' method tries to fetch an object from database
+        based on the given 'kwargs'. If a match is found, it updates the fields
+        passed in the 'defaults' dictionary.
+
+        https://docs.djangoproject.com/en/2.0/ref/models/querysets/#django.db.models.query.QuerySet.update_or_create
+        """
+        try:
+            obj = Associate.objects.get(id=kwargs['id'])
+            for key, value in defaults.items():
+                setattr(obj, key, value)
+            obj.save()
+            return obj, False
+        except Associate.DoesNotExist:
+            new_values = defaults
+            new_values.update(defaults)
+            obj = Associate(**new_values)
+            obj.save()
+            return obj, True
+
 
 class Associate(AbstractBigPk, AbstractContactPoint, AbstractPostalAddress, AbstractGeoCoordinate):
     class Meta:
@@ -83,7 +107,6 @@ class Associate(AbstractBigPk, AbstractContactPoint, AbstractPostalAddress, Abst
         null=True,
         blank=True,
     )
-    # area_served = ldn_area
     hourly_salary_desired = models.PositiveSmallIntegerField(
         _("Hourly Salary Desired"),
         help_text=_('The hourly salary rate the employee'),

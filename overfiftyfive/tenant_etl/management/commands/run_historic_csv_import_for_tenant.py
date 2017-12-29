@@ -14,7 +14,7 @@ from django.db import connection # Used for django tenants.
 from django.utils.translation import ugettext_lazy as _
 from shared_foundation.models import SharedFranchise
 from tenant_foundation.models import Staff
-from tenant_etl.utils.csv.staff_importer import run_staff_importer_from_csv_file
+from tenant_etl.utils.csv.associates_importer import run_associates_importer_from_csv_file
 from tenant_etl.utils.csv.customer_importer import run_customer_importer_from_csv_file
 
 
@@ -108,14 +108,16 @@ class Command(BaseCommand):
         # self.strip_chars(full_file_path)
 
         with open(full_file_path, newline='', encoding='utf-8') as csvfile:
-            # if "employee.csv" in full_file_path:
-            #     self.stdout.write(
-            #         self.style.SUCCESS(_('Importing "Employee" ...'))
-            #     )
-            #     run_staff_importer_from_csv_file(csvfile)
-
-            if "employer.csv" in full_file_path:
+            if "employee.csv" in full_file_path:
                 self.stdout.write(
-                    self.style.SUCCESS(_('Importing "Employer" ...'))
+                    self.style.SUCCESS(_('Importing "Associates" at %(path)s ...') % {
+                        'path': full_file_path
+                    })
                 )
-                run_customer_importer_from_csv_file(csvfile)
+                run_associates_importer_from_csv_file(csvfile)
+
+            # if "employer.csv" in full_file_path:
+            #     self.stdout.write(
+            #         self.style.SUCCESS(_('Importing "Employer" ...'))
+            #     )
+            #     run_customer_importer_from_csv_file(csvfile)
