@@ -24,7 +24,7 @@ class TestTenantCustomerModel(TenantTestCase):
     def setUp(self):
         super(TestTenantCustomerModel, self).setUp()
         self.c = TenantClient(self.tenant)
-        self.user = O55User.objects.create(
+        self.owner = O55User.objects.create(
             first_name="Aurthor",
             last_name="Clarke",
             email=TEST_USER_EMAIL,
@@ -34,7 +34,7 @@ class TestTenantCustomerModel(TenantTestCase):
             is_staff=True
         )
         self.customer = Customer.objects.create(
-            user=self.user,
+            owner=self.owner,
             given_name="Aurthor",
             last_name="Clarke",
             middle_name="C.",
@@ -50,7 +50,7 @@ class TestTenantCustomerModel(TenantTestCase):
     def tearDown(self):
         Customer.objects.delete_all()
         del self.c
-        self.user = None
+        self.owner = None
         super(TestTenantCustomerModel, self).tearDown()
 
     def test_str(self):

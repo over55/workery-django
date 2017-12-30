@@ -25,7 +25,7 @@ class TestOpeningHoursSpecification(TenantTestCase):
     def setUp(self):
         super(TestOpeningHoursSpecification, self).setUp()
         self.c = TenantClient(self.tenant)
-        self.user = O55User.objects.create(
+        self.owner = O55User.objects.create(
             first_name="Bart",
             last_name="Mika",
             email=TEST_USER_EMAIL,
@@ -35,7 +35,7 @@ class TestOpeningHoursSpecification(TenantTestCase):
             is_staff=True
         )
         self.obj = OpeningHoursSpecification.objects.create(
-            owner=self.user,
+            owner=self.owner,
             closes="9:00 PM",
             day_of_week="Monday",
             opens="8:00 AM"
@@ -44,6 +44,7 @@ class TestOpeningHoursSpecification(TenantTestCase):
     def tearDown(self):
         del self.c
         self.obj.delete()
+        self.owner.delete()
         super(TestOpeningHoursSpecification, self).tearDown()
 
     def test_str(self):

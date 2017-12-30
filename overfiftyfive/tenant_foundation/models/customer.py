@@ -18,7 +18,8 @@ from tenant_foundation.models import (
     AbstractBigPk,
     AbstractContactPoint,
     AbstractGeoCoordinate,
-    AbstractPostalAddress
+    AbstractPostalAddress,
+    AbstractThing
 )
 from tenant_foundation.utils import *
 
@@ -29,8 +30,32 @@ class CustomerManager(models.Manager):
         for item in items.all():
             item.delete()
 
+    def update_or_create(self, defaults=None, **kwargs):
+        """
+        Override the `update_or_create` function to work according to our
+        specification...
 
-class Customer(AbstractBigPk, AbstractContactPoint, AbstractPostalAddress, AbstractGeoCoordinate):
+        The 'update_or_create' method tries to fetch an object from database
+        based on the given 'kwargs'. If a match is found, it updates the fields
+        passed in the 'defaults' dictionary.
+
+        https://docs.djangoproject.com/en/2.0/ref/models/querysets/#django.db.models.query.QuerySet.update_or_create
+        """
+        try:
+            obj = Customer.objects.get(id=kwargs['id'])
+            for key, value in defaults.items():
+                setattr(obj, key, value)
+            obj.save()
+            return obj, False
+        except Customer.DoesNotExist:
+            new_values = defaults
+            new_values.update(defaults)
+            obj = Customer(**new_values)
+            obj.save()
+            return obj, True
+
+
+class Customer(AbstractBigPk, AbstractThing, AbstractContactPoint, AbstractPostalAddress, AbstractGeoCoordinate):
     class Meta:
         app_label = 'tenant_foundation'
         db_table = 'o55_customers'
@@ -46,39 +71,62 @@ class Customer(AbstractBigPk, AbstractContactPoint, AbstractPostalAddress, Abstr
     given_name = models.CharField(
         _("Given Name"),
         max_length=63,
-        help_text=_('The employees given name.'),
+        help_text=_('The customers given name.'),
         blank=True,
         null=True,
     )
     middle_name = models.CharField(
         _("Middle Name"),
         max_length=63,
-        help_text=_('The employees last name.'),
+        help_text=_('The customers last name.'),
         blank=True,
         null=True,
     )
     last_name = models.CharField(
         _("Last Name"),
         max_length=63,
-        help_text=_('The employees last name.'),
+        help_text=_('The customers last name.'),
         blank=True,
         null=True,
     )
-
-    #
-    #  SYSTEM FIELDS
-    #
-
-    user = models.OneToOneField(
-        User,
-        help_text=_('The user whom owns this customer.'),
+    birthdate = models.DateTimeField(
+        _('Birthdate'),
+        help_text=_('The customers birthdate.'),
+        blank=True,
+        null=True
+    )
+    is_senior = models.BooleanField(
+        _("Is Senior"),
+        help_text=_('Indicates whether customer is considered a senior or not.'),
+        default=False,
+        blank=True
+    )
+    is_support = models.BooleanField(
+        _("Is Support"),
+        help_text=_('Indicates whether customer needs support or not.'),
+        default=False,
+        blank=True
+    )
+    job_info_read = models.CharField(
+        _("Job Info Read"),
+        max_length=31,
+        help_text=_('-'),
         blank=True,
         null=True,
-        on_delete=models.CASCADE,
-        db_index=True,
     )
-    created = models.DateTimeField(auto_now_add=True, db_index=True,)
-    last_modified = models.DateTimeField(auto_now=True, db_index=True,)
+    how_hear = models.CharField(
+        _("How hear"),
+        max_length=2055,
+        help_text=_('How customer heared about this organization.'),
+        blank=True,
+        null=True,
+    )
+    join_date = models.DateTimeField(
+        _("Join Date"),
+        help_text=_('The date the customer joined this organization.'),
+        null=True,
+        blank=True,
+    )
 
     #
     #  FUNCTIONS

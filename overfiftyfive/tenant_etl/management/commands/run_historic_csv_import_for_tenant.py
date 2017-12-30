@@ -55,6 +55,31 @@ class Command(BaseCommand):
             self.style.SUCCESS(_('Successfully imported historic tenant.'))
         )
 
+    # def strip_chars(self, f):
+    #     remove_re = re.compile(u'[\x00-\x08\x0B-\x0C\x0E-\x1F\x7F%s]'
+    #                            % u'')
+    #     head,tail = ospath.split(f)
+    #     fin = codecs.open(f, encoding = 'utf-8')
+    #     fout = codecs.open(head + os.path.sep + 'tmp.csv', mode = 'w', encoding = 'utf-8')
+    #     i = 1
+    #     stripped = 0
+    #     for line in fin:
+    #         new_line, count = remove_re.subn('', line)
+    #         if count > 0:
+    #             plur = ((count > 1) and u's') or u''
+    #             sys.stderr.write('Line %d, removed %s character%s.\n'
+    #                              % (i, count, plur))
+    #
+    #         fout.write(new_line)
+    #         stripped = stripped + count
+    #         i = i + 1
+    #     sys.stderr.write('Stripped %d characters from %d lines.\n'
+    #                      % (stripped, i))
+    #     fin.close()
+    #     fout.close()
+    #     os.rename(f, head + os.path.sep + 'old_' + tail)
+    #     os.rename(head + os.path.sep + 'tmp.csv', f)
+
     def get_directory(self):
         # Get the directory of this command.
         directory = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -108,16 +133,19 @@ class Command(BaseCommand):
         # self.strip_chars(full_file_path)
 
         with open(full_file_path, newline='', encoding='utf-8') as csvfile:
-            if "employee.csv" in full_file_path:
+            # if "employee.csv" in full_file_path:
+            #     self.stdout.write(
+            #         self.style.SUCCESS(_('Importing "Associates" at %(path)s ...') % {
+            #             'path': full_file_path
+            #         })
+            #     )
+            #     run_associates_importer_from_csv_file(csvfile)
+
+            if "prod_small_job_employers.csv" in full_file_path:
                 self.stdout.write(
-                    self.style.SUCCESS(_('Importing "Associates" at %(path)s ...') % {
+                    self.style.SUCCESS(_('Importing "Customers" at %(path)s ...') % {
                         'path': full_file_path
                     })
                 )
-                run_associates_importer_from_csv_file(csvfile)
-
-            # if "employer.csv" in full_file_path:
-            #     self.stdout.write(
-            #         self.style.SUCCESS(_('Importing "Employer" ...'))
-            #     )
-            #     run_customer_importer_from_csv_file(csvfile)
+                # self.strip_chars(full_file_path)
+                run_customer_importer_from_csv_file(csvfile)

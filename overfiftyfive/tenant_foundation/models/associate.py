@@ -18,7 +18,8 @@ from tenant_foundation.models import (
     AbstractBigPk,
     AbstractContactPoint,
     AbstractGeoCoordinate,
-    AbstractPostalAddress
+    AbstractPostalAddress,
+    AbstractThing
 )
 from tenant_foundation.utils import *
 
@@ -54,7 +55,7 @@ class AssociateManager(models.Manager):
             return obj, True
 
 
-class Associate(AbstractBigPk, AbstractContactPoint, AbstractPostalAddress, AbstractGeoCoordinate):
+class Associate(AbstractBigPk, AbstractThing, AbstractContactPoint, AbstractPostalAddress, AbstractGeoCoordinate):
     class Meta:
         app_label = 'tenant_foundation'
         db_table = 'o55_associates'
@@ -220,20 +221,6 @@ class Associate(AbstractBigPk, AbstractContactPoint, AbstractPostalAddress, Abst
     # sponsor
     # owns
     # founder
-
-    #
-    #  SYSTEM FIELDS
-    #
-
-    user = models.OneToOneField(
-        User,
-        help_text=_('The user whom owns this associate.'),
-        blank=True,
-        null=True,
-        on_delete=models.CASCADE,
-    )
-    created = models.DateTimeField(auto_now_add=True, db_index=True,)
-    last_modified = models.DateTimeField(auto_now=True, db_index=True,)
 
     #
     #  FUNCTIONS

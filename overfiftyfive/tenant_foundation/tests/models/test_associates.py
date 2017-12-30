@@ -24,7 +24,7 @@ class TestTenantAssociateModel(TenantTestCase):
     def setUp(self):
         super(TestTenantAssociateModel, self).setUp()
         self.c = TenantClient(self.tenant)
-        self.user = O55User.objects.create(
+        self.owner = O55User.objects.create(
             first_name="Aurthor",
             last_name="Clarke",
             email=TEST_USER_EMAIL,
@@ -34,7 +34,7 @@ class TestTenantAssociateModel(TenantTestCase):
             is_staff=True
         )
         self.associate = Associate.objects.create(
-            user=self.user,
+            owner=self.owner,
             given_name="Aurthor",
             last_name="Clarke",
             middle_name="C."
@@ -44,7 +44,7 @@ class TestTenantAssociateModel(TenantTestCase):
         Associate.objects.delete_all()
         del self.c
         self.associate = None
-        self.user.delete()
+        self.owner.delete()
         super(TestTenantAssociateModel, self).tearDown()
 
     def test_str(self):
