@@ -15,6 +15,7 @@ from starterkit.utils import (
 )
 from shared_foundation.constants import *
 from tenant_foundation.models import Customer
+from tenant_foundation.models.organization import Organization
 from tenant_foundation.utils import *
 
 
@@ -35,8 +36,8 @@ def run_customer_importer_from_csv_file(csvfile):
                 postal_code = row[5]
                 job_info_read = row[6]
                 learn_about = row[7]
-                is_suppert = bool_or_none(row[8]) #TODO
-                is_senior = bool_or_none(row[9]) #TODO
+                is_suppert = bool_or_none(row[8])
+                is_senior = bool_or_none(row[9])
                 birthdate = row[10]
                 job_description = row[11]
                 address = row[12]
@@ -73,3 +74,48 @@ def run_customer_importer_from_csv_file(csvfile):
                     'is_suppert': bool(is_suppert)
                 }
             )
+
+
+def run_customer_and_org_importer_from_csv_file(csvfile):
+    csvreader = csv.reader(csvfile, delimiter=',', quotechar='"')
+    for i, row in enumerate(csvreader):
+        if i > 0:
+            try:
+                # For debugging purposes.
+                # print(row)
+
+                pk = row[0]
+                caller = row[1]
+                company = row[2] #TODO
+                pick = bool_or_none(row[3]) #TODO: ???
+                phone = row[4]
+                address = row[5]
+                city = row[6]
+                postal_code = row[7]
+                fax = row[8]
+                email = row[9]
+                com1 = row[10]
+
+                # Insert our extracted data into our database.
+                customer, create = Customer.objects.update_or_create(
+                    id=int_or_none(pk),
+                    defaults={
+                        'id':int_or_none(pk),
+                        'name':caller,
+                        'telephone': phone,
+                        'postal_code': postal_code,
+                        'street_address': address,
+                        'address_locality': city,
+                        'address_country': 'Canada',
+                        'email': email,
+                        'fax_number': fax,
+                        'description': com1,
+                    }
+                )
+
+            except Exception as e:
+                print(e)
+
+            # If company name does not already exist then create our company now.
+            if not Organization.objects.filter(name=company).exists():
+                org = Organization.objects.create(name=company)

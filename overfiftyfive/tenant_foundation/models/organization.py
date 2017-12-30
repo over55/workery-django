@@ -30,6 +30,30 @@ class OrganizationManager(models.Manager):
         for item in items.all():
             item.delete()
 
+    def update_or_create(self, defaults=None, **kwargs):
+        """
+        Override the `update_or_create` function to work according to our
+        specification...
+
+        The 'update_or_create' method tries to fetch an object from database
+        based on the given 'kwargs'. If a match is found, it updates the fields
+        passed in the 'defaults' dictionary.
+
+        https://docs.djangoproject.com/en/2.0/ref/models/querysets/#django.db.models.query.QuerySet.update_or_create
+        """
+        try:
+            obj = Organization.objects.get(id=kwargs['id'])
+            for key, value in defaults.items():
+                setattr(obj, key, value)
+            obj.save()
+            return obj, False
+        except Organization.DoesNotExist:
+            new_values = defaults
+            new_values.update(defaults)
+            obj = Organization(**new_values)
+            obj.save()
+            return obj, True
+
 
 class Organization(AbstractBigPk, AbstractThing, AbstractContactPoint, AbstractPostalAddress, AbstractGeoCoordinate):
     """
