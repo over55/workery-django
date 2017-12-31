@@ -4,6 +4,7 @@ import pytz
 from datetime import date, datetime, timedelta
 from django.conf import settings
 from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError
 from django.db import models
 from django.db.models.signals import pre_save
 from django.utils import timezone
@@ -139,9 +140,32 @@ class Customer(AbstractBigPk, AbstractThing, AbstractContactPoint, AbstractPosta
         else:
             return str(self.given_name)+" "+str(self.last_name)
 
+    def save(self, *args, **kwargs):
+        """
+        Override the "save" function.
+        """
+        if self.email:
+            user = User.objects.filter(email=self.email).first()
+            if self.owner:
+                if user != self.owner:
+                    # print("2 OF 3:")
+                    raise ValidationError({
+                        'email':'Your email is not unique! Please pick another email.'
+                    })
+            else:
+                email_exists = User.objects.filter(email=self.email).exists()
+                if email_exists:
+                    # print("1 OF 3:")
+                    raise ValidationError({
+                        'email':'Your email is not unique! Please pick another email.'
+                    })
 
-def validate_model(sender, **kwargs):
-    if 'raw' in kwargs and not kwargs['raw']:
-        kwargs['instance'].full_clean()
+        # print("3 of 3")
+        super(Customer, self).save(*args,**kwargs)
 
-pre_save.connect(validate_model, dispatch_uid='o55_customers.validate_models')
+
+# def validate_model(sender, **kwargs):
+#     if 'raw' in kwargs and not kwargs['raw']:
+#         kwargs['instance'].full_clean()
+#
+# pre_save.connect(validate_model, dispatch_uid='o55_customers.validate_models')
