@@ -111,6 +111,16 @@ class Command(BaseCommand):
         # Connection will set it back to our tenant.
         connection.set_schema(franchise.schema_name, True) # Switch to Tenant.
 
+        # FOR DEBUGGING PURPOSES ONLY. UNCOMMENT AT YOUR OWN RISK!
+        # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        from tenant_foundation.models.customer import Customer
+        from tenant_foundation.models.associate import Associate
+        from django.contrib.auth.models import User
+        Customer.objects.delete_all()
+        Associate.objects.delete_all()
+        User.objects.all().delete()
+        # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
         # Get all the files in the directory.
         directory = self.get_directory()
         full_file_paths = self.get_filepaths(directory)

@@ -6,11 +6,13 @@ from django.conf import settings
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.db import models
-from django.db.models.signals import pre_save
+from django.db.models.signals import pre_save, post_save
+from django.dispatch import receiver
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 from starterkit.utils import (
     get_random_string,
+    get_unique_username_from_email,
     generate_hash,
     int_or_none,
     float_or_none
@@ -169,3 +171,30 @@ class Customer(AbstractBigPk, AbstractThing, AbstractContactPoint, AbstractPosta
 #         kwargs['instance'].full_clean()
 #
 # pre_save.connect(validate_model, dispatch_uid='o55_customers.validate_models')
+
+
+# @receiver(post_save, sender=Customer)
+# def create_owners_if_none(sender, instance=None, created=False, **kwargs):
+#     if instance:
+#         if instance.owner is None:
+#             if instance.email is not None and instance.email is not '':
+#                 # For debugging purposes only.
+#                 # print("USERNAME", get_unique_username_from_email(instance.email))
+#                 # print("EMAIL", instance.email)
+#                 # print()
+#
+#                 # Create our user.
+#                 user = User.objects.create(
+#                     first_name=instance.given_name,
+#                     last_name=instance.last_name,
+#                     email=instance.email,
+#                     username=get_unique_username_from_email(instance.email),
+#                     is_active=True,
+#                 )
+#
+#                 # Generate and assign the password.
+#                 user.set_password(get_random_string())
+#                 user.save()
+#
+#                 # Attach our user to the "Executive"
+#                 user.groups.add(CUSTOMER_GROUP_ID)

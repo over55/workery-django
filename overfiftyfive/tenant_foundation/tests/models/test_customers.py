@@ -24,6 +24,7 @@ class TestTenantCustomerModel(TenantTestCase):
     def setUp(self):
         super(TestTenantCustomerModel, self).setUp()
         self.c = TenantClient(self.tenant)
+        call_command('init_app', verbosity=0)
         self.owner = O55User.objects.create(
             first_name="Aurthor",
             last_name="Clarke",

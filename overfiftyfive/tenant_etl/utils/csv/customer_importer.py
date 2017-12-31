@@ -36,7 +36,7 @@ def run_customer_importer_from_csv_file(csvfile):
                 postal_code = row[5]
                 job_info_read = row[6]
                 learn_about = row[7]
-                is_suppert = bool_or_none(row[8])
+                is_support = bool_or_none(row[8])
                 is_senior = bool_or_none(row[9])
                 birthdate = row[10]
                 job_description = row[11]
@@ -95,7 +95,7 @@ def run_customer_importer_from_csv_file(csvfile):
                         'how_hear': learn_about,
                         'description': job_description,
                         'is_senior': bool(is_senior),
-                        'is_suppert': bool(is_suppert)
+                        'is_support': bool(is_support)
                     }
                 )
 

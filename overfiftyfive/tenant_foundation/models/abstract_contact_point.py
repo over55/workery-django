@@ -69,6 +69,14 @@ class AbstractContactPoint(models.Model):
         null=True,
         default='',
     )
+    telephone_extension = models.CharField( # NOT STANDARD SCHEMA.
+        _("Telephone Extension"),
+        max_length=31,
+        help_text=_('The telephone extension for the number.'),
+        blank=True,
+        null=True,
+        default='',
+    )
     mobile = models.CharField( # Not standard in Schema.org
         _("Mobile"),
         max_length=31,
