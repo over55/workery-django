@@ -5,6 +5,7 @@ from datetime import date, datetime, timedelta
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.db import models
+from django.db.models.signals import pre_save
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 from starterkit.utils import (
@@ -137,3 +138,10 @@ class Customer(AbstractBigPk, AbstractThing, AbstractContactPoint, AbstractPosta
             return str(self.given_name)+" "+str(self.middle_name)+" "+str(self.last_name)
         else:
             return str(self.given_name)+" "+str(self.last_name)
+
+
+def validate_model(sender, **kwargs):
+    if 'raw' in kwargs and not kwargs['raw']:
+        kwargs['instance'].full_clean()
+
+pre_save.connect(validate_model, dispatch_uid='o55_customers.validate_models')

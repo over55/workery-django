@@ -66,44 +66,80 @@ def run_associates_importer_from_csv_file(csvfile):
             local_ins_due = get_dt_from_toronto_timezone_ms_access_dt_string(ins_due)
             local_police_check = get_dt_from_toronto_timezone_ms_access_dt_string(police_check)
 
-            # Create
-            associate, create = Associate.objects.update_or_create(
-                id=int_or_none(pk),
-                defaults={
-                    'id':int_or_none(pk),
-                    'last_name':last_name,
-                    'given_name':given_name,
-                    'business':business,
-                    'middle_name':middle_name,
-                    # 'is_active':bool_or_none(is_active),
-                    'birthdate':local_birthdate,
-                    'address_country':address,
-                    'join_date':local_join_date,
-                    'telephone':phone,
-                    'mobile':cell,
-                    'fax_number':fax,
-                    'email':email,
-                    'address_locality':city,
-                    'address_region':province,
-                    'postal_code':postal_code,
-                    'area_served':ldn_area,
-                    'hourly_salary_desired':int_or_none(hourly_salary_desired),
-                    'limit_special':limit_special,
-                    'dues_pd':local_dues_pd,
-                    'ins_due':local_ins_due,
-                    'police_check':local_police_check,
-                    'drivers_license_class':drivers_license_class,
-                    'comments':comments,
-                    'has_car':bool_or_none(has_van),
-                    'has_van':bool_or_none(has_van),
-                    'has_truck':bool_or_none(has_truck),
-                    'is_full_time':bool_or_none(is_full_time),
-                    'is_part_time':bool_or_none(is_part_time),
-                    'is_contract_time':bool_or_none(is_contract_time),
-                    'is_small_job':bool_or_none(is_small_job),
-                    'how_hear':how_hear
-                }
-            )
+            # Minor formatting.
+            email = email.replace(';', '')
+            email = email.replace(':', '')
+            email = email.replace('NONE', '')
+            email = email.replace('N/A', '')
+            email = email.replace(' ', '')
+            email = email.lower()
+            address = '-' if address is '' else address
+            address = '-' if address is None else address
+            province = 'ON' if province is '' else province
+            province = 'ON' if province is None else province
+            city = "London" if city is '' else city
+            fax = fax.replace('(', '')
+            fax = fax.replace(')', '')
+            fax = fax.replace('-', '')
+            fax = fax.replace(' ', '')
+            fax = fax.replace('.', '')
 
-            # For debugging purposes.
-            # print(associate, create)
+            phone = phone.replace('(', '')
+            phone = phone.replace(')', '')
+            phone = phone.replace('-', '')
+            phone = phone.replace(' ', '')
+            phone = phone.replace('.', '')
+
+            cell = cell.replace('(', '')
+            cell = cell.replace(')', '')
+            cell = cell.replace('-', '')
+            cell = cell.replace(' ', '')
+            cell = cell.replace('.', '')
+
+            # Create or update.
+            try:
+                associate, create = Associate.objects.update_or_create(
+                    id=int_or_none(pk),
+                    defaults={
+                        'id':int_or_none(pk),
+                        'last_name':last_name,
+                        'given_name':given_name,
+                        'business':business,
+                        'middle_name':middle_name,
+                        # 'is_active':bool_or_none(is_active),
+                        'birthdate':local_birthdate,
+                        'address_country':'Canada',
+                        'join_date':local_join_date,
+                        'telephone':phone,
+                        'mobile':cell,
+                        'fax_number':fax,
+                        'email':email,
+                        'address_locality':city,
+                        'address_region':province,
+                        'street_address': address,
+                        'postal_code':postal_code,
+                        'area_served':ldn_area,
+                        'hourly_salary_desired':int_or_none(hourly_salary_desired),
+                        'limit_special':limit_special,
+                        'dues_pd':local_dues_pd,
+                        'ins_due':local_ins_due,
+                        'police_check':local_police_check,
+                        'drivers_license_class':drivers_license_class,
+                        'comments':comments,
+                        'has_car':bool_or_none(has_van),
+                        'has_van':bool_or_none(has_van),
+                        'has_truck':bool_or_none(has_truck),
+                        'is_full_time':bool_or_none(is_full_time),
+                        'is_part_time':bool_or_none(is_part_time),
+                        'is_contract_time':bool_or_none(is_contract_time),
+                        'is_small_job':bool_or_none(is_small_job),
+                        'how_hear':how_hear
+                    }
+                )
+
+                # For debugging purposes.
+                # print(associate, create)
+            except Exception as e:
+                print(e)
+                print(row)
+                print()

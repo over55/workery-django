@@ -32,7 +32,7 @@ def run_customer_importer_from_csv_file(csvfile):
                 project_date = row[1]
                 last_name = row[2]
                 first_name = row[3]
-                home_phone = int_or_none(row[4])
+                home_phone = row[4]
                 postal_code = row[5]
                 job_info_read = row[6]
                 learn_about = row[7]
@@ -43,37 +43,66 @@ def run_customer_importer_from_csv_file(csvfile):
                 address = row[12]
                 city = row[13]
                 email = row[14]
+                url = None
+                telephone_extension = None
+
+                # Minor formatting.
+                email = email.replace(';', '')
+                email = email.replace(':', '')
+                email = email.replace('NONE', '')
+                email = email.replace('N/A', '')
+                email = email.replace(' ', '')
+                email = email.lower()
+                address = '-' if address is '' else address
+                address = '-' if address is None else address
+                city = "London" if city is '' else city
+                if "www" in email.lower():
+                    url = "http://"+email.lower()
+                    email = ""
+                if "ext" in email.lower():
+                    telephone_extension = email
+                    email = ""
+                home_phone = home_phone.replace('(', '')
+                home_phone = home_phone.replace(')', '')
+                home_phone = home_phone.replace('-', '')
+                home_phone = home_phone.replace(' ', '')
+                home_phone = home_phone.replace('.', '')
+                home_phone = int_or_none(home_phone)
+
+                # Convert the datetime.
+                local_birthdate = get_utc_dt_from_toronto_dt_string(birthdate)
+                local_project_date = get_utc_dt_from_toronto_dt_string(project_date)
+
+                # Insert our extracted data into our database.
+                customer, create = Customer.objects.update_or_create(
+                    id=int_or_none(pk),
+                    defaults={
+                        'id':int_or_none(pk),
+                        'last_name':last_name,
+                        'given_name':first_name,
+                        # 'middle_name':middle_name,
+                        'telephone': home_phone,
+                        'telephone_extension': telephone_extension,
+                        'postal_code': postal_code,
+                        'birthdate': local_birthdate,
+                        'street_address': address,
+                        'address_locality': city,
+                        'address_country': 'Canada',
+                        'address_region': 'Ontario',
+                        'email': email,
+                        'join_date': local_project_date,
+                        'job_info_read': job_info_read,
+                        'how_hear': learn_about,
+                        'description': job_description,
+                        'is_senior': bool(is_senior),
+                        'is_suppert': bool(is_suppert)
+                    }
+                )
 
             except Exception as e:
                 print(e)
-
-            # Convert the datetime.
-            local_birthdate = get_utc_dt_from_toronto_dt_string(birthdate)
-            local_project_date = get_utc_dt_from_toronto_dt_string(project_date)
-
-            # Insert our extracted data into our database.
-            customer, create = Customer.objects.update_or_create(
-                id=int_or_none(pk),
-                defaults={
-                    'id':int_or_none(pk),
-                    'last_name':last_name,
-                    'given_name':first_name,
-                    # 'middle_name':middle_name,
-                    'telephone': home_phone,
-                    'postal_code': postal_code,
-                    'birthdate': local_birthdate,
-                    'street_address': address,
-                    'address_locality': city,
-                    'address_country': 'Canada',
-                    'email': email,
-                    'join_date': local_project_date,
-                    'job_info_read': job_info_read,
-                    'how_hear': learn_about,
-                    'description': job_description,
-                    'is_senior': bool(is_senior),
-                    'is_suppert': bool(is_suppert)
-                }
-            )
+                print(row)
+                print()
 
 
 def run_customer_and_org_importer_from_csv_file(csvfile):
@@ -95,6 +124,29 @@ def run_customer_and_org_importer_from_csv_file(csvfile):
                 fax = row[8]
                 email = row[9]
                 com1 = row[10]
+                url = None
+
+                # Minor formatting.
+                email = email.replace(';', '')
+                email = email.lower()
+                address = '-' if address is '' else address
+                address = '-' if address is None else address
+                city = "London" if city is '' else city
+                if "www" in email.lower():
+                    url = "http://"+email.lower()
+                    email = ""
+                phone = phone.replace('(', '')
+                phone = phone.replace(')', '')
+                phone = phone.replace('-', '')
+                phone = phone.replace(' ', '')
+                phone = phone.replace('.', '')
+                phone = int_or_none(phone)
+                fax = fax.replace('(', '')
+                fax = fax.replace(')', '')
+                fax = fax.replace('-', '')
+                fax = fax.replace(' ', '')
+                fax = fax.replace('.', '')
+                fax = int_or_none(fax)
 
                 # Insert our extracted data into our database.
                 customer, create = Customer.objects.update_or_create(
@@ -107,14 +159,18 @@ def run_customer_and_org_importer_from_csv_file(csvfile):
                         'street_address': address,
                         'address_locality': city,
                         'address_country': 'Canada',
+                        'address_region': 'Ontario',
                         'email': email,
                         'fax_number': fax,
                         'description': com1,
+                        'url': url
                     }
                 )
 
             except Exception as e:
                 print(e)
+                print(row)
+                print()
 
             # If company name does not already exist then create our company now.
             if not Organization.objects.filter(name=company).exists():

@@ -147,7 +147,6 @@ class Command(BaseCommand):
                         'path': full_file_path
                     })
                 )
-                # self.strip_chars(full_file_path)
                 run_customer_importer_from_csv_file(csvfile)
 
             if "employer.csv" in full_file_path:
