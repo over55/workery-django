@@ -265,30 +265,3 @@ class Associate(AbstractBigPk, AbstractThing, AbstractContactPoint, AbstractPost
 #         kwargs['instance'].full_clean()
 #
 # pre_save.connect(validate_model, dispatch_uid='o55_associates.validate_models')
-
-
-# @receiver(post_save, sender=Associate)
-# def create_owners_if_none(sender, instance=None, created=False, **kwargs):
-#     if instance:
-#         if instance.owner is None:
-#             if instance.email is not None and instance.email is not '':
-#                 # For debugging purposes only.
-#                 # print("USERNAME", get_unique_username_from_email(instance.email))
-#                 # print("EMAIL", instance.email)
-#                 # print()
-#
-#                 # Create our user.
-#                 user = User.objects.create(
-#                     first_name=instance.given_name,
-#                     last_name=instance.last_name,
-#                     email=instance.email,
-#                     username=get_unique_username_from_email(instance.email),
-#                     is_active=True,
-#                 )
-#
-#                 # Generate and assign the password.
-#                 user.set_password(get_random_string())
-#                 user.save()
-#
-#                 # Attach our user to the "Executive"
-#                 user.groups.add(ASSOICATE_GROUP_ID)

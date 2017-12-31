@@ -113,12 +113,12 @@ class Command(BaseCommand):
 
         # FOR DEBUGGING PURPOSES ONLY. UNCOMMENT AT YOUR OWN RISK!
         # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        from tenant_foundation.models.customer import Customer
-        from tenant_foundation.models.associate import Associate
-        from django.contrib.auth.models import User
-        Customer.objects.delete_all()
-        Associate.objects.delete_all()
-        User.objects.all().delete()
+        # from tenant_foundation.models.customer import Customer
+        # from tenant_foundation.models.associate import Associate
+        # from django.contrib.auth.models import User
+        # Customer.objects.delete_all()
+        # Associate.objects.delete_all()
+        # User.objects.all().delete()
         # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
         # Get all the files in the directory.
@@ -143,6 +143,7 @@ class Command(BaseCommand):
         # self.strip_chars(full_file_path)
 
         with open(full_file_path, newline='', encoding='utf-8') as csvfile:
+            # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
             if "employee.csv" in full_file_path:
                 self.stdout.write(
                     self.style.SUCCESS(_('Importing "Associates" at %(path)s ...') % {
@@ -150,7 +151,7 @@ class Command(BaseCommand):
                     })
                 )
                 run_associates_importer_from_csv_file(csvfile)
-
+            # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
             if "small_job_employers.csv" in full_file_path:
                 self.stdout.write(
                     self.style.SUCCESS(_('Importing "Customers" at %(path)s ...') % {
@@ -158,7 +159,7 @@ class Command(BaseCommand):
                     })
                 )
                 run_customer_importer_from_csv_file(csvfile)
-
+            # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
             if "employer.csv" in full_file_path:
                 self.stdout.write(
                     self.style.SUCCESS(_('Importing "Customers" and "Organizations" at %(path)s ...') % {
@@ -166,3 +167,4 @@ class Command(BaseCommand):
                     })
                 )
                 run_customer_and_org_importer_from_csv_file(csvfile)
+            # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

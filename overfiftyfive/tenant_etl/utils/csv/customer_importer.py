@@ -9,6 +9,7 @@ from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 from starterkit.utils import (
     get_random_string,
+    get_unique_username_from_email,
     generate_hash,
     int_or_none,
     float_or_none
@@ -73,11 +74,31 @@ def run_customer_importer_from_csv_file(csvfile):
                 local_birthdate = get_utc_dt_from_toronto_dt_string(birthdate)
                 local_project_date = get_utc_dt_from_toronto_dt_string(project_date)
 
+                # Attempt to lookup or create user.
+                user = User.objects.filter(email=email).first()
+                if user is None:
+                    # Create our user.
+                    user = User.objects.create(
+                        first_name=first_name,
+                        last_name=last_name,
+                        email=email,
+                        username=get_unique_username_from_email(email),
+                        is_active=True,
+                    )
+
+                    # Generate and assign the password.
+                    user.set_password(get_random_string())
+                    user.save()
+
+                    # Attach our user to the "CUSTOMER_GROUP_ID"
+                    user.groups.add(CUSTOMER_GROUP_ID)
+
                 # Insert our extracted data into our database.
                 customer, create = Customer.objects.update_or_create(
                     id=int_or_none(pk),
                     defaults={
                         'id':int_or_none(pk),
+                        'owner': user,
                         'last_name':last_name,
                         'given_name':first_name,
                         # 'middle_name':middle_name,
@@ -148,11 +169,31 @@ def run_customer_and_org_importer_from_csv_file(csvfile):
                 fax = fax.replace('.', '')
                 fax = int_or_none(fax)
 
+                # Attempt to lookup or create user.
+                user = User.objects.filter(email=email).first()
+                if user is None:
+                    # Create our user.
+                    user = User.objects.create(
+                        first_name='-',
+                        last_name='-',
+                        email=email,
+                        username=get_unique_username_from_email(email),
+                        is_active=True,
+                    )
+
+                    # Generate and assign the password.
+                    user.set_password(get_random_string())
+                    user.save()
+
+                    # Attach our user to the "CUSTOMER_GROUP_ID"
+                    user.groups.add(CUSTOMER_GROUP_ID)
+
                 # Insert our extracted data into our database.
                 customer, create = Customer.objects.update_or_create(
                     id=int_or_none(pk),
                     defaults={
                         'id':int_or_none(pk),
+                        'owner': user,
                         'name':caller,
                         'telephone': phone,
                         'postal_code': postal_code,

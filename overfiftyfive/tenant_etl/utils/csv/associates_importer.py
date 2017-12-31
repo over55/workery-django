@@ -9,6 +9,7 @@ from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 from starterkit.utils import (
     get_random_string,
+    get_unique_username_from_email,
     generate_hash,
     int_or_none,
     float_or_none
@@ -96,12 +97,32 @@ def run_associates_importer_from_csv_file(csvfile):
             cell = cell.replace(' ', '')
             cell = cell.replace('.', '')
 
+            # Attempt to lookup or create user.
+            user = User.objects.filter(email=email).first()
+            if user is None:
+                # Create our user.
+                user = User.objects.create(
+                    first_name=given_name,
+                    last_name=last_name,
+                    email=email,
+                    username=get_unique_username_from_email(email),
+                    is_active=True,
+                )
+
+                # Generate and assign the password.
+                user.set_password(get_random_string())
+                user.save()
+
+                # Attach our user to the "Executive"
+                user.groups.add(ASSOICATE_GROUP_ID)
+
             # Create or update.
             try:
                 associate, create = Associate.objects.update_or_create(
                     id=int_or_none(pk),
                     defaults={
                         'id':int_or_none(pk),
+                        'owner': user,
                         'last_name':last_name,
                         'given_name':given_name,
                         'business':business,
