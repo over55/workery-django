@@ -16,6 +16,7 @@ class TestRunHistoricCSVImportForTenantManagementCommand(TenantTestCase):
     def setUp(self):
         super(TestRunHistoricCSVImportForTenantManagementCommand, self).setUp()
         self.c = TenantClient(self.tenant)
+        call_command('init_app', verbosity=0)
 
     def tearDown(self):
         del self.c

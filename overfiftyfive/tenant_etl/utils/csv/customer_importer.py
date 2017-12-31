@@ -15,6 +15,10 @@ from starterkit.utils import (
     float_or_none
 )
 from shared_foundation.constants import *
+from shared_foundation.models import (
+    SharedFranchise,
+    SharedMe
+)
 from tenant_foundation.models import Customer
 from tenant_foundation.models.organization import Organization
 from tenant_foundation.utils import *
