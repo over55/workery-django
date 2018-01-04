@@ -19,8 +19,12 @@ from shared_foundation.models import (
     SharedFranchise,
     SharedMe
 )
-from tenant_foundation.models import Customer
-from tenant_foundation.models.organization import Organization
+from tenant_foundation.constants import *
+from tenant_foundation.models import (
+    Customer,
+    CustomerAffiliation,
+    Organization
+)
 from tenant_foundation.utils import *
 
 
@@ -219,4 +223,9 @@ def run_customer_and_org_importer_from_csv_file(csvfile):
 
             # If company name does not already exist then create our company now.
             if not Organization.objects.filter(name=company).exists():
-                org = Organization.objects.create(name=company)
+                organization = Organization.objects.create(name=company)
+                CustomerAffiliation.objects.create(
+                    customer=customer,
+                    organization=organization,
+                    type_of=AFFILIATION_TYPE_AFFILIATION_ID
+                )

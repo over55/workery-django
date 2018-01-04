@@ -165,6 +165,7 @@ env
 .env
 *.cfg
 env/pip-selfcheck.json
+*.csv#
 
 #—————————————————————————————
 # Application Specific Ignores

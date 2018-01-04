@@ -211,20 +211,12 @@ class Associate(AbstractBigPk, AbstractThing, AbstractContactPoint, AbstractPost
     #  PERSON FIELDS - http://schema.org/Person
     #
 
-    # works_for = models.ForeignKey(
-    #     "Organization",
-    #     help_text=_('Organizations that the person works for.'),
-    #     blank=True,
-    #     null=True,
-    #     on_delete=models.CASCADE,
-    # )
-    # affiliation
-    # alumni_of
-    # funder
-    # member_of
-    # sponsor
-    # owns
-    # founder
+    organizations = models.ManyToManyField(
+        "Organization",
+        help_text=_('The organizations that this associate is affiliated with.'),
+        blank=True,
+        through='AssociateAffiliation'
+    )
 
     #
     #  FUNCTIONS

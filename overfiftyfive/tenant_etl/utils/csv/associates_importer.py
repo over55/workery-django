@@ -19,7 +19,11 @@ from shared_foundation.models import (
     SharedFranchise,
     SharedMe
 )
-from tenant_foundation.models import Associate
+from tenant_foundation.constants import *
+from tenant_foundation.models import (
+    Associate,
+    AssociateAffiliation
+)
 from tenant_foundation.utils import *
 
 

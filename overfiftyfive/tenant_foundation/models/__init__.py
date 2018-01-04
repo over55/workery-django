@@ -8,3 +8,5 @@ from tenant_foundation.models.customer import Customer
 from tenant_foundation.models.staff import Staff
 from tenant_foundation.models.organization import Organization
 from tenant_foundation.models.associate import Associate
+from tenant_foundation.models.associate_affiliation import AssociateAffiliation
+from tenant_foundation.models.customer_affiliation import CustomerAffiliation
