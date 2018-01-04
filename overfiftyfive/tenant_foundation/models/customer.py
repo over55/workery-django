@@ -133,6 +133,17 @@ class Customer(AbstractBigPk, AbstractThing, AbstractContactPoint, AbstractPosta
     )
 
     #
+    #  PERSON FIELDS - http://schema.org/Person
+    #
+
+    organizations = models.ManyToManyField(
+        "Organization",
+        help_text=_('The organizations that this customer is affiliated with.'),
+        blank=True,
+        through='CustomerAffiliation'
+    )
+
+    #
     #  FUNCTIONS
     #
 
