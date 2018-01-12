@@ -158,87 +158,87 @@ class Command(BaseCommand):
             local_date_done = get_utc_dt_from_toronto_dt_string(date_done)
             local_date_paid = get_utc_dt_from_toronto_dt_string(date_paid)
 
-            # For debugging purposes.
-            print(
-                order_pk,
-                associate_pk,
-                associate_last_name,
-                local_assign_date,
-                customer_pk,
-                customer_first_name,
-                customer_last_name,
-                telephone,
-                postal_code,
-                learn_about,
-                is_support,
-                is_senior,
-                local_birthdate,
-                customer_email,
-        #         job_type,
-        #         is_ongoing,
-        #         is_cancelled,
-        #         local_date_done,
-        #         hours,
-        #         service_fee,
-        #         local_date_paid,
-        #         comment,
-        #         follow_up_comment,
-        #         workmanship,
-        #         time_and_budget,
-        #         punctual,
-        #         professional,
-        #         refer,
-        #         score
+            # # For debugging purposes.
+            # print(
+            #     order_pk,
+            #     associate_pk,
+            #     associate_last_name,
+            #     local_assign_date,
+            #     customer_pk,
+            #     customer_first_name,
+            #     customer_last_name,
+            #     telephone,
+            #     postal_code,
+            #     learn_about,
+            #     is_support,
+            #     is_senior,
+            #     local_birthdate,
+            #     customer_email,
+            #     job_type,
+            #     is_ongoing,
+            #     is_cancelled,
+            #     local_date_done,
+            #     hours,
+            #     service_fee,
+            #     local_date_paid,
+            #     comment,
+            #     follow_up_comment,
+            #     workmanship,
+            #     time_and_budget,
+            #     punctual,
+            #     professional,
+            #     refer,
+            #     score
+            # )
+
+            # Attempt to lookup or create user based if we have an email.
+            user = None
+            if customer_email is not None:
+                user = User.objects.filter(email=customer_email).first()
+                if user is None:
+                    # Create our user.
+                    user = User.objects.create(
+                        first_name=customer_first_name,
+                        last_name=customer_last_name,
+                        email=customer_email,
+                        username=get_unique_username_from_email(customer_email),
+                        is_active=True,
+                    )
+
+                    # Generate and assign the password.
+                    user.set_password(get_random_string())
+                    user.save()
+
+                    # Attach our user to the "CUSTOMER_GROUP_ID"
+                    user.groups.add(CUSTOMER_GROUP_ID)
+
+            # Insert our extracted data into our database.
+            customer, create = Customer.objects.update_or_create(
+                id=int_or_none(customer_pk),
+                defaults={
+                    'id': customer_pk,
+                    'owner': user,
+                    'last_name': customer_last_name,
+                    'given_name': customer_first_name,
+                    # 'middle_name':middle_name,
+                    'telephone': telephone,
+                    'telephone_extension': telephone_extension,
+                    'postal_code': postal_code,
+                    'birthdate': local_birthdate,
+                    # 'street_address': address,
+                    # 'address_locality': city,
+                    # 'address_country': 'Canada',
+                    # 'address_region': 'Ontario',
+                    'email': customer_email,
+                    'join_date': local_assign_date,
+                    # 'job_info_read': job_info_read,
+                    'how_hear': learn_about,
+                    # 'description': job_description,
+                    'is_senior': bool(is_senior),
+                    'is_support': bool(is_support)
+                }
             )
-        #
-        #     # Attempt to lookup or create user based if we have an email.
-        #     user = None
-        #     if customer_email:
-        #         user = User.objects.filter(email=email).first()
-        #         if user is None:
-        #             # Create our user.
-        #             user = User.objects.create(
-        #                 first_name=customer_first_name,
-        #                 last_name=customer_last_name,
-        #                 email=customer_email,
-        #                 username=get_unique_username_from_email(customer_email),
-        #                 is_active=True,
-        #             )
-        #
-        #             # Generate and assign the password.
-        #             user.set_password(get_random_string())
-        #             user.save()
-        #
-        #             # Attach our user to the "CUSTOMER_GROUP_ID"
-        #             user.groups.add(CUSTOMER_GROUP_ID)
-        #
-        #     # Insert our extracted data into our database.
-        #     customer, create = Customer.objects.update_or_create(
-        #         id=int_or_none(customer_pk),
-        #         defaults={
-        #             'id': customer_pk,
-        #             'owner': user,
-        #             'last_name': customer_last_name,
-        #             'given_name': customer_first_name,
-        #             # 'middle_name':middle_name,
-        #             'telephone': telephone,
-        #             'telephone_extension': telephone_extension,
-        #             'postal_code': postal_code,
-        #             'birthdate': local_birthdate,
-        #             # 'street_address': address,
-        #             # 'address_locality': city,
-        #             # 'address_country': 'Canada',
-        #             # 'address_region': 'Ontario',
-        #             'email': customer_email,
-        #             'join_date': local_assign_date,
-        #             # 'job_info_read': job_info_read,
-        #             'how_hear': learn_about,
-        #             # 'description': job_description,
-        #             'is_senior': bool(is_senior),
-        #             'is_support': bool(is_support)
-        #         }
-        #     )
-        #
-        # except Exception as e:
-        #     if not "list index out of range" in str(e):
-        #         print(e)
+
+        except Exception as e:
+            if not "list index out of range" in str(e):
+                print(e)
