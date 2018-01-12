@@ -192,6 +192,7 @@ class Command(BaseCommand):
             )
 
             # Attempt to lookup or create user based if we have an email.
+            user = None
             if customer_email:
                 user = User.objects.filter(email=email).first()
                 if user is None:
@@ -213,7 +214,7 @@ class Command(BaseCommand):
 
             # Insert our extracted data into our database.
             customer, create = Customer.objects.update_or_create(
-                id=int_or_none(pk),
+                id=int_or_none(customer_pk),
                 defaults={
                     'id': customer_pk,
                     'owner': user,
@@ -239,4 +240,5 @@ class Command(BaseCommand):
             )
 
         except Exception as e:
-            print(e)
+            if not "list index out of range" in str(e):
+                print(e)
