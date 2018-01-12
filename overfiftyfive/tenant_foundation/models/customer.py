@@ -113,7 +113,7 @@ class Customer(AbstractBigPk, AbstractThing, AbstractContactPoint, AbstractPosta
     )
     job_info_read = models.CharField(
         _("Job Info Read"),
-        max_length=31,
+        max_length=255,
         help_text=_('-'),
         blank=True,
         null=True,

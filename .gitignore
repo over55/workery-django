@@ -186,5 +186,4 @@ overfiftyfive/db.sqlite3-journal
 overfiftyfive/overfiftyfive/whoosh_index
 
 # Do not share real-life production data.
-overfiftyfive/tenant_etl/static/PROD_*
-overfiftyfive/tenant_etl/static/prod_*
+prod_*.csv
