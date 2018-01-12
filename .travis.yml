@@ -10,7 +10,6 @@ addons:
 
 install:
   - pip install -r requirements.txt
-  - pip install git+https://github.com/tomturner/django-tenants
   - pip install coverage
   - pip install coveralls
 
