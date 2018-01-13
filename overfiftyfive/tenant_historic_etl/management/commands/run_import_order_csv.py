@@ -153,10 +153,10 @@ class Command(BaseCommand):
             telephone = int_or_none(telephone)
 
             # Convert the datetime.
-            local_birthdate = get_utc_dt_from_toronto_dt_string(birthdate)
-            local_assign_date = get_utc_dt_from_toronto_dt_string(assign_date)
-            local_date_done = get_utc_dt_from_toronto_dt_string(date_done)
-            local_date_paid = get_utc_dt_from_toronto_dt_string(date_paid)
+            local_birthdate = self.get_date_from_formatting1(birthdate)
+            local_assign_date = self.get_date_from_formatting2(assign_date)
+            local_date_done = self.get_date_from_formatting2(date_done)
+            local_date_paid = self.get_date_from_formatting2(date_paid)
 
             # # For debugging purposes.
             # print(
@@ -242,3 +242,31 @@ class Command(BaseCommand):
         except Exception as e:
             if not "list index out of range" in str(e):
                 print(e)
+
+    def get_date_from_formatting1(self, birthdate):
+        """
+        Format `5/15/48` to '1948-05-15'.
+        """
+        if birthdate:
+            arr = birthdate.split("/")
+            year = "19"+arr[2]
+            day = arr[1]
+            month = arr[0]
+            dt_string = year+"-"+month+"-"+day
+            dt = get_utc_dt_from_toronto_dt_string(dt_string)
+            return dt
+        return None
+
+    def get_date_from_formatting2(self, assign_date):
+        """
+        Format `'01-Dec-17` to '2017-Dec-01'.
+        """
+        if assign_date:
+            arr = assign_date.split("-")
+            year = "20"+arr[2]
+            day = arr[0]
+            month = arr[1]
+            dt_string = year+"-"+month+"-"+day
+            dt = get_utc_dt_from_toronto_dt_string(dt_string)
+            return dt
+        return None
