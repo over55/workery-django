@@ -7,6 +7,8 @@ from django.contrib.auth.models import User
 from django.db import models
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
+from djmoney.models.fields import MoneyField
+from djmoney.money import Money
 from starterkit.utils import (
     get_random_string,
     generate_hash,
@@ -53,7 +55,9 @@ class Order(AbstractBigPk):
         "Associate",
         help_text=_('The associate of our order.'),
         related_name="%(app_label)s_%(class)s_associate_related",
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
+        blank=True,
+        null=True
     )
     assignment_date = models.DateField(
         _('Assignment Date'),
@@ -90,10 +94,14 @@ class Order(AbstractBigPk):
         help_text=_('The total amount of hours worked on for this order by the associate.'),
         default=0
     )
-    service_fee = models.PositiveSmallIntegerField(
+    service_fee = MoneyField(
         _("Service Fee"),
         help_text=_('The service fee that the customer was charged by the associate..'),
-        default=0
+        max_digits=10,
+        decimal_places=2,
+        default_currency='CAD',
+        default=Money(0,'CAD'),
+        blank=True,
     )
     payment_date = models.DateField(
         _('Payment Date'),

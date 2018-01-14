@@ -14,6 +14,7 @@ from django.db import connection # Used for django tenants.
 from django.utils.translation import ugettext_lazy as _
 from shared_foundation.models import SharedFranchise
 from tenant_foundation.models import Staff
+from djmoney.money import Money
 from starterkit.utils import (
     get_random_string,
     get_unique_username_from_email,
@@ -30,7 +31,8 @@ from tenant_foundation.constants import *
 from tenant_foundation.models import (
     Customer,
     CustomerAffiliation,
-    Organization
+    Organization,
+    Order
 )
 from tenant_foundation.utils import *
 
@@ -67,6 +69,13 @@ class Command(BaseCommand):
         # Connection will set it back to our tenant.
         connection.set_schema(franchise.schema_name, True) # Switch to Tenant.
 
+        # FOR DEBUGGING PURPOSES ONLY. UNCOMMENT AT YOUR OWN RISK!
+        # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        User.objects.all().delete()
+        Customer.objects.delete_all()
+        Order.objects.delete_all()
+        # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
         # Begin importing...
         with open(full_filepath, newline='', encoding='utf-8') as csvfile:
             csvreader = csv.reader(csvfile, delimiter=',', quotechar='"')
@@ -78,18 +87,6 @@ class Command(BaseCommand):
         self.stdout.write(
             self.style.SUCCESS(_('Successfully imported order.csv file.'))
         )
-
-    def begin_processing(self, franchise, csvfile):
-        # FOR DEBUGGING PURPOSES ONLY. UNCOMMENT AT YOUR OWN RISK!
-        # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        # from tenant_foundation.models.customer import Customer
-        # from tenant_foundation.models.associate import Associate
-        # from django.contrib.auth.models import User
-        # Customer.objects.delete_all()
-        # Associate.objects.delete_all()
-        # User.objects.all().delete()
-        # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        self.run_customer_importer_from_csv_file(franchise, csvfile)
 
     def run_import_from_dict(self, row_dict):
         try:
@@ -157,6 +154,21 @@ class Command(BaseCommand):
             local_assign_date = self.get_date_from_formatting2(assign_date)
             local_date_done = self.get_date_from_formatting2(date_done)
             local_date_paid = self.get_date_from_formatting2(date_paid)
+
+            # Convert to money.
+            local_service_fee = Money(0.00, 'CAD')
+            if service_fee:
+                service_fee = service_fee.replace('$', '')
+                service_fee = service_fee.replace('\'', '')
+                service_fee = float(service_fee)
+                local_service_fee = Money(service_fee, 'CAD')
+
+            # Conver to integer.
+            if hours is None:
+                hourse = 0
+            if hours is '':
+                hours = 0
+            hours = int(float(hours))
 
             # # For debugging purposes.
             # print(
@@ -236,6 +248,24 @@ class Command(BaseCommand):
                     # 'description': job_description,
                     'is_senior': bool(is_senior),
                     'is_support': bool(is_support)
+                }
+            )
+
+            order, create = Order.objects.update_or_create(
+                id=int_or_none(order_pk),
+                defaults={
+                    'id': int(order_pk),
+                    'customer': customer,
+                    # # 'associate': associate,
+                    'assignment_date': local_assign_date,
+                    # # 'category_tags': category_tags
+                    'is_ongoing': is_ongoing,
+                    'is_cancelled': is_cancelled,
+                    'completion_date': local_date_done,
+                    'hours':  int(hours),
+                    'service_fee': local_service_fee,
+                    'payment_date': local_date_paid,
+                    # # 'comments': comments
                 }
             )
 

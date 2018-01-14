@@ -73,6 +73,7 @@ SHARED_APPS = (
     'rest_framework.authtoken',
     'django_filters',
     'django_rq',
+    'djmoney',
     # . . .
 
      # Shared Apps

@@ -21,6 +21,7 @@ pip install djangorestframework           # RESTful API Endpoint Generator
 pip install django_filter                 # Filter querysets dynamically
 pip install django-rq                     # Redis Queue Library
 pip install rq-scheduler                  # Redis Queue Scheduler Library
+pip install django-money                  # Money fields for django forms and models.
 
 #TODO: IMPLEMENT...
 pip install dateutil                      # Useful extensions to the standard Python datetime features
