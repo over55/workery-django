@@ -3,6 +3,7 @@ from tenant_foundation.models.abstract_thing import AbstractThing
 from tenant_foundation.models.abstract_contact_point import AbstractContactPoint
 from tenant_foundation.models.abstract_postal_address import AbstractPostalAddress
 from tenant_foundation.models.abstract_geo_coorindate import AbstractGeoCoordinate
+from tenant_foundation.models.tag import Tag
 from tenant_foundation.models.opening_hours_specification import OpeningHoursSpecification
 from tenant_foundation.models.customer import Customer
 from tenant_foundation.models.staff import Staff
@@ -10,3 +11,6 @@ from tenant_foundation.models.organization import Organization
 from tenant_foundation.models.associate import Associate
 from tenant_foundation.models.associate_affiliation import AssociateAffiliation
 from tenant_foundation.models.customer_affiliation import CustomerAffiliation
+from tenant_foundation.models.comment import Comment
+from tenant_foundation.models.order import Order
+from tenant_foundation.models.order_comment import OrderComment

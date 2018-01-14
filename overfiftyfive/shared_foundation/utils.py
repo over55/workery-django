@@ -22,3 +22,22 @@ def reverse_with_full_domain(reverse_url_id, resolve_url_args=[]):
     url += reverse(reverse_url_id, args=resolve_url_args)
     url = url.replace("None","en")
     return url
+
+
+"""
+class StringArray(object):
+    arr = []
+
+def unique_string_arr_append(string_arr, new_string_value):
+    # Assume that the item does not exist.
+    does_not_exist = True
+    # Prove that this new string does not exist in the array.
+    for string_value in string_arr:
+        if new_string_value == string_value:
+            does_not_exist = False
+
+    if does_not_exist:
+        string_arr.append(new_string_value)
+
+    return string_arr
+"""
