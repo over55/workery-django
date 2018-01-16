@@ -29,10 +29,14 @@ from shared_foundation.models import (
 )
 from tenant_foundation.constants import *
 from tenant_foundation.models import (
+    Associate,
+    Comment,
     Customer,
     CustomerAffiliation,
     Organization,
-    Order
+    Order,
+    OrderComment,
+    Tag
 )
 from tenant_foundation.utils import *
 
@@ -74,6 +78,8 @@ class Command(BaseCommand):
         User.objects.all().delete()
         Customer.objects.delete_all()
         Order.objects.delete_all()
+        Associate.objects.delete_all()
+        Tag.objects.delete_all()
         # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
         # Begin importing...
@@ -109,7 +115,7 @@ class Command(BaseCommand):
             is_senior = True if row_dict[11] == "TRUE" else False
             birthdate = row_dict[12]
             customer_email = row_dict[13]
-            job_type = row_dict[14]
+            job_type = str(row_dict[14])
             is_ongoing = True if row_dict[15] == "TRUE" else False
             is_cancelled = True if row_dict[16] == "TRUE" else False
             date_done = row_dict[17]
@@ -224,6 +230,9 @@ class Command(BaseCommand):
                     # Attach our user to the "CUSTOMER_GROUP_ID"
                     user.groups.add(CUSTOMER_GROUP_ID)
 
+            # Update the tag.
+            tag, create = Tag.objects.get_or_create(text=job_type)
+
             # Insert our extracted data into our database.
             customer, create = Customer.objects.update_or_create(
                 id=int_or_none(customer_pk),
@@ -258,7 +267,6 @@ class Command(BaseCommand):
                     'customer': customer,
                     # # 'associate': associate,
                     'assignment_date': local_assign_date,
-                    # # 'category_tags': category_tags
                     'is_ongoing': is_ongoing,
                     'is_cancelled': is_cancelled,
                     'completion_date': local_date_done,
@@ -268,6 +276,10 @@ class Command(BaseCommand):
                     # # 'comments': comments
                 }
             )
+
+            # Added to tags.
+            if tag and order:
+                order.category_tags.add(tag)
 
         except Exception as e:
             if not "list index out of range" in str(e):

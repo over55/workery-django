@@ -47,7 +47,8 @@ class Tag(models.Model):
         _("Text"),
         max_length=31,
         help_text=_('The text content of this tag.'),
-        db_index=True
+        db_index=True,
+        unique=True
     )
 
     #
@@ -55,4 +56,4 @@ class Tag(models.Model):
     #
 
     def __str__(self):
-        self.text
+        return str(self.text)

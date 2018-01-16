@@ -128,4 +128,4 @@ class Order(AbstractBigPk):
     #
 
     def __str__(self):
-        str(self.pk)
+        return str(self.pk)
