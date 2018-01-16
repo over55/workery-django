@@ -6,11 +6,11 @@ from tenant_foundation.constants import *
 from tenant_foundation.models import AbstractBigPk
 
 
-class OrderCommentManager(models.Manager):
-    def delete_all(self):
-        items = OrderComment.objects.all()
-        for item in items.all():
-            item.delete()
+# class OrderCommentManager(models.Manager):
+#     def delete_all(self):
+#         items = OrderComment.objects.all()
+#         for item in items.all():
+#             item.delete()
 
 
 class OrderComment(AbstractBigPk):
@@ -21,7 +21,7 @@ class OrderComment(AbstractBigPk):
         verbose_name = _('Order Comment')
         verbose_name_plural = _('Order Comments')
 
-    objects = OrderCommentManager()
+    # objects = OrderCommentManager()
 
     #
     #  CUSTOM FIELDS

@@ -47,7 +47,9 @@ class Comment(models.Model):
         User,
         help_text=_('The user whom owns this comment.'),
         related_name="%(app_label)s_%(class)s_owner_related",
-        on_delete=models.CASCADE
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True,
     )
     last_modified_by = models.ForeignKey(
         User,
@@ -69,4 +71,4 @@ class Comment(models.Model):
     #
 
     def __str__(self):
-        self.pk
+        return str(self.pk)

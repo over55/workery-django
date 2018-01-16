@@ -281,6 +281,24 @@ class Command(BaseCommand):
             if tag and order:
                 order.category_tags.add(tag)
 
+            # Add comments.
+            if comment:
+                OrderComment.objects.create(
+                    order=order,
+                    comment=Comment.objects.create(
+                        text=comment
+                    )
+                )
+
+            # Added follow up comment.
+            if follow_up_comment:
+                OrderComment.objects.create(
+                    order=order,
+                    comment=Comment.objects.create(
+                        text=follow_up_comment
+                    )
+                )
+
         except Exception as e:
             if not "list index out of range" in str(e):
                 print(e)
