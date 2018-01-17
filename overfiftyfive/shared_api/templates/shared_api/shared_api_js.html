@@ -22,9 +22,6 @@
      */
     function api_is_authenticated()
     {
-        // Fetch our existing API token.
-        var private_api_key = "{{ request.token }}";
-
         // If an API key was returned then continue...
         if (private_api_key === undefined) {
             return false;
@@ -74,9 +71,6 @@
      */
     function api_post_logout(func_callback, func_error_callback)
     {
-        // Fetch our existing API token.
-        var private_api_key = "{{ request.token }}";
-
         var url = get_base_domain_url("/api/logout?format=json");
         var type = "POST"; // Insert.
 
@@ -174,9 +168,6 @@
      */
     function api_post_register_university(data, func_callback, func_error_callback)
     {
-        // Fetch our existing API token.
-        var private_api_key = "{{ request.token }}";
-
         // Our URL to the API endpoint.
         var url = get_base_domain_url("/api/register/university/?format=json");
         var type = "POST"; // Insert.

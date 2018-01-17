@@ -32,24 +32,33 @@
     {% endblock %}
     <!-- /.CONTENT -->
 
-     <!-- Custom JS Library -->
-     {% include "shared_foundation/common_js.html" %}
-     {% include 'shared_api/shared_api_view.html' %}
-     <script>
-         /**
-          * Function will log the user out of the account.
-          */
-         function perform_sign_off() {
-             // Attempt to log out.
-             api_post_logout(
-                 function () {
-                     window.location = "{% get_app_domain %}{% url 'o55_login_master' %}";
-                 }, function() {
-                     alert("Failed logging out.");
-                 }
-             );
-         }
-     </script>
+    <!-- Custom JS Library -->
+    <script>
+        /**
+         *  This global variable is used to get the "django rest framework"
+         *  token and save it for globally for use in all JavaScript code. If
+         *  the user is not authenticated then the django code will not return
+         *  the token.
+         */
+        var private_api_key = "{{ request.token }}";
+    </script>
+    {% include "shared_foundation/common_js.html" %}
+    {% include 'shared_api/shared_api_js.html' %}
+    <script>
+        /**
+         * Function will log the user out of the account.
+         */
+        function perform_sign_off() {
+            // Attempt to log out.
+            api_post_logout(
+                function () {
+                    window.location = "{% get_app_domain %}{% url 'o55_login_master' %}";
+                }, function() {
+                    alert("Failed logging out.");
+                }
+            );
+        }
+    </script>
 </body>
 
 </html>
