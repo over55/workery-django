@@ -31,7 +31,7 @@ urlpatterns = [
     url('^', include('django.contrib.auth.urls')),
     url(r'^', include('shared_api.urls')),
     url(r'^', include('shared_foundation.urls')),
-    
+
     #  # Sitemap
     # url(r'^sitemap\.xml$', sitemap, {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap'),
     #
@@ -42,11 +42,12 @@ urlpatterns = [
 
 urlpatterns += i18n_patterns(
     # Public specific URLs.
-    url(r'^', include('shared_home.urls')),
     url(r'^', include('shared_api.urls')),
     url(r'^', include('shared_auth.urls')),
+    url(r'^', include('shared_home.urls')),
 
     # Tenant specific URLs.
+    url(r'^', include('tenant_api.urls')),
     url(r'^', include('tenant_dashboard.urls')),
 )
 
