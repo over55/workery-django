@@ -6,6 +6,7 @@ from tenant_api.views.associate import AssociateListCreateAPIView, AssociateRetr
 from tenant_api.views.comment import CommentListCreateAPIView, CommentRetrieveUpdateDestroyAPIView
 from tenant_api.views.customer import CustomerListCreateAPIView, CustomerRetrieveUpdateDestroyAPIView
 from tenant_api.views.order import OrderListCreateAPIView, OrderRetrieveUpdateDestroyAPIView
+from tenant_api.views.tag import TagListCreateAPIView, TagRetrieveUpdateDestroyAPIView
 
 
 urlpatterns = [
