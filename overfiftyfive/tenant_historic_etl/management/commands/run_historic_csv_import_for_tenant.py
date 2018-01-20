@@ -96,29 +96,28 @@ class Command(BaseCommand):
                 file_paths.append(filepath)  # Add it to the list.
         return file_paths  # Self-explanatory.
 
-    def begin_processing(self, schema_name, prefix):
+    def find_filepath_containing(self, text, prefix):
         # Get all the files in the directory.
         directory = self.get_directory()
         full_file_paths = self.get_filepaths(directory)
-
-        # Sort the URL's alphabetically.
-        full_file_paths = sorted(full_file_paths)
 
         # Iterate through all the file paths and only process files
         # with a "CSV" filename.
         for full_file_path in full_file_paths:
             if full_file_path.endswith(".csv") and prefix in full_file_path:
-                # Import this file into the database based on what type of
-                # object it is.
-                self.begin_processing_csv(schema_name, full_file_path)
+                if text in full_file_path:
+                    return full_file_path
+        return None
 
-    def begin_processing_csv(self, schema_name, full_file_path):
-        """
-        Function will import the CSV file into the database.
-        """
-        # self.strip_chars(full_file_path)
+    def begin_processing(self, schema_name, prefix):
+        full_file_path = self.find_filepath_containing("small_job_employers", prefix)  # Personal Customers
+        call_command('run_import_personal_customer_csv', schema_name, full_file_path, verbosity=0)
 
-        # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        if "prod_orders.csv" in full_file_path:
-            call_command('run_import_order_csv', schema_name, full_file_path, verbosity=0)
-        # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        full_file_path = self.find_filepath_containing("employee", prefix) # Associates
+        call_command('run_import_associate_csv', schema_name, full_file_path, verbosity=0)
+
+        filepath = self.find_filepath_containing("employer", prefix) # Business Customers
+        call_command('run_import_business_customer_csv', schema_name, full_file_path, verbosity=0)
+
+        filepath = self.find_filepath_containing("orders", prefix) # Orders
+        call_command('run_import_order_csv', schema_name, full_file_path, verbosity=0)

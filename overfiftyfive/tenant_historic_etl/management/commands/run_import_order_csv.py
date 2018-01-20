@@ -73,15 +73,6 @@ class Command(BaseCommand):
         # Connection will set it back to our tenant.
         connection.set_schema(franchise.schema_name, True) # Switch to Tenant.
 
-        # FOR DEBUGGING PURPOSES ONLY. UNCOMMENT AT YOUR OWN RISK!
-        # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        User.objects.all().delete()
-        Customer.objects.delete_all()
-        Order.objects.delete_all()
-        Associate.objects.delete_all()
-        Tag.objects.delete_all()
-        # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
         # Begin importing...
         with open(full_filepath, newline='', encoding='utf-8') as csvfile:
             csvreader = csv.reader(csvfile, delimiter=',', quotechar='"')
