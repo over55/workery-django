@@ -191,7 +191,9 @@ class Command(BaseCommand):
             )
 
         except Exception as e:
-            print(e)
-            # print(row_dict)
-            # print()
-            pass
+            self.stdout.write(
+                self.style.NOTICE(_('Importing (Personal) Customer #%(id)s with exception "%(e)s".') % {
+                    'e': str(e),
+                    'id': str(index)
+                })
+            )

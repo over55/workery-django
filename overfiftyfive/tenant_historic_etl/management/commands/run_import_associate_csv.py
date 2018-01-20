@@ -233,6 +233,9 @@ class Command(BaseCommand):
             # print(associate, create)
 
         except Exception as e:
-            print(e)
-            # print(row_dict_dict)
-            # print()
+            self.stdout.write(
+                self.style.NOTICE(_('Importing Associate #%(id)s with exception "%(e)s".') % {
+                    'e': str(e),
+                    'id': str(index)
+                })
+            )

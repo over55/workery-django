@@ -87,14 +87,14 @@ class Command(BaseCommand):
                     )
 
                     # Begin importing...
-                    self.run_import_from_dict(row_dict)
+                    self.run_import_from_dict(row_dict, i)
 
         # Used for debugging purposes.
         self.stdout.write(
             self.style.SUCCESS(_('Successfully imported order.csv file.'))
         )
 
-    def run_import_from_dict(self, row_dict):
+    def run_import_from_dict(self, row_dict, index):
         try:
             # For debugging purposes.
             # print(row_dict)
@@ -238,7 +238,12 @@ class Command(BaseCommand):
 
         except Exception as e:
             if not "list index out of range" in str(e):
-                print(e)
+                self.stdout.write(
+                    self.style.NOTICE(_('Importing Order #%(id)s with exception "%(e)s".') % {
+                        'e': str(e),
+                        'id': str(index)
+                    })
+                )
 
     def get_date_from_formatting1(self, birthdate):
         """
