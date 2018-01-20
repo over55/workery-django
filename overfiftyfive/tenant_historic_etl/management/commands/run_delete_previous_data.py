@@ -83,6 +83,7 @@ class Command(BaseCommand):
         Associate.objects.delete_all()
         Tag.objects.delete_all()
         Organization.objects.delete_all()
+        Comment.objects.delete_all()
         # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
         # Used for debugging purposes.
