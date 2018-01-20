@@ -91,7 +91,7 @@ class Command(BaseCommand):
 
         # Used for debugging purposes.
         self.stdout.write(
-            self.style.SUCCESS(_('Successfully imported order.csv file.'))
+            self.style.SUCCESS(_('Successfully imported Orders.'))
         )
 
     def run_import_from_dict(self, row_dict, index):
@@ -238,12 +238,13 @@ class Command(BaseCommand):
 
         except Exception as e:
             if not "list index out of range" in str(e):
-                self.stdout.write(
-                    self.style.NOTICE(_('Importing Order #%(id)s with exception "%(e)s".') % {
-                        'e': str(e),
-                        'id': str(index)
-                    })
-                )
+                pass
+                # self.stdout.write(
+                #     self.style.NOTICE(_('Importing Order #%(id)s with exception "%(e)s".') % {
+                #         'e': str(e),
+                #         'id': str(index)
+                #     })
+                # )
 
     def get_date_from_formatting1(self, birthdate):
         """

@@ -90,7 +90,7 @@ class Command(BaseCommand):
 
         # Used for debugging purposes.
         self.stdout.write(
-            self.style.SUCCESS(_('Successfully imported order.csv file.'))
+            self.style.SUCCESS(_('Successfully imported (Business) Customers.'))
         )
 
     def run_import_from_dict(self, row_dict, index=1):
@@ -174,13 +174,13 @@ class Command(BaseCommand):
 
             # If company name does not already exist then create our company now.
             if not Organization.objects.filter(name=company).exists():
-                # Used for debugging purposes only.
-                self.stdout.write(
-                    self.style.SUCCESS(_('Importing Organization #%(id)s with name of "%(name)s"') % {
-                        'id': index,
-                        'name': company
-                    })
-                )
+                # # Used for debugging purposes only.
+                # self.stdout.write(
+                #     self.style.SUCCESS(_('Importing Organization #%(id)s with name of "%(name)s"') % {
+                #         'id': index,
+                #         'name': company
+                #     })
+                # )
 
                 # Save the model.
                 organization = Organization.objects.create(name=company)

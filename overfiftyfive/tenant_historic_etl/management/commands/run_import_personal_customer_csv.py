@@ -90,7 +90,7 @@ class Command(BaseCommand):
 
         # Used for debugging purposes.
         self.stdout.write(
-            self.style.SUCCESS(_('Successfully imported order.csv file.'))
+            self.style.SUCCESS(_('Successfully imported (Personal) Customers.'))
         )
 
     def run_import_from_dict(self, row_dict, index=1):
