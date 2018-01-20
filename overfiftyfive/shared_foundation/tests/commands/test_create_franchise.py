@@ -9,7 +9,7 @@ from shared_foundation.models import SharedFranchise
 class TestCreateFranchiseTenantManagementCommand(TenantTestCase):
     """
     Console:
-    python manage.py test shared_foundation.tests.test_create_franchise
+    python manage.py test shared_foundation.tests.commands.test_create_franchise
     """
 
     def setUp(self):

@@ -19,13 +19,13 @@ TEST_USER_TEL_EX_NUM = ""
 TEST_USER_CELL_NUM = "123 123-1234"
 
 
-class TestCreateExecutiveManagementCommand(TenantTestCase):
+class TestCreateExecutiveAccountManagementCommand(TenantTestCase):
     """
     Console:
-    python manage.py test shared_foundation.tests.test_create_executive
+    python manage.py test shared_foundation.tests.commands.test_create_executive_account
     """
     def setUp(self):
-        super(TestCreateExecutiveManagementCommand, self).setUp()
+        super(TestCreateExecutiveAccountManagementCommand, self).setUp()
         self.c = TenantClient(self.tenant)
         call_command('init_app', verbosity=0)
 
@@ -34,7 +34,7 @@ class TestCreateExecutiveManagementCommand(TenantTestCase):
         for user in users.all():
             user.delete()
         del self.c
-        super(TestCreateExecutiveManagementCommand, self).tearDown()
+        super(TestCreateExecutiveAccountManagementCommand, self).tearDown()
 
     def test_command_with_success(self):
         call_command(

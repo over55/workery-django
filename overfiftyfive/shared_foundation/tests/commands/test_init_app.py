@@ -8,7 +8,7 @@ from django.urls import reverse
 class TestInitAppManagementCommand(TenantTestCase):
     """
     Console:
-    python manage.py test shared_foundation.tests.test_init_app
+    python manage.py test shared_foundation.tests.commands.test_init_app
     """
 
     def setUp(self):

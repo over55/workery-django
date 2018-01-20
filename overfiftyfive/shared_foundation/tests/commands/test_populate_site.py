@@ -8,7 +8,7 @@ from django.urls import reverse
 class TestPopulateSiteManagementCommand(TenantTestCase):
     """
     Console:
-    python manage.py test shared_foundation.tests.test_populate_site
+    python manage.py test shared_foundation.tests.commands.test_populate_site
     """
 
     def setUp(self):
