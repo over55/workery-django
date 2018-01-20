@@ -78,12 +78,12 @@ class Command(BaseCommand):
             csvreader = csv.reader(csvfile, delimiter=',', quotechar='"')
             for i, row_dict in enumerate(csvreader):
                 if i > 0:
-                    # Used for debugging purposes only.
-                    self.stdout.write(
-                        self.style.SUCCESS(_('Importing Associate #%(id)s') % {
-                            'id': i
-                        })
-                    )
+                    # # Used for debugging purposes only.
+                    # self.stdout.write(
+                    #     self.style.SUCCESS(_('Importing Associate #%(id)s') % {
+                    #         'id': i
+                    #     })
+                    # )
 
                     # Run the command for importing the data in our database.
                     self.run_import_from_dict(row_dict, i)

@@ -79,12 +79,12 @@ class Command(BaseCommand):
             for i, row_dict in enumerate(csvreader):
                 if i > 0:
 
-                    # Used for debugging purposes only.
-                    self.stdout.write(
-                        self.style.SUCCESS(_('Importing Order #%(id)s') % {
-                            'id': i
-                        })
-                    )
+                    # # Used for debugging purposes only.
+                    # self.stdout.write(
+                    #     self.style.SUCCESS(_('Importing Order #%(id)s') % {
+                    #         'id': i
+                    #     })
+                    # )
 
                     # Begin importing...
                     self.run_import_from_dict(row_dict, i)
