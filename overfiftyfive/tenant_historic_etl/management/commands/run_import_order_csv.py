@@ -78,6 +78,15 @@ class Command(BaseCommand):
             csvreader = csv.reader(csvfile, delimiter=',', quotechar='"')
             for i, row_dict in enumerate(csvreader):
                 if i > 0:
+
+                    # Used for debugging purposes only.
+                    self.stdout.write(
+                        self.style.SUCCESS(_('Importing Order #%(id)s') % {
+                            'id': i
+                        })
+                    )
+
+                    # Begin importing...
                     self.run_import_from_dict(row_dict)
 
         # Used for debugging purposes.
@@ -181,16 +190,19 @@ class Command(BaseCommand):
             tag, create = Tag.objects.get_or_create(text=job_type)
 
             # Lookup the customer and process it if the customer exists.
-            customer = Customer.objects.filter(id=int_or_none(order_pk),).first()
+            customer = Customer.objects.filter(id=int_or_none(customer_pk),).first()
+
+            # Lookup the associate...
+            associate = Associate.objects.filter(id=int_or_none(associate_pk),).first()
 
             # Begin processing...
-            if customer:
+            if customer and associate:
                 order, create = Order.objects.update_or_create(
                     id=int_or_none(order_pk),
                     defaults={
                         'id': int(order_pk),
                         'customer': customer,
-                        # # 'associate': associate,
+                        'associate': associate,
                         'assignment_date': local_assign_date,
                         'is_ongoing': is_ongoing,
                         'is_cancelled': is_cancelled,
@@ -198,7 +210,7 @@ class Command(BaseCommand):
                         'hours':  int(hours),
                         'service_fee': local_service_fee,
                         'payment_date': local_date_paid,
-                        # # 'comments': comments
+                        # 'comments': comments
                     }
                 )
 
