@@ -22,7 +22,7 @@ TEST_USER_CELL_NUM = "123 123-1234"
 class TestCreateManagementAccountManagementCommand(TenantTestCase):
     """
     Console:
-    python manage.py test shared_foundation.tests.commands.test_create_management_account
+    python manage.py test shared_foundation.tests.commands.test_create_tenant_account
     """
     def setUp(self):
         super(TestCreateManagementAccountManagementCommand, self).setUp()
@@ -53,8 +53,9 @@ class TestCreateManagementAccountManagementCommand(TenantTestCase):
             verbosity=0
         )
         call_command(
-           'create_management_account',
+           'create_tenant_account',
            "london_test",
+           constants.MANAGEMENT_GROUP_ID,
            TEST_USER_EMAIL,
            TEST_USER_PASSWORD,
            "Bart",
@@ -109,23 +110,24 @@ class TestCreateManagementAccountManagementCommand(TenantTestCase):
         )
         try:
             call_command(
-               'create_management_account',
-                "london_test",
-               TEST_USER_EMAIL,
-               TEST_USER_PASSWORD,
-               "Bart",
-               "Mika",
-               TEST_USER_TEL_NUM,
-               TEST_USER_TEL_EX_NUM,
-               TEST_USER_CELL_NUM,
-               "CA",
-               "London",
-               "Ontario",
-               "", # Post Offic #
-               "N6H 1B4",
-               "78 Riverside Drive",
-               "", # Extra line.
-               verbosity=0
+                'create_tenant_account',
+                'london_test',
+                constants.MANAGEMENT_GROUP_ID,
+                TEST_USER_EMAIL,
+                TEST_USER_PASSWORD,
+                "Bart",
+                "Mika",
+                TEST_USER_TEL_NUM,
+                TEST_USER_TEL_EX_NUM,
+                TEST_USER_CELL_NUM,
+                "CA",
+                "London",
+                "Ontario",
+                "", # Post Offic #
+                "N6H 1B4",
+                "78 Riverside Drive",
+                "", # Extra line.
+                verbosity=0
             )
         except Exception as e:
             self.assertIsNotNone(e)
@@ -134,23 +136,24 @@ class TestCreateManagementAccountManagementCommand(TenantTestCase):
     def test_command_with_missing_tenant_error(self):
         try:
             call_command(
-               'create_management_account',
+               'create_tenant_account',
                 "london2_test",
-               TEST_USER_EMAIL,
-               TEST_USER_PASSWORD,
-               "Bart",
-               "Mika",
-               TEST_USER_TEL_NUM,
-               TEST_USER_TEL_EX_NUM,
-               TEST_USER_CELL_NUM,
-               "CA",
-               "London",
-               "Ontario",
-               "", # Post Offic #
-               "N6H 1B4",
-               "78 Riverside Drive",
-               "", # Extra line.
-               verbosity=0
+                constants.MANAGEMENT_GROUP_ID,
+                TEST_USER_EMAIL,
+                TEST_USER_PASSWORD,
+                "Bart",
+                "Mika",
+                TEST_USER_TEL_NUM,
+                TEST_USER_TEL_EX_NUM,
+                TEST_USER_CELL_NUM,
+                "CA",
+                "London",
+                "Ontario",
+                "", # Post Offic #
+                "N6H 1B4",
+                "78 Riverside Drive",
+                "", # Extra line.
+                verbosity=0
             )
         except Exception as e:
             self.assertIsNotNone(e)

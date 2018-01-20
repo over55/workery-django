@@ -34,9 +34,10 @@ class Command(BaseCommand):
     def add_arguments(self, parser):
         """
         Run manually in console:
-        python manage.py create_management_account "london" "bart+manager@overfiftyfive.com" "123password" "Bart" "Mika" "123 123-1234" "" "123 123-1234" "CA" "London" "Ontario" "" "N6H 1B4" "78 Riverside Drive" ""
+        python manage.py create_tenant_account "london" 2 "bart+manager@overfiftyfive.com" "123password" "Bart" "Mika" "123 123-1234" "" "123 123-1234" "CA" "London" "Ontario" "" "N6H 1B4" "78 Riverside Drive" ""
         """
         parser.add_argument('schema_name', nargs='+', type=str)
+        parser.add_argument('group_id', nargs='+', type=int)
         parser.add_argument('email', nargs='+', type=str)
         parser.add_argument('password', nargs='+', type=str)
         parser.add_argument('first_name', nargs='+', type=str)
@@ -55,6 +56,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         # Get the user inputs.
         schema_name = options['schema_name'][0]
+        group_id = options['group_id'][0]
         email = options['email'][0]
         password = options['password'][0]
         first_name = options['first_name'][0]
@@ -119,8 +121,8 @@ class Command(BaseCommand):
             was_email_activated=True,
         )
 
-        # Attach our user to the "Executive"
-        user.groups.add(constants.MANAGEMENT_GROUP_ID)
+        # Attach our user to the group.
+        user.groups.add(group_id)
 
         # # Connection will set it back to our tenant.
         # connection.set_schema(franchise.schema_name, True) # Switch to Tenant.
