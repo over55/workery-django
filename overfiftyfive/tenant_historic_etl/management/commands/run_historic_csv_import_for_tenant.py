@@ -111,7 +111,7 @@ class Command(BaseCommand):
 
     def begin_processing(self, schema_name, prefix):
         # Delete previous data.
-        call_command('run_delete_previous_data', schema_name, full_file_path, verbosity=0)
+        call_command('run_delete_previous_data', schema_name, verbosity=0)
 
         # Load up the following historic data from CSV files...
         full_file_path = self.find_filepath_containing("small_job_employers", prefix)  # Personal Customers

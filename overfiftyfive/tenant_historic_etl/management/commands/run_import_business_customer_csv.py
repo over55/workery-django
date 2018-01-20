@@ -43,7 +43,7 @@ from tenant_foundation.utils import *
 
 """
 Run manually in console:
-python manage.py run_import_order_csv "london" "/Users/bmika/Developer/over55/overfiftyfive-django/overfiftyfive/tenant_historic_etl/static/prod_orders.csv"
+python manage.py run_import_business_customer_csv "london" "/Users/bmika/Developer/over55/overfiftyfive-django/overfiftyfive/tenant_historic_etl/static/prod_employer.csv"
 """
 
 
@@ -172,25 +172,26 @@ class Command(BaseCommand):
                 }
             )
 
+            # If company name does not already exist then create our company now.
+            if not Organization.objects.filter(name=company).exists():
+                # Used for debugging purposes only.
+                self.stdout.write(
+                    self.style.SUCCESS(_('Importing Organization #%(id)s with name of "%(name)s"') % {
+                        'id': index,
+                        'name': company
+                    })
+                )
+
+                # Save the model.
+                organization = Organization.objects.create(name=company)
+                CustomerAffiliation.objects.create(
+                    customer=customer,
+                    organization=organization,
+                    type_of=AFFILIATION_TYPE_AFFILIATION_ID
+                )
+
         except Exception as e:
             print(e)
             # print(row_dict)
             # print()
             pass
-
-        # If company name does not already exist then create our company now.
-        if not Organization.objects.filter(name=company).exists():
-            # Used for debugging purposes only.
-            self.stdout.write(
-                self.style.SUCCESS(_('Importing Organization #%(id)s') % {
-                    'id': index
-                })
-            )
-
-            # Save the model.
-            organization = Organization.objects.create(name=company)
-            CustomerAffiliation.objects.create(
-                customer=customer,
-                organization=organization,
-                type_of=AFFILIATION_TYPE_AFFILIATION_ID
-            )
