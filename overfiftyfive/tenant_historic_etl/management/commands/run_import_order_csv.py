@@ -123,29 +123,6 @@ class Command(BaseCommand):
             score = row_dict[28]
             url = None
 
-            # Minor formatting for various fields.
-            customer_email = customer_email.replace(';', '')
-            customer_email = customer_email.replace(':', '')
-            customer_email = customer_email.replace('NONE', '')
-            customer_email = customer_email.replace('N/A', '')
-            customer_email = customer_email.replace(' ', '')
-            customer_email = customer_email.lower()
-            # address = '-' if address is '' else address
-            # address = '-' if address is None else address
-            # city = "London" if city is '' else city
-            if "www" in customer_email.lower():
-                url = "http://"+customer_email.lower()
-                customer_email = ""
-            if "ext" in customer_email.lower():
-                telephone_extension = customer_email
-                customer_email = ""
-            telephone = telephone.replace('(', '')
-            telephone = telephone.replace(')', '')
-            telephone = telephone.replace('-', '')
-            telephone = telephone.replace(' ', '')
-            telephone = telephone.replace('.', '')
-            telephone = int_or_none(telephone)
-
             # Convert the datetime.
             local_birthdate = self.get_date_from_formatting1(birthdate)
             local_assign_date = self.get_date_from_formatting2(assign_date)
@@ -200,95 +177,52 @@ class Command(BaseCommand):
             #     score
             # )
 
-            # Attempt to lookup or create user based if we have an email.
-            user = None
-            if customer_email is not None:
-                user = User.objects.filter(email=customer_email).first()
-                if user is None:
-                    # Create our user.
-                    user = User.objects.create(
-                        first_name=customer_first_name,
-                        last_name=customer_last_name,
-                        email=customer_email,
-                        username=get_unique_username_from_email(customer_email),
-                        is_active=True,
-                    )
-
-                    # Generate and assign the password.
-                    user.set_password(get_random_string())
-                    user.save()
-
-                    # Attach our user to the "CUSTOMER_GROUP_ID"
-                    user.groups.add(CUSTOMER_GROUP_ID)
-
             # Update the tag.
             tag, create = Tag.objects.get_or_create(text=job_type)
 
-            # Insert our extracted data into our database.
-            customer, create = Customer.objects.update_or_create(
-                id=int_or_none(customer_pk),
-                defaults={
-                    'id': customer_pk,
-                    'owner': user,
-                    'last_name': customer_last_name,
-                    'given_name': customer_first_name,
-                    # 'middle_name':middle_name,
-                    'telephone': telephone,
-                    'telephone_extension': telephone_extension,
-                    'postal_code': postal_code,
-                    'birthdate': local_birthdate,
-                    # 'street_address': address,
-                    # 'address_locality': city,
-                    # 'address_country': 'Canada',
-                    # 'address_region': 'Ontario',
-                    'email': customer_email,
-                    'join_date': local_assign_date,
-                    # 'job_info_read': job_info_read,
-                    'how_hear': learn_about,
-                    # 'description': job_description,
-                    'is_senior': bool(is_senior),
-                    'is_support': bool(is_support)
-                }
-            )
+            # Lookup the customer and process it if the customer exists.
+            customer = Customer.objects.filter(id=int_or_none(order_pk),).first()
 
-            order, create = Order.objects.update_or_create(
-                id=int_or_none(order_pk),
-                defaults={
-                    'id': int(order_pk),
-                    'customer': customer,
-                    # # 'associate': associate,
-                    'assignment_date': local_assign_date,
-                    'is_ongoing': is_ongoing,
-                    'is_cancelled': is_cancelled,
-                    'completion_date': local_date_done,
-                    'hours':  int(hours),
-                    'service_fee': local_service_fee,
-                    'payment_date': local_date_paid,
-                    # # 'comments': comments
-                }
-            )
-
-            # Added to tags.
-            if tag and order:
-                order.category_tags.add(tag)
-
-            # Add comments.
-            if comment:
-                OrderComment.objects.create(
-                    order=order,
-                    comment=Comment.objects.create(
-                        text=comment
-                    )
+            # Begin processing...
+            if customer:
+                order, create = Order.objects.update_or_create(
+                    id=int_or_none(order_pk),
+                    defaults={
+                        'id': int(order_pk),
+                        'customer': customer,
+                        # # 'associate': associate,
+                        'assignment_date': local_assign_date,
+                        'is_ongoing': is_ongoing,
+                        'is_cancelled': is_cancelled,
+                        'completion_date': local_date_done,
+                        'hours':  int(hours),
+                        'service_fee': local_service_fee,
+                        'payment_date': local_date_paid,
+                        # # 'comments': comments
+                    }
                 )
 
-            # Added follow up comment.
-            if follow_up_comment:
-                OrderComment.objects.create(
-                    order=order,
-                    comment=Comment.objects.create(
-                        text=follow_up_comment
+                # Added to tags.
+                if tag and order:
+                    order.category_tags.add(tag)
+
+                # Add comments.
+                if comment:
+                    OrderComment.objects.create(
+                        order=order,
+                        comment=Comment.objects.create(
+                            text=comment
+                        )
                     )
-                )
+
+                # Added follow up comment.
+                if follow_up_comment:
+                    OrderComment.objects.create(
+                        order=order,
+                        comment=Comment.objects.create(
+                            text=follow_up_comment
+                        )
+                    )
 
         except Exception as e:
             if not "list index out of range" in str(e):

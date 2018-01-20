@@ -180,6 +180,14 @@ class Command(BaseCommand):
 
         # If company name does not already exist then create our company now.
         if not Organization.objects.filter(name=company).exists():
+            # Used for debugging purposes only.
+            self.stdout.write(
+                self.style.SUCCESS(_('Importing Organization #%(id)s') % {
+                    'id': index
+                })
+            )
+
+            # Save the model.
             organization = Organization.objects.create(name=company)
             CustomerAffiliation.objects.create(
                 customer=customer,
