@@ -95,7 +95,8 @@ TENANT_APPS = (
     'tenant_foundation',
     # 'tenant_etl',
     'tenant_dashboard',
-    'tenant_historic_etl'
+    'tenant_historic_etl',
+    'tenant_order'
     # . . .
 )
 

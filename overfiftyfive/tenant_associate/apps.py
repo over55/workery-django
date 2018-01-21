@@ -1,5 +1,5 @@
 from django.apps import AppConfig
 
 
-class TenantCustomerConfig(AppConfig):
-    name = 'tenant_customer'
+class TenantAssociateConfig(AppConfig):
+    name = 'tenant_associate'
