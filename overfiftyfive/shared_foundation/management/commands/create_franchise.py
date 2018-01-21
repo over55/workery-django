@@ -69,7 +69,7 @@ class Command(BaseCommand):
 
         # Used for debugging purposes.
         self.stdout.write(
-            self.style.SUCCESS(_('Successfully setup tenant.'))
+            self.style.SUCCESS(_('Successfully setup franchise.'))
         )
 
     def begin_processing(self, schema_name, name, alternate_name, description,

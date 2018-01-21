@@ -92,3 +92,8 @@ class Command(BaseCommand):
 
         # Attach our user to the "Executive"
         user.groups.add(constants.EXECUTIVE_GROUP_ID)
+
+        # For debugging purposes.
+        self.stdout.write(
+            self.style.SUCCESS(_('Successfully created a shared account.'))
+        )

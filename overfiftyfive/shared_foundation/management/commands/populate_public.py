@@ -53,3 +53,8 @@ class Command(BaseCommand):
         current_site = Site.objects.get_current()
         current_site.domain = settings.O55_APP_HTTP_DOMAIN
         current_site.save()
+
+        # For debugging purposes.
+        self.stdout.write(
+            self.style.SUCCESS(_('Successfully populated public.'))
+        )

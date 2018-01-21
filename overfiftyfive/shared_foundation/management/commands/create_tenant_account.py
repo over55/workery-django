@@ -130,3 +130,8 @@ class Command(BaseCommand):
         # Attach the users.
         user = O55User.objects.get(email=user.email)
         franchise.managers.add(user)
+
+        # For debugging purposes.
+        self.stdout.write(
+            self.style.SUCCESS(_('Successfully created a tenant account.'))
+        )
