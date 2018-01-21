@@ -1,0 +1,21 @@
+{% extends 'tenant_foundation/tenant_base.html' %}
+{% load staticfiles i18n %}
+
+{% block title %}
+{% trans 'Associates | Over 55 Inc.' %}
+{% endblock title %}
+
+{% block header_content %}
+{% endblock header_content %}
+
+{% block content %}
+
+<p>
+    Customers
+</p>
+
+
+<p>
+    <a href="{% url 'o55_tenant_dashboard_master' %}">Dashboard</a>
+</p>
+{% endblock content %}
