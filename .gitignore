@@ -187,3 +187,6 @@ overfiftyfive/overfiftyfive/whoosh_index
 
 # Do not share real-life production data.
 prod_*.csv
+
+# Project related notes.
+private_notes.txt

@@ -74,6 +74,7 @@ SHARED_APPS = (
     'django_filters',
     'django_rq',
     'djmoney',
+    'corsheaders',
     # . . .
 
      # Shared Apps
@@ -104,8 +105,8 @@ INSTALLED_APPS = list(SHARED_APPS) + [app for app in TENANT_APPS if app not in S
 
 
 MIDDLEWARE = [
-    'django_tenants.middleware.main.TenantMainMiddleware',       # Third Party
     'corsheaders.middleware.CorsMiddleware',                     # Third Party
+    'django_tenants.middleware.main.TenantMainMiddleware',       # Third Party
     'trapdoor.middleware.TrapdoorMiddleware',                    # Third Party
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -273,7 +274,8 @@ STATICFILES_DIRS = [
 # https://github.com/ottoyiu/django-cors-headers
 
 CORS_ORIGIN_ALLOW_ALL=True
-
+CORS_ALLOW_HEADERS = ('content-disposition', 'accept-encoding',
+                      'content-type', 'accept', 'origin', 'authorization')
 
 # django-htmlmin
 # https://github.com/cobrateam/django-htmlmin

@@ -15,7 +15,7 @@
         jQuery.ajax({
             url: url,
             headers: {
-                Authorization: 'Token ' + private_api_key
+                'Authorization': 'Token ' + private_api_key
             },
             type: 'POST',
             traditional: true, // Note: This allows many-to-many arrays for Django REST Framework
@@ -62,15 +62,13 @@
             url += "&page=1";
         }
 
-        var token = 'Token ' + private_api_key;
-
         jQuery.ajax({
             headers: {
-                Authorization: token
+                'Authorization': 'Token ' + private_api_key
             },
             url: url,
             cache: false,
-            contentType: false,
+            contentType:"application/json",
             processData: false,
             type: 'GET',
             success: function(json_results){
