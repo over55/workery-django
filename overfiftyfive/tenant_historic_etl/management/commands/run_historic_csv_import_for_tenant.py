@@ -32,6 +32,11 @@ class Command(BaseCommand):
         parser.add_argument('csv_prefix', nargs='+', type=str)
 
     def handle(self, *args, **options):
+        # Used for debugging purposes.
+        self.stdout.write(
+            self.style.SUCCESS(_('Importing historic tenant...'))
+        )
+
         # Get user inputs.
         schema_name = options['schema_name'][0]
         prefix = options['csv_prefix'][0]

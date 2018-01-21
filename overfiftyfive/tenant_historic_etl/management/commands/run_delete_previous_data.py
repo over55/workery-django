@@ -54,6 +54,11 @@ class Command(BaseCommand):
         parser.add_argument('schema_name', nargs='+', type=str)
 
     def handle(self, *args, **options):
+        # Used for debugging purposes.
+        self.stdout.write(
+            self.style.SUCCESS(_('Deleting previous data...'))
+        )
+
         # Get user inputs.
         schema_name = options['schema_name'][0]
 
