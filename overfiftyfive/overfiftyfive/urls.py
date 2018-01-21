@@ -48,6 +48,7 @@ urlpatterns += i18n_patterns(
 
     # Tenant specific URLs.
     url(r'^', include('tenant_api.urls')),
+    url(r'^', include('tenant_customer.urls')),
     url(r'^', include('tenant_dashboard.urls')),
 )
 

@@ -2,7 +2,7 @@
 {% load staticfiles i18n %}
 
 {% block title %}
-{% trans 'Dashboard | Over 55' %}
+{% trans 'Customer Detail | Over 55 Inc.' %}
 {% endblock title %}
 
 {% block header_content %}
@@ -11,14 +11,11 @@
 {% block content %}
 
 <p>
-    Dashboard
-</p>
-<p>
-    <a href="{% url 'o55_tenant_customer_master' %}">Customers</a>
+    Customer Detail
 </p>
 
-<p>
-    <a onclick="perform_sign_off();">Logout</a>
-</p>
 
+<p>
+    <a href="{% url 'o55_tenant_dashboard_master' %}">Dashboard</a>
+</p>
 {% endblock content %}
