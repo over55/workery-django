@@ -30,22 +30,28 @@
     {% endblock %}
     <!-- /.CONTENT -->
 
-    <!-- Custom JS Library -->
-    <script>
-        /**
-         *  This global variable is used to get the "django rest framework"
-         *  token and save it for globally for use in all JavaScript code. If
-         *  the user is not authenticated then the django code will not return
-         *  the token.
-         */
-        var private_api_key = localStorage.getItem("private_api_key");
 
-        /**
-         *  This global variable is used to track the "Franchise" subdomain
-         *  that this user belongs to.
-         */
-        var schema_name = localStorage.getItem("schema_name");
+    {% comment %}
+    DEVELOPER NOTES:
+    - DO NOT ADD THIS BLOCK OF JAVASCRIPT CODE IN ANY JS MINIFIER.
+
+    - This global variable is used to get the "django rest framework"
+      token and save it for globally for use in all JavaScript code. If
+      the user is not authenticated then the django code will not return
+      the token.
+
+    - This global variable is used to track the "Franchise" subdomain
+      that this user belongs to.
+
+    {% endcomment %}
+    <!-- PRIVATE INFO -->
+    <script>
+        var private_api_key = "{{ private_api_key }}";
+        var schema_name = "{{ schema_name }}";
     </script>
+    <!-- end PRIVATE INFO -->
+
+    <!-- JS LIBRARY -->
     {% include "shared_foundation/common_js.html" %}
     {% include 'tenant_api/tenant_api_js.html' %}
     <script>
@@ -54,7 +60,7 @@
          */
         function perform_sign_off() {
             // Attempt to log out.
-            api_post_logout(
+            tenant_api_post_logout(
                 function () {
                     window.location = "{% get_app_domain %}{% url 'o55_login_master' %}";
                 }, function() {
@@ -63,6 +69,7 @@
             );
         }
     </script>
+    <!-- end JS LIBRARY -->
 </body>
 
 </html>

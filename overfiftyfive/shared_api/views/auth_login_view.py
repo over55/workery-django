@@ -41,11 +41,16 @@ class LoginAPIView(APIView):
         me = SharedMe.objects.get(user=authenticated_user)
         franchise = SharedFranchise.objects.get_by_email_or_none(me.user.email)
 
+        # SAVE ALL THE USER PROFILE INFORMATION TO A SESSION.
+        request.session['me_token_key'] = str(token.key)
+        request.session['me_schema_name'] = str(franchise.schema_name)
+
+        # Return the user session information.
         return Response(
             data = {
                 'token': str(token.key),
+                'schema_name': franchise.schema_name,
                 'email': str(me),
-                'schema_name': franchise.schema_name
             },
             status=status.HTTP_200_OK
         )

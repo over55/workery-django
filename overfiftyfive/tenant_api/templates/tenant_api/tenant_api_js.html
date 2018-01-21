@@ -7,7 +7,7 @@
      *  function will clear the API key and thus none of the API functions
      *  will not work because no API key will exist.
      */
-    function api_post_logout_from_tenant(func_callback, func_error_callback)
+    function tenant_api_post_logout(func_callback, func_error_callback)
     {
         var url = get_tenant_domain_url(schema_name, "/api/logout?format=json");
         var type = "POST"; // Insert.

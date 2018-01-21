@@ -9,3 +9,15 @@ def foundation_constants(request):
     return {
         'constants': constants
     }
+
+
+def me(request):
+    """
+    Context processor stores session variables for the user profile which
+    was saved during the "login" API endpoint. If the user updates this profile
+    then the session will be updated and newest data released here.
+    """
+    return {
+        'private_api_key': request.session.get('me_token_key', None),
+        'schema_name': request.session.get('me_schema_name', None),
+    }

@@ -11,6 +11,10 @@ class LogoutAPIView(views.APIView):
         # Step 1: Delete the "auth_token" so our RESTFul API won't have a key.
         Token.objects.filter(user=request.user).delete()
 
+        # RESET ALL THE USER PROFILE INFORMATION TO A SESSION.
+        request.session['me_token_key'] = None
+        request.session['me_schema_name'] = None
+
         # Step 2: Close the Django session.
         logout(request)
 
