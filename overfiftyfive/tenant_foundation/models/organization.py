@@ -66,6 +66,14 @@ class Organization(AbstractBigPk, AbstractThing, AbstractContactPoint, AbstractP
         db_table = 'o55_organizations'
         verbose_name = _('Organization')
         verbose_name_plural = _('Organizations')
+        default_permissions = ()
+        permissions = (
+            ("can_get_organizations", "Can get organizations"),
+            ("can_get_organization", "Can get organization"),
+            ("can_post_organization", "Can create organization"),
+            ("can_put_organization", "Can update organization"),
+            ("can_delete_organization", "Can delete organization"),
+        )
 
     objects = OrganizationManager()
 

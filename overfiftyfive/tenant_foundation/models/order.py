@@ -38,6 +38,14 @@ class Order(AbstractBigPk):
         db_table = 'o55_orders'
         verbose_name = _('Order')
         verbose_name_plural = _('Orders')
+        default_permissions = ()
+        permissions = (
+            ("can_get_orders", "Can get orders"),
+            ("can_get_order", "Can get order"),
+            ("can_post_order", "Can create order"),
+            ("can_put_order", "Can update order"),
+            ("can_delete_order", "Can delete order"),
+        )
 
     objects = OrderManager()
 

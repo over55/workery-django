@@ -48,6 +48,14 @@ class Staff(AbstractBigPk):
         db_table = 'o55_staff'
         verbose_name = _('Staff')
         verbose_name_plural = _('Staves')
+        default_permissions = ()
+        permissions = (
+            ("can_get_staves", "Can get staves"),
+            ("can_get_staff", "Can get staff"),
+            ("can_post_staff", "Can create staff"),
+            ("can_put_staff", "Can update staff"),
+            ("can_delete_staff", "Can delete staff"),
+        )
 
     objects = StaffManager()
 

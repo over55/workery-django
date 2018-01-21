@@ -65,6 +65,14 @@ class Customer(AbstractBigPk, AbstractThing, AbstractContactPoint, AbstractPosta
         db_table = 'o55_customers'
         verbose_name = _('Customer')
         verbose_name_plural = _('Customers')
+        default_permissions = ()
+        permissions = (
+            ("can_get_customers", "Can get customers"),
+            ("can_get_customer", "Can get customer"),
+            ("can_post_customer", "Can create customer"),
+            ("can_put_customer", "Can update customer"),
+            ("can_delete_customer", "Can delete customer"),
+        )
 
     objects = CustomerManager()
 

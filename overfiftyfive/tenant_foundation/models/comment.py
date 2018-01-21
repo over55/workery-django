@@ -34,6 +34,14 @@ class Comment(models.Model):
         db_table = 'o55_comments'
         verbose_name = _('Comment')
         verbose_name_plural = _('Comments')
+        default_permissions = ()
+        permissions = (
+            ("can_get_comments", "Can get comments"),
+            ("can_get_comment", "Can get comment"),
+            ("can_post_comment", "Can create comment"),
+            ("can_put_comment", "Can update comment"),
+            ("can_delete_comment", "Can delete comment"),
+        )
 
     objects = CommentManager()
 

@@ -20,6 +20,14 @@ class OrderComment(AbstractBigPk):
         db_table = 'o55_order_comments'
         verbose_name = _('Order Comment')
         verbose_name_plural = _('Order Comments')
+        default_permissions = ()
+        permissions = (
+            ("can_get_order_comments", "Can get order comments"),
+            ("can_get_order_comment", "Can get order comment"),
+            ("can_post_order_comment", "Can post order comment"),
+            ("can_put_order_comment", "Can update order comment"),
+            ("can_delete_order_comment", "Can delete order comment"),
+        )
 
     # objects = OrderCommentManager()
 

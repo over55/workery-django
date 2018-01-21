@@ -65,6 +65,14 @@ class Associate(AbstractBigPk, AbstractThing, AbstractContactPoint, AbstractPost
         db_table = 'o55_associates'
         verbose_name = _('Associate')
         verbose_name_plural = _('Associates')
+        default_permissions = ()
+        permissions = (
+            ("can_get_associates", "Can get associates"),
+            ("can_get_associate", "Can get associate"),
+            ("can_post_associate", "Can create associate"),
+            ("can_pust_associate", "Can update associate"),
+            ("can_delete_associate", "Can delete associate"),
+        )
 
     objects = AssociateManager()
 

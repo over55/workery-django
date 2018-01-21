@@ -22,6 +22,14 @@ class SharedOpeningHoursSpecification(AbstractSharedThing):
         db_table = 'o55_opening_hours_specifications'
         verbose_name = _('Opening Hours Specification')
         verbose_name_plural = _('Opening Hours Specifications')
+        default_permissions = ()
+        permissions = (
+            ("can_get_opening_hours_specifications", "Can get opening hours specifications"),
+            ("can_get_opening_hours_specification", "Can get opening hours specifications"),
+            ("can_post_opening_hours_specification", "Can create opening hours specifications"),
+            ("can_put_opening_hours_specification", "Can update opening hours specifications"),
+            ("can_delete_opening_hours_specification", "Can delete opening hours specifications"),
+        )
 
     objects = SharedOpeningHoursSpecificationManager()
     closes = models.CharField(

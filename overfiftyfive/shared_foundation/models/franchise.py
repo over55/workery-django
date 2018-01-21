@@ -39,6 +39,14 @@ class SharedFranchise(TenantMixin, AbstractSharedThing, AbstractSharedContactPoi
         db_table = 'o55_franchises'
         verbose_name = _('Franchise')
         verbose_name_plural = _('Franchises')
+        default_permissions = ()
+        permissions = (
+            ("can_get_franchises", "Can get franchises"),
+            ("can_get_franchise", "Can get franchise"),
+            ("can_post_franchise", "Can post franchise"),
+            ("can_put_franchise", "Can put franchise"),
+            ("can_delete_franchise", "Can delete franchise"),
+        )
 
     objects = SharedFranchiseManager()
 

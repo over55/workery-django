@@ -36,6 +36,14 @@ class Tag(models.Model):
         db_table = 'o55_tags'
         verbose_name = _('Tag')
         verbose_name_plural = _('Tags')
+        default_permissions = ()
+        permissions = (
+            ("can_get_tags", "Can get tags"),
+            ("can_get_tag", "Can get tag"),
+            ("can_post_tag", "Can create tag"),
+            ("can_put_tag", "Can update tag"),
+            ("can_delete_tag", "Can delete tag"),
+        )
 
     objects = TagManager()
 

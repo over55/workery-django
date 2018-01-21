@@ -49,6 +49,14 @@ class SharedMe(AbstractSharedContactPoint, AbstractSharedPostalAddress, Abstract
         db_table = 'o55_mes'
         verbose_name = _('Me')
         verbose_name_plural = _('Mes')
+        default_permissions = ()
+        permissions = (
+            ("can_get_mes", "Can get mes"),
+            ("can_get_me", "Can get me"),
+            ("can_post_me", "Can create me"),
+            ("can_put_me", "Can update me"),
+            ("can_delete_me", "Can delete me"),
+        )
 
     objects = SharedMeManager()
 
@@ -74,7 +82,7 @@ class SharedMe(AbstractSharedContactPoint, AbstractSharedPostalAddress, Abstract
     salt = models.CharField( #DEVELOPERS NOTE: Used for cryptographic signatures.
         _("Salt"),
         max_length=127,
-        help_text=_('The unique salt value associated with this object.'),
+        help_text=_('The unique salt value me with this object.'),
         default=generate_hash,
         unique=True,
         blank=True,

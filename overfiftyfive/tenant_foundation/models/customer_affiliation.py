@@ -19,13 +19,21 @@ class CustomerAffiliation(AbstractBigPk):
         db_table = 'o55_customer_affiliations'
         verbose_name = _('Customer Affiliation')
         verbose_name_plural = _('Customer Affiliation')
+        default_permissions = ()
+        permissions = (
+            ("can_get_customer_affiliations", "Can get customer affiliations"),
+            ("can_get_customer_affiliation", "Can get customer affiliation"),
+            ("can_post_customer_affiliation", "Can create customer affiliation"),
+            ("can_put_customer_affiliation", "Can update customer affiliation"),
+            ("can_delete_customer_affiliation", "Can delete customer affiliation"),
+        )
 
     objects = CustomerAffiliationManager()
 
     #
     #  CUSTOM FIELDS
     #
-    
+
     customer = models.ForeignKey(
         "Customer",
         help_text=_('The customer of our reference.'),

@@ -22,6 +22,14 @@ class OpeningHoursSpecification(AbstractThing):
         db_table = 'o55_opening_hours_specifications'
         verbose_name = _('Opening Hours Specification')
         verbose_name_plural = _('Opening Hours Specifications')
+        default_permissions = ()
+        permissions = (
+            ("can_get_tenant_opening_hours_specifications", "Can get opening hours specifications (tenant)"),
+            ("can_get_tenant_opening_hours_specification", "Can get opening hours specifications (tenant)"),
+            ("can_post_tenant_opening_hours_specification", "Can create opening hours specifications (tenant)"),
+            ("can_put_tenant_opening_hours_specification", "Can update opening hours specifications (tenant)"),
+            ("can_delete_tenant_opening_hours_specification", "Can delete opening hours specifications (tenant)"),
+        )
 
     objects = OpeningHoursSpecificationManager()
     closes = models.CharField(
