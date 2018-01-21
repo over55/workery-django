@@ -33,10 +33,16 @@
                 // Store the API key for the authenticated user.
                 var private_api_key = json_results['token'];
 
+                // Store the "Franchise" subdomain that this user belongs to.
+                var schema_name = json_results['schema_name'];
+
                 // If an API key was returned then continue...
                 if (private_api_key !== undefined) {
                     // Save the api key in the browser.
                     localStorage.setItem("private_api_key", private_api_key);
+
+                    // Save the "Franchise" subdomain.
+                    localStorage.setItem("schema_name", schema_name);
 
                     // Return with a success condition.
                     window.location = "{% get_app_domain %}{% url 'o55_login_redirector' %}";

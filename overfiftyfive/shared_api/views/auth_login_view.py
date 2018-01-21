@@ -11,7 +11,7 @@ from rest_framework import mixins # See: http://www.django-rest-framework.org/ap
 from rest_framework import authentication, viewsets, permissions, status, parsers, renderers
 from rest_framework.decorators import detail_route, list_route # See: http://www.django-rest-framework.org/api-guide/viewsets/#marking-extra-actions-for-routing
 from rest_framework.response import Response
-from shared_foundation.models.me import SharedMe
+from shared_foundation.models import SharedFranchise, SharedMe
 from shared_api.serializers.auth_login_serializers import AuthCustomTokenSerializer
 
 
@@ -39,11 +39,13 @@ class LoginAPIView(APIView):
         token, created = Token.objects.get_or_create(user=authenticated_user)
 
         me = SharedMe.objects.get(user=authenticated_user)
+        franchise = SharedFranchise.objects.get_by_email_or_none(me.user.email)
 
         return Response(
             data = {
                 'token': str(token.key),
-                'me': str(me)
+                'email': str(me),
+                'schema_name': franchise.schema_name
             },
             status=status.HTTP_200_OK
         )

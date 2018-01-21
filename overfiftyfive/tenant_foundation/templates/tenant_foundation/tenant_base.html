@@ -38,10 +38,16 @@
          *  the user is not authenticated then the django code will not return
          *  the token.
          */
-         var private_api_key = localStorage.getItem("private_api_key");
+        var private_api_key = localStorage.getItem("private_api_key");
+
+        /**
+         *  This global variable is used to track the "Franchise" subdomain
+         *  that this user belongs to.
+         */
+        var schema_name = localStorage.getItem("schema_name");
     </script>
     {% include "shared_foundation/common_js.html" %}
-    {% include 'shared_api/shared_api_js.html' %}
+    {% include 'tenant_api/tenant_api_js.html' %}
     <script>
         /**
          * Function will log the user out of the account.
