@@ -38,7 +38,7 @@ class APILogOutWithPublicSchemaTestCase(APITestCase, TenantTestCase):
         self.c = TenantClient(self.tenant)
         call_command('init_app', verbosity=0)
         call_command(
-           'create_executive_account',
+           'create_shared_account',
            TEST_USER_EMAIL,
            TEST_USER_PASSWORD,
            "Bart",
