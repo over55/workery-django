@@ -17,10 +17,12 @@ class CustomerListCreateAPIView(generics.ListCreateAPIView):
     pagination_class = StandardResultsSetPagination
     authentication_classes = (authentication.TokenAuthentication, )
     permission_classes = (
-        permissions.IsAuthenticated,
+        # permissions.IsAuthenticated,
+        permissions.AllowAny,
     )
 
     def get_queryset(self):
+        print(self.request.user)
         queryset = Customer.objects.all()
         #TODO: IMPLEMENT.
         return queryset

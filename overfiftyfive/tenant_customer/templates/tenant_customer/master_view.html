@@ -10,8 +10,28 @@
 
 {% block content %}
 
+<script>
+    function ajax_get_customers() {
+        var criteria = [];
+
+        tenant_get_customers(
+            criteria,
+            function(json_results) {
+                console.log(json_results)
+            },
+            function(error) {
+                console.debug(error);
+                // alert(error);
+            }
+        );
+    }
+</script>
+
 <p>
     Customers
+</p>
+<p>
+    <a onclick="ajax_get_customers();">List</a>
 </p>
 
 
