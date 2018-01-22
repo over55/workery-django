@@ -10,7 +10,8 @@ from tenant_api.views.tag import TagListCreateAPIView, TagRetrieveUpdateDestroyA
 
 
 urlpatterns = [
-    url(r'^api/customers$', CustomerListCreateAPIView.as_view(), name='o55_franchise_list_create_api_endpoint'),
+    url(r'^api/associates$', AssociateListCreateAPIView.as_view(), name='o55_associate_list_create_api_endpoint'),
+    url(r'^api/customers$', CustomerListCreateAPIView.as_view(), name='o55_customer_list_create_api_endpoint'),
 ]
 
 
