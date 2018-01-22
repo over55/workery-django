@@ -55,14 +55,16 @@ class Command(BaseCommand):
         parser.add_argument('full_filepath', nargs='+', type=str)
 
     def handle(self, *args, **options):
-        # Used for debugging purposes.
-        self.stdout.write(
-            self.style.SUCCESS(_('Importing (Business) Customers...'))
-        )
-
         # Get user inputs.
         schema_name = options['schema_name'][0]
         full_filepath = options['full_filepath'][0]
+
+        # Used for debugging purposes.
+        self.stdout.write(
+            self.style.SUCCESS(_('Importing (Business) Customers at path: %(url)s ...') % {
+                'url': full_filepath
+            })
+        )
 
         # Connection needs first to be at the public schema, as this is where
         # the database needs to be set before creating a new tenant. If this is
@@ -105,7 +107,7 @@ class Command(BaseCommand):
 
             pk = row_dict[0]
             caller = row_dict[1]
-            company = row_dict[2] #TODO
+            company = row_dict[2]
             pick = bool_or_none(row_dict[3]) #TODO: ???
             phone = row_dict[4]
             address = row_dict[5]

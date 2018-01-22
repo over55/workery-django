@@ -1,7 +1,12 @@
 # -*- coding: utf-8 -*-
 from django.db import models
 from django.contrib.auth.models import User
+from django.core.validators import EmailValidator
 from django.utils.translation import ugettext_lazy as _
+
+
+# Override the validator to have our custom message.
+email_validator = EmailValidator(message=_("Invalid email"))
 
 
 class AbstractContactPoint(models.Model):
@@ -39,6 +44,7 @@ class AbstractContactPoint(models.Model):
         help_text=_('Email address.'),
         null=True,
         blank=True,
+        validators=[email_validator]
     )
     fax_number = models.CharField(
         _("Fax Number"),

@@ -55,14 +55,16 @@ class Command(BaseCommand):
         parser.add_argument('full_filepath', nargs='+', type=str)
 
     def handle(self, *args, **options):
-        # Used for debugging purposes.
-        self.stdout.write(
-            self.style.SUCCESS(_('Importing Orders...'))
-        )
-
         # Get user inputs.
         schema_name = options['schema_name'][0]
         full_filepath = options['full_filepath'][0]
+
+        # Used for debugging purposes.
+        self.stdout.write(
+            self.style.SUCCESS(_('Importing Orders at path: %(url)s ...') % {
+                'url': full_filepath
+            })
+        )
 
         # Connection needs first to be at the public schema, as this is where
         # the database needs to be set before creating a new tenant. If this is
@@ -157,39 +159,6 @@ class Command(BaseCommand):
             if hours is '':
                 hours = 0
             hours = int(float(hours))
-
-            # # For debugging purposes.
-            # print(
-            #     order_pk,
-            #     associate_pk,
-            #     associate_last_name,
-            #     local_assign_date,
-            #     customer_pk,
-            #     customer_first_name,
-            #     customer_last_name,
-            #     telephone,
-            #     postal_code,
-            #     learn_about,
-            #     is_support,
-            #     is_senior,
-            #     local_birthdate,
-            #     customer_email,
-            #     job_type,
-            #     is_ongoing,
-            #     is_cancelled,
-            #     local_date_done,
-            #     hours,
-            #     service_fee,
-            #     local_date_paid,
-            #     comment,
-            #     follow_up_comment,
-            #     workmanship,
-            #     time_and_budget,
-            #     punctual,
-            #     professional,
-            #     refer,
-            #     score
-            # )
 
             # Update the tag.
             tag, create = Tag.objects.get_or_create(text=job_type)

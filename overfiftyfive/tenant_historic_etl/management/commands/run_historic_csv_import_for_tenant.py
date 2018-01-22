@@ -125,8 +125,8 @@ class Command(BaseCommand):
         full_file_path = self.find_filepath_containing("employee", prefix) # Associates
         call_command('run_import_associate_csv', schema_name, full_file_path, verbosity=0)
 
-        filepath = self.find_filepath_containing("employer", prefix) # Business Customers
+        full_file_path = self.find_filepath_containing("employer", prefix) # Business Customers
         call_command('run_import_business_customer_csv', schema_name, full_file_path, verbosity=0)
 
-        filepath = self.find_filepath_containing("orders", prefix) # Orders
+        full_file_path = self.find_filepath_containing("orders", prefix) # Orders
         call_command('run_import_order_csv', schema_name, full_file_path, verbosity=0)
