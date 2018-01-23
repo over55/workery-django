@@ -16,7 +16,7 @@ from rest_framework.test import APITestCase
 from rest_framework.authtoken.models import Token
 from shared_foundation import constants
 
-
+TEST_SCHEMA_NAME = "test"
 TEST_USER_EMAIL = "bart@overfiftyfive.com"
 TEST_USER_USERNAME = "bart@overfiftyfive.com"
 TEST_USER_PASSWORD = "123P@$$w0rd"
@@ -36,8 +36,11 @@ class APILoginWithPublicSchemaTestCase(APITestCase, TenantTestCase):
         super(APILoginWithPublicSchemaTestCase, self).setUp()
         self.c = TenantClient(self.tenant)
         call_command('init_app', verbosity=0)
+        # Create the account.
         call_command(
-           'create_shared_account',
+           'create_tenant_account',
+           TEST_SCHEMA_NAME,
+           constants.MANAGEMENT_GROUP_ID,
            TEST_USER_EMAIL,
            TEST_USER_PASSWORD,
            "Bart",
@@ -57,9 +60,9 @@ class APILoginWithPublicSchemaTestCase(APITestCase, TenantTestCase):
 
     @transaction.atomic
     def tearDown(self):
-        users = User.objects.all()
-        for user in users.all():
-            user.delete()
+        # users = User.objects.all() #TODO: WHY ERROR WHEN USING THIS?
+        # for user in users.all():
+        #     user.delete()
         del self.c
         super(APILoginWithPublicSchemaTestCase, self).tearDown()
 
@@ -72,8 +75,9 @@ class APILoginWithPublicSchemaTestCase(APITestCase, TenantTestCase):
         }
         response = self.c.post(url, data, format='json')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+        # print(response.content)
         self.assertEqual(len(response.data['token']) > 0, True)
-        self.assertEqual(len(response.data['me']) > 0, True)
+        self.assertEqual(len(response.data['schema_name']) > 0, True)
 
     @transaction.atomic
     def test_api_login_with_nonexisting_account(self):

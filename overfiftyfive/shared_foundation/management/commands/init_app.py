@@ -2,7 +2,7 @@
 import os
 import sys
 from django.conf import settings
-from django.contrib.auth.models import User, Group
+from django.contrib.auth.models import User, Group, Permission
 from django.contrib.sites.models import Site
 from django.core.management.base import BaseCommand, CommandError
 from django.utils.translation import ugettext_lazy as _
@@ -34,60 +34,85 @@ class Command(BaseCommand):
         current_site.save()
 
     def process_groups(self):
-        """
-        Group
-        """
-        # Executives Group
-        try:
-            group = Group.objects.get(id=EXECUTIVE_GROUP_ID)
-            group.name = "Executives"
-            group.save()
-        except Exception as e:
-            Group.objects.create(
-                id=EXECUTIVE_GROUP_ID,
-                name="Executves"
-            )
+        '''
+        Executives Group
+        '''
+        group, created = Group.objects.get_or_create(id=EXECUTIVE_GROUP_ID)
+        group.name = "Executives"
+        group.save()
 
-        # Management Group
-        try:
-            group = Group.objects.get(id=MANAGEMENT_GROUP_ID)
-            group.name = "Management"
-            group.save()
-        except Exception as e:
-            Group.objects.create(
-                id=MANAGEMENT_GROUP_ID,
-                name="Management"
-            )
+        permission_codenames = [
+            'can_get_customers',
+            'can_get_customer',
+            'can_post_customer',
+            'can_put_customer',
+            'can_delete_customer'
+        ]
+        permissions = Permission.objects.filter(codename__in=permission_codenames)
+        for permission in permissions.all():
+            group.permissions.add(permission)
 
-        # Frontline Group
-        try:
-            group = Group.objects.get(id=FRONTLINE_GROUP_ID)
-            group.name = "Frontline Staff"
-            group.save()
-        except Exception as e:
-            Group.objects.create(
-                id=FRONTLINE_GROUP_ID,
-                name="Frontline Staff"
-            )
+        '''
+        Management Group
+        '''
+        group, created = Group.objects.get_or_create(id=MANAGEMENT_GROUP_ID)
+        group.name = "Management"
+        group.save()
+
+        permission_codenames = [
+            'can_get_customers',
+            'can_get_customer',
+            'can_post_customer',
+            'can_put_customer',
+            'can_delete_customer'
+            #'can_delete_customer'
+        ]
+        permissions = Permission.objects.filter(codename__in=permission_codenames)
+        for permission in permissions.all():
+            group.permissions.add(permission)
+
+        '''
+        Frontline Group
+        '''
+        group, created = Group.objects.get_or_create(id=FRONTLINE_GROUP_ID)
+        group.name = "Frontline Staff"
+        group.save()
+
+        permission_codenames = [
+            'can_get_customers',
+            'can_get_customer',
+            'can_post_customer',
+            'can_put_customer',
+            # 'can_delete_customer'
+        ]
+        permissions = Permission.objects.filter(codename__in=permission_codenames)
+        for permission in permissions.all():
+            group.permissions.add(permission)
 
         # Associate Group
-        try:
-            group = Group.objects.get(id=ASSOICATE_GROUP_ID)
-            group.name = "Associates"
-            group.save()
-        except Exception as e:
-            Group.objects.create(
-                id=ASSOICATE_GROUP_ID,
-                name="Associates"
-            )
+        group, created = Group.objects.get_or_create(id=ASSOICATE_GROUP_ID)
+        group.name = "Associates"
+        group.save()
 
-        # Customer Group
-        try:
-            group = Group.objects.get(id=CUSTOMER_GROUP_ID)
-            group.name = "Customers"
-            group.save()
-        except Exception as e:
-            Group.objects.create(
-                id=CUSTOMER_GROUP_ID,
-                name="Customers"
-            )
+        permission_codenames = [
+
+        ]
+        permissions = Permission.objects.filter(codename__in=permission_codenames)
+        for permission in permissions.all():
+            group.permissions.add(permission)
+
+        '''
+        Customer Group
+        '''
+        group, created = Group.objects.get_or_create(id=CUSTOMER_GROUP_ID)
+        group.name = "Customers"
+        group.save()
+
+        permission_codenames = [
+            'can_get_customer',
+            'can_post_customer',
+            'can_put_customer',
+        ]
+        permissions = Permission.objects.filter(codename__in=permission_codenames)
+        for permission in permissions.all():
+            group.permissions.add(permission)

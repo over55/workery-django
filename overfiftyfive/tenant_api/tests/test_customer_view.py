@@ -1,0 +1,134 @@
+# -*- coding: utf-8 -*-
+from django.core.management import call_command
+from django.db import connection # Used for django tenants.
+from django.db import transaction
+from django.db.models import Q
+from django.test import TestCase
+from django.test import Client
+from django.utils import translation
+from django.urls import reverse
+from django.contrib.auth.models import User, Group
+from django.contrib.auth import authenticate, login, logout
+from django_tenants.test.cases import TenantTestCase
+from django_tenants.test.client import TenantClient
+from rest_framework import status
+from rest_framework.test import APIClient
+from rest_framework.test import APITestCase
+from rest_framework.authtoken.models import Token
+from shared_foundation import constants
+from tenant_foundation.models import Customer
+
+
+TEST_SCHEMA_NAME = "london"
+TEST_USER_EMAIL = "bart@overfiftyfive.com"
+TEST_USER_USERNAME = "bart@overfiftyfive.com"
+TEST_USER_PASSWORD = "123P@$$w0rd"
+TEST_USER_TEL_NUM = "123 123-1234"
+TEST_USER_TEL_EX_NUM = ""
+TEST_USER_CELL_NUM = "123 123-1234"
+
+
+"""
+Console:
+python manage.py test tenant_api.tests.test_customer_view
+"""
+
+
+class CustomerListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
+
+    def setup_tenant(tenant):
+        """Tenant Schema"""
+        tenant.schema_name = TEST_SCHEMA_NAME
+        tenant.name='Over 55 (London) Inc.',
+        tenant.alternate_name="Over55",
+        tenant.description="Located at the Forks of the Thames in ...",
+        tenant.address_country="CA",
+        tenant.address_locality="London",
+        tenant.address_region="Ontario",
+        tenant.post_office_box_number="", # Post Offic #
+        tenant.postal_code="N6H 1B4",
+        tenant.street_address="78 Riverside Drive",
+        tenant.street_address_extra="", # Extra line.
+
+    @transaction.atomic
+    def setUp(self):
+        translation.activate('en')  # Set English
+        super(CustomerListCreateAPIViewWithTenantTestCase, self).setUp()
+
+        # Load up the dependat.
+        call_command('init_app', verbosity=0)
+
+        # Create the account.
+        call_command(
+           'create_tenant_account',
+           TEST_SCHEMA_NAME,
+           constants.MANAGEMENT_GROUP_ID,
+           TEST_USER_EMAIL,
+           TEST_USER_PASSWORD,
+           "Bart",
+           "Mika",
+           TEST_USER_TEL_NUM,
+           TEST_USER_TEL_EX_NUM,
+           TEST_USER_CELL_NUM,
+           "CA",
+           "London",
+           "Ontario",
+           "", # Post Offic #
+           "N6H 1B4",
+           "78 Riverside Drive",
+           "", # Extra line.
+           verbosity=0
+        )
+
+        # Initialize our test data.
+        self.user = User.objects.get(email=TEST_USER_EMAIL)
+        token = Token.objects.get(user=self.user)
+
+        # Setup.
+        self.unauthorized_client = TenantClient(self.tenant)
+        self.authorized_client = TenantClient(self.tenant, HTTP_AUTHORIZATION='Token ' + token.key)
+        self.authorized_client.login(
+            username=TEST_USER_USERNAME,
+            password=TEST_USER_PASSWORD
+        )
+        # Create our customer.
+        connection.set_schema(TEST_SCHEMA_NAME, True) # Switch to Tenant.
+        customer = Customer.objects.create(
+            owner=self.user,
+            given_name="Bart",
+            last_name="Mika"
+        )
+
+    @transaction.atomic
+    def tearDown(self):
+        connection.set_schema(TEST_SCHEMA_NAME, True) # Switch to Tenant.
+        Customer.objects.delete_all()
+        del self.unauthorized_client
+        del self.authorized_client
+        super(CustomerListCreateAPIViewWithTenantTestCase, self).tearDown()
+
+    @transaction.atomic
+    def test_anonymous_get_with_401(self):
+        url = reverse('o55_customer_list_create_api_endpoint')+"?format=json"
+        response = self.unauthorized_client.get(url, data=None, content_type='application/json')
+        self.assertIsNotNone(response)
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+
+    @transaction.atomic
+    def test_authenticated_get_with_200(self):
+        url = reverse('o55_customer_list_create_api_endpoint')
+        url += "?format=json"
+        response = self.authorized_client.get(url, data=None, content_type='application/json')
+        self.assertIsNotNone(response)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertIn("Bart", str(response.data))
+        self.assertIn("Mika", str(response.data))
+
+    # @transaction.atomic
+    # def test_anonymous_search_get_with_200_(self):
+    #     url = reverse('o55_franchise_list_api_endpoint')+"?format=json&search=London"
+    #     response = self.anon_client.get(url, data=None, content_type='application/json')
+    #     self.assertIsNotNone(response)
+    #     self.assertEqual(response.status_code, status.HTTP_200_OK)
+    #     self.assertIn("London", str(response.data))
+    #     self.assertIn("Ontario", str(response.data))
