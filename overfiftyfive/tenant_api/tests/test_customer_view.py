@@ -152,3 +152,17 @@ class CustomerListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
         self.assertIsNotNone(response)
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
         self.assertIn("You do not have permission to access this API-endpoint.", str(response.data))
+
+    #---------------------#
+    # Create API-endpoint #
+    #---------------------#
+
+    @transaction.atomic
+    def test_create_with_401(self):
+        """
+        Unit test will test anonymous make a POST request to the create API-endpoint.
+        """
+        url = reverse('o55_customer_list_create_api_endpoint')+"?format=json"
+        response = self.unauthorized_client.post(url, data={}, content_type='application/json')
+        self.assertIsNotNone(response)
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
