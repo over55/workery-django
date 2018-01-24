@@ -17,5 +17,20 @@ class CanAccessCustomerPermission(permissions.BasePermission):
     message = _('You do not have permission to access this API-endpoint.')
 
     def has_permission(self, request, view):
-        #TODO: IMPLEMENT.
-        return True
+        # print(request.method)  # For debugging purposes only.
+
+        # LIST
+        if "GET" in request.method:
+            return has_permission('can_get_customers', request.user, request.user.groups.all())
+
+        # CREATE
+        if "POST" in request.method:
+            return has_permission('can_post_customer', request.user, request.user.groups.all())
+
+        return False
+
+    # ("can_get_customers", "Can get customers"),
+    # ("can_get_customer", "Can get customer"),
+    # ("can_post_customer", "Can create customer"),
+    # ("can_put_customer", "Can update customer"),
+    # ("can_delete_customer", "Can delete customer"),

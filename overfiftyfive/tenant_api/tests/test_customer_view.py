@@ -7,7 +7,7 @@ from django.test import TestCase
 from django.test import Client
 from django.utils import translation
 from django.urls import reverse
-from django.contrib.auth.models import User, Group
+from django.contrib.auth.models import User, Group, Permission
 from django.contrib.auth import authenticate, login, logout
 from django_tenants.test.cases import TenantTestCase
 from django_tenants.test.client import TenantClient
@@ -35,6 +35,10 @@ python manage.py test tenant_api.tests.test_customer_view
 
 
 class CustomerListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
+
+    #------------------#
+    # Setup Unit Tests #
+    #------------------#
 
     def setup_tenant(tenant):
         """Tenant Schema"""
@@ -107,15 +111,26 @@ class CustomerListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
         del self.authorized_client
         super(CustomerListCreateAPIViewWithTenantTestCase, self).tearDown()
 
+    #-------------------#
+    # List API-endpoint #
+    #-------------------#
+
     @transaction.atomic
-    def test_anonymous_get_with_401(self):
+    def test_list_with_401(self):
+        """
+        Unit test will test anonymous make a GET request to the LIST API-endpoint.
+        """
         url = reverse('o55_customer_list_create_api_endpoint')+"?format=json"
         response = self.unauthorized_client.get(url, data=None, content_type='application/json')
         self.assertIsNotNone(response)
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
     @transaction.atomic
-    def test_authenticated_get_with_200(self):
+    def test_list_with_200(self):
+        """
+        Unit test will test authenticated user, who has permission, to make a
+        GET request to the list API-endpoint.
+        """
         url = reverse('o55_customer_list_create_api_endpoint')
         url += "?format=json"
         response = self.authorized_client.get(url, data=None, content_type='application/json')
@@ -124,11 +139,16 @@ class CustomerListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
         self.assertIn("Bart", str(response.data))
         self.assertIn("Mika", str(response.data))
 
-    # @transaction.atomic
-    # def test_anonymous_search_get_with_200_(self):
-    #     url = reverse('o55_franchise_list_api_endpoint')+"?format=json&search=London"
-    #     response = self.anon_client.get(url, data=None, content_type='application/json')
-    #     self.assertIsNotNone(response)
-    #     self.assertEqual(response.status_code, status.HTTP_200_OK)
-    #     self.assertIn("London", str(response.data))
-    #     self.assertIn("Ontario", str(response.data))
+    @transaction.atomic
+    def test_list_with_403(self):
+        """
+        Unit test will test authenticated user, who does not have permission, to
+        make a GET request to the list API-endpoint.
+        """
+        Permission.objects.all().delete()
+        url = reverse('o55_customer_list_create_api_endpoint')
+        url += "?format=json"
+        response = self.authorized_client.get(url, data=None, content_type='application/json')
+        self.assertIsNotNone(response)
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+        self.assertIn("You do not have permission to access this API-endpoint.", str(response.data))
