@@ -27,6 +27,7 @@ TEST_USER_PASSWORD = "123P@$$w0rd"
 TEST_USER_TEL_NUM = "123 123-1234"
 TEST_USER_TEL_EX_NUM = ""
 TEST_USER_CELL_NUM = "123 123-1234"
+TEST_ALERNATE_USER_EMAIL = "rodolfo@overfiftyfive.com"
 
 
 """
@@ -85,6 +86,28 @@ class CustomerListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
            verbosity=0
         )
 
+        # Create the account.
+        call_command(
+           'create_tenant_account',
+           TEST_SCHEMA_NAME,
+           constants.MANAGEMENT_GROUP_ID,
+           TEST_ALERNATE_USER_EMAIL,
+           TEST_USER_PASSWORD,
+           "Bart",
+           "Mika",
+           TEST_USER_TEL_NUM,
+           TEST_USER_TEL_EX_NUM,
+           TEST_USER_CELL_NUM,
+           "CA",
+           "London",
+           "Ontario",
+           "", # Post Offic #
+           "N6H 1B4",
+           "78 Riverside Drive",
+           "", # Extra line.
+           verbosity=0
+        )
+
         # Initialize our test data.
         self.user = User.objects.get(email=TEST_USER_EMAIL)
         token = Token.objects.get(user=self.user)
@@ -103,6 +126,11 @@ class CustomerListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
             given_name="Bart",
             last_name="Mika"
         )
+        self.alernate_customer = Customer.objects.create(
+            owner=User.objects.get(email=TEST_ALERNATE_USER_EMAIL),
+            given_name="Rodolfo",
+            last_name="Martinez"
+        )
 
     @transaction.atomic
     def tearDown(self):
@@ -117,7 +145,7 @@ class CustomerListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
     #-------------------#
 
     @transaction.atomic
-    def test_list_with_401(self):
+    def test_list_with_401_by_permissions(self):
         """
         Unit test will test anonymous make a GET request to the LIST API-endpoint.
         """
@@ -127,7 +155,7 @@ class CustomerListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
     @transaction.atomic
-    def test_list_with_200(self):
+    def test_list_with_200_by_permissions(self):
         """
         Unit test will test authenticated user, who has permission, to make a
         GET request to the list API-endpoint.
@@ -141,7 +169,7 @@ class CustomerListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
         self.assertIn("Mika", str(response.data))
 
     @transaction.atomic
-    def test_list_with_403(self):
+    def test_list_with_403_by_permissions(self):
         """
         Unit test will test authenticated user, who does not have permission, to
         make a GET request to the list API-endpoint.
@@ -159,7 +187,7 @@ class CustomerListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
     #---------------------#
 
     @transaction.atomic
-    def test_create_with_401(self):
+    def test_create_with_401_by_permissions(self):
         """
         Unit test will test anonymous make a POST request to the create API-endpoint.
         """
@@ -169,7 +197,7 @@ class CustomerListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
     @transaction.atomic
-    def test_create_with_200(self):
+    def test_create_with_200_by_permissions(self):
         """
         Unit test will test authenticated user, who has permission, to make a
         POST request to the create API-endpoint.
@@ -187,13 +215,12 @@ class CustomerListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
             'postal_code': 'N6H 1B4'
         }), content_type='application/json')
         self.assertIsNotNone(response)
-        # print(response.content)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertIn("Bart", str(response.data))
         self.assertIn("Mika", str(response.data))
 
     @transaction.atomic
-    def test_create_with_403(self):
+    def test_create_with_403_by_permissions(self):
         """
         Unit test will test authenticated user, who does not have permission, to
         make a POST request to the list API-endpoint.
@@ -211,7 +238,7 @@ class CustomerListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
     #---------------------#
 
     @transaction.atomic
-    def test_update_with_401(self):
+    def test_update_with_401_by_permissions(self):
         """
         Unit test will test anonymous make a PUT request to the update API-endpoint.
         """
@@ -221,7 +248,7 @@ class CustomerListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
     @transaction.atomic
-    def test_update_with_200(self):
+    def test_update_with_200_by_permissions(self):
         """
         Unit test will test authenticated user, who has permission, to make a
         PUT request to the update API-endpoint.
@@ -238,31 +265,53 @@ class CustomerListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
             'postal_code': 'N6H 1B4'
         }), content_type='application/json')
         self.assertIsNotNone(response)
-        # print(response.content)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertIn("Bartlomiej", str(response.data))
         self.assertIn("Mika", str(response.data))
 
     @transaction.atomic
-    def test_update_with_403(self):
+    def test_update_with_403_by_permissions(self):
         """
         Unit test will test authenticated user, who does not have permission, to
         make a PUT request to the update API-endpoint.
         """
         Permission.objects.all().delete()
-        url = reverse('o55_customer_retrieve_update_destroy_api_endpoint', args=[self.customer.id])+"?format=json"
+        url = reverse('o55_customer_retrieve_update_destroy_api_endpoint', args=[self.alernate_customer.id])+"?format=json"
         response = self.authorized_client.put(url, data=json.dumps({}), content_type='application/json')
         self.assertIsNotNone(response)
-        # print(response.content)
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
         self.assertIn("You do not have permission to access this API-endpoint.", str(response.data))
+
+    @transaction.atomic
+    def test_update_with_200_by_ownership(self):
+        """
+        Unit test will test authenticated user, who does not have permission, to
+        make a PUT request to the update API-endpoint but has ownership of the
+        object.
+        """
+        Permission.objects.all().delete()
+        url = reverse('o55_customer_retrieve_update_destroy_api_endpoint', args=[self.customer.id])+"?format=json"
+        response = self.authorized_client.put(url, data=json.dumps({
+            'given_name': 'Bartlomiej',
+            'middle_name': '',
+            'last_name': 'Mika',
+            'address_country': 'CA',
+            'address_locality': 'London',
+            'address_region': 'Ontario',
+            'street_address': '78 Riverside Drive',
+            'postal_code': 'N6H 1B4'
+        }), content_type='application/json')
+        self.assertIsNotNone(response)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertIn("Bartlomiej", str(response.data))
+        self.assertIn("Mika", str(response.data))
 
     #-----------------------#
     # Retrieve API-endpoint #
     #-----------------------#
 
     @transaction.atomic
-    def test_retrieve_with_401(self):
+    def test_retrieve_with_401_by_permissions(self):
         """
         Unit test will test anonymous make a GET request to the retrieve API-endpoint.
         """
@@ -272,7 +321,7 @@ class CustomerListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
     @transaction.atomic
-    def test_retrieve_with_200(self):
+    def test_retrieve_with_200_by_permissions(self):
         """
         Unit test will test authenticated user, who has permission, to make a
         GET request to the retrieve API-endpoint.
@@ -280,31 +329,44 @@ class CustomerListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
         url = reverse('o55_customer_retrieve_update_destroy_api_endpoint', args=[self.customer.id])+"?format=json"
         response = self.authorized_client.get(url, data=None, content_type='application/json')
         self.assertIsNotNone(response)
-        # print(response.content)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertIn("Bart", str(response.data))
         self.assertIn("Mika", str(response.data))
 
     @transaction.atomic
-    def test_retrieve_with_403(self):
+    def test_retrieve_with_403_by_permissions(self):
         """
         Unit test will test authenticated user, who does not have permission, to
         make a GET request to the retrieve API-endpoint.
         """
         Permission.objects.all().delete()
+        url = reverse('o55_customer_retrieve_update_destroy_api_endpoint', args=[self.alernate_customer.id])+"?format=json"
+        response = self.authorized_client.get(url, data=None, content_type='application/json')
+        self.assertIsNotNone(response)
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+        self.assertIn("You do not have permission to access this API-endpoint.", str(response.data))
+
+    @transaction.atomic
+    def test_retrieve_with_200_by_ownership(self):
+        """
+        Unit test will test authenticated user, who does not have permission,
+        but is the OWNER of the object to make a GET request to the retrieve
+        API-endpoint.
+        """
+        Permission.objects.all().delete()
         url = reverse('o55_customer_retrieve_update_destroy_api_endpoint', args=[self.customer.id])+"?format=json"
         response = self.authorized_client.get(url, data=None, content_type='application/json')
         self.assertIsNotNone(response)
-        # print(response.content)
-        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
-        self.assertIn("You do not have permission to access this API-endpoint.", str(response.data))
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertIn("Bart", str(response.data))
+        self.assertIn("Mika", str(response.data))
 
     #-----------------------#
     # Delete API-endpoint #
     #-----------------------#
 
     @transaction.atomic
-    def test_delete_with_401(self):
+    def test_delete_with_401_by_permissions(self):
         """
         Unit test will test anonymous make a DELETE request to the delete API-endpoint.
         """
@@ -314,7 +376,7 @@ class CustomerListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
     @transaction.atomic
-    def test_delete_with_200(self):
+    def test_delete_with_200_by_permissions(self):
         """
         Unit test will test authenticated user, who has permission, to make a
         DELETE request to the delete API-endpoint.
@@ -326,11 +388,10 @@ class CustomerListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
         url = reverse('o55_customer_retrieve_update_destroy_api_endpoint', args=[self.customer.id])+"?format=json"
         response = self.authorized_client.delete(url, data=None, content_type='application/json')
         self.assertIsNotNone(response)
-        # print(response.content)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     @transaction.atomic
-    def test_delete_with_403(self):
+    def test_delete_with_403_by_permissions(self):
         """
         Unit test will test authenticated user, who does not have permission, to
         make a DELETE request to the delete API-endpoint.
@@ -339,6 +400,5 @@ class CustomerListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
         url = reverse('o55_customer_retrieve_update_destroy_api_endpoint', args=[self.customer.id])+"?format=json"
         response = self.authorized_client.delete(url, data=None, content_type='application/json')
         self.assertIsNotNone(response)
-        # print(response.content)
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
         self.assertIn("You do not have permission to access this API-endpoint.", str(response.data))

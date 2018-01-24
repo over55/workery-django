@@ -38,14 +38,25 @@ class CanRetrieveUpdateDestroyCustomerPermission(permissions.BasePermission):
 
         # RETRIEVE
         if "GET" in request.method:
+            # OWNERSHIP BASED
+            if request.user == obj.owner:
+                return True
+
+            # PERMISSION BASED
             return has_permission('can_get_customer', request.user, request.user.groups.all())
 
         # UPDATE
         if "PUT" in request.method:
+            # OWNERSHIP BASED
+            if request.user == obj.owner:
+                return True
+
+            # PERMISSION BASED
             return has_permission('can_put_customer', request.user, request.user.groups.all())
 
         # DELETE
         if "DELETE" in request.method:
+            # PERMISSION BASED
             return has_permission('can_delete_customer', request.user, request.user.groups.all())
 
         return False

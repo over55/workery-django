@@ -158,3 +158,70 @@ class TestCreateManagementAccountManagementCommand(TenantTestCase):
         except Exception as e:
             self.assertIsNotNone(e)
             self.assertIn("Franchise does not exist!", str(e))
+
+    def test_command_with_multiple_success(self):
+        call_command(
+            "create_franchise",
+            "london_test",
+            "Over55",
+            "Over55 (London) Inc.",
+            "Located at the Forks of the Thames in downtown London Ontario, Over 55 is a non profit charitable organization that applies business strategies to achieve philanthropic goals. The net profits realized from the services we provide will help fund our client and community programs. When you use our services and recommended products, you are helping to improve the quality of life of older adults and the elderly in our community.",
+            "CA",
+            "London",
+            "Ontario",
+            "", # Post Offic #
+            "N6H 1B4",
+            "78 Riverside Drive",
+            "", # Extra line.
+            verbosity=0
+        )
+        call_command(
+           'create_tenant_account',
+           "london_test",
+           constants.MANAGEMENT_GROUP_ID,
+           TEST_USER_EMAIL,
+           TEST_USER_PASSWORD,
+           "Bart",
+           "Mika",
+           TEST_USER_TEL_NUM,
+           TEST_USER_TEL_EX_NUM,
+           TEST_USER_CELL_NUM,
+           "CA",
+           "London",
+           "Ontario",
+           "", # Post Offic #
+           "N6H 1B4",
+           "78 Riverside Drive",
+           "", # Extra line.
+           verbosity=0
+        )
+        call_command(
+           'create_tenant_account',
+           "london_test",
+           constants.MANAGEMENT_GROUP_ID,
+           "rodolfo@overfiftyfive.com",
+           "123password",
+           "Rodolfo",
+           "Martinez",
+           TEST_USER_TEL_NUM,
+           TEST_USER_TEL_EX_NUM,
+           TEST_USER_CELL_NUM,
+           "CA",
+           "London",
+           "Ontario",
+           "", # Post Offic #
+           "N6H 1B4",
+           "78 Riverside Drive",
+           "", # Extra line.
+           verbosity=0
+        )
+
+        # Verify the account works.
+        from django.contrib.auth.hashers import check_password
+        from django.contrib.auth import get_user_model
+        user = O55User.objects.filter(email__iexact=TEST_USER_EMAIL)[0]
+        is_authenticated = check_password(TEST_USER_PASSWORD, user.password)
+        self.assertTrue(is_authenticated)
+
+        # Delete all the users we've created in this unit test.
+        # O55User.objects.all().delete()
