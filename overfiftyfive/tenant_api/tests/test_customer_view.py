@@ -256,3 +256,89 @@ class CustomerListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
         # print(response.content)
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
         self.assertIn("You do not have permission to access this API-endpoint.", str(response.data))
+
+    #-----------------------#
+    # Retrieve API-endpoint #
+    #-----------------------#
+
+    @transaction.atomic
+    def test_retrieve_with_401(self):
+        """
+        Unit test will test anonymous make a GET request to the retrieve API-endpoint.
+        """
+        url = reverse('o55_customer_retrieve_update_destroy_api_endpoint', args=[self.customer.id])+"?format=json"
+        response = self.unauthorized_client.get(url, data={}, content_type='application/json')
+        self.assertIsNotNone(response)
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+
+    @transaction.atomic
+    def test_retrieve_with_200(self):
+        """
+        Unit test will test authenticated user, who has permission, to make a
+        GET request to the retrieve API-endpoint.
+        """
+        url = reverse('o55_customer_retrieve_update_destroy_api_endpoint', args=[self.customer.id])+"?format=json"
+        response = self.authorized_client.get(url, data=None, content_type='application/json')
+        self.assertIsNotNone(response)
+        # print(response.content)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertIn("Bart", str(response.data))
+        self.assertIn("Mika", str(response.data))
+
+    @transaction.atomic
+    def test_retrieve_with_403(self):
+        """
+        Unit test will test authenticated user, who does not have permission, to
+        make a GET request to the retrieve API-endpoint.
+        """
+        Permission.objects.all().delete()
+        url = reverse('o55_customer_retrieve_update_destroy_api_endpoint', args=[self.customer.id])+"?format=json"
+        response = self.authorized_client.get(url, data=None, content_type='application/json')
+        self.assertIsNotNone(response)
+        # print(response.content)
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+        self.assertIn("You do not have permission to access this API-endpoint.", str(response.data))
+
+    #-----------------------#
+    # Delete API-endpoint #
+    #-----------------------#
+
+    @transaction.atomic
+    def test_delete_with_401(self):
+        """
+        Unit test will test anonymous make a DELETE request to the delete API-endpoint.
+        """
+        url = reverse('o55_customer_retrieve_update_destroy_api_endpoint', args=[self.customer.id])+"?format=json"
+        response = self.unauthorized_client.delete(url, data={}, content_type='application/json')
+        self.assertIsNotNone(response)
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+
+    @transaction.atomic
+    def test_delete_with_200(self):
+        """
+        Unit test will test authenticated user, who has permission, to make a
+        DELETE request to the delete API-endpoint.
+        """
+        # Add executive group so you can delete.
+        self.user.groups.add(constants.EXECUTIVE_GROUP_ID)
+
+        # Go ahead and delete.
+        url = reverse('o55_customer_retrieve_update_destroy_api_endpoint', args=[self.customer.id])+"?format=json"
+        response = self.authorized_client.delete(url, data=None, content_type='application/json')
+        self.assertIsNotNone(response)
+        # print(response.content)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    @transaction.atomic
+    def test_delete_with_403(self):
+        """
+        Unit test will test authenticated user, who does not have permission, to
+        make a DELETE request to the delete API-endpoint.
+        """
+        Permission.objects.all().delete()
+        url = reverse('o55_customer_retrieve_update_destroy_api_endpoint', args=[self.customer.id])+"?format=json"
+        response = self.authorized_client.delete(url, data=None, content_type='application/json')
+        self.assertIsNotNone(response)
+        # print(response.content)
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+        self.assertIn("You do not have permission to access this API-endpoint.", str(response.data))

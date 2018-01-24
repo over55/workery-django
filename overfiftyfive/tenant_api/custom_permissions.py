@@ -13,7 +13,7 @@ def has_permission(codename, user, group_ids):
     return has_group_perm | has_user_perm
 
 
-class CanAccessCustomerPermission(permissions.BasePermission):
+class CanListCreateCustomerPermission(permissions.BasePermission):
     message = _('You do not have permission to access this API-endpoint.')
 
     def has_permission(self, request, view):
@@ -27,23 +27,25 @@ class CanAccessCustomerPermission(permissions.BasePermission):
         if "POST" in request.method:
             return has_permission('can_post_customer', request.user, request.user.groups.all())
 
-        # UPDATE
-        if "PUT" in request.method:
-            return has_permission('can_put_customer', request.user, request.user.groups.all())
-
         return False
+
+
+class CanRetrieveUpdateDestroyCustomerPermission(permissions.BasePermission):
+    message = _('You do not have permission to access this API-endpoint.')
 
     def has_object_permission(self, request, view, obj):
-        print("has_object_permission", request.method)  # For debugging purposes only.
+        # print("has_object_permission", request.method)  # For debugging purposes only.
+
+        # RETRIEVE
+        if "GET" in request.method:
+            return has_permission('can_get_customer', request.user, request.user.groups.all())
 
         # UPDATE
         if "PUT" in request.method:
             return has_permission('can_put_customer', request.user, request.user.groups.all())
 
-        return False
+        # DELETE
+        if "DELETE" in request.method:
+            return has_permission('can_delete_customer', request.user, request.user.groups.all())
 
-    # ("can_get_customers", "Can get customers"),
-    # ("can_get_customer", "Can get customer"),
-    # ("can_post_customer", "Can create customer"),
-    # ("can_put_customer", "Can update customer"),
-    # ("can_delete_customer", "Can delete customer"),
+        return False
