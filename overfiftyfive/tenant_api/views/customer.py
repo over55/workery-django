@@ -24,14 +24,23 @@ class CustomerListCreateAPIView(generics.ListCreateAPIView):
     )
 
     def get_queryset(self):
+        """
+        List
+        """
         queryset = Customer.objects.all().order_by('-created')
         return queryset
 
     def post(self, request, format=None):
+        """
+        Create
+        """
         serializer = CustomerListCreateSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+
+from django.shortcuts import get_list_or_404, get_object_or_404
 
 
 class CustomerRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
@@ -40,19 +49,33 @@ class CustomerRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView
     authentication_classes = (authentication.TokenAuthentication, )
     permission_classes = (
         permissions.IsAuthenticated,
+        CanAccessCustomerPermission
     )
 
     def get(self, request, pk=None):
-        #TODO: IMPLEMENT.
+        """
+        Retrieve
+        """
+        customer = get_object_or_404(Customer, pk=pk)
+        serializer = CustomerRetrieveUpdateDestroySerializer(customer, many=False)
         return Response(
-            data=[],
+            data=serializer.data,
             status=status.HTTP_200_OK
         )
 
     def put(self, request, pk=None):
-        #TODO: IMPLEMENT.
-        return Response(data=[], status=status.HTTP_200_OK)
+        """
+        Update
+        """
+        customer = get_object_or_404(Customer, pk=pk)
+        serializer = CustomerRetrieveUpdateDestroySerializer(customer, data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
     def delete(self, request, pk=None):
+        """
+        Delete
+        """
         #TODO: IMPLEMENT.
         return Response(data=[], status=status.HTTP_200_OK)

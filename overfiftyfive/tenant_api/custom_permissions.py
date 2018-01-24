@@ -17,7 +17,7 @@ class CanAccessCustomerPermission(permissions.BasePermission):
     message = _('You do not have permission to access this API-endpoint.')
 
     def has_permission(self, request, view):
-        # print(request.method)  # For debugging purposes only.
+        # print("has_permission", request.method)  # For debugging purposes only.
 
         # LIST
         if "GET" in request.method:
@@ -26,6 +26,19 @@ class CanAccessCustomerPermission(permissions.BasePermission):
         # CREATE
         if "POST" in request.method:
             return has_permission('can_post_customer', request.user, request.user.groups.all())
+
+        # UPDATE
+        if "PUT" in request.method:
+            return has_permission('can_put_customer', request.user, request.user.groups.all())
+
+        return False
+
+    def has_object_permission(self, request, view, obj):
+        print("has_object_permission", request.method)  # For debugging purposes only.
+
+        # UPDATE
+        if "PUT" in request.method:
+            return has_permission('can_put_customer', request.user, request.user.groups.all())
 
         return False
 

@@ -98,7 +98,7 @@ class CustomerListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
         )
         # Create our customer.
         connection.set_schema(TEST_SCHEMA_NAME, True) # Switch to Tenant.
-        customer = Customer.objects.create(
+        self.customer = Customer.objects.create(
             owner=self.user,
             given_name="Bart",
             last_name="Mika"
@@ -203,5 +203,56 @@ class CustomerListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
         url += "?format=json"
         response = self.authorized_client.post(url, data=json.dumps({}), content_type='application/json')
         self.assertIsNotNone(response)
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+        self.assertIn("You do not have permission to access this API-endpoint.", str(response.data))
+
+    #---------------------#
+    # Update API-endpoint #
+    #---------------------#
+
+    @transaction.atomic
+    def test_update_with_401(self):
+        """
+        Unit test will test anonymous make a PUT request to the update API-endpoint.
+        """
+        url = reverse('o55_customer_retrieve_update_destroy_api_endpoint', args=[self.customer.id])+"?format=json"
+        response = self.unauthorized_client.post(url, data={}, content_type='application/json')
+        self.assertIsNotNone(response)
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+
+    @transaction.atomic
+    def test_update_with_200(self):
+        """
+        Unit test will test authenticated user, who has permission, to make a
+        PUT request to the update API-endpoint.
+        """
+        url = reverse('o55_customer_retrieve_update_destroy_api_endpoint', args=[self.customer.id])+"?format=json"
+        response = self.authorized_client.put(url, data=json.dumps({
+            'given_name': 'Bartlomiej',
+            'middle_name': '',
+            'last_name': 'Mika',
+            'address_country': 'CA',
+            'address_locality': 'London',
+            'address_region': 'Ontario',
+            'street_address': '78 Riverside Drive',
+            'postal_code': 'N6H 1B4'
+        }), content_type='application/json')
+        self.assertIsNotNone(response)
+        # print(response.content)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertIn("Bartlomiej", str(response.data))
+        self.assertIn("Mika", str(response.data))
+
+    @transaction.atomic
+    def test_update_with_403(self):
+        """
+        Unit test will test authenticated user, who does not have permission, to
+        make a PUT request to the update API-endpoint.
+        """
+        Permission.objects.all().delete()
+        url = reverse('o55_customer_retrieve_update_destroy_api_endpoint', args=[self.customer.id])+"?format=json"
+        response = self.authorized_client.put(url, data=json.dumps({}), content_type='application/json')
+        self.assertIsNotNone(response)
+        # print(response.content)
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
         self.assertIn("You do not have permission to access this API-endpoint.", str(response.data))
