@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import json
 from django.core.management import call_command
 from django.db import connection # Used for django tenants.
 from django.db import transaction
@@ -166,3 +167,41 @@ class CustomerListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
         response = self.unauthorized_client.post(url, data={}, content_type='application/json')
         self.assertIsNotNone(response)
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+
+    @transaction.atomic
+    def test_create_with_200(self):
+        """
+        Unit test will test authenticated user, who has permission, to make a
+        POST request to the create API-endpoint.
+        """
+        url = reverse('o55_customer_list_create_api_endpoint')
+        url += "?format=json"
+        response = self.authorized_client.post(url, data=json.dumps({
+            'given_name': 'Bart',
+            'middle_name': '',
+            'last_name': 'Mika',
+            'address_country': 'CA',
+            'address_locality': 'London',
+            'address_region': 'Ontario',
+            'street_address': '78 Riverside Drive',
+            'postal_code': 'N6H 1B4'
+        }), content_type='application/json')
+        self.assertIsNotNone(response)
+        # print(response.content)
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertIn("Bart", str(response.data))
+        self.assertIn("Mika", str(response.data))
+
+    @transaction.atomic
+    def test_create_with_403(self):
+        """
+        Unit test will test authenticated user, who does not have permission, to
+        make a POST request to the list API-endpoint.
+        """
+        Permission.objects.all().delete()
+        url = reverse('o55_customer_list_create_api_endpoint')
+        url += "?format=json"
+        response = self.authorized_client.post(url, data=json.dumps({}), content_type='application/json')
+        self.assertIsNotNone(response)
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+        self.assertIn("You do not have permission to access this API-endpoint.", str(response.data))

@@ -4,6 +4,7 @@ from django_filters import rest_framework as filters
 from django.conf.urls import url, include
 from rest_framework import generics
 from rest_framework import authentication, viewsets, permissions, status
+from rest_framework.response import Response
 from tenant_api.pagination import StandardResultsSetPagination
 from tenant_api.custom_permissions import CanAccessCustomerPermission
 from tenant_api.serializers.customer import (
@@ -27,8 +28,10 @@ class CustomerListCreateAPIView(generics.ListCreateAPIView):
         return queryset
 
     def post(self, request, format=None):
-        #TODO: IMPLEMENT.
-        return Response(data=[], status=status.HTTP_201_CREATED)
+        serializer = CustomerListCreateSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
 class CustomerRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
