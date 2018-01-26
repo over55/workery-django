@@ -51,7 +51,22 @@ class Command(BaseCommand):
             'can_get_associate',
             'can_post_associate',
             'can_put_associate',
-            'can_delete_associate'
+            'can_delete_associate',
+            'can_get_orders',
+            'can_get_order',
+            'can_post_order',
+            'can_put_order',
+            'can_delete_order',
+            'can_get_comments',
+            'can_get_comment',
+            'can_post_comment',
+            'can_put_comment',
+            'can_delete_comment',
+            'can_get_tags',
+            'can_get_tag',
+            'can_post_tag',
+            'can_put_tag',
+            'can_delete_tag'
         ]
         permissions = Permission.objects.filter(codename__in=permission_codenames)
         for permission in permissions.all():
@@ -75,7 +90,22 @@ class Command(BaseCommand):
             'can_get_associate',
             'can_post_associate',
             'can_put_associate',
-            # 'can_delete_associate'
+            # 'can_delete_associate',
+            'can_get_orders',
+            'can_get_order',
+            'can_post_order',
+            'can_put_order',
+            # 'can_delete_order',
+            'can_get_comments',
+            'can_get_comment',
+            'can_post_comment',
+            'can_put_comment',
+            # 'can_delete_comment',
+            'can_get_tags',
+            'can_get_tag',
+            'can_post_tag',
+            'can_put_tag',
+            # 'can_delete_tag'
         ]
         permissions = Permission.objects.filter(codename__in=permission_codenames)
         for permission in permissions.all():
@@ -98,7 +128,22 @@ class Command(BaseCommand):
             'can_get_associate',
             'can_post_associate',
             'can_put_associate',
-            # 'can_delete_associate'
+            # 'can_delete_associate',
+            'can_get_orders',
+            'can_get_order',
+            'can_post_order',
+            'can_put_order',
+            # 'can_delete_order',
+            'can_get_comments',
+            'can_get_comment',
+            'can_post_comment',
+            'can_put_comment',
+            # 'can_delete_comment',
+            'can_get_tags',
+            'can_get_tag',
+            'can_post_tag',
+            'can_put_tag',
+            # 'can_delete_tag'
         ]
         permissions = Permission.objects.filter(codename__in=permission_codenames)
         for permission in permissions.all():
@@ -111,7 +156,8 @@ class Command(BaseCommand):
 
         permission_codenames = [
             'can_get_associate',
-            'can_put_associate'
+            'can_put_associate',
+            'can_get_tags'
         ]
         permissions = Permission.objects.filter(codename__in=permission_codenames)
         for permission in permissions.all():
@@ -127,6 +173,7 @@ class Command(BaseCommand):
         permission_codenames = [
             'can_get_customer',
             'can_put_customer',
+            'can_get_tags'
         ]
         permissions = Permission.objects.filter(codename__in=permission_codenames)
         for permission in permissions.all():
