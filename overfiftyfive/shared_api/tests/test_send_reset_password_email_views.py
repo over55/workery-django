@@ -24,6 +24,7 @@ TEST_USER_PASSWORD = "123P@$$w0rd"
 TEST_USER_TEL_NUM = "123 123-1234"
 TEST_USER_TEL_EX_NUM = ""
 TEST_USER_CELL_NUM = "123 123-1234"
+TEST_USER_SCHEMA_NAME = "london"
 
 
 class APISendResetPasswordEmailWithSchemaTestCase(APITestCase, TenantTestCase):
@@ -43,16 +44,6 @@ class APISendResetPasswordEmailWithSchemaTestCase(APITestCase, TenantTestCase):
            TEST_USER_PASSWORD,
            "Bart",
            "Mika",
-           TEST_USER_TEL_NUM,
-           TEST_USER_TEL_EX_NUM,
-           TEST_USER_CELL_NUM,
-           "CA",
-           "London",
-           "Ontario",
-           "", # Post Offic #
-           "N6H 1B4",
-           "78 Riverside Drive",
-           "", # Extra line.
            verbosity=0
         )
 
@@ -69,7 +60,6 @@ class APISendResetPasswordEmailWithSchemaTestCase(APITestCase, TenantTestCase):
         url = reverse('o55_send_reset_password_email_api_endpoint')
         data = {
             'email_or_username': TEST_USER_EMAIL,
-            'tel_or_cell': TEST_USER_TEL_NUM,
         }
         response = self.c.post(url, json.dumps(data), content_type='application/json')
 
@@ -81,7 +71,6 @@ class APISendResetPasswordEmailWithSchemaTestCase(APITestCase, TenantTestCase):
         url = reverse('o55_send_reset_password_email_api_endpoint')
         data = {
             'email_or_username': "some-bad-email@overfiftyfive.com",
-            'tel_or_cell': TEST_USER_TEL_NUM,
         }
         response = self.c.post(url, json.dumps(data), content_type='application/json')
 

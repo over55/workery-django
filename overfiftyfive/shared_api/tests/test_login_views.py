@@ -16,6 +16,7 @@ from rest_framework.test import APITestCase
 from rest_framework.authtoken.models import Token
 from shared_foundation import constants
 
+
 TEST_SCHEMA_NAME = "test"
 TEST_USER_EMAIL = "bart@overfiftyfive.com"
 TEST_USER_USERNAME = "bart@overfiftyfive.com"

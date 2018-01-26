@@ -56,9 +56,5 @@ class SharedFranchiseListSerializer(serializers.ModelSerializer):
 
     def setup_eager_loading(cls, queryset):
         """ Perform necessary eager loading of data. """
-        queryset = queryset.prefetch_related(
-            'managers',
-            'frontline_staff',
-            'customers'
-        )
+        queryset = queryset.prefetch_related()
         return queryset

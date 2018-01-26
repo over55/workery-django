@@ -23,11 +23,6 @@ class SendResetPasswordEmailSerializer(serializers.Serializer):
         allow_blank=False,
         max_length=63,
     )
-    tel_or_cell = serializers.CharField(
-        required=True,
-        allow_blank=False,
-        max_length=16,
-    )
 
     def validate(self, clean_data):
         """
@@ -38,11 +33,8 @@ class SendResetPasswordEmailSerializer(serializers.Serializer):
                 Q(
                     Q(user__email=clean_data['email_or_username']) |
                     Q(user__username=clean_data['email_or_username'])
-                ) & Q(
-                    Q(telephone=clean_data['tel_or_cell']) |
-                    Q(mobile=clean_data['tel_or_cell'])
                 )
             )
         except SharedMe.DoesNotExist:
-            raise serializers.ValidationError("Email with that phone number does not exist.")
+            raise serializers.ValidationError("Email does not exist.")
         return clean_data

@@ -48,7 +48,7 @@ class LoginAPIView(APIView):
         token, created = Token.objects.get_or_create(user=authenticated_user)
 
         me = SharedMe.objects.get(user=authenticated_user)
-        franchise = SharedFranchise.objects.get_by_email_or_none(me.user.email)
+        franchise = me.franchise
 
         # SAVE ALL THE USER PROFILE INFORMATION TO A SESSION.
         request.session['me_token_key'] = str(token.key)
