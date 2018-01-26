@@ -22,7 +22,7 @@ TEST_USER_CELL_NUM = "123 123-1234"
 class TestCreateManagementAccountManagementCommand(TenantTestCase):
     """
     Console:
-    python manage.py test shared_foundation.tests.commands.test_create_tenant_account
+    python manage.py test tenant_foundation.tests.commands.test_create_tenant_account
     """
     def setUp(self):
         super(TestCreateManagementAccountManagementCommand, self).setUp()

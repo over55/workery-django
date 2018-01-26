@@ -23,6 +23,7 @@ from tenant_foundation.models import (
     Organization,
     Order,
     OrderComment,
+    Staff,
     Tag
 )
 from tenant_foundation.utils import *
@@ -107,29 +108,64 @@ class Command(BaseCommand):
 
         # Create our profile.
         SharedMe.objects.create(
+            franchise=franchise,
             user=user,
-            telephone=telephone,
-            telephone_extension=telephone_extension,
-            mobile=mobile,
-            address_country=address_country,
-            address_locality=address_locality,
-            address_region=address_region,
-            post_office_box_number=post_office_box_number,
-            postal_code=postal_code,
-            street_address=street_address,
-            street_address_extra=street_address_extra,
             was_email_activated=True,
         )
 
         # Attach our user to the group.
         user.groups.add(group_id)
 
-        # # Connection will set it back to our tenant.
-        # connection.set_schema(franchise.schema_name, True) # Switch to Tenant.
+        # Connection will set it back to our tenant.
+        connection.set_schema(franchise.schema_name, True) # Switch to Tenant.
 
-        # Attach the users.
-        user = O55User.objects.get(email=user.email)
-        franchise.managers.add(user)
+        # Create `Manager` or `Frontline Staff`.
+        if group_id == constants.MANAGEMENT_GROUP_ID and group_id == constants.FRONTLINE_GROUP_ID:
+            Staff.objects.create(
+                user=user,
+                telephone=telephone,
+                telephone_extension=telephone_extension,
+                mobile=mobile,
+                address_country=address_country,
+                address_locality=address_locality,
+                address_region=address_region,
+                post_office_box_number=post_office_box_number,
+                postal_code=postal_code,
+                street_address=street_address,
+                street_address_extra=street_address_extra,
+            )
+
+        # Create `Associate`.
+        if group_id == constants.ASSOICATE_GROUP_ID:
+            Associate.objects.create(
+                user=user,
+                telephone=telephone,
+                telephone_extension=telephone_extension,
+                mobile=mobile,
+                address_country=address_country,
+                address_locality=address_locality,
+                address_region=address_region,
+                post_office_box_number=post_office_box_number,
+                postal_code=postal_code,
+                street_address=street_address,
+                street_address_extra=street_address_extra,
+            )
+
+        # Create `Customer`.
+        if group_id == constants.CUSTOMER_GROUP_ID:
+            Customer.objects.create(
+                user=user,
+                telephone=telephone,
+                telephone_extension=telephone_extension,
+                mobile=mobile,
+                address_country=address_country,
+                address_locality=address_locality,
+                address_region=address_region,
+                post_office_box_number=post_office_box_number,
+                postal_code=postal_code,
+                street_address=street_address,
+                street_address_extra=street_address_extra,
+            )
 
         # For debugging purposes.
         self.stdout.write(

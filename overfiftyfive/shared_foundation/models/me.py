@@ -12,10 +12,9 @@ from starterkit.utils import (
 )
 from shared_foundation import constants
 from shared_foundation.models import (
-    AbstractSharedContactPoint,
-    AbstractSharedPostalAddress,
-    AbstractSharedGeoCoordinate,
-    O55User
+    AbstractSharedBigPk,
+    O55User,
+    SharedFranchise
 )
 
 
@@ -43,7 +42,7 @@ class SharedMeManager(models.Manager):
             return None
 
 
-class SharedMe(AbstractSharedContactPoint, AbstractSharedPostalAddress, AbstractSharedGeoCoordinate):
+class SharedMe(AbstractSharedBigPk):
     class Meta:
         app_label = 'shared_foundation'
         db_table = 'o55_mes'
@@ -67,6 +66,14 @@ class SharedMe(AbstractSharedContactPoint, AbstractSharedPostalAddress, Abstract
     user = models.OneToOneField(
         O55User,
         help_text=_('The user whom is owns this profile.'),
+        blank=True,
+        null=True,
+        on_delete=models.CASCADE,
+        db_index=True,
+    )
+    franchise = models.ForeignKey(
+        SharedFranchise,
+        help_text=_('The franchise whom this profile belongs to.'),
         blank=True,
         null=True,
         on_delete=models.CASCADE,
@@ -125,29 +132,29 @@ class SharedMe(AbstractSharedContactPoint, AbstractSharedPostalAddress, Abstract
     def __str__(self):
         return str(self.user.email)
 
-    def save(self, *args, **kwargs):
-        """
-        Override the "save" function.
-        """
-        # Update...
-        if self.id:
-            old_obj = SharedMe.objects.get(pk=self.pk)
-            if old_obj.email != self.email:
-                email_exists = User.objects.filter(email=self.email).exists()
-                if email_exists:
-                    raise ValidationError({
-                        'email':'Your email is not unique! Please pick another email.'
-                    })
-
-        # Create...
-        else:
-            email_exists = User.objects.filter(email=self.email).exists()
-            if email_exists:
-                raise ValidationError({
-                    'email':'Your email is not unique! Please pick another email.'
-                })
-
-        super(SharedMe, self).save(*args,**kwargs)
+    # def save(self, *args, **kwargs):
+    #     """
+    #     Override the "save" function.
+    #     """
+    #     # Update...
+    #     if self.id:
+    #         old_obj = SharedMe.objects.get(pk=self.pk)
+    #         if old_obj.email != self.email:
+    #             email_exists = User.objects.filter(email=self.user.email).exists()
+    #             if email_exists:
+    #                 raise ValidationError({
+    #                     'email':'Your email is not unique! Please pick another email.'
+    #                 })
+    #
+    #     # Create...
+    #     else:
+    #         email_exists = User.objects.filter(email=self.user.email).exists()
+    #         if email_exists:
+    #             raise ValidationError({
+    #                 'email':'Your email is not unique! Please pick another email.'
+    #             })
+    #
+    #     super(SharedMe, self).save(*args,**kwargs)
 
     def generate_pr_code(self):
         """

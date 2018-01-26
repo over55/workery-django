@@ -54,25 +54,6 @@ class SharedFranchise(TenantMixin, AbstractSharedThing, AbstractSharedContactPoi
     #  Custom Fields
     #
 
-    managers = models.ManyToManyField(
-        O55User,
-        help_text=_('The managers who belong to this "Franchise" and are administrators or have executive decision making authority.'),
-        blank=True,
-        related_name="%(app_label)s_%(class)s_managers_related"
-    )
-    frontline_staff = models.ManyToManyField(
-        O55User,
-        help_text=_('The office staff and or volunteers who belong to this "Franchise".'),
-        blank=True,
-        related_name="%(app_label)s_%(class)s_frontline_staff_related"
-    )
-    customers = models.ManyToManyField(
-        O55User,
-        help_text=_('The customers who belong to this "Franchise".'),
-        blank=True,
-        related_name="%(app_label)s_%(class)s_customers_related"
-    )
-
     #
     #  FUNCTIONS
     #
