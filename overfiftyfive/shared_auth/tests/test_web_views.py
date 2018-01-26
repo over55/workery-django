@@ -49,16 +49,6 @@ class TestSharedAuthWebViews(TenantTestCase):
            TEST_USER_PASSWORD,
            "Bart",
            "Mika",
-           TEST_USER_TEL_NUM,
-           TEST_USER_TEL_EX_NUM,
-           TEST_USER_CELL_NUM,
-           "CA",
-           "London",
-           "Ontario",
-           "", # Post Offic #
-           "N6H 1B4",
-           "78 Riverside Drive",
-           "", # Extra line.
            verbosity=0
         )
 
@@ -75,7 +65,9 @@ class TestSharedAuthWebViews(TenantTestCase):
         )
 
         # Attach our user(s) to our test tenant organization.
-        self.tenant.managers.add(user)
+        me = SharedMe.objects.get(user=user)
+        me.franchise = self.tenant
+        me.save()
 
     def tearDown(self):
         """

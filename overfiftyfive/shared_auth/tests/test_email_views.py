@@ -33,16 +33,6 @@ class TestSharedAuthEmailViews(TenantTestCase):
            TEST_USER_PASSWORD,
            "Bart",
            "Mika",
-           TEST_USER_TEL_NUM,
-           TEST_USER_TEL_EX_NUM,
-           TEST_USER_CELL_NUM,
-           "CA",
-           "London",
-           "Ontario",
-           "", # Post Offic #
-           "N6H 1B4",
-           "78 Riverside Drive",
-           "", # Extra line.
            verbosity=0
         )
 

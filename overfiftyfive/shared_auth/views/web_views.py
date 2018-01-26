@@ -20,7 +20,8 @@ def user_login_redirector_master_page(request):
 
         # CASE 1 OF 2:
         # First check to see if user belongs to an organization to redirect to.
-        franchise = SharedFranchise.objects.get_by_email_or_none(request.user.email)
+        me = SharedMe.objects.get(user=request.user)
+        franchise = me.franchise
         if franchise:
             return HttpResponseRedirect(franchise.reverse('o55_tenant_dashboard_master'))
 
