@@ -70,7 +70,7 @@ class Associate(AbstractBigPk, AbstractThing, AbstractContactPoint, AbstractPost
             ("can_get_associates", "Can get associates"),
             ("can_get_associate", "Can get associate"),
             ("can_post_associate", "Can create associate"),
-            ("can_pust_associate", "Can update associate"),
+            ("can_put_associate", "Can update associate"),
             ("can_delete_associate", "Can delete associate"),
         )
 

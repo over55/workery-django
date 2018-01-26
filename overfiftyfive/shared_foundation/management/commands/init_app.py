@@ -46,7 +46,12 @@ class Command(BaseCommand):
             'can_get_customer',
             'can_post_customer',
             'can_put_customer',
-            'can_delete_customer'
+            'can_delete_customer',
+            'can_get_associates',
+            'can_get_associate',
+            'can_post_associate',
+            'can_put_associate',
+            'can_delete_associate'
         ]
         permissions = Permission.objects.filter(codename__in=permission_codenames)
         for permission in permissions.all():
@@ -64,8 +69,13 @@ class Command(BaseCommand):
             'can_get_customer',
             'can_post_customer',
             'can_put_customer',
-            'can_delete_customer'
-            #'can_delete_customer'
+            'can_delete_customer',
+            #'can_delete_customer',
+            'can_get_associates',
+            'can_get_associate',
+            'can_post_associate',
+            'can_put_associate',
+            # 'can_delete_associate'
         ]
         permissions = Permission.objects.filter(codename__in=permission_codenames)
         for permission in permissions.all():
@@ -83,7 +93,12 @@ class Command(BaseCommand):
             'can_get_customer',
             'can_post_customer',
             'can_put_customer',
-            # 'can_delete_customer'
+            # 'can_delete_customer',
+            'can_get_associates',
+            'can_get_associate',
+            'can_post_associate',
+            'can_put_associate',
+            # 'can_delete_associate'
         ]
         permissions = Permission.objects.filter(codename__in=permission_codenames)
         for permission in permissions.all():
@@ -95,7 +110,8 @@ class Command(BaseCommand):
         group.save()
 
         permission_codenames = [
-
+            'can_get_associate',
+            'can_put_associate'
         ]
         permissions = Permission.objects.filter(codename__in=permission_codenames)
         for permission in permissions.all():
@@ -110,7 +126,6 @@ class Command(BaseCommand):
 
         permission_codenames = [
             'can_get_customer',
-            'can_post_customer',
             'can_put_customer',
         ]
         permissions = Permission.objects.filter(codename__in=permission_codenames)

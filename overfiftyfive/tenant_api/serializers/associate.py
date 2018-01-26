@@ -79,7 +79,45 @@ class AssociateRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
             # Thing
             'created',
             'last_modified',
-            'owner'
+            'owner',
+
+            # Profile
+            'given_name',
+            'middle_name',
+            'last_name',
+            'birthdate',
+            # 'is_senior',
+            # 'is_support',
+            # 'job_info_read',
+            'how_hear',
+            'join_date',
+            'organizations',
+
+            # Contact Point
+            'area_served',
+            'available_language',
+            'contact_type',
+            'email',
+            'fax_number',
+            'hours_available',
+            'telephone',
+            'telephone_extension',
+            'mobile',
+
+            # Postal Address
+            'address_country',
+            'address_locality',
+            'address_region',
+            'post_office_box_number',
+            'postal_code',
+            'street_address',
+            'street_address_extra',
+
+            # Geo-coordinate
+            'elevation',
+            'latitude',
+            'longitude',
+            'location'
         )
 
     def setup_eager_loading(cls, queryset):

@@ -2,9 +2,15 @@
 import django_filters
 from django_filters import rest_framework as filters
 from django.conf.urls import url, include
+from django.shortcuts import get_list_or_404, get_object_or_404
 from rest_framework import generics
 from rest_framework import authentication, viewsets, permissions, status
+from rest_framework.response import Response
 from tenant_api.pagination import StandardResultsSetPagination
+from tenant_api.permissions.associate import (
+   CanListCreateAssociatePermission,
+   CanRetrieveUpdateDestroyAssociatePermission
+)
 from tenant_api.serializers.associate import (
     AssociateListCreateSerializer,
     AssociateRetrieveUpdateDestroySerializer
@@ -18,16 +24,24 @@ class AssociateListCreateAPIView(generics.ListCreateAPIView):
     authentication_classes = (authentication.TokenAuthentication, )
     permission_classes = (
         permissions.IsAuthenticated,
+        CanListCreateAssociatePermission
     )
 
     def get_queryset(self):
-        queryset = Associate.objects.all()
-        #TODO: IMPLEMENT.
+        """
+        List
+        """
+        queryset = Associate.objects.all().order_by('-created')
         return queryset
 
     def post(self, request, format=None):
-        #TODO: IMPLEMENT.
-        return Response(data=[], status=status.HTTP_201_CREATED)
+        """
+        Create
+        """
+        serializer = AssociateListCreateSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
 class AssociateRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
@@ -36,19 +50,37 @@ class AssociateRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIVie
     authentication_classes = (authentication.TokenAuthentication, )
     permission_classes = (
         permissions.IsAuthenticated,
+        CanRetrieveUpdateDestroyAssociatePermission
     )
 
     def get(self, request, pk=None):
-        #TODO: IMPLEMENT.
+        """
+        Retrieve
+        """
+        associate = get_object_or_404(Associate, pk=pk)
+        self.check_object_permissions(request, associate)  # Validate permissions.
+        serializer = AssociateRetrieveUpdateDestroySerializer(associate, many=False)
         return Response(
-            data=[],
+            data=serializer.data,
             status=status.HTTP_200_OK
         )
 
     def put(self, request, pk=None):
-        #TODO: IMPLEMENT.
-        return Response(data=[], status=status.HTTP_200_OK)
+        """
+        Update
+        """
+        associate = get_object_or_404(Associate, pk=pk)
+        self.check_object_permissions(request, associate)  # Validate permissions.
+        serializer = AssociateRetrieveUpdateDestroySerializer(associate, data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
     def delete(self, request, pk=None):
-        #TODO: IMPLEMENT.
+        """
+        Delete
+        """
+        associate = get_object_or_404(Associate, pk=pk)
+        self.check_object_permissions(request, associate)  # Validate permissions.
+        associate.delete()
         return Response(data=[], status=status.HTTP_200_OK)
