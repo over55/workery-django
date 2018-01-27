@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import django_filters
 from django_filters import rest_framework as filters
+from starterkit.drf.permissions import IsAuthenticatedAndIsActivePermission
 from django.conf.urls import url, include
 from rest_framework import generics
 from rest_framework import authentication, viewsets, permissions, status
@@ -18,6 +19,7 @@ class CommentListCreateAPIView(generics.ListCreateAPIView):
     authentication_classes = (authentication.TokenAuthentication, )
     permission_classes = (
         permissions.IsAuthenticated,
+        IsAuthenticatedAndIsActivePermission
     )
 
     def get_queryset(self):
@@ -36,6 +38,7 @@ class CommentRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView)
     authentication_classes = (authentication.TokenAuthentication, )
     permission_classes = (
         permissions.IsAuthenticated,
+        IsAuthenticatedAndIsActivePermission
     )
 
     def get(self, request, pk=None):

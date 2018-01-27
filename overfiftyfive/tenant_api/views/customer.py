@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import django_filters
 from django_filters import rest_framework as filters
+from starterkit.drf.permissions import IsAuthenticatedAndIsActivePermission
 from django.conf.urls import url, include
 from django.shortcuts import get_list_or_404, get_object_or_404
 from rest_framework import generics
@@ -24,6 +25,7 @@ class CustomerListCreateAPIView(generics.ListCreateAPIView):
     authentication_classes = (authentication.TokenAuthentication, )
     permission_classes = (
         permissions.IsAuthenticated,
+        IsAuthenticatedAndIsActivePermission,
         CanListCreateCustomerPermission
     )
 
@@ -50,6 +52,7 @@ class CustomerRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView
     authentication_classes = (authentication.TokenAuthentication, )
     permission_classes = (
         permissions.IsAuthenticated,
+        IsAuthenticatedAndIsActivePermission,
         CanRetrieveUpdateDestroyCustomerPermission
     )
 
