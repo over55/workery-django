@@ -35,9 +35,6 @@ class TestMe(TenantTestCase):
         )
         self.me = SharedMe.objects.create(
             user=self.user,
-            telephone='',
-            telephone_extension='',
-            mobile=''
         )
 
     def tearDown(self):
