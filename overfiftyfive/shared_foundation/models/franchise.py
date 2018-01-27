@@ -18,15 +18,10 @@ from shared_foundation.models.o55_user import O55User
 
 
 class SharedFranchiseManager(models.Manager):
-    def get_by_email_or_none(self, email):
-        try:
-            return SharedFranchise.objects.get(
-                Q(managers__email=email) |
-                Q(frontline_staff__email=email) |
-                Q(customers__email=email)
-            )
-        except SharedFranchise.DoesNotExist:
-            return None
+    def delete_all(self):
+        items = SharedFranchise.objects.all()
+        for item in items.all():
+            item.delete()
 
 
 class SharedFranchise(TenantMixin, AbstractSharedThing, AbstractSharedContactPoint, AbstractSharedPostalAddress, AbstractSharedGeoCoordinate):

@@ -34,24 +34,19 @@ class TestFranchise(TenantTestCase):
             is_staff=True
         )
         self.tenant.name = "Over55 (London) Inc."
-        self.tenant.frontline_staff.add(self.user)
+        self.me = SharedMe.objects.create(
+            user=self.user,
+            franchise = self.tenant
+        )
 
     def tearDown(self):
+        SharedFranchise.objects.delete_all()
         del self.c
         super(TestFranchise, self).tearDown()
 
     def test_str(self):
         self.assertIsNotNone(str(self.tenant))
         self.assertIn("Over55 (London) Inc.", str(self.tenant))
-
-    def test_get_by_email_or_none(self):
-        # CASE 1 OF 2:
-        franchise = SharedFranchise.objects.get_by_email_or_none(TEST_USER_EMAIL)
-        self.assertIsNotNone(franchise)
-
-        # CASE 2 OF 2:
-        franchise = SharedFranchise.objects.get_by_email_or_none("trudy@overfiftyfive.com")
-        self.assertIsNone(franchise)
 
     def test_reverse(self):
         # Attempt to lookup a URL.
