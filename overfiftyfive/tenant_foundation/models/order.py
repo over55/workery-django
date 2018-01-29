@@ -3,7 +3,6 @@ import csv
 import pytz
 from datetime import date, datetime, timedelta
 from django.conf import settings
-from django.contrib.auth.models import User
 from django.db import models
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
@@ -16,6 +15,7 @@ from starterkit.utils import (
     float_or_none
 )
 from shared_foundation.constants import *
+from shared_foundation.models.o55_user import O55User
 from tenant_foundation.models import AbstractBigPk
 from tenant_foundation.utils import *
 
@@ -130,6 +130,26 @@ class Order(AbstractBigPk):
     #Professional
     #Refer
     #Score
+
+    #
+    #  SYSTEM
+    #
+    created = models.DateTimeField(auto_now_add=True, db_index=True)
+    created_by = models.ForeignKey(
+        O55User,
+        help_text=_('The user whom created this order.'),
+        related_name="%(app_label)s_%(class)s_created_by_related",
+        on_delete=models.CASCADE
+    )
+    last_modified = models.DateTimeField(auto_now=True)
+    last_modified_by = models.ForeignKey(
+        O55User,
+        help_text=_('The user whom last modified this order.'),
+        related_name="%(app_label)s_%(class)s_last_modified_by_related",
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True
+    )
 
     #
     #  FUNCTIONS

@@ -3,9 +3,15 @@ import django_filters
 from django_filters import rest_framework as filters
 from starterkit.drf.permissions import IsAuthenticatedAndIsActivePermission
 from django.conf.urls import url, include
+from django.shortcuts import get_list_or_404, get_object_or_404
 from rest_framework import generics
 from rest_framework import authentication, viewsets, permissions, status
+from rest_framework.response import Response
 from tenant_api.pagination import StandardResultsSetPagination
+from tenant_api.permissions.order import (
+   CanListCreateOrderPermission,
+   CanRetrieveUpdateDestroyOrderPermission
+)
 from tenant_api.serializers.order import (
     OrderListCreateSerializer,
     OrderRetrieveUpdateDestroySerializer
@@ -19,17 +25,29 @@ class OrderListCreateAPIView(generics.ListCreateAPIView):
     authentication_classes = (authentication.TokenAuthentication, )
     permission_classes = (
         permissions.IsAuthenticated,
-        IsAuthenticatedAndIsActivePermission
+        IsAuthenticatedAndIsActivePermission,
+        CanListCreateOrderPermission
     )
 
     def get_queryset(self):
-        queryset = Order.objects.all()
-        #TODO: IMPLEMENT.
+        """
+        List
+        """
+        queryset = Order.objects.all().order_by('-created')
+        s = self.get_serializer_class()
+        queryset = s.setup_eager_loading(self, queryset)
         return queryset
 
     def post(self, request, format=None):
-        #TODO: IMPLEMENT.
-        return Response(data=[], status=status.HTTP_201_CREATED)
+        """
+        Create
+        """
+        serializer = OrderListCreateSerializer(data=request.data, context={
+            'created_by': request.user
+        })
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
 class OrderRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
@@ -38,20 +56,41 @@ class OrderRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
     authentication_classes = (authentication.TokenAuthentication, )
     permission_classes = (
         permissions.IsAuthenticated,
-        IsAuthenticatedAndIsActivePermission
+        IsAuthenticatedAndIsActivePermission,
+        CanRetrieveUpdateDestroyOrderPermission
     )
 
     def get(self, request, pk=None):
-        #TODO: IMPLEMENT.
+        """
+        Retrieve
+        """
+        order = get_object_or_404(Order, pk=pk)
+        self.check_object_permissions(request, order)  # Validate permissions.
+        serializer = OrderRetrieveUpdateDestroySerializer(order, many=False)
+        # queryset = serializer.setup_eager_loading(self, queryset)
         return Response(
-            data=[],
+            data=serializer.data,
             status=status.HTTP_200_OK
         )
 
     def put(self, request, pk=None):
-        #TODO: IMPLEMENT.
-        return Response(data=[], status=status.HTTP_200_OK)
+        """
+        Update
+        """
+        order = get_object_or_404(Order, pk=pk)
+        self.check_object_permissions(request, order)  # Validate permissions.
+        serializer = OrderRetrieveUpdateDestroySerializer(order, data=request.data, context={
+            'last_modified_by': request.user
+        })
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
     def delete(self, request, pk=None):
-        #TODO: IMPLEMENT.
+        """
+        Delete
+        """
+        order = get_object_or_404(Order, pk=pk)
+        self.check_object_permissions(request, order)  # Validate permissions.
+        order.delete()
         return Response(data=[], status=status.HTTP_200_OK)

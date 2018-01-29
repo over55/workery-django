@@ -14,6 +14,8 @@ urlpatterns = [
     url(r'^api/associate/(?P<pk>[^/.]+)/$', AssociateRetrieveUpdateDestroyAPIView.as_view(), name='o55_associate_retrieve_update_destroy_api_endpoint'),
     url(r'^api/customers$', CustomerListCreateAPIView.as_view(), name='o55_customer_list_create_api_endpoint'),
     url(r'^api/customer/(?P<pk>[^/.]+)/$', CustomerRetrieveUpdateDestroyAPIView.as_view(), name='o55_customer_retrieve_update_destroy_api_endpoint'),
+    url(r'^api/orders$', OrderListCreateAPIView.as_view(), name='o55_order_list_create_api_endpoint'),
+    url(r'^api/order/(?P<pk>[^/.]+)/$', OrderRetrieveUpdateDestroyAPIView.as_view(), name='o55_order_retrieve_update_destroy_api_endpoint'),
 ]
 
 

@@ -24,7 +24,7 @@ class TestTenantStaffModel(TenantTestCase):
     def setUp(self):
         super(TestTenantStaffModel, self).setUp()
         self.c = TenantClient(self.tenant)
-        self.user = O55User.objects.create(
+        self.owner = O55User.objects.create(
             first_name="Aurthor",
             last_name="Clarke",
             email=TEST_USER_EMAIL,
@@ -34,7 +34,7 @@ class TestTenantStaffModel(TenantTestCase):
             is_staff=True
         )
         self.staff = Staff.objects.create(
-            user=self.user,
+            owner=self.owner,
             given_name="Aurthor",
             last_name="Clarke",
             middle_name="C."
@@ -44,7 +44,7 @@ class TestTenantStaffModel(TenantTestCase):
         Staff.objects.delete_all()
         del self.c
         self.staff = None
-        self.user.delete()
+        self.owner.delete()
         super(TestTenantStaffModel, self).tearDown()
 
     def test_str(self):
@@ -70,7 +70,7 @@ class TestTenantStaffModel(TenantTestCase):
 
     def test_get_by_user_or_none(self):
         # CASE 1 OF 2:
-        staff = Staff.objects.get_by_user_or_none(self.user)
+        staff = Staff.objects.get_by_user_or_none(self.owner)
         self.assertIsNotNone(staff)
 
         # CASE 2 OF 2:
