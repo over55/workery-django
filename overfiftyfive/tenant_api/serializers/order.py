@@ -11,6 +11,7 @@ from django.utils.http import urlquote
 from rest_framework import exceptions, serializers
 from rest_framework.response import Response
 from rest_framework.authtoken.models import Token
+from tenant_api.serializers.order_comment import OrderCommentSerializer
 from tenant_foundation.models import Order, Tag, Comment, OrderComment
 
 
@@ -22,7 +23,7 @@ class OrderListCreateSerializer(serializers.ModelSerializer):
     # created_by = serializers.ReadOnlyField()
     # last_modified_by = serializers.ReadOnlyField()
     category_tags = serializers.PrimaryKeyRelatedField(many=True, queryset=Tag.objects.all(), allow_null=True)
-    # comments = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
+    comments = OrderCommentSerializer(many=True, read_only=True)
     created_by_first_name = serializers.ReadOnlyField(source='associate.created_by.first_name')
     created_by_last_name = serializers.ReadOnlyField(source='associate.created_by.last_name')
     last_modified_by_first_name = serializers.ReadOnlyField(source='customer.last_modified_by.first_name')
@@ -31,6 +32,7 @@ class OrderListCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Order
         fields = (
+            'id',
             'assignment_date',
             'associate_first_name',
             'associate_last_name',
@@ -38,11 +40,10 @@ class OrderListCreateSerializer(serializers.ModelSerializer):
             'customer_first_name',
             'customer_last_name',
             'category_tags',
-            # 'comments',
+            'comments',
             'completion_date',
             'customer',
             'hours',
-            'id',
             'is_cancelled',
             'is_ongoing',
             'payment_date',
@@ -115,7 +116,7 @@ class OrderRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
     # created_by = serializers.ReadOnlyField()
     # last_modified_by = serializers.ReadOnlyField()
     category_tags = serializers.PrimaryKeyRelatedField(many=True, queryset=Tag.objects.all(), allow_null=True)
-    # comments = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
+    comments = OrderCommentSerializer(many=True, read_only=True)
     created_by_first_name = serializers.ReadOnlyField(source='associate.created_by.first_name')
     created_by_last_name = serializers.ReadOnlyField(source='associate.created_by.last_name')
     last_modified_by_first_name = serializers.ReadOnlyField(source='customer.last_modified_by.first_name')
@@ -131,7 +132,7 @@ class OrderRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
             'customer_first_name',
             'customer_last_name',
             'category_tags',
-            # 'comments',
+            'comments',
             'completion_date',
             'customer',
             'hours',
