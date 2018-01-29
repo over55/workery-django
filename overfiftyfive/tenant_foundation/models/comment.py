@@ -51,7 +51,7 @@ class Comment(models.Model):
 
     created = models.DateTimeField(auto_now_add=True)
     last_modified = models.DateTimeField(auto_now=True)
-    owner = models.ForeignKey(
+    created_by = models.ForeignKey(
         User,
         help_text=_('The user whom owns this comment.'),
         related_name="%(app_label)s_%(class)s_owner_related",

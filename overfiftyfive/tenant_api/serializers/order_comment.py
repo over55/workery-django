@@ -11,11 +11,13 @@ from django.utils.http import urlquote
 from rest_framework import exceptions, serializers
 from rest_framework.response import Response
 from rest_framework.authtoken.models import Token
+from tenant_api.serializers.comment import CommentListCreateSerializer
 from tenant_foundation.models import OrderComment
 
 
 class OrderCommentSerializer(serializers.ModelSerializer):
     order = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
+    comment = CommentListCreateSerializer(many=False, read_only=True)
 
     class Meta:
         model = OrderComment
