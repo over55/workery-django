@@ -70,6 +70,7 @@ class OrderListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
 
         # Load up the dependat.
         call_command('init_app', verbosity=0)
+        call_command('populate_tenant_content', TEST_SCHEMA_NAME, verbosity=0)
         call_command('populate_tenant_sample_db', TEST_SCHEMA_NAME, verbosity=0)
 
         # Get objects.
