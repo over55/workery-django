@@ -19,6 +19,7 @@ class TagListCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tag
         fields = (
+            'id',
             'text'
         )
 
@@ -29,6 +30,6 @@ class TagRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
     class Meta:
         model = Tag
         fields = (
-            # Thing
+            'id',
             'text',
         )

@@ -25,7 +25,6 @@ class SkillSetListCreateSerializer(serializers.ModelSerializer):
         )
 
 
-
 class SkillSetRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
 
     class Meta:
