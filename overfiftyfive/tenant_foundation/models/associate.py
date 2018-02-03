@@ -77,59 +77,70 @@ class Associate(AbstractBigPk, AbstractThing, AbstractContactPoint, AbstractPost
     objects = AssociateManager()
 
     #
-    #  CUSTOM FIELDS
+    #  PERSON FIELDS - http://schema.org/Person
     #
+
+    organizations = models.ManyToManyField(
+        "Organization",
+        help_text=_('The organizations that this associate is affiliated with.'),
+        blank=True,
+        through='AssociateAffiliation'
+    )
 
     given_name = models.CharField(
         _("Given Name"),
         max_length=63,
-        help_text=_('The employees given name.'),
+        help_text=_('The associates given name.'),
         blank=True,
         null=True,
     )
     middle_name = models.CharField(
         _("Middle Name"),
         max_length=63,
-        help_text=_('The employees last name.'),
+        help_text=_('The associates last name.'),
         blank=True,
         null=True,
     )
     last_name = models.CharField(
         _("Last Name"),
         max_length=63,
-        help_text=_('The employees last name.'),
+        help_text=_('The associates last name.'),
         blank=True,
         null=True,
     )
     business = models.CharField(
         _("Business"),
         max_length=63,
-        help_text=_('The employees business status.'),
+        help_text=_('The associates business status.'),
         blank=True,
         null=True,
     )
     birthdate = models.DateTimeField(
         _('Birthdate'),
-        help_text=_('The employees birthdate.'),
+        help_text=_('The associates birthdate.'),
         blank=True,
         null=True
     )
     join_date = models.DateTimeField(
         _("Join Date"),
-        help_text=_('The date the employee joined.'),
+        help_text=_('The date the associate joined.'),
         null=True,
         blank=True,
     )
+
+    #
+    #  CUSTOM FIELDS
+    #
     hourly_salary_desired = models.PositiveSmallIntegerField(
         _("Hourly Salary Desired"),
-        help_text=_('The hourly salary rate the employee'),
+        help_text=_('The hourly salary rate the associate'),
         null=True,
         blank=True,
     )
     limit_special = models.CharField(
         _("Limit Special"),
         max_length=255,
-        help_text=_('Any special limitations / handicaps this employee has.'),
+        help_text=_('Any special limitations / handicaps this associate has.'),
         blank=True,
         null=True,
     )
@@ -147,83 +158,78 @@ class Associate(AbstractBigPk, AbstractThing, AbstractContactPoint, AbstractPost
     )
     police_check = models.DateTimeField(
         _("Police Check"),
-        help_text=_('The date the employee took a police check.'),
+        help_text=_('The date the associate took a police check.'),
         null=True,
         blank=True,
     )
     comments = models.CharField(
         _("Comments"),
         max_length=1027,
-        help_text=_('The comments associated with this employee.'),
+        help_text=_('The comments associated with this associate.'),
         blank=True,
         null=True,
     )
     drivers_license_class = models.CharField(
         _("Divers License Class"),
         max_length=7,
-        help_text=_('The employees license class for driving.'),
+        help_text=_('The associates license class for driving.'),
         blank=True,
         null=True,
     )
     has_car = models.BooleanField(
         _("Has Car"),
-        help_text=_('Indicates whether employee has a car or not.'),
+        help_text=_('Indicates whether associate has a car or not.'),
         default=False,
         blank=True
     )
     has_van = models.BooleanField(
         _("Has Van"),
-        help_text=_('Indicates whether employee has a van or not.'),
+        help_text=_('Indicates whether associate has a van or not.'),
         default=False,
         blank=True
     )
     has_truck = models.BooleanField(
         _("Has Truck"),
-        help_text=_('Indicates whether employee has a truck or not.'),
+        help_text=_('Indicates whether associate has a truck or not.'),
         default=False,
         blank=True
     )
     is_full_time = models.BooleanField(
         _("Is Full Time"),
-        help_text=_('Indicates whether employee is full time or not.'),
+        help_text=_('Indicates whether associate is full time or not.'),
         default=False,
         blank=True
     )
     is_part_time = models.BooleanField(
         _("Is Part Time"),
-        help_text=_('Indicates whether employee is part time or not.'),
+        help_text=_('Indicates whether associate is part time or not.'),
         default=False,
         blank=True
     )
     is_contract_time = models.BooleanField(
         _("Is Contract Time"),
-        help_text=_('Indicates whether employee is contracted or not.'),
+        help_text=_('Indicates whether associate is contracted or not.'),
         default=False,
         blank=True
     )
     is_small_job = models.BooleanField(
         _("Is Small Job"),
-        help_text=_('Indicates whether employee is employed for small jobs or not.'),
+        help_text=_('Indicates whether associate is employed for small jobs or not.'),
         default=False,
         blank=True
     )
     how_hear = models.CharField(
         _("How hear"),
         max_length=2055,
-        help_text=_('How employee heared about this business.'),
+        help_text=_('How associate heared about this business.'),
         blank=True,
         null=True,
     )
-
-    #
-    #  PERSON FIELDS - http://schema.org/Person
-    #
-
-    organizations = models.ManyToManyField(
-        "Organization",
-        help_text=_('The organizations that this associate is affiliated with.'),
+    skill_sets = models.ManyToManyField(
+        "SkillSet",
+        help_text=_('The skill sets this associate has.'),
         blank=True,
-        through='AssociateAffiliation'
+        related_name="%(app_label)s_%(class)s_skill_sets_related"
     )
 
     #

@@ -24,17 +24,30 @@ class AssociateListCreateSerializer(serializers.ModelSerializer):
             'last_modified',
             'owner',
 
-            # Profile
+            # Person
             'given_name',
             'middle_name',
             'last_name',
             'birthdate',
-            # 'is_senior',
-            # 'is_support',
-            # 'job_info_read',
-            'how_hear',
             'join_date',
             'organizations',
+
+            # Misc
+            'hourly_salary_desired',
+            'limit_special',
+            'dues_pd',
+            'ins_due',
+            'police_check',
+            'drivers_license_class',
+            'has_car',
+            'has_van',
+            'has_truck',
+            'is_full_time',
+            'is_part_time',
+            'is_contract_time',
+            'is_small_job',
+            'how_hear',
+            'skill_sets',
 
             # Contact Point
             'area_served',
