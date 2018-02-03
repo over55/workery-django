@@ -66,7 +66,12 @@ class Command(BaseCommand):
             'can_get_tag',
             'can_post_tag',
             'can_put_tag',
-            'can_delete_tag'
+            'can_delete_tag',
+            'can_get_skill_sets',
+            'can_get_skill_set',
+            'can_post_skill_set',
+            'can_put_skill_set',
+            'can_delete_skill_set',
         ]
         permissions = Permission.objects.filter(codename__in=permission_codenames)
         for permission in permissions.all():
@@ -105,7 +110,12 @@ class Command(BaseCommand):
             'can_get_tag',
             'can_post_tag',
             'can_put_tag',
-            # 'can_delete_tag'
+            # 'can_delete_tag',
+            'can_get_skill_sets',
+            'can_get_skill_set',
+            'can_post_skill_set',
+            'can_put_skill_set',
+            # 'can_delete_skill_set',
         ]
         permissions = Permission.objects.filter(codename__in=permission_codenames)
         for permission in permissions.all():
@@ -143,7 +153,9 @@ class Command(BaseCommand):
             'can_get_tag',
             'can_post_tag',
             'can_put_tag',
-            # 'can_delete_tag'
+            # 'can_delete_tag',
+            'can_get_skill_sets',
+            'can_get_skill_set',
         ]
         permissions = Permission.objects.filter(codename__in=permission_codenames)
         for permission in permissions.all():
@@ -157,7 +169,10 @@ class Command(BaseCommand):
         permission_codenames = [
             'can_get_associate',
             'can_put_associate',
-            'can_get_tags'
+            'can_get_tags',
+            'can_get_tag',
+            'can_get_skill_sets',
+            'can_get_skill_set',
         ]
         permissions = Permission.objects.filter(codename__in=permission_codenames)
         for permission in permissions.all():
@@ -173,7 +188,10 @@ class Command(BaseCommand):
         permission_codenames = [
             'can_get_customer',
             'can_put_customer',
-            'can_get_tags'
+            'can_get_tags',
+            'can_get_tag',
+            'can_get_skill_sets',
+            'can_get_skill_set',
         ]
         permissions = Permission.objects.filter(codename__in=permission_codenames)
         for permission in permissions.all():
