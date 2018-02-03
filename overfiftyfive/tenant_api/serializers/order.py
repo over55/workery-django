@@ -73,7 +73,6 @@ class OrderListCreateSerializer(serializers.ModelSerializer):
         assignment_date = validated_data['assignment_date']
         associate = validated_data['associate']
         category_tags = validated_data.get('category_tags', None)
-        comments = validated_data.get('comments', None)
         completion_date = validated_data.get('completion_date', None)
         customer = validated_data['customer']
         hours = validated_data.get('hours', 0)
@@ -101,8 +100,11 @@ class OrderListCreateSerializer(serializers.ModelSerializer):
         if category_tags is not None:
             order.category_tags.set(category_tags)
 
-        if comments is not None:
-            order.comments.set(comments)
+        # Add seperate fields.
+        validated_data['created'] = order.created
+        validated_data['created_by'] = order.created_by
+        validated_data['last_modified_by'] = order.last_modified_by
+        validated_data['last_modified'] = order.last_modified
 
         # Return our validated data.
         return validated_data

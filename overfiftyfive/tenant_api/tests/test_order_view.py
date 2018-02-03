@@ -22,7 +22,8 @@ from shared_foundation.models.o55_user import O55User
 from tenant_foundation.models import (
     Associate,
     Customer,
-    Order
+    Order,
+    Tag
 )
 
 
@@ -108,6 +109,11 @@ class OrderListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
         # Load up the tenant.
         connection.set_schema(TEST_SCHEMA_NAME, True) # Switch to Tenant.
 
+        # Tag
+        self.tag = Tag.objects.create(
+            text="Test Tag"
+        )
+
         # Create our order.
         self.order = Order.objects.create(
             customer=Customer.objects.get(owner__email="sikari@overfiftyfive.com"),
@@ -116,6 +122,7 @@ class OrderListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
             created_by=O55User.objects.get(email="fherbert@overfiftyfive.com"),
             last_modified_by=None
         )
+        self.order.category_tags.set([self.tag])
 
     @transaction.atomic
     def tearDown(self):
@@ -216,16 +223,16 @@ class OrderListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
             'street_address': '78 Riverside Drive',
             'postal_code': 'N6H 1B4',
             'assignment_date': "2018-01-30",
-            'category_tags': [],
-            'comments': []
+            'category_tags': [self.tag.id],
         }), content_type='application/json')
         self.assertIsNotNone(response)
-        # print(response.content)
+        #print(response.content)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertIn("Shinji", str(response.data))
         self.assertIn("Ikari", str(response.data))
         self.assertIn("Rei", str(response.data))
         self.assertIn("Ayanami", str(response.data))
+        self.assertIn("[1]", str(response.data)) # category_tags
 
         # Manager
         response = self.manager_client.post(url, data=json.dumps({
@@ -249,6 +256,7 @@ class OrderListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
         self.assertIn("Ikari", str(response.data))
         self.assertIn("Rei", str(response.data))
         self.assertIn("Ayanami", str(response.data))
+        self.assertIn("[]", str(response.data)) # category_tags
 
         # Staff
         response = self.staff_client.post(url, data=json.dumps({
