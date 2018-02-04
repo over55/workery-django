@@ -18,6 +18,7 @@ from starterkit.utils import (
     float_or_none
 )
 from shared_foundation.constants import *
+from shared_foundation.models.o55_user import O55User
 from tenant_foundation.models import (
     AbstractBigPk,
     AbstractContactPoint,
@@ -77,7 +78,7 @@ class Customer(AbstractBigPk, AbstractThing, AbstractContactPoint, AbstractPosta
     objects = CustomerManager()
 
     #
-    #  CUSTOM FIELDS
+    #  PERSON FIELDS - http://schema.org/Person
     #
 
     given_name = models.CharField(
@@ -107,6 +108,17 @@ class Customer(AbstractBigPk, AbstractThing, AbstractContactPoint, AbstractPosta
         blank=True,
         null=True
     )
+    join_date = models.DateTimeField(
+        _("Join Date"),
+        help_text=_('The date the customer joined this organization.'),
+        null=True,
+        blank=True,
+    )
+
+    #
+    #  CUSTOM FIELDS
+    #
+
     is_senior = models.BooleanField(
         _("Is Senior"),
         help_text=_('Indicates whether customer is considered a senior or not.'),
@@ -133,11 +145,28 @@ class Customer(AbstractBigPk, AbstractThing, AbstractContactPoint, AbstractPosta
         blank=True,
         null=True,
     )
-    join_date = models.DateTimeField(
-        _("Join Date"),
-        help_text=_('The date the customer joined this organization.'),
-        null=True,
+    comments = models.ManyToManyField(
+        "Comment",
+        help_text=_('The comments of this customer sorted by latest creation date..'),
         blank=True,
+        related_name="%(app_label)s_%(class)s_comments_related",
+        through="CustomerComment",
+    )
+    created_by = models.ForeignKey(
+        O55User,
+        help_text=_('The user whom created this object.'),
+        related_name="%(app_label)s_%(class)s_created_by_related",
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True,
+    )
+    last_modified_by = models.ForeignKey(
+        O55User,
+        help_text=_('The user whom modified this object last.'),
+        related_name="%(app_label)s_%(class)s_last_modified_by_related",
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True,
     )
 
     #

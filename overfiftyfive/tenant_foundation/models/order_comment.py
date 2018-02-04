@@ -3,6 +3,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
 from tenant_foundation.constants import *
+from shared_foundation.models.o55_user import O55User
 from tenant_foundation.models import AbstractBigPk
 
 
@@ -47,4 +48,4 @@ class OrderComment(AbstractBigPk):
         related_name="%(app_label)s_%(class)s_comment_related",
         on_delete=models.CASCADE
     )
-    created = models.DateTimeField(auto_now_add=True)
+    created = models.DateTimeField(auto_now_add=True, db_index=True)

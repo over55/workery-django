@@ -17,7 +17,15 @@ from rest_framework.test import APIClient
 from rest_framework.test import APITestCase
 from rest_framework.authtoken.models import Token
 from shared_foundation import constants
-from tenant_foundation.models import Customer
+from shared_foundation.models import (
+   O55User,
+   SharedMe
+)
+from tenant_foundation.models import (
+    Comment,
+    CustomerComment,
+    Customer
+)
 
 
 TEST_SCHEMA_NAME = "london"
@@ -209,16 +217,26 @@ class CustomerListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
             'given_name': 'Bart',
             'middle_name': '',
             'last_name': 'Mika',
+            'email': 'bart+customer@overfiftyfive.com',
             'address_country': 'CA',
             'address_locality': 'London',
             'address_region': 'Ontario',
             'street_address': '78 Riverside Drive',
-            'postal_code': 'N6H 1B4'
+            'postal_code': 'N6H 1B4',
+            'extra_comment': "This is a friendly customer."
         }), content_type='application/json')
         self.assertIsNotNone(response)
+        # print(response.content)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertIn("Bart", str(response.data))
         self.assertIn("Mika", str(response.data))
+        self.assertIn("This is a friendly customer.", str(response.data))
+        self.assertIn("78 Riverside Drive", str(response.data))
+
+        # Confirm we created a `Customer` object.
+        self.assertEqual(1, Customer.objects.filter(email="bart+customer@overfiftyfive.com").count())
+        self.assertEqual(1, O55User.objects.filter(email="bart+customer@overfiftyfive.com").count())
+        self.assertEqual(1, SharedMe.objects.filter(user__email="bart+customer@overfiftyfive.com").count())
 
     @transaction.atomic
     def test_create_with_403_by_permissions(self):

@@ -15,38 +15,48 @@ from tenant_foundation.models import Comment
 
 
 class CommentListCreateSerializer(serializers.ModelSerializer):
+    created_by = serializers.PrimaryKeyRelatedField(many=False, read_only=True)
+    last_modified_by = serializers.PrimaryKeyRelatedField(many=False, read_only=True)
 
     class Meta:
         model = Comment
         fields = (
-            # Thing
+            'id',
             'created',
             'last_modified',
-            'owner'
+            'created_by',
+            'last_modified_by',
+            'text'
         )
 
     def setup_eager_loading(cls, queryset):
         """ Perform necessary eager loading of data. """
         queryset = queryset.prefetch_related(
-            'owner',
+            'created_by',
+            'last_modified_by'
         )
         return queryset
 
 
 class CommentRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
+    created_by = serializers.PrimaryKeyRelatedField(many=False, read_only=True)
+    last_modified_by = serializers.PrimaryKeyRelatedField(many=False, read_only=True)
 
     class Meta:
         model = Comment
         fields = (
-            # Thing
+            'id',
             'created',
             'last_modified',
-            'owner'
+            'created_by',
+            'last_modified_by',
+            'text'
         )
 
     def setup_eager_loading(cls, queryset):
         """ Perform necessary eager loading of data. """
         queryset = queryset.prefetch_related(
-            'owner',
+            'created_by',
+            'last_modified_by'
         )
         return queryset

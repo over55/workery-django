@@ -18,6 +18,7 @@ from starterkit.utils import (
     float_or_none
 )
 from shared_foundation.constants import *
+from shared_foundation.models.o55_user import O55User
 from tenant_foundation.models import (
     AbstractBigPk,
     AbstractContactPoint,
@@ -230,6 +231,22 @@ class Associate(AbstractBigPk, AbstractThing, AbstractContactPoint, AbstractPost
         help_text=_('The skill sets this associate has.'),
         blank=True,
         related_name="%(app_label)s_%(class)s_skill_sets_related"
+    )
+    created_by = models.ForeignKey(
+        O55User,
+        help_text=_('The user whom created this object.'),
+        related_name="%(app_label)s_%(class)s_created_by_related",
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True,
+    )
+    last_modified_by = models.ForeignKey(
+        O55User,
+        help_text=_('The user whom modified this object last.'),
+        related_name="%(app_label)s_%(class)s_last_modified_by_related",
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True,
     )
 
     #

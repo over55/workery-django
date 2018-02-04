@@ -40,7 +40,10 @@ class CustomerListCreateAPIView(generics.ListCreateAPIView):
         """
         Create
         """
-        serializer = CustomerListCreateSerializer(data=request.data)
+        serializer = CustomerListCreateSerializer(data=request.data, context={
+            'created_by': request.user,
+            'franchise': request.tenant
+        })
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -74,7 +77,9 @@ class CustomerRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView
         """
         customer = get_object_or_404(Customer, pk=pk)
         self.check_object_permissions(request, customer)  # Validate permissions.
-        serializer = CustomerRetrieveUpdateDestroySerializer(customer, data=request.data)
+        serializer = CustomerRetrieveUpdateDestroySerializer(customer, data=request.data, context={
+            'modified_by': request.user
+        })
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data, status=status.HTTP_200_OK)

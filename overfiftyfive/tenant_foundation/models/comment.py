@@ -14,6 +14,7 @@ from starterkit.utils import (
     float_or_none
 )
 from shared_foundation.constants import *
+from shared_foundation.models.o55_user import O55User
 from tenant_foundation.models import AbstractBigPk
 from tenant_foundation.utils import *
 
@@ -52,15 +53,15 @@ class Comment(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     last_modified = models.DateTimeField(auto_now=True)
     created_by = models.ForeignKey(
-        User,
+        O55User,
         help_text=_('The user whom owns this comment.'),
-        related_name="%(app_label)s_%(class)s_owner_related",
+        related_name="%(app_label)s_%(class)s_created_by_related",
         on_delete=models.SET_NULL,
         blank=True,
         null=True,
     )
     last_modified_by = models.ForeignKey(
-        User,
+        O55User,
         help_text=_('The user whom last modified this comment.'),
         blank=True,
         null=True,
