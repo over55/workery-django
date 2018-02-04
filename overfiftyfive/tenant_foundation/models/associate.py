@@ -163,13 +163,6 @@ class Associate(AbstractBigPk, AbstractThing, AbstractContactPoint, AbstractPost
         null=True,
         blank=True,
     )
-    comments = models.CharField(
-        _("Comments"),
-        max_length=1027,
-        help_text=_('The comments associated with this associate.'),
-        blank=True,
-        null=True,
-    )
     drivers_license_class = models.CharField(
         _("Divers License Class"),
         max_length=7,

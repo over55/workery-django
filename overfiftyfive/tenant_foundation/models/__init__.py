@@ -23,6 +23,7 @@ from tenant_foundation.models.staff import Staff
 # Associate Models
 from tenant_foundation.models.associate import Associate
 from tenant_foundation.models.associate_affiliation import AssociateAffiliation
+from tenant_foundation.models.associate_comment import AssociateComment
 
 # Order Models
 from tenant_foundation.models.order import Order

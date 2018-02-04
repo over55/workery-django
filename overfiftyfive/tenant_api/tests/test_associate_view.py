@@ -17,7 +17,10 @@ from rest_framework.test import APIClient
 from rest_framework.test import APITestCase
 from rest_framework.authtoken.models import Token
 from shared_foundation import constants
-from tenant_foundation.models import Associate
+from tenant_foundation.models import (
+    Associate,
+    SkillSet
+)
 
 
 TEST_SCHEMA_NAME = "london"
@@ -204,9 +207,16 @@ class AssociateListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
         Unit test will test authenticated user, who has permission, to make a
         POST request to the create API-endpoint.
         """
+        # Fetch our `SkillSet` objects.
+        skill_set_1 = SkillSet.objects.filter(category="Carpentry", sub_category="Carpenter").first()
+        skill_set_2 = SkillSet.objects.filter(category="Carpentry", sub_category="Deck Construction").first()
+        skill_set_3 = SkillSet.objects.filter(category="Ceramic Tile", sub_category="Backsplash only").first()
+
+        # Perform our tests.
         url = reverse('o55_associate_list_create_api_endpoint')
         url += "?format=json"
         response = self.authorized_client.post(url, data=json.dumps({
+            'email': "bart+associate@overfiftyfive.com",
             'given_name': 'Bart',
             'middle_name': '',
             'last_name': 'Mika',
@@ -214,12 +224,22 @@ class AssociateListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
             'address_locality': 'London',
             'address_region': 'Ontario',
             'street_address': '78 Riverside Drive',
-            'postal_code': 'N6H 1B4'
+            'postal_code': 'N6H 1B4',
+            'extra_comment': "This is a friendly associate.",
+            'skill_sets': [
+                skill_set_1.id,
+                skill_set_2.id,
+                skill_set_3.id
+            ]
         }), content_type='application/json')
         self.assertIsNotNone(response)
+        # print(response.content)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertIn("Bart", str(response.data))
         self.assertIn("Mika", str(response.data))
+        self.assertIn("This is a friendly associate.", str(response.data))
+        self.assertIn("Ceramic Tile", str(response.data))
+        self.assertIn("Deck Construction", str(response.data))
 
     @transaction.atomic
     def test_create_with_403_by_permissions(self):
@@ -255,6 +275,12 @@ class AssociateListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
         Unit test will test authenticated user, who has permission, to make a
         PUT request to the update API-endpoint.
         """
+        # Fetch our `SkillSet` objects.
+        skill_set_1 = SkillSet.objects.filter(category="Carpentry", sub_category="Carpenter").first()
+        skill_set_2 = SkillSet.objects.filter(category="Carpentry", sub_category="Deck Construction").first()
+        skill_set_3 = SkillSet.objects.filter(category="Ceramic Tile", sub_category="Backsplash only").first()
+
+         # Perform our tests.
         url = reverse('o55_associate_retrieve_update_destroy_api_endpoint', args=[self.associate.id])+"?format=json"
         response = self.authorized_client.put(url, data=json.dumps({
             'given_name': 'Bartlomiej',
@@ -264,12 +290,21 @@ class AssociateListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
             'address_locality': 'London',
             'address_region': 'Ontario',
             'street_address': '78 Riverside Drive',
-            'postal_code': 'N6H 1B4'
+            'postal_code': 'N6H 1B4',
+            'extra_comment': "This is a helpful associate.",
+            'skill_sets': [
+                skill_set_1.id,
+                skill_set_2.id,
+                skill_set_3.id
+            ]
         }), content_type='application/json')
         self.assertIsNotNone(response)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertIn("Bartlomiej", str(response.data))
         self.assertIn("Mika", str(response.data))
+        self.assertIn("This is a helpful associate.", str(response.data))
+        self.assertIn("Ceramic Tile", str(response.data))
+        self.assertIn("Carpenter", str(response.data))
 
     @transaction.atomic
     def test_update_with_403_by_permissions(self):
@@ -291,6 +326,12 @@ class AssociateListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
         make a PUT request to the update API-endpoint but has ownership of the
         object.
         """
+        # Fetch our `SkillSet` objects.
+        skill_set_1 = SkillSet.objects.filter(category="Carpentry", sub_category="Carpenter").first()
+        skill_set_2 = SkillSet.objects.filter(category="Carpentry", sub_category="Deck Construction").first()
+        skill_set_3 = SkillSet.objects.filter(category="Ceramic Tile", sub_category="Backsplash only").first()
+
+         # Perform our tests.
         Permission.objects.all().delete()
         url = reverse('o55_associate_retrieve_update_destroy_api_endpoint', args=[self.associate.id])+"?format=json"
         response = self.authorized_client.put(url, data=json.dumps({
@@ -301,12 +342,22 @@ class AssociateListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
             'address_locality': 'London',
             'address_region': 'Ontario',
             'street_address': '78 Riverside Drive',
-            'postal_code': 'N6H 1B4'
+            'postal_code': 'N6H 1B4',
+            'extra_comment': "This is a helpful associate.",
+            'skill_sets': [
+                skill_set_1.id,
+                skill_set_2.id,
+                skill_set_3.id
+            ]
         }), content_type='application/json')
         self.assertIsNotNone(response)
+        # print(response.content)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertIn("Bartlomiej", str(response.data))
         self.assertIn("Mika", str(response.data))
+        self.assertIn("This is a helpful associate.", str(response.data))
+        self.assertIn("Ceramic Tile", str(response.data))
+        self.assertIn("Carpenter", str(response.data))
 
     #-----------------------#
     # Retrieve API-endpoint #

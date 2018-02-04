@@ -40,7 +40,10 @@ class AssociateListCreateAPIView(generics.ListCreateAPIView):
         """
         Create
         """
-        serializer = AssociateListCreateSerializer(data=request.data)
+        serializer = AssociateListCreateSerializer(data=request.data, context={
+            'created_by': request.user,
+            'franchise': request.tenant
+        })
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -74,7 +77,10 @@ class AssociateRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIVie
         """
         associate = get_object_or_404(Associate, pk=pk)
         self.check_object_permissions(request, associate)  # Validate permissions.
-        serializer = AssociateRetrieveUpdateDestroySerializer(associate, data=request.data)
+        serializer = AssociateRetrieveUpdateDestroySerializer(associate, data=request.data, context={
+            'last_modified_by': request.user,
+            'franchise': request.tenant
+        })
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data, status=status.HTTP_200_OK)
