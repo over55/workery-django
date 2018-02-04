@@ -13,8 +13,9 @@ from django.utils.translation import ugettext_lazy as _
 from django.utils import timezone
 from django.utils.http import urlquote
 from rest_framework import exceptions, serializers
-from rest_framework.response import Response
 from rest_framework.authtoken.models import Token
+from rest_framework.response import Response
+from rest_framework.validators import UniqueValidator
 from shared_foundation.constants import CUSTOMER_GROUP_ID
 from shared_foundation.models.me import SharedMe
 from shared_foundation.models.o55_user import O55User
@@ -28,6 +29,12 @@ from tenant_foundation.models import (
 
 class CustomerListCreateSerializer(serializers.ModelSerializer):
     # owner = serializers.PrimaryKeyRelatedField(many=False, read_only=True)
+
+    # We are overriding the `email` field to include unique email validation.
+    email = serializers.EmailField(
+        validators=[UniqueValidator(queryset=Customer.objects.all())],
+        required=False
+    )
 
     # All comments are created by our `create` function and not by
     # `django-rest-framework`.
@@ -116,7 +123,9 @@ class CustomerListCreateSerializer(serializers.ModelSerializer):
 
         - We will attach the staff user whom created this `Customer` object.
         """
+        #-------------------
         # Create our user.
+        #-------------------
         email = validated_data['email']
         user = O55User.objects.create(
             first_name=validated_data['given_name'],
@@ -131,7 +140,9 @@ class CustomerListCreateSerializer(serializers.ModelSerializer):
         # Attach the user to the `Customer` group.
         user.groups.add(CUSTOMER_GROUP_ID)
 
+        #-----------------------------------------------------
         # Create a user `Profile` object in our public schema.
+        #-----------------------------------------------------
         me = SharedMe.objects.update_or_create(
             user=user,
             franchise=self.context['franchise'],
@@ -143,7 +154,9 @@ class CustomerListCreateSerializer(serializers.ModelSerializer):
             }
         )
 
+        #---------------------------------------------------
         # Create our `Customer` object in our tenant schema.
+        #---------------------------------------------------
         customer = Customer.objects.create(
             owner=user,
             created_by=self.context['created_by'],
@@ -190,7 +203,9 @@ class CustomerListCreateSerializer(serializers.ModelSerializer):
             # 'location' #TODO: IMPLEMENT.
         )
 
-        # Attach our comment.
+        #-----------------------------
+        # Create our `Comment` object.
+        #-----------------------------
         extra_comment = validated_data.get('extra_comment', None)
         if extra_comment is not None:
             comment = Comment.objects.create(
@@ -216,6 +231,12 @@ class CustomerListCreateSerializer(serializers.ModelSerializer):
 
 class CustomerRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
     # owner = serializers.PrimaryKeyRelatedField(many=False, read_only=True)
+
+    # We are overriding the `email` field to include unique email validation.
+    email = serializers.EmailField(
+        validators=[UniqueValidator(queryset=Customer.objects.all())],
+        required=False
+    )
 
     # All comments are created by our `create` function and not by
     # `django-rest-framework`.
@@ -327,33 +348,33 @@ class CustomerRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         instance.how_hear = validated_data.get('how_hear', instance.how_hear)
 
         # # Misc (Read Only)
-        last_modified_by = self.context['last_modified_by']
+        instance.last_modified_by = self.context['last_modified_by']
         # 'organizations', #TODO: FIX
 
         # Contact Point
-        area_served = validated_data.get('area_served', instance.area_served)
-        available_language = validated_data.get('available_language', instance.available_language)
-        contact_type = validated_data.get('contact_type', instance.contact_type)
-        # 'email',#TODO: FIX
-        fax_number = validated_data.get('fax_number', instance.fax_number)
+        instance.area_served = validated_data.get('area_served', instance.area_served)
+        instance.available_language = validated_data.get('available_language', instance.available_language)
+        instance.contact_type = validated_data.get('contact_type', instance.contact_type)
+        instance.email = validated_data.get('email', instance.contact_type)
+        instance.fax_number = validated_data.get('fax_number', instance.fax_number)
         # 'hours_available', #TODO: FIX
-        telephone = validated_data.get('telephone', instance.telephone)
-        telephone_extension = validated_data.get('telephone_extension', instance.telephone_extension)
-        mobile = validated_data.get('mobile', instance.mobile)
+        instance.telephone = validated_data.get('telephone', instance.telephone)
+        instance.telephone_extension = validated_data.get('telephone_extension', instance.telephone_extension)
+        instance.mobile = validated_data.get('mobile', instance.mobile)
 
         # Postal Address
-        address_country = validated_data.get('address_country', instance.address_country)
-        address_locality = validated_data.get('address_locality', instance.address_locality)
-        address_region = validated_data.get('address_region', instance.address_region)
-        post_office_box_number = validated_data.get('post_office_box_number', instance.post_office_box_number)
-        postal_code = validated_data.get('postal_code', instance.postal_code)
-        street_address = validated_data.get('street_address', instance.street_address)
-        street_address_extra = validated_data.get('street_address_extra', instance.street_address_extra)
+        instance.address_country = validated_data.get('address_country', instance.address_country)
+        instance.address_locality = validated_data.get('address_locality', instance.address_locality)
+        instance.address_region = validated_data.get('address_region', instance.address_region)
+        instance.post_office_box_number = validated_data.get('post_office_box_number', instance.post_office_box_number)
+        instance.postal_code = validated_data.get('postal_code', instance.postal_code)
+        instance.street_address = validated_data.get('street_address', instance.street_address)
+        instance.street_address_extra = validated_data.get('street_address_extra', instance.street_address_extra)
 
         # Geo-coordinate
-        elevation = validated_data.get('elevation', instance.elevation)
-        latitude = validated_data.get('latitude', instance.latitude)
-        longitude = validated_data.get('longitude', instance.longitude)
+        instance.elevation = validated_data.get('elevation', instance.elevation)
+        instance.latitude = validated_data.get('latitude', instance.latitude)
+        instance.longitude = validated_data.get('longitude', instance.longitude)
         # 'location' #TODO: FIX
 
         instance.save()

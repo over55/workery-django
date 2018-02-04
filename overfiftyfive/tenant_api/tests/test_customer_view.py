@@ -282,7 +282,8 @@ class CustomerListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
             'address_region': 'Ontario',
             'street_address': '78 Riverside Drive',
             'postal_code': 'N6H 1B4',
-            'extra_comment': None
+            'extra_comment': None,
+            'email': TEST_USER_EMAIL
         }), content_type='application/json')
         self.assertIsNotNone(response)
         # print(response.content)
