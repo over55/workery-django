@@ -98,7 +98,7 @@ class CustomerListCreateSerializer(serializers.ModelSerializer):
     def setup_eager_loading(cls, queryset):
         """ Perform necessary eager loading of data. """
         queryset = queryset.prefetch_related(
-            'owner',
+            'owner', 'created_by', 'last_modified_by', 'comment'
         )
         return queryset
 
@@ -106,7 +106,11 @@ class CustomerListCreateSerializer(serializers.ModelSerializer):
         """
         Override the `create` function to add extra functinality:
 
-        - We will create a `User` object in the public database.
+        - Create a `User` object in the public database.
+
+        - Create a `SharedMe` object in the public database.
+
+        - Create a `Customer` object in the tenant database.
 
         - If user has entered text in the 'extra_comment' field then we will
           a `Comment` object and attach it to the `Customer` object.
@@ -213,6 +217,16 @@ class CustomerListCreateSerializer(serializers.ModelSerializer):
 
 
 class CustomerRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
+    # owner = serializers.PrimaryKeyRelatedField(many=False, read_only=True)
+
+    # All comments are created by our `create` function and not by
+    # `django-rest-framework`.
+    comments = CustomerCommentSerializer(many=True, read_only=True)
+
+    # This is a field used in the `create` function if the user enters a
+    # comment. This field is *ONLY* to be used during the POST creation and
+    # will be blank during GET.
+    extra_comment = serializers.CharField(required=False)
 
     class Meta:
         model = Customer
@@ -220,19 +234,29 @@ class CustomerRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
             # Thing
             'created',
             'last_modified',
-            'owner',
+            # 'owner',
 
             # Profile
             'given_name',
             'middle_name',
             'last_name',
             'birthdate',
+            'join_date',
+
+            # Misc (Read/Write)
             'is_senior',
             'is_support',
             'job_info_read',
             'how_hear',
-            'join_date',
-            'organizations',
+
+            # Misc (Read Only)
+            'comments',
+            'created_by',
+            'last_modified_by',
+            # 'organizations', #TODO: FIX
+
+            # Misc (Write Only)
+            'extra_comment',
 
             # Contact Point
             'area_served',
@@ -240,7 +264,7 @@ class CustomerRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
             'contact_type',
             'email',
             'fax_number',
-            'hours_available',
+            # 'hours_available', #TODO: FIX
             'telephone',
             'telephone_extension',
             'mobile',
@@ -258,7 +282,7 @@ class CustomerRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
             'elevation',
             'latitude',
             'longitude',
-            'location'
+            # 'location' #TODO: FIX
         )
 
     def setup_eager_loading(cls, queryset):
