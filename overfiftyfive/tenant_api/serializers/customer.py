@@ -42,6 +42,7 @@ class CustomerListCreateSerializer(serializers.ModelSerializer):
         model = Customer
         fields = (
             # Thing
+            'id',
             'created',
             'last_modified',
             # 'owner',
@@ -229,6 +230,7 @@ class CustomerRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         model = Customer
         fields = (
             # Thing
+            'id',
             'created',
             'last_modified',
             # 'owner',
@@ -283,7 +285,7 @@ class CustomerRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
     def setup_eager_loading(cls, queryset):
         """ Perform necessary eager loading of data. """
         queryset = queryset.prefetch_related(
-            'owner',
+            'owner', 'created_by', 'last_modified_by', 'comments'
         )
         return queryset
 
