@@ -98,7 +98,7 @@ class CustomerListCreateSerializer(serializers.ModelSerializer):
     def setup_eager_loading(cls, queryset):
         """ Perform necessary eager loading of data. """
         queryset = queryset.prefetch_related(
-            'owner', 'created_by', 'last_modified_by', 'comment'
+            'owner', 'created_by', 'last_modified_by', 'comments'
         )
         return queryset
 
@@ -211,6 +211,7 @@ class CustomerListCreateSerializer(serializers.ModelSerializer):
         validated_data['comments'] = CustomerComment.objects.filter(customer=customer)
         validated_data['created_by'] = self.context['created_by']
         validated_data['last_modified_by'] = self.context['created_by']
+        validated_data['extra_comment'] = None
 
         # Return our validated data.
         return validated_data
