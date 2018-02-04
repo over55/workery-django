@@ -31,12 +31,12 @@ class CustomerListCreateSerializer(serializers.ModelSerializer):
 
     # All comments are created by our `create` function and not by
     # `django-rest-framework`.
-    comments = CustomerCommentSerializer(many=True, read_only=True)
+    comments = CustomerCommentSerializer(many=True, read_only=True, allow_null=True)
 
     # This is a field used in the `create` function if the user enters a
     # comment. This field is *ONLY* to be used during the POST creation and
     # will be blank during GET.
-    extra_comment = serializers.CharField(required=False)
+    extra_comment = serializers.CharField(write_only=True, allow_null=True)
 
     class Meta:
         model = Customer
@@ -61,8 +61,6 @@ class CustomerListCreateSerializer(serializers.ModelSerializer):
 
             # Misc (Read Only)
             'comments',
-            'created_by',
-            'last_modified_by',
             # 'organizations', #TODO: FIX
 
             # Misc (Write Only)
@@ -163,8 +161,6 @@ class CustomerListCreateSerializer(serializers.ModelSerializer):
             # 'job_info_read',
             # 'how_hear',
             # 'organizations',
-            # 'comments',
-            # 'extra_comment',
             #
             # # Contact Point
             # 'area_served',
@@ -227,7 +223,7 @@ class CustomerRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
     # This is a field used in the `create` function if the user enters a
     # comment. This field is *ONLY* to be used during the POST creation and
     # will be blank during GET.
-    extra_comment = serializers.CharField(required=False)
+    extra_comment = serializers.CharField(write_only=True, allow_null=True)
 
     class Meta:
         model = Customer
@@ -252,8 +248,6 @@ class CustomerRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
 
             # Misc (Read Only)
             'comments',
-            'created_by',
-            'last_modified_by',
             # 'organizations', #TODO: FIX
 
             # Misc (Write Only)
@@ -292,3 +286,104 @@ class CustomerRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
             'owner',
         )
         return queryset
+
+    def update(self, instance, validated_data):
+        """
+        Override this function to include extra functionality.
+        """
+        # For debugging purposes only.
+        # print(validated_data)
+
+        # Get our inputs.
+        email = validated_data.get('email', instance.owner.email)
+
+        #---------------------------
+        # Update `O55User` object.
+        #---------------------------
+        instance.owner.email = email
+        instance.owner.username = get_unique_username_from_email(email)
+        instance.owner.first_name = validated_data.get('given_name', instance.owner.first_name)
+        instance.owner.last_name = validated_data.get('last_name', instance.owner.last_name)
+        instance.owner.save()
+
+        #---------------------------
+        # Update `Customer` object.
+        #---------------------------
+        instance.email = email
+        # Profile
+        instance.first_name = validated_data.get('given_name', None)
+        instance.middle_name = validated_data.get('middle_name', None)
+        instance.last_name = validated_data.get('last_name', None)
+        instance.last_modified_by = self.context['last_modified_by']
+        """
+        'birthdate',
+        'join_date',
+        # Misc (Read/Write)
+        'is_senior',
+        'is_support',
+        'job_info_read',
+        'how_hear',
+
+        # Misc (Read Only)
+        'comments',
+        'created_by',
+        'last_modified_by',
+        # 'organizations', #TODO: FIX
+
+        # Misc (Write Only)
+        'extra_comment',
+
+        # Contact Point
+        'area_served',
+        'available_language',
+        'contact_type',
+        'email',
+        'fax_number',
+        # 'hours_available', #TODO: FIX
+        'telephone',
+        'telephone_extension',
+        'mobile',
+
+        # Postal Address
+        'address_country',
+        'address_locality',
+        'address_region',
+        'post_office_box_number',
+        'postal_code',
+        'street_address',
+        'street_address_extra',
+
+        # Geo-coordinate
+        'elevation',
+        'latitude',
+        'longitude',
+        # 'location' #TODO: FIX
+        """
+        #TODO: IMPLEMENT MORE...
+        instance.save()
+
+        #---------------------------
+        # Attach our comment.
+        #---------------------------
+        extra_comment = validated_data.get('extra_comment', None)
+        if extra_comment is not None:
+            comment = Comment.objects.create(
+                created_by=self.context['last_modified_by'],
+                last_modified_by=self.context['last_modified_by'],
+                text=extra_comment
+            )
+            customer_comment = CustomerComment.objects.create(
+                customer=instance,
+                comment=comment,
+                created_by=self.context['last_modified_by'],
+            )
+
+        #---------------------------
+        # Update validation data.
+        #---------------------------
+        validated_data['comments'] = CustomerComment.objects.filter(customer=instance)
+        validated_data['last_modified_by'] = self.context['last_modified_by']
+        validated_data['extra_comment'] = None
+
+        # Return our validated data.
+        return validated_data

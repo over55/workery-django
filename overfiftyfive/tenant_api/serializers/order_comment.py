@@ -27,10 +27,10 @@ class OrderCommentSerializer(serializers.ModelSerializer):
             'created'
         )
 
-    # def setup_eager_loading(cls, queryset):
-    #     """ Perform necessary eager loading of data. """
-    #     queryset = queryset.prefetch_related(
-    #         'order',
-    #         'comment'
-    #     )
-    #     return queryset
+    def setup_eager_loading(cls, queryset):
+        """ Perform necessary eager loading of data. """
+        queryset = queryset.prefetch_related(
+            'order',
+            'comment'
+        )
+        return queryset

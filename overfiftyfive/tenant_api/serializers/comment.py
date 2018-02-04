@@ -15,8 +15,8 @@ from tenant_foundation.models import Comment
 
 
 class CommentListCreateSerializer(serializers.ModelSerializer):
-    created_by = serializers.PrimaryKeyRelatedField(many=False, read_only=True)
-    last_modified_by = serializers.PrimaryKeyRelatedField(many=False, read_only=True)
+    created_by = serializers.PrimaryKeyRelatedField(many=False, read_only=True, allow_null=True)
+    last_modified_by = serializers.PrimaryKeyRelatedField(many=False, read_only=True, allow_null=True)
 
     class Meta:
         model = Comment
@@ -39,8 +39,8 @@ class CommentListCreateSerializer(serializers.ModelSerializer):
 
 
 class CommentRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
-    created_by = serializers.PrimaryKeyRelatedField(many=False, read_only=True)
-    last_modified_by = serializers.PrimaryKeyRelatedField(many=False, read_only=True)
+    created_by = serializers.PrimaryKeyRelatedField(many=False, read_only=True, allow_null=True)
+    last_modified_by = serializers.PrimaryKeyRelatedField(many=False, read_only=True, allow_null=True)
 
     class Meta:
         model = Comment

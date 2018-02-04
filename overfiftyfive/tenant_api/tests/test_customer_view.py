@@ -281,9 +281,11 @@ class CustomerListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
             'address_locality': 'London',
             'address_region': 'Ontario',
             'street_address': '78 Riverside Drive',
-            'postal_code': 'N6H 1B4'
+            'postal_code': 'N6H 1B4',
+            'extra_comment': None
         }), content_type='application/json')
         self.assertIsNotNone(response)
+        # print(response.content)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertIn("Bartlomiej", str(response.data))
         self.assertIn("Mika", str(response.data))
@@ -318,9 +320,11 @@ class CustomerListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
             'address_locality': 'London',
             'address_region': 'Ontario',
             'street_address': '78 Riverside Drive',
-            'postal_code': 'N6H 1B4'
+            'postal_code': 'N6H 1B4',
+            'extra_comment': None
         }), content_type='application/json')
         self.assertIsNotNone(response)
+        # print(response.content)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertIn("Bartlomiej", str(response.data))
         self.assertIn("Mika", str(response.data))

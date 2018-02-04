@@ -18,7 +18,7 @@ from tenant_foundation.models import OrderComment
 class CustomerCommentSerializer(serializers.ModelSerializer):
     customer = serializers.PrimaryKeyRelatedField(many=False, read_only=True)
     comment = CommentListCreateSerializer(many=False, read_only=True)
-    created_by = serializers.PrimaryKeyRelatedField(many=False, read_only=True)
+    # created_by = serializers.PrimaryKeyRelatedField(many=False, read_only=True, allow_null=True)
     created_at = serializers.DateTimeField(read_only=True)
 
     class Meta:
@@ -27,7 +27,7 @@ class CustomerCommentSerializer(serializers.ModelSerializer):
             'customer',
             'comment',
             'created_at',
-            'created_by'
+            # 'created_by'
         )
 
     def setup_eager_loading(cls, queryset):
