@@ -381,49 +381,56 @@ class AssociateRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         # Update `Associate` object.
         #---------------------------
         instance.email = email
+
         # Profile
-        instance.first_name = validated_data.get('given_name', instance.given_name)
-        instance.middle_name = validated_data.get('middle_name', instance.middle_name)
-        instance.last_name = validated_data.get('last_name', instance.last_name)
-        instance.last_modified_by = self.context['last_modified_by']
-        instance.birthdate = validated_data.get('birthdate', instance.birthdate)
-        instance.join_date = validated_data.get('join_date', instance.join_date)
+        given_name=validated_data['given_name']
+        last_name=validated_data['last_name']
+        middle_name=validated_data['middle_name']
+        birthdate=validated_data.get('birthdate', None)
+        join_date=validated_data.get('join_date', None)
 
-        # # Misc (Read/Write)
-        # instance.is_senior = validated_data.get('is_senior', instance.is_senior)
-        # instance.is_support = validated_data.get('is_support', instance.is_support)
-        # instance.job_info_read = validated_data.get('job_info_read', instance.job_info_read)
-        # instance.how_hear = validated_data.get('how_hear', instance.how_hear)
-
-        # # Misc (Read Only)
-        instance.last_modified_by = self.context['last_modified_by']
-        # 'organizations', #TODO: FIX
+        # Misc
+        hourly_salary_desired=validated_data.get('hourly_salary_desired', 0.00)
+        limit_special=validated_data.get('limit_special', None)
+        dues_pd=validated_data.get('dues_pd', None)
+        ins_due=validated_data.get('ins_due', None)
+        police_check=validated_data.get('police_check', None)
+        drivers_license_class=validated_data.get('drivers_license_class', None)
+        has_car=validated_data.get('has_car', False)
+        has_van=validated_data.get('has_van', False)
+        has_truck=validated_data.get('has_truck', False)
+        is_full_time=validated_data.get('is_full_time', False)
+        is_part_time=validated_data.get('is_part_time', False)
+        is_contract_time=validated_data.get('is_contract_time', False)
+        is_small_job=validated_data.get('is_small_job', False)
+        how_hear=validated_data.get('how_hear', None)
+        # 'organizations', #TODO: IMPLEMENT.
 
         # Contact Point
-        instance.area_served = validated_data.get('area_served', instance.area_served)
-        instance.available_language = validated_data.get('available_language', instance.available_language)
-        instance.contact_type = validated_data.get('contact_type', instance.contact_type)
-        instance.email = validated_data.get('email', instance.contact_type)
-        instance.fax_number = validated_data.get('fax_number', instance.fax_number)
-        # 'hours_available', #TODO: FIX
-        instance.telephone = validated_data.get('telephone', instance.telephone)
-        instance.telephone_extension = validated_data.get('telephone_extension', instance.telephone_extension)
-        instance.mobile = validated_data.get('mobile', instance.mobile)
+        area_served=validated_data.get('area_served', None)
+        available_language=validated_data.get('available_language', None)
+        contact_type=validated_data.get('contact_type', None)
+        email=email,
+        fax_number=validated_data.get('fax_number', None)
+        # 'hours_available', #TODO: IMPLEMENT.
+        telephone=validated_data.get('telephone', None)
+        telephone_extension=validated_data.get('telephone_extension', None)
+        mobile=validated_data.get('mobile', None)
 
         # Postal Address
-        instance.address_country = validated_data.get('address_country', instance.address_country)
-        instance.address_locality = validated_data.get('address_locality', instance.address_locality)
-        instance.address_region = validated_data.get('address_region', instance.address_region)
-        instance.post_office_box_number = validated_data.get('post_office_box_number', instance.post_office_box_number)
-        instance.postal_code = validated_data.get('postal_code', instance.postal_code)
-        instance.street_address = validated_data.get('street_address', instance.street_address)
-        instance.street_address_extra = validated_data.get('street_address_extra', instance.street_address_extra)
+        address_country=validated_data.get('address_country', None)
+        address_locality=validated_data.get('address_locality', None)
+        address_region=validated_data.get('address_region', None)
+        post_office_box_number=validated_data.get('post_office_box_number', None)
+        postal_code=validated_data.get('postal_code', None)
+        street_address=validated_data.get('street_address', None)
+        street_address_extra=validated_data.get('street_address_extra', None)
 
         # Geo-coordinate
-        instance.elevation = validated_data.get('elevation', instance.elevation)
-        instance.latitude = validated_data.get('latitude', instance.latitude)
-        instance.longitude = validated_data.get('longitude', instance.longitude)
-        # 'location' #TODO: FIX
+        elevation=validated_data.get('elevation', None)
+        latitude=validated_data.get('latitude', None)
+        longitude=validated_data.get('longitude', None)
+        # 'location' #TODO: IMPLEMENT.
 
         # Save our instance.
         instance.save()
