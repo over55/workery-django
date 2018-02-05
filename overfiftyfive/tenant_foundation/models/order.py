@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import csv
 import pytz
+from djmoney.money import Money
 from datetime import date, datetime, timedelta
 from django.conf import settings
 from django.db import models
@@ -14,7 +15,7 @@ from starterkit.utils import (
     int_or_none,
     float_or_none
 )
-from shared_foundation.constants import *
+from shared_foundation import constants
 from shared_foundation.models.o55_user import O55User
 from tenant_foundation.models import AbstractBigPk
 from tenant_foundation.utils import *
@@ -107,8 +108,8 @@ class Order(AbstractBigPk):
         help_text=_('The service fee that the customer was charged by the associate..'),
         max_digits=10,
         decimal_places=2,
-        default_currency='CAD',
-        default=Money(0,'CAD'),
+        default_currency=constants.O55_APP_DEFAULT_MONEY_CURRENCY,
+        default=Money(0,constants.O55_APP_DEFAULT_MONEY_CURRENCY),
         blank=True,
     )
     payment_date = models.DateField(

@@ -6,6 +6,7 @@ import re
 import os.path as ospath
 import codecs
 from decimal import *
+from djmoney.money import Money
 from django.db.models import Sum
 from django.conf import settings
 from django.core.management import call_command
@@ -146,12 +147,12 @@ class Command(BaseCommand):
             local_date_paid = self.get_date_from_formatting2(date_paid)
 
             # Convert to money.
-            local_service_fee = Money(0.00, 'CAD')
+            local_service_fee = Money(0.00, O55_APP_DEFAULT_MONEY_CURRENCY)
             if service_fee:
                 service_fee = service_fee.replace('$', '')
                 service_fee = service_fee.replace('\'', '')
                 service_fee = float(service_fee)
-                local_service_fee = Money(service_fee, 'CAD')
+                local_service_fee = Money(service_fee, O55_APP_DEFAULT_MONEY_CURRENCY)
 
             # Conver to integer.
             if hours is None:

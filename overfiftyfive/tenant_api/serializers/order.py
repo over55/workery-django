@@ -12,6 +12,7 @@ from django.utils.http import urlquote
 from rest_framework import exceptions, serializers
 from rest_framework.response import Response
 from rest_framework.authtoken.models import Token
+from shared_foundation import constants
 from tenant_api.serializers.order_comment import OrderCommentSerializer
 from tenant_api.serializers.skill_set import SkillSetListCreateSerializer
 from tenant_foundation.models import (
@@ -111,7 +112,7 @@ class OrderListCreateSerializer(serializers.ModelSerializer):
         created_by = self.context['created_by']
 
         # Update currency price.
-        service_fee = validated_data.get('service_fee', Money(0, 'CAD'))
+        service_fee = validated_data.get('service_fee', Money(0, constants.O55_APP_DEFAULT_MONEY_CURRENCY))
 
         # Create our object.
         order = Order.objects.create(
@@ -265,7 +266,7 @@ class OrderRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         # Update currency price.
         service_fee = validated_data.get('service_fee', None)
         if service_fee:
-            instance.service_fee = Money(service_fee, 'CAD')
+            instance.service_fee = Money(service_fee, constants.O55_APP_DEFAULT_MONEY_CURRENCY)
 
         # Save the model.
         instance.save()
