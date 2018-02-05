@@ -21,5 +21,7 @@ To setup ``overfiftyfive-django`` on your system, then please read any of the fo
 
 * [HOWTO: Setup Over Fifty Five on MacOS for Development](https://github.com/over55/overfiftyfive-django/wiki/Setup-Project-on-MacOS)
 
+* [HOWTO: Setup Over Fifty Five on CentOS 7 for Production](https://github.com/over55/overfiftyfive-django/wiki/Setup-Project-on-DigitalOcean-CentOS-7)
+
 ## License
 This library is licensed under the **BSD** license. See [LICENSE](LICENSE) for more information.
