@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from django.core.management import call_command
 from starterkit.utils import get_unique_username_from_email
+from django.conf import settings
 from django_tenants.test.cases import TenantTestCase
 from django_tenants.test.client import TenantClient
 from django.urls import reverse
@@ -50,8 +51,12 @@ class TestFranchise(TenantTestCase):
 
     def test_reverse(self):
         # Attempt to lookup a URL.
-        url = self.tenant.reverse('o55_tenant_dashboard_master')
+        actual_url = self.tenant.reverse('o55_tenant_dashboard_master')
+
+        # Generate the URL we expect.
+        self.assertIsNotNone(settings.O55_APP_HTTP_DOMAIN) # Confirm var set.
+        expected_url = "http://test." + settings.O55_APP_HTTP_DOMAIN + "/en/dashboard"
 
         # Verify the URL.
-        self.assertIsNotNone(url)
-        self.assertIn("http://test.overfiftyfive.com/en/dashboard", url)
+        self.assertIsNotNone(actual_url)
+        self.assertIn(expected_url, actual_url)

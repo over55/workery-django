@@ -129,6 +129,7 @@ class OrderListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
     @transaction.atomic
     def tearDown(self):
         connection.set_schema(TEST_SCHEMA_NAME, True) # Switch to Tenant.
+        Tag.objects.delete_all()
         Order.objects.delete_all()
         del self.unauthorized_client
         del self.exec_client
@@ -360,7 +361,7 @@ class OrderListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
             'associate': self.associate.id,
             'completion_date': '2019-01-25',
             'assignment_date': "2018-01-30",
-            'category_tags': [],
+            'category_tags': [self.tag.id],
             'extra_comment': "This is an extra comment.",
             'skill_sets': [
                 skill_set_1.id,
