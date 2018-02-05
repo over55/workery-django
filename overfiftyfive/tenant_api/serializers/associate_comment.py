@@ -27,7 +27,6 @@ class AssociateCommentSerializer(serializers.ModelSerializer):
             'associate',
             'comment',
             'created_at',
-            # 'created_by'
         )
 
     def setup_eager_loading(cls, queryset):
@@ -35,6 +34,5 @@ class AssociateCommentSerializer(serializers.ModelSerializer):
         queryset = queryset.prefetch_related(
             'associate',
             'comment',
-            'created_by'
         )
         return queryset

@@ -29,10 +29,11 @@ from shared_foundation.models import (
 )
 from tenant_foundation.constants import *
 from tenant_foundation.models import (
+    AssociateComment,
     Associate,
     Comment,
-    Customer,
     CustomerAffiliation,
+    Customer,
     Organization,
     Order,
     OrderComment,
@@ -129,7 +130,7 @@ class Command(BaseCommand):
             ins_due = row_dict[20]               # INS DUE
             police_check = row_dict[21]          # POLCHK
             drivers_license_class = row_dict[22] # DRLICCLASS
-            comments = row_dict[23]              # COMMENTS
+            comments_text = row_dict[23]         # COMMENTS
             has_car = row_dict[24]               # Car?
             has_van = row_dict[25]               # Van?
             has_truck = row_dict[26]             # Truck?
@@ -196,7 +197,7 @@ class Command(BaseCommand):
                 user.groups.add(ASSOICATE_GROUP_ID)
 
             # Update or create.
-            associate, create = Associate.objects.update_or_create(
+            associate, created_associate = Associate.objects.update_or_create(
                 id=int_or_none(pk),
                 defaults={
                     'id':int_or_none(pk),
@@ -224,7 +225,7 @@ class Command(BaseCommand):
                     'ins_due':local_ins_due,
                     'police_check':local_police_check,
                     'drivers_license_class':drivers_license_class,
-                    'comments':comments,
+                    # 'comments':comments,
                     'has_car':bool_or_none(has_van),
                     'has_van':bool_or_none(has_van),
                     'has_truck':bool_or_none(has_truck),
@@ -235,6 +236,23 @@ class Command(BaseCommand):
                     'how_hear':how_hear
                 }
             )
+
+            # Create our comments.
+            comment, created_comment = Comment.objects.update_or_create(
+                text=comments_text,
+                defaults={
+                    'text': comments_text
+                }
+            )
+            AssociateComment.objects.update_or_create(
+                associate=associate,
+                comment=comment,
+                defaults={
+                    'associate': associate,
+                    'comment': comment
+                }
+            )
+            # associate.comments.set(comment)
 
             # For debugging purposes.
             # print(associate, create)

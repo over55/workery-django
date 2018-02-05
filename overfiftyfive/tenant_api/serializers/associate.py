@@ -253,7 +253,6 @@ class AssociateListCreateSerializer(serializers.ModelSerializer):
             associate_comment = AssociateComment.objects.create(
                 associate=associate,
                 comment=comment,
-                created_by=self.context['created_by'],
             )
 
         # Update validation data.
@@ -454,7 +453,6 @@ class AssociateRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
             associate_comment = AssociateComment.objects.create(
                 associate=instance,
                 comment=comment,
-                created_by=self.context['last_modified_by'],
             )
 
         #---------------------------

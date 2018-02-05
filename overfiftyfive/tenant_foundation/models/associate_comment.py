@@ -52,9 +52,3 @@ class AssociateComment(AbstractBigPk):
         on_delete=models.CASCADE
     )
     created_at = models.DateTimeField(auto_now_add=True, db_index=True)
-    created_by = models.ForeignKey(
-        O55User,
-        help_text=_('The user whom created this object.'),
-        related_name="%(app_label)s_%(class)s_created_by_related",
-        on_delete=models.CASCADE,
-    )
