@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from datetime import datetime, timedelta
 from dateutil import tz
+from djmoney.money import Money
 from django.conf import settings
 from django.contrib.auth.models import User, Group
 from django.contrib.auth import authenticate
@@ -80,7 +81,6 @@ class OrderListCreateSerializer(serializers.ModelSerializer):
             'is_ongoing',
             'payment_date',
             'service_fee',
-            'service_fee_currency',
             # 'created_by',
             # 'last_modified_by',
             'skill_sets',
@@ -108,10 +108,12 @@ class OrderListCreateSerializer(serializers.ModelSerializer):
         is_cancelled = validated_data.get('is_cancelled', False)
         is_ongoing = validated_data.get('is_ongoing', False)
         payment_date = validated_data.get('payment_date', None)
-        service_fee = validated_data.get('service_fee', 0)
-        service_fee_currency = validated_data.get('service_fee_currency', 'CAN')
         created_by = self.context['created_by']
 
+        # Update currency price.
+        service_fee = validated_data.get('service_fee', Money(0, 'CAD'))
+
+        # Create our object.
         order = Order.objects.create(
             customer=customer,
             associate=associate,
@@ -153,7 +155,6 @@ class OrderListCreateSerializer(serializers.ModelSerializer):
             order_comment = OrderComment.objects.create(
                 order=order,
                 comment=comment,
-                # created_by=created_by,
             )
 
         # Update validation data.
@@ -164,6 +165,7 @@ class OrderListCreateSerializer(serializers.ModelSerializer):
         validated_data['last_modified'] = self.context['created_by']
         validated_data['extra_comment'] = None
         validated_data['assigned_skill_sets'] = order.skill_sets.all()
+        validated_data['service_fee'] = service_fee
 
         # Return our validated data.
         return validated_data
@@ -223,7 +225,6 @@ class OrderRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
             'is_ongoing',
             'payment_date',
             'service_fee',
-            'service_fee_currency',
             # 'created_by',
             # 'last_modified_by',
             'created_by_first_name',
@@ -262,10 +263,9 @@ class OrderRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         instance.last_modified_by = self.context['last_modified_by']
 
         # Update currency price.
-        # instance.service_fee_currency = validated_data.get('service_fee_currency', instance.service_fee) #TODO: BUGFIX
-
-        # x = validated_data.get('service_fee_currency', instance.service_fee)
-        # print(x)
+        service_fee = validated_data.get('service_fee', None)
+        if service_fee:
+            instance.service_fee = Money(service_fee, 'CAD')
 
         # Save the model.
         instance.save()
@@ -306,6 +306,7 @@ class OrderRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         validated_data['last_modified_by'] = self.context['last_modified_by']
         validated_data['extra_comment'] = None
         validated_data['assigned_skill_sets'] = instance.skill_sets.all()
+        validated_data['service_fee'] = service_fee
 
         # Return our validated data.
         return validated_data
