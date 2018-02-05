@@ -16,7 +16,7 @@ from tenant_foundation.models import OrderComment
 
 
 class OrderCommentSerializer(serializers.ModelSerializer):
-    order = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
+    order = serializers.PrimaryKeyRelatedField(many=False, read_only=True)
     comment = CommentListCreateSerializer(many=False, read_only=True)
 
     class Meta:

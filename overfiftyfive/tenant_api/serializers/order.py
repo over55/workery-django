@@ -12,7 +12,14 @@ from rest_framework import exceptions, serializers
 from rest_framework.response import Response
 from rest_framework.authtoken.models import Token
 from tenant_api.serializers.order_comment import OrderCommentSerializer
-from tenant_foundation.models import Order, Tag, Comment, OrderComment
+from tenant_api.serializers.skill_set import SkillSetListCreateSerializer
+from tenant_foundation.models import (
+    Comment,
+    OrderComment,
+    Order,
+    SkillSet,
+    Tag
+)
 
 
 class OrderListCreateSerializer(serializers.ModelSerializer):
@@ -23,16 +30,37 @@ class OrderListCreateSerializer(serializers.ModelSerializer):
     # created_by = serializers.ReadOnlyField()
     # last_modified_by = serializers.ReadOnlyField()
     category_tags = serializers.PrimaryKeyRelatedField(many=True, queryset=Tag.objects.all(), allow_null=True)
-    comments = OrderCommentSerializer(many=True, read_only=True)
     created_by_first_name = serializers.ReadOnlyField(source='associate.created_by.first_name')
     created_by_last_name = serializers.ReadOnlyField(source='associate.created_by.last_name')
     last_modified_by_first_name = serializers.ReadOnlyField(source='customer.last_modified_by.first_name')
     last_modified_by_last_name = serializers.ReadOnlyField(source='customer.last_modified_by.last_name')
 
+    # All comments are created by our `create` function and not by
+    # `django-rest-framework`.
+    comments = OrderCommentSerializer(many=True, read_only=True, allow_null=True)
+
+    # This is a field used in the `create` function if the user enters a
+    # comment. This field is *ONLY* to be used during the POST creation and
+    # will be blank during GET.
+    extra_comment = serializers.CharField(write_only=True, allow_null=True)
+
+    # The skill_sets that this associate belongs to. We will return primary
+    # keys only. This field is read/write accessible.
+    skill_sets = serializers.PrimaryKeyRelatedField(many=True, queryset=SkillSet.objects.all(), allow_null=True)
+
+    assigned_skill_sets = SkillSetListCreateSerializer(many=True, read_only=True)
+
     class Meta:
         model = Order
         fields = (
+            # Read only fields.
             'id',
+            'assigned_skill_sets',
+
+            # Write only fields.
+            'extra_comment',
+
+            # Read / write fields.
             'assignment_date',
             'associate_first_name',
             'associate_last_name',
@@ -54,7 +82,8 @@ class OrderListCreateSerializer(serializers.ModelSerializer):
             'created_by_first_name',
             'created_by_last_name',
             'last_modified_by_first_name',
-            'last_modified_by_last_name'
+            'last_modified_by_last_name',
+            'skill_sets',
         )
 
     def setup_eager_loading(cls, queryset):
@@ -66,13 +95,13 @@ class OrderListCreateSerializer(serializers.ModelSerializer):
             'customer',
             'comments',
             'last_modified_by',
+            'skill_sets'
         )
         return queryset
 
     def create(self, validated_data):
         assignment_date = validated_data['assignment_date']
         associate = validated_data['associate']
-        category_tags = validated_data.get('category_tags', None)
         completion_date = validated_data.get('completion_date', None)
         customer = validated_data['customer']
         hours = validated_data.get('hours', 0)
@@ -97,14 +126,44 @@ class OrderListCreateSerializer(serializers.ModelSerializer):
             last_modified_by=None
         )
 
+        #-----------------------------
+        # Set our `Tags` objects.
+        #-----------------------------
+        category_tags = validated_data.get('category_tags', None)
         if category_tags is not None:
             order.category_tags.set(category_tags)
 
-        # Add seperate fields.
+        #-----------------------------
+        # Set our `SkillSet` objects.
+        #-----------------------------
+        skill_sets = validated_data.get('skill_sets', None)
+        if skill_sets is not None:
+            order.skill_sets.set(skill_sets)
+
+        #-----------------------------
+        # Create our `Comment` object.
+        #-----------------------------
+        extra_comment = validated_data.get('extra_comment', None)
+        if extra_comment is not None:
+            comment = Comment.objects.create(
+                created_by=created_by,
+                last_modified_by=created_by,
+                text=extra_comment
+            )
+            order_comment = OrderComment.objects.create(
+                order=order,
+                comment=comment,
+                # created_by=created_by,
+            )
+
+        # Update validation data.
+        validated_data['comments'] = OrderComment.objects.filter(order=order)
         validated_data['created'] = order.created
-        validated_data['created_by'] = order.created_by
-        validated_data['last_modified_by'] = order.last_modified_by
-        validated_data['last_modified'] = order.last_modified
+        validated_data['created_by'] = created_by
+        validated_data['last_modified_by'] = created_by
+        validated_data['last_modified'] = self.context['created_by']
+        validated_data['extra_comment'] = None
+        validated_data['assigned_skill_sets'] = order.skill_sets.all()
 
         # Return our validated data.
         return validated_data
@@ -118,15 +177,38 @@ class OrderRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
     # created_by = serializers.ReadOnlyField()
     # last_modified_by = serializers.ReadOnlyField()
     category_tags = serializers.PrimaryKeyRelatedField(many=True, queryset=Tag.objects.all(), allow_null=True)
-    comments = OrderCommentSerializer(many=True, read_only=True)
     created_by_first_name = serializers.ReadOnlyField(source='associate.created_by.first_name')
     created_by_last_name = serializers.ReadOnlyField(source='associate.created_by.last_name')
     last_modified_by_first_name = serializers.ReadOnlyField(source='customer.last_modified_by.first_name')
     last_modified_by_last_name = serializers.ReadOnlyField(source='customer.last_modified_by.last_name')
 
+    # All comments are created by our `create` function and not by
+    # `django-rest-framework`.
+    comments = OrderCommentSerializer(many=True, read_only=True, allow_null=True)
+
+    # This is a field used in the `create` function if the user enters a
+    # comment. This field is *ONLY* to be used during the POST creation and
+    # will be blank during GET.
+    extra_comment = serializers.CharField(write_only=True, allow_null=True)
+
+    # The skill_sets that this associate belongs to. We will return primary
+    # keys only. This field is read/write accessible.
+    skill_sets = serializers.PrimaryKeyRelatedField(many=True, queryset=SkillSet.objects.all(), allow_null=True)
+
+    assigned_skill_sets = SkillSetListCreateSerializer(many=True, read_only=True)
+
     class Meta:
         model = Order
         fields = (
+            # Read only field.
+            'id',
+            'comments',
+            'assigned_skill_sets',
+
+            # Write only fields.
+            'extra_comment',
+
+            # Read or write fields.
             'assignment_date',
             'associate_first_name',
             'associate_last_name',
@@ -134,11 +216,9 @@ class OrderRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
             'customer_first_name',
             'customer_last_name',
             'category_tags',
-            'comments',
             'completion_date',
             'customer',
             'hours',
-            'id',
             'is_cancelled',
             'is_ongoing',
             'payment_date',
@@ -149,7 +229,8 @@ class OrderRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
             'created_by_first_name',
             'created_by_last_name',
             'last_modified_by_first_name',
-            'last_modified_by_last_name'
+            'last_modified_by_last_name',
+            'skill_sets',
         )
 
     def setup_eager_loading(cls, queryset):
@@ -161,5 +242,70 @@ class OrderRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
             'customer',
             'comments',
             'last_modified_by',
+            'skill_sets'
         )
         return queryset
+
+    def update(self, instance, validated_data):
+        """
+        Override this function to include extra functionality.
+        """
+        instance.assignment_date = validated_data.get('assignment_date', instance.assignment_date)
+        instance.associate.id = validated_data.get('associate', instance.associate.id)
+        instance.completion_date = validated_data.get('completion_date', instance.completion_date)
+        instance.customer.id = validated_data.get('customer', instance.customer.id)
+        instance.hours = validated_data.get('hours', instance.hours)
+        instance.is_cancelled = validated_data.get('is_cancelled', instance.is_cancelled)
+        instance.is_ongoing = validated_data.get('is_ongoing', instance.is_ongoing)
+        instance.payment_date = validated_data.get('payment_date', instance.payment_date)
+        instance.service_fee = validated_data.get('service_fee', instance.service_fee)
+        instance.last_modified_by = self.context['last_modified_by']
+
+        # Update currency price.
+        # instance.service_fee_currency = validated_data.get('service_fee_currency', instance.service_fee) #TODO: BUGFIX
+
+        # x = validated_data.get('service_fee_currency', instance.service_fee)
+        # print(x)
+
+        # Save the model.
+        instance.save()
+
+        #-----------------------------
+        # Set our `Tags` objects.
+        #-----------------------------
+        category_tags = validated_data.get('category_tags', None)
+        if category_tags is not None:
+            instance.category_tags.set(category_tags)
+
+        #-----------------------------
+        # Set our `SkillSet` objects.
+        #-----------------------------
+        skill_sets = validated_data.get('skill_sets', None)
+        if skill_sets is not None:
+            instance.skill_sets.set(skill_sets)
+
+        #-----------------------------
+        # Create our `Comment` object.
+        #-----------------------------
+        extra_comment = validated_data.get('extra_comment', None)
+        if extra_comment is not None:
+            comment = Comment.objects.create(
+                created_by=self.context['last_modified_by'],
+                last_modified_by=self.context['last_modified_by'],
+                text=extra_comment
+            )
+            order_comment = OrderComment.objects.create(
+                order=instance,
+                comment=comment,
+            )
+
+        # Update validation data.
+        validated_data['comments'] = OrderComment.objects.filter(order=instance)
+        validated_data['created'] = instance.created
+        validated_data['created_by'] = instance.created_by
+        validated_data['last_modified_by'] = self.context['last_modified_by']
+        validated_data['extra_comment'] = None
+        validated_data['assigned_skill_sets'] = instance.skill_sets.all()
+
+        # Return our validated data.
+        return validated_data

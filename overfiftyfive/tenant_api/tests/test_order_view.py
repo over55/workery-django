@@ -23,7 +23,8 @@ from tenant_foundation.models import (
     Associate,
     Customer,
     Order,
-    Tag
+    Tag,
+    SkillSet
 )
 
 
@@ -208,6 +209,12 @@ class OrderListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
         Unit test will test authenticated user, who has permission, to make a
         POST request to the create API-endpoint.
         """
+        # Fetch our `SkillSet` objects.
+        skill_set_1 = SkillSet.objects.filter(category="Carpentry", sub_category="Carpenter").first()
+        skill_set_2 = SkillSet.objects.filter(category="Carpentry", sub_category="Deck Construction").first()
+        skill_set_3 = SkillSet.objects.filter(category="Ceramic Tile", sub_category="Backsplash only").first()
+
+        # Generate the URL.
         url = reverse('o55_order_list_create_api_endpoint')
         url += "?format=json"
 
@@ -225,15 +232,24 @@ class OrderListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
             'postal_code': 'N6H 1B4',
             'assignment_date': "2018-01-30",
             'category_tags': [self.tag.id],
+            'extra_comment': "This is an extra comment.",
+            'skill_sets': [
+                skill_set_1.id,
+                skill_set_2.id,
+                skill_set_3.id
+            ]
         }), content_type='application/json')
         self.assertIsNotNone(response)
-        #print(response.content)
+        # print(response.content)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertIn("Shinji", str(response.data))
         self.assertIn("Ikari", str(response.data))
         self.assertIn("Rei", str(response.data))
         self.assertIn("Ayanami", str(response.data))
         self.assertIn("[1]", str(response.data)) # category_tags
+        self.assertIn("Ceramic Tile", str(response.data))
+        self.assertIn("Carpentry", str(response.data))
+        self.assertIn("This is an extra comment.", str(response.data))
 
         # Manager
         response = self.manager_client.post(url, data=json.dumps({
@@ -249,7 +265,12 @@ class OrderListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
             'postal_code': 'N6H 1B4',
             'assignment_date': "2018-01-30",
             'category_tags': [],
-            'comments': []
+            'extra_comment': "This is an extra comment.",
+            'skill_sets': [
+                skill_set_1.id,
+                skill_set_2.id,
+                skill_set_3.id
+            ]
         }), content_type='application/json')
         self.assertIsNotNone(response)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
@@ -258,6 +279,9 @@ class OrderListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
         self.assertIn("Rei", str(response.data))
         self.assertIn("Ayanami", str(response.data))
         self.assertIn("[]", str(response.data)) # category_tags
+        self.assertIn("Ceramic Tile", str(response.data))
+        self.assertIn("Carpentry", str(response.data))
+        self.assertIn("This is an extra comment.", str(response.data))
 
         # Staff
         response = self.staff_client.post(url, data=json.dumps({
@@ -273,7 +297,12 @@ class OrderListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
             'postal_code': 'N6H 1B4',
             'assignment_date': "2018-01-30",
             'category_tags': [],
-            'comments': []
+            'extra_comment': "This is an extra comment.",
+            'skill_sets': [
+                skill_set_1.id,
+                skill_set_2.id,
+                skill_set_3.id
+            ]
         }), content_type='application/json')
         self.assertIsNotNone(response)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
@@ -281,6 +310,9 @@ class OrderListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
         self.assertIn("Ikari", str(response.data))
         self.assertIn("Rei", str(response.data))
         self.assertIn("Ayanami", str(response.data))
+        self.assertIn("Ceramic Tile", str(response.data))
+        self.assertIn("Carpentry", str(response.data))
+        self.assertIn("This is an extra comment.", str(response.data))
 
     @transaction.atomic
     def test_create_with_403_by_permissions(self):
@@ -316,6 +348,12 @@ class OrderListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
         Unit test will test authenticated user, who has permission, to make a
         PUT request to the update API-endpoint.
         """
+        # Fetch our `SkillSet` objects.
+        skill_set_1 = SkillSet.objects.filter(category="Carpentry", sub_category="Carpenter").first()
+        skill_set_2 = SkillSet.objects.filter(category="Carpentry", sub_category="Deck Construction").first()
+        skill_set_3 = SkillSet.objects.filter(category="Ceramic Tile", sub_category="Backsplash only").first()
+
+        # Generate the URL and data.
         url = reverse('o55_order_retrieve_update_destroy_api_endpoint', args=[self.order.id])+"?format=json"
         data = json.dumps({
             'customer': self.customer.id,
@@ -323,15 +361,22 @@ class OrderListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
             'completion_date': '2019-01-25',
             'assignment_date': "2018-01-30",
             'category_tags': [],
-            'comments': []
+            'extra_comment': "This is an extra comment.",
+            'skill_sets': [
+                skill_set_1.id,
+                skill_set_2.id,
+                skill_set_3.id
+            ]
         })
 
         # Executive
         response = self.exec_client.put(url, data=data, content_type='application/json')
         self.assertIsNotNone(response)
+        # print(response.content)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertIn("2019-01-25", str(response.data))
         self.assertIn("2018-01-30", str(response.data))
+        self.assertIn("This is an extra comment.", str(response.data))
 
         # Manager
         response = self.manager_client.put(url, data=data, content_type='application/json')

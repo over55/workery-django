@@ -124,6 +124,12 @@ class Order(AbstractBigPk):
         related_name="%(app_label)s_%(class)s_comments_related",
         through="OrderComment",
     )
+    skill_sets = models.ManyToManyField(
+        "SkillSet",
+        help_text=_('The skill sets that belong to this order.'),
+        blank=True,
+        related_name="%(app_label)s_%(class)s_skill_sets_related",
+    )
     #Workmanship
     #Time / Budget
     #Punctual

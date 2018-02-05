@@ -43,7 +43,8 @@ class OrderListCreateAPIView(generics.ListCreateAPIView):
         Create
         """
         serializer = OrderListCreateSerializer(data=request.data, context={
-            'created_by': request.user
+            'created_by': request.user,
+            'franchise': request.tenant
         })
         serializer.is_valid(raise_exception=True)
         serializer.save()
@@ -80,7 +81,8 @@ class OrderRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
         order = get_object_or_404(Order, pk=pk)
         self.check_object_permissions(request, order)  # Validate permissions.
         serializer = OrderRetrieveUpdateDestroySerializer(order, data=request.data, context={
-            'last_modified_by': request.user
+            'last_modified_by': request.user,
+            'franchise': request.tenant
         })
         serializer.is_valid(raise_exception=True)
         serializer.save()
