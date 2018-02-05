@@ -41,3 +41,17 @@ class TestTenantUtils(TenantTestCase):
         # Test null.
         result = get_dt_from_toronto_timezone_ms_access_dt_string(None)
         self.assertIsNone(result)
+
+    def test_get_utc_dt_from_toronto_dt_string(self):
+        # Test a sample.
+        result = get_utc_dt_from_toronto_dt_string("1954-01-21, 1:00:00 PM")
+        self.assertIsNotNone(result)
+        self.assertIn("1954-01-21 13:00:00", str(result))
+
+        # Test with bad text.
+        result = get_utc_dt_from_toronto_dt_string("la la la")
+        self.assertIsNone(result)
+
+        # Test null.
+        result = get_utc_dt_from_toronto_dt_string(None)
+        self.assertIsNone(result)

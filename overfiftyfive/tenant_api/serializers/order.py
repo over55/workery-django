@@ -55,20 +55,24 @@ class OrderListCreateSerializer(serializers.ModelSerializer):
         fields = (
             # Read only fields.
             'id',
+            'comments',
             'assigned_skill_sets',
+            'associate_first_name',
+            'associate_last_name',
+            'customer_first_name',
+            'customer_last_name',
+            'created_by_first_name',
+            'created_by_last_name',
+            'last_modified_by_first_name',
+            'last_modified_by_last_name',
 
             # Write only fields.
             'extra_comment',
 
             # Read / write fields.
             'assignment_date',
-            'associate_first_name',
-            'associate_last_name',
             'associate',
-            'customer_first_name',
-            'customer_last_name',
             'category_tags',
-            'comments',
             'completion_date',
             'customer',
             'hours',
@@ -79,10 +83,6 @@ class OrderListCreateSerializer(serializers.ModelSerializer):
             'service_fee_currency',
             # 'created_by',
             # 'last_modified_by',
-            'created_by_first_name',
-            'created_by_last_name',
-            'last_modified_by_first_name',
-            'last_modified_by_last_name',
             'skill_sets',
         )
 
@@ -204,17 +204,17 @@ class OrderRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
             'id',
             'comments',
             'assigned_skill_sets',
+            'associate_first_name',
+            'associate_last_name',
+            'customer_first_name',
+            'customer_last_name',
 
             # Write only fields.
             'extra_comment',
 
             # Read or write fields.
             'assignment_date',
-            'associate_first_name',
-            'associate_last_name',
             'associate',
-            'customer_first_name',
-            'customer_last_name',
             'category_tags',
             'completion_date',
             'customer',
