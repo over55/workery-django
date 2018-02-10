@@ -7,4 +7,5 @@ urlpatterns = (
     url(r'^$', views.index_page, name='o55_index_master'),
     url(r'^en$', views.index_page),
     url(r'^en/$', views.index_page),
+    url(r'^start$', views.start_page, name='o55_start_master'),
 )

@@ -9,7 +9,7 @@ class TestHomeViews(TenantTestCase):
     Class used to test the "views".
 
     Console:
-    python manage.py test shared_foundation.tests.test_views
+    python manage.py test shared_home.tests.test_views
     """
 
     def setUp(self):
@@ -21,4 +21,8 @@ class TestHomeViews(TenantTestCase):
 
     def test_get_index_page(self):
         response = self.c.get(reverse('o55_index_master'))
+        self.assertEqual(response.status_code, 200)
+
+    def test_get_start_page(self):
+        response = self.c.get(reverse('o55_start_master'))
         self.assertEqual(response.status_code, 200)
