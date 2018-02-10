@@ -12,7 +12,7 @@ from rest_framework import exceptions, serializers
 from rest_framework.response import Response
 from rest_framework.authtoken.models import Token
 from tenant_api.serializers.comment import CommentListCreateSerializer
-from tenant_foundation.models import OrderComment
+from tenant_foundation.models import CustomerComment
 
 
 class CustomerCommentSerializer(serializers.ModelSerializer):
@@ -22,7 +22,7 @@ class CustomerCommentSerializer(serializers.ModelSerializer):
     created_at = serializers.DateTimeField(read_only=True)
 
     class Meta:
-        model = OrderComment
+        model = CustomerComment
         fields = (
             'customer',
             'comment',

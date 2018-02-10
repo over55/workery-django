@@ -19,6 +19,7 @@ from rest_framework.validators import UniqueValidator
 from shared_foundation.constants import CUSTOMER_GROUP_ID
 from shared_foundation.models.me import SharedMe
 from shared_foundation.models.o55_user import O55User
+from tenant_api.serializers.customer_affiliation import CustomerAffiliationSerializer
 from tenant_api.serializers.customer_comment import CustomerCommentSerializer
 from tenant_foundation.models import (
     Comment,
@@ -45,6 +46,8 @@ class CustomerListCreateSerializer(serializers.ModelSerializer):
     # will be blank during GET.
     extra_comment = serializers.CharField(write_only=True, allow_null=True)
 
+    affiliations = CustomerAffiliationSerializer(many=True, read_only=True)
+
     class Meta:
         model = Customer
         fields = (
@@ -52,6 +55,7 @@ class CustomerListCreateSerializer(serializers.ModelSerializer):
             'id',
             'created',
             'last_modified',
+            'affiliations',
             # 'owner',
 
             # Profile
@@ -247,6 +251,8 @@ class CustomerRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
     # will be blank during GET.
     extra_comment = serializers.CharField(write_only=True, allow_null=True)
 
+    affiliations = CustomerAffiliationSerializer(many=True, read_only=True)
+
     class Meta:
         model = Customer
         fields = (
@@ -254,6 +260,7 @@ class CustomerRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
             'id',
             'created',
             'last_modified',
+            'affiliations',
             # 'owner',
 
             # Profile

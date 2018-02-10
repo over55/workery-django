@@ -12,26 +12,25 @@ from rest_framework import exceptions, serializers
 from rest_framework.response import Response
 from rest_framework.authtoken.models import Token
 from tenant_api.serializers.comment import CommentListCreateSerializer
-from tenant_foundation.models import AssociateComment
+from tenant_foundation.models import CustomerAffiliation
 
 
-class AssociateCommentSerializer(serializers.ModelSerializer):
-    associate = serializers.PrimaryKeyRelatedField(many=False, read_only=True)
-    comment = CommentListCreateSerializer(many=False, read_only=True)
-    created_at = serializers.DateTimeField(read_only=True)
-
+class CustomerAffiliationSerializer(serializers.ModelSerializer):
+    customer = serializers.PrimaryKeyRelatedField(many=False, read_only=True)
+    organization = CommentListCreateSerializer(many=False, read_only=True)
+    
     class Meta:
-        model = AssociateComment
+        model = CustomerAffiliation
         fields = (
-            'associate',
-            'comment',
-            'created_at',
+            'customer',
+            'organization',
+            'type_of',
         )
 
     def setup_eager_loading(cls, queryset):
         """ Perform necessary eager loading of data. """
         queryset = queryset.prefetch_related(
-            'associate',
-            'comment',
+            'customer',
+            'organization',
         )
         return queryset
