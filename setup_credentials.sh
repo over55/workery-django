@@ -46,7 +46,7 @@ KEEP_COMMENTS_ON_MINIFYING=False
 #--------------------------------#
 O55_APP_HTTP_PROTOCOL=http://
 O55_APP_HTTP_DOMAIN=overfiftyfive.com
-O55_APP_MONEY_CURRENCY=CAD
+O55_APP_DEFAULT_MONEY_CURRENCY=CAD
 EOL
 
 # Developers Note:
