@@ -45,8 +45,12 @@ class Command(BaseCommand):
         subject = "Over55: Password Reset"
         param = {
             'url': url,
-            'web_view_url': web_view_url
+            'web_view_url': web_view_url,
+            'me': me
         }
+
+        # DEVELOPERS NOTE:
+        # https://templates.mailchimp.com/resources/inline-css/
 
         # Plug-in the data into our templates and render the data.
         text_content = render_to_string('shared_auth/email/reset_password_email.txt', param)
