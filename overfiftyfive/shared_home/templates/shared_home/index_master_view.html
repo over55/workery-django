@@ -2,7 +2,7 @@
 {% load staticfiles i18n %}
 
 {% block title %}
-{% trans 'Homepage | Over 55' %}
+    {% trans 'Over 55 (London) Inc.' %}
 {% endblock title %}
 
 {% block header_content %}
@@ -11,7 +11,18 @@
 {% block content %}
 
 
-<p>This works!</p>
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12 text-center">
+            <img class="img-fluid" src="{% static 'img/over55-logo-600px.png' %}" alt="{% trans 'Over 55 (London) Inc.' %}" width="180px">
+        </div>
+    </div>
+    <div class="row">
+	    <div class="col-sm-6 mx-auto">
+	        <h2 class="form-signin-heading text-center mb-3">{% trans 'Welcome to the Over55 App!' %}</h2>
+		</div>
+    </div>
+</div> <!-- /container -->
 
 
 {% endblock content %}

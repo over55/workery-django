@@ -1,0 +1,73 @@
+body {
+  padding-top: 40px;
+  padding-bottom: 40px;
+  background-color: #eee;
+}
+.form-signin {
+  width: 100%;
+  padding: 15px;
+  margin: 0 auto;
+}
+.form-signin .checkbox {
+  margin-bottom: 10px;
+}
+.form-signin .checkbox {
+  font-weight: 400;
+}
+.form-signin input[type="email"] {
+  margin-bottom: -1px;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+}
+.form-signin .input-group-addon-e{
+  border-bottom-left-radius: 0 !important;
+  margin-bottom: -1px;
+}
+.form-signin .input-group-addon-p{
+  border-top-left-radius: 0 !important;
+}
+.form-reset .input-group-addon-e{
+  margin-bottom: -1px !important;
+  border-bottom-right-radius: 0 !important;
+  border-bottom-left-radius: 0 !important;
+}
+.form-reset .input-group-addon-p{
+  border-top-left-radius: 0 !important;
+  border-top-right-radius: 0 !important;
+}
+
+.form-signin input[type="password"] {
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+.col-centered{margin: auto;}
+.form-check-input {
+    margin-top: .38rem !important;
+}
+.form-signin .custom-control-label::before{
+  width: 1.3rem;
+  height: 1.3rem;
+}
+.form-signin .custom-control-label::after{
+  width: 1.3rem;
+  height: 1.3rem;
+}
+.form-signin .custom-control{
+  padding-left: 1.8rem;
+}
+.form-signin .custom-control-label{
+  font-size: 1.25rem;
+}
+.signin-box{
+      border: 0.2rem solid #f7f7f9;
+}
+a.plain-link:hover{
+  outline: none !important;
+}
+a.plain-link{
+  outline: none !important;
+  text-decoration: none !important;
+}
+.pass-reset.rounded {
+  border-radius: 0.5rem !important;
+}
