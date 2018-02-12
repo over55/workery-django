@@ -149,8 +149,6 @@ class CustomerListCreateSerializer(serializers.ModelSerializer):
         #-----------------------------------------------------
         me = SharedMe.objects.update_or_create(
             user=user,
-            franchise=self.context['franchise'],
-            was_email_activated=True,
             defaults={
                 'user': user,
                 'franchise': self.context['franchise'],

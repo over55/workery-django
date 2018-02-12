@@ -35,9 +35,12 @@ class TestFranchise(TenantTestCase):
             is_staff=True
         )
         self.tenant.name = "Over55 (London) Inc."
-        self.me = SharedMe.objects.create(
+        self.me, created = SharedMe.objects.update_or_create(
             user=self.user,
-            franchise = self.tenant
+            defaults={
+                'user': self.user,
+                'franchise': self.tenant,
+            }
         )
 
     def tearDown(self):

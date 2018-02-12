@@ -33,8 +33,11 @@ class TestMe(TenantTestCase):
             is_superuser=True,
             is_staff=True
         )
-        self.me = SharedMe.objects.create(
+        self.me, created = SharedMe.objects.update_or_create(
             user=self.user,
+            defaults={
+                'user': self.user,
+            }
         )
 
     def tearDown(self):

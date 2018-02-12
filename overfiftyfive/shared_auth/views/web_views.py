@@ -64,3 +64,19 @@ def rest_password_master_page(request, pr_access_code):
 
 def rest_password_detail_page(request, pr_access_code): #TEST
     return render(request, 'shared_auth/reset_password/detail_view.html',{})
+
+
+def user_activation_detail_page(request, pr_access_code=None):
+    try:
+        me = SharedMe.objects.get(pr_access_code=pr_access_code)
+        if not me.has_pr_code_expired():
+            # Indicate that the account is active.
+            me.was_activated = True
+            me.save()
+        else:
+            # Erro message indicating code expired.
+            raise PermissionDenied(_('Access code expired.'))
+    except SharedMe.DoesNotExist:
+        raise PermissionDenied(_('Wrong access code.'))
+
+    return render(request, 'shared_auth/activate_user/detail_view.html',{})

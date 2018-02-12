@@ -139,3 +139,32 @@ class TestSharedAuthWebViews(TenantTestCase):
         url = reverse('o55_reset_password_detail', args=[me.pr_access_code])
         response = self.anon_c.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_user_activation_detail_page_with_success(self):
+        me = SharedMe.objects.get(user__email=TEST_USER_EMAIL)
+        url = reverse('o55_user_activation_detail', args=[me.pr_access_code])
+        response = self.anon_c.get(url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_rest_user_activation_detail_page_with_bad_pr_access_code(self):
+        me = SharedMe.objects.get(user__email=TEST_USER_EMAIL)
+        url = reverse('o55_user_activation_detail', args=['some-bad-pr-access-code'])
+        response = self.anon_c.get(url)
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+    def test_rest_user_activation_detail_page_with_expired_pr_access_code(self):
+        # Get the user profile.
+        me = SharedMe.objects.get(user__email=TEST_USER_EMAIL)
+
+        # Set the expiry date to be old!
+        today = timezone.now()
+        today_minus_1_year = today - timedelta(minutes=1)
+        me.pr_expiry_date = today_minus_1_year
+        me.save()
+
+        # Run our test...
+        url = reverse('o55_user_activation_detail', args=[me.pr_access_code])
+        response = self.anon_c.get(url)
+
+        # Verify the results.
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)

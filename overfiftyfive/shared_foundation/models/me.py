@@ -4,6 +4,8 @@ from django.conf import settings
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.db import models
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 from starterkit.utils import (
@@ -172,3 +174,10 @@ class SharedMe(AbstractSharedBigPk):
         """
         today = timezone.now()
         return today >= self.pr_expiry_date
+
+
+@receiver(post_save, sender=User)
+@receiver(post_save, sender=O55User)
+def create_when_user_was_created(sender, instance, created, **kwargs):
+    if created:
+        SharedMe.objects.create(user=instance)

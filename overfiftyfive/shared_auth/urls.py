@@ -7,7 +7,7 @@ from shared_auth.views import web_views
 urlpatterns = (
     # # EMAIL
     # Email Views
-    # url(r'^activate-email/(.*)/$', email_views.activate_email_page, name='trcag_activate_email'),
+    url(r'^activate-email/(.*)/$', email_views.user_activation_email_page, name='o55_activate_email'),
     url(r'^reset-password-email/(.*)/$', email_views.reset_password_email_page, name='o55_reset_password_email'),
 
     # WEB
@@ -42,8 +42,8 @@ urlpatterns = (
     # url(r'^register/done$',
     # web_views.register_user_detail_page,
     # name='o55_register_detail'),
-    #
-    # url(r'^activate/(.*)/$',
-    # web_views.user_activation_detail_page,
-    # name='o55_register_user_activation_detail'),
+
+    url(r'^activate/(.*)/$',
+    web_views.user_activation_detail_page,
+    name='o55_user_activation_detail'),
 )

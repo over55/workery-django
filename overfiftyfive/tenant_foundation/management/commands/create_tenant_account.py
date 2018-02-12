@@ -107,10 +107,13 @@ class Command(BaseCommand):
         token = Token.objects.create(user=user)
 
         # Create our profile.
-        SharedMe.objects.create(
-            franchise=franchise,
+        me, created = SharedMe.objects.update_or_create(
             user=user,
-            was_email_activated=True,
+            defaults={
+                'franchise': franchise,
+                'user': user,
+                'was_email_activated': True,
+            }
         )
 
         # Attach our user to the group.

@@ -163,10 +163,8 @@ class AssociateListCreateSerializer(serializers.ModelSerializer):
         #-----------------------------------------------------
         # Create a user `Profile` object in our public schema.
         #-----------------------------------------------------
-        me = SharedMe.objects.update_or_create(
+        me, created = SharedMe.objects.update_or_create(
             user=user,
-            franchise=self.context['franchise'],
-            was_email_activated=True,
             defaults={
                 'user': user,
                 'franchise': self.context['franchise'],
