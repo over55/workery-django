@@ -261,6 +261,7 @@ DEFAULT_TO_EMAIL = env("DEFAULT_TO_EMAIL")
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
+STATIC_ROOT = os.path.abspath(os.path.join(BASE_DIR, 'overfiftyfive', 'static'))
 STATIC_URL = '/static/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'

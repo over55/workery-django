@@ -190,3 +190,6 @@ prod_*.csv
 
 # Project related notes.
 private_notes.txt
+
+# Do not share collected static files.
+overfiftyfive/overfiftyfive/static
