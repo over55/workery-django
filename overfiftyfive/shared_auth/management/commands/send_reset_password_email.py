@@ -49,6 +49,12 @@ class Command(BaseCommand):
             'me': me
         }
 
+        # For debugging purposes only.
+        print("---------------------------------------------------------------")
+        print("URL", url)
+        print("WEB URL", web_view_url)
+        print("---------------------------------------------------------------")
+
         # DEVELOPERS NOTE:
         # https://templates.mailchimp.com/resources/inline-css/
 

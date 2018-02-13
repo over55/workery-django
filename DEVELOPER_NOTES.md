@@ -23,11 +23,10 @@ pip install django-rq                     # Redis Queue Library
 pip install rq-scheduler                  # Redis Queue Scheduler Library
 pip install django-money                  # Money fields for django forms and models.
 pip install djangorestframework-msgpack   # MessagePack support for Django REST framework
+pip install django-anymail[mailgun]       # Third-Party Email
+
 
 #TODO: IMPLEMENT...
 pip install dateutil                      # Useful extensions to the standard Python datetime features
 # pip install django-crispy-forms           # Req: djangorestframework
-#
-#
-# pip install django-anymail[mailgun]       # Third-Party Email
 ```

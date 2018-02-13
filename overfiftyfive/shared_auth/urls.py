@@ -31,10 +31,6 @@ urlpatterns = (
     web_views.rest_password_master_page,
     name='o55_reset_password_master'),
 
-    url(r'^reset/(.*)/submitted$',
-    web_views.rest_password_detail_page,
-    name='o55_reset_password_detail'),
-
     # url(r'^register/$',
     # web_views.register_user_master_page,
     # name='o55_register_master'),

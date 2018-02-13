@@ -134,12 +134,6 @@ class TestSharedAuthWebViews(TenantTestCase):
         # Verify the results.
         self.assertEqual(response.status_code, status.HTTP_302_FOUND)
 
-    def test_rest_rest_password_detail_page_with_success(self):
-        me = SharedMe.objects.get(user__email=TEST_USER_EMAIL)
-        url = reverse('o55_reset_password_detail', args=[me.pr_access_code])
-        response = self.anon_c.get(url)
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-
     def test_user_activation_detail_page_with_success(self):
         me = SharedMe.objects.get(user__email=TEST_USER_EMAIL)
         url = reverse('o55_user_activation_detail', args=[me.pr_access_code])

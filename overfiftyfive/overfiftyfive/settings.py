@@ -75,6 +75,7 @@ SHARED_APPS = (
     'django_rq',
     'djmoney',
     'corsheaders',
+    'anymail',
     # . . .
 
      # Shared Apps
@@ -258,6 +259,16 @@ DEFAULT_FROM_EMAIL = env("DEFAULT_FROM_EMAIL")
 DEFAULT_TO_EMAIL = env("DEFAULT_TO_EMAIL")
 
 
+# Anymail
+#  https://github.com/anymail/django-anymail
+
+ANYMAIL = {
+    # (exact settings here depend on your ESP...)
+    "MAILGUN_API_KEY": env("MAILGUN_ACCESS_KEY"),
+    "MAILGUN_SENDER_DOMAIN": env("MAILGUN_SERVER_NAME"),
+}
+
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
@@ -284,18 +295,6 @@ CORS_ALLOW_HEADERS = ('content-disposition', 'accept-encoding',
 HTML_MINIFY = env("HTML_MINIFY")
 KEEP_COMMENTS_ON_MINIFYING = env("KEEP_COMMENTS_ON_MINIFYING")
 
-
-########
-# TODO #
-########
-# # Anymail
-# #  https://github.com/anymail/django-anymail
-#
-# ANYMAIL = {
-#     # (exact settings here depend on your ESP...)
-#     "MAILGUN_API_KEY": env("MAILGUN_ACCESS_KEY"),
-#     "MAILGUN_SENDER_DOMAIN": env("MAILGUN_SERVER_NAME"),
-# }
 
 ########
 # TODO #
