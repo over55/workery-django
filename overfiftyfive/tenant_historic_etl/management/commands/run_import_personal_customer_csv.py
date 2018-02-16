@@ -151,9 +151,6 @@ class Command(BaseCommand):
             local_birthdate = get_utc_dt_from_toronto_dt_string(birthdate)
             local_project_date = get_utc_dt_from_toronto_dt_string(project_date)
 
-            # Attempt to lookup or create user.
-            user = User.objects.filter(email=email).first()
-
             # Create or update our user.
             user, created = User.objects.update_or_create(
                 first_name=first_name,
@@ -169,17 +166,18 @@ class Command(BaseCommand):
                 }
             )
 
-            # Generate and assign the password.
-            user.set_password(get_random_string())
-            user.save()
+            if created:
+                # Generate and assign the password.
+                user.set_password(get_random_string())
+                user.save()
 
-            # Attach our user to the "CUSTOMER_GROUP_ID"
-            user.groups.add(CUSTOMER_GROUP_ID)
+                # Attach our user to the "CUSTOMER_GROUP_ID"
+                user.groups.add(CUSTOMER_GROUP_ID)
 
             # Insert our extracted data into our database.
             customer, create = Customer.objects.update_or_create(
                 id=int_or_none(pk),
-                email=email,
+                owner=user,
                 defaults={
                     'id':int_or_none(pk),
                     'owner': user,
@@ -200,7 +198,8 @@ class Command(BaseCommand):
                     'how_hear': learn_about,
                     'description': job_description,
                     'is_senior': bool(is_senior),
-                    'is_support': bool(is_support)
+                    'is_support': bool(is_support),
+                    'is_business': False,
                 }
             )
 

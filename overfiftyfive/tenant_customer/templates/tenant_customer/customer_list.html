@@ -36,28 +36,26 @@
 <table>
   <tr>
     <th>Customer ID</th>
+    <th>Is Biz</th>
     <th>Firstname</th>
     <th>Lastname</th>
     <th>birthdate</th>
     <th>join_date</th>
     <th>is_senior</th>
     <th>is_support</th>
-    <th>User ID</th>
-    <th>Full name</th>
     <th>email</th>
     <th>-</th>
   </tr>
   {% for customer in customer_list %}
   <tr>
     <td>{{ customer.id }}</td>
+    <td>{{ customer.is_business }}</td>
     <td>{{ customer.given_name }}</td>
     <td>{{ customer.last_name }}</td>
     <td>{{ customer.birthdate }}</td>
     <td>{{ customer.join_date }}</td>
     <td>{{ customer.is_senior }}</td>
     <td>{{ customer.is_support }}</td>
-    <td>{{ customer.owner.id }}</td>
-    <td>{{ customer.owner.get_full_name }}</td>
     <td>{{ customer.owner.email }}</td>
     <td>
         <a href="{% url 'o55_tenant_customer_detail' customer.id %}">View</a>

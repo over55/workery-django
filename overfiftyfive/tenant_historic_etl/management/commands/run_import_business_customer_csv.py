@@ -142,15 +142,15 @@ class Command(BaseCommand):
 
             # Attempt to lookup or create user.
             # Create our user.
-            user = User.objects.update_or_create(
-                first_name='-',
-                last_name='-',
+            user, created = User.objects.update_or_create(
+                first_name=caller,
+                last_name=company,
                 email=email,
                 username=get_unique_username_from_email(email),
                 is_active=True,
                 defaults={
-                    'first_name': '-',
-                    'last_name': '-',
+                    'first_name': caller,
+                    'last_name': company,
                     'email': email,
                     'username': get_unique_username_from_email(email),
                     'is_active': True,
@@ -158,19 +158,22 @@ class Command(BaseCommand):
             )
 
             # Generate and assign the password.
-            user.set_password(get_random_string())
-            user.save()
+            if created:
+                user.set_password(get_random_string())
+                user.save()
 
-            # Attach our user to the "CUSTOMER_GROUP_ID"
-            user.groups.add(CUSTOMER_GROUP_ID)
+                # Attach our user to the "CUSTOMER_GROUP_ID"
+                user.groups.add(CUSTOMER_GROUP_ID)
 
             # Insert our extracted data into our database.
             customer, create = Customer.objects.update_or_create(
                 id=int_or_none(pk),
+                owner=user,
                 defaults={
                     'id':int_or_none(pk),
                     'owner': user,
-                    'name':caller,
+                    'last_name':company,
+                    'given_name':caller,
                     'telephone': phone,
                     'postal_code': postal_code,
                     'street_address': address,
@@ -180,7 +183,8 @@ class Command(BaseCommand):
                     'email': email,
                     'fax_number': fax,
                     'description': com1,
-                    'url': url
+                    'url': url,
+                    'is_business': True
                 }
             )
 

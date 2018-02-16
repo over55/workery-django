@@ -126,6 +126,12 @@ class Customer(AbstractBigPk, AbstractThing, AbstractContactPoint, AbstractPosta
     #  CUSTOM FIELDS
     #
 
+    is_business = models.BooleanField(
+        _("Is Business"),
+        help_text=_('Indicates whether customer is considered a business representive or not.'),
+        default=False,
+        blank=True
+    )
     is_senior = models.BooleanField(
         _("Is Senior"),
         help_text=_('Indicates whether customer is considered a senior or not.'),
