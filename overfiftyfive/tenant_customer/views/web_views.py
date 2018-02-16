@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 from django.contrib.auth.decorators import login_required
-from django.views.generic import DetailView
-from django.views.generic import ListView
+from django.views.generic.edit import CreateView, FormView, UpdateView
+from django.views.generic import DetailView, ListView, TemplateView
 from django.utils.decorators import method_decorator
+# from tenant_foundation.forms import CustomerForm  #TODO
 from tenant_foundation.models import Customer
 
 
@@ -13,6 +14,18 @@ class CustomerListView(ListView):
     template_name = 'tenant_customer/customer_list.html'
     paginate_by = 100
 
+    # def head(self, *args, **kwargs):
+    #     last_customer = self.get_queryset().latest('-last_modified')
+    #     response = HttpResponse('')
+    #     # RFC 1123 date format
+    #     response['Last-Modified'] = last_customer.last_modified.strftime('%a, %d %b %Y %H:%M:%S GMT')
+    #     return response
+
+
+@method_decorator(login_required, name='dispatch')
+class CustomerCreateView(TemplateView):
+    template_name = 'tenant_customer/customer_create.html'
+
 
 @method_decorator(login_required, name='dispatch')
 class CustomerDetailView(DetailView):
@@ -22,3 +35,8 @@ class CustomerDetailView(DetailView):
     def get_object(self):
         customer = super().get_object()  # Call the superclass
         return customer  # Return the object
+
+
+# class AuthorCreateView(FormView): #TODO: IMPl.
+#     model = Customer
+#     fields = ['name']
