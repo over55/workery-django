@@ -141,23 +141,28 @@ class Command(BaseCommand):
             fax = int_or_none(fax)
 
             # Attempt to lookup or create user.
-            user = User.objects.filter(email=email).first()
-            if user is None:
-                # Create our user.
-                user = User.objects.create(
-                    first_name='-',
-                    last_name='-',
-                    email=email,
-                    username=get_unique_username_from_email(email),
-                    is_active=True,
-                )
+            # Create our user.
+            user = User.objects.update_or_create(
+                first_name='-',
+                last_name='-',
+                email=email,
+                username=get_unique_username_from_email(email),
+                is_active=True,
+                defaults={
+                    'first_name': '-',
+                    'last_name': '-',
+                    'email': email,
+                    'username': get_unique_username_from_email(email),
+                    'is_active': True,
+                }
+            )
 
-                # Generate and assign the password.
-                user.set_password(get_random_string())
-                user.save()
+            # Generate and assign the password.
+            user.set_password(get_random_string())
+            user.save()
 
-                # Attach our user to the "CUSTOMER_GROUP_ID"
-                user.groups.add(CUSTOMER_GROUP_ID)
+            # Attach our user to the "CUSTOMER_GROUP_ID"
+            user.groups.add(CUSTOMER_GROUP_ID)
 
             # Insert our extracted data into our database.
             customer, create = Customer.objects.update_or_create(

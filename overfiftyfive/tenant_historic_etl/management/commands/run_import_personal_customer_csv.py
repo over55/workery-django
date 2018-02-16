@@ -80,6 +80,9 @@ class Command(BaseCommand):
         # Connection will set it back to our tenant.
         connection.set_schema(franchise.schema_name, True) # Switch to Tenant.
 
+        # # For debugging purposes only.
+        # Customer.objects.delete_all()
+
         # Begin importing...
         with open(full_filepath, newline='', encoding='utf-8') as csvfile:
             csvreader = csv.reader(csvfile, delimiter=',', quotechar='"')
@@ -102,9 +105,6 @@ class Command(BaseCommand):
 
     def run_import_from_dict(self, row_dict, index=1):
         try:
-            # For debugging purposes.
-            # print(row_dict)
-
             # Fetch our values.
             pk = int_or_none(row_dict[0])
             project_date = row_dict[1]
@@ -153,26 +153,33 @@ class Command(BaseCommand):
 
             # Attempt to lookup or create user.
             user = User.objects.filter(email=email).first()
-            if user is None:
-                # Create our user.
-                user = User.objects.create(
-                    first_name=first_name,
-                    last_name=last_name,
-                    email=email,
-                    username=get_unique_username_from_email(email),
-                    is_active=True,
-                )
 
-                # Generate and assign the password.
-                user.set_password(get_random_string())
-                user.save()
+            # Create or update our user.
+            user, created = User.objects.update_or_create(
+                first_name=first_name,
+                last_name=last_name,
+                email=email,
+                username=get_unique_username_from_email(email),
+                defaults={
+                    'first_name': first_name,
+                    'last_name': last_name,
+                    'email': email,
+                    'username': get_unique_username_from_email(email),
+                    'is_active': True,
+                }
+            )
 
-                # Attach our user to the "CUSTOMER_GROUP_ID"
-                user.groups.add(CUSTOMER_GROUP_ID)
+            # Generate and assign the password.
+            user.set_password(get_random_string())
+            user.save()
+
+            # Attach our user to the "CUSTOMER_GROUP_ID"
+            user.groups.add(CUSTOMER_GROUP_ID)
 
             # Insert our extracted data into our database.
             customer, create = Customer.objects.update_or_create(
                 id=int_or_none(pk),
+                email=email,
                 defaults={
                     'id':int_or_none(pk),
                     'owner': user,
@@ -199,8 +206,14 @@ class Command(BaseCommand):
 
         except Exception as e:
             self.stdout.write(
-                self.style.NOTICE(_('Importing (Personal) Customer #%(id)s with exception "%(e)s".') % {
+                self.style.NOTICE(_('Importing (Personal) Customer #%(id)s with exception "%(e)s" for %(email)s.') % {
                     'e': str(e),
-                    'id': str(index)
+                    'id': str(index),
+                    'email': str(email)
                 })
             )
+
+            if "Your email is not unique!" in str(e):
+                customer = Customer.objects.filter(email=email)
+                print(customer)
+                print()

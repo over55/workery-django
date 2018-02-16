@@ -114,6 +114,13 @@ class Customer(AbstractBigPk, AbstractThing, AbstractContactPoint, AbstractPosta
         null=True,
         blank=True,
     )
+    nationality = models.CharField(
+        _("Nationality"),
+        max_length=63,
+        help_text=_('Nationality of the person.'),
+        blank=True,
+        null=True,
+    )
 
     #
     #  CUSTOM FIELDS
@@ -132,16 +139,16 @@ class Customer(AbstractBigPk, AbstractThing, AbstractContactPoint, AbstractPosta
         blank=True
     )
     job_info_read = models.CharField(
-        _("Job Info Read"),
+        _("Job information received by"),
         max_length=255,
-        help_text=_('-'),
+        help_text=_('The volunteer\'s name whom received this customer.'),
         blank=True,
         null=True,
     )
     how_hear = models.CharField(
-        _("How hear"),
+        _("Learned about Over 55"),
         max_length=2055,
-        help_text=_('How customer heared about this organization.'),
+        help_text=_('How customer heared/learned about this Over 55 Inc.'),
         blank=True,
         null=True,
     )
@@ -189,30 +196,6 @@ class Customer(AbstractBigPk, AbstractThing, AbstractContactPoint, AbstractPosta
             return str(self.given_name)+" "+str(self.middle_name)+" "+str(self.last_name)
         else:
             return str(self.given_name)+" "+str(self.last_name)
-
-    def save(self, *args, **kwargs):
-        """
-        Override the "save" function.
-        """
-        if self.email:
-            user = User.objects.filter(email=self.email).first()
-            if self.owner:
-                if user != self.owner:
-                    # print("2 OF 3:")
-                    raise ValidationError({
-                        'email':'Your email is not unique! Please pick another email.'
-                    })
-            else:
-                email_exists = User.objects.filter(email=self.email).exists()
-                if email_exists:
-                    # print("1 OF 3:")
-                    raise ValidationError({
-                        'email':'Your email is not unique! Please pick another email.'
-                    })
-
-        # print("3 of 3")
-        super(Customer, self).save(*args,**kwargs)
-
 
 # def validate_model(sender, **kwargs):
 #     if 'raw' in kwargs and not kwargs['raw']:
