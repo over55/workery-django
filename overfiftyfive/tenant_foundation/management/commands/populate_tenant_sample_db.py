@@ -142,7 +142,7 @@ class Command(BaseCommand):
             is_staff=True,
             password=TEST_SAMPLE_USER_PASSWORD,
             was_email_activated=True,
-            group_id=constants.ASSOICATE_GROUP_ID
+            group_id=constants.ASSOCIATE_GROUP_ID
         )
         user5, me5 = self.create_user(
             franchise=franchise,

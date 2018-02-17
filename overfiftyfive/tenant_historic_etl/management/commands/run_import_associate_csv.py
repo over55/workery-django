@@ -177,24 +177,28 @@ class Command(BaseCommand):
             cell = cell.replace(' ', '')
             cell = cell.replace('.', '')
 
-            # Attempt to lookup or create user.
-            user = User.objects.filter(email=email).first()
-            if user is None:
-                # Create our user.
-                user = User.objects.create(
-                    first_name=given_name,
-                    last_name=last_name,
-                    email=email,
-                    username=get_unique_username_from_email(email),
-                    is_active=True,
-                )
+            # Create or update our user.
+            user, created = User.objects.update_or_create(
+                first_name=given_name,
+                last_name=last_name,
+                email=email,
+                username=get_unique_username_from_email(email),
+                defaults={
+                    'first_name': given_name,
+                    'last_name': last_name,
+                    'email': email,
+                    'username': get_unique_username_from_email(email),
+                    'is_active': True,
+                }
+            )
 
+            if created:
                 # Generate and assign the password.
                 user.set_password(get_random_string())
                 user.save()
 
                 # Attach our user to the "Executive"
-                user.groups.add(ASSOICATE_GROUP_ID)
+                user.groups.add(ASSOCIATE_GROUP_ID)
 
             # Update or create.
             associate, created_associate = Associate.objects.update_or_create(
@@ -259,8 +263,9 @@ class Command(BaseCommand):
 
         except Exception as e:
             self.stdout.write(
-                self.style.NOTICE(_('Importing Associate #%(id)s with exception "%(e)s".') % {
+                self.style.NOTICE(_('Importing Associate Member #%(id)s with exception "%(e)s" for %(email)s.') % {
                     'e': str(e),
-                    'id': str(index)
+                    'id': str(index),
+                    'email': str(email)
                 })
             )

@@ -162,7 +162,7 @@ class Command(BaseCommand):
             group.permissions.add(permission)
 
         # Associate Group
-        group, created = Group.objects.get_or_create(id=ASSOICATE_GROUP_ID)
+        group, created = Group.objects.get_or_create(id=ASSOCIATE_GROUP_ID)
         group.name = "Associates"
         group.save()
 

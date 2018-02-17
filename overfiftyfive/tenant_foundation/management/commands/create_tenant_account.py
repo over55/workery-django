@@ -139,7 +139,7 @@ class Command(BaseCommand):
             )
 
         # Create `Associate`.
-        if group_id == constants.ASSOICATE_GROUP_ID:
+        if group_id == constants.ASSOCIATE_GROUP_ID:
             Associate.objects.create(
                 user=user,
                 telephone=telephone,

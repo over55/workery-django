@@ -122,7 +122,7 @@ def run_associates_importer_from_csv_file(csvfile):
                 user.save()
 
                 # Attach our user to the "Executive"
-                user.groups.add(ASSOICATE_GROUP_ID)
+                user.groups.add(ASSOCIATE_GROUP_ID)
 
             # Create or update.
             try:

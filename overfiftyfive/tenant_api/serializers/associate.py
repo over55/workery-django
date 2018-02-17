@@ -16,7 +16,7 @@ from rest_framework import exceptions, serializers
 from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
 from rest_framework.validators import UniqueValidator
-from shared_foundation.constants import ASSOICATE_GROUP_ID
+from shared_foundation.constants import ASSOCIATE_GROUP_ID
 from shared_foundation.models.me import SharedMe
 from shared_foundation.models.o55_user import O55User
 from tenant_api.serializers.associate_comment import AssociateCommentSerializer
@@ -158,7 +158,7 @@ class AssociateListCreateSerializer(serializers.ModelSerializer):
         )
 
         # Attach the user to the `Associate` group.
-        user.groups.add(ASSOICATE_GROUP_ID)
+        user.groups.add(ASSOCIATE_GROUP_ID)
 
         #-----------------------------------------------------
         # Create a user `Profile` object in our public schema.
