@@ -1,0 +1,124 @@
+{% extends 'tenant_foundation/tenant_base.html' %}
+{% load staticfiles i18n %}
+
+{% block title %}
+{% trans 'Associate Members | Over 55 Inc.' %}
+{% endblock title %}
+
+{% block header_content %}
+{% endblock header_content %}
+
+{% block content %}
+
+<script>
+    function ajax_get_associates() {
+        var criteria = [];
+
+        tenant_get_associates(
+            criteria,
+            function(json_results) {
+                console.log(json_results)
+            },
+            function(error) {
+                console.debug(error);
+                // alert(error);
+            }
+        );
+    }
+</script>
+
+<main id="main" role="main">
+    <h1>{% trans 'Associates Members' %}</h1>
+    <section class="row text-center placeholders">
+        <div class="col-sm-3 placeholder">
+
+            <a href="{% url 'o55_tenant_associate_create' %}">
+
+            <div class="rounded-circle mx-auto mt-4 mb-4" style="height: 200px;width: 200px;background-color: #f4424e">
+                <h1 class="r-circle"><i class="fas fa-plus fa-3x"></i></h1>
+            </div>
+            <h4>Add</h4>
+            <div class="text-muted">Add New Member</div>
+
+            </a>
+
+        </div>
+        <div class="col-sm-3 placeholder">
+
+            <a href="{% url 'o55_tenant_associate_search' %}">
+
+            <div class="rounded-circle mx-auto mt-4 mb-4" style="height: 200px;width: 200px;background-color: #008000">
+                <h1 class="r-circle"><i class="fas fa-search fa-3x"></i></h1>
+            </div>
+            <h4>Search</h4>
+            <span class="text-muted">Search for a Member</span>
+
+            </a>
+
+        </div>
+
+        {% comment %}
+        <div class="col-sm-3 placeholder">
+            <div class="rounded-circle mx-auto mt-4 mb-4" style="height: 200px;width: 200px;background-color: #0275D8">
+                <h1 class="r-circle"><i class="fas fa-pencil-alt fa-3x"></i></h1>
+            </div>
+            <h4>Edit</h4>
+            <span class="text-muted">Edit Client Profile</span>
+        </div>
+        <div class="col-sm-3 placeholder">
+            <div class="rounded-circle mx-auto mt-4 mb-4" style="height: 200px;width: 200px;background-color: #F26523">
+                <h1 style="border: 0;color: #ffffff;line-height: 4.75;">120</h1>
+            </div>
+            <h4>Active Clients</h4>
+            <span class="text-muted">View all active clients</span>
+        </div>
+        {% endcomment %}
+    </section>
+
+    <h2>Associate Member List</h2>
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>{% trans '#' %}</th>
+                    <th>{% trans 'First Name' %}</th>
+                    <th>{% trans 'Last Name' %}</th>
+                    <th>{% trans 'Phone' %}</th>
+                    <th>{% trans 'E-Mail' %}</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for associate in associate_list %}
+                <tr>
+                    <td>{{ associate.id }}</td>
+                    <td>{{ associate.given_name }}</td>
+                    <td>{{ associate.last_name }}</td>
+                    <td>{{ associate.telephone }}</td>
+                    <td>{{ associate.owner.email }}</td>
+                    <td>
+                        <a href="{% url 'o55_tenant_associate_detail' associate.id %}">{% trans 'View' %}</a>
+                    </td>
+                </tr>
+                {% empty %}
+                No associates yet.
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="pagination">
+        <span class="step-links">
+        {% if page_obj.has_previous %}
+        <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+        {% endif %}
+        <span class="current">
+        Page {{ page_obj.number }} of {{ paginator.num_pages }}.
+        </span>
+        {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}">next</a>
+        {% endif %}
+        </span>
+    </div>
+</main>
+{% endblock content %}

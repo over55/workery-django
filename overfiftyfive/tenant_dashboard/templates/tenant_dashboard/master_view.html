@@ -11,18 +11,60 @@
 {% block content %}
 
 <main id="main" role="main">
-  <h1>Clients Menu</h1>
-    Dashboard
-  </h1>
-<p>
-    <a href="{% url 'o55_tenant_associate_master' %}">Associates</a>
-</p>
-<p>
-    <a href="{% url 'o55_tenant_customer_list' %}">Customers</a>
-</p>
-<p>
-    <a href="{% url 'o55_tenant_order_master' %}">Orders</a>
-</p>
+  <h1>Dashboard</h1>
+  <section class="row text-center placeholders">
+      <div class="col-sm-3 placeholder">
+
+        <a href="{% url 'o55_tenant_associate_list' %}">
+
+            <div class="rounded-circle mx-auto mt-4 mb-4" style="height: 200px;width: 200px;background-color: #f4424e">
+                <h1 class="r-circle"><i class="fas fa-plus fa-3x"></i></h1>
+            </div>
+            <h4>Associate Members</h4>
+            <!-- <div class="text-muted">Associate Members</div> -->
+
+        </a>
+
+      </div>
+      <div class="col-sm-3 placeholder">
+
+          <a href="{% url 'o55_tenant_customer_list' %}">
+
+          <div class="rounded-circle mx-auto mt-4 mb-4" style="height: 200px;width: 200px;background-color: #008000">
+              <h1 class="r-circle"><i class="fas fa-search fa-3x"></i></h1>
+          </div>
+          <h4>Customers</h4>
+          <!-- <span class="text-muted">Customers</span> -->
+
+          </a>
+
+      </div>
+
+
+      <div class="col-sm-3 placeholder">
+
+        <a href="{% url 'o55_tenant_order_master' %}">
+
+          <div class="rounded-circle mx-auto mt-4 mb-4" style="height: 200px;width: 200px;background-color: #0275D8">
+              <h1 class="r-circle"><i class="fas fa-pencil-alt fa-3x"></i></h1>
+          </div>
+          <h4>Jobs</h4>
+          <!-- <span class="text-muted">Jobs</span> -->
+
+        </a>
+
+      </div>
+
+       {% comment %}
+      <div class="col-sm-3 placeholder">
+          <div class="rounded-circle mx-auto mt-4 mb-4" style="height: 200px;width: 200px;background-color: #F26523">
+              <h1 style="border: 0;color: #ffffff;line-height: 4.75;">120</h1>
+          </div>
+          <h4>Active Clients</h4>
+          <span class="text-muted">View all active clients</span>
+      </div>
+      {% endcomment %}
+  </section>
 </main>
 
 {% endblock content %}
