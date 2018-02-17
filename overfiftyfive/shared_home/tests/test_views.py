@@ -22,3 +22,11 @@ class TestHomeViews(TenantTestCase):
     def test_get_index_page(self):
         response = self.c.get(reverse('o55_index_master'))
         self.assertEqual(response.status_code, 200)
+
+    def test_http_404_page(self):
+        response = self.c.get(reverse('o55_http_404_master'))
+        self.assertEqual(response.status_code, 200)
+
+    def test_http_500_page(self):
+        response = self.c.get(reverse('o55_http_500_master'))
+        self.assertEqual(response.status_code, 200)

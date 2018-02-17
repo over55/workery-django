@@ -63,5 +63,5 @@ urlpatterns += i18n_patterns(
 
 # Custom errors.
 # handler403 = "shared_foundation.views.http_403_page"
-# handler404 = "shared_foundation.views.http_404_page"
-# handler500 = "shared_foundation.views.http_500_page"
+handler404 = "shared_home.views.http_404_page"
+handler500 = "shared_home.views.http_500_page"
