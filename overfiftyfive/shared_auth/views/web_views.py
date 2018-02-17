@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
+from rest_framework.authtoken.models import Token
 from django.core.exceptions import PermissionDenied
+from django.conf import settings
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseBadRequest, HttpResponseRedirect, JsonResponse
@@ -80,3 +82,20 @@ def user_activation_detail_page(request, pr_access_code=None):
         raise PermissionDenied(_('Wrong access code.'))
 
     return render(request, 'shared_auth/activate_user/detail_view.html',{})
+
+
+@login_required(login_url="login/")
+def user_logout_redirector_master_page(request):
+    # Step 1: Delete the "auth_token" so our RESTFul API won't have a key.
+    Token.objects.filter(user=request.user).delete()
+
+    # Step 2: RESET ALL THE USER PROFILE INFORMATION TO A SESSION.
+    request.session['me_token_key'] = None
+    request.session['me_schema_name'] = None
+
+    # Step 3: Close the Django session.
+    logout(request)
+
+    # Step 4: Redirect to the homepage.
+    sign_in_url = settings.O55_APP_HTTP_PROTOCOL + settings.O55_APP_HTTP_DOMAIN + reverse('o55_login_master', args=[])
+    return HttpResponseRedirect(sign_in_url)

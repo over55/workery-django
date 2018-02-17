@@ -30,7 +30,7 @@ from django.contrib.sitemaps.views import sitemap
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^i18n/', include('django.conf.urls.i18n')),
-    url('^', include('django.contrib.auth.urls')),
+    # url('^', include('django.contrib.auth.urls')),
     url(r'^', include('shared_api.urls')),
     url(r'^', include('shared_foundation.urls')),
 
@@ -62,6 +62,6 @@ urlpatterns += i18n_patterns(
 
 
 # Custom errors.
-# handler403 = "public_home.views.http_403_page"
-# handler404 = "public_home.views.http_404_page"
-# handler500 = "public_home.views.http_500_page"
+# handler403 = "shared_foundation.views.http_403_page"
+# handler404 = "shared_foundation.views.http_404_page"
+# handler500 = "shared_foundation.views.http_500_page"

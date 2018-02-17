@@ -99,7 +99,7 @@ TENANT_APPS = (
     # 'tenant_etl',
     'tenant_dashboard',
     'tenant_historic_etl',
-    'tenant_order'
+    'tenant_order',
     # . . .
 )
 

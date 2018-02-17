@@ -2,35 +2,6 @@
     // DEVELOPER NOTES:
     // - Requires "common_js.html" to be included before using this code.
 
-    /**
-     *  Function will log out the user from the system. Essentially this
-     *  function will clear the API key and thus none of the API functions
-     *  will not work because no API key will exist.
-     */
-    function tenant_api_post_logout(func_callback, func_error_callback)
-    {
-        var url = get_tenant_domain_url(schema_name, "/api/logout?format=json");
-        var type = "POST"; // Insert.
-
-        jQuery.ajax({
-            url: url,
-            headers: {
-                'Authorization': 'Token ' + private_api_key
-            },
-            type: 'POST',
-            traditional: true, // Note: This allows many-to-many arrays for Django REST Framework
-            success: function(json_results){
-                func_callback(json_results);
-            },
-            error: function(xhr, status, error) {
-                func_error_callback(xhr, status, error);
-            },
-            complete: function(xhr,status) {
-                // Do nothing.
-            }
-        });
-    }
-
     function tenant_get_list(url, criteria, func_callback, func_error_callback)
     {
         // If developer has specified criteria then iterate through all the

@@ -162,3 +162,15 @@ class TestSharedAuthWebViews(TenantTestCase):
 
         # Verify the results.
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+    def test_user_logout_redirector_master_page_with_redirect(self):
+        me = SharedMe.objects.get(user__email=TEST_USER_EMAIL)
+        url = reverse('o55_logout_redirector')
+        response = self.anon_c.get(url)
+        self.assertEqual(response.status_code, 302)
+
+    def test_user_logout_redirector_master_page_with_success(self):
+        me = SharedMe.objects.get(user__email=TEST_USER_EMAIL)
+        url = reverse('o55_logout_redirector')
+        response = self.auth_c.get(url)
+        self.assertEqual(response.status_code, 302)

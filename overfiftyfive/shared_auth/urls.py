@@ -42,4 +42,8 @@ urlpatterns = (
     url(r'^activate/(.*)/$',
     web_views.user_activation_detail_page,
     name='o55_user_activation_detail'),
+
+    url(r'^logout/redirector$',
+    web_views.user_logout_redirector_master_page,
+    name='o55_logout_redirector'),
 )

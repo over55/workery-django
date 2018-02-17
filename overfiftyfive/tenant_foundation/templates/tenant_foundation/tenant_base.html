@@ -113,7 +113,9 @@
                   <a class="nav-link" href="#"><i class="fas fa-question-circle"></i> Help</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="#"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                  <a class="nav-link" href="{% url 'o55_logout_redirector' %}">
+                      <i class="fas fa-sign-out-alt"></i>&nbsp;{% trans 'Logout' %}
+                  </a>
                 </li>
               </ul>
             </nav>
@@ -153,7 +155,11 @@
          *  the token.
          */
         var private_api_key = "{{ private_api_key }}";
-        var schema_name = "{{ schema_name }}";
+        var schema_name = "{{ request.tenant.schema_name }}";
+
+        // For debugging purposes only.
+        console.log(private_api_key);
+        console.log(schema_name);
     </script>
     <!-- end PRIVATE INFO -->
 
@@ -166,21 +172,6 @@
     <script src="{% static 'js/custom.js' %}"></script>
     {% include "shared_foundation/common_js.html" %}
     {% include 'tenant_api/tenant_api_js.html' %}
-    <script>
-        /**
-         * Function will log the user out of the account.
-         */
-        function perform_sign_off() {
-            // Attempt to log out.
-            tenant_api_post_logout(
-                function () {
-                    window.location = "{% get_app_domain %}{% url 'o55_login_master' %}";
-                }, function() {
-                    alert("Failed logging out.");
-                }
-            );
-        }
-    </script>
     <!-- end JS LIBRARY -->
     <!------------------------------------------------------------------------->
     <!-- end JAVASCRIPT -->
