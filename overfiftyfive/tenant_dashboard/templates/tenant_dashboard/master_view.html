@@ -10,9 +10,10 @@
 
 {% block content %}
 
-<p>
+<main id="main" role="main">
+  <h1>Clients Menu</h1>
     Dashboard
-</p>
+  </h1>
 <p>
     <a href="{% url 'o55_tenant_associate_master' %}">Associates</a>
 </p>
@@ -22,8 +23,6 @@
 <p>
     <a href="{% url 'o55_tenant_order_master' %}">Orders</a>
 </p>
-<p>
-    <a onclick="perform_sign_off();">Logout</a>
-</p>
+</main>
 
 {% endblock content %}

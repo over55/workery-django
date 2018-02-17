@@ -28,6 +28,16 @@ class CustomerListView(ListView):
 
 
 @method_decorator(login_required, name='dispatch')
+class CustomerSearchView(TemplateView):
+    template_name = 'tenant_customer/customer_search.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['current_page'] = "customers"
+        return context
+
+
+@method_decorator(login_required, name='dispatch')
 class CustomerCreateView(TemplateView):
     template_name = 'tenant_customer/customer_create.html'
 

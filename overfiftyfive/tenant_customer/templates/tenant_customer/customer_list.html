@@ -27,67 +27,98 @@
     }
 </script>
 
+<main id="main" role="main">
+    <h1>{% trans 'Customers' %}</h1>
+    <section class="row text-center placeholders">
+        <div class="col-sm-3 placeholder">
 
-<h2>Customers</h2>
+            <a href="{% url 'o55_tenant_customer_create' %}">
 
-<p><a href="{% url 'o55_tenant_customer_create' %}">{% trans 'Create' %}</a></p>
-<br/>
+            <div class="rounded-circle mx-auto mt-4 mb-4" style="height: 200px;width: 200px;background-color: #f4424e">
+                <h1 class="r-circle"><i class="fas fa-plus fa-3x"></i></h1>
+            </div>
+            <h4>Add</h4>
+            <div class="text-muted">Add New Client</div>
 
-<table>
-  <tr>
-    <th>Customer ID</th>
-    <th>Is Biz</th>
-    <th>Firstname</th>
-    <th>Lastname</th>
-    <th>birthdate</th>
-    <th>join_date</th>
-    <th>is_senior</th>
-    <th>is_support</th>
-    <th>email</th>
-    <th>-</th>
-  </tr>
-  {% for customer in customer_list %}
-  <tr>
-    <td>{{ customer.id }}</td>
-    <td>{{ customer.is_business }}</td>
-    <td>{{ customer.given_name }}</td>
-    <td>{{ customer.last_name }}</td>
-    <td>{{ customer.birthdate }}</td>
-    <td>{{ customer.join_date }}</td>
-    <td>{{ customer.is_senior }}</td>
-    <td>{{ customer.is_support }}</td>
-    <td>{{ customer.owner.email }}</td>
-    <td>
-        <a href="{% url 'o55_tenant_customer_detail' customer.id %}">View</a>
-    </td>
-  </tr>
-  {% empty %}
-      No customers yet.
-  {% endfor %}
-</table>
+            </a>
 
-    <div class="pagination">
-            <span class="step-links">
-                {% if page_obj.has_previous %}
-                    <a href="?page={{ page_obj.previous_page_number }}">previous</a>
-                {% endif %}
+        </div>
+        <div class="col-sm-3 placeholder">
 
-                <span class="current">
-                    Page {{ page_obj.number }} of {{ paginator.num_pages }}.
-                </span>
+            <a href="{% url 'o55_tenant_customer_search' %}">
 
-                {% if page_obj.has_next %}
-                    <a href="?page={{ page_obj.next_page_number }}">next</a>
-                {% endif %}
-            </span>
+            <div class="rounded-circle mx-auto mt-4 mb-4" style="height: 200px;width: 200px;background-color: #008000">
+                <h1 class="r-circle"><i class="fas fa-search fa-3x"></i></h1>
+            </div>
+            <h4>Search</h4>
+            <span class="text-muted">Search for a Client</span>
+
+            </a>
+
         </div>
 
+        {% comment %}
+        <div class="col-sm-3 placeholder">
+            <div class="rounded-circle mx-auto mt-4 mb-4" style="height: 200px;width: 200px;background-color: #0275D8">
+                <h1 class="r-circle"><i class="fas fa-pencil-alt fa-3x"></i></h1>
+            </div>
+            <h4>Edit</h4>
+            <span class="text-muted">Edit Client Profile</span>
+        </div>
+        <div class="col-sm-3 placeholder">
+            <div class="rounded-circle mx-auto mt-4 mb-4" style="height: 200px;width: 200px;background-color: #F26523">
+                <h1 style="border: 0;color: #ffffff;line-height: 4.75;">120</h1>
+            </div>
+            <h4>Active Clients</h4>
+            <span class="text-muted">View all active clients</span>
+        </div>
+        {% endcomment %}
+    </section>
 
+    <h2>Active Client List</h2>
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>{% trans '#' %}</th>
+                    <th>{% trans 'First Name' %}</th>
+                    <th>{% trans 'Last Name' %}</th>
+                    <th>{% trans 'Phone' %}</th>
+                    <th>{% trans 'E-Mail' %}</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for customer in customer_list %}
+                <tr>
+                    <td>{{ customer.id }}</td>
+                    <td>{{ customer.given_name }}</td>
+                    <td>{{ customer.last_name }}</td>
+                    <td>{{ customer.telephone }}</td>
+                    <td>{{ customer.owner.email }}</td>
+                    <td>
+                        <a href="{% url 'o55_tenant_customer_detail' customer.id %}">{% trans 'View' %}</a>
+                    </td>
+                </tr>
+                {% empty %}
+                No customers yet.
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 
-<br /><br />
-
-
-<p>
-    <a href="{% url 'o55_tenant_dashboard_master' %}">Dashboard</a>
-</p>
+    <div class="pagination">
+        <span class="step-links">
+        {% if page_obj.has_previous %}
+        <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+        {% endif %}
+        <span class="current">
+        Page {{ page_obj.number }} of {{ paginator.num_pages }}.
+        </span>
+        {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}">next</a>
+        {% endif %}
+        </span>
+    </div>
+</main>
 {% endblock content %}
