@@ -24,9 +24,11 @@ pip install rq-scheduler                  # Redis Queue Scheduler Library
 pip install django-money                  # Money fields for django forms and models.
 pip install djangorestframework-msgpack   # MessagePack support for Django REST framework
 pip install django-anymail[mailgun]       # Third-Party Email
-
+pip install whitenoise                    #
+pip install brotlipy                      # Brotli compression format
 
 #TODO: IMPLEMENT...
 pip install dateutil                      # Useful extensions to the standard Python datetime features
 # pip install django-crispy-forms           # Req: djangorestframework
+pip install --upgrade django-brotli       # Middleware that compresses response using brotli algorithm
 ```

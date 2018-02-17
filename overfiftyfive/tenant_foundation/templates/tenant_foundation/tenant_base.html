@@ -3,34 +3,116 @@
 <html lang="{{ request.language }}">
 
 <head>
-
+    <!-- PAGE META -->
+    <!------------------------------------------------------------------------->
+    <title>{% block title %}{% trans 'Over 55 (London) Inc.' %}{% endblock %}</title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
+    <meta name="Over 55 Inc." content="">
     <meta name="author" content="">
+    <!-- <link rel="icon" href="../favicon.ico"> -->
+    <!------------------------------------------------------------------------->
+    <!-- end PAGE META -->
 
-    <title>{% block title %}{% trans 'Over 55 (London) Inc.' %}{% endblock %}</title>
-
-    <!-- jQuery -->
-    <script src="{% static 'js/jquery-3.2.1.min.js' %}"></script>
-
+    <!-- JAVASCRIPT -->
+    <!------------------------------------------------------------------------->
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
+    <!-- <script src="{% static 'js/jquery-3.2.1.min.js' %}"></script> -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <!-- <script src="https://code.jquery.com/jquery-3.2.1.js" integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE=" crossorigin="anonymous"></script> -->
+    <!------------------------------------------------------------------------->
+    <!-- end JAVASCRIPT -->
 
+    <!-- CSS -->
+    <!------------------------------------------------------------------------->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
+    <link rel="stylesheet" href="{% static 'css/shared_base.css' %}">
+    <!------------------------------------------------------------------------->
+    <!-- end CSS -->
 </head>
 
 <body>
-    <!-- CONTENT -->
-    {% block content %}
-    {% endblock %}
-    <!-- /.CONTENT -->
+    <header class="navbar navbar-dark fixed-top bg-dark justify-content-between">
+        <a class="navbar-brand" href="#">Over55</a>
+        <button class="navbar-toggler" type="button" id="sidebarCollapse">
+      	    <i class="fa fa-bars"></i>
+    	</button>
+    </header>
 
+    <div class="container-fluid">
+        <div class="d-flex align-items-stretch">
+            <!-- NAVIGATION -->
+            <!----------------------------------------------------------------->
+            <nav id="sidebar">
+    		<p class="text-center text-light mt-3 mb-2">Hi, Rodolfo</p>
+              <hr class="nav-divider">
+              <ul class="nav flex-column">
+                <li class="nav-item">
+                  <a class="nav-link active" href="http://inthought.pw/dashboard/"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="http://inthought.pw/tasks/"><i class="fa fa-list-ol"></i> Tasks</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="http://inthought.pw/jobs/"><i class="fa fa-wrench"></i> Jobs</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="http://inthought.pw/reports/"><i class="fa fa-chart-bar"></i> Reports</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="http://inthought.pw/clients/"><i class="fa fa-user-circle"></i> Clients</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="http://inthought.pw/members/"><i class="fas fa-user"></i> Members</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="http://inthought.pw/team/"><i class="fa fa-users"></i> Team</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="http://inthought.pw/partners/"><i class="fa fa-handshake"></i> Partners</a>
+                </li>
+    			<li class="nav-item">
+                  <a class="nav-link" href="#"><i class="fas fa-file-alt"></i> Resources</a>
+                </li>
+              </ul>
+        	  <hr class="nav-divider">
+              <ul class="nav flex-column">
+                <li class="nav-item">
+                  <a class="nav-link" href="#"><i class="fas fa-cog"></i> Settings</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#"><i class="fas fa-address-card"></i> Profile</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#"><i class="fas fa-question-circle"></i> Help</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                </li>
+              </ul>
+            </nav>
+            <!----------------------------------------------------------------->
+            <!-- end NAVIGATION -->
 
+            <!-- CONTENT -->
+            <!----------------------------------------------------------------->
+            {% block content %}
+            {% endblock %}
+            <!----------------------------------------------------------------->
+            <!-- /.CONTENT -->
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT -->
+    <!------------------------------------------------------------------------->
     {% comment %}
     DEVELOPER NOTES:
     - DO NOT ADD THIS BLOCK OF JAVASCRIPT CODE IN ANY JS MINIFIER.
@@ -46,12 +128,24 @@
     {% endcomment %}
     <!-- PRIVATE INFO -->
     <script>
+        /**
+         *  This global variable is used to get the "django rest framework"
+         *  token and save it for globally for use in all JavaScript code. If
+         *  the user is not authenticated then the django code will not return
+         *  the token.
+         */
         var private_api_key = "{{ private_api_key }}";
         var schema_name = "{{ schema_name }}";
     </script>
     <!-- end PRIVATE INFO -->
 
     <!-- JS LIBRARY -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script defer src="https://use.fontawesome.com/releases/v5.0.4/js/all.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
+    <script src="{% static 'js/custom.js' %}"></script>
     {% include "shared_foundation/common_js.html" %}
     {% include 'tenant_api/tenant_api_js.html' %}
     <script>
@@ -70,6 +164,8 @@
         }
     </script>
     <!-- end JS LIBRARY -->
+    <!------------------------------------------------------------------------->
+    <!-- end JAVASCRIPT -->
 </body>
 
 </html>

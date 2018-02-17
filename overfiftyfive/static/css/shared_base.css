@@ -1,5 +1,23 @@
+/*
+ * Base structure
+ */
+
+/* Move down content because we have a fixed navbar that is 3.5rem tall */
 body {
-  padding-top: 40px;
+  padding-top: 3.5rem;
+  font-size: 1.25rem !important;
+}
+
+/*
+ * Typography
+ */
+
+h1 {
+  padding-bottom: 9px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #eee;
+}
+body {
   padding-bottom: 40px;
   background-color: #eee;
 }
@@ -70,4 +88,149 @@ a.plain-link{
 }
 .pass-reset.rounded {
   border-radius: 0.5rem !important;
+}
+/*
+ * Dashboard
+ */
+#main {
+    width: 100%;
+    min-height: 100vh;
+    transition: all 0.3s;
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: 80px 40px 40px;
+}
+#sidebar {
+    width: 250px;
+    position: fixed;
+    padding-top: 66px;
+    top: 0;
+    right: 0;
+    height: 100vh;
+    z-index: 999;
+    background: #33404F;
+    color: #ffffff;
+    transition: all 0.3s;
+    margin-right: -250px;
+}
+#sidebar.active {
+    margin-right: 0 !important;
+}
+#main.active {
+    width: calc(100% - 250px); !important;
+}
+#sidebar a{
+    color: #ffffff;
+}
+#sidebar a [class*='fa-'] {
+    margin-right: 0.45rem;
+}
+/* Placeholders */
+.placeholders {
+    padding-bottom: 3rem;
+}
+.placeholder img {
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
+}
+
+.navbar-brand {
+    font-size: 1.7rem !important;
+}
+.navbar-toggler {
+    padding: .45rem 1rem !important;
+    font-size: 2rem !important;
+}
+.navbar-dark .navbar-toggler {
+    color: rgba(255,255,255,.95) !important;
+    border-color: rgba(255,255,255,.95) !important;
+    outline: 0;
+}
+.navbar-dark .navbar-toggler.active {
+    color: #343a40 !important;
+    background-color: #ffffff;
+    outline: 0;
+}
+.nav .nav-link.active, .nav .nav-link:hover {
+    background: #17a2b8;
+}
+.nav-divider {
+    margin: 0.8rem;
+    border-color: rgba(255,255,255,0.3);
+}
+@media (min-width: 768px) {
+.bd-links {
+    display: block!important;
+}
+}
+
+.card-custom-top {
+    height: 225px;
+    width: 100%;
+    border-top-left-radius: calc(.45rem - 1px);
+    border-top-right-radius: calc(.45rem - 1px);
+    background-color: #0275D8;
+    font-size: 3rem;
+    color: #ffffff;
+    line-height: 6.9;
+    text-align: center;
+}
+.card {
+    border-radius: .45rem !important;
+}
+.btn-orange {
+    color: #fff;
+    background-color: #F26523;
+    border-color: #F26523;
+}
+.btn-orange:hover, .btn-orange:focus {
+    background-color: #d54d0d;
+    border-color: #d54d0d;
+}
+.r-circle {
+    border: 0;
+    line-height: 0;
+    padding: 52px 0;
+    margin: 0;
+    font-size: 2rem;
+    color: #ffffff;
+}
+.form-check .custom-control-label::before {
+    width: 1.3rem;
+    height: 1.3rem;
+    background-color: rgba(242,101,35,0.8);
+}
+.form-check .custom-control-label::after {
+    width: 1.3rem;
+    height: 1.3rem;
+}
+.form-check.custom-checkbox .custom-control-input:checked ~ .custom-control-label::before {
+    background-color: rgba(242,101,35,1);
+}
+.form-check.custom-control {
+    padding-left: 1.8rem;
+}
+.form-check .custom-control-label {
+    font-size: 1.25rem;
+}
+.input-group .input-group-append .btn {
+    border-top-right-radius: 0.3rem !important;
+    border-bottom-right-radius: 0.3rem !important;
+}
+.back-to-top {
+    cursor: pointer;
+    position: fixed;
+    bottom: 15px;
+    right: 15px;
+    display:none;
+}
+.back-to-top.active{right:265px;}
+#adv-search, #advance_search_btn_x {display:none;}
+/** Error Pages **/
+.error-template {padding: 40px 15px;text-align: center;}
+.error-actions {margin-top:15px;margin-bottom:15px;}
+.error-actions .btn { margin-right:10px; }
+.form-gap {
+    padding-top: 70px;
 }

@@ -12,6 +12,7 @@
     {
         var email_or_username = $('#id_email_or_username').val().toLowerCase();
         var tele = $('#id_telephone_or_mobile').val();
+        var tele = null;
         api_send_password_reset_email(
             email_or_username,
             tele,
@@ -24,7 +25,7 @@
                 }
             },
             function(xhr, status, error) {
-                alert("Wrong email and or telephone.");
+                alert("Wrong email or username.");
                 // Convert the error json into string.
                 // var string = JSON.stringify( error );
                 // console.log(string);

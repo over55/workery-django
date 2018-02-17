@@ -66,6 +66,7 @@ SHARED_APPS = (
     'django.contrib.gis',        # Geo-Django https://docs.djangoproject.com/en/dev/ref/contrib/gis/
 
     # Third Party Apps
+    # 'whitenoise.runserver_nostatic',
     'starterkit',
     'django_tenants',
     'trapdoor',
@@ -110,6 +111,7 @@ MIDDLEWARE = [
     'django_tenants.middleware.main.TenantMainMiddleware',       # Third Party
     'trapdoor.middleware.TrapdoorMiddleware',                    # Third Party
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',                # Third Party
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -272,14 +274,18 @@ ANYMAIL = {
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
-STATIC_ROOT = os.path.abspath(os.path.join(BASE_DIR, 'overfiftyfive', 'static'))
-STATIC_URL = '/static/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-MEDIA_URL = '/media/'
-
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_HOST = env("DJANGO_STATIC_HOST", default="")
+STATIC_URL = STATIC_HOST + '/static/'
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
+
+
 
 
 # django-cors-headers

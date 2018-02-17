@@ -193,3 +193,4 @@ private_notes.txt
 
 # Do not share collected static files.
 overfiftyfive/overfiftyfive/static
+overfiftyfive/staticfiles
