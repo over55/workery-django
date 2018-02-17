@@ -21,10 +21,20 @@ class CustomerListView(ListView):
     #     response['Last-Modified'] = last_customer.last_modified.strftime('%a, %d %b %Y %H:%M:%S GMT')
     #     return response
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['current_page'] = "customers"
+        return context
+
 
 @method_decorator(login_required, name='dispatch')
 class CustomerCreateView(TemplateView):
     template_name = 'tenant_customer/customer_create.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['current_page'] = "customers"
+        return context
 
 
 @method_decorator(login_required, name='dispatch')
@@ -36,7 +46,7 @@ class CustomerDetailView(DetailView):
         customer = super().get_object()  # Call the superclass
         return customer  # Return the object
 
-
-# class AuthorCreateView(FormView): #TODO: IMPl.
-#     model = Customer
-#     fields = ['name']
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['current_page'] = "customers"
+        return context

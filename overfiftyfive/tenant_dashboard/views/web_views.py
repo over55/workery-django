@@ -9,5 +9,5 @@ def master_page(request):
     The default entry point into our dashboard.
     """
     return render(request, 'tenant_dashboard/master_view.html',{
-        'current_page': 'dashboard-master',
+        'current_page': 'dashboard',
     })

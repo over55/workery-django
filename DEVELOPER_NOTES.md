@@ -24,7 +24,7 @@ pip install rq-scheduler                  # Redis Queue Scheduler Library
 pip install django-money                  # Money fields for django forms and models.
 pip install djangorestframework-msgpack   # MessagePack support for Django REST framework
 pip install django-anymail[mailgun]       # Third-Party Email
-pip install whitenoise                    #
+pip install whitenoise                    # Simplified static file serving for Python web apps
 pip install brotlipy                      # Brotli compression format
 
 #TODO: IMPLEMENT...

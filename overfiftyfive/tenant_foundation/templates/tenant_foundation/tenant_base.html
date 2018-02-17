@@ -52,35 +52,53 @@
             <!-- NAVIGATION -->
             <!----------------------------------------------------------------->
             <nav id="sidebar">
-    		<p class="text-center text-light mt-3 mb-2">Hi, Rodolfo</p>
+    		<p class="text-center text-light mt-3 mb-2">{% trans 'Menu' %}</p>
               <hr class="nav-divider">
               <ul class="nav flex-column">
                 <li class="nav-item">
-                  <a class="nav-link active" href="http://inthought.pw/dashboard/"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+                  <a class="nav-link {% if current_page == 'dashboard' %}active{% endif %}" href="{% url 'o55_tenant_dashboard_master' %}">
+                      <i class="fas fa-tachometer-alt"></i>&nbsp;{% trans 'Dashboard' %}
+                  </a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="http://inthought.pw/tasks/"><i class="fa fa-list-ol"></i> Tasks</a>
+                  <a class="nav-link" href="http://inthought.pw/tasks/">
+                      <i class="fa fa-list-ol"></i>&nbsp;Tasks
+                  </a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="http://inthought.pw/jobs/"><i class="fa fa-wrench"></i> Jobs</a>
+                  <a class="nav-link {% if current_page == 'orders' %}active{% endif %}" href="{% url 'o55_tenant_order_master' %}">
+                      <i class="fa fa-wrench"></i>&nbsp;{% trans 'Jobs' %}
+                  </a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="http://inthought.pw/reports/"><i class="fa fa-chart-bar"></i> Reports</a>
+                  <a class="nav-link" href="http://inthought.pw/reports/">
+                      <i class="fa fa-chart-bar"></i>&nbsp;Reports
+                  </a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="http://inthought.pw/clients/"><i class="fa fa-user-circle"></i> Clients</a>
+                  <a class="nav-link {% if current_page == 'customers' %}active{% endif %}" href="{% url 'o55_tenant_customer_list' %}">
+                      <i class="fa fa-user-circle"></i>&nbsp;{% trans 'Clients' %}
+                  </a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="http://inthought.pw/members/"><i class="fas fa-user"></i> Members</a>
+                  <a class="nav-link {% if current_page == 'associates' %}active{% endif %}" href="{% url 'o55_tenant_associate_master' %}">
+                      <i class="fas fa-user"></i>&nbsp;{% trans 'Members' %}
+                  </a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="http://inthought.pw/team/"><i class="fa fa-users"></i> Team</a>
+                  <a class="nav-link" href="http://inthought.pw/team/">
+                      <i class="fa fa-users"></i>&nbsp;Team
+                  </a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="http://inthought.pw/partners/"><i class="fa fa-handshake"></i> Partners</a>
+                  <a class="nav-link" href="http://inthought.pw/partners/">
+                      <i class="fa fa-handshake"></i>&nbsp;Partners
+                  </a>
                 </li>
     			<li class="nav-item">
-                  <a class="nav-link" href="#"><i class="fas fa-file-alt"></i> Resources</a>
+                  <a class="nav-link" href="#">
+                      <i class="fas fa-file-alt"></i>&nbsp;Resources
+                  </a>
                 </li>
               </ul>
         	  <hr class="nav-divider">

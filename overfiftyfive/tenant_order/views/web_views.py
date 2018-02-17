@@ -6,12 +6,12 @@ from django.shortcuts import render
 @login_required(login_url="/login/")
 def master_page(request):
     return render(request, 'tenant_order/master_view.html',{
-        'current_page': 'order-master',
+        'current_page': 'orders',
     })
 
 
 @login_required(login_url="/login/")
 def detail_page(request, pk):
     return render(request, 'tenant_order/detail_view.html',{
-        'current_page': 'order-master',
+        'current_page': 'orders',
     })
