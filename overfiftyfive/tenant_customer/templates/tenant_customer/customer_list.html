@@ -2,7 +2,7 @@
 {% load staticfiles i18n %}
 
 {% block title %}
-{% trans 'Customers | Over 55 Inc.' %}
+{% trans 'Clients List | Over 55 Inc.' %}
 {% endblock title %}
 
 {% block header_content %}
@@ -28,7 +28,19 @@
 </script>
 
 <main id="main" role="main">
-    <h1>{% trans 'Customers' %}</h1>
+
+    <!-- BREADCRUMB -->
+    <!------------------------------------------------------------------------->
+    <nav aria-label="breadcrumb">
+	  	<ol class="breadcrumb">
+	    		<li class="breadcrumb-item"><a href="{% url 'o55_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
+	    		<li class="breadcrumb-item active" aria-current="page">{% trans 'Clients' %}</li>
+	  	</ol>
+	</nav>
+    <!------------------------------------------------------------------------->
+    <!-- end BREADCRUMB -->
+
+    <h1>{% trans 'Clients' %}</h1>
     <section class="row text-center placeholders">
         <div class="col-sm-3 placeholder">
 

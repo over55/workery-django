@@ -2,7 +2,7 @@
 {% load staticfiles i18n %}
 
 {% block title %}
-{% trans 'Orders | Over 55 Inc.' %}
+{% trans 'Jobs | Over 55 Inc.' %}
 {% endblock title %}
 
 {% block header_content %}
@@ -10,12 +10,19 @@
 
 {% block content %}
 
-<p>
-    Orders
-</p>
+<main id="main" role="main">
 
+    <!-- BREADCRUMB -->
+    <!------------------------------------------------------------------------->
+    <nav aria-label="breadcrumb">
+	  	<ol class="breadcrumb">
+	    		<li class="breadcrumb-item"><a href="{% url 'o55_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
+	    		<li class="breadcrumb-item active" aria-current="page">{% trans 'Jobs' %}</li>
+	  	</ol>
+	</nav>
+    <!------------------------------------------------------------------------->
+    <!-- end BREADCRUMB -->
 
-<p>
-    <a href="{% url 'o55_tenant_dashboard_master' %}">Dashboard</a>
-</p>
+    <h1>{% trans 'Jobs' %}</h1>
+</main>
 {% endblock content %}

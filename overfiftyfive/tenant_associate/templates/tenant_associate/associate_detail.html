@@ -2,7 +2,7 @@
 {% load staticfiles i18n %}
 
 {% block title %}
-{% trans 'Associate Detail | Over 55 Inc.' %}
+{% trans 'Associate Member #{{ object.id }} | Over 55 Inc.' %}
 {% endblock title %}
 
 {% block header_content %}
@@ -10,13 +10,19 @@
 
 {% block content %}
 
-<h1>{{ object.given_name }}</h1>
-<p>{{ object.last_name }}</p>
+<main id="main" role="main">
+    <!-- BREADCRUMB -->
+    <!------------------------------------------------------------------------->
+    <nav aria-label="breadcrumb">
+	  	<ol class="breadcrumb">
+	    		<li class="breadcrumb-item"><a href="{% url 'o55_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
+	    		<li class="breadcrumb-item"><a href="{% url 'o55_tenant_associate_list' %}">{% trans 'Associate Members' %}</a></li>
+	    		<li class="breadcrumb-item active" aria-current="page">{% trans 'Member #' %}{{ object.id }}</li>
+	  	</ol>
+	</nav>
+    <!------------------------------------------------------------------------->
+    <!-- end BREADCRUMB -->
 
-<p>
-    <a href="{% url 'o55_tenant_associate_list' %}">Associate List</a>
-</p>
-<p>
-    <a href="{% url 'o55_tenant_dashboard_master' %}">Dashboard</a>
-</p>
+    <h1>{% trans 'Associate Member #' %}{{ object.id }}</h1>
+</main>
 {% endblock content %}

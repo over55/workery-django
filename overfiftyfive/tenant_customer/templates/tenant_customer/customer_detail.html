@@ -2,7 +2,7 @@
 {% load staticfiles i18n %}
 
 {% block title %}
-{% trans 'Customer Detail | Over 55 Inc.' %}
+{% trans 'Client List | Over 55 Inc.' %}
 {% endblock title %}
 
 {% block header_content %}
@@ -10,13 +10,20 @@
 
 {% block content %}
 
-<h1>{{ object.given_name }}</h1>
-<p>{{ object.last_name }}</p>
+<main id="main" role="main">
 
-<p>
-    <a href="{% url 'o55_tenant_customer_list' %}">Customer List</a>
-</p>
-<p>
-    <a href="{% url 'o55_tenant_dashboard_master' %}">Dashboard</a>
-</p>
+    <!-- BREADCRUMB -->
+    <!------------------------------------------------------------------------->
+    <nav aria-label="breadcrumb">
+	  	<ol class="breadcrumb">
+	    	<li class="breadcrumb-item"><a href="{% url 'o55_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'o55_tenant_customer_list' %}">{% trans 'Clients' %}</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{% trans 'Client #' %}{{ object.id }}</li>
+	  	</ol>
+	</nav>
+    <!------------------------------------------------------------------------->
+    <!-- end BREADCRUMB -->
+
+</main>
+
 {% endblock content %}
