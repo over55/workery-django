@@ -31,6 +31,9 @@ before_script:
   - python overfiftyfive/manage.py migrate_schemas --noinput
   - python overfiftyfive/manage.py populate_public
   - python overfiftyfive/manage.py init_app
+  - python overfiftyfive/manage.py collectstatic --noinput
+  - python overfiftyfive/manage.py populate_site
+  - python overfiftyfive/manage.py populate_public
 
 branches:
   only:
