@@ -55,7 +55,7 @@ class ResetPasswordAPIView(APIView):
         return Response(
             data = {
                 'token': str(token.key),
-                'schema_name': me.franchise.schema_name,
+                'schema_name': None if me.franchise is None else me.franchise.schema_name,
                 'email': str(me),
             },
             status=status.HTTP_200_OK
