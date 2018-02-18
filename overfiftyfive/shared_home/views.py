@@ -11,13 +11,13 @@ def index_page(request):
     })
 
 
-def handler404(request, exception, template_name='shared_home/http_404.html'):
+def page_not_found(request, exception, template_name='shared_home/http_404.html'):
     response = render(request, 'shared_home/http_404.html',{})
     response.status_code = 404
     return response
 
 
-def handler500(request, exception, template_name='shared_home/http_404.html'):
-    response = render(request, 'shared_home/http_500.html', {})
+def server_error(request, template_name='shared_home/http_500.html'):
+    response = render(request, 'shared_home/http_500.html',{})
     response.status_code = 500
     return response

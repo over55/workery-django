@@ -11,7 +11,7 @@ cat > overfiftyfive/overfiftyfive/.env << EOL
 # Django #
 #--------#
 SECRET_KEY=l7y)rwm2(@nye)rloo0=ugdxgqsywkiv&#20dqugj76w)s!!ns
-IS_DEBUG=True
+DEBUG=False
 ALLOWED_HOSTS='*'
 ADMIN_NAME='Bartlomiej Mika'
 ADMIN_EMAIL=bart@mikasoftware.com

@@ -3,6 +3,8 @@ from django_tenants.test.cases import TenantTestCase
 from django_tenants.test.client import TenantClient
 from django.urls import reverse
 
+from django.core.exceptions import SuspiciousOperation, PermissionDenied
+
 
 class TestHomeViews(TenantTestCase):
     """
@@ -24,9 +26,5 @@ class TestHomeViews(TenantTestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_http_404_page(self):
-        response = self.c.get(reverse('o55_http_404_master'))
-        self.assertEqual(response.status_code, 200)
-
-    def test_http_500_page(self):
-        response = self.c.get(reverse('o55_http_500_master'))
-        self.assertEqual(response.status_code, 200)
+        response = self.c.get('la-la-la-la-la-la-la-la-la-la-la')
+        self.assertEqual(response.status_code, 404)
