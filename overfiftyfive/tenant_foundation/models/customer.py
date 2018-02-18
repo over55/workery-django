@@ -61,8 +61,8 @@ class CustomerManager(models.Manager):
             obj.save()
             return obj, True
 
-    def full_text_search(self, keyword):
-        """Function performs full text search of various textfields."""
+    def partial_text_search(self, keyword):
+        """Function performs partial text search of various textfields."""
         return Customer.objects.filter(
             Q(
                 Q(given_name__icontains=keyword) |
@@ -96,23 +96,26 @@ class CustomerManager(models.Manager):
                 Q(telephone__icontains=keyword)
             )
         )
-        # # The following code will use the native 'PostgreSQL' library
-        # # which comes with Django to utilize the 'full text search' feature.
-        # # For more details please read:
-        # # https://docs.djangoproject.com/en/2.0/ref/contrib/postgres/search/
-        # return Customer.objects.annotate(search=SearchVector(
-        #     'organizations__name',
-        #     'given_name',
-        #     'middle_name',
-        #     'last_name',
-        #     # 'business',
-        #     # 'limit_special',
-        #     # 'drivers_license_class',
-        #     # 'how_hear',
-        #     'owner__email',
-        #     'email',
-        #     'telephone'
-        # ),).filter(search=keyword)
+
+    def full_text_search(self, keyword):
+        """Function performs full text search of various textfields."""
+        # The following code will use the native 'PostgreSQL' library
+        # which comes with Django to utilize the 'full text search' feature.
+        # For more details please read:
+        # https://docs.djangoproject.com/en/2.0/ref/contrib/postgres/search/
+        return Customer.objects.annotate(search=SearchVector(
+            'organizations__name',
+            'given_name',
+            'middle_name',
+            'last_name',
+            # 'business',
+            # 'limit_special',
+            # 'drivers_license_class',
+            # 'how_hear',
+            'owner__email',
+            'email',
+            'telephone'
+        ),).filter(search=keyword)
 
 
 class Customer(AbstractBigPk, AbstractThing, AbstractContactPoint, AbstractPostalAddress, AbstractGeoCoordinate):

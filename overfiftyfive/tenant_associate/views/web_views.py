@@ -32,11 +32,6 @@ class AssociateListView(ListView):
         GET parameterss using the 'django-filter' library.
         """
         queryset = None
-
-        # The following code will use the native 'PostgreSQL' library
-        # which comes with Django to utilize the 'full text search' feature.
-        # For more details please read:
-        # https://docs.djangoproject.com/en/2.0/ref/contrib/postgres/search/
         keyword = self.request.GET.get('keyword', None)
         if keyword:
             queryset = Associate.objects.full_text_search(keyword)

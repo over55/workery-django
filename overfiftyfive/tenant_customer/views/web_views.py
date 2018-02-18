@@ -32,8 +32,6 @@ class CustomerListView(ListView):
         GET parameterss using the 'django-filter' library.
         """
         queryset = None  # The queryset we will be returning.
-
-        # Either apply search or narrow down the searches.
         keyword = self.request.GET.get('keyword', None)
         if keyword:
             queryset = Customer.objects.full_text_search(keyword)

@@ -157,5 +157,26 @@ class TestTenantAssociateModel(TenantTestCase):
         )
 
         # Test and verify.
-        querysets = Associate.objects.full_text_search('Clark')
+        querysets = Associate.objects.full_text_search('Aurthor')
+        self.assertEqual(querysets.count(), 1)
+
+    def test_partial_text_search(self):
+        # Setup the test.
+        associate = Associate.objects.create(
+            owner=self.owner,
+            email=TEST_USER_EMAIL,
+            given_name="Aurthor",
+            last_name="Clarke",
+            middle_name="C.",
+            address_country="CA",
+            address_locality="London",
+            address_region="Ontario",
+            post_office_box_number="", # Post Offic #
+            postal_code="N6H 1B4",
+            street_address="78 Riverside Drive",
+            street_address_extra="", # Extra line.
+        )
+
+        # Test and verify.
+        querysets = Associate.objects.partial_text_search('Aurthor')
         self.assertEqual(querysets.count(), 1)
