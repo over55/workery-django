@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.views.generic.edit import CreateView, FormView, UpdateView
 from django.views.generic import DetailView, ListView, TemplateView
 from django.utils.decorators import method_decorator
+from tenant_api.filters.associate import AssociateFilter
 from tenant_foundation.models import Associate
 
 
@@ -25,6 +26,28 @@ class AssociateListView(ListView):
         context['current_page'] = "associates"
         return context
 
+    def get_queryset(self):
+        """
+        Override the default queryset to allow dynamic filtering with
+        GET parameterss using the 'django-filter' library.
+        """
+        queryset = None
+
+        # The following code will use the native 'PostgreSQL' library
+        # which comes with Django to utilize the 'full text search' feature.
+        # For more details please read:
+        # https://docs.djangoproject.com/en/2.0/ref/contrib/postgres/search/
+        keyword = self.request.GET.get('keyword', None)
+        if keyword:
+            queryset = Associate.objects.full_text_search(keyword)
+            queryset = queryset.order_by('-created')
+        else:
+            queryset = super(AssociateListView, self).get_queryset()
+
+        # The following code will use the 'django-filter'
+        filter = AssociateFilter(self.request.GET, queryset=queryset)
+        queryset = filter.qs
+        return queryset
 
 @method_decorator(login_required, name='dispatch')
 class AssociateSearchView(TemplateView):

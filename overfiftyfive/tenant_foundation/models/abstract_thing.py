@@ -58,6 +58,7 @@ class AbstractThing(models.Model):
         blank=True,
         null=True,
         default='',
+        db_index=True,
     )
     # same_as = models.URLField(
     #     _("Same As"),

@@ -25,7 +25,9 @@ pip install django-money                  # Money fields for django forms and mo
 pip install djangorestframework-msgpack   # MessagePack support for Django REST framework
 pip install django-anymail[mailgun]       # Third-Party Email
 pip install whitenoise                    # Simplified static file serving for Python web apps
-pip install brotlipy                      # Brotli compression format
+pip install brotlipy                      # Brotli compression format to be used by "whitenoise" library.
+pip install django-filter                 # A generic system for filtering Django QuerySets based on user selections.
+
 
 #TODO: IMPLEMENT...
 pip install dateutil                      # Useful extensions to the standard Python datetime features

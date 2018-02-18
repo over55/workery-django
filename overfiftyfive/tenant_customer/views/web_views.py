@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.views.generic.edit import CreateView, FormView, UpdateView
 from django.views.generic import DetailView, ListView, TemplateView
 from django.utils.decorators import method_decorator
-# from tenant_foundation.forms import CustomerForm  #TODO
+from tenant_api.filters.customer import CustomerFilter
 from tenant_foundation.models import Customer
 
 
@@ -25,6 +25,26 @@ class CustomerListView(ListView):
         context = super().get_context_data(**kwargs)
         context['current_page'] = "customers"
         return context
+
+    def get_queryset(self):
+        """
+        Override the default queryset to allow dynamic filtering with
+        GET parameterss using the 'django-filter' library.
+        """
+        queryset = None  # The queryset we will be returning.
+
+        # Either apply search or narrow down the searches.
+        keyword = self.request.GET.get('keyword', None)
+        if keyword:
+            queryset = Customer.objects.full_text_search(keyword)
+            queryset = queryset.order_by('-created')
+        else:
+            queryset = super(CustomerListView, self).get_queryset()
+
+        # The following code will use the 'django-filter'
+        filter = CustomerFilter(self.request.GET, queryset=queryset)
+        queryset = filter.qs
+        return queryset
 
 
 @method_decorator(login_required, name='dispatch')

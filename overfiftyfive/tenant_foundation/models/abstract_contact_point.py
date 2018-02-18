@@ -44,7 +44,8 @@ class AbstractContactPoint(models.Model):
         help_text=_('Email address.'),
         null=True,
         blank=True,
-        validators=[email_validator]
+        validators=[email_validator],
+        db_index=True
     )
     fax_number = models.CharField(
         _("Fax Number"),
@@ -74,6 +75,7 @@ class AbstractContactPoint(models.Model):
         blank=True,
         null=True,
         default='',
+        db_index=True,
     )
     telephone_extension = models.CharField( # NOT STANDARD SCHEMA.
         _("Telephone Extension"),
