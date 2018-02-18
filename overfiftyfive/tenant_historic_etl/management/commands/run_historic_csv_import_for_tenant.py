@@ -79,7 +79,7 @@ class Command(BaseCommand):
         directory = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
         # Change root location.
-        directory = directory.replace("/management", "/static")
+        directory = directory.replace("/management", "/csv")
 
         # Return our directory.
         return directory
