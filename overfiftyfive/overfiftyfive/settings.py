@@ -35,7 +35,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = env('SECRET_KEY') # Raises ImproperlyConfigured exception if SECRET_KEY not in os.environ
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = env('IS_DEBUG') # False if not in os.environ
+DEBUG = env('IS_DEBUG', default=False) # False if not in os.environ
 
 ALLOWED_HOSTS = ['*']
 

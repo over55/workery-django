@@ -19,6 +19,12 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.conf.urls.i18n import i18n_patterns
 from django.contrib.sitemaps.views import sitemap
+from django.conf.urls import (
+    handler400,
+    handler403,
+    handler404,
+    handler500
+)
 # from overfiftyfive.sitemaps import StaticViewSitemap
 
 
@@ -26,7 +32,12 @@ from django.contrib.sitemaps.views import sitemap
 #     'static': StaticViewSitemap,
 # }
 
+# Custom errors.
+# handler403 = "shared_foundation.views.http_403_page"
+handler404 = "shared_home.views.handler404"
+handler500 = "shared_home.views.handler500"
 
+# Base URLs.
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^i18n/', include('django.conf.urls.i18n')),
@@ -59,9 +70,3 @@ urlpatterns += i18n_patterns(
     url(r'^', include('tenant_dashboard.urls')),
     url(r'^', include('tenant_order.urls')),
 )
-
-
-# Custom errors.
-# handler403 = "shared_foundation.views.http_403_page"
-handler404 = "shared_home.views.http_404_page"
-handler500 = "shared_home.views.http_500_page"
