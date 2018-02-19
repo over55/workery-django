@@ -24,13 +24,13 @@
     <!-- end BREADCRUMB -->
     <h1>{% trans 'Members Search' %}</h1>
     <div id="m-search" class="col-sm-6 mx-auto mt-4 pt-4">
-        <form class="needs-validation" novalidate>
+        <form id="id_basic_search_form" class="needs-validation was-validated" novalidate>
             <div class="input-group mb-2">
-                <input type="text" class="form-control form-control-lg border border-primary" placeholder="Search" required>
+                <input id="id_keywords" type="text" class="form-control form-control-lg border border-primary" placeholder="Search" required>
                 <div class="input-group-append">
-                    <button class="btn btn-primary btn-lg" type="submit"><i class="fas fa-search"></i></button>
+                    <button class="btn btn-primary btn-lg" type="button" onclick="ajax_perform_basic_search();"><i class="fas fa-search"></i></button>
                 </div>
-                <div class="invalid-feedback">
+                <div class="invalid-feedback" id="id_keywords_error" style="display: none;">
                     Fill in at least 3 characters.
                 </div>
             </div>
@@ -43,7 +43,7 @@
     </div>
     <div id="adv-search" class="col-sm-6 mx-auto border-top mt-4">
         <p class="mb-4 mt-4"><strong>Please fill in atleast one field and hit search</strong></p>
-        <form class="needs-validation" novalidate>
+        <form id="id_advanced_search_form" class="needs-validation" novalidate>
             <div class="form-row">
                 <div class="col-md-12 mb-3">
                     <label for="validationCustom01">First name</label>
@@ -110,7 +110,7 @@
                 </div>
             </div>
             <div class="col-md-3 mb-3 mx-auto pl-4 pr-4">
-                <button class="btn btn-success btn-lg" type="submit"><i class="fas fa-search"></i> Search</button>
+                <button class="btn btn-success btn-lg" type="button" onclick="ajax_perform_advanced_search();"><i class="fas fa-search"></i> Search</button>
             </div>
         </form>
     </div>
@@ -118,6 +118,28 @@
     <!-- SCRIPTS -->
     <!------------------------------------------------------------------------->
     <script>
+        var is_advanced_on = false;
+
+        function ajax_perform_basic_search() {
+            var keywords = $('#id_keywords').val()
+            if (keywords.length <= 0) {
+                console.log(keywords);
+                var keywords_error = $("#id_keywords_error");
+                keywords_error.show();
+            } else {
+                var keywords_error = $("#id_keywords_error");
+                keywords_error.hide();
+                window.location.replace('{% url "o55_tenant_associate_list" %}'+'?keyword='+keywords);
+            }
+
+
+        }
+
+        function ajax_perform_advanced_search() {
+            console.log("TODO: IMPLEMENT");
+        }
+
+    {% comment %}
         // Example starter JavaScript for disabling form submissions if there are invalid fields
         (function() {
           'use strict';
@@ -131,11 +153,12 @@
                   event.preventDefault();
                   event.stopPropagation();
                 }
-                form.classList.add('was-validated');
+                form.addClass('was-validated');
               }, false);
             });
           }, false);
         })();
+    {% endcomment %}
     </script>
     <!------------------------------------------------------------------------->
     <!-- end SCRIPTS -->
