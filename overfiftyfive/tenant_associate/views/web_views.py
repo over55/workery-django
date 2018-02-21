@@ -3,12 +3,13 @@ from django.contrib.auth.decorators import login_required
 from django.views.generic.edit import CreateView, FormView, UpdateView
 from django.views.generic import DetailView, ListView, TemplateView
 from django.utils.decorators import method_decorator
+from shared_foundation.mixins import ExtraRequestProcessingMixin
 from tenant_api.filters.associate import AssociateFilter
 from tenant_foundation.models import Associate
 
 
 @method_decorator(login_required, name='dispatch')
-class AssociateListView(ListView):
+class AssociateListView(ListView, ExtraRequestProcessingMixin):
     context_object_name = 'associate_list'
     queryset = Associate.objects.order_by('-created')
     template_name = 'tenant_associate/associate_list.html'
@@ -22,9 +23,18 @@ class AssociateListView(ListView):
     #     return response
 
     def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['current_page'] = "associates"
-        return context
+        modified_context = super().get_context_data(**kwargs)
+        modified_context['current_page'] = "associates"
+
+        # DEVELOPERS NOTE:
+        # - This class based view will have URL parameters for filtering and
+        #   searching records.
+        # - We will extract the URL parameters and save them into our context
+        #   so we can use this to help the pagination.
+        modified_context['filter_parameters'] = self.get_param_urls(['page'])
+
+        # Return our modified context.
+        return modified_context
 
     def get_queryset(self):
         """
