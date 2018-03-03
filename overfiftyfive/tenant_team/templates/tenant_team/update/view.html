@@ -1,0 +1,57 @@
+{% extends 'tenant_foundation/tenant_base.html' %}
+{% load staticfiles i18n %}
+
+{% block title %}
+{% trans 'Client List | Over 55 Inc.' %}
+{% endblock title %}
+
+{% block header_content %}
+{% endblock header_content %}
+
+{% block content %}
+
+<main id="main" role="main">
+
+    <!-- BREADCRUMB -->
+    <!------------------------------------------------------------------------->
+    <nav aria-label="breadcrumb">
+	  	<ol class="breadcrumb">
+            {% if template == 'search' %}
+
+            <li class="breadcrumb-item">
+                <a href="{% url 'o55_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a>
+            </li>
+            <li class="breadcrumb-item">
+                <a href="{% url 'o55_tenant_team_summary' %}">{% trans 'Clients' %}</a>
+            </li>
+            <li class="breadcrumb-item">
+                <a href="{% url 'o55_tenant_team_search' %}">{% trans 'Search' %}</a>
+            </li>
+            <li class="breadcrumb-item active">{% trans 'Search Results' %}</li>
+            <li class="breadcrumb-item"><a href="{% url 'o55_tenant_team_retrieve' template object.id %}">{% trans 'Client #' %}{{ object.id }}</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{% trans 'Edit' %}</li>
+
+            {% elif template == 'list' %}
+
+            <li class="breadcrumb-item"><a href="{% url 'o55_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'o55_tenant_team_summary' %}">{% trans 'Clients' %}</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'o55_tenant_team_list' %}">{% trans 'List' %}</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'o55_tenant_team_retrieve' template object.id %}">{% trans 'Client #' %}{{ object.id }}</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{% trans 'Edit' %}</li>
+
+            {% else %}
+
+	    	<li class="breadcrumb-item"><a href="{% url 'o55_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'o55_tenant_team_summary' %}">{% trans 'Clients' %}</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'o55_tenant_team_retrieve' template object.id %}">{% trans 'Client #' %}{{ object.id }}</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{% trans 'Edit' %}</li>
+
+            {% endif %}
+	  	</ol>
+	</nav>
+    <!------------------------------------------------------------------------->
+    <!-- end BREADCRUMB -->
+
+</main>
+
+{% endblock content %}

@@ -2,7 +2,7 @@
 {% load staticfiles i18n %}
 
 {% block title %}
-{% trans 'Add New Member | Over 55 Inc.' %}
+{% trans 'Add New Client | Over 55 Inc.' %}
 {% endblock title %}
 
 {% block header_content %}
@@ -11,18 +11,19 @@
 {% block content %}
 
 <main id="main" role="main">
+
     <!-- BREADCRUMB -->
     <!------------------------------------------------------------------------->
     <nav aria-label="breadcrumb">
 	  	<ol class="breadcrumb">
-	    		<li class="breadcrumb-item"><a href="{% url 'o55_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
-	    		<li class="breadcrumb-item"><a href="{% url 'o55_tenant_associate_list' %}">{% trans 'Associate Members' %}</a></li>
-	    		<li class="breadcrumb-item active" aria-current="page">{% trans 'Add' %}</li>
+	    	<li class="breadcrumb-item"><a href="{% url 'o55_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'o55_tenant_member_summary' %}">{% trans 'Clients' %}</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{% trans 'Add' %}</li>
 	  	</ol>
 	</nav>
     <!------------------------------------------------------------------------->
     <!-- end BREADCRUMB -->
 
-    <h1>{% trans 'Add New Member' %}</h1>
 </main>
+
 {% endblock content %}

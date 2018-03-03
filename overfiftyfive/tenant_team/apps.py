@@ -2,4 +2,4 @@ from django.apps import AppConfig
 
 
 class TenantCustomerConfig(AppConfig):
-    name = 'tenant_associate'
+    name = 'tenant_team'

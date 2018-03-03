@@ -14,8 +14,8 @@ from tenant_foundation.models import Customer
 #--------#
 
 @method_decorator(login_required, name='dispatch')
-class MemberCreateView(TemplateView):
-    template_name = 'tenant_associate/create/view.html'
+class TeamCreateView(TemplateView):
+    template_name = 'tenant_team/create/view.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -29,10 +29,10 @@ class MemberCreateView(TemplateView):
 
 
 @method_decorator(login_required, name='dispatch')
-class MemberSummaryView(ListView, ExtraRequestProcessingMixin):
+class TeamSummaryView(ListView, ExtraRequestProcessingMixin):
     context_object_name = 'customer_list'
     queryset = Customer.objects.order_by('-created')
-    template_name = 'tenant_associate/summary/view.html'
+    template_name = 'tenant_team/summary/view.html'
     paginate_by = 100
 
     def get_context_data(self, **kwargs):
@@ -52,10 +52,10 @@ class MemberSummaryView(ListView, ExtraRequestProcessingMixin):
 
 
 @method_decorator(login_required, name='dispatch')
-class MemberListView(ListView, ExtraRequestProcessingMixin):
+class TeamListView(ListView, ExtraRequestProcessingMixin):
     context_object_name = 'customer_list'
     queryset = Customer.objects.order_by('-created')
-    template_name = 'tenant_associate/list/view.html'
+    template_name = 'tenant_team/list/view.html'
     paginate_by = 100
 
     def get_context_data(self, **kwargs):
@@ -64,7 +64,7 @@ class MemberListView(ListView, ExtraRequestProcessingMixin):
         return context
 
     def get_queryset(self):
-        queryset = super(MemberListView, self).get_queryset() # Get the base.
+        queryset = super(TeamListView, self).get_queryset() # Get the base.
 
         # The following code will use the 'django-filter'
         filter = CustomerFilter(self.request.GET, queryset=queryset)
@@ -78,8 +78,8 @@ class MemberListView(ListView, ExtraRequestProcessingMixin):
 
 
 @method_decorator(login_required, name='dispatch')
-class MemberSearchView(TemplateView):
-    template_name = 'tenant_associate/search/search_view.html'
+class TeamSearchView(TemplateView):
+    template_name = 'tenant_team/search/search_view.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -88,10 +88,10 @@ class MemberSearchView(TemplateView):
 
 
 @method_decorator(login_required, name='dispatch')
-class MemberSearchResultView(ListView, ExtraRequestProcessingMixin):
+class TeamSearchResultView(ListView, ExtraRequestProcessingMixin):
     context_object_name = 'customer_list'
     queryset = Customer.objects.order_by('-created')
-    template_name = 'tenant_associate/search/result_view.html'
+    template_name = 'tenant_team/search/result_view.html'
     paginate_by = 100
 
     def get_context_data(self, **kwargs):
@@ -121,7 +121,7 @@ class MemberSearchResultView(ListView, ExtraRequestProcessingMixin):
             queryset = Customer.objects.full_text_search(keyword)
             queryset = queryset.order_by('-created')
         else:
-            queryset = super(MemberListView, self).get_queryset()
+            queryset = super(TeamListView, self).get_queryset()
 
         # The following code will use the 'django-filter'
         filter = CustomerFilter(self.request.GET, queryset=queryset)
@@ -135,9 +135,9 @@ class MemberSearchResultView(ListView, ExtraRequestProcessingMixin):
 
 
 @method_decorator(login_required, name='dispatch')
-class MemberRetrieveView(DetailView):
+class TeamRetrieveView(DetailView):
     model = Customer
-    template_name = 'tenant_associate/retrieve/view.html'
+    template_name = 'tenant_team/retrieve/view.html'
 
     def get_object(self):
         customer = super().get_object()  # Call the superclass
@@ -167,9 +167,9 @@ class MemberRetrieveView(DetailView):
 
 
 @method_decorator(login_required, name='dispatch')
-class MemberUpdateView(DetailView):
+class TeamUpdateView(DetailView):
     model = Customer
-    template_name = 'tenant_associate/update/view.html'
+    template_name = 'tenant_team/update/view.html'
 
     def get_object(self):
         customer = super().get_object()  # Call the superclass

@@ -5,11 +5,22 @@ from tenant_associate.views import web_views
 
 
 urlpatterns = (
-    path('associates/', web_views.AssociateListView.as_view(), name='o55_tenant_associate_list'),
-    path('associate/create', web_views.AssociateCreateView.as_view(), name='o55_tenant_associate_create'),
-    path('associate/search', web_views.AssociateSearchView.as_view(), name='o55_tenant_associate_search'),
-    path('associate/<int:pk>/', web_views.AssociateDetailView.as_view(), name='o55_tenant_associate_detail'),
+    # Summary
+    path('members/', web_views.MemberSummaryView.as_view(), name='o55_tenant_member_summary'),
 
-    # url(r'^associate/create$', web_views.create_page, name='o55_tenant_associate_create'),
-    # url(r'^associate/(?P<pk>[^/.]+)/$', web_views.retrieve_or_update_page, name='o55_tenant_associate_retrieve_or_update'),
+    # Create
+    path('members/create/', web_views.MemberCreateView.as_view(), name='o55_tenant_member_create'),
+
+    # List
+    path('members/list/', web_views.MemberListView.as_view(), name='o55_tenant_member_list'),
+
+    # Search
+    path('members/search/', web_views.MemberSearchView.as_view(), name='o55_tenant_member_search'),
+    path('members/search/results/', web_views.MemberSearchResultView.as_view(), name='o55_tenant_member_search_results'),
+
+    # Retrieve
+    path('members/detail/<str:template>/<int:pk>/', web_views.MemberRetrieveView.as_view(), name='o55_tenant_member_retrieve'),
+
+    # Update
+    path('members/detail/<str:template>/<int:pk>/edit/', web_views.MemberUpdateView.as_view(), name='o55_tenant_member_update'),
 )

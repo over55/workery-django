@@ -96,11 +96,12 @@ TENANT_APPS = (
     'tenant_api',
     'tenant_associate',
     'tenant_customer',
+    'tenant_dashboard',
     'tenant_foundation',
     # 'tenant_etl',
-    'tenant_dashboard',
     'tenant_historic_etl',
     'tenant_order',
+    'tenant_team',
     # . . .
 )
 
