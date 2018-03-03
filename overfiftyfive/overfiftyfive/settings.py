@@ -64,7 +64,8 @@ SHARED_APPS = (
     'django.contrib.sites',
     'django.contrib.sitemaps',
     'django.contrib.postgres',   # Postgres full-text search: https://docs.djangoproject.com/en/1.10/ref/contrib/postgres/search/
-    'django.contrib.gis',        # Geo-Django https://docs.djangoproject.com/en/dev/ref/contrib/gis/
+    'django.contrib.gis',        # Geo-Django: https://docs.djangoproject.com/en/dev/ref/contrib/gis/
+    'django.contrib.humanize',   # Humanize: https://docs.djangoproject.com/en/dev/ref/contrib/humanize/
 
     # Third Party Apps
     # 'whitenoise.runserver_nostatic',

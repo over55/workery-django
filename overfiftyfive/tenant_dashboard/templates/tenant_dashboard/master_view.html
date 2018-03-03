@@ -1,5 +1,5 @@
 {% extends 'tenant_foundation/tenant_base.html' %}
-{% load staticfiles i18n %}
+{% load staticfiles i18n humanize %}
 
 {% block title %}
 {% trans 'Dashboard | Over 55' %}
@@ -11,59 +11,66 @@
 {% block content %}
 
 <main id="main" role="main">
-  <h1>Dashboard</h1>
+    <h1>Dashboard</h1>
+    <section class="row text-center placeholders">
 
-  <section class="row text-center placeholders">
-    <div class="col-sm-3 placeholder">
-  <div class="rounded-circle mx-auto mt-4 mb-4 circle-200 bg-pink">
-    <a href="http://inthought.pw/clients/" class="d-block link-ndecor" title="Clients">
-        <h1 class="circle-title">1,100</h1>
-    </a>
-      </div>
-      <h4>Clients</h4>
-      <div class="text-muted">View your client list</div>
-    </div>
-    <div class="col-sm-3 placeholder">
-      <div class="rounded-circle mx-auto mt-4 mb-4 circle-200 bg-dgreen">
-        <a href="http://inthought.pw/jobs/" class="d-block link-ndecor" title="Jobs">
-        <h1 class="circle-title">10,000</h1>
-    </a>
-      </div>
-      <h4>Jobs</h4>
-      <span class="text-muted">View your job history</span>
-    </div>
-    <div class="col-sm-3 placeholder">
-      <div class="rounded-circle mx-auto mt-4 mb-4 circle-200 bg-dblue">
-    <a href="http://inthought.pw/members/" class="d-block link-ndecor" title="Members">
-        <h1 class="circle-title">2,200</h1>
-    </a>
-      </div>
-      <h4>Associate Members</h4>
-      <span class="text-muted">View Member Data</span>
-    </div>
-    <div class="col-sm-3 placeholder">
-      <div class="rounded-circle mx-auto mt-4 mb-4 circle-200 bg-orange">
-        <a href="http://inthought.pw/tasks/" class="d-block link-ndecor" title="Tasks">
-            <h1 class="circle-title">12</h1>
-        </a>
-      </div>
-      <h4>Tasks</h4>
-      <span class="text-muted">View your tasks</span>
-    </div>
-  </section>
 
-  <div class="jumbotron">
-  <h1 class="display-4">Announcements</h1>
-  <p class="lead">This is a simple hero unit, a simple jumbotron-style component for calling extra attention to featured content or information.</p>
-  <hr class="my-4">
-  <p>It uses utility classes for typography and spacing to space content out within the larger container.</p>
-  <p class="lead">
-    <a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a>
-  </p>
-</div>
+        <div class="col-sm-3 placeholder">
+            <div class="rounded-circle mx-auto mt-4 mb-4 circle-200 bg-pink">
+                <a href="{% url 'o55_tenant_customer_summary' %}" class="d-block link-ndecor" title="Clients">
+                    <h1 class="circle-title">{{ customers_count|intcomma }}</h1>
+                </a>
+            </div>
+            <h4>Clients</h4>
+            <div class="text-muted">View your client list</div>
+        </div>
 
-  <a id="return-to-top" href="#" class="btn-primary btn-lg back-to-top" role="button" title="Back to top"><i class="fas fa-angle-up fa-2x"></i></a>
 
+        <div class="col-sm-3 placeholder">
+            <div class="rounded-circle mx-auto mt-4 mb-4 circle-200 bg-dgreen">
+                <a href="{% url 'o55_tenant_order_master' %}" class="d-block link-ndecor" title="Jobs">
+                    <h1 class="circle-title">{{ jobs_count|intcomma }}</h1>
+                </a>
+            </div>
+            <h4>Jobs</h4>
+            <span class="text-muted">View your job history</span>
+        </div>
+
+
+        <div class="col-sm-3 placeholder">
+            <div class="rounded-circle mx-auto mt-4 mb-4 circle-200 bg-dblue">
+                <a href="{% url 'o55_tenant_member_summary' %}" class="d-block link-ndecor" title="Members">
+                    <h1 class="circle-title">{{ associates_count|intcomma }}</h1>
+                </a>
+            </div>
+            <h4>Associate Members</h4>
+            <span class="text-muted">View Member Data</span>
+        </div>
+
+        {% comment %}
+        <div class="col-sm-3 placeholder">
+            <div class="rounded-circle mx-auto mt-4 mb-4 circle-200 bg-orange">
+                <a href="{% url '' %}" class="d-block link-ndecor" title="Tasks">
+                    <h1 class="circle-title">12</h1>
+                </a>
+            </div>
+            <h4>Tasks</h4>
+            <span class="text-muted">View your tasks</span>
+        </div>
+        {% endcomment %}
+
+
+    </section>
+    <div class="jumbotron">
+        <h1 class="display-4">Announcements</h1>
+        <p class="lead">This is a simple hero unit, a simple jumbotron-style component for calling extra attention to featured content or information.</p>
+        <hr class="my-4">
+        <p>It uses utility classes for typography and spacing to space content out within the larger container.</p>
+        <p class="lead">
+            <a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a>
+        </p>
+    </div>
+    <a id="return-to-top" href="#" class="btn-primary btn-lg back-to-top" role="button" title="Back to top"><i class="fas fa-angle-up fa-2x"></i></a>
 </main>
 
 {% endblock content %}
