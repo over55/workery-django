@@ -43,7 +43,7 @@ from tenant_foundation.utils import *
 
 """
 Run manually in console:
-python manage.py run_import_business_customer_csv "london" "/Users/bmika/Developer/over55/overfiftyfive-django/overfiftyfive/tenant_historic_etl/static/prod_employer.csv"
+python manage.py run_import_business_customer_csv "london" "/Users/bmika/Developer/over55/overfiftyfive-django/overfiftyfive/tenant_historic_etl/csv/prod_employer.csv"
 """
 
 

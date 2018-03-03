@@ -146,7 +146,9 @@ class Order(AbstractBigPk):
         O55User,
         help_text=_('The user whom created this order.'),
         related_name="%(app_label)s_%(class)s_created_by_related",
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
+        blank=True,
+        null=True
     )
     last_modified = models.DateTimeField(auto_now=True)
     last_modified_by = models.ForeignKey(
