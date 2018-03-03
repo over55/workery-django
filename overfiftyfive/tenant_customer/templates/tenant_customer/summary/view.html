@@ -1,0 +1,120 @@
+{% extends 'tenant_foundation/tenant_base.html' %}
+{% load staticfiles i18n %}
+
+{% block title %}
+{% trans 'Clients List | Over 55 Inc.' %}
+{% endblock title %}
+
+{% block header_content %}
+{% endblock header_content %}
+
+{% block content %}
+
+<script>
+    function ajax_get_customers() {
+        var criteria = [];
+
+        tenant_get_customers(
+            criteria,
+            function(json_results) {
+                console.log(json_results)
+            },
+            function(error) {
+                console.debug(error);
+                // alert(error);
+            }
+        );
+    }
+</script>
+
+<main id="main" role="main">
+
+    <!-- BREADCRUMB -->
+    <!------------------------------------------------------------------------->
+    <nav aria-label="breadcrumb">
+	  	<ol class="breadcrumb">
+	    		<li class="breadcrumb-item"><a href="{% url 'o55_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
+                <li class="breadcrumb-item active" aria-current="page">{% trans 'Clients' %}</li>
+	  	</ol>
+	</nav>
+    <!------------------------------------------------------------------------->
+    <!-- end BREADCRUMB -->
+
+    <h1>{% trans 'Clients' %}</h1>
+    <section class="row text-center placeholders">
+        <div class="col-sm-3 placeholder">
+            <div class="rounded-circle mx-auto mt-4 mb-4 circle-200 bg-pink">
+                <a href="{% url 'o55_tenant_customer_create' %}" class="d-block link-ndecor" title="Add Client">
+                    <h1 class="r-circle"><i class="fas fa-plus fa-3x"></i></h1>
+                </a>
+            </div>
+            <h4>Add</h4>
+            <div class="text-muted">Add Client</div>
+        </div>
+        <div class="col-sm-3 placeholder">
+            <div class="rounded-circle mx-auto mt-4 mb-4 circle-200 bg-dgreen">
+                <a href="{% url 'o55_tenant_customer_search' %}" class="d-block link-ndecor" title="Search Clients">
+                    <h1 class="r-circle"><i class="fas fa-search fa-3x"></i></h1>
+                </a>
+            </div>
+            <h4>Search</h4>
+            <span class="text-muted">Search Clients</span>
+        </div>
+        <div class="col-sm-3 placeholder">
+            <div class="rounded-circle mx-auto mt-4 mb-4 circle-200 bg-orange">
+                <a href="{% url 'o55_tenant_customer_list' %}" class="d-block link-ndecor" title="View Clients">
+                    <h1 class="r-circle"><i class="fas fa-list-alt fa-3x"></i></h1>
+                </a>
+            </div>
+            <h4>List</h4>
+            <span class="text-muted">View All Clients</span>
+        </div>
+    </section>
+
+    <h2>Active Client List</h2>
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>{% trans '#' %}</th>
+                    <th>{% trans 'First Name' %}</th>
+                    <th>{% trans 'Last Name' %}</th>
+                    <th>{% trans 'Phone' %}</th>
+                    <th>{% trans 'E-Mail' %}</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for customer in customer_list %}
+                <tr>
+                    <td>{{ customer.id }}</td>
+                    <td>{{ customer.given_name }}</td>
+                    <td>{{ customer.last_name }}</td>
+                    <td>{{ customer.telephone }}</td>
+                    <td>{{ customer.owner.email }}</td>
+                    <td>
+                        <a href="{% url 'o55_tenant_customer_retrieve' 'summary' customer.id %}?page={{ page_obj.number }}">{% trans 'View' %}</a>
+                    </td>
+                </tr>
+                {% empty %}
+                No customers yet.
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="pagination">
+        <span class="step-links">
+        {% if page_obj.has_previous %}
+        <a href="?page={{ page_obj.previous_page_number }}{{ filter_parameters }}">previous</a>
+        {% endif %}
+        <span class="current">
+        Page {{ page_obj.number }} of {{ paginator.num_pages }}.
+        </span>
+        {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}{{ filter_parameters }}">next</a>
+        {% endif %}
+        </span>
+    </div>
+</main>
+{% endblock content %}

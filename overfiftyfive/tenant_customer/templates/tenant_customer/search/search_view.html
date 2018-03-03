@@ -16,7 +16,7 @@
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="{% url 'o55_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
-            <li class="breadcrumb-item"><a href="{% url 'o55_tenant_customer_list' %}">{% trans 'Clients' %}</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'o55_tenant_customer_summary' %}">{% trans 'Clients' %}</a></li>
             <li class="breadcrumb-item active" aria-current="page">{% trans 'Search' %}</li>
         </ol>
     </nav>
@@ -129,7 +129,7 @@
             } else {
                 var keywords_error = $("#id_keywords_error");
                 keywords_error.hide();
-                window.location.replace('{% url "o55_tenant_customer_list" %}'+'?keyword='+keywords);
+                window.location.replace('{% url "o55_tenant_customer_search_results" %}'+'?keyword='+keywords);
             }
 
 

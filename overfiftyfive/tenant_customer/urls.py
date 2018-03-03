@@ -5,11 +5,22 @@ from tenant_customer.views import web_views
 
 
 urlpatterns = (
-    path('customers/', web_views.CustomerListView.as_view(), name='o55_tenant_customer_list'),
-    path('customer/create', web_views.CustomerCreateView.as_view(), name='o55_tenant_customer_create'),
-    path('customer/search', web_views.CustomerSearchView.as_view(), name='o55_tenant_customer_search'),
-    path('customer/<int:pk>/', web_views.CustomerDetailView.as_view(), name='o55_tenant_customer_detail'),
+    # Summary
+    path('clients/', web_views.CustomerSummaryView.as_view(), name='o55_tenant_customer_summary'),
 
-    # url(r'^customer/create$', web_views.create_page, name='o55_tenant_customer_create'),
-    # url(r'^customer/(?P<pk>[^/.]+)/$', web_views.retrieve_or_update_page, name='o55_tenant_customer_retrieve_or_update'),
+    # Create
+    path('clients/create/', web_views.CustomerCreateView.as_view(), name='o55_tenant_customer_create'),
+
+    # List
+    path('clients/list/', web_views.CustomerListView.as_view(), name='o55_tenant_customer_list'),
+
+    # Search
+    path('clients/search/', web_views.CustomerSearchView.as_view(), name='o55_tenant_customer_search'),
+    path('clients/search/results/', web_views.CustomerSearchResultView.as_view(), name='o55_tenant_customer_search_results'),
+
+    # Retrieve
+    path('clients/detail/<str:template>/<int:pk>/', web_views.CustomerRetrieveView.as_view(), name='o55_tenant_customer_retrieve'),
+
+    # Update
+    path('clients/detail/<str:template>/<int:pk>/edit/', web_views.CustomerUpdateView.as_view(), name='o55_tenant_customer_update'),
 )

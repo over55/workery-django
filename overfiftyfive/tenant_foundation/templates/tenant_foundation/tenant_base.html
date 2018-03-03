@@ -72,7 +72,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {% if current_page == 'customers' %}active{% endif %}" href="{% url 'o55_tenant_customer_list' %}">
+                        <a class="nav-link {% if current_page == 'customers' %}active{% endif %}" href="{% url 'o55_tenant_customer_summary' %}">
                         <i class="fa fa-user-circle"></i>&nbsp;{% trans 'Clients' %}
                         </a>
                     </li>
@@ -155,22 +155,19 @@
         var schema_name = "{{ request.tenant.schema_name }}";
 
         // For debugging purposes only.
-        console.log(private_api_key);
-        console.log(schema_name);
+        //console.log(private_api_key);
+        //console.log(schema_name);
     </script>
     <!-- end PRIVATE INFO -->
 
 
     <!-- jQuery library -->
-	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 	<script defer src="https://use.fontawesome.com/releases/v5.0.4/js/all.js"></script>
-	<!-- Custom Scroller Js CDN -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
     <script src="{% static 'js/custom.js' %}"></script>
-
     {% include "shared_foundation/common_js.html" %}
     {% include 'tenant_api/tenant_api_js.html' %}
     <!-- end JS LIBRARY -->
