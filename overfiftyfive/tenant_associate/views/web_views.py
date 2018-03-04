@@ -5,8 +5,8 @@ from django.views.generic import DetailView, ListView, TemplateView
 from django.utils.decorators import method_decorator
 from django.utils.translation import ugettext_lazy as _
 from shared_foundation.mixins import ExtraRequestProcessingMixin
-from tenant_api.filters.customer import CustomerFilter
-from tenant_foundation.models import Customer
+from tenant_api.filters.associate import AssociateFilter
+from tenant_foundation.models import Associate
 
 
 #--------#
@@ -19,7 +19,7 @@ class MemberCreateView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['current_page'] = "customers" # Required for navigation
+        context['current_page'] = "associates" # Required for navigation
         return context
 
 
@@ -30,18 +30,18 @@ class MemberCreateView(TemplateView):
 
 @method_decorator(login_required, name='dispatch')
 class MemberSummaryView(ListView, ExtraRequestProcessingMixin):
-    context_object_name = 'customer_list'
-    queryset = Customer.objects.order_by('-created')
+    context_object_name = 'associate_list'
+    queryset = Associate.objects.order_by('-created')
     template_name = 'tenant_associate/summary/view.html'
     paginate_by = 100
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['current_page'] = "customers" # Required for navigation
+        context['current_page'] = "associates" # Required for navigation
         return context
 
     def get_queryset(self):
-        queryset = Customer.objects.all()
+        queryset = Associate.objects.all()
         queryset = queryset.order_by('-created')
         return queryset
 
@@ -53,21 +53,21 @@ class MemberSummaryView(ListView, ExtraRequestProcessingMixin):
 
 @method_decorator(login_required, name='dispatch')
 class MemberListView(ListView, ExtraRequestProcessingMixin):
-    context_object_name = 'customer_list'
-    queryset = Customer.objects.order_by('-created')
+    context_object_name = 'associate_list'
+    queryset = Associate.objects.order_by('-created')
     template_name = 'tenant_associate/list/view.html'
     paginate_by = 100
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['current_page'] = "customers" # Required for navigation
+        context['current_page'] = "associates" # Required for navigation
         return context
 
     def get_queryset(self):
         queryset = super(MemberListView, self).get_queryset() # Get the base.
 
         # The following code will use the 'django-filter'
-        filter = CustomerFilter(self.request.GET, queryset=queryset)
+        filter = AssociateFilter(self.request.GET, queryset=queryset)
         queryset = filter.qs
         return queryset
 
@@ -83,14 +83,14 @@ class MemberSearchView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['current_page'] = "customers"
+        context['current_page'] = "associates"
         return context
 
 
 @method_decorator(login_required, name='dispatch')
 class MemberSearchResultView(ListView, ExtraRequestProcessingMixin):
-    context_object_name = 'customer_list'
-    queryset = Customer.objects.order_by('-created')
+    context_object_name = 'associate_list'
+    queryset = Associate.objects.order_by('-created')
     template_name = 'tenant_associate/search/result_view.html'
     paginate_by = 100
 
@@ -98,7 +98,7 @@ class MemberSearchResultView(ListView, ExtraRequestProcessingMixin):
         modified_context = super().get_context_data(**kwargs)
 
         # Required for navigation
-        modified_context['current_page'] = "customers"
+        modified_context['current_page'] = "associates"
 
         # DEVELOPERS NOTE:
         # - This class based view will have URL parameters for filtering and
@@ -118,13 +118,13 @@ class MemberSearchResultView(ListView, ExtraRequestProcessingMixin):
         queryset = None  # The queryset we will be returning.
         keyword = self.request.GET.get('keyword', None)
         if keyword:
-            queryset = Customer.objects.full_text_search(keyword)
+            queryset = Associate.objects.full_text_search(keyword)
             queryset = queryset.order_by('-created')
         else:
             queryset = super(MemberListView, self).get_queryset()
 
         # The following code will use the 'django-filter'
-        filter = CustomerFilter(self.request.GET, queryset=queryset)
+        filter = AssociateFilter(self.request.GET, queryset=queryset)
         queryset = filter.qs
         return queryset
 
@@ -136,12 +136,12 @@ class MemberSearchResultView(ListView, ExtraRequestProcessingMixin):
 
 @method_decorator(login_required, name='dispatch')
 class MemberRetrieveView(DetailView):
-    model = Customer
+    model = Associate
     template_name = 'tenant_associate/retrieve/view.html'
 
     def get_object(self):
-        customer = super().get_object()  # Call the superclass
-        return customer                  # Return the object
+        associate = super().get_object()  # Call the superclass
+        return associate                  # Return the object
 
     def get_context_data(self, **kwargs):
         # Get the context of this class based view.
@@ -155,7 +155,7 @@ class MemberRetrieveView(DetailView):
         modified_context['template'] = template
 
         # Required for navigation
-        modified_context['current_page'] = "customers"
+        modified_context['current_page'] = "associates"
 
         # Return our modified context.
         return modified_context
@@ -168,12 +168,12 @@ class MemberRetrieveView(DetailView):
 
 @method_decorator(login_required, name='dispatch')
 class MemberUpdateView(DetailView):
-    model = Customer
+    model = Associate
     template_name = 'tenant_associate/update/view.html'
 
     def get_object(self):
-        customer = super().get_object()  # Call the superclass
-        return customer                  # Return the object
+        associate = super().get_object()  # Call the superclass
+        return associate                  # Return the object
 
     def get_context_data(self, **kwargs):
         # Get the context of this class based view.
@@ -187,7 +187,7 @@ class MemberUpdateView(DetailView):
         modified_context['template'] = template
 
         # Required for navigation
-        modified_context['current_page'] = "customers"
+        modified_context['current_page'] = "associates"
 
         # Return our modified context.
         return modified_context
