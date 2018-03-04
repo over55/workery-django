@@ -82,10 +82,10 @@
                 console.log(result_dict);
                 window.location = "{% url 'o55_tenant_customer_summary' %}?was_created=True";
             },
-            function(result_dict) { // Error
-                console.log(result_dict); //TODO: IMPL.
-                var json = jQuery.parseJSON(result_dict);
-                alert(json);
+            function(xhr,status,error) { // Error
+                var errorJSON = xhr.responseJSON;
+                console.log(errorJSON); //TODO: IMPL.
+                alert("Error with submission, see console.");
             },
             function() { // Finally
                 // UNLOCK THE "SUBMIT" BUTTON TO BE AVAILABLE FOR USAGE.
