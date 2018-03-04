@@ -55,8 +55,8 @@
         var telephone_extension = $('#id_telephone_extension').val();
         var mobile = $('#id_mobile').val();
 
-        // // LOCK OUT THE "SUBMIT" BUTTON SO THE USER DOES NOT MAKE MULTI-CALLS.
-        // disable_btn();
+        // LOCK OUT THE "SUBMIT" BUTTON SO THE USER DOES NOT MAKE MULTI-CALLS.
+        disable_btn();
 
         // MAKE OUR API CALL TO THE BACKEND TO "CREATE" THE CUSTOMER USER.
         create_customer_api(
@@ -79,14 +79,17 @@
                 'mobile': 'mobile'
             },
             function(result_dict) { // Success
-                console.log(result_dict); //TODO: IMPL.
+                console.log(result_dict);
+                window.location = "{% url 'o55_tenant_customer_summary' %}?was_created=True";
             },
             function(result_dict) { // Error
                 console.log(result_dict); //TODO: IMPL.
+                var json = jQuery.parseJSON(result_dict);
+                alert(json);
             },
             function() { // Finally
-                // // UNLOCK THE "SUBMIT" BUTTON TO BE AVAILABLE FOR USAGE.
-                // enable_btn();
+                // UNLOCK THE "SUBMIT" BUTTON TO BE AVAILABLE FOR USAGE.
+                enable_btn();
             }
         );
     }
@@ -138,11 +141,11 @@
 
     <!-- LOCATION -->
     <h3>Address</h3>
-    <p>Street Address</p><input id="id_street_address" name="street_address" type="text"/></p><br/>
+    <p>Street Address (*)</p><input id="id_street_address" name="street_address" type="text"/></p><br/>
     <p>Street Address (Extra)</p><input id="id_street_address_extra" name="street_address_extra" type="text"/></p><br/>
-    <p>City</p><input id="id_address_locality" name="address_locality" type="text"/></p><br/>
-    <p>Province</p><input id="id_address_region" name="address_region" type="text"/></p><br/>
-    <p>Country</p><input id="id_address_country" name="address_country" type="text"/></p><br/>
+    <p>City (*)</p><input id="id_address_locality" name="address_locality" type="text"/></p><br/>
+    <p>Province (*)</p><input id="id_address_region" name="address_region" type="text"/></p><br/>
+    <p>Country (*)</p><input id="id_address_country" name="address_country" type="text"/></p><br/>
     <p>Postal</p><input id="id_postal_code" name="postal_code" type="text"/></p><br/>
     <p>Post Office Box #</p><input id="id_post_office_box_number" name="post_office_box_number" type="text" placeholder="Optional" /></p><br/>
     <!-- end LOCATION -->

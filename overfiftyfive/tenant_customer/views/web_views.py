@@ -36,9 +36,18 @@ class CustomerSummaryView(ListView, ExtraRequestProcessingMixin):
     paginate_by = 100
 
     def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['current_page'] = "customers" # Required for navigation
-        return context
+        modified_context = super().get_context_data(**kwargs)
+
+        # Required for navigation
+        modified_context['current_page'] = "customers"
+
+        # DEVELOPERS NOTE:
+        # - We will extract the URL parameters and save them into our context
+        #   so we can use this to help the pagination.
+        modified_context['parameters'] = self.get_params_dict([])
+
+        # Return our modified context.
+        return modified_context
 
     def get_queryset(self):
         queryset = Customer.objects.all()
@@ -64,7 +73,7 @@ class CustomerListView(ListView, ExtraRequestProcessingMixin):
         return context
 
     def get_queryset(self):
-        queryset = super(CustomerListView, self).get_queryset() # Get the base.
+        queryset = super(CustomerListView, self).get_queryset().order_by('given_name', 'last_name') # Get the base.
 
         # The following code will use the 'django-filter'
         filter = CustomerFilter(self.request.GET, queryset=queryset)

@@ -130,7 +130,9 @@ class CustomerListCreateSerializer(serializers.ModelSerializer):
         #---------------------------------------------------
         # Create our `Customer` object in our tenant schema.
         #---------------------------------------------------
+        customer_id = Customer.objects.all().count() + 20
         customer = Customer.objects.create(
+            id=customer_id,
             created_by=self.context['created_by'],
             last_modified_by=self.context['created_by'],
 

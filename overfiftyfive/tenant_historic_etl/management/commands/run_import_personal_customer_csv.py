@@ -153,11 +153,13 @@ class Command(BaseCommand):
 
             # Create or update our user.
             user, created = User.objects.update_or_create(
+                id=int_or_none(pk),
                 first_name=first_name,
                 last_name=last_name,
                 email=email,
                 username=get_unique_username_from_email(email),
                 defaults={
+                    'id': int_or_none(pk),
                     'first_name': first_name,
                     'last_name': last_name,
                     'email': email,
@@ -179,7 +181,7 @@ class Command(BaseCommand):
                 id=int_or_none(pk),
                 owner=user,
                 defaults={
-                    'id':int_or_none(pk),
+                    'id': int_or_none(pk),
                     'owner': user,
                     'last_name':last_name,
                     'given_name':first_name,

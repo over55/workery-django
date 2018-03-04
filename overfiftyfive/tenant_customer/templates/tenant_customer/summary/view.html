@@ -40,6 +40,14 @@
     <!------------------------------------------------------------------------->
     <!-- end BREADCRUMB -->
 
+    <!-- NOTIFICATION -->
+    <!------------------------------------------------------------------------->
+    {% if parameters.was_created == 'True' %}
+    <h1>Client was created!!!</h1>
+    {% endif %}
+    <!------------------------------------------------------------------------->
+    <!-- end NOTIFICATION -->
+
     <h1>{% trans 'Clients' %}</h1>
     <section class="row text-center placeholders">
         <div class="col-sm-3 placeholder">

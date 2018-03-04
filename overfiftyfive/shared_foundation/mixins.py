@@ -14,3 +14,11 @@ class ExtraRequestProcessingMixin(object):
                 parameters += parameter
 
         return parameters
+
+
+    def get_params_dict(self, skip_parameters_array):
+        parameters = {}
+        for param in self.request.GET:
+            if str(param) not in skip_parameters_array:
+                parameters[param] = self.request.GET.get(param, None)
+        return parameters
