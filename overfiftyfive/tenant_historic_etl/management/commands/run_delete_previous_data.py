@@ -82,7 +82,6 @@ class Command(BaseCommand):
         )
 
         # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        User.objects.all().delete()
         Customer.objects.delete_all()
         Order.objects.delete_all()
         Associate.objects.delete_all()
