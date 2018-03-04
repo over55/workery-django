@@ -2,7 +2,7 @@
 {% load staticfiles i18n %}
 
 {% block title %}
-{% trans 'Clients List | Over 55 Inc.' %}
+{% trans 'Members List | Over 55 Inc.' %}
 {% endblock title %}
 
 {% block header_content %}
@@ -11,10 +11,10 @@
 {% block content %}
 
 <script>
-    function ajax_get_customers() {
+    function ajax_get_members() {
         var criteria = [];
 
-        tenant_get_customers(
+        tenant_get_members(
             criteria,
             function(json_results) {
                 console.log(json_results)
@@ -37,7 +37,7 @@
                     <a href="{% url 'o55_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a>
                 </li>
                 <li class="breadcrumb-item">
-                    <a href="{% url 'o55_tenant_member_summary' %}">{% trans 'Clients' %}</a>
+                    <a href="{% url 'o55_tenant_member_summary' %}">{% trans 'Members' %}</a>
                 </li>
                 <li class="breadcrumb-item">
                     <a href="{% url 'o55_tenant_member_search' %}">{% trans 'Search' %}</a>
@@ -48,9 +48,9 @@
     <!------------------------------------------------------------------------->
     <!-- end BREADCRUMB -->
 
-    <h1>{% trans 'Clients' %}</h1>
+    <h1>{% trans 'Members' %}</h1>
 
-    <h2>Active Client List</h2>
+    <h2>Active Member List</h2>
     <div class="table-responsive">
         <table class="table table-striped">
             <thead>
@@ -64,19 +64,19 @@
                 </tr>
             </thead>
             <tbody>
-                {% for customer in customer_list %}
+                {% for member in member_list %}
                 <tr>
-                    <td>{{ customer.id }}</td>
-                    <td>{{ customer.given_name }}</td>
-                    <td>{{ customer.last_name }}</td>
-                    <td>{{ customer.telephone }}</td>
-                    <td>{{ customer.owner.email }}</td>
+                    <td>{{ member.id }}</td>
+                    <td>{{ member.given_name }}</td>
+                    <td>{{ member.last_name }}</td>
+                    <td>{{ member.telephone }}</td>
+                    <td>{{ member.owner.email }}</td>
                     <td>
-                        <a href="{% url 'o55_tenant_member_retrieve' 'search' customer.id %}?page={{ page_obj.number }}{{ filter_parameters }}">{% trans 'View' %}</a>
+                        <a href="{% url 'o55_tenant_member_retrieve' 'search' member.id %}?page={{ page_obj.number }}{{ filter_parameters }}">{% trans 'View' %}</a>
                     </td>
                 </tr>
                 {% empty %}
-                No customers yet.
+                No members yet.
                 {% endfor %}
             </tbody>
         </table>
