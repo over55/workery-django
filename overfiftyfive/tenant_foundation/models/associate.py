@@ -23,7 +23,6 @@ from starterkit.utils import (
 from shared_foundation.constants import *
 from shared_foundation.models.o55_user import O55User
 from tenant_foundation.models import (
-    AbstractBigPk,
     AbstractContactPoint,
     AbstractGeoCoordinate,
     AbstractPostalAddress,
@@ -119,7 +118,7 @@ class AssociateManager(models.Manager):
         ),).filter(search=keyword)
 
 
-class Associate(AbstractBigPk, AbstractThing, AbstractContactPoint, AbstractPostalAddress, AbstractGeoCoordinate):
+class Associate(AbstractThing, AbstractContactPoint, AbstractPostalAddress, AbstractGeoCoordinate):
     class Meta:
         app_label = 'tenant_foundation'
         db_table = 'o55_associates'

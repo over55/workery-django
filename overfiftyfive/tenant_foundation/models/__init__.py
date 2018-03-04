@@ -1,5 +1,4 @@
 # Abstract Models
-from tenant_foundation.models.abstract_bigpk import AbstractBigPk
 from tenant_foundation.models.abstract_thing import AbstractThing
 from tenant_foundation.models.abstract_contact_point import AbstractContactPoint
 from tenant_foundation.models.abstract_postal_address import AbstractPostalAddress

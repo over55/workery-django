@@ -15,7 +15,6 @@ from starterkit.utils import (
 )
 from shared_foundation.constants import *
 from shared_foundation.models.o55_user import O55User
-from tenant_foundation.models import AbstractBigPk
 from tenant_foundation.utils import *
 
 

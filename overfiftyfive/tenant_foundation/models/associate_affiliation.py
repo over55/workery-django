@@ -4,7 +4,6 @@ from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
 from tenant_foundation.constants import *
 from shared_foundation.models.o55_user import O55User
-from tenant_foundation.models import AbstractBigPk
 
 
 class AssociateAffiliationManager(models.Manager):
@@ -14,7 +13,7 @@ class AssociateAffiliationManager(models.Manager):
             item.delete()
 
 
-class AssociateAffiliation(AbstractBigPk):
+class AssociateAffiliation(models.Model):
     class Meta:
         app_label = 'tenant_foundation'
         db_table = 'o55_associate_affiliations'

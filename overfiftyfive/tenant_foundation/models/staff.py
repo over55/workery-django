@@ -15,7 +15,6 @@ from starterkit.utils import (
 )
 from shared_foundation.constants import *
 from tenant_foundation.models import (
-    AbstractBigPk,
     AbstractContactPoint,
     AbstractGeoCoordinate,
     AbstractPostalAddress,
@@ -48,7 +47,7 @@ class StaffManager(models.Manager):
             return None
 
 
-class Staff(AbstractBigPk, AbstractThing, AbstractContactPoint, AbstractPostalAddress, AbstractGeoCoordinate):
+class Staff(AbstractThing, AbstractContactPoint, AbstractPostalAddress, AbstractGeoCoordinate):
     class Meta:
         app_label = 'tenant_foundation'
         db_table = 'o55_staff'

@@ -1,4 +1,3 @@
-from shared_foundation.models.abstract_bigpk import AbstractSharedBigPk
 from shared_foundation.models.abstract_thing import AbstractSharedThing
 from shared_foundation.models.abstract_contact_point import AbstractSharedContactPoint
 from shared_foundation.models.abstract_postal_address import AbstractSharedPostalAddress

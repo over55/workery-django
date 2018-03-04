@@ -22,7 +22,6 @@ from starterkit.utils import (
 from shared_foundation.constants import *
 from shared_foundation.models.o55_user import O55User
 from tenant_foundation.models import (
-    AbstractBigPk,
     AbstractContactPoint,
     AbstractGeoCoordinate,
     AbstractPostalAddress,
@@ -118,7 +117,7 @@ class CustomerManager(models.Manager):
         ),).filter(search=keyword)
 
 
-class Customer(AbstractBigPk, AbstractThing, AbstractContactPoint, AbstractPostalAddress, AbstractGeoCoordinate):
+class Customer(AbstractThing, AbstractContactPoint, AbstractPostalAddress, AbstractGeoCoordinate):
     class Meta:
         app_label = 'tenant_foundation'
         db_table = 'o55_customers'

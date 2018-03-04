@@ -14,7 +14,6 @@ from starterkit.utils import (
     float_or_none
 )
 from shared_foundation.constants import *
-from tenant_foundation.models import AbstractBigPk
 from tenant_foundation.utils import *
 
 

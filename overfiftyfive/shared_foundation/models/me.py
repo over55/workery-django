@@ -14,7 +14,6 @@ from starterkit.utils import (
 )
 from shared_foundation import constants
 from shared_foundation.models import (
-    AbstractSharedBigPk,
     O55User,
     SharedFranchise
 )
@@ -44,7 +43,7 @@ class SharedMeManager(models.Manager):
             return None
 
 
-class SharedMe(AbstractSharedBigPk):
+class SharedMe(models.Model):
     class Meta:
         app_label = 'shared_foundation'
         db_table = 'o55_mes'

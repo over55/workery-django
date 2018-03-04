@@ -17,7 +17,6 @@ from starterkit.utils import (
 )
 from shared_foundation import constants
 from shared_foundation.models.o55_user import O55User
-from tenant_foundation.models import AbstractBigPk
 from tenant_foundation.utils import *
 
 
@@ -33,7 +32,7 @@ class OrderManager(models.Manager):
             item.delete()
 
 
-class Order(AbstractBigPk):
+class Order(models.Model):
     class Meta:
         app_label = 'tenant_foundation'
         db_table = 'o55_orders'

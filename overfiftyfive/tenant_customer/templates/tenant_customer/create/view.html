@@ -10,6 +10,90 @@
 
 {% block content %}
 
+<{% load i18n %}
+
+
+<!-- API JAVASCRIPT -->
+<!----------------------------------------------------------------------------->
+{% include 'tenant_api/customers_api_js.html' %}
+<!----------------------------------------------------------------------------->
+<!-- end API JAVASCRIPT -->
+
+
+<!-- CUSTOM JAVASCRIPT -->
+<!----------------------------------------------------------------------------->
+<script>
+    $(document).ready(function () {
+        // Nothing.
+    }); // end Ready
+
+    function disable_btn() {
+        $('#id_submit_btn').val("{% trans 'Please Wait...' %}");
+        $('#id_submit_btn').prop("disabled", true);
+    }
+
+    function enable_btn() {
+        $('#id_submit_btn').prop("disabled", false);
+        $('#id_submit_btn').val("{% trans 'Update' %}");
+    }
+
+    function ajax_post_form_submission() {
+        // EXTRACT OUR FIELD VALUES.
+        var given_name = $('#id_given_name').val();
+        var middle_name = $('#id_middle_name').val();
+        var last_name = $('#id_last_name').val();
+        var street_address = $('#id_street_address').val();
+        var street_address_extra = $('#id_street_address_extra').val();
+        var address_region = $('#id_address_region').val();
+        var address_locality = $('#id_address_locality').val();
+        var address_country = $('#id_address_country').val();
+        var postal_code = $('#id_postal_code').val();
+        var post_office_box_number = $('#id_post_office_box_number').val();
+        var email = $('#id_email').val();
+        var area_served = $('#id_area_served').val();
+        var telephone = $('#id_telephone').val();
+        var telephone_extension = $('#id_telephone_extension').val();
+        var mobile = $('#id_mobile').val();
+
+        // // LOCK OUT THE "SUBMIT" BUTTON SO THE USER DOES NOT MAKE MULTI-CALLS.
+        // disable_btn();
+
+        // MAKE OUR API CALL TO THE BACKEND TO "CREATE" THE CUSTOMER USER.
+        create_customer_api(
+            {
+                'given_name': given_name,
+                'middle_name': middle_name,
+                'last_name': last_name,
+                'address_country': address_country,
+                'address_locality': address_locality,
+                'address_region': address_region,
+                'extra_comment': null,
+                'street_address': street_address,
+                'street_address_extra': street_address_extra,
+                'postal_code': postal_code,
+                'post_office_box_number': post_office_box_number,
+                'email': email,
+                'area_served': area_served,
+                'telephone': telephone,
+                'telephone_extension': 'telephone_extension',
+                'mobile': 'mobile'
+            },
+            function(result_dict) { // Success
+                console.log(result_dict); //TODO: IMPL.
+            },
+            function(result_dict) { // Error
+                console.log(result_dict); //TODO: IMPL.
+            },
+            function() { // Finally
+                // // UNLOCK THE "SUBMIT" BUTTON TO BE AVAILABLE FOR USAGE.
+                // enable_btn();
+            }
+        );
+    }
+</script>
+<!----------------------------------------------------------------------------->
+<!-- end CUSTOM JAVASCRIPT -->
+
 <main id="main" role="main">
 
     <!-- BREADCRUMB -->
@@ -24,6 +108,73 @@
     <!------------------------------------------------------------------------->
     <!-- end BREADCRUMB -->
 
+    <h1>{% trans 'Add Client' %}</h1>
+
+    <!-- FORM -->
+    <!------------------------------------------------------------------------->
+
+
+    <!-- USER -->
+    <h3>User</h3>
+    <p>Given Name</p><input id="id_given_name" name="given_name" type="text"/></p><br/>
+    <p>Middle Name</p><input id="id_middle_name" name="middle_name" type="text" /></p><br/>
+    <p>Last Name</p><input id="id_last_name" name="last_name" type="text" /></p><br />
+    {% comment %}
+    # Profile
+    'birthdate',
+    'join_date',
+
+    # Misc (Read/Write)
+    'is_senior',
+    'is_support',
+    'job_info_read',
+    'how_hear',
+
+    # Misc (Write Only)
+    'extra_comment',
+    {% endcomment %}
+    <!-- end USER -->
+
+
+    <!-- LOCATION -->
+    <h3>Address</h3>
+    <p>Street Address</p><input id="id_street_address" name="street_address" type="text"/></p><br/>
+    <p>Street Address (Extra)</p><input id="id_street_address_extra" name="street_address_extra" type="text"/></p><br/>
+    <p>City</p><input id="id_address_locality" name="address_locality" type="text"/></p><br/>
+    <p>Province</p><input id="id_address_region" name="address_region" type="text"/></p><br/>
+    <p>Country</p><input id="id_address_country" name="address_country" type="text"/></p><br/>
+    <p>Postal</p><input id="id_postal_code" name="postal_code" type="text"/></p><br/>
+    <p>Post Office Box #</p><input id="id_post_office_box_number" name="post_office_box_number" type="text" placeholder="Optional" /></p><br/>
+    <!-- end LOCATION -->
+
+    {% comment %}
+    # Contact Point
+    '',
+    'available_language',
+    'contact_type',
+    'fax_number',
+    # 'hours_available', #TODO: FIX
+    {% endcomment %}
+
+    <!-- CONTACT -->
+    <h3>Contact Point</h3>
+    <p>Email</p><input id="id_email" name="email" type="text"/></p><br/>
+    <p>Telephone</p><input id="id_telephone" name="telephone" type="text"/></p><br/>
+    <p>Telephone Extension</p><input id="id_telephone_extension" name="telephone_extension" type="text"/></p><br/>
+    <p>Mobile</p><input id="id_mobile" name="mobile" type="text"/></p><br/>
+    <p>Area Served</p><input id="id_area_served" name="area_served" type="text"/></p><br/>
+    <!-- end CONTACT -->
+
+
+    <!-- end SUBMIT BUTTON -->
+    <button id="id_submit_btn"
+       onclick="ajax_post_form_submission();"
+          type="button"
+         class="btn btn-info">{% trans 'Add' %}</button>
+    <!-- end SUBMIT BUTTON -->
+
+    <!------------------------------------------------------------------------->
+    <!-- end FORM -->
 </main>
 
 {% endblock content %}

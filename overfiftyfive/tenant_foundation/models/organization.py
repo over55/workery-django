@@ -15,7 +15,6 @@ from starterkit.utils import (
 )
 from shared_foundation.constants import *
 from tenant_foundation.models import (
-    AbstractBigPk,
     AbstractContactPoint,
     AbstractGeoCoordinate,
     AbstractPostalAddress,
@@ -55,7 +54,7 @@ class OrganizationManager(models.Manager):
             return obj, True
 
 
-class Organization(AbstractBigPk, AbstractThing, AbstractContactPoint, AbstractPostalAddress, AbstractGeoCoordinate):
+class Organization(AbstractThing, AbstractContactPoint, AbstractPostalAddress, AbstractGeoCoordinate):
     """
     An organization such as a library, NGO, corporation, club, etc.
 

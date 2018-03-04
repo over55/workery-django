@@ -4,7 +4,6 @@ from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
 from tenant_foundation.constants import *
 from shared_foundation.models.o55_user import O55User
-from tenant_foundation.models import AbstractBigPk
 
 
 # class OrderCommentManager(models.Manager):
@@ -14,7 +13,7 @@ from tenant_foundation.models import AbstractBigPk
 #             item.delete()
 
 
-class OrderComment(AbstractBigPk):
+class OrderComment(models.Model):
     class Meta:
         app_label = 'tenant_foundation'
         ordering = ('-created',)
