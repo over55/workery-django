@@ -2,7 +2,7 @@
 {% load staticfiles i18n %}
 
 {% block title %}
-{% trans 'Clients Search | Over 55 Inc.' %}
+{% trans 'Team Search | Over 55 Inc.' %}
 {% endblock title %}
 
 {% block header_content %}
@@ -16,13 +16,13 @@
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="{% url 'o55_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
-            <li class="breadcrumb-item"><a href="{% url 'o55_tenant_team_summary' %}">{% trans 'Clients' %}</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'o55_tenant_team_summary' %}">{% trans 'Team' %}</a></li>
             <li class="breadcrumb-item active" aria-current="page">{% trans 'Search' %}</li>
         </ol>
     </nav>
     <!------------------------------------------------------------------------->
     <!-- end BREADCRUMB -->
-    <h1>{% trans 'Clients Search' %}</h1>
+    <h1>{% trans 'Team Search' %}</h1>
     <div id="m-search" class="col-sm-6 mx-auto mt-4 pt-4">
         <form id="id_basic_search_form" class="needs-validation was-validated" novalidate>
             <div class="input-group mb-2">

@@ -2,7 +2,7 @@
 {% load staticfiles i18n %}
 
 {% block title %}
-{% trans 'Clients List | Over 55 Inc.' %}
+{% trans 'Team List | Over 55 Inc.' %}
 {% endblock title %}
 
 {% block header_content %}
@@ -11,10 +11,10 @@
 {% block content %}
 
 <script>
-    function ajax_get_customers() {
+    function ajax_get_staffs() {
         var criteria = [];
 
-        tenant_get_customers(
+        tenant_get_staffs(
             criteria,
             function(json_results) {
                 console.log(json_results)
@@ -34,44 +34,44 @@
     <nav aria-label="breadcrumb">
 	  	<ol class="breadcrumb">
 	    		<li class="breadcrumb-item"><a href="{% url 'o55_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
-                <li class="breadcrumb-item active" aria-current="page">{% trans 'Clients' %}</li>
+                <li class="breadcrumb-item active" aria-current="page">{% trans 'Team' %}</li>
 	  	</ol>
 	</nav>
     <!------------------------------------------------------------------------->
     <!-- end BREADCRUMB -->
 
-    <h1>{% trans 'Clients' %}</h1>
+    <h1>{% trans 'Team' %}</h1>
     <section class="row text-center placeholders">
         <div class="col-sm-3 placeholder">
             <div class="rounded-circle mx-auto mt-4 mb-4 circle-200 bg-pink">
-                <a href="{% url 'o55_tenant_team_create' %}" class="d-block link-ndecor" title="Add Client">
+                <a href="{% url 'o55_tenant_team_create' %}" class="d-block link-ndecor" title="Add Team">
                     <h1 class="r-circle"><i class="fas fa-plus fa-3x"></i></h1>
                 </a>
             </div>
             <h4>Add</h4>
-            <div class="text-muted">Add Client</div>
+            <div class="text-muted">Add Team</div>
         </div>
         <div class="col-sm-3 placeholder">
             <div class="rounded-circle mx-auto mt-4 mb-4 circle-200 bg-dgreen">
-                <a href="{% url 'o55_tenant_team_search' %}" class="d-block link-ndecor" title="Search Clients">
+                <a href="{% url 'o55_tenant_team_search' %}" class="d-block link-ndecor" title="Search Team">
                     <h1 class="r-circle"><i class="fas fa-search fa-3x"></i></h1>
                 </a>
             </div>
             <h4>Search</h4>
-            <span class="text-muted">Search Clients</span>
+            <span class="text-muted">Search Team</span>
         </div>
         <div class="col-sm-3 placeholder">
             <div class="rounded-circle mx-auto mt-4 mb-4 circle-200 bg-orange">
-                <a href="{% url 'o55_tenant_team_list' %}" class="d-block link-ndecor" title="View Clients">
+                <a href="{% url 'o55_tenant_team_list' %}" class="d-block link-ndecor" title="View Team">
                     <h1 class="r-circle"><i class="fas fa-list-alt fa-3x"></i></h1>
                 </a>
             </div>
             <h4>List</h4>
-            <span class="text-muted">View All Clients</span>
+            <span class="text-muted">View All Team</span>
         </div>
     </section>
 
-    <h2>Active Client List</h2>
+    <h2>Active Team List</h2>
     <div class="table-responsive">
         <table class="table table-striped">
             <thead>
@@ -85,19 +85,19 @@
                 </tr>
             </thead>
             <tbody>
-                {% for customer in customer_list %}
+                {% for staff in staff_list %}
                 <tr>
-                    <td>{{ customer.id }}</td>
-                    <td>{{ customer.given_name }}</td>
-                    <td>{{ customer.last_name }}</td>
-                    <td>{{ customer.telephone }}</td>
-                    <td>{{ customer.owner.email }}</td>
+                    <td>{{ staff.id }}</td>
+                    <td>{{ staff.given_name }}</td>
+                    <td>{{ staff.last_name }}</td>
+                    <td>{{ staff.telephone }}</td>
+                    <td>{{ staff.owner.email }}</td>
                     <td>
-                        <a href="{% url 'o55_tenant_team_retrieve' 'summary' customer.id %}?page={{ page_obj.number }}">{% trans 'View' %}</a>
+                        <a href="{% url 'o55_tenant_team_retrieve' 'summary' staff.id %}?page={{ page_obj.number }}">{% trans 'View' %}</a>
                     </td>
                 </tr>
                 {% empty %}
-                No customers yet.
+                No staffs yet.
                 {% endfor %}
             </tbody>
         </table>

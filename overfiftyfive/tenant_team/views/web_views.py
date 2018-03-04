@@ -5,8 +5,8 @@ from django.views.generic import DetailView, ListView, TemplateView
 from django.utils.decorators import method_decorator
 from django.utils.translation import ugettext_lazy as _
 from shared_foundation.mixins import ExtraRequestProcessingMixin
-from tenant_api.filters.customer import CustomerFilter
-from tenant_foundation.models import Customer
+from tenant_api.filters.staff import StaffFilter
+from tenant_foundation.models import Staff
 
 
 #--------#
@@ -19,7 +19,7 @@ class TeamCreateView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['current_page'] = "customers" # Required for navigation
+        context['current_page'] = "team" # Required for navigation
         return context
 
 
@@ -30,18 +30,18 @@ class TeamCreateView(TemplateView):
 
 @method_decorator(login_required, name='dispatch')
 class TeamSummaryView(ListView, ExtraRequestProcessingMixin):
-    context_object_name = 'customer_list'
-    queryset = Customer.objects.order_by('-created')
+    context_object_name = 'staff_list'
+    queryset = Staff.objects.order_by('-created')
     template_name = 'tenant_team/summary/view.html'
     paginate_by = 100
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['current_page'] = "customers" # Required for navigation
+        context['current_page'] = "team" # Required for navigation
         return context
 
     def get_queryset(self):
-        queryset = Customer.objects.all()
+        queryset = Staff.objects.all()
         queryset = queryset.order_by('-created')
         return queryset
 
@@ -53,21 +53,21 @@ class TeamSummaryView(ListView, ExtraRequestProcessingMixin):
 
 @method_decorator(login_required, name='dispatch')
 class TeamListView(ListView, ExtraRequestProcessingMixin):
-    context_object_name = 'customer_list'
-    queryset = Customer.objects.order_by('-created')
+    context_object_name = 'staff_list'
+    queryset = Staff.objects.order_by('-created')
     template_name = 'tenant_team/list/view.html'
     paginate_by = 100
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['current_page'] = "customers" # Required for navigation
+        context['current_page'] = "team" # Required for navigation
         return context
 
     def get_queryset(self):
         queryset = super(TeamListView, self).get_queryset() # Get the base.
 
         # The following code will use the 'django-filter'
-        filter = CustomerFilter(self.request.GET, queryset=queryset)
+        filter = StaffFilter(self.request.GET, queryset=queryset)
         queryset = filter.qs
         return queryset
 
@@ -83,14 +83,14 @@ class TeamSearchView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['current_page'] = "customers"
+        context['current_page'] = "team"
         return context
 
 
 @method_decorator(login_required, name='dispatch')
 class TeamSearchResultView(ListView, ExtraRequestProcessingMixin):
-    context_object_name = 'customer_list'
-    queryset = Customer.objects.order_by('-created')
+    context_object_name = 'staff_list'
+    queryset = Staff.objects.order_by('-created')
     template_name = 'tenant_team/search/result_view.html'
     paginate_by = 100
 
@@ -98,7 +98,7 @@ class TeamSearchResultView(ListView, ExtraRequestProcessingMixin):
         modified_context = super().get_context_data(**kwargs)
 
         # Required for navigation
-        modified_context['current_page'] = "customers"
+        modified_context['current_page'] = "team"
 
         # DEVELOPERS NOTE:
         # - This class based view will have URL parameters for filtering and
@@ -118,13 +118,13 @@ class TeamSearchResultView(ListView, ExtraRequestProcessingMixin):
         queryset = None  # The queryset we will be returning.
         keyword = self.request.GET.get('keyword', None)
         if keyword:
-            queryset = Customer.objects.full_text_search(keyword)
+            queryset = Staff.objects.full_text_search(keyword)
             queryset = queryset.order_by('-created')
         else:
             queryset = super(TeamListView, self).get_queryset()
 
         # The following code will use the 'django-filter'
-        filter = CustomerFilter(self.request.GET, queryset=queryset)
+        filter = StaffFilter(self.request.GET, queryset=queryset)
         queryset = filter.qs
         return queryset
 
@@ -136,12 +136,12 @@ class TeamSearchResultView(ListView, ExtraRequestProcessingMixin):
 
 @method_decorator(login_required, name='dispatch')
 class TeamRetrieveView(DetailView):
-    model = Customer
+    model = Staff
     template_name = 'tenant_team/retrieve/view.html'
 
     def get_object(self):
-        customer = super().get_object()  # Call the superclass
-        return customer                  # Return the object
+        staff = super().get_object()  # Call the superclass
+        return staff                  # Return the object
 
     def get_context_data(self, **kwargs):
         # Get the context of this class based view.
@@ -155,7 +155,7 @@ class TeamRetrieveView(DetailView):
         modified_context['template'] = template
 
         # Required for navigation
-        modified_context['current_page'] = "customers"
+        modified_context['current_page'] = "team"
 
         # Return our modified context.
         return modified_context
@@ -168,12 +168,12 @@ class TeamRetrieveView(DetailView):
 
 @method_decorator(login_required, name='dispatch')
 class TeamUpdateView(DetailView):
-    model = Customer
+    model = Staff
     template_name = 'tenant_team/update/view.html'
 
     def get_object(self):
-        customer = super().get_object()  # Call the superclass
-        return customer                  # Return the object
+        staff = super().get_object()  # Call the superclass
+        return staff                  # Return the object
 
     def get_context_data(self, **kwargs):
         # Get the context of this class based view.
@@ -187,7 +187,7 @@ class TeamUpdateView(DetailView):
         modified_context['template'] = template
 
         # Required for navigation
-        modified_context['current_page'] = "customers"
+        modified_context['current_page'] = "team"
 
         # Return our modified context.
         return modified_context
