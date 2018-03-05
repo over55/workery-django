@@ -54,6 +54,8 @@
         var telephone = $('#id_telephone').val();
         var telephone_extension = $('#id_telephone_extension').val();
         var mobile = $('#id_mobile').val();
+        var fax_number = $('#id_fax_number').val();
+
 
         // LOCK OUT THE "SUBMIT" BUTTON SO THE USER DOES NOT MAKE MULTI-CALLS.
         disable_btn();
@@ -74,9 +76,11 @@
                 'post_office_box_number': post_office_box_number,
                 'email': email,
                 'area_served': area_served,
+                'fax_number': null,
                 'telephone': telephone,
-                'telephone_extension': 'telephone_extension',
-                'mobile': 'mobile'
+                'telephone_extension': telephone_extension,
+                'mobile': mobile,
+                'fax_number': fax_number
             },
             function(result_dict) { // Success
                 console.log(result_dict);
@@ -155,7 +159,6 @@
     '',
     'available_language',
     'contact_type',
-    'fax_number',
     # 'hours_available', #TODO: FIX
     {% endcomment %}
 
@@ -165,6 +168,7 @@
     <p>Telephone</p><input id="id_telephone" name="telephone" type="text"/></p><br/>
     <p>Telephone Extension</p><input id="id_telephone_extension" name="telephone_extension" type="text"/></p><br/>
     <p>Mobile</p><input id="id_mobile" name="mobile" type="text"/></p><br/>
+    <p>Fax</p><input id="id_fax_number" name="fax_number" type="text"/></p><br/>
     <p>Area Served</p><input id="id_area_served" name="area_served" type="text"/></p><br/>
     <!-- end CONTACT -->
 

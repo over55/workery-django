@@ -180,8 +180,8 @@ class Command(BaseCommand):
                 order, create = Order.objects.update_or_create(
                     customer=customer,
                     associate=associate,
-                    assignment_date=assignment_date,
-                    completion_date=completion_date,
+                    assignment_date=local_assign_date,
+                    completion_date=local_date_done,
                     payment_date=local_date_paid,
                     defaults={
                         'customer': customer,
@@ -222,12 +222,12 @@ class Command(BaseCommand):
         except Exception as e:
             if not "list index out of range" in str(e):
                 pass
-                # self.stdout.write(
-                #     self.style.NOTICE(_('Importing Order #%(id)s with exception "%(e)s".') % {
-                #         'e': str(e),
-                #         'id': str(index)
-                #     })
-                # )
+                self.stdout.write(
+                    self.style.NOTICE(_('Importing Order #%(id)s with exception "%(e)s".') % {
+                        'e': str(e),
+                        'id': str(index)
+                    })
+                )
 
     def get_date_from_formatting1(self, birthdate):
         """

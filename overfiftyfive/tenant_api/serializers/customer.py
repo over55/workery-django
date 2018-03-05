@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import phonenumbers
 from datetime import datetime, timedelta
 from dateutil import tz
 from starterkit.utils import (
@@ -16,6 +17,7 @@ from rest_framework import exceptions, serializers
 from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
 from rest_framework.validators import UniqueValidator
+from shared_api.custom_fields import PhoneNumberField
 from shared_foundation.constants import CUSTOMER_GROUP_ID
 from shared_foundation.models.me import SharedMe
 from shared_foundation.models.o55_user import O55User
@@ -48,6 +50,12 @@ class CustomerListCreateSerializer(serializers.ModelSerializer):
 
     affiliations = CustomerAffiliationSerializer(many=True, read_only=True)
 
+    # Custom formatting of our telephone fields.
+    fax_number = PhoneNumberField()
+    telephone = PhoneNumberField()
+    mobile = PhoneNumberField()
+
+    # Meta Information.
     class Meta:
         model = Customer
         fields = (
@@ -127,6 +135,17 @@ class CustomerListCreateSerializer(serializers.ModelSerializer):
 
         - We will attach the staff user whom created this `Customer` object.
         """
+        # Format our telephone(s)
+        fax_number = validated_data.get('fax_number', None)
+        if fax_number:
+            fax_number = phonenumbers.parse(fax_number, "CA")
+        telephone = validated_data.get('telephone', None)
+        if telephone:
+            telephone = phonenumbers.parse(telephone, "CA")
+        mobile = validated_data.get('mobile', None)
+        if mobile:
+            mobile = phonenumbers.parse(mobile, "CA")
+
         #---------------------------------------------------
         # Create our `Customer` object in our tenant schema.
         #---------------------------------------------------
@@ -154,11 +173,11 @@ class CustomerListCreateSerializer(serializers.ModelSerializer):
             area_served=validated_data.get('area_served', None),
             available_language=validated_data.get('available_language', None),
             contact_type=validated_data.get('contact_type', None),
-            fax_number=validated_data.get('fax_number', None),
+            fax_number=fax_number,
             # 'hours_available', #TODO: IMPLEMENT.
-            telephone=validated_data.get('telephone', None),
+            telephone=telephone,
             telephone_extension=validated_data.get('telephone_extension', None),
-            mobile=validated_data.get('mobile', None),
+            mobile=mobile,
 
             # Postal Address
             address_country=validated_data.get('address_country', None),
@@ -176,61 +195,64 @@ class CustomerListCreateSerializer(serializers.ModelSerializer):
             # 'location' #TODO: IMPLEMENT.
         )
 
-        # #-------------------
-        # # Create our user.
-        # #-------------------
-        # email = validated_data.get('email', None)
-        # if email:
-        #     user = O55User.objects.create(
-        #         first_name=validated_data['given_name'],
-        #         last_name=validated_data['last_name'],
-        #         email=email,
-        #         username=get_unique_username_from_email(email),
-        #         is_active=True,
-        #         is_staff=False,
-        #         is_superuser=False
-        #     )
-        #
-        #     # Attach the user to the `Customer` group.
-        #     user.groups.add(CUSTOMER_GROUP_ID)
-        #
-        #     customer.owner = user
-        #     customer.email = email
-        #     customer.save()
-        #
-        #     #-----------------------------------------------------
-        #     # Create a user `Profile` object in our public schema.
-        #     #-----------------------------------------------------
-        #     me = SharedMe.objects.update_or_create(
-        #         user=user,
-        #         defaults={
-        #             'user': user,
-        #             'franchise': self.context['franchise'],
-        #             'was_email_activated': True,
-        #         }
-        #     )
-        #
-        # #-----------------------------
-        # # Create our `Comment` object.
-        # #-----------------------------
-        # extra_comment = validated_data.get('extra_comment', None)
-        # if extra_comment is not None:
-        #     comment = Comment.objects.create(
-        #         created_by=self.context['created_by'],
-        #         last_modified_by=self.context['created_by'],
-        #         text=extra_comment
-        #     )
-        #     customer_comment = CustomerComment.objects.create(
-        #         customer=customer,
-        #         comment=comment,
-        #         created_by=self.context['created_by'],
-        #     )
-        #
-        # # Update validation data.
-        # validated_data['comments'] = CustomerComment.objects.filter(customer=customer)
-        # validated_data['created_by'] = self.context['created_by']
-        # validated_data['last_modified_by'] = self.context['created_by']
-        # validated_data['extra_comment'] = None
+        #-------------------
+        # Create our user.
+        #-------------------
+        email = validated_data.get('email', None)
+        if email:
+            user = O55User.objects.create(
+                first_name=validated_data['given_name'],
+                last_name=validated_data['last_name'],
+                email=email,
+                username=get_unique_username_from_email(email),
+                is_active=True,
+                is_staff=False,
+                is_superuser=False
+            )
+
+            # Attach the user to the `Customer` group.
+            user.groups.add(CUSTOMER_GROUP_ID)
+
+            customer.owner = user
+            customer.email = email
+            customer.save()
+
+            #-----------------------------------------------------
+            # Create a user `Profile` object in our public schema.
+            #-----------------------------------------------------
+            me = SharedMe.objects.update_or_create(
+                user=user,
+                defaults={
+                    'user': user,
+                    'franchise': self.context['franchise'],
+                    'was_email_activated': True,
+                }
+            )
+
+        #-----------------------------
+        # Create our `Comment` object.
+        #-----------------------------
+        extra_comment = validated_data.get('extra_comment', None)
+        if extra_comment is not None:
+            comment = Comment.objects.create(
+                created_by=self.context['created_by'],
+                last_modified_by=self.context['created_by'],
+                text=extra_comment
+            )
+            customer_comment = CustomerComment.objects.create(
+                customer=customer,
+                comment=comment,
+                created_by=self.context['created_by'],
+            )
+
+        # Update validation data.
+        validated_data['comments'] = CustomerComment.objects.filter(customer=customer)
+        validated_data['created_by'] = self.context['created_by']
+        validated_data['last_modified_by'] = self.context['created_by']
+        validated_data['extra_comment'] = None
+        validated_data['telephone'] = telephone
+        validated_data['fax_number'] = fax_number
+        validated_data['mobile'] = mobile
 
         # Return our validated data.
         return validated_data

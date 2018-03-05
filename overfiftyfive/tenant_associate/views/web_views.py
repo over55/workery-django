@@ -65,10 +65,7 @@ class MemberListView(ListView, ExtraRequestProcessingMixin):
 
     def get_queryset(self):
         queryset = super(MemberListView, self).get_queryset() # Get the base.
-
-        # The following code will use the 'django-filter'
-        filter = AssociateFilter(self.request.GET, queryset=queryset)
-        queryset = filter.qs
+        queryset = queryset.order_by('given_name', 'last_name')
         return queryset
 
 
