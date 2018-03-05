@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import phonenumbers
 import datetime
 from django import template
 from django.conf import settings
@@ -20,3 +21,12 @@ def get_app_domain():
     url = settings.O55_APP_HTTP_PROTOCOL
     url += settings.O55_APP_HTTP_DOMAIN
     return url
+
+
+@register.filter
+def pretty_formatted_phonenumber(phone):
+    """
+    Template tag converts the "PhoneNumber" object into a "NATIONAL" format.
+    See: https://github.com/daviddrysdale/python-phonenumbers
+    """
+    return phonenumbers.format_number(phone, phonenumbers.PhoneNumberFormat.NATIONAL)
