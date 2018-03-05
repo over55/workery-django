@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import phonenumbers
 import csv
 import os
 import sys
@@ -199,6 +200,14 @@ class Command(BaseCommand):
 
                 # Attach our user to the "Executive"
                 user.groups.add(ASSOCIATE_GROUP_ID)
+
+            # Format telephone number(s).
+            if phone:
+                phone = phonenumbers.parse(str(phone), "CA")
+            if cell:
+                cell = phonenumbers.parse(str(cell), "CA")
+            if fax:
+                fax = phonenumbers.parse(str(fax), "CA")
 
             # Update or create.
             associate, created_associate = Associate.objects.update_or_create(

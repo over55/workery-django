@@ -79,6 +79,7 @@ SHARED_APPS = (
     'djmoney',
     'corsheaders',
     'anymail',
+    'phonenumber_field',
     # . . .
 
      # Shared Apps
@@ -377,6 +378,13 @@ RQ_QUEUES = {
         'DEFAULT_TIMEOUT': 360,
     }
 }
+
+
+# django-phonenumber-field
+# https://github.com/stefanfoulis/django-phonenumber-field
+
+PHONENUMBER_DEFAULT_REGION = 'CA'  # ISO-3166-1 Country: Canada
+PHONENUMBER_DB_FORMAT = 'E164'     # Format: +1xxxyyyzzzz
 
 
 # Application Specific Variables #

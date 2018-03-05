@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import phonenumbers
 import csv
 import os
 import sys
@@ -139,6 +140,10 @@ class Command(BaseCommand):
             refer = row_dict[27]
             score = row_dict[28]
             url = None
+
+            # Format telephone number(s).
+            if telephone:
+                telephone = phonenumbers.parse(str(telephone), "CA")
 
             # Convert the datetime.
             local_birthdate = self.get_date_from_formatting1(birthdate)

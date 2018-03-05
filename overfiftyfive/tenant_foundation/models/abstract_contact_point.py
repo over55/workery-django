@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from phonenumber_field.modelfields import PhoneNumberField
 from django.db import models
 from django.contrib.auth.models import User
 from django.core.validators import EmailValidator
@@ -47,12 +48,11 @@ class AbstractContactPoint(models.Model):
         validators=[email_validator],
         db_index=True
     )
-    fax_number = models.CharField(
+    fax_number = PhoneNumberField(
         _("Fax Number"),
-        max_length=31,
         help_text=_('The fax number.'),
         blank=True,
-        null=True,
+        null=True
     )
     hours_available = models.ManyToManyField(
         "OpeningHoursSpecification",
@@ -68,13 +68,11 @@ class AbstractContactPoint(models.Model):
         null=True,
         default='',
     )
-    telephone = models.CharField(
+    telephone = PhoneNumberField(
         _("Telephone"),
-        max_length=31,
         help_text=_('The telephone number.'),
         blank=True,
         null=True,
-        default='',
         db_index=True,
     )
     telephone_extension = models.CharField( # NOT STANDARD SCHEMA.
@@ -85,12 +83,10 @@ class AbstractContactPoint(models.Model):
         null=True,
         default='',
     )
-    mobile = models.CharField( # Not standard in Schema.org
+    mobile = PhoneNumberField( # Not standard in Schema.org
         _("Mobile"),
-        max_length=31,
         help_text=_('The mobile telephone number.'),
         db_index=True,
-        validators=[],
         blank=True,
-        null=True,
+        null=True
     )

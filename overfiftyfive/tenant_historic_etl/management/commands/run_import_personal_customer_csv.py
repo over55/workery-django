@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import phonenumbers
 import csv
 import os
 import sys
@@ -173,6 +174,10 @@ class Command(BaseCommand):
 
                 # Attach our user to the "CUSTOMER_GROUP_ID"
                 user.groups.add(CUSTOMER_GROUP_ID)
+
+            # Format telephone number.
+            if home_phone:
+                home_phone = phonenumbers.parse(str(home_phone), "CA")
 
             # Insert our extracted data into our database.
             customer, create = Customer.objects.update_or_create(

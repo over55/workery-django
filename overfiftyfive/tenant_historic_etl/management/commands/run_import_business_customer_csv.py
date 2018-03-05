@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import phonenumbers
 import csv
 import os
 import sys
@@ -165,6 +166,12 @@ class Command(BaseCommand):
                 # Attach our user to the "CUSTOMER_GROUP_ID"
                 user.groups.add(CUSTOMER_GROUP_ID)
 
+            # Format telephone number(s).
+            if phone:
+                phone = phonenumbers.parse(str(phone), "CA")
+            if fax:
+                fax = phonenumbers.parse(str(fax), "CA")
+
             # Insert our extracted data into our database.
             customer, create = Customer.objects.update_or_create(
                 given_name=caller,
@@ -172,7 +179,7 @@ class Command(BaseCommand):
                 telephone=phone,
                 postal_code=postal_code,
                 street_address=address,
-                address_locality=city
+                address_locality=city,
                 email=email,
                 fax_number=fax,
                 defaults={

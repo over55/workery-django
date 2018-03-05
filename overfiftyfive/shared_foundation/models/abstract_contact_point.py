@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from phonenumber_field.modelfields import PhoneNumberField
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
@@ -40,12 +41,11 @@ class AbstractSharedContactPoint(models.Model):
         null=True,
         blank=True,
     )
-    fax_number = models.CharField(
+    fax_number = PhoneNumberField(
         _("Fax Number"),
-        max_length=31,
         help_text=_('The fax number.'),
         blank=True,
-        null=True,
+        null=True
     )
     hours_available = models.ManyToManyField(
         "SharedOpeningHoursSpecification",
@@ -61,13 +61,11 @@ class AbstractSharedContactPoint(models.Model):
         null=True,
         default='',
     )
-    telephone = models.CharField(
+    telephone = PhoneNumberField(
         _("Telephone"),
-        max_length=31,
         help_text=_('The telephone number.'),
         blank=True,
-        null=True,
-        default='',
+        null=True
     )
     telephone_extension = models.CharField(
         _("Telephone Extension"),
@@ -77,12 +75,10 @@ class AbstractSharedContactPoint(models.Model):
         null=True,
         default='',
     )
-    mobile = models.CharField( # Not standard in Schema.org
+    mobile = PhoneNumberField( # Not standard in Schema.org
         _("Mobile"),
-        max_length=31,
         help_text=_('The mobile telephone number.'),
         db_index=True,
-        validators=[],
         blank=True,
-        null=True,
+        null=True
     )
