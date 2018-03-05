@@ -67,10 +67,12 @@
                 {% for customer in customer_list %}
                 <tr>
                     <td>{{ customer.id }}</td>
-                    <td>{{ customer.given_name }}</td>
-                    <td>{{ customer.last_name }}</td>
-                    <td>{{ customer.telephone }}</td>
-                    <td>{{ customer.owner.email }}</td>
+                    <td>{% if customer.given_name %}{{ customer.given_name }}{% else %}-{% endif %}</td>
+                    <td>{% if customer.last_name %}{{ customer.last_name }}{% else %}-{% endif %}</td>
+                    <td>
+                        {% if customer.telephone %}<a href="tel:{{ customer.telephone }}">{{ customer.telephone }}</a>{% else %}-{% endif %}
+                    </td>
+                    <td>{% if customer.owner.email %}<a href="mailto:{{ customer.owner.email }}">{{ customer.owner.email }}</a>{% else %}-{% endif %}</td>
                     <td>
                         <a href="{% url 'o55_tenant_customer_retrieve' 'search' customer.id %}?page={{ page_obj.number }}{{ filter_parameters }}">{% trans 'View' %}</a>
                     </td>

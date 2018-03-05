@@ -77,10 +77,12 @@
                 {% for staff in staff_list %}
                 <tr>
                     <td>{{ staff.id }}</td>
-                    <td>{{ staff.given_name }}</td>
-                    <td>{{ staff.last_name }}</td>
-                    <td>{{ staff.telephone }}</td>
-                    <td>{{ staff.owner.email }}</td>
+                    <td>{% if staff.given_name %}{{ staff.given_name }}{% else %}-{% endif %}</td>
+                    <td>{% if staff.last_name %}{{ staff.last_name }}{% else %}-{% endif %}</td>
+                    <td>
+                        {% if staff.telephone %}<a href="tel:{{ staff.telephone }}">{{ staff.telephone }}</a>{% else %}-{% endif %}
+                    </td>
+                    <td>{% if staff.owner.email %}<a href="mailto:{{ staff.owner.email }}">{{ staff.owner.email }}</a>{% else %}-{% endif %}</td>
                     <td>
                         <a href="{% url 'o55_tenant_team_retrieve' 'list' staff.id %}?page={{ page_obj.number }}">{% trans 'View' %}</a>
                     </td>

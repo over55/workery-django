@@ -6,7 +6,8 @@ from django.db import connection # Used for django tenants.
 from django.utils.translation import ugettext_lazy as _
 from starterkit.utils import (
     get_random_string,
-    get_unique_username_from_email
+    get_unique_username_from_email,
+    int_or_none
 )
 from rest_framework.authtoken.models import Token
 from shared_foundation import constants
@@ -98,6 +99,7 @@ class Command(BaseCommand):
             is_superuser=True,
             is_staff=True
         )
+        self.stdout.write(self.style.SUCCESS(_('Created a "User" object.')))
 
         # Generate and assign the password.
         user.set_password(password)
@@ -115,6 +117,7 @@ class Command(BaseCommand):
                 'was_email_activated': True,
             }
         )
+        self.stdout.write(self.style.SUCCESS(_('Created a "SharedMe" object.')))
 
         # Attach our user to the group.
         user.groups.add(group_id)
@@ -137,6 +140,7 @@ class Command(BaseCommand):
                 street_address=street_address,
                 street_address_extra=street_address_extra,
             )
+            self.stdout.write(self.style.SUCCESS(_('Created a "Staff" object.')))
 
         # Create `Associate`.
         if group_id == constants.ASSOCIATE_GROUP_ID:
@@ -153,6 +157,7 @@ class Command(BaseCommand):
                 street_address=street_address,
                 street_address_extra=street_address_extra,
             )
+            self.stdout.write(self.style.SUCCESS(_('Created an "Associate" object.')))
 
         # Create `Customer`.
         if group_id == constants.CUSTOMER_GROUP_ID:
@@ -169,6 +174,7 @@ class Command(BaseCommand):
                 street_address=street_address,
                 street_address_extra=street_address_extra,
             )
+            self.stdout.write(self.style.SUCCESS(_('Created a "Customer" object.')))
 
         # For debugging purposes.
         self.stdout.write(

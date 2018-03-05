@@ -202,7 +202,16 @@ class Command(BaseCommand):
 
             # Update or create.
             associate, created_associate = Associate.objects.update_or_create(
-                id=int_or_none(pk),
+                given_name=given_name,
+                last_name=last_name,
+                business=business,
+                middle_name=middle_name,
+                join_date=local_join_date,
+                telephone=phone,
+                mobile=cell,
+                email=email,
+                street_address=address,
+                area_served=ldn_area,
                 defaults={
                     'id':int_or_none(pk),
                     'owner': user,

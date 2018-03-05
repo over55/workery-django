@@ -65,6 +65,7 @@ class TeamListView(ListView, ExtraRequestProcessingMixin):
 
     def get_queryset(self):
         queryset = super(TeamListView, self).get_queryset() # Get the base.
+        print(queryset)
 
         # The following code will use the 'django-filter'
         filter = StaffFilter(self.request.GET, queryset=queryset)
