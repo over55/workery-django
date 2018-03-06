@@ -1,5 +1,5 @@
 {% extends 'tenant_foundation/tenant_base.html' %}
-{% load staticfiles i18n %}
+{% load staticfiles i18n humanize %}
 
 {% block title %}
 {% trans 'Member List | Over 55 Inc.' %}
@@ -28,7 +28,7 @@
                 <a href="{% url 'o55_tenant_member_search' %}">{% trans 'Search' %}</a>
             </li>
             <li class="breadcrumb-item active">{% trans 'Search Results' %}</li>
-            <li class="breadcrumb-item"><a href="{% url 'o55_tenant_member_retrieve' template object.id %}">{% trans 'Member #' %}{{ object.id }}</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'o55_tenant_member_retrieve' template object.id %}">{% trans 'Member #' %}{{ object.id|intcomma }}</a></li>
             <li class="breadcrumb-item active" aria-current="page">{% trans 'Edit' %}</li>
 
             {% elif template == 'list' %}
@@ -36,14 +36,14 @@
             <li class="breadcrumb-item"><a href="{% url 'o55_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
             <li class="breadcrumb-item"><a href="{% url 'o55_tenant_member_summary' %}">{% trans 'Members' %}</a></li>
             <li class="breadcrumb-item"><a href="{% url 'o55_tenant_member_list' %}">{% trans 'List' %}</a></li>
-            <li class="breadcrumb-item"><a href="{% url 'o55_tenant_member_retrieve' template object.id %}">{% trans 'Member #' %}{{ object.id }}</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'o55_tenant_member_retrieve' template object.id %}">{% trans 'Member #' %}{{ object.id|intcomma }}</a></li>
             <li class="breadcrumb-item active" aria-current="page">{% trans 'Edit' %}</li>
 
             {% else %}
 
 	    	<li class="breadcrumb-item"><a href="{% url 'o55_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
             <li class="breadcrumb-item"><a href="{% url 'o55_tenant_member_summary' %}">{% trans 'Members' %}</a></li>
-            <li class="breadcrumb-item"><a href="{% url 'o55_tenant_member_retrieve' template object.id %}">{% trans 'Member #' %}{{ object.id }}</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'o55_tenant_member_retrieve' template object.id %}">{% trans 'Member #' %}{{ object.id|intcomma }}</a></li>
             <li class="breadcrumb-item active" aria-current="page">{% trans 'Edit' %}</li>
 
             {% endif %}
