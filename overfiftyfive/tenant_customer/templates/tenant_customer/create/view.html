@@ -28,7 +28,9 @@
      */
     $(document).ready(function () {
         // Initialize our datepicker jQuery code with our HTML view.
-        $( "#dob" ).datepicker();
+        $( "#dob" ).datepicker({
+            dateFormat: 'yy-mm-dd'  // https://stackoverflow.com/a/7500097
+        });
     }); // end Ready
 
     /**
@@ -138,9 +140,14 @@
 
         // EXTRACT OUR FIELD VALUES.
         var given_name = $('#firstname').val();
-        // var middle_name = $('#id_middle_name').val();
+        var middle_name = $('#middlename').val();
         var last_name = $('#lastname').val();
         var date_of_birth = $('#dob').val();
+        if (date_of_birth !== undefined && date_of_birth != null && date_of_birth.length > 0) {
+            console.log(date_of_birth);
+        } else {
+            date_of_birth = null;
+        }
         var gender = $('#gender').val();
         if (gender == undefined || gender == null || gender.length == 0) {
             gender = null;
@@ -168,7 +175,7 @@
         create_customer_api(
             {
                 'given_name': given_name,
-                // 'middle_name': middle_name,
+                'middle_name': middle_name,
                 'last_name': last_name,
                 'birthdate': date_of_birth,
                 'gender': gender,
@@ -241,8 +248,6 @@
 
     <!-- FORM -->
     <!------------------------------------------------------------------------->
-
-
     <div class="col-sm-5 mx-auto mt-2">
         <!-- Residential form -->
         <div class="col-sm-12 fade show active" id="client-form" aria-labelledby="residential">
@@ -251,242 +256,146 @@
             <p><span class="text-secondary font-italic"><sup>*</sup>&nbsp;-&nbsp;Indicates required field to fill out.</span></p>
             <p>&nbsp;</p>
             <form id="add-client-form" method="post" class="needs-validation" action="" novalidate>
-
-                <!-- ############ PERSON ############ -->
-                <p class="border-bottom mb-3 pb-1 text-secondary">Personal Information</p>
-                <div class="form-row">
-                    <div class="form-group col-md-12 mb-4">
-                        <label for="firstname">First name <sup>*</sup></label>
-                        <input type="text" class="form-control form-control-lg border border-primary" id="firstname" name="firstname" placeholder="First name" minlength="2" maxlength="30" required>
-                        <div id="firstname-error" class="invalid-feedback"></div>
-                    </div>
-                    <div class="form-group col-md-12 mb-4">
-                        <label for="lastname">Last name <sup>*</sup></label>
-                        <input type="text" class="form-control form-control-lg border border-primary" id="lastname" name="lastname" placeholder="Last name" minlength="2" maxlength="150" required>
-                        <div id="lastname-error" class="invalid-feedback"></div>
-                    </div>
-                    <div class="form-group p-0 col-md-7 mb-4">
-                        <label for="dob">Date of Birth</label>
-                        <div class="input-group input-group-lg">
-                            <input type="text" class="form-control form-control-lg border border-success" id="dob" name="dob" placeholder="mm/dd/yyyy" required>
-                            <div class="input-group-append">
-                                <span class="input-group-text dob-icon bg-success border-success"><i class="far fa-calendar-alt"></i></span>
-                            </div>
-                            <div id="dob-error" class="invalid-feedback"></div>
+            <!-- ############ PERSON ############ -->
+            <p class="border-bottom mb-3 pb-1 text-secondary">Personal Information</p>
+            <div class="form-row">
+                <div class="form-group col-md-12 mb-4">
+                    <label for="firstname">First name <sup>*</sup></label>
+                    <input type="text" class="form-control form-control-lg border border-primary" id="firstname" name="firstname" placeholder="First name" minlength="2" maxlength="30" required>
+                    <div id="firstname-error" class="invalid-feedback"></div>
+                </div>
+                <div class="form-group col-md-12 mb-4">
+                    <label for="middlename">Middle name <sup>*</sup></label>
+                    <input type="text" class="form-control form-control-lg border border-primary" id="middlename" name="middlename" placeholder="Middle name" minlength="2" maxlength="30" required>
+                    <div id="middlename-error" class="invalid-feedback"></div>
+                </div>
+                <div class="form-group col-md-12 mb-4">
+                    <label for="lastname">Last name <sup>*</sup></label>
+                    <input type="text" class="form-control form-control-lg border border-primary" id="lastname" name="lastname" placeholder="Last name" minlength="2" maxlength="150" required>
+                    <div id="lastname-error" class="invalid-feedback"></div>
+                </div>
+                <div class="form-group p-0 col-md-7 mb-4">
+                    <label for="dob">Date of Birth</label>
+                    <div class="input-group input-group-lg">
+                        <input type="text" class="form-control form-control-lg border border-success" id="dob" name="dob" placeholder="yyyy-mm-dd" required>
+                        <div class="input-group-append">
+                            <span class="input-group-text dob-icon bg-success border-success"><i class="far fa-calendar-alt"></i></span>
                         </div>
-                    </div>
-                    <div class="form-group col-md-7 mb-4 p-0">
-                        <label for="gender">Gender</label>
-                        <select class="custom-select form-control-lg border-success" id="gender" name="gender" required>
-                            <option value="" selected>Gender...</option>
-                            <option value="male">Male</option>
-                            <option value="female">Female</option>
-                        </select>
-                        <div id="gender-error" class="invalid-feedback"></div>
+                        <div id="dob-error" class="invalid-feedback"></div>
                     </div>
                 </div>
-                <!-- ############ end PERSON ############ -->
-
-                <!-- ############ CONTACT POINT ############ -->
-                <p class="border-bottom mb-3 pb-1 text-secondary">Contact Point</p>
-                <div class="form-row">
-                    <div class="form-group col-md-7 mb-4">
-                        <label for="phonenumber">Phone <sup>*</sup></label>
-                        <input type="text" class="form-control form-control-lg border border-primary" id="phonenumber" name="phonenumber" placeholder="(xxx) xxx-xxxx" minlength="10" maxlength="31" required>
-                        <div id="phonenumber-error" class="invalid-feedback"></div>
-                    </div>
-                    <div class="form-group col-md-7 mb-4">
-                        <label for="mobilenumber">Mobile</label>
-                        <input type="text" class="form-control form-control-lg border border-success" id="mobilenumber" name="mobilenumber" placeholder="(xxx) xxx-xxxx" minlength="10" maxlength="31">
-                        <div id="mobilenumber-error" class="invalid-feedback"></div>
-                    </div>
-                    <div class="form-group col-md-12 mb-4">
-                        <label for="email">E-Mail</label>
-                        <input type="email" class="form-control form-control-lg border border-success" id="email" name="email" placeholder="Email Address" maxlength="254">
-                        <div id="email-error" class="invalid-feedback"></div>
-                    </div>
-                    <div class="form-group mt-2 mb-4">
-                        <p class="mb-1">Ok to E-Mail?</p>
-                        <div class="form-radio custom-control custom-radio custom-control-inline">
-                            <input type="radio" id="ok_to_email" name="ok_to_email" value="yes" class="custom-control-input form-check-input">
-                            <label class="custom-control-label form-check-label" for="ok_to_email">Yes</label>
-                        </div>
-                        <div class="form-radio custom-control custom-radio custom-control-inline">
-                            <input type="radio" id="ok_to_email2" name="ok_to_email" value="no" class="custom-control-input form-check-input">
-                            <label class="custom-control-label form-check-label" for="ok_to_email2">No</label>
-                        </div>
-                    </div>
-                    <div class="form-group mt-2 mb-4">
-                        <p class="mb-1">Ok to Text?</p>
-                        <div class="form-radio custom-control custom-radio custom-control-inline">
-                            <input type="radio" id="ok_to_text" name="ok_to_text" value="yes" class="custom-control-input form-check-input">
-                            <label class="custom-control-label form-check-label" for="ok_to_text">Yes</label>
-                        </div>
-                        <div class="form-radio custom-control custom-radio custom-control-inline">
-                            <input type="radio" id="ok_to_text2" name="ok_to_text" value="no" class="custom-control-input form-check-input">
-                            <label class="custom-control-label form-check-label" for="ok_to_text2">No</label>
-                        </div>
-                    </div>
+                <div class="form-group col-md-7 mb-4 p-0">
+                    <label for="gender">Gender</label>
+                    <select class="custom-select form-control-lg border-success" id="gender" name="gender" required>
+                        <option value="" selected>Gender...</option>
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
+                    </select>
+                    <div id="gender-error" class="invalid-feedback"></div>
                 </div>
-                <!-- ############ end CONTACT POINT ############ -->
-
-                <!-- ############ LOCATION ############ -->
-                <p class="border-bottom mb-3 pb-1 text-secondary">Postal Address</p>
-                <div class="form-row">
-                    <div class="form-group col-md-12 mb-4">
-                        <label for="street_address">Street Address <sup>*</sup></label>
-                        <input type="text" class="form-control form-control-lg border border-primary" id="street_address" name="street_address" placeholder="Street Address" minlength="3" maxlength="255" required>
-                        <div id="street_address-error" class="invalid-feedback"></div>
-                    </div>
-                    <div class="form-group col-md-12 mb-4">
-                        <label for="street_address_extra">Street Address (Extra)</label>
-                        <input type="text" class="form-control form-control-lg border border-success" id="street_address_extra" name="street_address_extra" placeholder="Street Address (Extra)" minlength="3" maxlength="255">
-                        <div id="street_address_extra-error" class="invalid-feedback"></div>
-                    </div>
-                    <div class="form-group col-md-12 mb-4">
-                        <label for="address_locality">City <sup>*</sup></label>
-                        <input type="text" class="form-control form-control-lg border border-primary" id="address_locality" name="address_locality" placeholder="City" minlength="3" maxlength="127" required>
-                        <div id="address_locality-error" class="invalid-feedback"></div>
-                    </div>
-                    <div class="form-group col-md-12 mb-4">
-                        <label for="address_region">Province <sup>*</sup></label>
-                        <input type="text" class="form-control form-control-lg border border-primary" id="address_region" name="address_region" placeholder="Province" minlength="3" maxlength="127" required>
-                        <div id="address_region-error" class="invalid-feedback"></div>
-                    </div>
-                    <div class="form-group col-md-12 mb-4">
-                        <label for="address_country">Country <sup>*</sup></label>
-                        <input type="text" class="form-control form-control-lg border border-primary" id="address_country" name="address_country" placeholder="Country" minlength="3" maxlength="127" required>
-                        <div id="address_country-error" class="invalid-feedback"></div>
-                    </div>
-                    <div class="form-group col-md-12 mb-4">
-                        <label for="postal_code">Postal Code <sup>*</sup></label>
-                        <input type="text" class="form-control form-control-lg border border-primary" id="postal_code" name="postal_code" placeholder="Postal Address" minlength="6" maxlength="6" required>
-                        <div id="postal_code-error" class="invalid-feedback"></div>
-                    </div>
-                    <div class="form-group col-md-12 mb-4">
-                        <label for="post_office_box_number">Post Office Box # </label>
-                        <input type="text" class="form-control form-control-lg border border-success" id="post_office_box_number" name="post_office_box_number" placeholder="Post Office Box #" minlength="3" maxlength="255" required>
-                        <div id="post_office_box_number-error" class="invalid-feedback"></div>
-                    </div>
-
+            </div>
+            <!-- ############ end PERSON ############ -->
+            <!-- ############ CONTACT POINT ############ -->
+            <p class="border-bottom mb-3 pb-1 text-secondary">Contact Point</p>
+            <div class="form-row">
+                <div class="form-group col-md-7 mb-4">
+                    <label for="phonenumber">Phone <sup>*</sup></label>
+                    <input type="text" class="form-control form-control-lg border border-primary" id="phonenumber" name="phonenumber" placeholder="(xxx) xxx-xxxx" minlength="10" maxlength="31" required>
+                    <div id="phonenumber-error" class="invalid-feedback"></div>
                 </div>
-                <!-- ############ end LOCATION ############ -->
-
-                <!-- ############ BUSINESS ############ -->
-                {% comment %}
-                <p class="border-bottom mb-3 pb-1 text-secondary">Business Information</p>
-                <div class="form-row">
+                <div class="form-group col-md-7 mb-4">
+                    <label for="mobilenumber">Mobile</label>
+                    <input type="text" class="form-control form-control-lg border border-success" id="mobilenumber" name="mobilenumber" placeholder="(xxx) xxx-xxxx" minlength="10" maxlength="31">
+                    <div id="mobilenumber-error" class="invalid-feedback"></div>
                 </div>
-                {% endcomment %}
-                <!-- ############ end BUSINESS ############ -->
-
-                <!-- end SUBMIT BUTTON -->
-                <div class="form-group col-md-12 mb-3 mx-auto text-center">
-                    <button  id="id_submit_btn"
-                          class="btn btn-success btn-lg btn-fxw mt-4"
-                          onclick="ajax_post_form_submission();"
-                             type="button">
-                        <i class="fas fa-plus"></i>&nbsp;{% trans 'Add Client' %}
-                    </button>
-                </div>
-                <!-- end SUBMIT BUTTON -->
-
-        <!-- Commercial form -->
-        {% comment %}
-            <h3 class="pt-4 pb-2 text-center">Commercial</h3>
-            <form id="commercial-form" method="post" class="needs-validation" action="" novalidate>
-                <p class="border-bottom mb-3 pb-1 text-secondary">Company Details</p>
-                <div class="form-row">
-                    <div class="form-group col-md-12 mb-4">
-                        <label for="companyname">Company name *</label>
-                        <input type="text" class="form-control form-control-lg border border-primary" id="companyname" name="companyname" placeholder="Company name" minlength="3" required>
-                        <div id="companyname-error" class="invalid-feedback"></div>
-                    </div>
-                    <div class="form-group col-md-7 mb-4 p-0">
-                        <label for="companytype">Company type *</label>
-                        <select class="custom-select form-control-lg border-success" id="companytype" name="companytype" required>
-                            <option value="" selected>Type...</option>
-                            <option value="private">Private</option>
-                            <option value="non-profit">Non-Profit</option>
-                            <option value="government">Government</option>
-                        </select>
-                        <div id="companytype-error" class="invalid-feedback"></div>
-                    </div>
-                    <div class="form-group col-md-12 mb-4">
-                        <label for="contact-firstname">Contact First name</label>
-                        <input type="text" class="form-control form-control-lg border border-primary" id="contact-firstname" name="contact-firstname" placeholder="First name" minlength="3" required>
-                        <div id="c_firstname-error" class="invalid-feedback"></div>
-                    </div>
-                    <div class="form-group col-md-12 mb-4">
-                        <label for="contact-lastname">Contact Last name</label>
-                        <input type="text" class="form-control form-control-lg border border-primary" id="contact-lastname" name="contact-lastname" placeholder="Last name" minlength="3" required>
-                        <div id="c_lastname-error" class="invalid-feedback"></div>
-                    </div>
-                    <div class="form-group col-md-8 mb-4">
-                        <label for="c_phonenumber1">Phone 1 *</label>
-                        <input type="text" class="form-control form-control-lg border border-primary" id="c_phonenumber1" name="c_phonenumber1" placeholder="(xxx) xxx-xxxx" minlength="10" maxlength="14" required>
-                        <div id="phonenumber1-error" class="invalid-feedback"></div>
-                    </div>
-                    <div class="form-group col-md-4 mb-4">
-                        <label for="phonetype">&nbsp;</label>
-                        <select class="custom-select form-control-lg border-primary" id="phonetype" name="phonetype" required>
-                            <option value="mobile">Mobile</option>
-                            <option value="home">Home</option>
-                            <option value="work">Work</option>
-                        </select>
-                        <div id="phonetype1-error" class="invalid-feedback"></div>
-                    </div>
-                    <div class="form-group col-md-8 mb-4">
-                        <label for="c_phonenumber2">Phone 2</label>
-                        <input type="text" class="form-control form-control-lg border border-primary" id="c_phonenumber2" name="c_phonenumber2" placeholder="(xxx) xxx-xxxx" minlength="10" maxlength="14" required>
-                        <div id="phonenumber2-error" class="invalid-feedback"></div>
-                    </div>
-                    <div class="form-group col-md-4 mb-4">
-                        <label for="phonetype2">&nbsp;</label>
-                        <select class="custom-select form-control-lg border-primary" id="phonetype2" name="phonetype2">
-                            <option value="mobile">Mobile</option>
-                            <option value="home">Home</option>
-                            <option value="work">Work</option>
-                        </select>
-                        <div id="phonetype2-error" class="invalid-feedback"></div>
-                    </div>
-                    <div class="form-group col-md-12 mb-4">
-                        <label for="c_email">E-Mail</label>
-                        <input type="email" class="form-control form-control-lg border border-success" id="c_email" name="c_email" placeholder="Email Address">
-                        <div id="c_email-error" class="invalid-feedback"></div>
-                    </div>
+                <div class="form-group col-md-12 mb-4">
+                    <label for="email">E-Mail</label>
+                    <input type="email" class="form-control form-control-lg border border-success" id="email" name="email" placeholder="Email Address" maxlength="254">
+                    <div id="email-error" class="invalid-feedback"></div>
                 </div>
                 <div class="form-group mt-2 mb-4">
                     <p class="mb-1">Ok to E-Mail?</p>
                     <div class="form-radio custom-control custom-radio custom-control-inline">
-                        <input type="radio" id="c_ok_to_email" name="c_ok_to_email" value="yes" class="custom-control-input form-check-input">
-                        <label class="custom-control-label form-check-label" for="c_ok_to_email">Yes</label>
+                        <input type="radio" id="ok_to_email" name="ok_to_email" value="yes" class="custom-control-input form-check-input">
+                        <label class="custom-control-label form-check-label" for="ok_to_email">Yes</label>
                     </div>
                     <div class="form-radio custom-control custom-radio custom-control-inline">
-                        <input type="radio" id="c_ok_to_email2" name="c_ok_to_email" value="no" class="custom-control-input form-check-input">
-                        <label class="custom-control-label form-check-label" for="c_ok_to_email2">No</label>
+                        <input type="radio" id="ok_to_email2" name="ok_to_email" value="no" class="custom-control-input form-check-input">
+                        <label class="custom-control-label form-check-label" for="ok_to_email2">No</label>
                     </div>
                 </div>
                 <div class="form-group mt-2 mb-4">
                     <p class="mb-1">Ok to Text?</p>
                     <div class="form-radio custom-control custom-radio custom-control-inline">
-                        <input type="radio" id="c_ok_to_text" name="c_ok_to_text" value="yes" class="custom-control-input form-check-input">
-                        <label class="custom-control-label form-check-label" for="c_ok_to_text">Yes</label>
+                        <input type="radio" id="ok_to_text" name="ok_to_text" value="yes" class="custom-control-input form-check-input">
+                        <label class="custom-control-label form-check-label" for="ok_to_text">Yes</label>
                     </div>
                     <div class="form-radio custom-control custom-radio custom-control-inline">
-                        <input type="radio" id="c_ok_to_text2" name="c_ok_to_text" value="no" class="custom-control-input form-check-input">
-                        <label class="custom-control-label form-check-label" for="c_ok_to_text2">No</label>
+                        <input type="radio" id="ok_to_text2" name="ok_to_text" value="no" class="custom-control-input form-check-input">
+                        <label class="custom-control-label form-check-label" for="ok_to_text2">No</label>
                     </div>
                 </div>
-                <span class="text-secondary font-italic">* Indicates required.</span>
-                <div class="form-group col-md-12 mb-3 mx-auto text-center">
-                    <button class="btn btn-success btn-lg btn-fxw mt-4" type="submit"><i class="fas fa-plus"></i> Add Client</button>
+            </div>
+            <!-- ############ end CONTACT POINT ############ -->
+            <!-- ############ LOCATION ############ -->
+            <p class="border-bottom mb-3 pb-1 text-secondary">Postal Address</p>
+            <div class="form-row">
+                <div class="form-group col-md-12 mb-4">
+                    <label for="street_address">Street Address <sup>*</sup></label>
+                    <input type="text" class="form-control form-control-lg border border-primary" id="street_address" name="street_address" placeholder="Street Address" minlength="3" maxlength="255" required>
+                    <div id="street_address-error" class="invalid-feedback"></div>
                 </div>
-            </form>
+                <div class="form-group col-md-12 mb-4">
+                    <label for="street_address_extra">Street Address (Extra)</label>
+                    <input type="text" class="form-control form-control-lg border border-success" id="street_address_extra" name="street_address_extra" placeholder="Street Address (Extra)" minlength="3" maxlength="255">
+                    <div id="street_address_extra-error" class="invalid-feedback"></div>
+                </div>
+                <div class="form-group col-md-12 mb-4">
+                    <label for="address_locality">City <sup>*</sup></label>
+                    <input type="text" class="form-control form-control-lg border border-primary" id="address_locality" name="address_locality" placeholder="City" minlength="3" maxlength="127" required>
+                    <div id="address_locality-error" class="invalid-feedback"></div>
+                </div>
+                <div class="form-group col-md-12 mb-4">
+                    <label for="address_region">Province <sup>*</sup></label>
+                    <input type="text" class="form-control form-control-lg border border-primary" id="address_region" name="address_region" placeholder="Province" minlength="3" maxlength="127" required>
+                    <div id="address_region-error" class="invalid-feedback"></div>
+                </div>
+                <div class="form-group col-md-12 mb-4">
+                    <label for="address_country">Country <sup>*</sup></label>
+                    <input type="text" class="form-control form-control-lg border border-primary" id="address_country" name="address_country" placeholder="Country" minlength="3" maxlength="127" required>
+                    <div id="address_country-error" class="invalid-feedback"></div>
+                </div>
+                <div class="form-group col-md-12 mb-4">
+                    <label for="postal_code">Postal Code <sup>*</sup></label>
+                    <input type="text" class="form-control form-control-lg border border-primary" id="postal_code" name="postal_code" placeholder="Postal Address" minlength="6" maxlength="6" required>
+                    <div id="postal_code-error" class="invalid-feedback"></div>
+                </div>
+                <div class="form-group col-md-12 mb-4">
+                    <label for="post_office_box_number">Post Office Box # </label>
+                    <input type="text" class="form-control form-control-lg border border-success" id="post_office_box_number" name="post_office_box_number" placeholder="Post Office Box #" minlength="3" maxlength="255" required>
+                    <div id="post_office_box_number-error" class="invalid-feedback"></div>
+                </div>
+            </div>
+            <!-- ############ end LOCATION ############ -->
+            <!-- ############ BUSINESS ############ -->
+            {% comment %}
+            <p class="border-bottom mb-3 pb-1 text-secondary">Business Information</p>
+            <div class="form-row">
+            </div>
             {% endcomment %}
+            <!-- ############ end BUSINESS ############ -->
+            <!-- end SUBMIT BUTTON -->
+            <div class="form-group col-md-12 mb-3 mx-auto text-center">
+                <button  id="id_submit_btn"
+                    class="btn btn-success btn-lg btn-fxw mt-4"
+                    onclick="ajax_post_form_submission();"
+                    type="button">
+                <i class="fas fa-plus"></i>&nbsp;{% trans 'Add Client' %}
+                </button>
+            </div>
+            <!-- end SUBMIT BUTTON -->
         </div>
     </div>
-
     <!------------------------------------------------------------------------->
     <!-- end FORM -->
 

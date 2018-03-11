@@ -138,7 +138,7 @@ class Customer(AbstractThing, AbstractContactPoint, AbstractPostalAddress, Abstr
         null=True,
         db_index=True,
     )
-    birthdate = models.DateTimeField(
+    birthdate = models.DateField(
         _('Birthdate'),
         help_text=_('The customers birthdate.'),
         blank=True,
