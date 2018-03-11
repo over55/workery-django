@@ -157,11 +157,30 @@ class Customer(AbstractThing, AbstractContactPoint, AbstractPostalAddress, Abstr
         blank=True,
         null=True,
     )
+    gender = models.CharField(
+        _("Gender"),
+        max_length=63,
+        help_text=_('Gender of the person. While Male and Female may be used, text strings are also acceptable for people who do not identify as a binary gender.'),
+        blank=True,
+        null=True,
+    )
 
     #
     #  CUSTOM FIELDS
     #
 
+    is_ok_to_email = models.BooleanField(
+        _("Is OK to email"),
+        help_text=_('Indicates whether customer allows being reached by email'),
+        default=True,
+        blank=True
+    )
+    is_ok_to_text = models.BooleanField(
+        _("Is OK to text"),
+        help_text=_('Indicates whether customer allows being reached by text.'),
+        default=True,
+        blank=True
+    )
     is_business = models.BooleanField(
         _("Is Business"),
         help_text=_('Indicates whether customer is considered a business representive or not.'),

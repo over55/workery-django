@@ -66,14 +66,18 @@ class CustomerListCreateSerializer(serializers.ModelSerializer):
             'affiliations',
             # 'owner',
 
-            # Profile
+            # Person
             'given_name',
             'middle_name',
             'last_name',
             'birthdate',
             'join_date',
+            'gender',
+            'nationality',
 
             # Misc (Read/Write)
+            'is_ok_to_email',
+            'is_ok_to_text',
             'is_senior',
             'is_support',
             'job_info_read',
