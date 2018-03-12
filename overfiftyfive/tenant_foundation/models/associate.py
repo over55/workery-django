@@ -153,7 +153,7 @@ class Associate(AbstractThing, AbstractContactPoint, AbstractPostalAddress, Abst
         blank=True,
         null=True,
     )
-    birthdate = models.DateTimeField(
+    birthdate = models.DateField(
         _('Birthdate'),
         help_text=_('The associates birthdate.'),
         blank=True,
@@ -165,10 +165,36 @@ class Associate(AbstractThing, AbstractContactPoint, AbstractPostalAddress, Abst
         null=True,
         blank=True,
     )
+    nationality = models.CharField(
+        _("Nationality"),
+        max_length=63,
+        help_text=_('Nationality of the person.'),
+        blank=True,
+        null=True,
+    )
+    gender = models.CharField(
+        _("Gender"),
+        max_length=63,
+        help_text=_('Gender of the person. While Male and Female may be used, text strings are also acceptable for people who do not identify as a binary gender.'),
+        blank=True,
+        null=True,
+    )
 
     #
     #  CUSTOM FIELDS
     #
+    is_ok_to_email = models.BooleanField(
+        _("Is OK to email"),
+        help_text=_('Indicates whether associate allows being reached by email'),
+        default=True,
+        blank=True
+    )
+    is_ok_to_text = models.BooleanField(
+        _("Is OK to text"),
+        help_text=_('Indicates whether associate allows being reached by text.'),
+        default=True,
+        blank=True
+    )
     hourly_salary_desired = models.PositiveSmallIntegerField(
         _("Hourly Salary Desired"),
         help_text=_('The hourly salary rate the associate'),

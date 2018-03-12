@@ -37,7 +37,8 @@ class AssociateListCreateSerializer(serializers.ModelSerializer):
     # We are overriding the `email` field to include unique email validation.
     email = serializers.EmailField(
         validators=[UniqueValidator(queryset=Associate.objects.all())],
-        required=True
+        required=True,
+        source="owner.email"
     )
 
     # All comments are created by our `create` function and not by

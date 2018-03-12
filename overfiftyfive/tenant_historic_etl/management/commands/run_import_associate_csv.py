@@ -222,7 +222,6 @@ class Command(BaseCommand):
                 street_address=address,
                 area_served=ldn_area,
                 defaults={
-                    'id':int_or_none(pk),
                     'owner': user,
                     'last_name':last_name,
                     'given_name':given_name,
