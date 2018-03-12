@@ -322,28 +322,28 @@ class Associate(AbstractThing, AbstractContactPoint, AbstractPostalAddress, Abst
         else:
             return str(self.given_name)+" "+str(self.last_name)
 
-    def save(self, *args, **kwargs):
-        """
-        Override the "save" function.
-        """
-        if self.email:
-            user = User.objects.filter(email=self.email).first()
-            if self.owner:
-                if user != self.owner:
-                    # print("2 OF 3:")
-                    raise ValidationError({
-                        'email':'Your email is not unique! Please pick another email.'
-                    })
-            else:
-                email_exists = User.objects.filter(email=self.email).exists()
-                if email_exists:
-                    # print("1 OF 3:")
-                    raise ValidationError({
-                        'email':'Your email is not unique! Please pick another email.'
-                    })
-
-        # print("3 of 3")
-        super(Associate, self).save(*args,**kwargs)
+    # def save(self, *args, **kwargs):
+    #     """
+    #     Override the "save" function.
+    #     """
+    #     if self.email:
+    #         user = User.objects.filter(email=self.email).first()
+    #         if self.owner:
+    #             if user != self.owner:
+    #                 # print("2 OF 3:")
+    #                 raise ValidationError({
+    #                     'email':'Your email is not unique! Please pick another email.'
+    #                 })
+    #         else:
+    #             email_exists = User.objects.filter(email=self.email).exists()
+    #             if email_exists:
+    #                 # print("1 OF 3:")
+    #                 raise ValidationError({
+    #                     'email':'Your email is not unique! Please pick another email.'
+    #                 })
+    #
+    #     # print("3 of 3")
+    #     super(Associate, self).save(*args,**kwargs)
 
 
 # def validate_model(sender, **kwargs):

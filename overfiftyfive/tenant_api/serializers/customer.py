@@ -36,7 +36,8 @@ class CustomerListCreateSerializer(serializers.ModelSerializer):
     # We are overriding the `email` field to include unique email validation.
     email = serializers.EmailField(
         validators=[UniqueValidator(queryset=Customer.objects.all())],
-        required=False
+        required=False,
+        source="owner.email"
     )
 
     # All comments are created by our `create` function and not by
@@ -202,7 +203,13 @@ class CustomerListCreateSerializer(serializers.ModelSerializer):
         #-------------------
         # Create our user.
         #-------------------
-        email = validated_data.get('email', None)
+        # Extract our "email" field.
+        owner = validated_data.get('owner', None)
+        email = None
+        if owner:
+            email = owner.get('email', None)
+
+        # If an email exists then
         if email:
             user = O55User.objects.create(
                 first_name=validated_data['given_name'],

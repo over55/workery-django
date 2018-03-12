@@ -166,8 +166,16 @@ class AssociateListCreateSerializer(serializers.ModelSerializer):
         #---------------------------------------------------
         # Create our `Associate` object in our tenant schema.
         #---------------------------------------------------
-        email = validated_data.get('email', None)
+        # Extract our "email" field.
+        owner = validated_data.get('owner', None)
+        email = None
+        if owner:
+            email = owner.get('email', None)
+
+        # Extract skills.
         skill_sets = validated_data.get('skill_sets', None)
+
+        # Create an "Associate".
         associate = Associate.objects.create(
             created_by=self.context['created_by'],
             last_modified_by=self.context['created_by'],
