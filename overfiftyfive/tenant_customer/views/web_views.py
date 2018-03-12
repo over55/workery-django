@@ -144,6 +144,7 @@ class CustomerSearchResultView(ListView, ExtraRequestProcessingMixin):
 
 @method_decorator(login_required, name='dispatch')
 class CustomerRetrieveView(DetailView):
+    context_object_name = 'customer'
     model = Customer
     template_name = 'tenant_customer/retrieve/view.html'
 
@@ -169,13 +170,14 @@ class CustomerRetrieveView(DetailView):
         return modified_context
 
 
-#----------#
+#--------#
 # UPDATE #
-#----------#
+#--------#
 
 
 @method_decorator(login_required, name='dispatch')
 class CustomerUpdateView(DetailView):
+    context_object_name = 'customer'
     model = Customer
     template_name = 'tenant_customer/update/view.html'
 

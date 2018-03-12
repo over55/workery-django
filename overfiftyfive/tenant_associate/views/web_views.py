@@ -133,6 +133,7 @@ class MemberSearchResultView(ListView, ExtraRequestProcessingMixin):
 
 @method_decorator(login_required, name='dispatch')
 class MemberRetrieveView(DetailView):
+    context_object_name = 'associate'
     model = Associate
     template_name = 'tenant_associate/retrieve/view.html'
 
