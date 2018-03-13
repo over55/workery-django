@@ -1,0 +1,403 @@
+{% extends 'tenant_foundation/tenant_base.html' %}
+{% load staticfiles i18n %}
+
+{% block title %}
+{% trans 'Add New Job | Over 55 Inc.' %}
+{% endblock title %}
+
+{% block header_content %}
+{% endblock header_content %}
+
+{% block content %}
+
+<!-- API JAVASCRIPT -->
+<!----------------------------------------------------------------------------->
+{% include 'tenant_api/customers_api_js.html' %}
+<!----------------------------------------------------------------------------->
+<!-- end API JAVASCRIPT -->
+
+
+<!-- CUSTOM JAVASCRIPT -->
+<!----------------------------------------------------------------------------->
+<script>
+    /**
+     *  When page loads, the following code will be run first.
+     */
+    $(document).ready(function () {
+        // Initialize our datepicker jQuery code with our HTML view.
+        $( "#dob" ).datepicker({
+            dateFormat: 'yy-mm-dd'  // https://stackoverflow.com/a/7500097
+        });
+    }); // end Ready
+
+    /**
+     *  Function will unlock the submit button.
+     */
+    function disable_btn() {
+        $('#id_submit_btn').val("{% trans 'Please Wait...' %}");
+        $('#id_submit_btn').prop("disabled", true);
+    }
+
+    /**
+     *  Function will lock the submit button.
+     */
+    function enable_btn() {
+        $('#id_submit_btn').prop("disabled", false);
+        $('#id_submit_btn').val("{% trans 'Update' %}");
+    }
+
+    function get_selected_radio_value(radiofields_name) {
+        var radios = document.getElementsByName('ok_to_email');
+        for (var i = 0, length = radios.length; i < length; i++) {
+            if (radios[i].checked) {
+                // only one radio can be logically checked, don't check the rest
+                return radios[i].value;
+            }
+        }
+        return null;
+    }
+
+    function valid_textfield_value(textfield_id, is_required, min_length) {
+        var textfield = document.getElementById(textfield_id);
+        var textfield_error = document.getElementById(textfield_id+'-error');
+        var value = textfield.value;
+
+        // CASE 1: BLANK FIELD.
+        if (is_required) {
+            if (value == '' || value == null || value == undefined || value.length == 0) {
+                $('#'+textfield_id).addClass('border-primary').removeClass('border-success');
+                textfield_error.innerHTML = "Field should not be blank.";
+                return true; // This means that an error occured in validation.
+            }
+        }
+
+        // CASE 2: MINIMUM LENGTH NOT MET.
+        if (value.length > 0) {              // If user entered something...
+            if (value.length < min_length) { // Validate that the minium was entered...
+                $('#'+textfield_id).addClass('border-primary').removeClass('border-success');
+                textfield_error.innerHTML = "Field requires a minimum of "+min_length+" characters.";
+                return true;
+            }
+        }
+
+        // Update the GUI to indicate this field has been updated.
+        $('#'+textfield_id).addClass('border-success').removeClass('border-primary');
+
+        // Return "false" which means no errors occured.
+        return false;
+    }
+
+    function valid_radiofields_seleciton(radiofields_name, is_required) {
+        var value = get_selected_radio_value(radiofields_name);
+
+        if (is_required) {
+            if (value == null) {
+                //TODO: IMPLEMENT UPDATE GUI VALIDATION.
+                // alert("Please select a radio button for "+radiofields_name+".");
+                return false;
+            }
+        }
+
+        // Return "false" which means no errors occured.
+        return false;
+    }
+
+    /**
+     *  Function will attempt to submit the form to the API server. This
+     *  funciton will:
+     *  (1) Lock / Unlock the submit button.
+     *  (2)
+     */
+    function ajax_post_form_submission() {
+        // GET OUR FORM.
+        var form = document.getElementById('add-client-form');
+
+        // VALIDATE ALL OUR FORM FIELDS.
+        var has_error = false;
+        has_error |= valid_textfield_value('firstname', true, 2);
+        has_error |= valid_textfield_value('lastname', true, 2);
+        has_error |= valid_textfield_value('phonenumber', true, 10);
+        has_error |= valid_textfield_value('mobilenumber', false, 10);
+        has_error |= valid_radiofields_seleciton('ok_to_email', true);
+        has_error |= valid_radiofields_seleciton('ok_to_text', true);
+        has_error |= valid_textfield_value('street_address', true, 3);
+        has_error |= valid_textfield_value('street_address_extra', false, 3)
+        has_error |= valid_textfield_value('address_locality', true, 3);
+        has_error |= valid_textfield_value('address_region', true, 3);
+        has_error |= valid_textfield_value('address_country', true, 3);
+        has_error |= valid_textfield_value('postal_code', true, 3);
+        has_error |= valid_textfield_value('post_office_box_number', false, 3);
+
+        // INTERRUPT THE FORM SUBMISSION IF ANY ERRORS EXISTED AND UPDATE THE
+        // GUI TO INDICATE THAT WE HAVE VALIDATED SOME FIELDS.
+        form.classList.add('was-validated');
+        if (has_error) {
+            return; // STOP THIS FUNCTION FROM GOING FORWARD UNTIL ERRORS FIXED.
+        }
+
+        // EXTRACT OUR FIELD VALUES.
+        var given_name = $('#firstname').val();
+        var middle_name = $('#middlename').val();
+        var last_name = $('#lastname').val();
+        var date_of_birth = $('#dob').val();
+        if (date_of_birth !== undefined && date_of_birth != null && date_of_birth.length > 0) {
+            console.log(date_of_birth);
+        } else {
+            date_of_birth = null;
+        }
+        var gender = $('#gender').val();
+        if (gender == undefined || gender == null || gender.length == 0) {
+            gender = null;
+        }
+        var ok_to_email = get_selected_radio_value('ok_to_email');
+        var ok_to_text = get_selected_radio_value('ok_to_text');
+        var street_address = $('#street_address').val();
+        var street_address_extra = $('#street_address_extra').val();
+        var address_region = $('#address_region').val();
+        var address_locality = $('#address_locality').val();
+        var address_country = $('#address_country').val();
+        var postal_code = $('#postal_code').val();
+        var post_office_box_number = $('#post_office_box_number').val();
+        var email = $('#email').val();
+        // var area_served = $('#id_area_served').val();
+        var telephone = $('#phonenumber').val();
+        // var telephone_extension = $('#id_telephone_extension').val();
+        var mobile = $('#mobilenumber').val();
+        // var fax_number = $('#id_fax_number').val();
+
+        // LOCK OUT THE "SUBMIT" BUTTON SO THE USER DOES NOT MAKE MULTI-CALLS.
+        disable_btn();
+
+        // MAKE OUR API CALL TO THE BACKEND TO "CREATE" THE CUSTOMER USER.
+        create_customer_api(
+            {
+                'given_name': given_name,
+                'middle_name': middle_name,
+                'last_name': last_name,
+                'birthdate': date_of_birth,
+                'gender': gender,
+                'nationality': null,
+                'is_ok_to_email': ok_to_email,
+                'is_ok_to_text': ok_to_text,
+                'address_country': address_country,
+                'address_locality': address_locality,
+                'address_region': address_region,
+                'extra_comment': null,
+                'street_address': street_address,
+                'street_address_extra': street_address_extra,
+                'postal_code': postal_code,
+                'post_office_box_number': post_office_box_number,
+                'email': email,
+                // 'area_served': area_served,
+                'fax_number': null,
+                'telephone': telephone,
+                // 'telephone_extension': telephone_extension,
+                'mobile': mobile,
+                // 'fax_number': fax_number
+            },
+            function(result_dict) { // Success
+                console.log(result_dict);
+                window.location = "{% url 'o55_tenant_job_summary' %}?was_created=True";
+            },
+            function(xhr,status,error) { // Error
+                var errorJSON = xhr.responseJSON;
+                console.log(errorJSON); //TODO: IMPL.
+                alert("Error with submission, see console.");
+            },
+            function() { // Finally
+                // UNLOCK THE "SUBMIT" BUTTON TO BE AVAILABLE FOR USAGE.
+                enable_btn();
+            }
+        );
+    }
+</script>
+<!----------------------------------------------------------------------------->
+<!-- end CUSTOM JAVASCRIPT -->
+
+<main id="main" role="main">
+
+    <!-- BREADCRUMB -->
+    <!------------------------------------------------------------------------->
+    <nav aria-label="breadcrumb">
+	  	<ol class="breadcrumb">
+	    	<li class="breadcrumb-item"><a href="{% url 'o55_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'o55_tenant_job_summary' %}">{% trans 'Jobs' %}</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{% trans 'Add' %}</li>
+	  	</ol>
+	</nav>
+    <!------------------------------------------------------------------------->
+    <!-- end BREADCRUMB -->
+
+    <!-- BACK BUTTON -->
+    <!------------------------------------------------------------------------->
+    <div class="row">
+		<div class="col-sm-3 p-3 mb-2">
+			<a class="btn btn-primary btn-lg" href="{% url 'o55_tenant_job_summary' %}" role="button">
+                <svg class="svg-inline--fa fa-arrow-left fa-w-14" aria-hidden="true" data-fa-processed="" data-prefix="fas" data-icon="arrow-left" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                <path fill="currentColor" d="M257.5 445.1l-22.2 22.2c-9.4 9.4-24.6 9.4-33.9 0L7 273c-9.4-9.4-9.4-24.6 0-33.9L201.4 44.7c9.4-9.4 24.6-9.4 33.9 0l22.2 22.2c9.5 9.5 9.3 25-.4 34.3L136.6 216H424c13.3 0 24 10.7 24 24v32c0 13.3-10.7 24-24 24H136.6l120.5 114.8c9.8 9.3 10 24.8.4 34.3z"></path>
+            </svg><!-- <i class="fas fa-arrow-left"></i> -->&nbsp;{% trans 'Back to Jobs Home' %}</a>
+		</div>
+	</div>
+    <!------------------------------------------------------------------------->
+    <!-- end BACK BUTTON -->
+
+    <h1>{% trans 'Add Job' %}</h1>
+
+    <!-- FORM -->
+    <!------------------------------------------------------------------------->
+    {% comment %}
+    <div class="col-sm-5 mx-auto mt-2">
+        <!-- Residential form -->
+        <div class="col-sm-12 fade show active" id="client-form" aria-labelledby="residential">
+            <h3 class="pt-4 pb-2 text-center">Add Job Form</h3>
+            <p>Use this form to fill out the client information.</p>
+            <p><span class="text-secondary font-italic"><sup>*</sup>&nbsp;-&nbsp;Indicates required field to fill out.</span></p>
+            <p>&nbsp;</p>
+            <form id="add-client-form" method="post" class="needs-validation" action="" novalidate>
+            <!-- ############ PERSON ############ -->
+            <p class="border-bottom mb-3 pb-1 text-secondary">Personal Information</p>
+            <div class="form-row">
+                <div class="form-group col-md-12 mb-4">
+                    <label for="firstname">First name <sup>*</sup></label>
+                    <input type="text" class="form-control form-control-lg border border-primary" id="firstname" name="firstname" placeholder="First name" minlength="2" maxlength="30" required>
+                    <div id="firstname-error" class="invalid-feedback"></div>
+                </div>
+                <div class="form-group col-md-12 mb-4">
+                    <label for="middlename">Middle name <sup>*</sup></label>
+                    <input type="text" class="form-control form-control-lg border border-primary" id="middlename" name="middlename" placeholder="Middle name" minlength="2" maxlength="30" required>
+                    <div id="middlename-error" class="invalid-feedback"></div>
+                </div>
+                <div class="form-group col-md-12 mb-4">
+                    <label for="lastname">Last name <sup>*</sup></label>
+                    <input type="text" class="form-control form-control-lg border border-primary" id="lastname" name="lastname" placeholder="Last name" minlength="2" maxlength="150" required>
+                    <div id="lastname-error" class="invalid-feedback"></div>
+                </div>
+                <div class="form-group p-0 col-md-7 mb-4">
+                    <label for="dob">Date of Birth</label>
+                    <div class="input-group input-group-lg">
+                        <input type="text" class="form-control form-control-lg border border-success" id="dob" name="dob" placeholder="yyyy-mm-dd" required>
+                        <div class="input-group-append">
+                            <span class="input-group-text dob-icon bg-success border-success"><i class="far fa-calendar-alt"></i></span>
+                        </div>
+                        <div id="dob-error" class="invalid-feedback"></div>
+                    </div>
+                </div>
+                <div class="form-group col-md-7 mb-4 p-0">
+                    <label for="gender">Gender</label>
+                    <select class="custom-select form-control-lg border-success" id="gender" name="gender" required>
+                        <option value="" selected>Gender...</option>
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
+                    </select>
+                    <div id="gender-error" class="invalid-feedback"></div>
+                </div>
+            </div>
+            <!-- ############ end PERSON ############ -->
+            <!-- ############ CONTACT POINT ############ -->
+            <p class="border-bottom mb-3 pb-1 text-secondary">Contact Point</p>
+            <div class="form-row">
+                <div class="form-group col-md-7 mb-4">
+                    <label for="phonenumber">Phone <sup>*</sup></label>
+                    <input type="text" class="form-control form-control-lg border border-primary" id="phonenumber" name="phonenumber" placeholder="(xxx) xxx-xxxx" minlength="10" maxlength="31" required>
+                    <div id="phonenumber-error" class="invalid-feedback"></div>
+                </div>
+                <div class="form-group col-md-7 mb-4">
+                    <label for="mobilenumber">Mobile</label>
+                    <input type="text" class="form-control form-control-lg border border-success" id="mobilenumber" name="mobilenumber" placeholder="(xxx) xxx-xxxx" minlength="10" maxlength="31">
+                    <div id="mobilenumber-error" class="invalid-feedback"></div>
+                </div>
+                <div class="form-group col-md-12 mb-4">
+                    <label for="email">E-Mail</label>
+                    <input type="email" class="form-control form-control-lg border border-success" id="email" name="email" placeholder="Email Address" maxlength="254">
+                    <div id="email-error" class="invalid-feedback"></div>
+                </div>
+                <div class="form-group mt-2 mb-4">
+                    <p class="mb-1">Ok to E-Mail?</p>
+                    <div class="form-radio custom-control custom-radio custom-control-inline">
+                        <input type="radio" id="ok_to_email" name="ok_to_email" value="yes" class="custom-control-input form-check-input">
+                        <label class="custom-control-label form-check-label" for="ok_to_email">Yes</label>
+                    </div>
+                    <div class="form-radio custom-control custom-radio custom-control-inline">
+                        <input type="radio" id="ok_to_email2" name="ok_to_email" value="no" class="custom-control-input form-check-input">
+                        <label class="custom-control-label form-check-label" for="ok_to_email2">No</label>
+                    </div>
+                </div>
+                <div class="form-group mt-2 mb-4">
+                    <p class="mb-1">Ok to Text?</p>
+                    <div class="form-radio custom-control custom-radio custom-control-inline">
+                        <input type="radio" id="ok_to_text" name="ok_to_text" value="yes" class="custom-control-input form-check-input">
+                        <label class="custom-control-label form-check-label" for="ok_to_text">Yes</label>
+                    </div>
+                    <div class="form-radio custom-control custom-radio custom-control-inline">
+                        <input type="radio" id="ok_to_text2" name="ok_to_text" value="no" class="custom-control-input form-check-input">
+                        <label class="custom-control-label form-check-label" for="ok_to_text2">No</label>
+                    </div>
+                </div>
+            </div>
+            <!-- ############ end CONTACT POINT ############ -->
+            <!-- ############ LOCATION ############ -->
+            <p class="border-bottom mb-3 pb-1 text-secondary">Postal Address</p>
+            <div class="form-row">
+                <div class="form-group col-md-12 mb-4">
+                    <label for="street_address">Street Address <sup>*</sup></label>
+                    <input type="text" class="form-control form-control-lg border border-primary" id="street_address" name="street_address" placeholder="Street Address" minlength="3" maxlength="255" required>
+                    <div id="street_address-error" class="invalid-feedback"></div>
+                </div>
+                <div class="form-group col-md-12 mb-4">
+                    <label for="street_address_extra">Street Address (Extra)</label>
+                    <input type="text" class="form-control form-control-lg border border-success" id="street_address_extra" name="street_address_extra" placeholder="Street Address (Extra)" minlength="3" maxlength="255">
+                    <div id="street_address_extra-error" class="invalid-feedback"></div>
+                </div>
+                <div class="form-group col-md-12 mb-4">
+                    <label for="address_locality">City <sup>*</sup></label>
+                    <input type="text" class="form-control form-control-lg border border-primary" id="address_locality" name="address_locality" placeholder="City" minlength="3" maxlength="127" required>
+                    <div id="address_locality-error" class="invalid-feedback"></div>
+                </div>
+                <div class="form-group col-md-12 mb-4">
+                    <label for="address_region">Province <sup>*</sup></label>
+                    <input type="text" class="form-control form-control-lg border border-primary" id="address_region" name="address_region" placeholder="Province" minlength="3" maxlength="127" required>
+                    <div id="address_region-error" class="invalid-feedback"></div>
+                </div>
+                <div class="form-group col-md-12 mb-4">
+                    <label for="address_country">Country <sup>*</sup></label>
+                    <input type="text" class="form-control form-control-lg border border-primary" id="address_country" name="address_country" placeholder="Country" minlength="3" maxlength="127" required>
+                    <div id="address_country-error" class="invalid-feedback"></div>
+                </div>
+                <div class="form-group col-md-12 mb-4">
+                    <label for="postal_code">Postal Code <sup>*</sup></label>
+                    <input type="text" class="form-control form-control-lg border border-primary" id="postal_code" name="postal_code" placeholder="Postal Address" minlength="6" maxlength="6" required>
+                    <div id="postal_code-error" class="invalid-feedback"></div>
+                </div>
+                <div class="form-group col-md-12 mb-4">
+                    <label for="post_office_box_number">Post Office Box # </label>
+                    <input type="text" class="form-control form-control-lg border border-success" id="post_office_box_number" name="post_office_box_number" placeholder="Post Office Box #" minlength="3" maxlength="255" required>
+                    <div id="post_office_box_number-error" class="invalid-feedback"></div>
+                </div>
+            </div>
+            <!-- ############ end LOCATION ############ -->
+            <!-- ############ BUSINESS ############ -->
+
+            <!-- ############ end BUSINESS ############ -->
+            <!-- end SUBMIT BUTTON -->
+            <div class="form-group col-md-12 mb-3 mx-auto text-center">
+                <button  id="id_submit_btn"
+                    class="btn btn-success btn-lg btn-fxw mt-4"
+                    onclick="ajax_post_form_submission();"
+                    type="button">
+                <i class="fas fa-plus"></i>&nbsp;{% trans 'Add Job' %}
+                </button>
+            </div>
+            <!-- end SUBMIT BUTTON -->
+        </div>
+    </div>
+    {% endcomment %}
+    <!------------------------------------------------------------------------->
+    <!-- end FORM -->
+
+
+    <!-- RETURN-TO-TOP -->
+    <a id="return-to-top" href="#" class="btn-info btn-lg back-to-top" role="button" title="Back to top"><i class="fas fa-angle-up fa-2x"></i></a>
+    <!-- end RETURN-TO-TOP -->
+</main>
+
+{% endblock content %}
