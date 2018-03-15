@@ -52,7 +52,7 @@ class JobSummaryView(ListView, ExtraRequestProcessingMixin):
 
     def get_queryset(self):
         queryset = Order.objects.all()
-        queryset = queryset.order_by('-created')
+        queryset = queryset.order_by('-assignment_date', '-completion_date', '-payment_date') # Get the base.
         return queryset
 
 
@@ -74,7 +74,7 @@ class JobListView(ListView, ExtraRequestProcessingMixin):
         return context
 
     def get_queryset(self):
-        queryset = super(JobListView, self).get_queryset().order_by('given_name', 'last_name') # Get the base.
+        queryset = super(JobListView, self).get_queryset().order_by('-assignment_date', '-completion_date', '-payment_date') # Get the base.
 
         # The following code will use the 'django-filter'
         filter = OrderFilter(self.request.GET, queryset=queryset)

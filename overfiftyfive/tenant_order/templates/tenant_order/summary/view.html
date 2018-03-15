@@ -68,12 +68,12 @@
             <thead>
                 <tr>
                     <th>{% trans '#' %}</th>
-                    {% comment %}
-                    <th>{% trans 'First Name' %}</th>
-                    <th>{% trans 'Last Name' %}</th>
-                    <th>{% trans 'Phone' %}</th>
-                    <th>{% trans 'E-Mail' %}</th>
-                    {% endcomment %}
+                    <th>{% trans 'Client' %}</th>
+                    <th>{% trans 'Associate' %}</th>
+                    <th>{% trans 'Assigned Date' %}</th>
+                    <th>{% trans 'Ongoing' %}</th>
+                    <th>{% trans 'Completion Date' %}</th>
+                    <th>{% trans 'Cancelled' %}</th>
                     <th></th>
                 </tr>
             </thead>
@@ -81,14 +81,12 @@
                 {% for job in job_list %}
                 <tr>
                     <td>{{ job.id|intcomma }}</td>
-                    {% comment %}
-                    <td>{% if job.given_name %}{{ job.given_name }}{% else %}-{% endif %}</td>
-                    <td>{% if job.last_name %}{{ job.last_name }}{% else %}-{% endif %}</td>
-                    <td>
-                        {% if job.telephone %}<a href="tel:{{ job.telephone }}">{{ job.telephone|pretty_formatted_phonenumber }}</a>{% else %}-{% endif %}
-                    </td>
-                    <td>{% if job.owner.email %}<a href="mailto:{{ job.owner.email }}">{{ job.owner.email }}</a>{% else %}-{% endif %}</td>
-                    {% endcomment %}
+                    <td>{% if job.customer %}{{ job.customer }}{% else %}-{% endif %}</td>
+                    <td>{% if job.associate %}{{ job.associate }}{% else %}-{% endif %}</td>
+                    <td>{% if job.assignment_date %}{{ job.assignment_date }}{% else %}-{% endif %}</td>
+                    <td>{{ job.is_ongoing }}</td>
+                    <td>{% if job.completion_date %}{{ job.completion_date }}{% else %}-{% endif %}</td>
+                    <td>{{ job.is_cancelled }}</td>
                     <td>
                         <a href="{% url 'o55_tenant_job_retrieve' 'summary' job.id %}?page={{ page_obj.number }}">{% trans 'View' %}</a>
                     </td>
