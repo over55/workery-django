@@ -5,6 +5,7 @@ from djmoney.money import Money
 from datetime import date, datetime, timedelta
 from django.conf import settings
 from django.db import models
+from django.contrib.postgres.search import SearchVector, SearchVectorField
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 from djmoney.models.fields import MoneyField
@@ -31,6 +32,26 @@ class OrderManager(models.Manager):
         for item in items.all():
             item.delete()
 
+    def full_text_search(self, keyword):
+        """Function performs full text search of various textfields."""
+        # The following code will use the native 'PostgreSQL' library
+        # which comes with Django to utilize the 'full text search' feature.
+        # For more details please read:
+        # https://docs.djangoproject.com/en/2.0/ref/contrib/postgres/search/
+        return Order.objects.annotate(search=SearchVector(
+            'customer__email',
+            'customer__telephone',
+            'customer__mobile',
+            'customer__given_name',
+            'customer__middle_name',
+            'customer__last_name',
+            'associate__email',
+            'associate__telephone',
+            'associate__mobile',
+            'associate__given_name',
+            'associate__middle_name',
+            'associate__last_name',
+        ),).filter(search=keyword)
 
 class Order(models.Model):
     class Meta:

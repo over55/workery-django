@@ -100,7 +100,6 @@ class JobSearchView(TemplateView):
 @method_decorator(login_required, name='dispatch')
 class JobSearchResultView(ListView, ExtraRequestProcessingMixin):
     context_object_name = 'job_list'
-    queryset = Order.objects.order_by('-created')
     template_name = 'tenant_order/search/result_view.html'
     paginate_by = 100
 
@@ -129,13 +128,13 @@ class JobSearchResultView(ListView, ExtraRequestProcessingMixin):
         keyword = self.request.GET.get('keyword', None)
         if keyword:
             queryset = Order.objects.full_text_search(keyword)
-            queryset = queryset.order_by('-created')
         else:
-            queryset = super(JobSearchResultView, self).get_queryset()
+            queryset = Order.objects.all()
             filter = OrderFilter(self.request.GET, queryset=queryset)
             queryset = filter.qs
 
-        return queryset
+        # Return our filtered results ordered by the specific order.
+        return queryset.order_by('-assignment_date', '-completion_date', '-payment_date')
 
 
 #----------#

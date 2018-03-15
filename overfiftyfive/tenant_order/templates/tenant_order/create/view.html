@@ -245,7 +245,7 @@
 
     <!-- FORM -->
     <!------------------------------------------------------------------------->
-    {% comment %}
+
     <div class="col-sm-5 mx-auto mt-2">
         <!-- Residential form -->
         <div class="col-sm-12 fade show active" id="client-form" aria-labelledby="residential">
@@ -257,6 +257,7 @@
             <!-- ############ PERSON ############ -->
             <p class="border-bottom mb-3 pb-1 text-secondary">Personal Information</p>
             <div class="form-row">
+                {% comment %}
                 <div class="form-group col-md-12 mb-4">
                     <label for="firstname">First name <sup>*</sup></label>
                     <input type="text" class="form-control form-control-lg border border-primary" id="firstname" name="firstname" placeholder="First name" minlength="2" maxlength="30" required>
@@ -293,6 +294,22 @@
                 </div>
             </div>
             <!-- ############ end PERSON ############ -->
+
+            <!-- ############ end BUSINESS ############ -->
+            <!-- end SUBMIT BUTTON -->
+            <div class="form-group col-md-12 mb-3 mx-auto text-center">
+                <button  id="id_submit_btn"
+                    class="btn btn-success btn-lg btn-fxw mt-4"
+                    onclick="ajax_post_form_submission();"
+                    type="button">
+                <i class="fas fa-plus"></i>&nbsp;{% trans 'Add Job' %}
+                </button>
+            </div>
+            <!-- end SUBMIT BUTTON -->
+        </div>
+    </div>
+
+            {% comment %}
             <!-- ############ CONTACT POINT ############ -->
             <p class="border-bottom mb-3 pb-1 text-secondary">Contact Point</p>
             <div class="form-row">
