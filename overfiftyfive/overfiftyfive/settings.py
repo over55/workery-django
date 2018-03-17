@@ -145,7 +145,6 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 'shared_foundation.context_processors.foundation_constants', # Custom App
                 'shared_foundation.context_processors.me', # Custom App
-
             ],
         },
     },

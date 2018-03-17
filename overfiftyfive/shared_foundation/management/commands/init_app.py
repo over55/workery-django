@@ -72,6 +72,11 @@ class Command(BaseCommand):
             'can_post_skill_set',
             'can_put_skill_set',
             'can_delete_skill_set',
+            'can_get_staves',
+            'can_get_staff',
+            'can_post_staff',
+            'can_put_staff',
+            'can_delete_staff'
         ]
         permissions = Permission.objects.filter(codename__in=permission_codenames)
         for permission in permissions.all():
@@ -116,6 +121,11 @@ class Command(BaseCommand):
             'can_post_skill_set',
             'can_put_skill_set',
             # 'can_delete_skill_set',
+            'can_get_staves',
+            'can_get_staff',
+            'can_post_staff',
+            'can_put_staff',
+            # 'can_delete_staff'
         ]
         permissions = Permission.objects.filter(codename__in=permission_codenames)
         for permission in permissions.all():
@@ -156,6 +166,11 @@ class Command(BaseCommand):
             # 'can_delete_tag',
             'can_get_skill_sets',
             'can_get_skill_set',
+            # 'can_get_staves',
+            'can_get_staff',
+            # 'can_post_staff',
+            'can_put_staff',
+            # 'can_delete_staff'
         ]
         permissions = Permission.objects.filter(codename__in=permission_codenames)
         for permission in permissions.all():
