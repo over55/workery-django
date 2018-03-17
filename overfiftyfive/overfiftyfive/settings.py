@@ -132,7 +132,9 @@ ROOT_URLCONF = 'overfiftyfive.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            BASE_DIR + '/templates/',
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -292,6 +294,12 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
+
+# Template Directory
+#
+TEMPLATE_DIRS = (
+    BASE_DIR + '/templates/',
+)
 
 
 # django-cors-headers
