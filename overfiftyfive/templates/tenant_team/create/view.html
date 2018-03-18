@@ -102,6 +102,18 @@
         return false;
     }
 
+    function valid_dropdown_selection(dropdown_name) {
+        var textfield = $('#'+dropdown_name).val();
+        var textfield_error = document.getElementById('account_type-error');
+        if (textfield == "") {
+            $('#'+dropdown_name).addClass('border-primary').removeClass('border-success');
+            textfield_error.innerHTML = "Please select an option.";
+        } else {
+            $('#'+dropdown_name).addClass('border-success').removeClass('border-primary');
+            textfield_error.innerHTML = "";
+        }
+    }
+
     /**
      *  Function will attempt to submit the form to the API server. This
      *  funciton will:
@@ -117,6 +129,7 @@
         // has_error |= valid_textfield_value('account_type', true, 1);
         has_error |= valid_textfield_value('password', true, 2);
         has_error |= valid_textfield_value('password_repeat', true, 2);
+        has_error |= valid_dropdown_selection('account_type');
         has_error |= valid_textfield_value('firstname', true, 2);
         has_error |= valid_textfield_value('lastname', true, 2);
         has_error |= valid_textfield_value('phonenumber', true, 10);
@@ -298,7 +311,7 @@
                             <option value="{{ constants.MANAGEMENT_GROUP_ID }}">Manager</option>
                             <option value="{{ constants.FRONTLINE_GROUP_ID }}">Frontline Staff</option>
                         </select>
-                        <div id="account_type" class="invalid-feedback"></div>
+                        <div id="account_type-error" class="invalid-feedback"></div>
                     </div>
                 </div>
                 <!-- ############ end SECURITY ############ -->
