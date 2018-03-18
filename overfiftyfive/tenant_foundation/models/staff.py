@@ -141,7 +141,7 @@ class Staff(AbstractThing, AbstractContactPoint, AbstractPostalAddress, Abstract
         blank=True,
         null=True,
     )
-    birthdate = models.DateTimeField(
+    birthdate = models.DateField(
         _('Birthdate'),
         help_text=_('The staff members birthdate.'),
         blank=True,
@@ -154,11 +154,25 @@ class Staff(AbstractThing, AbstractContactPoint, AbstractPostalAddress, Abstract
         blank=True,
         null=True,
     )
-    join_date = models.DateTimeField(
+    join_date = models.DateField(
         _("Join Date"),
         help_text=_('The date the staff member joined this organization.'),
         null=True,
         blank=True,
+    )
+    nationality = models.CharField(
+        _("Nationality"),
+        max_length=63,
+        help_text=_('Nationality of the person.'),
+        blank=True,
+        null=True,
+    )
+    gender = models.CharField(
+        _("Gender"),
+        max_length=63,
+        help_text=_('Gender of the person. While Male and Female may be used, text strings are also acceptable for people who do not identify as a binary gender.'),
+        blank=True,
+        null=True,
     )
 
     #

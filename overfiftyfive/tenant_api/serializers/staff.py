@@ -2,6 +2,10 @@
 import phonenumbers
 from datetime import datetime, timedelta
 from dateutil import tz
+from starterkit.drf.validation import (
+    MatchingDuelFieldsValidator,
+    EnhancedPasswordStrengthFieldValidator
+)
 from starterkit.utils import (
     get_random_string,
     get_unique_username_from_email
@@ -53,6 +57,27 @@ class StaffListCreateSerializer(serializers.ModelSerializer):
     telephone = PhoneNumberField(allow_null=True, required=False)
     mobile = PhoneNumberField(allow_null=True, required=False)
 
+    # Add password adding.
+    password = serializers.CharField(
+        required=True,
+        allow_blank=False,
+        max_length=63,
+        style={'input_type': 'password'},
+        validators = [
+            MatchingDuelFieldsValidator(
+                another_field='password_repeat',
+                message=_("Inputted passwords fields do not match.")
+            ),
+            EnhancedPasswordStrengthFieldValidator()
+        ]
+    )
+    password_repeat = serializers.CharField(
+        required=True,
+        allow_blank=False,
+        max_length=63,
+        style={'input_type': 'password'}
+    )
+
     # Meta Information.
     class Meta:
         model = Staff
@@ -78,6 +103,8 @@ class StaffListCreateSerializer(serializers.ModelSerializer):
 
             # Misc (Write Only)
             'extra_comment',
+            'password',
+            'password_repeat',
 
             # Contact Point
             'area_served',
@@ -214,6 +241,12 @@ class StaffListCreateSerializer(serializers.ModelSerializer):
         # Attach the user to the `Staff` group.
         user.groups.add(ASSOCIATE_GROUP_ID)
 
+        # Update the password.
+        password = validated_data.get('password', None)
+        user.set_password(password)
+        user.save()
+
+        # Update our staff again.
         staff.owner = user
         staff.email = email
         staff.save()
