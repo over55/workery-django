@@ -35,6 +35,11 @@ from tenant_foundation.models import (
 
 class StaffListCreateSerializer(serializers.ModelSerializer):
     # owner = serializers.PrimaryKeyRelatedField(many=False, read_only=True)
+    groups = serializers.PrimaryKeyRelatedField(
+        many=True,
+        queryset=Group.objects.all(),
+        source="owner.groups"
+    )
 
     # We are overriding the `email` field to include unique email validation.
     email = serializers.EmailField(
@@ -59,6 +64,7 @@ class StaffListCreateSerializer(serializers.ModelSerializer):
 
     # Add password adding.
     password = serializers.CharField(
+        write_only=True,
         required=True,
         allow_blank=False,
         max_length=63,
@@ -72,6 +78,7 @@ class StaffListCreateSerializer(serializers.ModelSerializer):
         ]
     )
     password_repeat = serializers.CharField(
+        write_only=True,
         required=True,
         allow_blank=False,
         max_length=63,
@@ -86,7 +93,7 @@ class StaffListCreateSerializer(serializers.ModelSerializer):
             'id',
             'created',
             'last_modified',
-            # 'owner',
+            'groups',
 
             # Person
             'given_name',
@@ -298,6 +305,29 @@ class StaffRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         required=False
     )
 
+    # Add password adding.
+    password = serializers.CharField(
+        write_only=True,
+        required=False,
+        allow_blank=True,
+        max_length=63,
+        style={'input_type': 'password'},
+        validators = [
+            MatchingDuelFieldsValidator(
+                another_field='password_repeat',
+                message=_("Inputted passwords fields do not match.")
+            ),
+            EnhancedPasswordStrengthFieldValidator()
+        ]
+    )
+    password_repeat = serializers.CharField(
+        write_only=True,
+        required=False,
+        allow_blank=True,
+        max_length=63,
+        style={'input_type': 'password'}
+    )
+
     # All comments are created by our `create` function and not by
     # # `django-rest-framework`.
     # comments = StaffCommentSerializer(many=True, read_only=True)
@@ -339,6 +369,8 @@ class StaffRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
             # 'comments',
             #
             # # Misc (Write Only)
+            'password',
+            'password_repeat',
             # 'extra_comment',
 
             # Contact Point
@@ -387,95 +419,101 @@ class StaffRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
 
         # Get our inputs.
         email = validated_data.get('email', instance.owner.email)
-#
-#         #---------------------------
-#         # Update `O55User` object.
-#         #---------------------------
-#         instance.owner.email = email
-#         instance.owner.username = get_unique_username_from_email(email)
-#         instance.owner.first_name = validated_data.get('given_name', instance.owner.first_name)
-#         instance.owner.last_name = validated_data.get('last_name', instance.owner.last_name)
-#         instance.owner.save()
-#
-#         #---------------------------
-#         # Update `Staff` object.
-#         #---------------------------
-#         instance.email = email
-#
-#         # Profile
-#         given_name=validated_data['given_name']
-#         last_name=validated_data['last_name']
-#         middle_name=validated_data['middle_name']
-#         birthdate=validated_data.get('birthdate', None)
-#         join_date=validated_data.get('join_date', None)
-#
-#         # Misc
-#         hourly_salary_desired=validated_data.get('hourly_salary_desired', 0.00)
-#         limit_special=validated_data.get('limit_special', None)
-#         dues_pd=validated_data.get('dues_pd', None)
-#         ins_due=validated_data.get('ins_due', None)
-#         police_check=validated_data.get('police_check', None)
-#         drivers_license_class=validated_data.get('drivers_license_class', None)
-#         has_car=validated_data.get('has_car', False)
-#         has_van=validated_data.get('has_van', False)
-#         has_truck=validated_data.get('has_truck', False)
-#         is_full_time=validated_data.get('is_full_time', False)
-#         is_part_time=validated_data.get('is_part_time', False)
-#         is_contract_time=validated_data.get('is_contract_time', False)
-#         is_small_job=validated_data.get('is_small_job', False)
-#         how_hear=validated_data.get('how_hear', None)
-#         # 'organizations', #TODO: IMPLEMENT.
-#
-#         # Contact Point
-#         area_served=validated_data.get('area_served', None)
-#         available_language=validated_data.get('available_language', None)
-#         contact_type=validated_data.get('contact_type', None)
-#         email=email,
-#         fax_number=validated_data.get('fax_number', None)
-#         # 'hours_available', #TODO: IMPLEMENT.
-#         telephone=validated_data.get('telephone', None)
-#         telephone_extension=validated_data.get('telephone_extension', None)
-#         mobile=validated_data.get('mobile', None)
-#
-#         # Postal Address
-#         address_country=validated_data.get('address_country', None)
-#         address_locality=validated_data.get('address_locality', None)
-#         address_region=validated_data.get('address_region', None)
-#         post_office_box_number=validated_data.get('post_office_box_number', None)
-#         postal_code=validated_data.get('postal_code', None)
-#         street_address=validated_data.get('street_address', None)
-#         street_address_extra=validated_data.get('street_address_extra', None)
-#
-#         # Geo-coordinate
-#         elevation=validated_data.get('elevation', None)
-#         latitude=validated_data.get('latitude', None)
-#         longitude=validated_data.get('longitude', None)
-#         # 'location' #TODO: IMPLEMENT.
-#
-#         # Save our instance.
-#         instance.save()
-#
-#         #---------------------------
-#         # Attach our comment.
-#         #---------------------------
-#         extra_comment = validated_data.get('extra_comment', None)
-#         if extra_comment is not None:
-#             comment = Comment.objects.create(
-#                 created_by=self.context['last_modified_by'],
-#                 last_modified_by=self.context['last_modified_by'],
-#                 text=extra_comment
-#             )
-#             staff_comment = StaffComment.objects.create(
-#                 staff=instance,
-#                 comment=comment,
-#             )
-#
-#         #---------------------------
-#         # Update validation data.
-#         #---------------------------
-#         validated_data['comments'] = StaffComment.objects.filter(staff=instance)
-#         validated_data['last_modified_by'] = self.context['last_modified_by']
-#         validated_data['extra_comment'] = None
+
+        #---------------------------
+        # Update `O55User` object.
+        #---------------------------
+        # Update the password if required.
+        password = validated_data.get('password', None)
+        if password:
+            instance.owner.set_password(password)
+
+        # Update the account.
+        instance.owner.email = email
+        instance.owner.username = get_unique_username_from_email(email)
+        instance.owner.first_name = validated_data.get('given_name', instance.owner.first_name)
+        instance.owner.last_name = validated_data.get('last_name', instance.owner.last_name)
+        instance.owner.save()
+
+        #---------------------------
+        # Update `Staff` object.
+        #---------------------------
+        instance.email = email
+
+        # Profile
+        given_name=validated_data['given_name']
+        last_name=validated_data['last_name']
+        middle_name=validated_data['middle_name']
+        birthdate=validated_data.get('birthdate', None)
+        join_date=validated_data.get('join_date', None)
+
+        # Misc
+        hourly_salary_desired=validated_data.get('hourly_salary_desired', 0.00)
+        limit_special=validated_data.get('limit_special', None)
+        dues_pd=validated_data.get('dues_pd', None)
+        ins_due=validated_data.get('ins_due', None)
+        police_check=validated_data.get('police_check', None)
+        drivers_license_class=validated_data.get('drivers_license_class', None)
+        has_car=validated_data.get('has_car', False)
+        has_van=validated_data.get('has_van', False)
+        has_truck=validated_data.get('has_truck', False)
+        is_full_time=validated_data.get('is_full_time', False)
+        is_part_time=validated_data.get('is_part_time', False)
+        is_contract_time=validated_data.get('is_contract_time', False)
+        is_small_job=validated_data.get('is_small_job', False)
+        how_hear=validated_data.get('how_hear', None)
+        # 'organizations', #TODO: IMPLEMENT.
+
+        # Contact Point
+        area_served=validated_data.get('area_served', None)
+        available_language=validated_data.get('available_language', None)
+        contact_type=validated_data.get('contact_type', None)
+        email=email,
+        fax_number=validated_data.get('fax_number', None)
+        # 'hours_available', #TODO: IMPLEMENT.
+        telephone=validated_data.get('telephone', None)
+        telephone_extension=validated_data.get('telephone_extension', None)
+        mobile=validated_data.get('mobile', None)
+
+        # Postal Address
+        address_country=validated_data.get('address_country', None)
+        address_locality=validated_data.get('address_locality', None)
+        address_region=validated_data.get('address_region', None)
+        post_office_box_number=validated_data.get('post_office_box_number', None)
+        postal_code=validated_data.get('postal_code', None)
+        street_address=validated_data.get('street_address', None)
+        street_address_extra=validated_data.get('street_address_extra', None)
+
+        # Geo-coordinate
+        elevation=validated_data.get('elevation', None)
+        latitude=validated_data.get('latitude', None)
+        longitude=validated_data.get('longitude', None)
+        # 'location' #TODO: IMPLEMENT.
+
+        # Save our instance.
+        instance.save()
+
+        # #---------------------------
+        # # Attach our comment.
+        # #---------------------------
+        # extra_comment = validated_data.get('extra_comment', None)
+        # if extra_comment is not None:
+        #     comment = Comment.objects.create(
+        #         created_by=self.context['last_modified_by'],
+        #         last_modified_by=self.context['last_modified_by'],
+        #         text=extra_comment
+        #     )
+        #     staff_comment = StaffComment.objects.create(
+        #         staff=instance,
+        #         comment=comment,
+        #     )
+
+        #---------------------------
+        # Update validation data.
+        #---------------------------
+        # validated_data['comments'] = StaffComment.objects.filter(staff=instance)
+        validated_data['last_modified_by'] = self.context['last_modified_by']
+        # validated_data['extra_comment'] = None
 
         # Return our validated data.
         return validated_data

@@ -211,6 +211,11 @@ class StaffListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
         url = reverse('o55_staff_list_create_api_endpoint')
         url += "?format=json"
         response = self.authorized_client.post(url, data=json.dumps({
+            'password': '123Password!',
+            'password_repeat': '123Password!',
+            'groups': [
+                constants.MANAGEMENT_GROUP_ID
+            ],
             'email': "bart+staff@overfiftyfive.com",
             'given_name': 'Bart',
             'middle_name': '',
@@ -284,7 +289,7 @@ class StaffListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
         }), content_type='application/json')
         self.assertIsNotNone(response)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        # print(response.data)
+        print(response.data)
         self.assertIn("Rodolfo", str(response.data))
         self.assertIn("Martinez", str(response.data))
         self.assertIn("666 Riverside Drive", str(response.data))
@@ -306,11 +311,6 @@ class StaffListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
 
     @transaction.atomic
     def test_update_with_200_by_ownership(self):
-        """
-        Unit test will test authenticated user, who does not have permission, to
-        make a PUT request to the update API-endpoint but has ownership of the
-        object.
-        """
         # Perform our tests.
         Permission.objects.all().delete()
         url = reverse('o55_staff_retrieve_update_destroy_api_endpoint', args=[self.staff.id])+"?format=json"
@@ -329,6 +329,34 @@ class StaffListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
         self.assertIsNotNone(response)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         # print(response.data)
+        self.assertIn("Bartlomiej", str(response.data))
+        self.assertIn("Mika", str(response.data))
+        self.assertIn("666 Riverside Drive", str(response.data))
+        self.assertIn("N1N 1N1", str(response.data))
+        self.assertIn("Port Bart", str(response.data))
+
+    @transaction.atomic
+    def test_update_with_200_by_ownership_and_password_change(self):
+        # Perform our tests.
+        Permission.objects.all().delete()
+        url = reverse('o55_staff_retrieve_update_destroy_api_endpoint', args=[self.staff.id])+"?format=json"
+        response = self.authorized_client.put(url, data=json.dumps({
+            'password': '123Password!',
+            'password_repeat': '123Password!',
+            'email': 'bart@overfiftyfive.com',
+            'given_name': 'Bartlomiej',
+            'middle_name': '',
+            'last_name': 'Mika',
+            'address_country': 'CA',
+            'address_locality': 'Port Bart',
+            'address_region': 'Alberta',
+            'street_address': '666 Riverside Drive',
+            'postal_code': 'N1N 1N1',
+            # 'extra_comment': "This is a helpful staff.",
+        }), content_type='application/json')
+        self.assertIsNotNone(response)
+        # print(response.data)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertIn("Bartlomiej", str(response.data))
         self.assertIn("Mika", str(response.data))
         self.assertIn("666 Riverside Drive", str(response.data))

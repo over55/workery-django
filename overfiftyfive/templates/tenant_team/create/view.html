@@ -114,6 +114,7 @@
 
         // VALIDATE ALL OUR FORM FIELDS.
         var has_error = false;
+        // has_error |= valid_textfield_value('account_type', true, 1);
         has_error |= valid_textfield_value('password', true, 2);
         has_error |= valid_textfield_value('password_repeat', true, 2);
         has_error |= valid_textfield_value('firstname', true, 2);
@@ -139,6 +140,7 @@
         }
 
         // EXTRACT OUR FIELD VALUES.
+        var account_type = $('#account_type').val();
         var password = $('#password').val();
         var password_repeat = $('#password_repeat').val();
         var given_name = $('#firstname').val();
@@ -176,6 +178,9 @@
         // MAKE OUR API CALL TO THE BACKEND TO "CREATE" THE CUSTOMER USER.
         create_staff_api(
             {
+                'groups': [
+                    account_type
+                ],
                 'password': password,
                 'password_repeat': password_repeat,
                 'given_name': given_name,
@@ -285,6 +290,15 @@
                         minlength="2"
                         maxlength="30" required />
                         <div id="password_repeat-error" class="invalid-feedback"></div>
+                    </div>
+                    <div class="form-group col-md-7 mb-4 p-0">
+                        <label for="account_type">Account Type</label>
+                        <select class="custom-select form-control-lg border-primary" id="account_type" name="account_type" required>
+                            <option value="" selected>type of account...</option>
+                            <option value="{{ constants.MANAGEMENT_GROUP_ID }}">Manager</option>
+                            <option value="{{ constants.FRONTLINE_GROUP_ID }}">Frontline Staff</option>
+                        </select>
+                        <div id="account_type" class="invalid-feedback"></div>
                     </div>
                 </div>
                 <!-- ############ end SECURITY ############ -->
