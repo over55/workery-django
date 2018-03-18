@@ -137,6 +137,7 @@ class TeamSearchResultView(ListView, ExtraRequestProcessingMixin):
 
 @method_decorator(login_required, name='dispatch')
 class TeamRetrieveView(DetailView):
+    context_object_name = 'staff'
     model = Staff
     template_name = 'tenant_team/retrieve/view.html'
 
