@@ -143,7 +143,7 @@ class CustomerSearchResultView(ListView, ExtraRequestProcessingMixin):
 
 
 @method_decorator(login_required, name='dispatch')
-class CustomerRetrieveView(DetailView):
+class CustomerRetrieveView(DetailView, ExtraRequestProcessingMixin):
     context_object_name = 'customer'
     model = Customer
     template_name = 'tenant_customer/retrieve/view.html'
@@ -165,6 +165,11 @@ class CustomerRetrieveView(DetailView):
 
         # Required for navigation
         modified_context['current_page'] = "customers"
+
+        # DEVELOPERS NOTE:
+        # - We will extract the URL parameters and save them into our context
+        #   so we can use this to help the pagination.
+        modified_context['parameters'] = self.get_params_dict([])
 
         # Return our modified context.
         return modified_context

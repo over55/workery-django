@@ -1,5 +1,5 @@
 {% extends 'tenant_foundation/tenant_base.html' %}
-{% load staticfiles i18n humanize %}
+{% load staticfiles i18n humanize foundation_tags %}
 
 {% block title %}
 {% trans 'Client List | Over 55 Inc.' %}
@@ -103,6 +103,18 @@
         return false;
     }
 
+    function valid_dropdown_selection(dropdown_name) {
+        var textfield = $('#'+dropdown_name).val();
+        var textfield_error = document.getElementById('account_type-error');
+        if (textfield == "") {
+            $('#'+dropdown_name).addClass('border-primary').removeClass('border-success');
+            textfield_error.innerHTML = "Please select an option.";
+        } else {
+            $('#'+dropdown_name).addClass('border-success').removeClass('border-primary');
+            textfield_error.innerHTML = "";
+        }
+    }
+
     /**
      *  Function will attempt to submit the form to the API server. This
      *  funciton will:
@@ -111,7 +123,7 @@
      */
     function ajax_post_form_submission() {
         // GET OUR FORM.
-        var form = document.getElementById('add-client-form');
+        var form = document.getElementById('update-client-form');
 
         // VALIDATE ALL OUR FORM FIELDS.
         var has_error = false;
@@ -170,8 +182,9 @@
         // LOCK OUT THE "SUBMIT" BUTTON SO THE USER DOES NOT MAKE MULTI-CALLS.
         disable_btn();
 
-        // MAKE OUR API CALL TO THE BACKEND TO "CREATE" THE CUSTOMER USER.
-        create_customer_api(
+        // MAKE OUR API CALL TO THE BACKEND TO "CREATE" THE MEMBER USER.
+        update_customer_api(
+            {{ customer.id }}, // Staff PK
             {
                 'given_name': given_name,
                 'middle_name': middle_name,
@@ -199,7 +212,7 @@
             },
             function(result_dict) { // Success
                 console.log(result_dict);
-                window.location = "{% url 'o55_tenant_customer_summary' %}?was_created=True";
+                window.location = "{% url 'o55_tenant_customer_retrieve' template customer.pk %}?was_modified=True";
             },
             function(xhr,status,error) { // Error
                 var errorJSON = xhr.responseJSON;
@@ -243,14 +256,14 @@
             <li class="breadcrumb-item"><a href="{% url 'o55_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
             <li class="breadcrumb-item"><a href="{% url 'o55_tenant_customer_summary' %}">{% trans 'Clients' %}</a></li>
             <li class="breadcrumb-item"><a href="{% url 'o55_tenant_customer_list' %}">{% trans 'List' %}</a></li>
-            <li class="breadcrumb-item"><a href="{% url 'o55_tenant_customer_retrieve' template object.id %}">{% trans 'Client #' %}{{ object.id }}</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'o55_tenant_customer_retrieve' template object.id %}">{% trans 'Client #' %}{{ object.id|intcomma }}</a></li>
             <li class="breadcrumb-item active" aria-current="page">{% trans 'Edit' %}</li>
 
             {% else %}
 
 	    	<li class="breadcrumb-item"><a href="{% url 'o55_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
             <li class="breadcrumb-item"><a href="{% url 'o55_tenant_customer_summary' %}">{% trans 'Clients' %}</a></li>
-            <li class="breadcrumb-item"><a href="{% url 'o55_tenant_customer_retrieve' template object.id %}">{% trans 'Client #' %}{{ object.id }}</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'o55_tenant_customer_retrieve' template object.id %}">{% trans 'Client #' %}{{ object.id|intcomma }}</a></li>
             <li class="breadcrumb-item active" aria-current="page">{% trans 'Edit' %}</li>
 
             {% endif %}
@@ -283,7 +296,7 @@
             <p>Use this form to fill out the client information.</p>
             <p><span class="text-secondary font-italic"><sup>*</sup>&nbsp;-&nbsp;Indicates required field to fill out.</span></p>
             <p>&nbsp;</p>
-            <form id="add-client-form" method="post" class="needs-validation" action="" novalidate>
+            <form id="update-client-form" method="post" class="needs-validation" action="" novalidate>
             <!-- ############ PERSON ############ -->
             <p class="border-bottom mb-3 pb-1 text-secondary">Personal Information</p>
             <div class="form-row">
@@ -417,8 +430,7 @@
                 <button  id="id_submit_btn"
                       class="btn btn-primary btn-lg btn-fxw mt-4"
                     onclick="ajax_post_form_submission();"
-                      type="button"
-                  disabled="true">
+                      type="button">
                 <i class="fas fa-check"></i>&nbsp;{% trans 'Update Client' %}
                 </button>
             </div>

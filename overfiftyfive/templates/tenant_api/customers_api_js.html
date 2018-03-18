@@ -21,4 +21,28 @@
             }
         });
     }
+
+    function update_customer_api(pk, data_dict, func_callback, func_error_callback, complete_callback) {
+        var url = "/api/customer/" + pk + "/";
+        jQuery.ajax({
+            url: url,
+            headers: {
+                Authorization: rest_api_token
+            },
+            data: data_dict,
+            type: "PUT",
+            traditional: true, // Note: This allows many-to-many arrays for Django REST Framework
+            success: function(result_dict){
+                func_callback(result_dict); // Call back the function with the JSON results.
+            },
+            error: function(xhr,status,error) {
+                func_error_callback(xhr,status,error);
+            },
+            complete: function(xhr,status) {
+                // Convert JSON string into javascript associative array.
+                var json = jQuery.parseJSON(xhr.responseText);
+                complete_callback(json); // Return JSON
+            }
+        });
+    }
 </script>
