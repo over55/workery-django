@@ -136,7 +136,7 @@ class TeamSearchResultView(ListView, ExtraRequestProcessingMixin):
 
 
 @method_decorator(login_required, name='dispatch')
-class TeamRetrieveView(DetailView):
+class TeamRetrieveView(DetailView, ExtraRequestProcessingMixin):
     context_object_name = 'staff'
     model = Staff
     template_name = 'tenant_team/retrieve/view.html'
@@ -159,6 +159,11 @@ class TeamRetrieveView(DetailView):
         # Required for navigation
         modified_context['current_page'] = "team"
 
+        # DEVELOPERS NOTE:
+        # - We will extract the URL parameters and save them into our context
+        #   so we can use this to help the pagination.
+        modified_context['parameters'] = self.get_params_dict([])
+
         # Return our modified context.
         return modified_context
 
@@ -169,7 +174,8 @@ class TeamRetrieveView(DetailView):
 
 
 @method_decorator(login_required, name='dispatch')
-class TeamUpdateView(DetailView):
+class TeamUpdateView(DetailView, ExtraRequestProcessingMixin):
+    context_object_name = 'staff'
     model = Staff
     template_name = 'tenant_team/update/view.html'
 

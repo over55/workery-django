@@ -28,26 +28,34 @@
                 <a href="{% url 'o55_tenant_team_search' %}">{% trans 'Search' %}</a>
             </li>
             <li class="breadcrumb-item active" aria-current="page">{% trans 'Search Results' %}</li>
-            <li class="breadcrumb-item active" aria-current="page">{% trans 'Team #' %}{{ object.id }}</li>
+            <li class="breadcrumb-item active" aria-current="page">{% trans 'Team Member #' %}{{ object.id }}</li>
 
             {% elif template == 'list' %}
 
             <li class="breadcrumb-item"><a href="{% url 'o55_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
             <li class="breadcrumb-item"><a href="{% url 'o55_tenant_team_summary' %}">{% trans 'Team' %}</a></li>
             <li class="breadcrumb-item"><a href="{% url 'o55_tenant_team_list' %}">{% trans 'List' %}</a></li>
-            <li class="breadcrumb-item active" aria-current="page">{% trans 'Team #' %}{{ object.id }}</li>
+            <li class="breadcrumb-item active" aria-current="page">{% trans 'Team Member #' %}{{ object.id }}</li>
 
             {% else %}
 
 	    	<li class="breadcrumb-item"><a href="{% url 'o55_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
             <li class="breadcrumb-item"><a href="{% url 'o55_tenant_team_summary' %}">{% trans 'Team' %}</a></li>
-            <li class="breadcrumb-item active" aria-current="page">{% trans 'Team #' %}{{ object.id }}</li>
+            <li class="breadcrumb-item active" aria-current="page">{% trans 'Team Member #' %}{{ object.id }}</li>
 
             {% endif %}
 	  	</ol>
 	</nav>
     <!------------------------------------------------------------------------->
     <!-- end BREADCRUMB -->
+
+    <!-- NOTIFICATION -->
+    <!------------------------------------------------------------------------->
+    {% if parameters.was_modified == 'True' %}
+    <h1>Staff was modified!!!</h1>
+    {% endif %}
+    <!------------------------------------------------------------------------->
+    <!-- end NOTIFICATION -->
 
     <h1>{% trans 'View Team Member' %}</h1>
 
