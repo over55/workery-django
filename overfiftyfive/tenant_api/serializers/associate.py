@@ -57,9 +57,9 @@ class AssociateListCreateSerializer(serializers.ModelSerializer):
     assigned_skill_sets = SkillSetListCreateSerializer(many=True, read_only=True)
 
     # Custom formatting of our telephone fields.
-    fax_number = PhoneNumberField()
+    fax_number = PhoneNumberField(allow_null=True, required=False)
     telephone = PhoneNumberField()
-    mobile = PhoneNumberField()
+    mobile = PhoneNumberField(allow_null=True, required=False)
 
     # Meta Information.
     class Meta:
@@ -162,6 +162,10 @@ class AssociateListCreateSerializer(serializers.ModelSerializer):
         mobile = validated_data.get('mobile', None)
         if mobile:
             mobile = phonenumbers.parse(mobile, "CA")
+
+        validated_data['fax_number'] = fax_number
+        validated_data['telephone'] = telephone
+        validated_data['mobile'] = mobile
 
         #---------------------------------------------------
         # Create our `Associate` object in our tenant schema.
@@ -321,6 +325,11 @@ class AssociateRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
 
     assigned_skill_sets = SkillSetListCreateSerializer(many=True, read_only=True)
 
+    # Custom formatting of our telephone fields.
+    fax_number = PhoneNumberField(allow_null=True, required=False)
+    telephone = PhoneNumberField()
+    mobile = PhoneNumberField(allow_null=True, required=False)
+
     class Meta:
         model = Associate
         fields = (
@@ -397,6 +406,17 @@ class AssociateRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         # Get our inputs.
         email = validated_data.get('email', instance.owner.email)
         skill_sets = validated_data.get('skill_sets', None)
+
+        # Update telephone numbers.
+        fax_number = validated_data.get('fax_number', instance.fax_number)
+        if fax_number is not None:
+            validated_data['fax_number'] = phonenumbers.parse(fax_number, "CA")
+        telephone = validated_data.get('telephone', instance.telephone)
+        if telephone is not None:
+            validated_data['telephone'] = phonenumbers.parse(telephone, "CA")
+        mobile = validated_data.get('mobile', instance.mobile)
+        if mobile is not None:
+            validated_data['mobile'] = phonenumbers.parse(mobile, "CA")
 
         #---------------------------
         # Update `O55User` object.

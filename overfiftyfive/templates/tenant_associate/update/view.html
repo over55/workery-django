@@ -1,5 +1,5 @@
 {% extends 'tenant_foundation/tenant_base.html' %}
-{% load staticfiles i18n humanize %}
+{% load staticfiles i18n humanize foundation_tags %}
 
 {% block title %}
 {% trans 'Member List | Over 55 Inc.' %}
@@ -68,6 +68,7 @@
             if (value == '' || value == null || value == undefined || value.length == 0) {
                 $('#'+textfield_id).addClass('border-primary').removeClass('border-success');
                 textfield_error.innerHTML = "Field should not be blank.";
+                console.log(textfield_id, "IS BLANK FIELD.");
                 return true; // This means that an error occured in validation.
             }
         }
@@ -77,6 +78,7 @@
             if (value.length < min_length) { // Validate that the minium was entered...
                 $('#'+textfield_id).addClass('border-primary').removeClass('border-success');
                 textfield_error.innerHTML = "Field requires a minimum of "+min_length+" characters.";
+                console.log(textfield_id,"IS MINIMUM LENGTH NOT MET.");
                 return true;
             }
         }
@@ -111,7 +113,7 @@
      */
     function ajax_post_form_submission() {
         // GET OUR FORM.
-        var form = document.getElementById('add-member-form');
+        var form = document.getElementById('update-associate-form');
 
         // VALIDATE ALL OUR FORM FIELDS.
         var has_error = false;
@@ -124,7 +126,7 @@
         has_error |= valid_textfield_value('street_address', true, 3);
         has_error |= valid_textfield_value('street_address_extra', false, 3)
         has_error |= valid_textfield_value('address_locality', true, 3);
-        has_error |= valid_textfield_value('address_region', true, 3);
+        has_error |= valid_textfield_value('address_region', true, 2);
         has_error |= valid_textfield_value('address_country', true, 3);
         has_error |= valid_textfield_value('postal_code', true, 3);
         has_error |= valid_textfield_value('post_office_box_number', false, 3);
@@ -171,7 +173,8 @@
         disable_btn();
 
         // MAKE OUR API CALL TO THE BACKEND TO "CREATE" THE MEMBER USER.
-        create_member_api(
+        update_member_api(
+            {{ associate.id }}, // Staff PK
             {
                 'given_name': given_name,
                 'middle_name': middle_name,
@@ -190,16 +193,16 @@
                 'postal_code': postal_code,
                 'post_office_box_number': post_office_box_number,
                 'email': email,
-                // 'area_served': area_served,
+                'area_served': null,
                 'fax_number': null,
                 'telephone': telephone,
-                // 'telephone_extension': telephone_extension,
+                'telephone_extension': null,
                 'mobile': mobile,
-                // 'fax_number': fax_number
+                'fax_number': null
             },
             function(result_dict) { // Success
                 console.log(result_dict);
-                window.location = "{% url 'o55_tenant_member_summary' %}?was_created=True";
+                window.location = "{% url 'o55_tenant_member_retrieve' template associate.pk %}?was_modified=True";
             },
             function(xhr,status,error) { // Error
                 var errorJSON = xhr.responseJSON;
@@ -229,28 +232,28 @@
                 <a href="{% url 'o55_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a>
             </li>
             <li class="breadcrumb-item">
-                <a href="{% url 'o55_tenant_member_summary' %}">{% trans 'Members' %}</a>
+                <a href="{% url 'o55_tenant_team_summary' %}">{% trans 'Members' %}</a>
             </li>
             <li class="breadcrumb-item">
-                <a href="{% url 'o55_tenant_member_search' %}">{% trans 'Search' %}</a>
+                <a href="{% url 'o55_tenant_team_search' %}">{% trans 'Search' %}</a>
             </li>
             <li class="breadcrumb-item active">{% trans 'Search Results' %}</li>
-            <li class="breadcrumb-item"><a href="{% url 'o55_tenant_member_retrieve' template object.id %}">{% trans 'Member #' %}{{ object.id|intcomma }}</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'o55_tenant_member_retrieve' template associate.id %}">{% trans 'Member #' %}{{ associate.id|intcomma }}</a></li>
             <li class="breadcrumb-item active" aria-current="page">{% trans 'Edit' %}</li>
 
             {% elif template == 'list' %}
 
             <li class="breadcrumb-item"><a href="{% url 'o55_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
-            <li class="breadcrumb-item"><a href="{% url 'o55_tenant_member_summary' %}">{% trans 'Members' %}</a></li>
-            <li class="breadcrumb-item"><a href="{% url 'o55_tenant_member_list' %}">{% trans 'List' %}</a></li>
-            <li class="breadcrumb-item"><a href="{% url 'o55_tenant_member_retrieve' template object.id %}">{% trans 'Member #' %}{{ object.id|intcomma }}</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'o55_tenant_team_summary' %}">{% trans 'Member' %}</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'o55_tenant_team_list' %}">{% trans 'List' %}</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'o55_tenant_member_retrieve' template associate.id %}">{% trans 'Member #' %}{{ associate.id|intcomma }}</a></li>
             <li class="breadcrumb-item active" aria-current="page">{% trans 'Edit' %}</li>
 
             {% else %}
 
 	    	<li class="breadcrumb-item"><a href="{% url 'o55_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
-            <li class="breadcrumb-item"><a href="{% url 'o55_tenant_member_summary' %}">{% trans 'Members' %}</a></li>
-            <li class="breadcrumb-item"><a href="{% url 'o55_tenant_member_retrieve' template object.id %}">{% trans 'Member #' %}{{ object.id|intcomma }}</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'o55_tenant_team_summary' %}">{% trans 'Member' %}</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'o55_tenant_member_retrieve' template associate.id %}">{% trans 'Member #' %}{{ associate.id|intcomma }}</a></li>
             <li class="breadcrumb-item active" aria-current="page">{% trans 'Edit' %}</li>
 
             {% endif %}
@@ -259,16 +262,31 @@
     <!------------------------------------------------------------------------->
     <!-- end BREADCRUMB -->
 
+
+    <!-- BACK BUTTON -->
+    <!------------------------------------------------------------------------->
+    <div class="row">
+		<div class="col-sm-3 p-3 mb-2">
+			<a class="btn btn-primary btn-lg" href="{% url 'o55_tenant_member_retrieve' template associate.id %}" role="button">
+                <svg class="svg-inline--fa fa-arrow-left fa-w-14" aria-hidden="true" data-fa-processed="" data-prefix="fas" data-icon="arrow-left" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                <path fill="currentColor" d="M257.5 445.1l-22.2 22.2c-9.4 9.4-24.6 9.4-33.9 0L7 273c-9.4-9.4-9.4-24.6 0-33.9L201.4 44.7c9.4-9.4 24.6-9.4 33.9 0l22.2 22.2c9.5 9.5 9.3 25-.4 34.3L136.6 216H424c13.3 0 24 10.7 24 24v32c0 13.3-10.7 24-24 24H136.6l120.5 114.8c9.8 9.3 10 24.8.4 34.3z"></path>
+            </svg><!-- <i class="fas fa-arrow-left"></i> -->&nbsp;{% trans 'Back to Member\'s Detail' %}</a>
+		</div>
+	</div>
+    <!------------------------------------------------------------------------->
+    <!-- end BACK BUTTON -->
+
+
     <!-- FORM -->
     <!------------------------------------------------------------------------->
     <div class="col-sm-5 mx-auto mt-2">
         <!-- Residential form -->
         <div class="col-sm-12 fade show active" id="client-form" aria-labelledby="residential">
-            <h3 class="pt-4 pb-2 text-center">Edit Client Form</h3>
+            <h3 class="pt-4 pb-2 text-center">Edit Associate Member Form</h3>
             <p>Use this form to fill out the client information.</p>
             <p><span class="text-secondary font-italic"><sup>*</sup>&nbsp;-&nbsp;Indicates required field to fill out.</span></p>
             <p>&nbsp;</p>
-            <form id="add-client-form" method="post" class="needs-validation" action="" novalidate>
+            <form id="update-associate-form" method="post" class="needs-validation" action="" novalidate>
             <!-- ############ PERSON ############ -->
             <p class="border-bottom mb-3 pb-1 text-secondary">Personal Information</p>
             <div class="form-row">
@@ -300,9 +318,9 @@
                 <div class="form-group col-md-7 mb-4 p-0">
                     <label for="gender">Gender</label>
                     <select class="custom-select form-control-lg border-success" id="gender" name="gender" required>
-                        <option value="" selected>Gender...</option>
-                        <option value="male">Male</option>
-                        <option value="female">Female</option>
+                        <option value="" {% if associate.gender == None %}selected{% endif %}>Gender...</option>
+                        <option value="male" {% if associate.gender == 'Male' %}selected{% endif %}>Male</option>
+                        <option value="female" {% if associate.gender == 'Female' %}selected{% endif %}>Female</option>
                     </select>
                     <div id="gender-error" class="invalid-feedback"></div>
                 </div>
@@ -370,7 +388,7 @@
                 </div>
                 <div class="form-group col-md-12 mb-4">
                     <label for="address_region">Province <sup>*</sup></label>
-                    <input type="text" class="form-control form-control-lg border border-primary" id="address_region" name="address_region" placeholder="Province" minlength="3" maxlength="127" required value="{% if associate.address_region %}{{ associate.address_region }}{% endif %}">
+                    <input type="text" class="form-control form-control-lg border border-primary" id="address_region" name="address_region" placeholder="Province" minlength="2" maxlength="127" required value="{% if associate.address_region %}{{ associate.address_region }}{% endif %}">
                     <div id="address_region-error" class="invalid-feedback"></div>
                 </div>
                 <div class="form-group col-md-12 mb-4">
@@ -402,9 +420,8 @@
                 <button  id="id_submit_btn"
                       class="btn btn-primary btn-lg btn-fxw mt-4"
                     onclick="ajax_post_form_submission();"
-                      type="button"
-                  disabled="true">
-                <i class="fas fa-check"></i>&nbsp;{% trans 'Update Client' %}
+                      type="button">
+                <i class="fas fa-check"></i>&nbsp;{% trans 'Update Member' %}
                 </button>
             </div>
             <!-- end SUBMIT BUTTON -->
@@ -416,7 +433,6 @@
     <!-- RETURN-TO-TOP -->
     <a id="return-to-top" href="#" class="btn-info btn-lg back-to-top" role="button" title="Back to top"><i class="fas fa-angle-up fa-2x"></i></a>
     <!-- end RETURN-TO-TOP -->
-
 </main>
 
 {% endblock content %}

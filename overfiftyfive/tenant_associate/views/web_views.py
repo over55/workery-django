@@ -132,7 +132,7 @@ class MemberSearchResultView(ListView, ExtraRequestProcessingMixin):
 
 
 @method_decorator(login_required, name='dispatch')
-class MemberRetrieveView(DetailView):
+class MemberRetrieveView(DetailView, ExtraRequestProcessingMixin):
     context_object_name = 'associate'
     model = Associate
     template_name = 'tenant_associate/retrieve/view.html'
@@ -155,6 +155,11 @@ class MemberRetrieveView(DetailView):
         # Required for navigation
         modified_context['current_page'] = "associates"
 
+        # DEVELOPERS NOTE:
+        # - We will extract the URL parameters and save them into our context
+        #   so we can use this to help the pagination.
+        modified_context['parameters'] = self.get_params_dict([])
+
         # Return our modified context.
         return modified_context
 
@@ -166,6 +171,7 @@ class MemberRetrieveView(DetailView):
 
 @method_decorator(login_required, name='dispatch')
 class MemberUpdateView(DetailView):
+    context_object_name = 'associate'
     model = Associate
     template_name = 'tenant_associate/update/view.html'
 
