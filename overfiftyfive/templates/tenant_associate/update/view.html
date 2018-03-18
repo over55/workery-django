@@ -176,6 +176,7 @@
         update_member_api(
             {{ associate.id }}, // Staff PK
             {
+                'id': {{ associate.id }},
                 'given_name': given_name,
                 'middle_name': middle_name,
                 'last_name': last_name,

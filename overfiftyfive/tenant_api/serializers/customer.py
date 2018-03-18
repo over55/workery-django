@@ -368,87 +368,88 @@ class CustomerRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         # Get our inputs.
         email = validated_data.get('email', instance.owner.email)
 
-        # #---------------------------
-        # # Update `O55User` object.
-        # #---------------------------
-        # instance.owner.email = email
-        # instance.owner.username = get_unique_username_from_email(email)
-        # instance.owner.first_name = validated_data.get('given_name', instance.owner.first_name)
-        # instance.owner.last_name = validated_data.get('last_name', instance.owner.last_name)
-        # instance.owner.save()
-        #
-        # #---------------------------
-        # # Update `Customer` object.
-        # #---------------------------
-        # instance.email = email
-        # # Profile
-        # instance.first_name = validated_data.get('given_name', instance.given_name)
-        # instance.middle_name = validated_data.get('middle_name', instance.middle_name)
-        # instance.last_name = validated_data.get('last_name', instance.last_name)
-        # instance.last_modified_by = self.context['last_modified_by']
-        # instance.birthdate = validated_data.get('birthdate', instance.birthdate)
-        # instance.join_date = validated_data.get('join_date', instance.join_date)
-        #
-        # # Misc (Read/Write)
-        # instance.is_senior = validated_data.get('is_senior', instance.is_senior)
-        # instance.is_support = validated_data.get('is_support', instance.is_support)
-        # instance.job_info_read = validated_data.get('job_info_read', instance.job_info_read)
-        # instance.how_hear = validated_data.get('how_hear', instance.how_hear)
-        #
-        # # # Misc (Read Only)
-        # instance.last_modified_by = self.context['last_modified_by']
-        # # 'organizations', #TODO: FIX
-        #
-        # # Contact Point
-        # instance.area_served = validated_data.get('area_served', instance.area_served)
-        # instance.available_language = validated_data.get('available_language', instance.available_language)
-        # instance.contact_type = validated_data.get('contact_type', instance.contact_type)
-        # instance.email = validated_data.get('email', instance.contact_type)
-        # instance.fax_number = validated_data.get('fax_number', instance.fax_number)
-        # # 'hours_available', #TODO: FIX
-        # instance.telephone = validated_data.get('telephone', instance.telephone)
-        # instance.telephone_extension = validated_data.get('telephone_extension', instance.telephone_extension)
-        # instance.mobile = validated_data.get('mobile', instance.mobile)
-        #
-        # # Postal Address
-        # instance.address_country = validated_data.get('address_country', instance.address_country)
-        # instance.address_locality = validated_data.get('address_locality', instance.address_locality)
-        # instance.address_region = validated_data.get('address_region', instance.address_region)
-        # instance.post_office_box_number = validated_data.get('post_office_box_number', instance.post_office_box_number)
-        # instance.postal_code = validated_data.get('postal_code', instance.postal_code)
-        # instance.street_address = validated_data.get('street_address', instance.street_address)
-        # instance.street_address_extra = validated_data.get('street_address_extra', instance.street_address_extra)
-        #
-        # # Geo-coordinate
-        # instance.elevation = validated_data.get('elevation', instance.elevation)
-        # instance.latitude = validated_data.get('latitude', instance.latitude)
-        # instance.longitude = validated_data.get('longitude', instance.longitude)
-        # # 'location' #TODO: FIX
-        #
-        # instance.save()
-        #
-        # #---------------------------
-        # # Attach our comment.
-        # #---------------------------
-        # extra_comment = validated_data.get('extra_comment', None)
-        # if extra_comment is not None:
-        #     comment = Comment.objects.create(
-        #         created_by=self.context['last_modified_by'],
-        #         last_modified_by=self.context['last_modified_by'],
-        #         text=extra_comment
-        #     )
-        #     customer_comment = CustomerComment.objects.create(
-        #         customer=instance,
-        #         comment=comment,
-        #         created_by=self.context['last_modified_by'],
-        #     )
-        #
-        # #---------------------------
-        # # Update validation data.
-        # #---------------------------
-        # validated_data['comments'] = CustomerComment.objects.filter(customer=instance)
-        # validated_data['last_modified_by'] = self.context['last_modified_by']
-        # validated_data['extra_comment'] = None
+        #---------------------------
+        # Update `O55User` object.
+        #---------------------------
+        instance.owner.email = email
+        instance.owner.username = get_unique_username_from_email(email)
+        instance.owner.first_name = validated_data.get('given_name', instance.owner.first_name)
+        instance.owner.last_name = validated_data.get('last_name', instance.owner.last_name)
+        instance.owner.save()
+
+        #---------------------------
+        # Update `Customer` object.
+        #---------------------------
+        instance.email = email
+        # Profile
+        instance.given_name = validated_data.get('given_name', instance.given_name)
+        instance.middle_name = validated_data.get('middle_name', instance.middle_name)
+        instance.last_name = validated_data.get('last_name', instance.last_name)
+        instance.last_modified_by = self.context['last_modified_by']
+        instance.birthdate = validated_data.get('birthdate', instance.birthdate)
+        instance.join_date = validated_data.get('join_date', instance.join_date)
+
+        # Misc (Read/Write)
+        instance.is_senior = validated_data.get('is_senior', instance.is_senior)
+        instance.is_support = validated_data.get('is_support', instance.is_support)
+        instance.job_info_read = validated_data.get('job_info_read', instance.job_info_read)
+        instance.how_hear = validated_data.get('how_hear', instance.how_hear)
+
+        # # Misc (Read Only)
+        instance.last_modified_by = self.context['last_modified_by']
+        # 'organizations', #TODO: FIX
+
+        # Contact Point
+        instance.area_served = validated_data.get('area_served', instance.area_served)
+        instance.available_language = validated_data.get('available_language', instance.available_language)
+        instance.contact_type = validated_data.get('contact_type', instance.contact_type)
+        instance.email = validated_data.get('email', instance.contact_type)
+        instance.fax_number = validated_data.get('fax_number', instance.fax_number)
+        # 'hours_available', #TODO: FIX
+        instance.telephone = validated_data.get('telephone', instance.telephone)
+        instance.telephone_extension = validated_data.get('telephone_extension', instance.telephone_extension)
+        instance.mobile = validated_data.get('mobile', instance.mobile)
+
+        # Postal Address
+        instance.address_country = validated_data.get('address_country', instance.address_country)
+        instance.address_locality = validated_data.get('address_locality', instance.address_locality)
+        instance.address_region = validated_data.get('address_region', instance.address_region)
+        instance.post_office_box_number = validated_data.get('post_office_box_number', instance.post_office_box_number)
+        instance.postal_code = validated_data.get('postal_code', instance.postal_code)
+        instance.street_address = validated_data.get('street_address', instance.street_address)
+        instance.street_address_extra = validated_data.get('street_address_extra', instance.street_address_extra)
+
+        # Geo-coordinate
+        instance.elevation = validated_data.get('elevation', instance.elevation)
+        instance.latitude = validated_data.get('latitude', instance.latitude)
+        instance.longitude = validated_data.get('longitude', instance.longitude)
+        # 'location' #TODO: FIX
+
+        instance.save()
+        print("Saved")
+
+        #---------------------------
+        # Attach our comment.
+        #---------------------------
+        extra_comment = validated_data.get('extra_comment', None)
+        if extra_comment is not None:
+            comment = Comment.objects.create(
+                created_by=self.context['last_modified_by'],
+                last_modified_by=self.context['last_modified_by'],
+                text=extra_comment
+            )
+            customer_comment = CustomerComment.objects.create(
+                customer=instance,
+                comment=comment,
+                created_by=self.context['last_modified_by'],
+            )
+
+        #---------------------------
+        # Update validation data.
+        #---------------------------
+        validated_data['comments'] = CustomerComment.objects.filter(customer=instance)
+        validated_data['last_modified_by'] = self.context['last_modified_by']
+        validated_data['extra_comment'] = None
 
         # Return our validated data.
         return validated_data

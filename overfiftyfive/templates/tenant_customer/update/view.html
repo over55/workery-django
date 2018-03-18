@@ -186,6 +186,7 @@
         update_customer_api(
             {{ customer.id }}, // Staff PK
             {
+                'id': {{ customer.id }},
                 'given_name': given_name,
                 'middle_name': middle_name,
                 'last_name': last_name,

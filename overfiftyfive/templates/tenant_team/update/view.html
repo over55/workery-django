@@ -173,6 +173,7 @@
         update_staff_api(
             {{ staff.id }}, // Staff PK
             {
+                'id': {{ staff.id }},
                 'given_name': given_name,
                 'middle_name': middle_name,
                 'last_name': last_name,
