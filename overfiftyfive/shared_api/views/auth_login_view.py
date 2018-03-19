@@ -53,6 +53,7 @@ class LoginAPIView(APIView):
         # SAVE ALL THE USER PROFILE INFORMATION TO A SESSION.
         request.session['me_token_key'] = str(token.key)
         request.session['me_schema_name'] = str(franchise.schema_name)
+        request.session['me_user_id'] = str(authenticated_user.id)
 
         # # Connection will set it back to our tenant.
         connection.set_schema(franchise.schema_name, True) # Switch to Tenant.

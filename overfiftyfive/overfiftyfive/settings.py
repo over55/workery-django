@@ -96,6 +96,7 @@ TENANT_APPS = (
 
     # Tenant-specific apps
     'tenant_api',
+    'tenant_account',
     'tenant_associate',
     'tenant_customer',
     'tenant_dashboard',

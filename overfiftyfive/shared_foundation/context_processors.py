@@ -20,4 +20,5 @@ def me(request):
     return {
         'private_api_key': request.session.get('me_token_key', None),
         'schema_name': request.session.get('me_schema_name', None),
+        'logged_in_user_id': request.session.get('me_user_id', None),
     }
