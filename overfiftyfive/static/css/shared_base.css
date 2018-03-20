@@ -191,6 +191,23 @@ a.plain-link{
     line-height: 6.9;
     text-align: center;
 }
+.card-custom-top [class*='fa-'] {
+    width: 90%;
+}
+.card-custom-top-2 {
+    height: 200px;
+    width: 100%;
+    border-top-left-radius: calc(.45rem - 1px);
+    border-top-right-radius: calc(.45rem - 1px);
+    background-color: #0275D8;
+    font-size: 3rem;
+    color: #ffffff;
+    line-height: 5.6;
+    text-align: center;
+}
+.card-custom-top-2 [class*='fa-'] {
+    width: 90%;
+}
 .card {
     border-radius: .45rem !important;
 }
@@ -228,6 +245,18 @@ a.plain-link{
 }
 .form-check .custom-control-label {
     font-size: 1.25rem;
+}
+.form-radio .custom-control-label::before {
+    width: 1.3rem;
+    height: 1.3rem;
+    background-color: #cccccc;
+}
+.form-radio .custom-control-label::after {
+    width: 1.3rem;
+    height: 1.3rem;
+}
+.form-radio.custom-control {
+    padding-left: 1.8rem;
 }
 .input-group .input-group-append .btn {
     border-top-right-radius: 0.3rem !important;
@@ -277,4 +306,81 @@ a.plain-link{
 .ft-indent {
    text-indent: -13px;
    margin-left: 13px;
+}
+.no-outline:focus, .no-outline:hover, .no-outline.active{
+   outline: 0 !important;
+}
+.form-group .dob-icon {
+   border-bottom-right-radius: 0.3rem !important;
+   border-top-right-radius: 0.3rem !important;
+   color: #ffffff;
+}
+.star-rating .fa-star, .star-rating .fa-star-half{color: #F26523;}
+table.custom-cell-w tr th{width:35% !important;}
+
+/** Tags input cloud css **/
+.bootstrap-tagsinput {
+  background-color: #fff;
+  border: 1px solid #007bff;
+  color: #495057;
+  background-clip: padding-box;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+  display: inline-block;
+  vertical-align: middle;
+  width: 100%;
+  cursor: text;
+  padding: .5rem 1rem;
+  min-height: 150px;
+  font-size: 1.25rem;
+  line-height: 1.5;
+  border-radius: .3rem;
+  transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+.bootstrap-tagsinput input {
+  border: none;
+  box-shadow: none;
+  outline: none;
+  background-color: transparent;
+  padding: 0 6px;
+  margin: 0;
+  width: auto;
+  max-width: inherit;
+}
+.bootstrap-tagsinput.form-control input::-moz-placeholder {
+  color: #777;
+  opacity: 1;
+}
+.bootstrap-tagsinput.form-control input:-ms-input-placeholder {
+  color: #777;
+}
+.bootstrap-tagsinput.form-control input::-webkit-input-placeholder {
+  color: #777;
+}
+.bootstrap-tagsinput input:focus {
+  border: none;
+  box-shadow: none;
+}
+.bootstrap-tagsinput .tag {
+  margin-bottom: 0.4em;
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-right: .2em;
+  padding: .25em .4em .35em;
+}
+.bootstrap-tagsinput .tag [data-role="remove"] {
+  margin-left: 6px;
+  cursor: pointer;
+}
+.bootstrap-tagsinput .tag [data-role="remove"]:after {
+  content: "x";
+  padding: 0 .2em;
+}
+.bootstrap-tagsinput .tag [data-role="remove"]:hover {
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+.bootstrap-tagsinput .tag [data-role="remove"]:hover:active {
+  box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+}
+.bootstrap-tagsinput-max{
+  border: 1px solid #dc3545 !important;
 }

@@ -36,9 +36,18 @@ class TeamSummaryView(ListView, ExtraRequestProcessingMixin):
     paginate_by = 100
 
     def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['current_page'] = "team" # Required for navigation
-        return context
+        modified_context = super().get_context_data(**kwargs)
+
+        # Required for navigation
+        modified_context['current_page'] = "team"
+
+        # DEVELOPERS NOTE:
+        # - We will extract the URL parameters and save them into our context
+        #   so we can use this to help the pagination.
+        modified_context['parameters'] = self.get_params_dict([])
+
+        # Return our modified context.
+        return modified_context
 
     def get_queryset(self):
         queryset = Staff.objects.all()
