@@ -190,7 +190,7 @@ class CustomerListCreateSerializer(serializers.ModelSerializer):
 
         # If an email exists then
         if email:
-            user = SharedUser.objects.create(
+            owner = SharedUser.objects.create(
                 first_name=validated_data['given_name'],
                 last_name=validated_data['last_name'],
                 email=email,
@@ -200,18 +200,18 @@ class CustomerListCreateSerializer(serializers.ModelSerializer):
             )
 
             # Attach the user to the `Customer` group.
-            user.groups.add(CUSTOMER_GROUP_ID)
+            owner.groups.add(CUSTOMER_GROUP_ID)
 
             # Update the password.
             password = validated_data.get('password', None)
-            user.set_password(password)
-            user.save()
+            owner.set_password(password)
+            owner.save()
 
         #---------------------------------------------------
         # Create our `Customer` object in our tenant schema.
         #---------------------------------------------------
         customer = Customer.objects.create(
-            owner=user,
+            owner=owner,
             email=email,
             created_by=self.context['created_by'],
             last_modified_by=self.context['created_by'],

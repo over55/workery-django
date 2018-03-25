@@ -2,6 +2,10 @@
 import phonenumbers
 from datetime import datetime, timedelta
 from dateutil import tz
+from starterkit.drf.validation import (
+    MatchingDuelFieldsValidator,
+    EnhancedPasswordStrengthFieldValidator
+)
 from starterkit.utils import (
     get_random_string,
     get_unique_username_from_email
@@ -37,7 +41,6 @@ class AssociateListCreateSerializer(serializers.ModelSerializer):
     email = serializers.EmailField(
         validators=[UniqueValidator(queryset=Associate.objects.all())],
         required=True,
-        source="owner.email"
     )
 
     # All comments are created by our `create` function and not by
@@ -59,6 +62,29 @@ class AssociateListCreateSerializer(serializers.ModelSerializer):
     fax_number = PhoneNumberField(allow_null=True, required=False)
     telephone = PhoneNumberField()
     mobile = PhoneNumberField(allow_null=True, required=False)
+
+    # Add password adding.
+    password = serializers.CharField(
+        write_only=True,
+        required=True,
+        allow_blank=False,
+        max_length=63,
+        style={'input_type': 'password'},
+        validators = [
+            MatchingDuelFieldsValidator(
+                another_field='password_repeat',
+                message=_("Inputted passwords fields do not match.")
+            ),
+            EnhancedPasswordStrengthFieldValidator()
+        ]
+    )
+    password_repeat = serializers.CharField(
+        write_only=True,
+        required=True,
+        allow_blank=False,
+        max_length=63,
+        style={'input_type': 'password'}
+    )
 
     # Meta Information.
     class Meta:
@@ -97,6 +123,8 @@ class AssociateListCreateSerializer(serializers.ModelSerializer):
 
             # Misc (Read Only)
             'comments',
+            'password',
+            'password_repeat',
             'assigned_skill_sets',
 
             # Misc (Write Only)
@@ -166,20 +194,36 @@ class AssociateListCreateSerializer(serializers.ModelSerializer):
         validated_data['telephone'] = telephone
         validated_data['mobile'] = mobile
 
+        #-------------------
+        # Create our user.
+        #-------------------
+        email = validated_data.get('email', None) # Extract our "email" field.
+        owner = SharedUser.objects.create(
+            first_name=validated_data['given_name'],
+            last_name=validated_data['last_name'],
+            email=email,
+            is_active=True,
+            franchise=self.context['franchise'],
+            was_email_activated=True,
+        )
+
+        # Attach the user to the `Associate` group.
+        owner.groups.add(ASSOCIATE_GROUP_ID)
+
+        # Update the password.
+        password = validated_data.get('password', None)
+        owner.set_password(password)
+        owner.save()
+
         #---------------------------------------------------
         # Create our `Associate` object in our tenant schema.
         #---------------------------------------------------
-        # Extract our "email" field.
-        owner = validated_data.get('owner', None)
-        email = None
-        if owner:
-            email = owner.get('email', None)
-
         # Extract skills.
         skill_sets = validated_data.get('skill_sets', None)
 
         # Create an "Associate".
         associate = Associate.objects.create(
+            owner=owner,
             created_by=self.context['created_by'],
             last_modified_by=self.context['created_by'],
 
@@ -233,27 +277,6 @@ class AssociateListCreateSerializer(serializers.ModelSerializer):
             longitude=validated_data.get('longitude', None),
             # 'location' #TODO: IMPLEMENT.
         )
-
-        if email:
-            #-------------------
-            # Create our user.
-            #-------------------
-
-            user = SharedUser.objects.create(
-                first_name=validated_data['given_name'],
-                last_name=validated_data['last_name'],
-                email=email,
-                is_active=True,
-                franchise=self.context['franchise'],
-                was_email_activated=True,
-            )
-
-            # Attach the user to the `Associate` group.
-            user.groups.add(ASSOCIATE_GROUP_ID)
-
-            associate.owner = user
-            associate.email = email
-            associate.save()
 
         #-----------------------------
         # Set our `SkillSet` objects.
@@ -390,7 +413,7 @@ class AssociateRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         # print(validated_data)
 
         # Get our inputs.
-        email = validated_data.get('email', instance.owner.email)
+        email = validated_data.get('email', instance.email)
         skill_sets = validated_data.get('skill_sets', None)
 
         # Update telephone numbers.
@@ -407,10 +430,18 @@ class AssociateRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         #---------------------------
         # Update `SharedUser` object.
         #---------------------------
+        # Update the details.
         instance.owner.email = email
         instance.owner.username = get_unique_username_from_email(email)
         instance.owner.first_name = validated_data.get('given_name', instance.owner.first_name)
         instance.owner.last_name = validated_data.get('last_name', instance.owner.last_name)
+
+        # Update the password.
+        password = validated_data.get('password', None)
+        if password:
+            instance.owner.set_password(password)
+
+        # Save the model.
         instance.owner.save()
 
         #---------------------------
