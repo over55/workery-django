@@ -47,16 +47,13 @@ class LoginAPIView(APIView):
 
         token, created = Token.objects.get_or_create(user=authenticated_user)
 
-        me = SharedUser.objects.get(user=authenticated_user)
-        franchise = me.franchise
-
         # SAVE ALL THE USER PROFILE INFORMATION TO A SESSION.
         request.session['me_token_key'] = str(token.key)
-        request.session['me_schema_name'] = str(franchise.schema_name)
+        request.session['me_schema_name'] = str(authenticated_user.franchise.schema_name)
         request.session['me_user_id'] = str(authenticated_user.id)
 
         # # Connection will set it back to our tenant.
-        connection.set_schema(franchise.schema_name, True) # Switch to Tenant.
+        connection.set_schema(authenticated_user.franchise.schema_name, True) # Switch to Tenant.
 
         # Authenticate with the tenant.
         login(self.request, authenticated_user)
@@ -65,8 +62,8 @@ class LoginAPIView(APIView):
         return Response(
             data = {
                 'token': str(token.key),
-                'schema_name': franchise.schema_name,
-                'email': str(me),
+                'schema_name': authenticated_user.franchise.schema_name,
+                'email': str(authenticated_user),
             },
             status=status.HTTP_200_OK
         )

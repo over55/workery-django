@@ -30,10 +30,7 @@ class Command(BaseCommand):
 
         try:
             for email_or_username in options['email_or_username']:
-                me = SharedUser.objects.get(
-                    Q(user__email__iexact=email_or_username) |
-                    Q(user__username__iexact=email_or_username)
-                )
+                me = SharedUser.objects.get(email__iexact=email_or_username)
                 self.begin_processing(me)
         except SharedUser.DoesNotExist:
             raise CommandError(_('Account does not exist with the email or username: %s') % str(email_or_username))
@@ -69,7 +66,7 @@ class Command(BaseCommand):
 
         # Generate our address.
         from_email = settings.DEFAULT_FROM_EMAIL
-        to = [me.user.email]
+        to = [me.email]
 
         # Send the email.
         msg = EmailMultiAlternatives(subject, text_content, from_email, to)

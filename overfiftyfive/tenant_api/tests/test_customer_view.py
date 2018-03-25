@@ -135,7 +135,7 @@ class CustomerListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
             last_name="Mika"
         )
         self.alernate_customer = Customer.objects.create(
-            owner=User.objects.get(email=TEST_ALERNATE_USER_EMAIL),
+            owner= SharedUser.objects.get(email=TEST_ALERNATE_USER_EMAIL),
             given_name="Rodolfo",
             last_name="Martinez"
         )
@@ -222,7 +222,8 @@ class CustomerListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
             'address_region': 'Ontario',
             'street_address': '78 Riverside Drive',
             'postal_code': 'N6H 1B4',
-            'extra_comment': "This is a friendly customer."
+            'extra_comment': "This is a friendly customer.",
+            'telephone': '1231231234'
         }), content_type='application/json')
         self.assertIsNotNone(response)
         # print(response.content)

@@ -28,10 +28,7 @@ class TestSharedOpeningHoursSpecification(TenantTestCase):
             first_name="Bart",
             last_name="Mika",
             email=TEST_USER_EMAIL,
-            username=get_unique_username_from_email(TEST_USER_EMAIL),
             is_active=True,
-            is_superuser=True,
-            is_staff=True
         )
         self.obj = SharedOpeningHoursSpecification.objects.create(
             owner=self.user,

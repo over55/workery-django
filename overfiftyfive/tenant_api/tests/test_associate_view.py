@@ -17,6 +17,7 @@ from rest_framework.test import APIClient
 from rest_framework.test import APITestCase
 from rest_framework.authtoken.models import Token
 from shared_foundation import constants
+from shared_foundation.models import SharedUser
 from tenant_foundation.models import (
     Associate,
     SkillSet
@@ -131,7 +132,7 @@ class AssociateListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
             last_name="Mika"
         )
         self.alernate_associate = Associate.objects.create(
-            owner=User.objects.get(email=TEST_ALERNATE_USER_EMAIL),
+            owner= SharedUser.objects.get(email=TEST_ALERNATE_USER_EMAIL),
             given_name="Rodolfo",
             last_name="Martinez"
         )
@@ -230,7 +231,8 @@ class AssociateListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
                 skill_set_1.id,
                 skill_set_2.id,
                 skill_set_3.id
-            ]
+            ],
+            'telephone': '1231231234'
         }), content_type='application/json')
         self.assertIsNotNone(response)
         # print(response.content)
@@ -296,10 +298,12 @@ class AssociateListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
                 skill_set_1.id,
                 skill_set_2.id,
                 skill_set_3.id
-            ]
+            ],
+            'telephone': '1231231234'
         }), content_type='application/json')
         self.assertIsNotNone(response)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+        # print(response.data)
         self.assertIn("Bartlomiej", str(response.data))
         self.assertIn("Mika", str(response.data))
         self.assertIn("This is a helpful associate.", str(response.data))
@@ -348,7 +352,8 @@ class AssociateListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
                 skill_set_1.id,
                 skill_set_2.id,
                 skill_set_3.id
-            ]
+            ],
+            'telephone': '1231231234'
         }), content_type='application/json')
         self.assertIsNotNone(response)
         # print(response.content)

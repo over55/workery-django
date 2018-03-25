@@ -17,6 +17,7 @@ from rest_framework.test import APIClient
 from rest_framework.test import APITestCase
 from rest_framework.authtoken.models import Token
 from shared_foundation import constants
+from shared_foundation.models import SharedUser
 from tenant_foundation.models import (
     Staff,
     SkillSet
@@ -131,7 +132,7 @@ class StaffListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
             last_name="Mika"
         )
         self.alernate_staff = Staff.objects.create(
-            owner=User.objects.get(email=TEST_ALERNATE_USER_EMAIL),
+            owner= SharedUser.objects.get(email=TEST_ALERNATE_USER_EMAIL),
             given_name="Rodolfo",
             last_name="Martinez"
         )

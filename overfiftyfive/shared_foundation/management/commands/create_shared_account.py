@@ -60,7 +60,7 @@ class Command(BaseCommand):
         user.save()
 
         # Generate the private access key.
-
+        token, created = Token.objects.get_or_create(user=user)
 
         # Attach our user to the "Executive"
         user.groups.add(constants.EXECUTIVE_GROUP_ID)

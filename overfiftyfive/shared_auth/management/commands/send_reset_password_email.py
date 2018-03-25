@@ -21,10 +21,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         try:
             for email_or_username in options['email_or_username']:
-                me = SharedUser.objects.get(
-                    Q(user__email__iexact=email_or_username) |
-                    Q(user__username__iexact=email_or_username)
-                )
+                me = SharedUser.objects.get(email__iexact=email_or_username)
                 self.begin_processing(me)
 
         except SharedUser.DoesNotExist:
@@ -64,7 +61,7 @@ class Command(BaseCommand):
 
         # Generate our address.
         from_email = settings.DEFAULT_FROM_EMAIL
-        to = [me.user.email]
+        to = [me.email]
 
         # Send the email.
         msg = EmailMultiAlternatives(subject, text_content, from_email, to)
@@ -72,5 +69,5 @@ class Command(BaseCommand):
         msg.send()
 
         self.stdout.write(
-            self.style.SUCCESS(_('O55: Sent welcome email to %s.') % str(me.user.email))
+            self.style.SUCCESS(_('O55: Sent welcome email to %s.') % str(me.email))
         )

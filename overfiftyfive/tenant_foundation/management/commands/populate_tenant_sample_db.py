@@ -66,10 +66,9 @@ class Command(BaseCommand):
             first_name=first_name,
             last_name=last_name,
             email=email,
-            username=get_unique_username_from_email(email),
             is_active=is_active,
-            is_superuser=is_superuser,
-            is_staff=is_staff
+            franchise=franchise,
+            was_email_activated=was_email_activated
         )
 
         # Generate and assign the password.
@@ -79,24 +78,13 @@ class Command(BaseCommand):
         # Generate the private access key.
         token = Token.objects.create(user=user)
 
-        #TODO: FIX THIS NOW!
-        # # Create our profile.
-        # me, created = SharedUser.objects.update_or_create(
-        #     user=user,
-        #     defaults={
-        #         'franchise': franchise,
-        #         'user': user,
-        #         'was_email_activated': was_email_activated,
-        #     }
-        # )
-
         # Attach our user to the group.
         user.groups.add(group_id)
 
-        return user, me
+        return user
 
     def begin_importing_for_franchise(self, franchise):
-        user1, me1 = self.create_user(
+        user1 = self.create_user(
             franchise=franchise,
             first_name="Bart",
             last_name="Mika",
@@ -108,7 +96,7 @@ class Command(BaseCommand):
             was_email_activated=True,
             group_id=constants.EXECUTIVE_GROUP_ID
         )
-        user2, me2 = self.create_user(
+        user2 = self.create_user(
             franchise=franchise,
             first_name="Bartlomiej",
             last_name="Mika",
@@ -120,7 +108,7 @@ class Command(BaseCommand):
             was_email_activated=True,
             group_id=constants.MANAGEMENT_GROUP_ID
         )
-        user3, me3 = self.create_user(
+        user3 = self.create_user(
             franchise=franchise,
             first_name="Frank",
             last_name="Herbert",
@@ -132,7 +120,7 @@ class Command(BaseCommand):
             was_email_activated=True,
             group_id=constants.FRONTLINE_GROUP_ID
         )
-        user4, me4 = self.create_user(
+        user4 = self.create_user(
             franchise=franchise,
             first_name="Rei",
             last_name="Ayanami",
@@ -144,7 +132,7 @@ class Command(BaseCommand):
             was_email_activated=True,
             group_id=constants.ASSOCIATE_GROUP_ID
         )
-        user5, me5 = self.create_user(
+        user5 = self.create_user(
             franchise=franchise,
             first_name="Shinji",
             last_name="Ikari",

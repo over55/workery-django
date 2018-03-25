@@ -28,10 +28,7 @@ class TestOver55User(TenantTestCase):
             first_name="Bart",
             last_name="Mika",
             email=TEST_USER_EMAIL,
-            username=get_unique_username_from_email(TEST_USER_EMAIL),
             is_active=True,
-            is_superuser=True,
-            is_staff=True
         )
 
     def tearDown(self):

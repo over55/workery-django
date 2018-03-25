@@ -22,8 +22,7 @@ def user_login_redirector_master_page(request):
 
         # CASE 1 OF 2:
         # First check to see if user belongs to an organization to redirect to.
-        me = SharedUser.objects.get(user=request.user)
-        franchise = me.franchise
+        franchise = request.user.franchise
         if franchise:
             return HttpResponseRedirect(franchise.reverse('o55_tenant_dashboard_master'))
 

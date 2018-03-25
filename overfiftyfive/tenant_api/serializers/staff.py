@@ -238,10 +238,9 @@ class StaffListCreateSerializer(serializers.ModelSerializer):
             first_name=validated_data['given_name'],
             last_name=validated_data['last_name'],
             email=email,
-            username=get_unique_username_from_email(email),
             is_active=True,
-            is_staff=False,
-            is_superuser=False
+            franchise=self.context['franchise'],
+            was_email_activated=True
         )
 
         # Attach the user to the `Staff` group.
@@ -256,19 +255,6 @@ class StaffListCreateSerializer(serializers.ModelSerializer):
         staff.owner = user
         staff.email = email
         staff.save()
-
-        #-----------------------------------------------------
-        # Create a user `Profile` object in our public schema.
-        #-----------------------------------------------------
-        #TODO: FIX THIS NOW!!!
-        # me, created = SharedUser.objects.update_or_create(
-        #     user=user,
-        #     defaults={
-        #         'user': user,
-        #         'franchise': self.context['franchise'],
-        #         'was_email_activated': True,
-        #     }
-        # )
 
         # #-----------------------------
         # # Create our `Comment` object.

@@ -28,10 +28,7 @@ class TestTenantStaffModel(TenantTestCase):
             first_name="Aurthor",
             last_name="Clarke",
             email=TEST_USER_EMAIL,
-            username=get_unique_username_from_email(TEST_USER_EMAIL),
             is_active=True,
-            is_superuser=True,
-            is_staff=True
         )
         self.staff = Staff.objects.create(
             owner=self.owner,

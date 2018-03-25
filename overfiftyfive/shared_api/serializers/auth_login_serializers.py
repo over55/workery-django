@@ -20,10 +20,7 @@ class AuthCustomTokenSerializer(serializers.Serializer):
         password = attrs.get('password', None)
 
         try:
-            user = SharedUser.objects.get(
-                Q(email=email_or_username) |
-                Q(username=email_or_username)
-            )
+            user = SharedUser.objects.get(email=email_or_username)
         except SharedUser.DoesNotExist:
             raise exceptions.ValidationError(_('Password or email is not valid.'))
 

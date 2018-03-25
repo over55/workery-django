@@ -95,6 +95,9 @@ class Command(BaseCommand):
             last_name=last_name,
             email=email,
             is_active=True,
+            franchise=franchise,
+            was_email_activated=True
+
         )
         self.stdout.write(self.style.SUCCESS(_('Created a "User" object.')))
 
@@ -105,16 +108,6 @@ class Command(BaseCommand):
         # Generate the private access key.
         token = Token.objects.create(user=user)
 
-        #TODO: FIX THIS NOW!
-        # Create our profile.
-        # me, created = SharedUser.objects.update_or_create(
-        #     user=user,
-        #     defaults={
-        #         'franchise': franchise,
-        #         'user': user,
-        #         'was_email_activated': True,
-        #     }
-        # )
         self.stdout.write(self.style.SUCCESS(_('Created a "SharedUser" object.')))
 
         # Attach our user to the group.
