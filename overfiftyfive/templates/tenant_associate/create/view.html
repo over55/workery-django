@@ -122,6 +122,7 @@
 
         // VALIDATE ALL OUR FORM FIELDS.
         var has_error = false;
+        has_error |= valid_textfield_value('email', true, 2);
         has_error |= valid_textfield_value('firstname', true, 2);
         has_error |= valid_textfield_value('lastname', true, 2);
         has_error |= valid_textfield_value('phonenumber', true, 10);
@@ -322,7 +323,7 @@
                 </div>
                 <div class="form-group col-md-12 mb-4">
                     <label for="email">E-Mail</label>
-                    <input type="email" class="form-control form-control-lg border border-success" id="email" name="email" placeholder="Email Address" maxlength="254">
+                    <input type="email" class="form-control form-control-lg border border-primary" id="email" name="email" placeholder="Email Address" maxlength="254" required>
                     <div id="email-error" class="invalid-feedback"></div>
                 </div>
                 <div class="form-group mt-2 mb-4">
