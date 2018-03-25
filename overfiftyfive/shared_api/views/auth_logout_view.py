@@ -1,4 +1,3 @@
-from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.db import connection # Used for django tenants.
 from rest_framework import permissions, status, response, views

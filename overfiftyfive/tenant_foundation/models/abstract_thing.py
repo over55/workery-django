@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from django.db import models
-from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
+from shared_foundation.models.user import SharedUser
 
 
 class AbstractThing(models.Model):
@@ -16,7 +16,7 @@ class AbstractThing(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     last_modified = models.DateTimeField(auto_now=True)
     owner = models.ForeignKey(
-        User,
+        SharedUser,
         help_text=_('The user whom owns this thing.'),
         blank=True,
         null=True,

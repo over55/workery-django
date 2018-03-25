@@ -2,7 +2,6 @@
 import csv
 from datetime import date, datetime, timedelta
 from django.conf import settings
-from django.contrib.auth.models import User
 from django.db import models
 from django.db.models import Q
 from django.urls import reverse
@@ -14,7 +13,7 @@ from shared_foundation.models.abstract_thing import AbstractSharedThing
 from shared_foundation.models.abstract_contact_point import AbstractSharedContactPoint
 from shared_foundation.models.abstract_postal_address import AbstractSharedPostalAddress
 from shared_foundation.models.abstract_geo_coorindate import AbstractSharedGeoCoordinate
-from shared_foundation.models.o55_user import O55User
+from shared_foundation.models.user import SharedUser
 
 
 class SharedFranchiseManager(models.Manager):

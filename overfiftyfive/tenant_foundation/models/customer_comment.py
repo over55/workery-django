@@ -3,7 +3,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
 from tenant_foundation.constants import *
-from shared_foundation.models.o55_user import O55User
+from shared_foundation.models.user import SharedUser
 
 
 # class CustomerCommentManager(models.Manager):
@@ -52,7 +52,7 @@ class CustomerComment(models.Model):
     )
     created_at = models.DateTimeField(auto_now_add=True, db_index=True)
     created_by = models.ForeignKey(
-        O55User,
+        SharedUser,
         help_text=_('The user whom created this object.'),
         related_name="%(app_label)s_%(class)s_created_by_related",
         on_delete=models.CASCADE,

@@ -96,16 +96,16 @@ TENANT_APPS = (
 
     # Tenant-specific apps
     'tenant_api',
-    'tenant_account',
-    'tenant_associate',
-    'tenant_customer',
-    'tenant_dashboard',
+    # 'tenant_account',
+    # 'tenant_associate',
+    # 'tenant_customer',
+    # 'tenant_dashboard',
     'tenant_foundation',
-    # 'tenant_etl',
-    'tenant_historic_etl',
-    'tenant_order',
-    'tenant_team',
-    # . . .
+    # # 'tenant_etl',
+    # 'tenant_historic_etl',
+    # 'tenant_order',
+    # 'tenant_team',
+    # # . . .
 )
 
 INSTALLED_APPS = list(SHARED_APPS) + [app for app in TENANT_APPS if app not in SHARED_APPS]
@@ -228,11 +228,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Custom authentication
 # https://docs.djangoproject.com/en/dev/topics/auth/customizing/
 
-AUTHENTICATION_BACKENDS = (
-    'starterkit.auth.backends.UserModelEmailBackend', # Support email as username.
-    'django.contrib.auth.backends.ModelBackend',
-)
-
+AUTH_USER_MODEL = 'shared_foundation.SharedUser'
 
 # Internationalization
 # https://docs.djangoproject.com/en/2.0/topics/i18n/

@@ -17,7 +17,7 @@ from starterkit.utils import (
     float_or_none
 )
 from shared_foundation import constants
-from shared_foundation.models.o55_user import O55User
+from shared_foundation.models import SharedUser
 from tenant_foundation.utils import *
 
 
@@ -163,7 +163,7 @@ class Order(models.Model):
     #
     created = models.DateTimeField(auto_now_add=True, db_index=True)
     created_by = models.ForeignKey(
-        O55User,
+        SharedUser,
         help_text=_('The user whom created this order.'),
         related_name="%(app_label)s_%(class)s_created_by_related",
         on_delete=models.CASCADE,
@@ -172,7 +172,7 @@ class Order(models.Model):
     )
     last_modified = models.DateTimeField(auto_now=True)
     last_modified_by = models.ForeignKey(
-        O55User,
+        SharedUser,
         help_text=_('The user whom last modified this order.'),
         related_name="%(app_label)s_%(class)s_last_modified_by_related",
         on_delete=models.SET_NULL,

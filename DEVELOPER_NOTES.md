@@ -15,13 +15,15 @@ pip install django-cors-headers           # Enable CORS in Headers
 pip install gunicorn                      # Web-Server Helper
 pip install django-htmlmin                # HTML Minify
 pip install django-trapdoor               # Automatically Exploit Scanners
-pip install psycopg2                      # Postgres SQL ODBC
+pip install psycopg2-binary               # Postgres SQL ODBC
 pip install django-tenants                # Multi-Tenancy Handler
 pip install djangorestframework           # RESTful API Endpoint Generator
+pip install django-starterkit             # Django starter kit
 pip install django_filter                 # Filter querysets dynamically
+pip install djangorestframework-msgpack   # MessagePack support for Django REST framework
+pip install djangorestframework-jwt       # JSON Web Token Authentication support for Django REST Framework
 pip install django-rq                     # Redis Queue Library
 pip install rq-scheduler                  # Redis Queue Scheduler Library
-pip install djangorestframework-msgpack   # MessagePack support for Django REST framework
 pip install django-anymail[mailgun]       # Third-Party Email
 pip install whitenoise                    # Simplified static file serving for Python web apps
 pip install brotlipy                      # Brotli compression format to be used by "whitenoise" library.

@@ -20,7 +20,7 @@ from starterkit.utils import (
     float_or_none
 )
 from shared_foundation.constants import *
-from shared_foundation.models.o55_user import O55User
+from shared_foundation.models import SharedUser
 from tenant_foundation.models import (
     AbstractContactPoint,
     AbstractGeoCoordinate,
@@ -221,7 +221,7 @@ class Customer(AbstractThing, AbstractContactPoint, AbstractPostalAddress, Abstr
         through="CustomerComment",
     )
     created_by = models.ForeignKey(
-        O55User,
+        SharedUser,
         help_text=_('The user whom created this object.'),
         related_name="%(app_label)s_%(class)s_created_by_related",
         on_delete=models.SET_NULL,
@@ -229,7 +229,7 @@ class Customer(AbstractThing, AbstractContactPoint, AbstractPostalAddress, Abstr
         null=True,
     )
     last_modified_by = models.ForeignKey(
-        O55User,
+        SharedUser,
         help_text=_('The user whom modified this object last.'),
         related_name="%(app_label)s_%(class)s_last_modified_by_related",
         on_delete=models.SET_NULL,

@@ -55,15 +55,15 @@ urlpatterns = [
 urlpatterns += i18n_patterns(
     # Public specific URLs.
     url(r'^', include('shared_api.urls')),
-    url(r'^', include('shared_auth.urls')),
+    # url(r'^', include('shared_auth.urls')),
     url(r'^', include('shared_home.urls')),
 
-    # Tenant specific URLs.
-    url(r'^', include('tenant_api.urls')),
-    url(r'^', include('tenant_account.urls')),
-    url(r'^', include('tenant_associate.urls')),
-    url(r'^', include('tenant_customer.urls')),
-    url(r'^', include('tenant_dashboard.urls')),
-    url(r'^', include('tenant_order.urls')),
-    url(r'^', include('tenant_team.urls')),
+    # # Tenant specific URLs.
+    # url(r'^', include('tenant_api.urls')),
+    # url(r'^', include('tenant_account.urls')),
+    # url(r'^', include('tenant_associate.urls')),
+    # url(r'^', include('tenant_customer.urls')),
+    # url(r'^', include('tenant_dashboard.urls')),
+    # url(r'^', include('tenant_order.urls')),
+    # url(r'^', include('tenant_team.urls')),
 )

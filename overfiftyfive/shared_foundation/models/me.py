@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 from datetime import date, datetime, timedelta
 from django.conf import settings
-from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.db.models.signals import post_save
@@ -14,7 +13,7 @@ from starterkit.utils import (
 )
 from shared_foundation import constants
 from shared_foundation.models import (
-    O55User,
+    SharedUser,
     SharedFranchise
 )
 
@@ -65,7 +64,7 @@ class SharedMe(models.Model):
     #
 
     user = models.OneToOneField(
-        O55User,
+        SharedUser,
         help_text=_('The user whom is owns this profile.'),
         blank=True,
         null=True,
@@ -175,8 +174,7 @@ class SharedMe(models.Model):
         return today >= self.pr_expiry_date
 
 
-@receiver(post_save, sender=User)
-@receiver(post_save, sender=O55User)
+@receiver(post_save, sender=SharedUser)
 def create_when_user_was_created(sender, instance, created, **kwargs):
     if created:
         SharedMe.objects.create(user=instance)
