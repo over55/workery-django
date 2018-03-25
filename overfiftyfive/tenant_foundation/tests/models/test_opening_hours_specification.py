@@ -4,7 +4,7 @@ from starterkit.utils import get_unique_username_from_email
 from django_tenants.test.cases import TenantTestCase
 from django_tenants.test.client import TenantClient
 from django.urls import reverse
-from shared_foundation.models import O55User
+from shared_foundation.models import SharedUser
 from tenant_foundation.models import *
 
 
@@ -25,7 +25,7 @@ class TestOpeningHoursSpecification(TenantTestCase):
     def setUp(self):
         super(TestOpeningHoursSpecification, self).setUp()
         self.c = TenantClient(self.tenant)
-        self.owner = O55User.objects.create(
+        self.owner = SharedUser.objects.create(
             first_name="Bart",
             last_name="Mika",
             email=TEST_USER_EMAIL,

@@ -6,14 +6,14 @@ from django.shortcuts import render
 from django.utils.translation import ugettext_lazy as _
 from django.views.decorators.http import condition
 from shared_foundation import constants
-from shared_foundation.models import SharedMe
+from shared_foundation.models import SharedUser
 from shared_foundation.utils import reverse_with_full_domain
 
 
 def reset_password_email_page(request, pr_access_code=None):
     # Find the user or error.
     try:
-        me = SharedMe.objects.get(pr_access_code=pr_access_code)
+        me = SharedUser.objects.get(pr_access_code=pr_access_code)
         if not me.has_pr_code_expired():
             # Indicate that the account is active.
             me.was_activated = True
@@ -21,7 +21,7 @@ def reset_password_email_page(request, pr_access_code=None):
         else:
             # Erro message indicating code expired.
             raise PermissionDenied(_('Access code expired.'))
-    except SharedMe.DoesNotExist:
+    except SharedUser.DoesNotExist:
         raise PermissionDenied(_('Wrong access code.'))
 
     # Generate the data.
@@ -51,7 +51,7 @@ def reset_password_email_page(request, pr_access_code=None):
 def user_activation_email_page(request, pr_access_code=None):
     # Find the user or error.
     try:
-        me = SharedMe.objects.get(pr_access_code=pr_access_code)
+        me = SharedUser.objects.get(pr_access_code=pr_access_code)
         if not me.has_pr_code_expired():
             # Indicate that the account is active.
             me.was_activated = True
@@ -59,7 +59,7 @@ def user_activation_email_page(request, pr_access_code=None):
         else:
             # Erro message indicating code expired.
             raise PermissionDenied(_('Access code expired.'))
-    except SharedMe.DoesNotExist:
+    except SharedUser.DoesNotExist:
         raise PermissionDenied(_('Wrong access code.'))
 
     # Generate the data.

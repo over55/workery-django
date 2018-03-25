@@ -24,7 +24,7 @@ class TestOver55User(TenantTestCase):
     def setUp(self):
         super(TestOver55User, self).setUp()
         self.c = TenantClient(self.tenant)
-        self.user = O55User.objects.create(
+        self.user = SharedUser.objects.create(
             first_name="Bart",
             last_name="Mika",
             email=TEST_USER_EMAIL,

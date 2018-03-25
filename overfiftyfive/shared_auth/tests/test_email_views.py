@@ -5,8 +5,8 @@ from django_tenants.test.cases import TenantTestCase
 from django_tenants.test.client import TenantClient
 from django.urls import reverse
 from django.utils import timezone
-from shared_foundation.models.o55_user import O55User
-from shared_foundation.models import SharedMe
+from shared_foundation.models import SharedUser
+from shared_foundation.models import SharedUser
 
 
 TEST_USER_EMAIL = "bart@overfiftyfive.com"
@@ -40,20 +40,20 @@ class TestSharedAuthEmailViews(TenantTestCase):
 
     def tearDown(self):
         del self.c
-        users = O55User.objects.all()
+        users = SharedUser.objects.all()
         for user in users.all():
             user.delete()
         super(TestSharedAuthEmailViews, self).tearDown()
 
     def test_reset_password_email_page_with_200(self):
-        me = SharedMe.objects.get(user__email=TEST_USER_EMAIL)
+        me = SharedUser.objects.get(user__email=TEST_USER_EMAIL)
         url = reverse('o55_reset_password_email', args=[me.pr_access_code])
         response = self.c.get(url)
         self.assertEqual(response.status_code, 200)
 
     def test_reset_password_email_page_with_403(self):
         # CASE 1 of 2: Expired token.
-        me = SharedMe.objects.get(user__email=TEST_USER_EMAIL)
+        me = SharedUser.objects.get(user__email=TEST_USER_EMAIL)
         me.pr_expiry_date = timezone.now() + timedelta(days=-500)
         me.save()
         url = reverse('o55_reset_password_email', args=[me.pr_access_code])
@@ -66,14 +66,14 @@ class TestSharedAuthEmailViews(TenantTestCase):
         self.assertEqual(response.status_code, 403)
 
     def test_activate_email_page_with_200(self):
-        me = SharedMe.objects.get(user__email=TEST_USER_EMAIL)
+        me = SharedUser.objects.get(user__email=TEST_USER_EMAIL)
         url = reverse('o55_activate_email', args=[me.pr_access_code])
         response = self.c.get(url)
         self.assertEqual(response.status_code, 200)
 
     def test_activate_email_page_with_403(self):
         # CASE 1 of 2: Expired token.
-        me = SharedMe.objects.get(user__email=TEST_USER_EMAIL)
+        me = SharedUser.objects.get(user__email=TEST_USER_EMAIL)
         me.pr_expiry_date = timezone.now() + timedelta(days=-500)
         me.save()
         url = reverse('o55_activate_email', args=[me.pr_access_code])

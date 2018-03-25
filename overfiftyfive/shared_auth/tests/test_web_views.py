@@ -8,8 +8,8 @@ from django.utils import timezone
 from rest_framework.authtoken.models import Token
 from rest_framework import status
 from shared_foundation.models import SharedFranchise
-from shared_foundation.models import SharedMe
-from shared_foundation.models import O55User
+from shared_foundation.models import SharedUser
+from shared_foundation.models import SharedUser
 
 
 TEST_USER_EMAIL = "bart@overfiftyfive.com"
@@ -53,7 +53,7 @@ class TestSharedAuthWebViews(TenantTestCase):
         )
 
         # Get user and credentials.
-        user = O55User.objects.get()
+        user = SharedUser.objects.get()
         token = Token.objects.get(user_id=user.id)
 
         # Setup our clients.
@@ -65,7 +65,7 @@ class TestSharedAuthWebViews(TenantTestCase):
         )
 
         # Attach our user(s) to our test tenant organization.
-        me = SharedMe.objects.get(user=user)
+        me = SharedUser.objects.get(user=user)
         me.franchise = self.tenant
         me.save()
 
@@ -78,7 +78,7 @@ class TestSharedAuthWebViews(TenantTestCase):
         del self.auth_c
 
         # Delete previous data.
-        O55User.objects.all().delete()
+        SharedUser.objects.all().delete()
 
         # Finish teardown.
         super(TestSharedAuthWebViews, self).tearDown()
@@ -106,20 +106,20 @@ class TestSharedAuthWebViews(TenantTestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_rest_password_master_page_with_success(self):
-        me = SharedMe.objects.get(user__email=TEST_USER_EMAIL)
+        me = SharedUser.objects.get(user__email=TEST_USER_EMAIL)
         url = reverse('o55_reset_password_master', args=[me.pr_access_code])
         response = self.anon_c.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_rest_password_master_page_with_bad_pr_access_code(self):
-        me = SharedMe.objects.get(user__email=TEST_USER_EMAIL)
+        me = SharedUser.objects.get(user__email=TEST_USER_EMAIL)
         url = reverse('o55_reset_password_master', args=['some-bad-pr-access-code'])
         response = self.anon_c.get(url)
         self.assertEqual(response.status_code, status.HTTP_302_FOUND)
 
     def test_rest_password_master_page_with_expired_pr_access_code(self):
         # Get the user profile.
-        me = SharedMe.objects.get(user__email=TEST_USER_EMAIL)
+        me = SharedUser.objects.get(user__email=TEST_USER_EMAIL)
 
         # Set the expiry date to be old!
         today = timezone.now()
@@ -135,20 +135,20 @@ class TestSharedAuthWebViews(TenantTestCase):
         self.assertEqual(response.status_code, status.HTTP_302_FOUND)
 
     def test_user_activation_detail_page_with_success(self):
-        me = SharedMe.objects.get(user__email=TEST_USER_EMAIL)
+        me = SharedUser.objects.get(user__email=TEST_USER_EMAIL)
         url = reverse('o55_user_activation_detail', args=[me.pr_access_code])
         response = self.anon_c.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_rest_user_activation_detail_page_with_bad_pr_access_code(self):
-        me = SharedMe.objects.get(user__email=TEST_USER_EMAIL)
+        me = SharedUser.objects.get(user__email=TEST_USER_EMAIL)
         url = reverse('o55_user_activation_detail', args=['some-bad-pr-access-code'])
         response = self.anon_c.get(url)
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
     def test_rest_user_activation_detail_page_with_expired_pr_access_code(self):
         # Get the user profile.
-        me = SharedMe.objects.get(user__email=TEST_USER_EMAIL)
+        me = SharedUser.objects.get(user__email=TEST_USER_EMAIL)
 
         # Set the expiry date to be old!
         today = timezone.now()
@@ -164,13 +164,13 @@ class TestSharedAuthWebViews(TenantTestCase):
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
     def test_user_logout_redirector_master_page_with_redirect(self):
-        me = SharedMe.objects.get(user__email=TEST_USER_EMAIL)
+        me = SharedUser.objects.get(user__email=TEST_USER_EMAIL)
         url = reverse('o55_logout_redirector')
         response = self.anon_c.get(url)
         self.assertEqual(response.status_code, 302)
 
     def test_user_logout_redirector_master_page_with_success(self):
-        me = SharedMe.objects.get(user__email=TEST_USER_EMAIL)
+        me = SharedUser.objects.get(user__email=TEST_USER_EMAIL)
         url = reverse('o55_logout_redirector')
         response = self.auth_c.get(url)
         self.assertEqual(response.status_code, 302)

@@ -10,7 +10,7 @@ from django_tenants.test.client import TenantClient
 from django.urls import reverse
 from django.utils import timezone
 from shared_foundation import constants
-from shared_foundation.models import O55User, SharedMe
+from shared_foundation.models import SharedUser, SharedUser
 
 
 class TestSendActivationEmail(TenantTestCase):

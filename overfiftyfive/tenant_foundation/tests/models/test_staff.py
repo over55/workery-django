@@ -7,7 +7,7 @@ from starterkit.utils import (
     get_random_string,
     get_unique_username_from_email
 )
-from shared_foundation.models import O55User
+from shared_foundation.models import SharedUser
 from shared_foundation.utils import *
 from tenant_foundation.models import Staff
 
@@ -24,7 +24,7 @@ class TestTenantStaffModel(TenantTestCase):
     def setUp(self):
         super(TestTenantStaffModel, self).setUp()
         self.c = TenantClient(self.tenant)
-        self.owner = O55User.objects.create(
+        self.owner = SharedUser.objects.create(
             first_name="Aurthor",
             last_name="Clarke",
             email=TEST_USER_EMAIL,

@@ -8,7 +8,7 @@ from django_tenants.test.cases import TenantTestCase
 from django_tenants.test.client import TenantClient
 from django.urls import reverse
 from shared_foundation import constants
-from shared_foundation.models.o55_user import O55User
+from shared_foundation.models import SharedUser
 
 
 TEST_USER_EMAIL = "bart@overfiftyfive.com"
@@ -30,7 +30,7 @@ class TestCreateManagementAccountManagementCommand(TenantTestCase):
         call_command('init_app', verbosity=0)
 
     def tearDown(self):
-        # users = O55User.objects.all()
+        # users = SharedUser.objects.all()
         # for user in users.all():
         #     user.delete()
         del self.c
@@ -76,12 +76,12 @@ class TestCreateManagementAccountManagementCommand(TenantTestCase):
         # Verify the account works.
         from django.contrib.auth.hashers import check_password
         from django.contrib.auth import get_user_model
-        user = O55User.objects.filter(email__iexact=TEST_USER_EMAIL)[0]
+        user = SharedUser.objects.filter(email__iexact=TEST_USER_EMAIL)[0]
         is_authenticated = check_password(TEST_USER_PASSWORD, user.password)
         self.assertTrue(is_authenticated)
 
         # Delete all the users we've created in this unit test.
-        # O55User.objects.all().delete()
+        # SharedUser.objects.all().delete()
 
     def test_command_with_duplicate_email_error(self):
         call_command(
@@ -99,7 +99,7 @@ class TestCreateManagementAccountManagementCommand(TenantTestCase):
             "", # Extra line.
             verbosity=0
         )
-        user = O55User.objects.create(
+        user = SharedUser.objects.create(
             first_name="Bart",
             last_name="Mika",
             email=TEST_USER_EMAIL,
@@ -219,9 +219,9 @@ class TestCreateManagementAccountManagementCommand(TenantTestCase):
         # Verify the account works.
         from django.contrib.auth.hashers import check_password
         from django.contrib.auth import get_user_model
-        user = O55User.objects.filter(email__iexact=TEST_USER_EMAIL)[0]
+        user = SharedUser.objects.filter(email__iexact=TEST_USER_EMAIL)[0]
         is_authenticated = check_password(TEST_USER_PASSWORD, user.password)
         self.assertTrue(is_authenticated)
 
         # Delete all the users we've created in this unit test.
-        # O55User.objects.all().delete()
+        # SharedUser.objects.all().delete()

@@ -16,7 +16,7 @@ from rest_framework.test import APIClient
 from rest_framework.test import APITestCase
 from rest_framework.authtoken.models import Token
 from shared_foundation import constants
-from shared_foundation.models import SharedMe
+from shared_foundation.models import SharedUser
 
 
 TEST_USER_EMAIL = "bart@overfiftyfive.com"
@@ -58,7 +58,7 @@ class APIAuthResetPasswordViewslWithSchemaTestCase(APITestCase, TenantTestCase):
     @transaction.atomic
     def test_api_endpoint_with_success(self):
         # Get credentials
-        me = SharedMe.objects.get()
+        me = SharedUser.objects.get()
         pr_access_code = me.generate_pr_code()
 
         # Log out.
@@ -76,7 +76,7 @@ class APIAuthResetPasswordViewslWithSchemaTestCase(APITestCase, TenantTestCase):
     @transaction.atomic
     def test_api_endpoint_with_bad_pr_access_code(self):
         # Get credentials
-        me = SharedMe.objects.get()
+        me = SharedUser.objects.get()
         pr_access_code = me.generate_pr_code()
 
         # Log out.

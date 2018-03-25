@@ -18,7 +18,7 @@ from rest_framework.test import APIClient
 from rest_framework.test import APITestCase
 from rest_framework.authtoken.models import Token
 from shared_foundation import constants
-from shared_foundation.models.o55_user import O55User
+from shared_foundation.models import SharedUser
 from tenant_foundation.models import (
     Associate,
     Customer,

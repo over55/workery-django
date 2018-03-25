@@ -25,7 +25,7 @@ class TestFranchise(TenantTestCase):
     def setUp(self):
         super(TestFranchise, self).setUp()
         self.c = TenantClient(self.tenant)
-        self.user = O55User.objects.create(
+        self.user = SharedUser.objects.create(
             first_name="Bart",
             last_name="Mika",
             email=TEST_USER_EMAIL,
@@ -35,13 +35,7 @@ class TestFranchise(TenantTestCase):
             is_staff=True
         )
         self.tenant.name = "Over55 (London) Inc."
-        self.me, created = SharedMe.objects.update_or_create(
-            user=self.user,
-            defaults={
-                'user': self.user,
-                'franchise': self.tenant,
-            }
-        )
+        self.user.franchise = self.tenant
 
     def tearDown(self):
         SharedFranchise.objects.delete_all()

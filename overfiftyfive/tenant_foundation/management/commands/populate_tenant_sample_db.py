@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import sys
 from django.conf import settings
-from django.contrib.auth.models import User, Group
+from django.contrib.auth.models import Group
 from django.core.management.base import BaseCommand, CommandError
 from django.db import connection # Used for django tenants.
 from django.utils.translation import ugettext_lazy as _
@@ -12,9 +12,8 @@ from starterkit.utils import (
 from rest_framework.authtoken.models import Token
 from shared_foundation import constants
 from shared_foundation.models import (
-    O55User,
-    SharedFranchise,
-    SharedMe
+    SharedUser,
+    SharedFranchise
 )
 from tenant_foundation.models import (
     Associate,
@@ -63,7 +62,7 @@ class Command(BaseCommand):
 
     def create_user(self, franchise, first_name, last_name, email, is_active, is_superuser, is_staff, password, was_email_activated, group_id):
         # Create the user.
-        user = O55User.objects.create(
+        user = SharedUser.objects.create(
             first_name=first_name,
             last_name=last_name,
             email=email,
@@ -80,15 +79,16 @@ class Command(BaseCommand):
         # Generate the private access key.
         token = Token.objects.create(user=user)
 
-        # Create our profile.
-        me, created = SharedMe.objects.update_or_create(
-            user=user,
-            defaults={
-                'franchise': franchise,
-                'user': user,
-                'was_email_activated': was_email_activated,
-            }
-        )
+        #TODO: FIX THIS NOW!
+        # # Create our profile.
+        # me, created = SharedUser.objects.update_or_create(
+        #     user=user,
+        #     defaults={
+        #         'franchise': franchise,
+        #         'user': user,
+        #         'was_email_activated': was_email_activated,
+        #     }
+        # )
 
         # Attach our user to the group.
         user.groups.add(group_id)

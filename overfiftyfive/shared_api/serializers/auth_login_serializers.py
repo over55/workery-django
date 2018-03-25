@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from django.contrib.auth.models import User, Group
+from django.contrib.auth.models import Group
 from django.contrib.auth import authenticate
 from django.db.models import Q
 from django.shortcuts import get_object_or_404
@@ -7,7 +7,7 @@ from django.utils.translation import ugettext_lazy as _
 from rest_framework import exceptions, serializers
 from rest_framework.response import Response
 from rest_framework.authtoken.models import Token
-from shared_foundation.models.me import SharedMe
+from shared_foundation.models import SharedUser
 from shared_foundation import utils
 
 
@@ -20,11 +20,11 @@ class AuthCustomTokenSerializer(serializers.Serializer):
         password = attrs.get('password', None)
 
         try:
-            user = User.objects.get(
+            user = SharedUser.objects.get(
                 Q(email=email_or_username) |
                 Q(username=email_or_username)
             )
-        except User.DoesNotExist:
+        except SharedUser.DoesNotExist:
             raise exceptions.ValidationError(_('Password or email is not valid.'))
 
         if not user.is_active:

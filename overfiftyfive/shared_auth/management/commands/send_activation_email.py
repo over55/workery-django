@@ -14,7 +14,7 @@ from django.urls import reverse
 from django.utils.translation import ugettext_lazy as _
 from django.template.loader import render_to_string    # HTML to TXT
 from shared_foundation import constants
-from shared_foundation.models import SharedMe
+from shared_foundation.models import SharedUser
 from shared_foundation.utils import reverse_with_full_domain
 
 
@@ -30,12 +30,12 @@ class Command(BaseCommand):
 
         try:
             for email_or_username in options['email_or_username']:
-                me = SharedMe.objects.get(
+                me = SharedUser.objects.get(
                     Q(user__email__iexact=email_or_username) |
                     Q(user__username__iexact=email_or_username)
                 )
                 self.begin_processing(me)
-        except SharedMe.DoesNotExist:
+        except SharedUser.DoesNotExist:
             raise CommandError(_('Account does not exist with the email or username: %s') % str(email_or_username))
 
         # Return success message.

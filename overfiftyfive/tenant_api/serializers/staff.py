@@ -23,8 +23,7 @@ from rest_framework.response import Response
 from rest_framework.validators import UniqueValidator
 from shared_api.custom_fields import PhoneNumberField
 from shared_foundation.constants import ASSOCIATE_GROUP_ID
-from shared_foundation.models.me import SharedMe
-from shared_foundation.models.o55_user import O55User
+from shared_foundation.models import SharedUser
 from tenant_api.serializers.skill_set import SkillSetListCreateSerializer
 from tenant_foundation.models import (
     Comment,
@@ -156,7 +155,7 @@ class StaffListCreateSerializer(serializers.ModelSerializer):
 
         - Create a `User` object in the public database.
 
-        - Create a `SharedMe` object in the public database.
+        - Create a `SharedUser` object in the public database.
 
         - Create a `Staff` object in the tenant database.
 
@@ -235,7 +234,7 @@ class StaffListCreateSerializer(serializers.ModelSerializer):
         # Create our user.
         #-------------------
 
-        user = O55User.objects.create(
+        user = SharedUser.objects.create(
             first_name=validated_data['given_name'],
             last_name=validated_data['last_name'],
             email=email,
@@ -261,14 +260,15 @@ class StaffListCreateSerializer(serializers.ModelSerializer):
         #-----------------------------------------------------
         # Create a user `Profile` object in our public schema.
         #-----------------------------------------------------
-        me, created = SharedMe.objects.update_or_create(
-            user=user,
-            defaults={
-                'user': user,
-                'franchise': self.context['franchise'],
-                'was_email_activated': True,
-            }
-        )
+        #TODO: FIX THIS NOW!!!
+        # me, created = SharedUser.objects.update_or_create(
+        #     user=user,
+        #     defaults={
+        #         'user': user,
+        #         'franchise': self.context['franchise'],
+        #         'was_email_activated': True,
+        #     }
+        # )
 
         # #-----------------------------
         # # Create our `Comment` object.
@@ -421,7 +421,7 @@ class StaffRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         email = validated_data.get('email', instance.owner.email)
 
         #---------------------------
-        # Update `O55User` object.
+        # Update `SharedUser` object.
         #---------------------------
         # Update the password if required.
         password = validated_data.get('password', None)

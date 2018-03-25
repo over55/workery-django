@@ -7,7 +7,7 @@ from starterkit.utils import (
     get_random_string,
     get_unique_username_from_email
 )
-from shared_foundation.models import O55User
+from shared_foundation.models import SharedUser
 from shared_foundation.utils import *
 from tenant_foundation.models import Organization
 

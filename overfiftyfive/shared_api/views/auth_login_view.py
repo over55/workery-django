@@ -12,7 +12,7 @@ from rest_framework import mixins # See: http://www.django-rest-framework.org/ap
 from rest_framework import authentication, viewsets, permissions, status, parsers, renderers
 from rest_framework.decorators import detail_route, list_route # See: http://www.django-rest-framework.org/api-guide/viewsets/#marking-extra-actions-for-routing
 from rest_framework.response import Response
-from shared_foundation.models import SharedFranchise, SharedMe
+from shared_foundation.models import SharedFranchise, SharedUser
 from shared_api.serializers.auth_login_serializers import AuthCustomTokenSerializer
 
 
@@ -47,7 +47,7 @@ class LoginAPIView(APIView):
 
         token, created = Token.objects.get_or_create(user=authenticated_user)
 
-        me = SharedMe.objects.get(user=authenticated_user)
+        me = SharedUser.objects.get(user=authenticated_user)
         franchise = me.franchise
 
         # SAVE ALL THE USER PROFILE INFORMATION TO A SESSION.

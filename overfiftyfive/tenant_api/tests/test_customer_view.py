@@ -18,8 +18,7 @@ from rest_framework.test import APITestCase
 from rest_framework.authtoken.models import Token
 from shared_foundation import constants
 from shared_foundation.models import (
-   O55User,
-   SharedMe
+   SharedUser,
 )
 from tenant_foundation.models import (
     Comment,
@@ -235,8 +234,7 @@ class CustomerListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
 
         # Confirm we created a `Customer` object.
         self.assertEqual(1, Customer.objects.filter(email="bart+customer@overfiftyfive.com").count())
-        self.assertEqual(1, O55User.objects.filter(email="bart+customer@overfiftyfive.com").count())
-        self.assertEqual(1, SharedMe.objects.filter(user__email="bart+customer@overfiftyfive.com").count())
+        self.assertEqual(1, SharedUser.objects.filter(email="bart+customer@overfiftyfive.com").count())
 
     @transaction.atomic
     def test_create_with_403_by_permissions(self):

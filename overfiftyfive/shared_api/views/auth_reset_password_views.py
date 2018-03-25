@@ -12,7 +12,7 @@ from rest_framework.views import APIView
 from rest_framework import authentication, permissions, status
 from rest_framework.response import Response
 from shared_api.serializers.auth_reset_password_serializers import ResetPasswordSerializer
-from shared_foundation.models import SharedMe
+from shared_foundation.models import SharedUser
 
 
 class ResetPasswordAPIView(APIView):

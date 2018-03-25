@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from django.conf import settings
-from django.contrib.auth.models import User, Group
+from django.contrib.auth.models import Group
 from django.core.management.base import BaseCommand, CommandError
 from django.db import connection # Used for django tenants.
 from django.utils.translation import ugettext_lazy as _
@@ -12,9 +12,9 @@ from starterkit.utils import (
 from rest_framework.authtoken.models import Token
 from shared_foundation import constants
 from shared_foundation.models import (
-    O55User,
+    SharedUser,
     SharedFranchise,
-    SharedMe
+    SharedUser
 )
 from tenant_foundation.models import (
     Associate,
@@ -81,7 +81,7 @@ class Command(BaseCommand):
         connection.set_schema_to_public() # Switch to Public.
 
         # Defensive Code: Prevent continuing if the email already exists.
-        if O55User.objects.filter(email=email).exists():
+        if SharedUser.objects.filter(email=email).exists():
             raise CommandError(_('Email already exists, please pick another email.'))
 
         try:
@@ -90,14 +90,11 @@ class Command(BaseCommand):
             raise CommandError(_('Franchise does not exist!'))
 
         # Create the user.
-        user = O55User.objects.create(
+        user = SharedUser.objects.create(
             first_name=first_name,
             last_name=last_name,
             email=email,
-            username=get_unique_username_from_email(email),
             is_active=True,
-            is_superuser=True,
-            is_staff=True
         )
         self.stdout.write(self.style.SUCCESS(_('Created a "User" object.')))
 
@@ -108,16 +105,17 @@ class Command(BaseCommand):
         # Generate the private access key.
         token = Token.objects.create(user=user)
 
+        #TODO: FIX THIS NOW!
         # Create our profile.
-        me, created = SharedMe.objects.update_or_create(
-            user=user,
-            defaults={
-                'franchise': franchise,
-                'user': user,
-                'was_email_activated': True,
-            }
-        )
-        self.stdout.write(self.style.SUCCESS(_('Created a "SharedMe" object.')))
+        # me, created = SharedUser.objects.update_or_create(
+        #     user=user,
+        #     defaults={
+        #         'franchise': franchise,
+        #         'user': user,
+        #         'was_email_activated': True,
+        #     }
+        # )
+        self.stdout.write(self.style.SUCCESS(_('Created a "SharedUser" object.')))
 
         # Attach our user to the group.
         user.groups.add(group_id)

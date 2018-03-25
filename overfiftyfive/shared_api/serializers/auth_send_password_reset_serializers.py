@@ -13,7 +13,7 @@ from starterkit.drf.validation import (
     MatchingDuelFieldsValidator,
     EnhancedPasswordStrengthFieldValidator
 )
-from shared_foundation.models.me import SharedMe
+from shared_foundation.models import SharedUser
 from shared_foundation import utils
 
 
@@ -29,12 +29,12 @@ class SendResetPasswordEmailSerializer(serializers.Serializer):
         Check to see if the email address is unique and passwords match.
         """
         try:
-            clean_data['me'] = SharedMe.objects.get(
+            clean_data['me'] = SharedUser.objects.get(
                 Q(
                     Q(user__email=clean_data['email_or_username']) |
                     Q(user__username=clean_data['email_or_username'])
                 )
             )
-        except SharedMe.DoesNotExist:
+        except SharedUser.DoesNotExist:
             raise serializers.ValidationError("Email does not exist.")
         return clean_data

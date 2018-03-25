@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from django.conf import settings
-from django.contrib.auth.models import User, Group
+from django.contrib.auth.models import Group
 from django.core.management.base import BaseCommand, CommandError
 from django.utils.translation import ugettext_lazy as _
 from starterkit.utils import (
@@ -9,7 +9,7 @@ from starterkit.utils import (
 )
 from rest_framework.authtoken.models import Token
 from shared_foundation import constants
-from shared_foundation.models.me import SharedMe
+from shared_foundation.models import SharedUser
 
 
 class Command(BaseCommand):
@@ -43,18 +43,16 @@ class Command(BaseCommand):
         last_name = options['last_name'][0]
 
         # Defensive Code: Prevent continuing if the email already exists.
-        if User.objects.filter(email=email).exists():
+        if SharedUser.objects.filter(email=email).exists():
             raise CommandError(_('Email already exists, please pick another email.'))
 
         # Create the user.
-        user = User.objects.create(
+        user = SharedUser.objects.create(
             first_name=first_name,
             last_name=last_name,
             email=email,
-            username=get_unique_username_from_email(email),
             is_active=True,
-            is_superuser=True,
-            is_staff=True
+            was_email_activated=True
         )
 
         # Generate and assign the password.
@@ -62,19 +60,10 @@ class Command(BaseCommand):
         user.save()
 
         # Generate the private access key.
-        token = Token.objects.create(user=user)
 
-        # Create our profile.
-        me, created = SharedMe.objects.update_or_create(
-            user=user,
-            defaults={
-                'user': user,
-                'was_email_activated': True
-            }
-        )
 
         # Attach our user to the "Executive"
-        me.user.groups.add(constants.EXECUTIVE_GROUP_ID)
+        user.groups.add(constants.EXECUTIVE_GROUP_ID)
 
         # For debugging purposes.
         self.stdout.write(

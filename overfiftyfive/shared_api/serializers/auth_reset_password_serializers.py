@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import re
 from datetime import timedelta
-from django.contrib.auth.models import User, Group
+from django.contrib.auth.models import Group
 from django.contrib.auth import authenticate
 from django.core.validators import EMPTY_VALUES
 from django.db.models import Q
@@ -13,7 +13,7 @@ from starterkit.drf.validation import (
     MatchingDuelFieldsValidator,
     EnhancedPasswordStrengthFieldValidator
 )
-from shared_foundation.models.me import SharedMe
+from shared_foundation.models import SharedUser
 from shared_foundation import utils
 
 
@@ -47,7 +47,7 @@ class ResetPasswordSerializer(serializers.Serializer):
     def validate(self, clean_data):
         pr_access_code = clean_data['pr_access_code']
         try:
-            clean_data['me'] = SharedMe.objects.get(pr_access_code=pr_access_code)
-        except SharedMe.DoesNotExist:
+            clean_data['me'] = SharedUser.objects.get(pr_access_code=pr_access_code)
+        except SharedUser.DoesNotExist:
             raise serializers.ValidationError(_("Password reset access code does not exist."))
         return clean_data

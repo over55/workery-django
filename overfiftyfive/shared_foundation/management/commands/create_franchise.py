@@ -11,8 +11,11 @@ from starterkit.utils import (
 )
 from rest_framework.authtoken.models import Token
 from shared_foundation import constants
-from shared_foundation.models import SharedFranchise
-from shared_foundation.models import SharedFranchiseDomain
+from shared_foundation.models import (
+    SharedFranchise,
+    SharedFranchiseDomain,
+    SharedUser
+)
 
 
 class Command(BaseCommand):

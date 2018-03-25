@@ -8,7 +8,7 @@ from django_tenants.test.cases import TenantTestCase
 from django_tenants.test.client import TenantClient
 from django.urls import reverse
 from shared_foundation import constants
-from shared_foundation.models.o55_user import O55User
+from shared_foundation.models import SharedUser
 
 
 TEST_SCHEMA_NAME = "london_test"
@@ -49,7 +49,7 @@ class TestPopulateTenantSampleDBManagementCommand(TenantTestCase):
         call_command('init_app', verbosity=0)
 
     def tearDown(self):
-        # users = O55User.objects.all()
+        # users = SharedUser.objects.all()
         # for user in users.all():
         #     user.delete()
         del self.c

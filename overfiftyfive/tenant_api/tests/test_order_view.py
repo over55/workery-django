@@ -18,7 +18,7 @@ from rest_framework.test import APIClient
 from rest_framework.test import APITestCase
 from rest_framework.authtoken.models import Token
 from shared_foundation import constants
-from shared_foundation.models.o55_user import O55User
+from shared_foundation.models import SharedUser
 from tenant_foundation.models import (
     Associate,
     Customer,
@@ -121,7 +121,7 @@ class OrderListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
             customer=Customer.objects.get(owner__email="sikari@overfiftyfive.com"),
             associate=Associate.objects.get(owner__email="rayanami@overfiftyfive.com"),
             assignment_date=timezone.now(),
-            created_by=O55User.objects.get(email="fherbert@overfiftyfive.com"),
+            created_by=SharedUser.objects.get(email="fherbert@overfiftyfive.com"),
             last_modified_by=None
         )
         self.order.category_tags.set([self.tag])

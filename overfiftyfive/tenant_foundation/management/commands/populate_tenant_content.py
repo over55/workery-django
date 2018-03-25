@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from django.conf import settings
-from django.contrib.auth.models import User, Group
+from django.contrib.auth.models import Group
 from django.core.management.base import BaseCommand, CommandError
 from django.db import connection # Used for django tenants.
 from django.utils.translation import ugettext_lazy as _
@@ -11,9 +11,8 @@ from starterkit.utils import (
 from rest_framework.authtoken.models import Token
 from shared_foundation import constants
 from shared_foundation.models import (
-    O55User,
-    SharedFranchise,
-    SharedMe
+    SharedUser,
+    SharedFranchise
 )
 from tenant_foundation.models import (
     Associate,

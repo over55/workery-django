@@ -19,8 +19,7 @@ from rest_framework.response import Response
 from rest_framework.validators import UniqueValidator
 from shared_api.custom_fields import PhoneNumberField
 from shared_foundation.constants import CUSTOMER_GROUP_ID
-from shared_foundation.models.me import SharedMe
-from shared_foundation.models.o55_user import O55User
+from shared_foundation.models import SharedUser
 from tenant_api.serializers.customer_affiliation import CustomerAffiliationSerializer
 from tenant_api.serializers.customer_comment import CustomerCommentSerializer
 from tenant_foundation.models import (
@@ -131,7 +130,7 @@ class CustomerListCreateSerializer(serializers.ModelSerializer):
 
         - Create a `User` object in the public database.
 
-        - Create a `SharedMe` object in the public database.
+        - Create a `SharedUser` object in the public database.
 
         - Create a `Customer` object in the tenant database.
 
@@ -211,7 +210,7 @@ class CustomerListCreateSerializer(serializers.ModelSerializer):
 
         # If an email exists then
         if email:
-            user = O55User.objects.create(
+            user = SharedUser.objects.create(
                 first_name=validated_data['given_name'],
                 last_name=validated_data['last_name'],
                 email=email,
@@ -231,14 +230,15 @@ class CustomerListCreateSerializer(serializers.ModelSerializer):
             #-----------------------------------------------------
             # Create a user `Profile` object in our public schema.
             #-----------------------------------------------------
-            me = SharedMe.objects.update_or_create(
-                user=user,
-                defaults={
-                    'user': user,
-                    'franchise': self.context['franchise'],
-                    'was_email_activated': True,
-                }
-            )
+            #TODO: FIX THIS!!!!!
+            # me = SharedUser.objects.update_or_create(
+            #     user=user,
+            #     defaults={
+            #         'user': user,
+            #         'franchise': self.context['franchise'],
+            #         'was_email_activated': True,
+            #     }
+            # )
 
         #-----------------------------
         # Create our `Comment` object.
@@ -369,7 +369,7 @@ class CustomerRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         email = validated_data.get('email', instance.owner.email)
 
         #---------------------------
-        # Update `O55User` object.
+        # Update `SharedUser` object.
         #---------------------------
         instance.owner.email = email
         instance.owner.username = get_unique_username_from_email(email)

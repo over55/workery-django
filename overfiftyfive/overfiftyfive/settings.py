@@ -96,16 +96,16 @@ TENANT_APPS = (
 
     # Tenant-specific apps
     'tenant_api',
-    # 'tenant_account',
-    # 'tenant_associate',
-    # 'tenant_customer',
-    # 'tenant_dashboard',
+    'tenant_account',
+    'tenant_associate',
+    'tenant_customer',
+    'tenant_dashboard',
     'tenant_foundation',
-    # # 'tenant_etl',
-    # 'tenant_historic_etl',
-    # 'tenant_order',
-    # 'tenant_team',
-    # # . . .
+    # 'tenant_etl',
+    'tenant_historic_etl',
+    'tenant_order',
+    'tenant_team',
+    # . . .
 )
 
 INSTALLED_APPS = list(SHARED_APPS) + [app for app in TENANT_APPS if app not in SHARED_APPS]

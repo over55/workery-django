@@ -24,52 +24,43 @@ class TestMe(TenantTestCase):
     def setUp(self):
         super(TestMe, self).setUp()
         self.c = TenantClient(self.tenant)
-        self.user = O55User.objects.create(
+        self.user = SharedUser.objects.create(
             first_name="Bart",
             last_name="Mika",
             email=TEST_USER_EMAIL,
-            username=get_unique_username_from_email(TEST_USER_EMAIL),
             is_active=True,
-            is_superuser=True,
-            is_staff=True
-        )
-        self.me, created = SharedMe.objects.update_or_create(
-            user=self.user,
-            defaults={
-                'user': self.user,
-            }
         )
 
     def tearDown(self):
         del self.c
-        self.me.delete()
+        self.user.delete()
         super(TestMe, self).tearDown()
 
     def test_str(self):
-        self.assertIsNotNone(str(self.me))
-        self.assertIn(TEST_USER_EMAIL, str(self.me))
+        self.assertIsNotNone(str(self.user))
+        self.assertIn(TEST_USER_EMAIL, str(self.user))
 
     def test_delete_all(self):
-        SharedMe.objects.delete_all()
+        SharedUser.objects.delete_all()
         try:
-            me = SharedMe.objects.get()
-        except SharedMe.DoesNotExist:
+            me = SharedUser.objects.get()
+        except SharedUser.DoesNotExist:
             self.assertTrue(True)
 
     def test_get_by_email_or_none(self):
         # CASE 1 OF 2:
-        me = SharedMe.objects.get_by_email_or_none(TEST_USER_EMAIL)
+        me = SharedUser.objects.get_by_email_or_none(TEST_USER_EMAIL)
         self.assertIsNotNone(me)
 
         # CASE 2 OF 2:
-        me = SharedMe.objects.get_by_email_or_none("trudy@overfiftyfive.com")
+        me = SharedUser.objects.get_by_email_or_none("trudy@overfiftyfive.com")
         self.assertIsNone(me)
 
     def test_get_by_user_or_none(self):
         # CASE 1 OF 2:
-        me = SharedMe.objects.get_by_user_or_none(self.user)
+        me = SharedUser.objects.get_by_user_or_none(self.user)
         self.assertIsNotNone(me)
 
         # CASE 2 OF 2:
-        me = SharedMe.objects.get_by_user_or_none(None)
+        me = SharedUser.objects.get_by_user_or_none(None)
         self.assertIsNone(me)
