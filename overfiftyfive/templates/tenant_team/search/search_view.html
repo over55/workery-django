@@ -1,0 +1,185 @@
+{% extends 'tenant_foundation/tenant_base.html' %}
+{% load staticfiles i18n %}
+
+{% block title %}
+{% trans 'Team Search | Over 55 Inc.' %}
+{% endblock title %}
+
+{% block header_content %}
+{% endblock header_content %}
+
+{% block content %}
+
+<main id="main" role="main">
+    <!-- BREADCRUMB -->
+    <!------------------------------------------------------------------------->
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'o55_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'o55_tenant_team_summary' %}">{% trans 'Team' %}</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{% trans 'Search' %}</li>
+        </ol>
+    </nav>
+    <!------------------------------------------------------------------------->
+    <!-- end BREADCRUMB -->
+
+    <!-- BACK BUTTON -->
+    <!------------------------------------------------------------------------->
+    <div class="row">
+		<div class="col-sm-3 p-3 mb-2">
+			<a class="btn btn-primary btn-lg" href="{% url 'o55_tenant_team_summary' %}" role="button">
+                <svg class="svg-inline--fa fa-arrow-left fa-w-14" aria-hidden="true" data-fa-processed="" data-prefix="fas" data-icon="arrow-left" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                <path fill="currentColor" d="M257.5 445.1l-22.2 22.2c-9.4 9.4-24.6 9.4-33.9 0L7 273c-9.4-9.4-9.4-24.6 0-33.9L201.4 44.7c9.4-9.4 24.6-9.4 33.9 0l22.2 22.2c9.5 9.5 9.3 25-.4 34.3L136.6 216H424c13.3 0 24 10.7 24 24v32c0 13.3-10.7 24-24 24H136.6l120.5 114.8c9.8 9.3 10 24.8.4 34.3z"></path>
+            </svg><!-- <i class="fas fa-arrow-left"></i> -->&nbsp;{% trans 'Back to Team Home' %}</a>
+		</div>
+	</div>
+    <!------------------------------------------------------------------------->
+    <!-- end BACK BUTTON -->
+
+    <h1>{% trans 'Team Search' %}</h1>
+    <div id="m-search" class="col-sm-6 mx-auto mt-4 pt-4">
+        <form id="id_basic_search_form" class="needs-validation was-validated" novalidate>
+            <div class="input-group mb-2">
+                <input id="id_keywords" type="text" class="form-control form-control-lg border border-primary" placeholder="Search" required>
+                <div class="input-group-append">
+                    <button class="btn btn-primary btn-lg" type="button" onclick="ajax_perform_basic_search();"><i class="fas fa-search"></i></button>
+                </div>
+                <div class="invalid-feedback" id="id_keywords_error" style="display: none;">
+                    Fill in at least 3 characters.
+                </div>
+            </div>
+        </form>
+        <div class="col-md-12 text-center">
+            <h3 class="p-2">- or -</h3>
+            <button id="advance_search_btn" class="btn btn-primary btn-lg" type="button">Advanced Search</button>
+            <button id="advance_search_btn_x" class="btn btn-dark btn-lg" type="button"><i class="fas fa-times"></i> Advanced Search</button>
+        </div>
+    </div>
+    <div id="adv-search" class="col-sm-6 mx-auto border-top mt-4">
+        <p class="mb-4 mt-4"><strong>Please fill in atleast one field and hit search</strong></p>
+        <form id="id_advanced_search_form" class="needs-validation" novalidate>
+            <div class="form-row">
+                <div class="col-md-12 mb-3">
+                    <label for="validationCustom01">First name</label>
+                    <input type="text" class="form-control form-control-lg border border-primary" id="validationCustom01" placeholder="First name" required>
+                    <div class="valid-feedback">
+                        Looks good!
+                    </div>
+                </div>
+                <div class="col-md-12 mb-3">
+                    <label for="validationCustom02">Last name</label>
+                    <input type="text" class="form-control form-control-lg border border-primary" id="validationCustom02" placeholder="Last name" required>
+                    <div class="valid-feedback">
+                        Looks good!
+                    </div>
+                </div>
+                <div class="col-md-12 mb-3">
+                    <label for="validationCustom03">Phone</label>
+                    <input type="text" class="form-control form-control-lg border border-primary" id="validationCustom03" placeholder="Phone" required>
+                    <div class="invalid-feedback">
+                        Please provide a valid phone number.
+                    </div>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="col-md-12 mb-3">
+                    <label for="exampleFormControlSelect1">Skills</label>
+                    <select class="custom-select form-control-lg border-success" id="exampleFormControlSelect1">
+                        <option>1</option>
+                        <option>2</option>
+                        <option>3</option>
+                        <option>4</option>
+                        <option>5</option>
+                    </select>
+                </div>
+                <div class="col-md-12 mb-3">
+                    <label for="exampleFormControlSelect2">Skill 2</label>
+                    <select class="custom-select form-control-lg border-success" id="exampleFormControlSelect2">
+                        <option>2</option>
+                        <option>3</option>
+                        <option>4</option>
+                        <option>5</option>
+                    </select>
+                </div>
+                <div class="col-md-12 mb-3">
+                    <label for="exampleFormControlSelect3">Skill 3</label>
+                    <select class="custom-select form-control-lg border-success" id="exampleFormControlSelect3">
+                        <option>Example select</option>
+                        <option>2</option>
+                        <option>3</option>
+                        <option>4</option>
+                        <option>5</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group mt-2 mb-4">
+                <div class="form-check custom-control custom-checkbox">
+                    <input class="form-check-input custom-control-input" type="checkbox" value="" id="invalidCheck" required>
+                    <label class="form-check-label custom-control-label" for="invalidCheck">
+                    Has WSIB?
+                    </label>
+                    <div class="invalid-feedback">
+                        You must agree before submitting.
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3 mx-auto pl-4 pr-4">
+                <button class="btn btn-success btn-lg" type="button" onclick="ajax_perform_advanced_search();"><i class="fas fa-search"></i> Search</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- SCRIPTS -->
+    <!------------------------------------------------------------------------->
+    <script>
+        var is_advanced_on = false;
+
+        function ajax_perform_basic_search() {
+            var keywords = $('#id_keywords').val()
+            if (keywords.length <= 0) {
+                console.log(keywords);
+                var keywords_error = $("#id_keywords_error");
+                keywords_error.show();
+            } else {
+                var keywords_error = $("#id_keywords_error");
+                keywords_error.hide();
+                window.location.replace('{% url "o55_tenant_team_search_results" %}'+'?keyword='+keywords);
+            }
+
+
+        }
+
+        function ajax_perform_advanced_search() {
+            console.log("TODO: IMPLEMENT");
+        }
+
+    {% comment %}
+        // Example starter JavaScript for disabling form submissions if there are invalid fields
+        (function() {
+          'use strict';
+          window.addEventListener('load', function() {
+            // Fetch all the forms we want to apply custom Bootstrap validation styles to
+            var forms = document.getElementsByClassName('needs-validation');
+            // Loop over them and prevent submission
+            var validation = Array.prototype.filter.call(forms, function(form) {
+              form.addEventListener('submit', function(event) {
+                if (form.checkValidity() === false) {
+                  event.preventDefault();
+                  event.stopPropagation();
+                }
+                form.addClass('was-validated');
+              }, false);
+            });
+          }, false);
+        })();
+    {% endcomment %}
+    </script>
+    <!------------------------------------------------------------------------->
+    <!-- end SCRIPTS -->
+
+    <!-- RETURN-TO-TOP -->
+    <a id="return-to-top" href="#" class="btn-info btn-lg back-to-top" role="button" title="Back to top"><i class="fas fa-angle-up fa-2x"></i></a>
+    <!-- end RETURN-TO-TOP -->
+</main>
+
+{% endblock content %}

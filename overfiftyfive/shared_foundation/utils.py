@@ -5,7 +5,7 @@ import string
 import re # Regex
 from datetime import date, timedelta, datetime, time
 from django.conf import settings
-from django.contrib.auth.models import User, Group, Permission
+from django.contrib.auth.models import Group, Permission
 from django.core.signing import Signer
 from django.core.validators import RegexValidator
 from django.db.models import Q

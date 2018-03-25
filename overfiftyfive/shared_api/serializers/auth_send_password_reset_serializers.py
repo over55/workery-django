@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import re
 from datetime import timedelta
-from django.contrib.auth.models import User, Group
+from django.contrib.auth.models import Group
 from django.contrib.auth import authenticate
 from django.core.validators import EMPTY_VALUES
 from django.db.models import Q

@@ -153,7 +153,7 @@ class Command(BaseCommand):
             local_project_date = get_utc_dt_from_toronto_dt_string(project_date)
 
             # Create or update our user.
-            user, created = User.objects.update_or_create(
+            user, created = SharedUser.objects.update_or_create(
                 first_name=first_name,
                 last_name=last_name,
                 email=email,

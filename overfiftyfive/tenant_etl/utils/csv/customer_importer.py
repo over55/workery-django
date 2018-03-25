@@ -83,10 +83,10 @@ def run_customer_importer_from_csv_file(csvfile):
                 local_project_date = get_utc_dt_from_toronto_dt_string(project_date)
 
                 # Attempt to lookup or create user.
-                user = User.objects.filter(email=email).first()
+                user = SharedUser.objects.filter(email=email).first()
                 if user is None:
                     # Create our user.
-                    user = User.objects.create(
+                    user = SharedUser.objects.create(
                         first_name=first_name,
                         last_name=last_name,
                         email=email,
@@ -178,10 +178,10 @@ def run_customer_and_org_importer_from_csv_file(csvfile):
                 fax = int_or_none(fax)
 
                 # Attempt to lookup or create user.
-                user = User.objects.filter(email=email).first()
+                user = SharedUser.objects.filter(email=email).first()
                 if user is None:
                     # Create our user.
-                    user = User.objects.create(
+                    user = SharedUser.objects.create(
                         first_name='-',
                         last_name='-',
                         email=email,

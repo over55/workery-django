@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import json
 from django.core.management import call_command
-from django.contrib.auth.models import User, Group, Permission
+from django.contrib.auth.models import Group, Permission
 from django.contrib.auth import authenticate, login, logout
 from django.db import connection # Used for django tenants.
 from django.db import transaction

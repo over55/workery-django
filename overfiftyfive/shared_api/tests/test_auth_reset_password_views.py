@@ -7,7 +7,7 @@ from django.test import TestCase
 from django.test import Client
 from django.utils import translation
 from django.urls import reverse
-from django.contrib.auth.models import User, Group
+from django.contrib.auth.models import Group
 from django.contrib.auth import authenticate, login, logout
 from django_tenants.test.cases import TenantTestCase
 from django_tenants.test.client import TenantClient
@@ -49,7 +49,7 @@ class APIAuthResetPasswordViewslWithSchemaTestCase(APITestCase, TenantTestCase):
 
     @transaction.atomic
     def tearDown(self):
-        users = User.objects.all()
+        users = SharedUser.objects.all()
         for user in users.all():
             user.delete()
         del self.c

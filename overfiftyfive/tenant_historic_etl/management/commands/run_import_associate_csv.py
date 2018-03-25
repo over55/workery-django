@@ -179,7 +179,7 @@ class Command(BaseCommand):
             cell = cell.replace('.', '')
 
             # Create or update our user.
-            user, created = User.objects.update_or_create(
+            user, created = SharedUser.objects.update_or_create(
                 first_name=given_name,
                 last_name=last_name,
                 email=email,

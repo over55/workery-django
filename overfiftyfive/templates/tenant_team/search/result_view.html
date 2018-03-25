@@ -1,0 +1,116 @@
+{% extends 'tenant_foundation/tenant_base.html' %}
+{% load staticfiles i18n foundation_tags humanize %}
+
+{% block title %}
+{% trans 'Team List | Over 55 Inc.' %}
+{% endblock title %}
+
+{% block header_content %}
+{% endblock header_content %}
+
+{% block content %}
+
+<script>
+    function ajax_get_staffs() {
+        var criteria = [];
+
+        tenant_get_staffs(
+            criteria,
+            function(json_results) {
+                console.log(json_results)
+            },
+            function(error) {
+                console.debug(error);
+                // alert(error);
+            }
+        );
+    }
+</script>
+
+<main id="main" role="main">
+
+    <!-- BREADCRUMB -->
+    <!------------------------------------------------------------------------->
+    <nav aria-label="breadcrumb">
+	  	<ol class="breadcrumb">
+	    		<li class="breadcrumb-item">
+                    <a href="{% url 'o55_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a>
+                </li>
+                <li class="breadcrumb-item">
+                    <a href="{% url 'o55_tenant_team_summary' %}">{% trans 'Team' %}</a>
+                </li>
+                <li class="breadcrumb-item">
+                    <a href="{% url 'o55_tenant_team_search' %}">{% trans 'Search' %}</a>
+                </li>
+	    		<li class="breadcrumb-item active" aria-current="page">{% trans 'Search Results' %}</li>
+	  	</ol>
+	</nav>
+    <!------------------------------------------------------------------------->
+    <!-- end BREADCRUMB -->
+
+    <!-- BACK BUTTON -->
+    <!------------------------------------------------------------------------->
+    <div class="row">
+		<div class="col-sm-3 p-3 mb-2">
+			<a class="btn btn-primary btn-lg" href="{% url 'o55_tenant_team_search' %}" role="button">
+                <svg class="svg-inline--fa fa-arrow-left fa-w-14" aria-hidden="true" data-fa-processed="" data-prefix="fas" data-icon="arrow-left" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                <path fill="currentColor" d="M257.5 445.1l-22.2 22.2c-9.4 9.4-24.6 9.4-33.9 0L7 273c-9.4-9.4-9.4-24.6 0-33.9L201.4 44.7c9.4-9.4 24.6-9.4 33.9 0l22.2 22.2c9.5 9.5 9.3 25-.4 34.3L136.6 216H424c13.3 0 24 10.7 24 24v32c0 13.3-10.7 24-24 24H136.6l120.5 114.8c9.8 9.3 10 24.8.4 34.3z"></path>
+            </svg><!-- <i class="fas fa-arrow-left"></i> -->&nbsp;{% trans 'Back to Members Search' %}</a>
+		</div>
+	</div>
+    <!------------------------------------------------------------------------->
+    <!-- end BACK BUTTON -->
+
+    <h2>Active Team List</h2>
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>{% trans '#' %}</th>
+                    <th>{% trans 'First Name' %}</th>
+                    <th>{% trans 'Last Name' %}</th>
+                    <th>{% trans 'Phone' %}</th>
+                    <th>{% trans 'E-Mail' %}</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for staff in staff_list %}
+                <tr>
+                    <td>{{ staff.id|intcomma }}</td>
+                    <td>{% if staff.given_name %}{{ staff.given_name }}{% else %}-{% endif %}</td>
+                    <td>{% if staff.last_name %}{{ staff.last_name }}{% else %}-{% endif %}</td>
+                    <td>
+                        {% if staff.telephone %}<a href="tel:{{ staff.telephone }}">{{ staff.telephone|pretty_formatted_phonenumber }}</a>{% else %}-{% endif %}
+                    </td>
+                    <td>{% if staff.owner.email %}<a href="mailto:{{ staff.owner.email }}">{{ staff.owner.email }}</a>{% else %}-{% endif %}</td>
+                    <td>
+                        <a href="{% url 'o55_tenant_team_retrieve' 'search' staff.id %}?page={{ page_obj.number }}{{ filter_parameters }}">{% trans 'View' %}</a>
+                    </td>
+                </tr>
+                {% empty %}
+                No staffs yet.
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="pagination">
+        <span class="step-links">
+        {% if page_obj.has_previous %}
+        <a href="?page={{ page_obj.previous_page_number }}{{ filter_parameters }}">previous</a>
+        {% endif %}
+        <span class="current">
+        Page {{ page_obj.number }} of {{ paginator.num_pages }}.
+        </span>
+        {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}{{ filter_parameters }}">next</a>
+        {% endif %}
+        </span>
+    </div>
+
+    <!-- RETURN-TO-TOP -->
+    <a id="return-to-top" href="#" class="btn-info btn-lg back-to-top" role="button" title="Back to top"><i class="fas fa-angle-up fa-2x"></i></a>
+    <!-- end RETURN-TO-TOP -->
+</main>
+{% endblock content %}

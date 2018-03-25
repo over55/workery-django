@@ -27,15 +27,15 @@ class ResetPasswordAPIView(APIView):
 
         # Get our validated variables.
         password = serializer.validated_data['password']
-        me = serializer.validated_data['me']
+        user = serializer.validated_data['me']
 
         # Update the password.
-        me.user.set_password(password)
-        me.user.save()
+        user.set_password(password)
+        user.save()
 
         # Security: Remove the "pr_access_code" so it cannot be used again.
-        me.pr_access_code = ''
-        me.save()
+        user.pr_access_code = ''
+        user.save()
 
         # DEVELOPER NOTES:
         # - The code below is similar to the "sign-in" API endpoint.
@@ -45,7 +45,7 @@ class ResetPasswordAPIView(APIView):
         # - We will return our profile info.
 
         # Authenticate with the tenant.
-        authenticated_user = authenticate(username=me.user.username, password=password)
+        authenticated_user = authenticate(username=user.email, password=password)
         login(self.request, authenticated_user)
 
         token, created = Token.objects.get_or_create(user=authenticated_user)
@@ -55,8 +55,8 @@ class ResetPasswordAPIView(APIView):
         return Response(
             data = {
                 'token': str(token.key),
-                'schema_name': None if me.franchise is None else me.franchise.schema_name,
-                'email': str(me),
+                'schema_name': None if user.franchise is None else user.franchise.schema_name,
+                'email': str(user),
             },
             status=status.HTTP_200_OK
         )

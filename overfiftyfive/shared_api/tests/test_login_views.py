@@ -6,7 +6,7 @@ from django.test import TestCase
 from django.test import Client
 from django.utils import translation
 from django.urls import reverse
-from django.contrib.auth.models import User, Group
+from django.contrib.auth.models import Group
 from django.contrib.auth import authenticate, login, logout
 from django_tenants.test.cases import TenantTestCase
 from django_tenants.test.client import TenantClient
@@ -15,6 +15,7 @@ from rest_framework.test import APIClient
 from rest_framework.test import APITestCase
 from rest_framework.authtoken.models import Token
 from shared_foundation import constants
+from shared_foundation.models import SharedUser
 
 
 TEST_SCHEMA_NAME = "test"
@@ -61,7 +62,7 @@ class APILoginWithPublicSchemaTestCase(APITestCase, TenantTestCase):
 
     @transaction.atomic
     def tearDown(self):
-        # users = User.objects.all() #TODO: WHY ERROR WHEN USING THIS?
+        # users = SharedUser.objects.all() #TODO: WHY ERROR WHEN USING THIS?
         # for user in users.all():
         #     user.delete()
         del self.c
@@ -93,7 +94,7 @@ class APILoginWithPublicSchemaTestCase(APITestCase, TenantTestCase):
     @transaction.atomic
     def test_api_login_with_inactive_account(self):
         # Get our current user and set the user to be inactive.
-        client = User.objects.get()
+        client = SharedUser.objects.get()
         client.is_active = False
         client.save()
 
@@ -109,7 +110,7 @@ class APILoginWithPublicSchemaTestCase(APITestCase, TenantTestCase):
     @transaction.atomic
     def test_api_login_with_bad_password(self):
         # Get our current user and set the user to be inactive.
-        client = User.objects.get()
+        client = SharedUser.objects.get()
         client.save()
 
         # Run this test.

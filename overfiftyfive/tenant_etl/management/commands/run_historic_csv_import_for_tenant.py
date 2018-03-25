@@ -118,7 +118,7 @@ class Command(BaseCommand):
         # from django.contrib.auth.models import User
         # Customer.objects.delete_all()
         # Associate.objects.delete_all()
-        # User.objects.all().delete()
+        # SharedUser.objects.all().delete()
         # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
         # Get all the files in the directory.

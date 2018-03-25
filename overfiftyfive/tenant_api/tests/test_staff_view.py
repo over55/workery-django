@@ -8,7 +8,7 @@ from django.test import TestCase
 from django.test import Client
 from django.utils import translation
 from django.urls import reverse
-from django.contrib.auth.models import User, Group, Permission
+from django.contrib.auth.models import Group, Permission
 from django.contrib.auth import authenticate, login, logout
 from django_tenants.test.cases import TenantTestCase
 from django_tenants.test.client import TenantClient
@@ -113,7 +113,7 @@ class StaffListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
         )
 
         # Initialize our test data.
-        self.user = User.objects.get(email=TEST_USER_EMAIL)
+        self.user = SharedUser.objects.get(email=TEST_USER_EMAIL)
         token = Token.objects.get(user=self.user)
 
         # Setup.

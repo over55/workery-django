@@ -6,7 +6,7 @@ from starterkit.utils import (
 )
 from datetime import datetime
 from django.conf import settings
-from django.contrib.auth.models import User, Group
+from django.contrib.auth.models import Group
 from django.core.management.base import BaseCommand, CommandError
 from django.core.mail import EmailMultiAlternatives    # EMAILER
 from django.db.models import Q

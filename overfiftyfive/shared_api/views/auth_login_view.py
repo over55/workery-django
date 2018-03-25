@@ -1,6 +1,6 @@
 import django_filters
 from django.conf.urls import url, include
-from django.contrib.auth.models import User, Group
+from django.contrib.auth.models import Group
 from django.contrib.auth import authenticate, login, logout
 from django.db import connection # Used for django tenants.
 from django_filters import rest_framework as filters

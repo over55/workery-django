@@ -1,4 +1,4 @@
-from django.contrib.auth.models import User, Group, Permission
+from django.contrib.auth.models import Group, Permission
 from django.utils.translation import ugettext_lazy as _
 from rest_framework import permissions
 from shared_foundation.utils import has_permission

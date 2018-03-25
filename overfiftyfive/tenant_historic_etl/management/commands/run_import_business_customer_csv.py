@@ -143,7 +143,7 @@ class Command(BaseCommand):
 
             # Attempt to lookup or create user.
             # Create our user.
-            user, created = User.objects.update_or_create(
+            user, created = SharedUser.objects.update_or_create(
                 first_name=caller,
                 last_name=company,
                 email=email,

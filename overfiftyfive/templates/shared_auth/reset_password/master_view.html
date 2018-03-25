@@ -1,0 +1,89 @@
+{% extends 'shared_foundation/shared_base.html' %}
+{% load staticfiles i18n %}
+
+{% block title %}
+{% trans 'Reset Password | Over 55' %}
+{% endblock title %}
+
+{% block header_content %}
+{% endblock header_content %}
+
+{% block content %}
+<!-- JS -->
+<script>
+    function ajax_reset_password() {
+	    var data = {
+		    'password': $('#id_password').val(),
+			'password_repeat': $('#id_password_repeat').val(),
+            'pr_access_code': '{{ pr_access_code }}'
+		};
+
+		post_reset_password(
+		    data,
+			function(json_results) {
+			    console.log(json_results);
+				window.location = "{% url 'o55_login_redirector' %}";
+			},
+			function(error_results) {
+			    console.log(error_results);
+			}
+		);
+	} // end FUNC
+</script>
+<!-- end JS -->
+
+
+<!-- container -->
+<div class="container">
+   <div class="row">
+      <div class="col-sm-12 text-center">
+          <img class="img-fluid" src="{{ constants.O55_APP_HTTP_PROTOCOL }}{{ constants.O55_APP_HTTP_DOMAIN }}{% static 'img/over55-logo-600px.png' %}" alt="Logo" width="180px" />
+      </div>
+   </div>
+   <div class="row">
+      <div class="col-sm-6 mx-auto">
+         <form class="form-signin">
+              <h3 class="text-center"><i class="fa fa-key fa-2x"></i></h3>
+            <h2 class="form-signin-heading text-center mb-3">{% trans 'Reset Password' %}</h2>
+             <p class="text-center lead">Please enter your new password below to reset.</p>
+            <div class="form-group mb-0">
+               <div class="input-group input-group-lg">
+                  <!-- <div class="input-group-prepend">
+                     <span class="input-group-text input-group-addon-e">
+                         <i class="fa fa-lock color-blue"></i>
+                     </span>
+                  </div> -->
+                  <input id="id_password"
+                       name="password"
+                placeholder="{% trans 'Password' %}"
+                      class="form-control form-control-lg"
+                       type="password" autofocus
+             autocapitalize="off" />
+               </div>
+            </div>
+            <div class="form-group mb-2">
+               <div class="input-group input-group-lg">
+                  <!-- <div class="input-group-prepend">
+                     <span class="input-group-text input-group-addon-p">
+                         <i class="fa fa-lock color-blue"></i>
+                     </span>
+                  </div> -->
+                  <input id="id_password_repeat"
+                       name="password_repeat"
+                placeholder="{% trans 'Repeat Password' %}"
+                      class="form-control form-control-lg"
+                       type="password"
+                      value=""
+             autocapitalize="off" />
+               </div>
+            </div>
+            <br />
+            <input type="button" value="{% trans 'Reset Password and Sign-In' %}" class="btn btn-lg btn-primary btn-block" onclick="ajax_reset_password();">
+            <h5 class="text-center mt-3 mb-3">
+            <a href="{% url 'o55_login_master' %}" class="text-primary plain-link">{% trans 'Cancel' %}</a></h2>
+         </form>
+      </div>
+   </div>
+</div>
+<!-- /container -->
+{% endblock content %}

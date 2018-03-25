@@ -129,7 +129,7 @@ class SharedUser(AbstractBaseUser, PermissionsMixin):
 
     def email_user(self, subject, message, from_email=None, **kwargs):
         '''
-        Sends an email to this User.
+        Sends an email to this SharedUser.
         '''
         send_mail(subject, message, from_email, [self.email], **kwargs)
 

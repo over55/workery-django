@@ -1,0 +1,119 @@
+{% extends 'tenant_foundation/tenant_base.html' %}
+{% load staticfiles i18n foundation_tags humanize %}
+
+{% block title %}
+{% trans 'Jobs List | Over 55 Inc.' %}
+{% endblock title %}
+
+{% block header_content %}
+{% endblock header_content %}
+
+{% block content %}
+
+<main id="main" role="main">
+
+    <!-- BREADCRUMB -->
+    <!------------------------------------------------------------------------->
+    <nav aria-label="breadcrumb">
+	  	<ol class="breadcrumb">
+	    		<li class="breadcrumb-item"><a href="{% url 'o55_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
+                <li class="breadcrumb-item active" aria-current="page">{% trans 'Jobs' %}</li>
+	  	</ol>
+	</nav>
+    <!------------------------------------------------------------------------->
+    <!-- end BREADCRUMB -->
+
+    <!-- NOTIFICATION -->
+    <!------------------------------------------------------------------------->
+    {% if parameters.was_created == 'True' %}
+    <h1>Job was created!!!</h1>
+    {% endif %}
+    <!------------------------------------------------------------------------->
+    <!-- end NOTIFICATION -->
+
+    <h1>{% trans 'Jobs' %}</h1>
+    <section class="row text-center placeholders">
+        <div class="col-sm-3 placeholder">
+            <div class="rounded-circle mx-auto mt-4 mb-4 circle-200 bg-pink">
+                <a href="{% url 'o55_tenant_job_create' %}" class="d-block link-ndecor" title="Add Job">
+                    <h1 class="r-circle"><i class="fas fa-plus fa-3x"></i></h1>
+                </a>
+            </div>
+            <h4>Add</h4>
+            <div class="text-muted">Add Job</div>
+        </div>
+        <div class="col-sm-3 placeholder">
+            <div class="rounded-circle mx-auto mt-4 mb-4 circle-200 bg-dgreen">
+                <a href="{% url 'o55_tenant_job_search' %}" class="d-block link-ndecor" title="Search Jobs">
+                    <h1 class="r-circle"><i class="fas fa-search fa-3x"></i></h1>
+                </a>
+            </div>
+            <h4>Search</h4>
+            <span class="text-muted">Search Jobs</span>
+        </div>
+        <div class="col-sm-3 placeholder">
+            <div class="rounded-circle mx-auto mt-4 mb-4 circle-200 bg-orange">
+                <a href="{% url 'o55_tenant_job_list' %}" class="d-block link-ndecor" title="View Jobs">
+                    <h1 class="r-circle"><i class="fas fa-list-alt fa-3x"></i></h1>
+                </a>
+            </div>
+            <h4>List</h4>
+            <span class="text-muted">View All Jobs</span>
+        </div>
+    </section>
+
+    <h2>Active Job List</h2>
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>{% trans '#' %}</th>
+                    <th>{% trans 'Client' %}</th>
+                    <th>{% trans 'Associate' %}</th>
+                    <th>{% trans 'Assigned Date' %}</th>
+                    <th>{% trans 'Ongoing' %}</th>
+                    <th>{% trans 'Completion Date' %}</th>
+                    <th>{% trans 'Cancelled' %}</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for job in job_list %}
+                <tr>
+                    <td>{{ job.id|intcomma }}</td>
+                    <td>{% if job.customer %}{{ job.customer }}{% else %}-{% endif %}</td>
+                    <td>{% if job.associate %}{{ job.associate }}{% else %}-{% endif %}</td>
+                    <td>{% if job.assignment_date %}{{ job.assignment_date }}{% else %}-{% endif %}</td>
+                    <td>{{ job.is_ongoing }}</td>
+                    <td>{% if job.completion_date %}{{ job.completion_date }}{% else %}-{% endif %}</td>
+                    <td>{{ job.is_cancelled }}</td>
+                    <td>
+                        <a href="{% url 'o55_tenant_job_retrieve' 'summary' job.id %}?page={{ page_obj.number }}">{% trans 'View' %}</a>
+                    </td>
+                </tr>
+                {% empty %}
+                No jobs yet.
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="pagination">
+        <span class="step-links">
+        {% if page_obj.has_previous %}
+        <a href="?page={{ page_obj.previous_page_number }}{{ filter_parameters }}">previous</a>
+        {% endif %}
+        <span class="current">
+        Page {{ page_obj.number }} of {{ paginator.num_pages }}.
+        </span>
+        {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}{{ filter_parameters }}">next</a>
+        {% endif %}
+        </span>
+    </div>
+
+    <!-- RETURN-TO-TOP -->
+    <a id="return-to-top" href="#" class="btn-info btn-lg back-to-top" role="button" title="Back to top"><i class="fas fa-angle-up fa-2x"></i></a>
+    <!-- end RETURN-TO-TOP -->
+</main>
+{% endblock content %}

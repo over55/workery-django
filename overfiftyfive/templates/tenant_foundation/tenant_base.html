@@ -1,0 +1,186 @@
+{% load staticfiles i18n foundation_tags %}
+<!DOCTYPE html>
+<html lang="{{ request.language }}">
+
+<head>
+    <!-- PAGE META -->
+    <!------------------------------------------------------------------------->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="Over 55 Inc." content="">
+    <meta name="author" content="">
+    <!-- <link rel="icon" href="../favicon.ico"> -->
+    <title>{% block title %}{% trans 'Over 55 (London) Inc.' %}{% endblock %}</title>
+    <!------------------------------------------------------------------------->
+    <!-- end PAGE META -->
+
+    <!-- JAVASCRIPT -->
+    <!------------------------------------------------------------------------->
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <!------------------------------------------------------------------------->
+    <!-- end JAVASCRIPT -->
+
+    <!-- CSS -->
+    <!------------------------------------------------------------------------->
+	<link href="{% static 'css/shared_base.css' %}" rel="stylesheet">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <!------------------------------------------------------------------------->
+    <!-- end CSS -->
+  </head>
+<body>
+    <header class="navbar navbar-dark fixed-top bg-dark justify-content-between">
+          <a class="navbar-brand" href="{% url 'o55_tenant_dashboard_master' %}">{% trans 'Over55' %}</a>
+          <button class="navbar-toggler" type="button" id="sidebarCollapse">
+      		<i class="fa fa-bars"></i>
+    	  </button>
+    </header>
+    <div class="container-fluid">
+        <div class="d-flex align-items-stretch">
+            <!-- NAVIGATION -->
+            <!----------------------------------------------------------------->
+            <nav id="sidebar">
+                <p class="text-center text-light mt-3 mb-2">{% trans 'Menu' %}</p>
+                <hr class="nav-divider">
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link {% if current_page == 'dashboard' %}active{% endif %}" href="{% url 'o55_tenant_dashboard_master' %}">
+                        <i class="fas fa-tachometer-alt"></i>&nbsp;{% trans 'Dashboard' %}
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                        <i class="fa fa-list-ol"></i>&nbsp;Tasks
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if current_page == 'jobs' %}active{% endif %}" href="{% url 'o55_tenant_job_summary' %}">
+                        <i class="fa fa-wrench"></i>&nbsp;{% trans 'Jobs' %}
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                        <i class="fa fa-chart-bar"></i>&nbsp;Reports
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if current_page == 'customers' %}active{% endif %}" href="{% url 'o55_tenant_customer_summary' %}">
+                        <i class="fa fa-user-circle"></i>&nbsp;{% trans 'Clients' %}
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if current_page == 'associates' %}active{% endif %}" href="{% url 'o55_tenant_member_summary' %}">
+                        <i class="fas fa-user"></i>&nbsp;{% trans 'Members' %}
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if current_page == 'team' %}active{% endif %}" href="{% url 'o55_tenant_team_summary' %}">
+                        <i class="fas fa-user"></i>&nbsp;{% trans 'Team' %}
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                        <i class="fa fa-handshake"></i>&nbsp;Partners
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                        <i class="fas fa-file-alt"></i>&nbsp;Resources
+                        </a>
+                    </li>
+                </ul>
+                <hr class="nav-divider">
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"><i class="fas fa-cog"></i> Settings</a>
+                    </li>
+                    <li class="nav-item">
+                        <!-- NOTE: EXECUTIVE MEMBERS DO NOT GET ACCESS TO THE PROFILES PAGE. -->
+                        {% if not request.user.is_staff %}
+                        <a class="nav-link {% if current_page == 'profile' %}active{% endif %}" href="{% url 'o55_tenant_account_update' logged_in_user_id %}">
+                            <i class="fas fa-address-card"></i>&nbsp;Profile
+                        </a>
+                        {% endif %}
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"><i class="fas fa-question-circle"></i> Help</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'o55_logout_redirector' %}">
+                        <i class="fas fa-sign-out-alt"></i>&nbsp;{% trans 'Logout' %}
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            <!----------------------------------------------------------------->
+            <!-- end NAVIGATION -->
+
+            <!-- CONTENT -->
+            <!----------------------------------------------------------------->
+            {% block content %}
+            {% endblock %}
+            <!----------------------------------------------------------------->
+            <!-- /.CONTENT -->
+
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT -->
+    <!------------------------------------------------------------------------->
+    {% comment %}
+    DEVELOPER NOTES:
+    - DO NOT ADD THIS BLOCK OF JAVASCRIPT CODE IN ANY JS MINIFIER.
+
+    - This global variable is used to get the "django rest framework"
+      token and save it for globally for use in all JavaScript code. If
+      the user is not authenticated then the django code will not return
+      the token.
+
+    - This global variable is used to track the "Franchise" subdomain
+      that this user belongs to.
+
+    {% endcomment %}
+    <!-- PRIVATE INFO -->
+    <script>
+        /**
+         *  This global variable is used to get the "django rest framework"
+         *  token and save it for globally for use in all JavaScript code. If
+         *  the user is not authenticated then the django code will not return
+         *  the token.
+         */
+        var private_api_key = "{{ private_api_key }}";
+        var schema_name = "{{ request.tenant.schema_name }}";
+        var rest_api_token = 'Token ' + private_api_key;
+
+        // For debugging purposes only.
+        //console.log(private_api_key);
+        //console.log(schema_name);
+    </script>
+    <!-- end PRIVATE INFO -->
+
+
+    <!-- jQuery library -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script defer src="https://use.fontawesome.com/releases/v5.0.4/js/all.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="{% static 'js/custom.js' %}"></script>
+    {% include "shared_foundation/common_js.html" %}
+    {% include 'tenant_api/tenant_api_js.html' %}
+    <!-- end JS LIBRARY -->
+    <!------------------------------------------------------------------------->
+    <!-- end JAVASCRIPT -->
+
+  </body>
+</html>

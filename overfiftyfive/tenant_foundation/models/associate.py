@@ -327,7 +327,7 @@ class Associate(AbstractThing, AbstractContactPoint, AbstractPostalAddress, Abst
     #     Override the "save" function.
     #     """
     #     if self.email:
-    #         user = User.objects.filter(email=self.email).first()
+    #         user = SharedUser.objects.filter(email=self.email).first()
     #         if self.owner:
     #             if user != self.owner:
     #                 # print("2 OF 3:")
@@ -335,7 +335,7 @@ class Associate(AbstractThing, AbstractContactPoint, AbstractPostalAddress, Abst
     #                     'email':'Your email is not unique! Please pick another email.'
     #                 })
     #         else:
-    #             email_exists = User.objects.filter(email=self.email).exists()
+    #             email_exists = SharedUser.objects.filter(email=self.email).exists()
     #             if email_exists:
     #                 # print("1 OF 3:")
     #                 raise ValidationError({

@@ -11,7 +11,7 @@ from starterkit.utils import (
     get_unique_username_from_email
 )
 from django.conf import settings
-from django.contrib.auth.models import User, Group
+from django.contrib.auth.models import Group
 from django.contrib.auth import authenticate
 from django.db.models import Q, Prefetch
 from django.utils.translation import ugettext_lazy as _

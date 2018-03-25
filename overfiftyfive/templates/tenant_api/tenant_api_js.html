@@ -1,0 +1,87 @@
+<script>
+    // DEVELOPER NOTES:
+    // - Requires "common_js.html" to be included before using this code.
+
+    function tenant_get_list(url, criteria, func_callback, func_error_callback)
+    {
+        // If developer has specified criteria then iterate through all the
+        // keys in the dictionary, fetch the item in the dictionary at the key
+        // and append it to the URL.
+        for(var prop in criteria) {
+            if(criteria.hasOwnProperty(prop)) {
+                url += "&";
+
+                // Generate our parameters
+                var param = "";
+                if (criteria[prop] === true) { // Handle "True" cases.
+                    param = prop + "=True";
+                }
+                else if (criteria[prop] === false) { // Handle "False" cases.
+                    param = prop + "=False";
+                }
+                else {
+                    param = prop + "=" + criteria[prop];
+                }
+
+                url += param; // Add the parameters to the URL.
+            }
+        }
+
+        // If developer has not specified what page this is for pagination
+        // then we automatically assign "&page=1" to the URL.
+        if(!criteria.hasOwnProperty('page')) {
+            url += "&page=1";
+        }
+
+        jQuery.ajax({
+            headers: {
+                'Authorization': 'Token ' + private_api_key
+            },
+            url: url,
+            cache: false,
+            contentType:"application/json",
+            processData: false,
+            type: 'GET',
+            success: function(json_results){
+                func_callback(json_results);
+            },
+            error: function(xhr, status, error) {
+                func_error_callback(xhr, status, error);
+            },
+            complete: function(xhr,status) {
+                // Do nothing.
+            }
+        });
+    }
+
+    function tenant_get_associates(criteria, func_callback, func_error_callback)
+    {
+        var url = get_tenant_domain_url(schema_name, "/api/associates?format=json");
+        tenant_get_list(
+            url,
+            criteria,
+            function(json_results) {
+                func_callback(json_results)
+            },
+            function(error) {
+                func_error_callback(error);
+            }
+        );
+    }
+
+    function tenant_get_customers(criteria, func_callback, func_error_callback)
+    {
+        var url = get_tenant_domain_url(schema_name, "/api/customers?format=json");
+        tenant_get_list(
+            url,
+            criteria,
+            function(json_results) {
+                func_callback(json_results)
+            },
+            function(error) {
+                func_error_callback(error);
+            }
+        );
+    }
+
+</script>
