@@ -40,7 +40,6 @@ class CustomerListCreateSerializer(serializers.ModelSerializer):
     email = serializers.EmailField(
         validators=[UniqueValidator(queryset=Customer.objects.all())],
         required=False,
-        source="owner.email"
     )
 
     # All comments are created by our `create` function and not by
@@ -183,12 +182,10 @@ class CustomerListCreateSerializer(serializers.ModelSerializer):
         # Create our user.
         #-------------------
         # Extract our "email" field.
-        owner = validated_data.get('owner', None)
-        email = None
-        if owner:
-            email = owner.get('email', None)
+        email = validated_data.get('email', None)
 
         # If an email exists then
+        owner = None
         if email:
             owner = SharedUser.objects.create(
                 first_name=validated_data['given_name'],
@@ -212,7 +209,6 @@ class CustomerListCreateSerializer(serializers.ModelSerializer):
         #---------------------------------------------------
         customer = Customer.objects.create(
             owner=owner,
-            email=email,
             created_by=self.context['created_by'],
             last_modified_by=self.context['created_by'],
 
@@ -231,6 +227,7 @@ class CustomerListCreateSerializer(serializers.ModelSerializer):
             # 'organizations', #TODO: IMPLEMENT.
 
             # Contact Point
+            email=email,
             area_served=validated_data.get('area_served', None),
             available_language=validated_data.get('available_language', None),
             contact_type=validated_data.get('contact_type', None),
