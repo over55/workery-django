@@ -142,21 +142,21 @@ class Command(BaseCommand):
             fax = int_or_none(fax)
 
             # Attempt to lookup or create user.
-            # Create our user.
-            user, created = SharedUser.objects.update_or_create(
-                first_name=caller,
-                last_name=company,
-                email=email,
-                username=get_unique_username_from_email(email),
-                is_active=True,
-                defaults={
-                    'first_name': caller,
-                    'last_name': company,
-                    'email': email,
-                    'username': get_unique_username_from_email(email),
-                    'is_active': True,
-                }
-            )
+            user = None
+            email = None
+            created = False
+            if email is not None and email != "":
+                user, created = SharedUser.objects.update_or_create(
+                    first_name=first_name,
+                    last_name=last_name,
+                    email=email,
+                    defaults={
+                        'first_name': first_name,
+                        'last_name': last_name,
+                        'email': email,
+                        'is_active': True,
+                    }
+                )
 
             # Generate and assign the password.
             if created:

@@ -42,6 +42,8 @@ class LoginAPIView(APIView):
         serializer.is_valid(raise_exception=True)
         authenticated_user = serializer.validated_data['authenticated_user']
 
+        print(authenticated_user.franchise)
+
         # Authenticate with the public.
         login(self.request, authenticated_user)
 

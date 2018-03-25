@@ -179,19 +179,21 @@ class Command(BaseCommand):
             cell = cell.replace('.', '')
 
             # Create or update our user.
-            user, created = SharedUser.objects.update_or_create(
-                first_name=given_name,
-                last_name=last_name,
-                email=email,
-                username=get_unique_username_from_email(email),
-                defaults={
-                    'first_name': given_name,
-                    'last_name': last_name,
-                    'email': email,
-                    'username': get_unique_username_from_email(email),
-                    'is_active': True,
-                }
-            )
+            user = None
+            email = None
+            created = False
+            if email is not None and email != "":
+                user, created = SharedUser.objects.update_or_create(
+                    first_name=first_name,
+                    last_name=last_name,
+                    email=email,
+                    defaults={
+                        'first_name': first_name,
+                        'last_name': last_name,
+                        'email': email,
+                        'is_active': True,
+                    }
+                )
 
             if created:
                 # Generate and assign the password.
