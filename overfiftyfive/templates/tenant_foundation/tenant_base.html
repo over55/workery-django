@@ -160,6 +160,27 @@
         var private_api_key = "{{ private_api_key }}";
         var private_api_key_orig_iat = "{{ private_api_key_orig_iat }}";
         var schema_name = "{{ request.tenant.schema_name }}";
+
+        // If an API key was returned then continue...
+        if (private_api_key !== undefined && private_api_key !== "None") {
+            // Save the api key in the browser.
+            localStorage.setItem("private_api_key", private_api_key);
+            localStorage.setItem("private_api_key_orig_iat", private_api_key_orig_iat);
+
+            // Save the "Franchise" subdomain.
+            localStorage.setItem("schema_name", schema_name);
+        } else {
+            var private_api_key = localStorage.getItem("private_api_key");
+            var private_api_key_orig_iat = localStorage.getItem("private_api_key_orig_iat");
+            var schema_name = localStorage.getItem("schema_name");
+
+            // SESSION EXPIRED.
+            if (private_api_key === undefined || private_api_key === "None") {
+                window.location = "{% get_app_domain %}{% url 'o55_login_master' %}?session_expired=True";
+            }
+        }
+
+        // Generate our token.
         var rest_api_token = 'JWT ' + private_api_key;
 
         // For debugging purposes only.
