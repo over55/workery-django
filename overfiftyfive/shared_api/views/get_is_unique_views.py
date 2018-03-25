@@ -10,7 +10,6 @@ class GetIsUniqueAPIView(APIView):
     """
     API-endpoint used for looking up an email address to check if is unique.
     """
-    authentication_classes = (authentication.TokenAuthentication, )
     permission_classes = (permissions.AllowAny,)
 
     def get(self, request):

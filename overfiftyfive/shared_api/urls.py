@@ -1,3 +1,4 @@
+from rest_framework_jwt.views import obtain_jwt_token, refresh_jwt_token, verify_jwt_token
 from django.conf.urls import include, url
 from rest_framework.urlpatterns import format_suffix_patterns
 from rest_framework import serializers, viewsets, routers
@@ -26,6 +27,11 @@ urlpatterns = [
 
     # Application.
     url(r'^api/franchises$', SharedFranchiseListAPIView.as_view(), name='o55_franchise_list_api_endpoint'),
+
+    # JWT
+    url(r'^api-token-auth/', obtain_jwt_token),
+    url(r'^api-token-refresh/', refresh_jwt_token),
+    url(r'^api-token-verify/', verify_jwt_token),
 ]
 
 

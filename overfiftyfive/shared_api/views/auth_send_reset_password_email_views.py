@@ -15,7 +15,6 @@ from shared_api.serializers.auth_send_password_reset_serializers import SendRese
 
 
 class SendResetPasswordEmailAPIView(APIView):
-    authentication_classes = (authentication.TokenAuthentication, )
     permission_classes = (permissions.AllowAny,)
 
     def post(self, request, format=None):

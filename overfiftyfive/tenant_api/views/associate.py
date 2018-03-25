@@ -22,7 +22,6 @@ from tenant_foundation.models import Associate
 class AssociateListCreateAPIView(generics.ListCreateAPIView):
     serializer_class = AssociateListCreateSerializer
     pagination_class = StandardResultsSetPagination
-    authentication_classes = (authentication.TokenAuthentication, )
     permission_classes = (
         permissions.IsAuthenticated,
         IsAuthenticatedAndIsActivePermission,
@@ -52,7 +51,6 @@ class AssociateListCreateAPIView(generics.ListCreateAPIView):
 class AssociateRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = AssociateRetrieveUpdateDestroySerializer
     pagination_class = StandardResultsSetPagination
-    authentication_classes = (authentication.TokenAuthentication, )
     permission_classes = (
         permissions.IsAuthenticated,
         IsAuthenticatedAndIsActivePermission,

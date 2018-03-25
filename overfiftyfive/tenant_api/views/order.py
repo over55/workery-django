@@ -22,7 +22,6 @@ from tenant_foundation.models import Order
 class OrderListCreateAPIView(generics.ListCreateAPIView):
     serializer_class = OrderListCreateSerializer
     pagination_class = StandardResultsSetPagination
-    authentication_classes = (authentication.TokenAuthentication, )
     permission_classes = (
         permissions.IsAuthenticated,
         IsAuthenticatedAndIsActivePermission,
@@ -54,7 +53,6 @@ class OrderListCreateAPIView(generics.ListCreateAPIView):
 class OrderRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = OrderRetrieveUpdateDestroySerializer
     pagination_class = StandardResultsSetPagination
-    authentication_classes = (authentication.TokenAuthentication, )
     permission_classes = (
         permissions.IsAuthenticated,
         IsAuthenticatedAndIsActivePermission,

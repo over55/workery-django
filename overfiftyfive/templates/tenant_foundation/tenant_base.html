@@ -158,8 +158,9 @@
          *  the token.
          */
         var private_api_key = "{{ private_api_key }}";
+        var private_api_key_orig_iat = "{{ private_api_key_orig_iat }}";
         var schema_name = "{{ request.tenant.schema_name }}";
-        var rest_api_token = 'Token ' + private_api_key;
+        var rest_api_token = 'JWT ' + private_api_key;
 
         // For debugging purposes only.
         //console.log(private_api_key);

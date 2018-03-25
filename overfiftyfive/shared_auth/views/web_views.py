@@ -89,7 +89,8 @@ def user_logout_redirector_master_page(request):
     Token.objects.filter(user=request.user).delete()
 
     # Step 2: RESET ALL THE USER PROFILE INFORMATION TO A SESSION.
-    request.session['me_token_key'] = None
+    request.session['me_token'] = None
+    request.session['me_token_orig_iat'] = None
     request.session['me_schema_name'] = None
 
     # Step 3: Close the Django session.

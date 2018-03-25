@@ -22,7 +22,6 @@ from tenant_foundation.models import Staff
 class StaffListCreateAPIView(generics.ListCreateAPIView):
     serializer_class = StaffListCreateSerializer
     pagination_class = StandardResultsSetPagination
-    authentication_classes = (authentication.TokenAuthentication, )
     permission_classes = (
         permissions.IsAuthenticated,
         IsAuthenticatedAndIsActivePermission,
@@ -52,7 +51,6 @@ class StaffListCreateAPIView(generics.ListCreateAPIView):
 class StaffRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = StaffRetrieveUpdateDestroySerializer
     pagination_class = StandardResultsSetPagination
-    authentication_classes = (authentication.TokenAuthentication, )
     permission_classes = (
         permissions.IsAuthenticated,
         IsAuthenticatedAndIsActivePermission,

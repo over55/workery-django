@@ -18,7 +18,8 @@ def me(request):
     then the session will be updated and newest data released here.
     """
     return {
-        'private_api_key': request.session.get('me_token_key', None),
+        'private_api_key': request.session.get('me_token', None),
+        'private_api_key_orig_iat': request.session.get('me_token_orig_iat', None),
         'schema_name': request.session.get('me_schema_name', None),
         'logged_in_user_id': request.session.get('me_user_id', None),
     }

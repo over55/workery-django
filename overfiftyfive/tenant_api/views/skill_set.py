@@ -22,7 +22,6 @@ from tenant_foundation.models import SkillSet
 class SkillSetListCreateAPIView(generics.ListCreateAPIView):
     serializer_class = SkillSetListCreateSerializer
     pagination_class = StandardResultsSetPagination
-    authentication_classes = (authentication.TokenAuthentication, )
     permission_classes = (
         permissions.IsAuthenticated,
         IsAuthenticatedAndIsActivePermission,
@@ -49,7 +48,6 @@ class SkillSetListCreateAPIView(generics.ListCreateAPIView):
 class SkillSetRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = SkillSetRetrieveUpdateDestroySerializer
     pagination_class = StandardResultsSetPagination
-    authentication_classes = (authentication.TokenAuthentication, )
     permission_classes = (
         permissions.IsAuthenticated,
         IsAuthenticatedAndIsActivePermission,

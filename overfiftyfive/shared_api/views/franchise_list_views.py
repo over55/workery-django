@@ -13,7 +13,6 @@ from shared_api.filters.franchise_filters import SharedFranchiseListFilter
 class SharedFranchiseListAPIView(generics.ListAPIView):
     serializer_class = SharedFranchiseListSerializer
     pagination_class = TinyResultsSetPagination
-    authentication_classes = (authentication.TokenAuthentication, )
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
     filter_class = SharedFranchiseListFilter
 

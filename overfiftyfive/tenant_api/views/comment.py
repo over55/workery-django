@@ -16,7 +16,6 @@ from tenant_foundation.models import Comment
 class CommentListCreateAPIView(generics.ListCreateAPIView):
     serializer_class = CommentListCreateSerializer
     pagination_class = StandardResultsSetPagination
-    authentication_classes = (authentication.TokenAuthentication, )
     permission_classes = (
         permissions.IsAuthenticated,
         IsAuthenticatedAndIsActivePermission
@@ -35,7 +34,6 @@ class CommentListCreateAPIView(generics.ListCreateAPIView):
 class CommentRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = CommentRetrieveUpdateDestroySerializer
     pagination_class = StandardResultsSetPagination
-    authentication_classes = (authentication.TokenAuthentication, )
     permission_classes = (
         permissions.IsAuthenticated,
         IsAuthenticatedAndIsActivePermission
