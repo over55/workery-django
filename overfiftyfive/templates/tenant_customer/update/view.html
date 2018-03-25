@@ -140,6 +140,8 @@
         has_error |= valid_textfield_value('address_country', true, 3);
         has_error |= valid_textfield_value('postal_code', true, 3);
         has_error |= valid_textfield_value('post_office_box_number', false, 3);
+        has_error |= valid_textfield_value('password', false, 2);
+        has_error |= valid_textfield_value('password_repeat', false, 2);
 
         // INTERRUPT THE FORM SUBMISSION IF ANY ERRORS EXISTED AND UPDATE THE
         // GUI TO INDICATE THAT WE HAVE VALIDATED SOME FIELDS.
@@ -178,6 +180,8 @@
         // var telephone_extension = $('#id_telephone_extension').val();
         var mobile = $('#mobilenumber').val();
         // var fax_number = $('#id_fax_number').val();
+        var password = $('#password').val();
+        var password_repeat = $('#password_repeat').val();
 
         // LOCK OUT THE "SUBMIT" BUTTON SO THE USER DOES NOT MAKE MULTI-CALLS.
         disable_btn();
@@ -209,7 +213,9 @@
                 'telephone': telephone,
                 // 'telephone_extension': telephone_extension,
                 'mobile': mobile,
-                // 'fax_number': fax_number
+                // 'fax_number': fax_number,
+                'password': password,
+                'password_repeat': password_repeat,
             },
             function(result_dict) { // Success
                 console.log(result_dict);
@@ -419,13 +425,35 @@
                 </div>
             </div>
             <!-- ############ end LOCATION ############ -->
-            <!-- ############ BUSINESS ############ -->
-            {% comment %}
-            <p class="border-bottom mb-3 pb-1 text-secondary">Business Information</p>
+            <!-- ############ SECURITY ############ -->
+            <p class="border-bottom mb-3 pb-1 text-secondary">Account Security</p>
             <div class="form-row">
+                <div class="form-group col-md-12 mb-4">
+                    <label for="password">Password</label>
+                    <input id="password"
+                         name="password"
+                  placeholder="{% trans 'Password' %}"
+                        class="form-control form-control-lg border border-success"
+                         type="password" autofocus
+               autocapitalize="off"
+                    minlength="2"
+                    maxlength="30" required />
+                    <div id="password-error" class="invalid-feedback"></div>
+                </div>
+                <div class="form-group col-md-12 mb-4">
+                    <label for="password_repeat">Repeat Password</label>
+                    <input id="password_repeat"
+                         name="password_repeat"
+                  placeholder="{% trans 'Repeat Password' %}"
+                        class="form-control form-control-lg border border-success"
+                         type="password" autofocus
+               autocapitalize="off"
+                    minlength="2"
+                    maxlength="30" required />
+                    <div id="password_repeat-error" class="invalid-feedback"></div>
+                </div>
             </div>
-            {% endcomment %}
-            <!-- ############ end BUSINESS ############ -->
+            <!-- ############ end SECURITY ############ -->
             <!-- end SUBMIT BUTTON -->
             <div class="form-group col-md-12 mb-3 mx-auto text-center">
                 <button  id="id_submit_btn"

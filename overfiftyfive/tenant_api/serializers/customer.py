@@ -310,6 +310,29 @@ class CustomerRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
     telephone = PhoneNumberField(allow_null=True, required=False)
     mobile = PhoneNumberField(allow_null=True, required=False)
 
+    # Add password adding.
+    password = serializers.CharField(
+        write_only=True,
+        required=True,
+        allow_blank=False,
+        max_length=63,
+        style={'input_type': 'password'},
+        validators = [
+            MatchingDuelFieldsValidator(
+                another_field='password_repeat',
+                message=_("Inputted passwords fields do not match.")
+            ),
+            EnhancedPasswordStrengthFieldValidator()
+        ]
+    )
+    password_repeat = serializers.CharField(
+        write_only=True,
+        required=True,
+        allow_blank=False,
+        max_length=63,
+        style={'input_type': 'password'}
+    )
+
     class Meta:
         model = Customer
         fields = (
@@ -338,6 +361,8 @@ class CustomerRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
             # 'organizations', #TODO: FIX
 
             # Misc (Write Only)
+            'password',
+            'password_repeat',
             'extra_comment',
 
             # Contact Point
@@ -387,11 +412,19 @@ class CustomerRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         #---------------------------
         # Update `SharedUser` object.
         #---------------------------
-        instance.owner.email = email
-        instance.owner.username = get_unique_username_from_email(email)
-        instance.owner.first_name = validated_data.get('given_name', instance.owner.first_name)
-        instance.owner.last_name = validated_data.get('last_name', instance.owner.last_name)
-        instance.owner.save()
+        if instance.owner:
+            # Update details.
+            instance.owner.email = email
+            instance.owner.username = get_unique_username_from_email(email)
+            instance.owner.first_name = validated_data.get('given_name', instance.owner.first_name)
+            instance.owner.last_name = validated_data.get('last_name', instance.owner.last_name)
+
+            # Update the password.
+            password = validated_data.get('password', None)
+            instance.owner.set_password(password)
+
+            # Save the model to the database.
+            instance.owner.save()
 
         #---------------------------
         # Update `Customer` object.
