@@ -29,6 +29,13 @@
         $( "#dob" ).datepicker({
             dateFormat: 'yy-mm-dd'  // https://stackoverflow.com/a/7500097
         });
+
+        // Generate random password and apply it automatically to the
+        // password fields.
+        var randomString = Math.random().toString(36).slice(-8);
+        console.log(randomString);
+        $('#password').val(randomString);
+        $('#password_repeat').val(randomString);
     }); // end Ready
 
     /**
