@@ -2,6 +2,10 @@
 import phonenumbers
 from datetime import datetime, timedelta
 from dateutil import tz
+from starterkit.drf.validation import (
+    MatchingDuelFieldsValidator,
+    EnhancedPasswordStrengthFieldValidator
+)
 from starterkit.utils import (
     get_random_string,
     get_unique_username_from_email
@@ -55,6 +59,29 @@ class CustomerListCreateSerializer(serializers.ModelSerializer):
     telephone = PhoneNumberField()
     mobile = PhoneNumberField(allow_null=True, required=False)
 
+    # Add password adding.
+    password = serializers.CharField(
+        write_only=True,
+        required=True,
+        allow_blank=False,
+        max_length=63,
+        style={'input_type': 'password'},
+        validators = [
+            MatchingDuelFieldsValidator(
+                another_field='password_repeat',
+                message=_("Inputted passwords fields do not match.")
+            ),
+            EnhancedPasswordStrengthFieldValidator()
+        ]
+    )
+    password_repeat = serializers.CharField(
+        write_only=True,
+        required=True,
+        allow_blank=False,
+        max_length=63,
+        style={'input_type': 'password'}
+    )
+
     # Meta Information.
     class Meta:
         model = Customer
@@ -85,6 +112,8 @@ class CustomerListCreateSerializer(serializers.ModelSerializer):
 
             # Misc (Read Only)
             'comments',
+            'password',
+            'password_repeat',
             # 'organizations', #TODO: FIX
 
             # Misc (Write Only)
@@ -150,12 +179,40 @@ class CustomerListCreateSerializer(serializers.ModelSerializer):
         if mobile:
             mobile = phonenumbers.parse(mobile, "CA")
 
+        #-------------------
+        # Create our user.
+        #-------------------
+        # Extract our "email" field.
+        owner = validated_data.get('owner', None)
+        email = None
+        if owner:
+            email = owner.get('email', None)
+
+        # If an email exists then
+        if email:
+            user = SharedUser.objects.create(
+                first_name=validated_data['given_name'],
+                last_name=validated_data['last_name'],
+                email=email,
+                is_active=True,
+                franchise=self.context['franchise'],
+                was_email_activated=True
+            )
+
+            # Attach the user to the `Customer` group.
+            user.groups.add(CUSTOMER_GROUP_ID)
+
+            # Update the password.
+            password = validated_data.get('password', None)
+            user.set_password(password)
+            user.save()
+
         #---------------------------------------------------
         # Create our `Customer` object in our tenant schema.
         #---------------------------------------------------
-        customer_id = Customer.objects.all().count() + 20
         customer = Customer.objects.create(
-            id=customer_id,
+            owner=user,
+            email=email,
             created_by=self.context['created_by'],
             last_modified_by=self.context['created_by'],
 
@@ -198,33 +255,6 @@ class CustomerListCreateSerializer(serializers.ModelSerializer):
             longitude=validated_data.get('longitude', None),
             # 'location' #TODO: IMPLEMENT.
         )
-
-        #-------------------
-        # Create our user.
-        #-------------------
-        # Extract our "email" field.
-        owner = validated_data.get('owner', None)
-        email = None
-        if owner:
-            email = owner.get('email', None)
-
-        # If an email exists then
-        if email:
-            user = SharedUser.objects.create(
-                first_name=validated_data['given_name'],
-                last_name=validated_data['last_name'],
-                email=email,
-                is_active=True,
-                franchise=self.context['franchise'],
-                was_email_activated=True
-            )
-
-            # Attach the user to the `Customer` group.
-            user.groups.add(CUSTOMER_GROUP_ID)
-
-            customer.owner = user
-            customer.email = email
-            customer.save()
 
         #-----------------------------
         # Create our `Comment` object.
