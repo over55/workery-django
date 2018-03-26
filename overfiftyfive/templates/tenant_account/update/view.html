@@ -210,9 +210,23 @@
                 window.location = "{% url 'o55_tenant_account_update' staff.pk %}?was_modified=True";
             },
             function(xhr,status,error) { // Error
-                var errorJSON = xhr.responseJSON;
-                console.log(errorJSON); //TODO: IMPL.
-                alert("Error with submission, see console.");
+                // STEP 1: Convert to JSON.
+                var err = JSON.parse(xhr.responseText);
+
+                // For debugging purposes only.
+                console.log(err);
+                $('#all_error_result').html();
+
+                // Print the error.
+                for(var prop in err) {
+                    if(err.hasOwnProperty(prop)) {
+                        var val = err[prop];
+                        console.log(val);
+                        $('#all_error_result').append("<p><b>"+prop+"</b>"+val+"</p><br />");
+                    }
+                }
+
+                $('#all_error_result').focus(); // FOCUS ON THE ERROR.
             },
             function() { // Finally
                 // UNLOCK THE "SUBMIT" BUTTON TO BE AVAILABLE FOR USAGE.
@@ -261,6 +275,9 @@
         <div class="col-sm-12 fade show active" id="client-form" aria-labelledby="residential">
             <h3 class="pt-4 pb-2 text-center">My Profile</h3>
             <p><span class="text-secondary font-italic"><sup>*</sup>&nbsp;-&nbsp;Indicates required field to fill out.</span></p>
+            <!-- Error Output -->
+            <div id="all_error_result" name="all_error_result"></div>
+            <!-- end Error Output -->
             <p>&nbsp;</p>
             <form id="update-staff-form" method="post" class="needs-validation" action="" novalidate>
             <!-- ############ PERSON ############ -->
