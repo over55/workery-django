@@ -7,7 +7,6 @@ from django.utils.translation import ugettext_lazy as _
 from shared_foundation.mixins import ExtraRequestProcessingMixin
 from tenant_api.filters.order import OrderFilter
 from tenant_foundation.models.order import Order
-from tenant_foundation.models.order_comment import OrderComment
 
 
 #--------#

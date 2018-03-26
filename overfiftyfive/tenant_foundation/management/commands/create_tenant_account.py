@@ -18,12 +18,12 @@ from shared_foundation.models import (
 )
 from tenant_foundation.models import (
     Associate,
-    Comment,
+    # Comment,
     Customer,
     CustomerAffiliation,
     Organization,
     Order,
-    OrderComment,
+    # OrderComment,
     Staff,
     Tag
 )

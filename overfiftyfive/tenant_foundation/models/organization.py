@@ -62,14 +62,14 @@ class Organization(AbstractThing, AbstractContactPoint, AbstractPostalAddress, A
         blank=True,
         null=True,
     )
-    parent_organization = models.ForeignKey(
-        "Organization",
-        help_text=_('The larger organization that this organization is a sub-organization of'),
-        blank=True,
-        null=True,
-        on_delete=models.CASCADE,
-        related_name="%(app_label)s_%(class)s_parent_organization_related"
-    )
+    # parent_organization = models.ForeignKey(
+    #     "Organization",
+    #     help_text=_('The larger organization that this organization is a sub-organization of'),
+    #     blank=True,
+    #     null=True,
+    #     on_delete=models.CASCADE,
+    #     related_name="%(app_label)s_%(class)s_parent_organization_related"
+    # )
 
     #
     #  CUSTOM FIELDS

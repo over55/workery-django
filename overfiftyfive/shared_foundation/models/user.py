@@ -70,7 +70,7 @@ class SharedUser(AbstractBaseUser, PermissionsMixin):
         help_text=_('The franchise whom this profile belongs to.'),
         blank=True,
         null=True,
-        on_delete=models.CASCADE,
+        on_delete=models.SET_NULL,
         db_index=True,
     )
 

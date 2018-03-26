@@ -138,13 +138,6 @@ class Order(models.Model):
         blank=True,
         null=True
     )
-    comments = models.ManyToManyField(
-        "Comment",
-        help_text=_('The comments of this order sorted by latest creation date..'),
-        blank=True,
-        related_name="%(app_label)s_%(class)s_comments_related",
-        through="OrderComment",
-    )
     skill_sets = models.ManyToManyField(
         "SkillSet",
         help_text=_('The skill sets that belong to this order.'),

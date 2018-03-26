@@ -213,13 +213,6 @@ class Customer(AbstractThing, AbstractContactPoint, AbstractPostalAddress, Abstr
         blank=True,
         null=True,
     )
-    comments = models.ManyToManyField(
-        "Comment",
-        help_text=_('The comments of this customer sorted by latest creation date..'),
-        blank=True,
-        related_name="%(app_label)s_%(class)s_comments_related",
-        through="CustomerComment",
-    )
     created_by = models.ForeignKey(
         SharedUser,
         help_text=_('The user whom created this object.'),

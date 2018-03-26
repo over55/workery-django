@@ -25,10 +25,10 @@ from shared_api.custom_fields import PhoneNumberField
 from shared_foundation.constants import CUSTOMER_GROUP_ID
 from shared_foundation.models import SharedUser
 from tenant_api.serializers.customer_affiliation import CustomerAffiliationSerializer
-from tenant_api.serializers.customer_comment import CustomerCommentSerializer
+# from tenant_api.serializers.customer_comment import CustomerCommentSerializer
 from tenant_foundation.models import (
-    Comment,
-    CustomerComment,
+    # Comment,
+    # CustomerComment,
     Customer
 )
 
@@ -44,7 +44,7 @@ class CustomerListCreateSerializer(serializers.ModelSerializer):
 
     # All comments are created by our `create` function and not by
     # `django-rest-framework`.
-    comments = CustomerCommentSerializer(many=True, read_only=True, allow_null=True)
+    # comments = CustomerCommentSerializer(many=True, read_only=True, allow_null=True)
 
     # This is a field used in the `create` function if the user enters a
     # comment. This field is *ONLY* to be used during the POST creation and
@@ -110,7 +110,7 @@ class CustomerListCreateSerializer(serializers.ModelSerializer):
             'how_hear',
 
             # Misc (Read Only)
-            'comments',
+            # 'comments',
             'password',
             'password_repeat',
             # 'organizations', #TODO: FIX
@@ -148,7 +148,8 @@ class CustomerListCreateSerializer(serializers.ModelSerializer):
     def setup_eager_loading(cls, queryset):
         """ Perform necessary eager loading of data. """
         queryset = queryset.prefetch_related(
-            'owner', 'created_by', 'last_modified_by', 'comments'
+            'owner', 'created_by', 'last_modified_by',
+            # 'comments'
         )
         return queryset
 
@@ -270,7 +271,7 @@ class CustomerListCreateSerializer(serializers.ModelSerializer):
             )
 
         # Update validation data.
-        validated_data['comments'] = CustomerComment.objects.filter(customer=customer)
+        # validated_data['comments'] = CustomerComment.objects.filter(customer=customer)
         validated_data['created_by'] = self.context['created_by']
         validated_data['last_modified_by'] = self.context['created_by']
         validated_data['extra_comment'] = None
@@ -293,7 +294,7 @@ class CustomerRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
 
     # All comments are created by our `create` function and not by
     # `django-rest-framework`.
-    comments = CustomerCommentSerializer(many=True, read_only=True)
+    # comments = CustomerCommentSerializer(many=True, read_only=True)
 
     # This is a field used in the `create` function if the user enters a
     # comment. This field is *ONLY* to be used during the POST creation and
@@ -354,7 +355,7 @@ class CustomerRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
             'how_hear',
 
             # Misc (Read Only)
-            'comments',
+            # 'comments',
             # 'organizations', #TODO: FIX
 
             # Misc (Write Only)
@@ -392,7 +393,8 @@ class CustomerRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
     def setup_eager_loading(cls, queryset):
         """ Perform necessary eager loading of data. """
         queryset = queryset.prefetch_related(
-            'owner', 'created_by', 'last_modified_by', 'comments'
+            'owner', 'created_by', 'last_modified_by',
+            # 'comments'
         )
         return queryset
 
@@ -493,7 +495,7 @@ class CustomerRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         #---------------------------
         # Update validation data.
         #---------------------------
-        validated_data['comments'] = CustomerComment.objects.filter(customer=instance)
+        # validated_data['comments'] = CustomerComment.objects.filter(customer=instance)
         validated_data['last_modified_by'] = self.context['last_modified_by']
         validated_data['extra_comment'] = None
 

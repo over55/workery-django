@@ -26,7 +26,7 @@ from shared_foundation.constants import ASSOCIATE_GROUP_ID
 from shared_foundation.models import SharedUser
 from tenant_api.serializers.skill_set import SkillSetListCreateSerializer
 from tenant_foundation.models import (
-    Comment,
+    # Comment,
     SkillSet,
     Staff
 )

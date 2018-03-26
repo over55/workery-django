@@ -11,14 +11,14 @@ from django.utils.http import urlquote
 from rest_framework import exceptions, serializers
 from rest_framework.response import Response
 from rest_framework.authtoken.models import Token
-from tenant_api.serializers.comment import CommentListCreateSerializer
+# from tenant_api.serializers.comment import CommentListCreateSerializer
 from tenant_foundation.models import CustomerAffiliation
 
 
 class CustomerAffiliationSerializer(serializers.ModelSerializer):
     customer = serializers.PrimaryKeyRelatedField(many=False, read_only=True)
-    organization = CommentListCreateSerializer(many=False, read_only=True)
-    
+    # organization = CommentListCreateSerializer(many=False, read_only=True)
+
     class Meta:
         model = CustomerAffiliation
         fields = (

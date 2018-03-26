@@ -24,12 +24,12 @@ from rest_framework.validators import UniqueValidator
 from shared_api.custom_fields import PhoneNumberField
 from shared_foundation.constants import ASSOCIATE_GROUP_ID
 from shared_foundation.models import SharedUser
-from tenant_api.serializers.associate_comment import AssociateCommentSerializer
+# from tenant_api.serializers.associate_comment import AssociateCommentSerializer
 from tenant_api.serializers.skill_set import SkillSetListCreateSerializer
 from tenant_foundation.models import (
-    AssociateComment,
+    # AssociateComment,
     Associate,
-    Comment,
+    # Comment,
     SkillSet
 )
 
@@ -45,7 +45,7 @@ class AssociateListCreateSerializer(serializers.ModelSerializer):
 
     # All comments are created by our `create` function and not by
     # `django-rest-framework`.
-    comments = AssociateCommentSerializer(many=True, read_only=True, allow_null=True)
+    # comments = AssociateCommentSerializer(many=True, read_only=True, allow_null=True)
 
     # This is a field used in the `create` function if the user enters a
     # comment. This field is *ONLY* to be used during the POST creation and
@@ -122,7 +122,7 @@ class AssociateListCreateSerializer(serializers.ModelSerializer):
             'skill_sets', # many-to-many
 
             # Misc (Read Only)
-            'comments',
+            # 'comments',
             'password',
             'password_repeat',
             'assigned_skill_sets',
@@ -160,7 +160,8 @@ class AssociateListCreateSerializer(serializers.ModelSerializer):
     def setup_eager_loading(cls, queryset):
         """ Perform necessary eager loading of data. """
         queryset = queryset.prefetch_related(
-            'owner', 'created_by', 'last_modified_by', 'comments'
+            'owner', 'created_by', 'last_modified_by',
+            # 'comments'
         )
         return queryset
 
@@ -300,7 +301,7 @@ class AssociateListCreateSerializer(serializers.ModelSerializer):
             )
 
         # Update validation data.
-        validated_data['comments'] = AssociateComment.objects.filter(associate=associate)
+        # validated_data['comments'] = AssociateComment.objects.filter(associate=associate)
         validated_data['created_by'] = self.context['created_by']
         validated_data['last_modified_by'] = self.context['created_by']
         validated_data['extra_comment'] = None
@@ -321,7 +322,7 @@ class AssociateRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
 
     # All comments are created by our `create` function and not by
     # `django-rest-framework`.
-    comments = AssociateCommentSerializer(many=True, read_only=True)
+    # comments = AssociateCommentSerializer(many=True, read_only=True)
 
     # This is a field used in the `create` function if the user enters a
     # comment. This field is *ONLY* to be used during the POST creation and
@@ -364,7 +365,7 @@ class AssociateRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
             # 'organizations', #TODO: FIX
 
             # Misc (Read Only)
-            'comments',
+            # 'comments',
             'assigned_skill_sets',
             # 'organizations', #TODO: FIX
 
@@ -401,7 +402,8 @@ class AssociateRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
     def setup_eager_loading(cls, queryset):
         """ Perform necessary eager loading of data. """
         queryset = queryset.prefetch_related(
-            'owner', 'created_by', 'last_modified_by', 'comments'
+            'owner', 'created_by', 'last_modified_by',
+            # 'comments'
         )
         return queryset
 
@@ -526,7 +528,7 @@ class AssociateRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         #---------------------------
         # Update validation data.
         #---------------------------
-        validated_data['comments'] = AssociateComment.objects.filter(associate=instance)
+        # validated_data['comments'] = AssociateComment.objects.filter(associate=instance)
         validated_data['last_modified_by'] = self.context['last_modified_by']
         validated_data['extra_comment'] = None
         validated_data['assigned_skill_sets'] = instance.skill_sets.all()

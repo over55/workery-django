@@ -15,11 +15,11 @@ from rest_framework.response import Response
 from rest_framework.authtoken.models import Token
 from shared_api.custom_fields import PhoneNumberField
 from shared_foundation import constants
-from tenant_api.serializers.order_comment import OrderCommentSerializer
+# from tenant_api.serializers.order_comment import OrderCommentSerializer
 from tenant_api.serializers.skill_set import SkillSetListCreateSerializer
 from tenant_foundation.models import (
-    Comment,
-    OrderComment,
+    # Comment,
+    # OrderComment,
     Order,
     SkillSet,
     Tag
@@ -41,7 +41,7 @@ class OrderListCreateSerializer(serializers.ModelSerializer):
 
     # All comments are created by our `create` function and not by
     # `django-rest-framework`.
-    comments = OrderCommentSerializer(many=True, read_only=True, allow_null=True)
+    # comments = OrderCommentSerializer(many=True, read_only=True, allow_null=True)
 
     # This is a field used in the `create` function if the user enters a
     # comment. This field is *ONLY* to be used during the POST creation and
@@ -59,7 +59,7 @@ class OrderListCreateSerializer(serializers.ModelSerializer):
         fields = (
             # Read only fields.
             'id',
-            'comments',
+            # 'comments',
             'assigned_skill_sets',
             'associate_first_name',
             'associate_last_name',
@@ -71,7 +71,7 @@ class OrderListCreateSerializer(serializers.ModelSerializer):
             'last_modified_by_last_name',
 
             # Write only fields.
-            'extra_comment',
+            # 'extra_comment',
 
             # Read / write fields.
             'assignment_date',
@@ -96,7 +96,7 @@ class OrderListCreateSerializer(serializers.ModelSerializer):
             'category_tags',
             'created_by',
             'customer',
-            'comments',
+            # 'comments',
             'last_modified_by',
             'skill_sets'
         )
@@ -161,7 +161,7 @@ class OrderListCreateSerializer(serializers.ModelSerializer):
             )
 
         # Update validation data.
-        validated_data['comments'] = OrderComment.objects.filter(order=order)
+        # validated_data['comments'] = OrderComment.objects.filter(order=order)
         validated_data['created'] = order.created
         validated_data['created_by'] = created_by
         validated_data['last_modified_by'] = created_by
@@ -189,7 +189,7 @@ class OrderRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
 
     # All comments are created by our `create` function and not by
     # `django-rest-framework`.
-    comments = OrderCommentSerializer(many=True, read_only=True, allow_null=True)
+    # comments = OrderCommentSerializer(many=True, read_only=True, allow_null=True)
 
     # This is a field used in the `create` function if the user enters a
     # comment. This field is *ONLY* to be used during the POST creation and
@@ -207,7 +207,7 @@ class OrderRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         fields = (
             # Read only field.
             'id',
-            'comments',
+            # 'comments',
             'assigned_skill_sets',
             'associate_first_name',
             'associate_last_name',
@@ -244,7 +244,7 @@ class OrderRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
             'category_tags',
             'created_by',
             'customer',
-            'comments',
+            # 'comments',
             'last_modified_by',
             'skill_sets'
         )
@@ -303,7 +303,7 @@ class OrderRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
             )
 
         # Update validation data.
-        validated_data['comments'] = OrderComment.objects.filter(order=instance)
+        # validated_data['comments'] = OrderComment.objects.filter(order=instance)
         validated_data['created'] = instance.created
         validated_data['created_by'] = instance.created_by
         validated_data['last_modified_by'] = self.context['last_modified_by']

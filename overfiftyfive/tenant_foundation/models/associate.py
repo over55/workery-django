@@ -304,13 +304,6 @@ class Associate(AbstractThing, AbstractContactPoint, AbstractPostalAddress, Abst
         blank=True,
         null=True,
     )
-    comments = models.ManyToManyField(
-        "Comment",
-        help_text=_('The comments of this associate sorted by latest creation date..'),
-        blank=True,
-        related_name="%(app_label)s_%(class)s_associate_related",
-        through="AssociateComment",
-    )
 
     #
     #  FUNCTIONS
