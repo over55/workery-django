@@ -39,7 +39,7 @@ class AssociateListCreateSerializer(serializers.ModelSerializer):
 
     # We are overriding the `email` field to include unique email validation.
     email = serializers.EmailField(
-        validators=[UniqueValidator(queryset=Associate.objects.all())],
+        validators=[UniqueValidator(queryset=SharedUser.objects.all())],
         required=True,
     )
 

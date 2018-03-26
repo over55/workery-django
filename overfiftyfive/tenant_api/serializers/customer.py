@@ -38,7 +38,7 @@ class CustomerListCreateSerializer(serializers.ModelSerializer):
 
     # We are overriding the `email` field to include unique email validation.
     email = serializers.EmailField(
-        validators=[UniqueValidator(queryset=Customer.objects.all())],
+        validators=[UniqueValidator(queryset=SharedUser.objects.all())],
         required=False,
     )
 

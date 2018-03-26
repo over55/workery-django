@@ -42,9 +42,8 @@ class StaffListCreateSerializer(serializers.ModelSerializer):
 
     # We are overriding the `email` field to include unique email validation.
     email = serializers.EmailField(
-        validators=[UniqueValidator(queryset=Staff.objects.all())],
+        validators=[UniqueValidator(queryset=SharedUser.objects.all())],
         required=True,
-        source="owner.email"
     )
 
     # All comments are created by our `create` function and not by
@@ -183,10 +182,8 @@ class StaffListCreateSerializer(serializers.ModelSerializer):
         # Create our `Staff` object in our tenant schema.
         #---------------------------------------------------
         # Extract our "email" field.
-        owner = validated_data.get('owner', None)
-        email = None
-        if owner:
-            email = owner.get('email', None)
+        owner = None
+        email = validated_data.get('email', None)
 
         # Create an "Staff".
         staff = Staff.objects.create(
