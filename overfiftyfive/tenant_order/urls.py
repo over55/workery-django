@@ -1,7 +1,8 @@
 from django.conf.urls import include, url
 from django.urls import path
+from django.views.generic import TemplateView
 from django.views.generic.base import RedirectView
-from tenant_order.views import web_views
+from tenant_order.views import web_views, create_views
 
 
 urlpatterns = (
@@ -9,7 +10,7 @@ urlpatterns = (
     path('jobs/', web_views.JobSummaryView.as_view(), name='o55_tenant_job_summary'),
 
     # Create
-    path('jobs/create/', web_views.JobCreateView.as_view(), name='o55_tenant_job_create'),
+    path('jobs/create/step1/search-or-add', create_views.Step1CreateOrAddCustomerView.as_view(), name='o55_tenant_job_create'),
 
     # List
     path('jobs/list/', web_views.JobListView.as_view(), name='o55_tenant_job_list'),
