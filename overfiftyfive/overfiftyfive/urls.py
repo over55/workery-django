@@ -20,6 +20,7 @@ from django.contrib import admin
 from django.conf.urls.i18n import i18n_patterns
 from django.contrib.sitemaps.views import sitemap
 # from overfiftyfive.sitemaps import StaticViewSitemap
+from django.views.generic.base import RedirectView
 
 
 # sitemaps = {
@@ -34,7 +35,16 @@ handler500 = "shared_home.views.server_error"
 
 # Base URLs.
 urlpatterns = [
-    url(r'^admin/', admin.site.urls),
+    # Here are a list of URLs we'd like to have to help users who enter
+    # URLs from memory and or do not know the URLs. These redirects are for
+    # user's convinience.
+    url(r'^login/', RedirectView.as_view(pattern_name='o55_login_master', permanent=True, query_string=True)),
+    url(r'^login', RedirectView.as_view(pattern_name='o55_login_master', permanent=True, query_string=True)),
+    url(r'^sign-in/', RedirectView.as_view(pattern_name='o55_login_master', permanent=True, query_string=True)),
+    url(r'^sign-in', RedirectView.as_view(pattern_name='o55_login_master', permanent=True, query_string=True)),
+
+    # Here are where the applications URL start.
+    # url(r'^admin/', admin.site.urls), # Our project does not support Django Admin.
     url(r'^i18n/', include('django.conf.urls.i18n')),
     url('^', include('django.contrib.auth.urls')),
     url(r'^', include('shared_api.urls')),

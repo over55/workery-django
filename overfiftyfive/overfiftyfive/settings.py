@@ -42,7 +42,7 @@ TEMPLATE_DEBUG = env('DEBUG', default=False)
 ALLOWED_HOSTS = ['*']
 
 SITE_ID = 1
-
+ADMIN_ENABLED = False
 
 # Application definition
 
@@ -54,7 +54,7 @@ SESSION_COOKIE_DOMAIN = '.' + env("O55_APP_HTTP_DOMAIN")
 
 SHARED_APPS = (
     # Django Apps
-    'django.contrib.admin',
+    # 'django.contrib.admin', # Our project does not support Django Admin.
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
