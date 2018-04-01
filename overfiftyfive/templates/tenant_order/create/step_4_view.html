@@ -12,7 +12,7 @@
 
 <!-- API JAVASCRIPT -->
 <!----------------------------------------------------------------------------->
-{% include 'tenant_api/customers_api_js.html' %}
+{% include 'tenant_api/skillset_api_js.html' %}
 <!----------------------------------------------------------------------------->
 <!-- end API JAVASCRIPT -->
 
@@ -23,7 +23,6 @@
     $(document).ready(function() {
         // Populate our 'select2' chosen values.
         var tmp_skillsets = localStorage.getObj("tmp_skillsets");
-        console.log(tmp_skillsets);
         $('#skillsets').val(tmp_skillsets);
 
         // Initialize our 'select2' element.
@@ -33,11 +32,33 @@
     // Save this field.
     function ajax_submit() {
         var tmp_skillsets = $('#skillsets').val();
-        console.log(tmp_skillsets);
         localStorage.setObj("tmp_skillsets", tmp_skillsets);
 
-        // Redirect to the next page in the form.
-        window.location = "{% url 'o55_tenant_job_step_5_create' %}";
+        var ids_string = tmp_skillsets.toString();
+        localStorage.setObj("tmp_skillset_ids", tmp_skillsets);
+
+        // CREATE AN ARRAY OF ITEMS TO FILTER.
+        var search_arr = [];
+        for (var i = 0; i < tmp_skillsets.length; i++) {
+            var x = tmp_skillsets[i];
+            search_arr.push({
+                'id': tmp_skillsets[i],
+            });
+        } // end FOR LOOP.
+
+        // APPLY YOUR FILTER AND GET OUR SKILLSETS.
+        list_skillset_api2(
+            search_arr,
+            function(success_result) {
+                console.log(success_result);
+
+                // // Redirect to the next page in the form.
+                // window.location = "{% url 'o55_tenant_job_step_5_create' %}";
+            }, // end SUCCESS
+            function(error_result) {
+                console.log(error_result);
+            } // end ERROR
+        ); // end LIST API
     }
 
     function ajax_previous() {

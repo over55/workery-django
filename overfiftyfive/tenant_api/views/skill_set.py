@@ -7,6 +7,7 @@ from django.shortcuts import get_list_or_404, get_object_or_404
 from rest_framework import generics
 from rest_framework import authentication, viewsets, permissions, status
 from rest_framework.response import Response
+from tenant_api.filters.skill_set import SkillSetFilter
 from tenant_api.pagination import StandardResultsSetPagination
 from tenant_api.permissions.skill_set import (
    CanListCreateSkillSetPermission,
@@ -20,12 +21,13 @@ from tenant_foundation.models import SkillSet
 
 
 class SkillSetListCreateAPIView(generics.ListCreateAPIView):
+    filter_class = SkillSetFilter
     serializer_class = SkillSetListCreateSerializer
     pagination_class = StandardResultsSetPagination
     permission_classes = (
-        permissions.IsAuthenticated,
-        IsAuthenticatedAndIsActivePermission,
-        CanListCreateSkillSetPermission
+        # permissions.IsAuthenticated,
+        # IsAuthenticatedAndIsActivePermission,
+        # CanListCreateSkillSetPermission
     )
 
     def get_queryset(self):

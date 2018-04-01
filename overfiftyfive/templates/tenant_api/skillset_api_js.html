@@ -2,8 +2,13 @@
     // DEVELOPER NOTES:
     // - Requires "common_js.html" to be included before using this code.
 
+    /**
+     * criteria - A dictoary with key-value items.
+     */
     function list_skillset_api(criteria, func_callback, func_error_callback)
     {
+        var url = "{% url 'o55_skill_set_list_create_api_endpoint' %}?format=json";
+
         // If developer has specified criteria then iterate through all the
         // keys in the dictionary, fetch the item in the dictionary at the key
         // and append it to the URL.
@@ -37,7 +42,50 @@
             headers: {
                 'Authorization': rest_api_token
             },
-            url: "{% url 'o55_staff_list_create_api_endpoint' %}",
+            url: url,
+            cache: false,
+            contentType:"application/json",
+            processData: false,
+            type: 'GET',
+            success: function(json_results){
+                func_callback(json_results);
+            },
+            error: function(xhr, status, error) {
+                func_error_callback(xhr, status, error);
+            },
+            complete: function(xhr,status) {
+                // Do nothing.
+            }
+        });
+    }
+
+    /**
+     * criteria - array of dictionary items.
+     */
+    function list_skillset_api2(criteria, func_callback, func_error_callback)
+    {
+        var url = "{% url 'o55_skill_set_list_create_api_endpoint' %}?format=json";
+
+        for (var i = 0; i < criteria.length; i++) {
+            url += "&";
+
+            // Build our search criteria in the URL based on the results.
+            for(var index in criteria[i]) {
+                url += index + "=" + criteria[i][index];
+            }
+        }
+
+        // If developer has not specified what page this is for pagination
+        // then we automatically assign "&page=1" to the URL.
+        if(!criteria.hasOwnProperty('page')) {
+            url += "&page=1";
+        }
+
+        jQuery.ajax({
+            headers: {
+                'Authorization': rest_api_token
+            },
+            url: url,
             cache: false,
             contentType:"application/json",
             processData: false,
