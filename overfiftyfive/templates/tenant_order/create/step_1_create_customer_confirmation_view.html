@@ -1,4 +1,24 @@
 
 
 
-<a class="btn btn-primary btn-lg btn-block" href="{% url 'o55_tenant_job_step_2_create' %}" role="button"><i class="fas fa-plus"></i> Add New</a>
+<script>
+    function ajax_select(customer_id) {
+        // STEP 1 OF 2:
+        var previous_url = window.location.href;
+        localStorage.setItem("tmp_branch_previous_url", previous_url);
+
+        // STEP 2 OF 2:
+        // Redirect to the next page in the form.
+        window.location = "{% url 'o55_tenant_job_step_2_create' %}";
+    }
+
+    function ajax_previous() {
+        // Redirect to the next page in the form.
+        window.location = "{% url 'o55_tenant_job_add_customer_create' %}";
+    }
+</script>
+
+
+<a class="btn btn-primary btn-lg btn-block" role="button" onclick="ajax_previous();"><i class="fas fa-plus"></i> Previous</a>
+
+<a class="btn btn-primary btn-lg btn-block" role="button" onclick="ajax_select();"><i class="fas fa-plus"></i> Add New</a>

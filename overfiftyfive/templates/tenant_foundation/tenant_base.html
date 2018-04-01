@@ -186,6 +186,13 @@
         // For debugging purposes only.
         //console.log(private_api_key);
         //console.log(schema_name);
+
+        Storage.prototype.setObj = function(key, obj) {
+            return this.setItem(key, JSON.stringify(obj));
+        }
+        Storage.prototype.getObj = function(key) {
+            return JSON.parse(this.getItem(key));
+        }
     </script>
     <!-- end PRIVATE INFO -->
 

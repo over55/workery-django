@@ -12,9 +12,11 @@
 
 <script>
     function ajax_select(customer_id) {
+        var previous_url = window.location.href;
+        localStorage.setItem("tmp_branch_previous_url", previous_url);
+
         // STEP 1 OF 2:
         // Save the customer ID # into the users local storage.
-        console.log(customer_id);
         localStorage.setItem("tmp_customer_id", customer_id);
 
         // STEP 2 OF 2:
@@ -50,7 +52,7 @@
     <!------------------------------------------------------------------------->
     <!-- end BACK BUTTON -->
 
-    <h1>Add Client</h1>
+    <h1>Add Job</h1>
 
 	<div class="col-sm-12 mx-auto mt-3 pt-3 mb-3 text-center">
 		<h5>We found a match for this client:</h5>

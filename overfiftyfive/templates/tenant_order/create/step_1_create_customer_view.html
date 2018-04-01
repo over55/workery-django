@@ -1,4 +1,11 @@
+<script>
+function ajax_previous() {
+    // Redirect to the next page in the form.
+    window.location = "{% url 'o55_tenant_job_search_or_add_create' %}";
+}
+</script>
 
+<a class="btn btn-primary btn-lg btn-block" role="button" onclick="ajax_previous();"><i class="fas fa-plus"></i> Previous</a>
 
 
 <a class="btn btn-primary btn-lg btn-block" href="{% url 'o55_tenant_job_add_customer_confirmation_create' %}" role="button"><i class="fas fa-plus"></i> Add New</a>
