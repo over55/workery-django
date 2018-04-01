@@ -1,4 +1,84 @@
+{% extends 'tenant_foundation/tenant_base.html' %}
+{% load staticfiles i18n foundation_tags humanize %}
+
+{% block title %}
+{% trans 'Clients List | Over 55 Inc.' %}
+{% endblock title %}
+
+{% block header_content %}
+{% endblock header_content %}
+
+{% block content %}
+
+<script>
+    // Pre-populate the field with previous data.
+    $(document).ready(function() {
+        var tmp_describe = localStorage.getItem("tmp_describe");
+        $('#describe').val(tmp_describe);
+    });
+
+    // Save this field.
+    function ajax_submit() {
+        var tmp_describe = $('#describe').val();
+        localStorage.setItem("tmp_describe", tmp_describe);
+
+        // Redirect to the next page in the form.
+        window.location = "{% url 'o55_tenant_job_step_4_create' %}";
+    }
+
+    function ajax_previous() {
+        window.location = "{% url 'o55_tenant_job_step_2_create' %}";
+    }
+</script>
+
+<main id="main" role="main">
+
+    <!-- BREADCRUMB -->
+    <!------------------------------------------------------------------------->
+    <nav aria-label="breadcrumb">
+	  	<ol class="breadcrumb">
+	    	<li class="breadcrumb-item"><a href="{% url 'o55_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'o55_tenant_job_summary' %}">{% trans 'Jobs' %}</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{% trans 'Add' %}</li>
+	  	</ol>
+	</nav>
+    <!------------------------------------------------------------------------->
+    <!-- end BREADCRUMB -->
+
+    <!-- BACK BUTTON -->
+    <!------------------------------------------------------------------------->
+    <div class="row">
+		<div class="col-sm-3 p-3 mb-2">
+			<a class="btn btn-primary btn-lg" href="{% url 'o55_tenant_job_summary' %}" role="button">
+                <svg class="svg-inline--fa fa-arrow-left fa-w-14" aria-hidden="true" data-fa-processed="" data-prefix="fas" data-icon="arrow-left" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                <path fill="currentColor" d="M257.5 445.1l-22.2 22.2c-9.4 9.4-24.6 9.4-33.9 0L7 273c-9.4-9.4-9.4-24.6 0-33.9L201.4 44.7c9.4-9.4 24.6-9.4 33.9 0l22.2 22.2c9.5 9.5 9.3 25-.4 34.3L136.6 216H424c13.3 0 24 10.7 24 24v32c0 13.3-10.7 24-24 24H136.6l120.5 114.8c9.8 9.3 10 24.8.4 34.3z"></path>
+            </svg><!-- <i class="fas fa-arrow-left"></i> -->&nbsp;{% trans 'Back to Jobs Home' %}</a>
+		</div>
+	</div>
+    <!------------------------------------------------------------------------->
+    <!-- end BACK BUTTON -->
+
+    <h1>Add Client</h1>
+
+    <div class="col-md-5 mx-auto mt-2">
+		<h3 class="pt-4 pb-2 text-center">Add Residential Job</h3>
+		<form id="residential-job" class="needs-validation" action="" novalidate>
+	    	  <div class="form-group my-3">
+		      <label for="describe" class="font-b6">Describe the Job:</label>
+		      <textarea class="form-control form-control-lg border border-primary" id="describe" name="describe" placeholder="Describe here..." rows="4" minlength="10" required>
+              </textarea>
+		      <div id="describe-error" class="invalid-feedback"></div>
+		  </div>
+		  <div class="form-group mb-3 mx-auto text-center p-0">
+			<button class="btn btn-success btn-lg mt-4 float-right pl-4 pr-4" type="button" onclick="ajax_submit();">Next <i class="fas fa-arrow-right"></i></button>
+			<button class="btn btn-orange btn-lg mt-4 float-left pl-4 pr-4" type="button" onclick="ajax_previous();"><i class="fas fa-arrow-left"></i> Back</button>
+		  </div>
+		</form>
+	</div>
 
 
-
-<a class="btn btn-primary btn-lg btn-block" href="{% url 'o55_tenant_job_step_4_create' %}" role="button"><i class="fas fa-plus"></i> Add New</a>
+    <!-- RETURN-TO-TOP -->
+    <a id="return-to-top" href="#" class="btn-info btn-lg back-to-top" role="button" title="Back to top"><i class="fas fa-angle-up fa-2x"></i></a>
+    <!-- end RETURN-TO-TOP -->
+</main>
+{% endblock content %}
