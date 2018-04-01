@@ -1,4 +1,111 @@
+{% extends 'tenant_foundation/tenant_base.html' %}
+{% load staticfiles i18n foundation_tags humanize %}
+
+{% block title %}
+{% trans 'Clients List | Over 55 Inc.' %}
+{% endblock title %}
+
+{% block header_content %}
+{% endblock header_content %}
+
+{% block content %}
+
+<!-- API JAVASCRIPT -->
+<!----------------------------------------------------------------------------->
+{% include 'tenant_api/customers_api_js.html' %}
+<!----------------------------------------------------------------------------->
+<!-- end API JAVASCRIPT -->
+
+<!-- CUSTOM JAVASCRIPT -->
+<!----------------------------------------------------------------------------->
+<script>
+    // Pre-populate the field with previous data.
+    $(document).ready(function() {
+        // Populate our 'select2' chosen values.
+        var tmp_skillsets = localStorage.getObj("tmp_skillsets");
+        console.log(tmp_skillsets);
+        $('#skillsets').val(tmp_skillsets);
+
+        // Initialize our 'select2' element.
+        $('.js-example-basic-multiple').select2();
+    });
+
+    // Save this field.
+    function ajax_submit() {
+        var tmp_skillsets = $('#skillsets').val();
+        console.log(tmp_skillsets);
+        localStorage.setObj("tmp_skillsets", tmp_skillsets);
+
+        // Redirect to the next page in the form.
+        window.location = "{% url 'o55_tenant_job_step_5_create' %}";
+    }
+
+    function ajax_previous() {
+        window.location = "{% url 'o55_tenant_job_step_3_create' %}";
+    }
+</script>
+<!----------------------------------------------------------------------------->
+<!-- end CUSTOM JAVASCRIPT -->
+
+<main id="main" role="main">
+
+    <!-- BREADCRUMB -->
+    <!------------------------------------------------------------------------->
+    <nav aria-label="breadcrumb">
+	  	<ol class="breadcrumb">
+	    	<li class="breadcrumb-item"><a href="{% url 'o55_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'o55_tenant_job_summary' %}">{% trans 'Jobs' %}</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{% trans 'Add' %}</li>
+	  	</ol>
+	</nav>
+    <!------------------------------------------------------------------------->
+    <!-- end BREADCRUMB -->
+
+    <!-- BACK BUTTON -->
+    <!------------------------------------------------------------------------->
+    <div class="row">
+		<div class="col-sm-3 p-3 mb-2">
+			<a class="btn btn-primary btn-lg" href="{% url 'o55_tenant_job_summary' %}" role="button">
+                <svg class="svg-inline--fa fa-arrow-left fa-w-14" aria-hidden="true" data-fa-processed="" data-prefix="fas" data-icon="arrow-left" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                <path fill="currentColor" d="M257.5 445.1l-22.2 22.2c-9.4 9.4-24.6 9.4-33.9 0L7 273c-9.4-9.4-9.4-24.6 0-33.9L201.4 44.7c9.4-9.4 24.6-9.4 33.9 0l22.2 22.2c9.5 9.5 9.3 25-.4 34.3L136.6 216H424c13.3 0 24 10.7 24 24v32c0 13.3-10.7 24-24 24H136.6l120.5 114.8c9.8 9.3 10 24.8.4 34.3z"></path>
+            </svg><!-- <i class="fas fa-arrow-left"></i> -->&nbsp;{% trans 'Back to Jobs Home' %}</a>
+		</div>
+	</div>
+    <!------------------------------------------------------------------------->
+    <!-- end BACK BUTTON -->
+
+    <h1>Add Client</h1>
+
+    <div class="col-md-5 mx-auto mt-2">
+		<h3 class="pt-4 pb-2 text-center">Add Residential Job</h3>
 
 
 
-<a class="btn btn-primary btn-lg btn-block" href="{% url 'o55_tenant_job_step_5_create' %}" role="button"><i class="fas fa-plus"></i> Add New</a>
+		<form id="residential-job" class="needs-validation" action="" novalidate>
+
+
+	    	<div class="form-group my-3">
+		      <label for="describe" class="font-b6">Please select required job skill(s):</label>
+              <br />
+
+              <select id="skillsets" name="skillsets" class="js-example-basic-multiple" name="states[]" multiple="multiple">
+              {% for skillset in skillsets %}
+                <option value="{{ skillset.id }}">{{ skillset }}</option>
+              {% endfor %}
+              </select>
+
+            <div id="describe-error" class="invalid-feedback"></div>
+		  </div>
+		  <div class="form-group mb-3 mx-auto text-center p-0">
+			<button class="btn btn-success btn-lg mt-4 float-right pl-4 pr-4" type="button" onclick="ajax_submit();">Next <i class="fas fa-arrow-right"></i></button>
+			<button class="btn btn-orange btn-lg mt-4 float-left pl-4 pr-4" type="button" onclick="ajax_previous();"><i class="fas fa-arrow-left"></i> Back</button>
+		  </div>
+		</form>
+	</div>
+
+
+    <!-- RETURN-TO-TOP -->
+    <a id="return-to-top" href="#" class="btn-info btn-lg back-to-top" role="button" title="Back to top"><i class="fas fa-angle-up fa-2x"></i></a>
+    <!-- end RETURN-TO-TOP -->
+</main>
+{% endblock content %}
