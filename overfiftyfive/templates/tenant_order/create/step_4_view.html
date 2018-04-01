@@ -38,27 +38,16 @@
         localStorage.setObj("tmp_skillset_ids", tmp_skillsets);
 
         // CREATE AN ARRAY OF ITEMS TO FILTER.
-        var search_arr = [];
+        var skills_arr = [];
         for (var i = 0; i < tmp_skillsets.length; i++) {
-            var x = tmp_skillsets[i];
-            search_arr.push({
-                'id': tmp_skillsets[i],
-            });
+            var option_id = tmp_skillsets[i];
+            var option_value = $('#option_id_'+option_id).text();
+            skills_arr.push(option_value);
         } // end FOR LOOP.
+        localStorage.setObj("tmp_skillset_values", skills_arr);
 
-        // APPLY YOUR FILTER AND GET OUR SKILLSETS.
-        list_skillset_api2(
-            search_arr,
-            function(success_result) {
-                console.log(success_result);
-
-                // // Redirect to the next page in the form.
-                // window.location = "{% url 'o55_tenant_job_step_5_create' %}";
-            }, // end SUCCESS
-            function(error_result) {
-                console.log(error_result);
-            } // end ERROR
-        ); // end LIST API
+        // Redirect to the next page in the form.
+        window.location = "{% url 'o55_tenant_job_step_5_create' %}";
     }
 
     function ajax_previous() {
@@ -111,7 +100,7 @@
 
               <select id="skillsets" name="skillsets" class="js-example-basic-multiple" name="states[]" multiple="multiple">
               {% for skillset in skillsets %}
-                <option value="{{ skillset.id }}">{{ skillset }}</option>
+                <option value="{{ skillset.id }}" id="option_id_{{ skillset.id }}">{{ skillset }}</option>
               {% endfor %}
               </select>
 
