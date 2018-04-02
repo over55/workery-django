@@ -13,8 +13,74 @@
 <script>
     // Pre-populate the field with previous data.
     $(document).ready(function() {
-        // var tmp_describe = localStorage.getItem("tmp_describe");
-        // $('#describe').val(tmp_describe);
+        ////////////////////////////////
+        // GET FROM OUR LOCAL STORAGE //
+        ////////////////////////////////
+        var tmp_order_given_name = localStorage.getItem("tmp_order_given_name");
+        var tmp_order_middle_name = localStorage.getItem("tmp_order_middle_name");
+        var tmp_order_last_name = localStorage.getItem("tmp_order_last_name");
+        var tmp_order_dob = localStorage.getItem("tmp_order_dob");
+        var tmp_order_gender = localStorage.getItem("tmp_order_gender");
+        var tmp_order_ok_to_email = localStorage.getItem("tmp_order_ok_to_email");
+        var tmp_order_ok_to_text = localStorage.getItem("tmp_order_ok_to_text");
+        var tmp_order_street_address = localStorage.getItem("tmp_order_street_address");
+        var tmp_order_street_address_extra = localStorage.getItem("tmp_order_street_address_extra");
+        var tmp_order_address_region = localStorage.getItem("tmp_order_address_region");
+        var tmp_order_address_locality = localStorage.getItem("tmp_order_address_locality");
+        var tmp_order_address_country = localStorage.getItem("tmp_order_address_country");
+        var tmp_order_postal_code = localStorage.getItem("tmp_order_postal_code");
+        var tmp_order_post_office_box_number = localStorage.getItem("tmp_order_post_office_box_number");
+        var tmp_order_email = localStorage.getItem("tmp_order_email");
+        var tmp_order_telephone = localStorage.getItem("tmp_order_telephone");
+        var tmp_order_mobile = localStorage.getItem("tmp_order_mobile");
+        var tmp_order_password = localStorage.getItem("tmp_order_password");
+        var tmp_order_password_repeat = localStorage.getItem("tmp_order_password_repeat");
+
+        ////////////////////
+        // SET OUR VALUES //
+        ////////////////////
+        $('#selected_first_name').append(tmp_order_given_name);
+        $('#selected_middle_name').append(tmp_order_middle_name);
+        $('#selected_last_name').append(tmp_order_last_name);
+        $('#selected_phonenumber').append(tmp_order_telephone);
+        if (tmp_order_mobile !== undefined && tmp_order_mobile !== null && tmp_order_mobile.length > 0) {
+            $('#selected_mobilenumber').append(tmp_order_mobile);
+        }
+        if (tmp_order_email !== undefined && tmp_order_email !== null && tmp_order_email.length > 0) {
+            $('#selected_email').append(tmp_order_email);
+        }
+        if (tmp_order_ok_to_email !== undefined && tmp_order_ok_to_email !== null && tmp_order_ok_to_email.length > 0) {
+            tmp_order_ok_to_email = capitalizeFirstLetter(tmp_order_ok_to_email);
+            $('#selected_ok_to_email').append(tmp_order_ok_to_email);
+        }
+        if (tmp_order_ok_to_text !== undefined && tmp_order_ok_to_text !== null && tmp_order_ok_to_text.length > 0) {
+            tmp_order_ok_to_text = capitalizeFirstLetter(tmp_order_ok_to_text);
+            $('#selected_ok_to_text').append(tmp_order_ok_to_text);
+        }
+        if (tmp_order_dob !== undefined && tmp_order_dob !== null && tmp_order_dob.length > 0) {
+            $('#selected_dob').append(tmp_order_dob);
+        }
+        if (tmp_order_gender !== undefined && tmp_order_gender !== null && tmp_order_gender.length > 0) {
+            tmp_order_gender = capitalizeFirstLetter(tmp_order_gender);
+            $('#selected_gender').append(tmp_order_gender);
+        }
+        $('#selected_street_address').append(tmp_order_street_address);
+        if (tmp_order_street_address_extra !== undefined && tmp_order_street_address_extra !== null && tmp_order_street_address_extra.length > 0) {
+            $('#selected_street_address_extra').append(tmp_order_street_address_extra);
+        }
+        $('#selected_address_region').append(tmp_order_address_region);
+        $('#selected_address_locality').append(tmp_order_address_locality);
+        $('#selected_address_country').append(tmp_order_address_country);
+        $('#selected_postal_code').append(tmp_order_postal_code);
+        if (tmp_order_post_office_box_number !== undefined && tmp_order_post_office_box_number !== null && tmp_order_post_office_box_number.length > 0) {
+            $('#selected_post_office_box_number').append(tmp_order_post_office_box_number);
+        }
+        // if (tmp_order_password !== undefined && tmp_order_password !== null && tmp_order_password.length > 0) {
+        //     $('#password').val(tmp_order_password);
+        // }
+        // if (tmp_order_password_repeat !== undefined && tmp_order_password_repeat !== null && tmp_order_password_repeat.length > 0) {
+        //     $('#password_repeat').val(tmp_order_password_repeat);
+        // }
     });
 
     function ajax_submit() {
@@ -72,71 +138,76 @@
             </tr>
             <tr>
               <th scope="row" class="bg-light">First name</th>
-              <td>Rodolfo</td>
+              <td id="selected_first_name"><!-- PLACEHOLDER --></td>
+            </tr>
+            <tr>
+              <th scope="row" class="bg-light">Middle name name</th>
+              <td id="selected_middle_name"><!-- PLACEHOLDER --></td>
             </tr>
             <tr>
               <th scope="row" class="bg-light">Last name</th>
-              <td>Martinez</td>
+              <td id="selected_last_name"><!-- PLACEHOLDER --></td>
             </tr>
             <tr>
               <th scope="row" class="bg-light">Phone</th>
-              <td>(xxx) xxx-xxxx</td>
+              <td id="selected_phonenumber"><!-- PLACEHOLDER --></td>
             </tr>
             <tr>
               <th scope="row" class="bg-light">Mobile</th>
-              <td>---</td>
+              <td id="selected_mobilenumber"><!-- PLACEHOLDER --></td>
             </tr>
             <tr>
               <th scope="row" class="bg-light">E-Mail</th>
-              <td>example@example.com</td>
+              <td id="selected_email"><!-- PLACEHOLDER --></td>
             </tr>
             <tr>
               <th scope="row" class="bg-light">Ok to E-Mail?</th>
-              <td>Yes</td>
+              <td id="selected_ok_to_email"><!-- PLACEHOLDER --></td>
             </tr>
             <tr>
               <th scope="row" class="bg-light">Ok to Text?</th>
-              <td>No</td>
+              <td id="selected_ok_to_text"><!-- PLACEHOLDER --></td>
             </tr>
             <tr>
               <th scope="row" class="bg-light">Date of Birth</th>
-              <td>30/03/1994</td>
+              <td id="selected_dob"><!-- PLACEHOLDER --></td>
             </tr>
             <tr>
               <th scope="row" class="bg-light">Gender</th>
-              <td>Male</td>
+              <td id="selected_gender"><!-- PLACEHOLDER --></td>
             </tr>
             <tr class="bg-dark">
               <th scope="row" colspan="2" class="text-light">Address</th>
             </tr>
             <tr>
-              <th scope="row" class="bg-light">Street No.</th>
-              <td>XYZ</td>
+              <th scope="row" class="bg-light">Street Address</th>
+              <td id="selected_street_address"><!-- PLACEHOLDER --></td>
             </tr>
             <tr>
-              <th scope="row" class="bg-light">Street name</th>
-              <td>Southdale road</td>
-            </tr>
-            <tr>
-              <th scope="row" class="bg-light">Neighbourhood</th>
-              <td>---</td>
+              <th scope="row" class="bg-light">Street Address (Extra)</th>
+              <td id="selected_street_address_extra"><!-- PLACEHOLDER --></td>
             </tr>
             <tr>
               <th scope="row" class="bg-light">City</th>
-              <td>London</td>
+              <td id="selected_address_locality"><!-- PLACEHOLDER --></td>
             </tr>
             <tr>
               <th scope="row" class="bg-light">State/Province</th>
-              <td>Ontario</td>
+              <td id="selected_address_region"><!-- PLACEHOLDER --></td>
             </tr>
             <tr>
               <th scope="row" class="bg-light">Postal code</th>
-              <td>N0L 1E0</td>
+              <td id="selected_postal_code"><!-- PLACEHOLDER --></td>
             </tr>
             <tr>
               <th scope="row" class="bg-light">Country</th>
-              <td>Canada</td>
+              <td id="selected_address_country"><!-- PLACEHOLDER --></td>
             </tr>
+            <tr>
+              <th scope="row" class="bg-light">Post Office Box Number</th>
+              <td id="selected_post_office_box_number"><!-- PLACEHOLDER --></td>
+            </tr>
+            {% comment %}
             <tr class="bg-dark">
               <th scope="row" colspan="2" class="text-light">Skills</th>
             </tr>
@@ -146,6 +217,7 @@
               <span class="badge badge-info badge-lg">HTML</span> <span class="badge badge-info badge-lg">PHP</span> <span class="badge badge-info badge-lg">Bootstrap</span> <span class="badge badge-info badge-lg">Django</span> <span class="badge badge-info badge-lg">Photoshop</span> <span class="badge badge-info badge-lg">Python</span> <span class="badge badge-info badge-lg">ASP.net</span> <span class="badge badge-info badge-lg">Android</span> <span class="badge badge-info badge-lg">jQuery</span>
               </td>
             </tr>
+            {% endcomment %}
           </tbody>
         </table>
         <div class="form-group col-md-12 mb-3 p-0 mx-auto text-center">
