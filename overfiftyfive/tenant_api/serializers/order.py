@@ -43,10 +43,10 @@ class OrderListCreateSerializer(serializers.ModelSerializer):
     # `django-rest-framework`.
     # comments = OrderCommentSerializer(many=True, read_only=True, allow_null=True)
 
-    # This is a field used in the `create` function if the user enters a
-    # comment. This field is *ONLY* to be used during the POST creation and
-    # will be blank during GET.
-    extra_comment = serializers.CharField(write_only=True, allow_null=True)
+    # # This is a field used in the `create` function if the user enters a
+    # # comment. This field is *ONLY* to be used during the POST creation and
+    # # will be blank during GET.
+    # extra_comment = serializers.CharField(write_only=True, allow_null=True)
 
     # The skill_sets that this associate belongs to. We will return primary
     # keys only. This field is read/write accessible.
@@ -82,11 +82,13 @@ class OrderListCreateSerializer(serializers.ModelSerializer):
             'hours',
             'is_cancelled',
             'is_ongoing',
+            'is_home_support_service',
             'payment_date',
             'service_fee',
             # 'created_by',
             # 'last_modified_by',
             'skill_sets',
+            'description',
         )
 
     def setup_eager_loading(cls, queryset):
@@ -103,15 +105,17 @@ class OrderListCreateSerializer(serializers.ModelSerializer):
         return queryset
 
     def create(self, validated_data):
-        assignment_date = validated_data['assignment_date']
-        associate = validated_data['associate']
+        assignment_date = validated_data.get('assignment_date', None)
+        associate = validated_data.get('associate', None)
         completion_date = validated_data.get('completion_date', None)
         customer = validated_data['customer']
         hours = validated_data.get('hours', 0)
         is_cancelled = validated_data.get('is_cancelled', False)
         is_ongoing = validated_data.get('is_ongoing', False)
+        is_home_support_service = validated_data.get('is_home_support_service', False)
         payment_date = validated_data.get('payment_date', None)
         created_by = self.context['created_by']
+        description = validated_data.get('description', False)
 
         # Update currency price.
         service_fee = validated_data.get('service_fee', Money(0, constants.O55_APP_DEFAULT_MONEY_CURRENCY))
@@ -122,13 +126,15 @@ class OrderListCreateSerializer(serializers.ModelSerializer):
             associate=associate,
             assignment_date=assignment_date,
             is_ongoing=is_ongoing,
+            is_home_support_service=is_home_support_service,
             is_cancelled=is_cancelled,
             completion_date=completion_date,
             hours=hours,
             service_fee=service_fee,
             payment_date=payment_date,
             created_by=created_by,
-            last_modified_by=None
+            last_modified_by=None,
+            description=description
         )
 
         #-----------------------------
@@ -145,20 +151,20 @@ class OrderListCreateSerializer(serializers.ModelSerializer):
         if skill_sets is not None:
             order.skill_sets.set(skill_sets)
 
-        #-----------------------------
-        # Create our `Comment` object.
-        #-----------------------------
-        extra_comment = validated_data.get('extra_comment', None)
-        if extra_comment is not None:
-            comment = Comment.objects.create(
-                created_by=created_by,
-                last_modified_by=created_by,
-                text=extra_comment
-            )
-            order_comment = OrderComment.objects.create(
-                order=order,
-                comment=comment,
-            )
+        # #-----------------------------
+        # # Create our `Comment` object.
+        # #-----------------------------
+        # extra_comment = validated_data.get('extra_comment', None)
+        # if extra_comment is not None:
+        #     comment = Comment.objects.create(
+        #         created_by=created_by,
+        #         last_modified_by=created_by,
+        #         text=extra_comment
+        #     )
+        #     order_comment = OrderComment.objects.create(
+        #         order=order,
+        #         comment=comment,
+        #     )
 
         # Update validation data.
         # validated_data['comments'] = OrderComment.objects.filter(order=order)
@@ -226,6 +232,7 @@ class OrderRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
             'hours',
             'is_cancelled',
             'is_ongoing',
+            'is_home_support_service',
             'payment_date',
             'service_fee',
             # 'created_by',

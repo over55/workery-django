@@ -1,7 +1,7 @@
 <script>
     function create_job_api(data_dict, func_callback, func_error_callback, complete_callback) {
         jQuery.ajax({
-            url: "{% url 'o55_job_list_create_api_endpoint' %}",
+            url: "{% url 'o55_order_list_create_api_endpoint' %}",
             headers: {
                 Authorization: rest_api_token
             },

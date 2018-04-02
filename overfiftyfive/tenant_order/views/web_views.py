@@ -17,7 +17,7 @@ from tenant_foundation.models.order import Order
 @method_decorator(login_required, name='dispatch')
 class JobSummaryView(ListView, ExtraRequestProcessingMixin):
     context_object_name = 'job_list'
-    queryset = Order.objects.order_by('-created')
+    queryset = Order.objects.filter(is_cancelled=False).order_by('-created')
     template_name = 'tenant_order/summary/view.html'
     paginate_by = 100
 
@@ -34,11 +34,6 @@ class JobSummaryView(ListView, ExtraRequestProcessingMixin):
 
         # Return our modified context.
         return modified_context
-
-    def get_queryset(self):
-        queryset = Order.objects.all()
-        queryset = queryset.order_by('-assignment_date', '-completion_date', '-payment_date') # Get the base.
-        return queryset
 
 
 #------#

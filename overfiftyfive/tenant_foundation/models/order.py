@@ -88,6 +88,13 @@ class Order(models.Model):
         blank=True,
         null=True
     )
+    description = models.TextField(
+        _("Description"),
+        help_text=_('A description of this job.'),
+        blank=True,
+        null=True,
+        default='',
+    )
     assignment_date = models.DateField(
         _('Assignment Date'),
         help_text=_('The date that an associate was assigned to the customer.'),
@@ -103,6 +110,12 @@ class Order(models.Model):
     is_ongoing = models.BooleanField(
         _("Is Active"),
         help_text=_('Track whether this order is ongoing.'),
+        default=False,
+        blank=True
+    )
+    is_home_support_service = models.BooleanField(
+        _("Is Home Support Service"),
+        help_text=_('Track whether this order is a home support service request.'),
         default=False,
         blank=True
     )

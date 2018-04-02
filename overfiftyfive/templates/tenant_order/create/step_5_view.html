@@ -10,6 +10,14 @@
 
 {% block content %}
 
+<!-- API JAVASCRIPT -->
+<!----------------------------------------------------------------------------->
+{% include 'tenant_api/jobs_api_js.html' %}
+<!----------------------------------------------------------------------------->
+<!-- end API JAVASCRIPT -->
+
+<!-- CUSTOM JAVASCRIPT -->
+<!----------------------------------------------------------------------------->
 <script>
     // Pre-populate the field with previous data.
     $(document).ready(function() {
@@ -48,17 +56,55 @@
 
     // Save this field.
     function ajax_submit() {
-        var tmp_describe = $('#describe').val();
-        localStorage.setItem("tmp_describe", tmp_describe);
+        var tmp_job_type = localStorage.getItem("tmp_job_type");
+        var is_ongoing = tmp_job_type == "Ongoing" ? true : false;
+        var tmp_home_support = localStorage.getItem("tmp_home_support");
+        var is_home_support_service = tmp_home_support == "Yes" ? true : false;
 
-        // Redirect to the next page in the form.
-        window.location = "{% url 'o55_tenant_job_summary' %}";
+        create_job_api(
+            {
+                'customer': localStorage.getItem("tmp_customer_id"),
+                'associate': null,
+                'skill_sets': localStorage.getObj("tmp_skillset_ids"),
+                'is_ongoing': is_ongoing,
+                'is_home_support_service': is_home_support_service,
+                'customer': localStorage.getItem("tmp_customer_id"),
+                'description': localStorage.getItem("tmp_describe"),
+            },
+            function(success_result) {
+                console.log(success_result);
+
+                // Delete all our selected data.
+                localStorage.removeItem("tmp_customer_id");
+                localStorage.removeItem("tmp_customer_name");
+                localStorage.removeItem("tmp_job_type");
+                localStorage.removeItem("tmp_home_support");
+                localStorage.removeItem("tmp_describe");
+                localStorage.removeItem("tmp_skillsets");
+                localStorage.removeItem("tmp_skillset_ids");
+                localStorage.removeItem("tmp_skillset_values");
+
+                // Redirect to the next page in the form.
+                window.location = "{% url 'o55_tenant_job_summary' %}";
+            },
+            function(error_result) {
+                console.log("ERROR");
+                console.log(error_result);
+            },
+            function(xhr,status) {
+                // Do nothing ...
+            }
+        );
+
+
     }
 
     function ajax_previous() {
         window.location = "{% url 'o55_tenant_job_step_4_create' %}";
     }
 </script>
+<!----------------------------------------------------------------------------->
+<!-- end CUSTOM JAVASCRIPT -->
 
 <main id="main" role="main">
 
@@ -140,7 +186,7 @@
           <div class="modal-body">
             <p class="m-3 p-2">This will create a new job, which will need to be assigned to a member. Do you want to continue?</p>
             <button type="button" class="btn btn-lg btn-secondary float-left m-2" data-dismiss="modal">No</button>
-            <button type="button" class="btn btn-lg btn-primary float-right m-2" id="yes_submit">Yes</button>
+            <button type="button" class="btn btn-lg btn-primary float-right m-2" id="yes_submit" onclick="ajax_submit();">Yes</button>
           </div>
         </div>
       </div>
