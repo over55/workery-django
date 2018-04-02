@@ -1,11 +1,255 @@
+{% extends 'tenant_foundation/tenant_base.html' %}
+{% load staticfiles i18n foundation_tags humanize %}
+
+{% block title %}
+{% trans 'Clients List | Over 55 Inc.' %}
+{% endblock title %}
+
+{% block header_content %}
+{% endblock header_content %}
+
+{% block content %}
+
 <script>
-function ajax_previous() {
-    // Redirect to the next page in the form.
-    window.location = "{% url 'o55_tenant_job_search_or_add_create' %}";
-}
+    /**
+     *  When page loads, the following code will be run first.
+     */
+    $(document).ready(function () {
+        // Initialize our datepicker jQuery code with our HTML view.
+        $( "#dob" ).datepicker({
+            dateFormat: 'yy-mm-dd'  // https://stackoverflow.com/a/7500097
+        });
+
+        // Generate random password and apply it automatically to the
+        // password fields.
+        var randomString = Math.random().toString(36).slice(-10);
+        $('#password').val(randomString);
+        $('#password_repeat').val(randomString);
+    }); // end Ready
+
+    // Save this field.
+    function ajax_submit() {
+        // var tmp_describe = $('#describe').val();
+        // localStorage.setItem("tmp_describe", tmp_describe);
+
+        // Redirect to the next page in the form.
+        window.location = "{% url 'o55_tenant_job_add_customer_confirmation_create' %}";
+    }
+
+    function ajax_previous() {
+        window.location = "{% url 'o55_tenant_job_search_or_add_create' %}";
+    }
 </script>
 
-<a class="btn btn-primary btn-lg btn-block" role="button" onclick="ajax_previous();"><i class="fas fa-plus"></i> Previous</a>
+<main id="main" role="main">
+
+    <!-- BREADCRUMB -->
+    <!------------------------------------------------------------------------->
+    <nav aria-label="breadcrumb">
+	  	<ol class="breadcrumb">
+	    	<li class="breadcrumb-item"><a href="{% url 'o55_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'o55_tenant_job_summary' %}">{% trans 'Jobs' %}</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{% trans 'Add' %}</li>
+	  	</ol>
+	</nav>
+    <!------------------------------------------------------------------------->
+    <!-- end BREADCRUMB -->
+
+    <!-- BACK BUTTON -->
+    <!------------------------------------------------------------------------->
+    <div class="row">
+		<div class="col-sm-3 p-3 mb-2">
+			<a class="btn btn-primary btn-lg" href="{% url 'o55_tenant_job_summary' %}" role="button">
+                <svg class="svg-inline--fa fa-arrow-left fa-w-14" aria-hidden="true" data-fa-processed="" data-prefix="fas" data-icon="arrow-left" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                <path fill="currentColor" d="M257.5 445.1l-22.2 22.2c-9.4 9.4-24.6 9.4-33.9 0L7 273c-9.4-9.4-9.4-24.6 0-33.9L201.4 44.7c9.4-9.4 24.6-9.4 33.9 0l22.2 22.2c9.5 9.5 9.3 25-.4 34.3L136.6 216H424c13.3 0 24 10.7 24 24v32c0 13.3-10.7 24-24 24H136.6l120.5 114.8c9.8 9.3 10 24.8.4 34.3z"></path>
+            </svg><!-- <i class="fas fa-arrow-left"></i> -->&nbsp;{% trans 'Back to Jobs Home' %}</a>
+		</div>
+	</div>
+    <!------------------------------------------------------------------------->
+    <!-- end BACK BUTTON -->
+
+    <h1>Add Client</h1>
+
+    <!-- FORM -->
+    <!------------------------------------------------------------------------->
+    <div class="col-sm-5 mx-auto mt-2">
+        <!-- Residential form -->
+        <div class="col-sm-12 fade show active" id="client-form" aria-labelledby="residential">
+            <h3 class="pt-4 pb-2 text-center">Add Client Form</h3>
+            <p>Use this form to fill out the client information.</p>
+            <p><span class="text-secondary font-italic"><sup>*</sup>&nbsp;-&nbsp;Indicates required field to fill out.</span></p>
+            <!-- Error Output -->
+            <div id="all_error_result" name="all_error_result"></div>
+            <!-- end Error Output -->
+            <p>&nbsp;</p>
+            <form id="add-client-form" method="post" class="needs-validation" action="" novalidate>
+            <!-- ############ PERSON ############ -->
+            <p class="border-bottom mb-3 pb-1 text-secondary">Personal Information</p>
+            <div class="form-row">
+                <div class="form-group col-md-12 mb-4">
+                    <label for="firstname">First name <sup>*</sup></label>
+                    <input type="text" class="form-control form-control-lg border border-primary" id="firstname" name="firstname" placeholder="First name" minlength="2" maxlength="30" required>
+                    <div id="firstname-error" class="invalid-feedback"></div>
+                </div>
+                <div class="form-group col-md-7 mb-4">
+                    <label for="middlename">Middle name <sup>*</sup></label>
+                    <input type="text" class="form-control form-control-lg border border-primary" id="middlename" name="middlename" placeholder="Middle name" minlength="2" maxlength="30" required>
+                    <div id="middlename-error" class="invalid-feedback"></div>
+                </div>
+                <div class="form-group col-md-12 mb-4">
+                    <label for="lastname">Last name <sup>*</sup></label>
+                    <input type="text" class="form-control form-control-lg border border-primary" id="lastname" name="lastname" placeholder="Last name" minlength="2" maxlength="150" required>
+                    <div id="lastname-error" class="invalid-feedback"></div>
+                </div>
+                <div class="form-group p-0 col-md-7 mb-4">
+                    <label for="dob">Date of Birth</label>
+                    <div class="input-group input-group-lg">
+                        <input type="text" class="form-control form-control-lg border border-success" id="dob" name="dob" placeholder="yyyy-mm-dd" required>
+                        <div class="input-group-append">
+                            <span class="input-group-text dob-icon bg-success border-success"><i class="far fa-calendar-alt"></i></span>
+                        </div>
+                        <div id="dob-error" class="invalid-feedback"></div>
+                    </div>
+                </div>
+                <div class="form-group col-md-7 mb-4 p-0">
+                    <label for="gender">Gender</label>
+                    <select class="custom-select form-control-lg border-success" id="gender" name="gender" required>
+                        <option value="" selected>Gender...</option>
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
+                    </select>
+                    <div id="gender-error" class="invalid-feedback"></div>
+                </div>
+            </div>
+            <!-- ############ end PERSON ############ -->
+            <!-- ############ CONTACT POINT ############ -->
+            <p class="border-bottom mb-3 pb-1 text-secondary">Contact Point</p>
+            <div class="form-row">
+                <div class="form-group col-md-7 mb-4">
+                    <label for="phonenumber">Phone <sup>*</sup></label>
+                    <input type="text" class="form-control form-control-lg border border-primary" id="phonenumber" name="phonenumber" placeholder="(xxx) xxx-xxxx" minlength="10" maxlength="31" required>
+                    <div id="phonenumber-error" class="invalid-feedback"></div>
+                </div>
+                <div class="form-group col-md-7 mb-4">
+                    <label for="mobilenumber">Mobile</label>
+                    <input type="text" class="form-control form-control-lg border border-success" id="mobilenumber" name="mobilenumber" placeholder="(xxx) xxx-xxxx" minlength="10" maxlength="31">
+                    <div id="mobilenumber-error" class="invalid-feedback"></div>
+                </div>
+                <div class="form-group col-md-12 mb-4">
+                    <label for="email">E-Mail</label>
+                    <input type="email" class="form-control form-control-lg border border-success" id="email" name="email" placeholder="Email Address" maxlength="254">
+                    <div id="email-error" class="invalid-feedback"></div>
+                </div>
+                <div class="form-group mt-2 mb-4">
+                    <p class="mb-1">Ok to E-Mail?</p>
+                    <div class="form-radio custom-control custom-radio custom-control-inline">
+                        <input type="radio" id="ok_to_email" name="ok_to_email" value="yes" class="custom-control-input form-check-input">
+                        <label class="custom-control-label form-check-label" for="ok_to_email">Yes</label>
+                    </div>
+                    <div class="form-radio custom-control custom-radio custom-control-inline">
+                        <input type="radio" id="ok_to_email2" name="ok_to_email" value="no" class="custom-control-input form-check-input">
+                        <label class="custom-control-label form-check-label" for="ok_to_email2">No</label>
+                    </div>
+                </div>
+                <div class="form-group mt-2 mb-4">
+                    <p class="mb-1">Ok to Text?</p>
+                    <div class="form-radio custom-control custom-radio custom-control-inline">
+                        <input type="radio" id="ok_to_text" name="ok_to_text" value="yes" class="custom-control-input form-check-input">
+                        <label class="custom-control-label form-check-label" for="ok_to_text">Yes</label>
+                    </div>
+                    <div class="form-radio custom-control custom-radio custom-control-inline">
+                        <input type="radio" id="ok_to_text2" name="ok_to_text" value="no" class="custom-control-input form-check-input">
+                        <label class="custom-control-label form-check-label" for="ok_to_text2">No</label>
+                    </div>
+                </div>
+            </div>
+            <!-- ############ end CONTACT POINT ############ -->
+            <!-- ############ LOCATION ############ -->
+            <p class="border-bottom mb-3 pb-1 text-secondary">Postal Address</p>
+            <div class="form-row">
+                <div class="form-group col-md-12 mb-4">
+                    <label for="street_address">Street Address <sup>*</sup></label>
+                    <input type="text" class="form-control form-control-lg border border-primary" id="street_address" name="street_address" placeholder="Street Address" minlength="3" maxlength="255" required>
+                    <div id="street_address-error" class="invalid-feedback"></div>
+                </div>
+                <div class="form-group col-md-12 mb-4">
+                    <label for="street_address_extra">Street Address (Extra)</label>
+                    <input type="text" class="form-control form-control-lg border border-success" id="street_address_extra" name="street_address_extra" placeholder="Street Address (Extra)" minlength="3" maxlength="255">
+                    <div id="street_address_extra-error" class="invalid-feedback"></div>
+                </div>
+                <div class="form-group col-md-12 mb-4">
+                    <label for="address_locality">City <sup>*</sup></label>
+                    <input type="text" class="form-control form-control-lg border border-primary" id="address_locality" name="address_locality" placeholder="City" minlength="3" maxlength="127" required>
+                    <div id="address_locality-error" class="invalid-feedback"></div>
+                </div>
+                <div class="form-group col-md-7 mb-4">
+                    <label for="address_region">Province <sup>*</sup></label>
+                    <input type="text" class="form-control form-control-lg border border-primary" id="address_region" name="address_region" placeholder="Province" minlength="3" maxlength="127" required>
+                    <div id="address_region-error" class="invalid-feedback"></div>
+                </div>
+                <div class="form-group col-md-7 mb-4">
+                    <label for="address_country">Country <sup>*</sup></label>
+                    <input type="text" class="form-control form-control-lg border border-primary" id="address_country" name="address_country" placeholder="Country" minlength="3" maxlength="127" required>
+                    <div id="address_country-error" class="invalid-feedback"></div>
+                </div>
+                <div class="form-group col-md-7 mb-4">
+                    <label for="postal_code">Postal Code <sup>*</sup></label>
+                    <input type="text" class="form-control form-control-lg border border-primary" id="postal_code" name="postal_code" placeholder="Postal Address" minlength="6" maxlength="6" required>
+                    <div id="postal_code-error" class="invalid-feedback"></div>
+                </div>
+                <div class="form-group col-md-7 mb-4">
+                    <label for="post_office_box_number">Post Office Box # </label>
+                    <input type="text" class="form-control form-control-lg border border-success" id="post_office_box_number" name="post_office_box_number" placeholder="Post Office Box #" minlength="3" maxlength="255" required>
+                    <div id="post_office_box_number-error" class="invalid-feedback"></div>
+                </div>
+            </div>
+            <!-- ############ end LOCATION ############ -->
+            <!-- ############ SECURITY ############ -->
+            <p class="border-bottom mb-3 pb-1 text-secondary">Account Security</p>
+            <div class="form-row">
+                <div class="form-group col-md-12 mb-4">
+                    <label for="password">Password</label>
+                    <input id="password"
+                         name="password"
+                  placeholder="{% trans 'Password' %}"
+                        class="form-control form-control-lg border border-success"
+                         type="password" autofocus
+               autocapitalize="off"
+                    minlength="2"
+                    maxlength="30" required />
+                    <div id="password-error" class="invalid-feedback"></div>
+                </div>
+                <div class="form-group col-md-12 mb-4">
+                    <label for="password_repeat">Repeat Password</label>
+                    <input id="password_repeat"
+                         name="password_repeat"
+                  placeholder="{% trans 'Repeat Password' %}"
+                        class="form-control form-control-lg border border-success"
+                         type="password" autofocus
+               autocapitalize="off"
+                    minlength="2"
+                    maxlength="30" required />
+                    <div id="password_repeat-error" class="invalid-feedback"></div>
+                </div>
+            </div>
+            <!-- ############ end SECURITY ############ -->
+            <!-- end SUBMIT BUTTON -->
+            <div class="form-group col-md-12 mb-3 mx-auto text-center">
+
+                <div class="form-group mb-3 mx-auto text-center p-0">
+               <button class="btn btn-success btn-lg mt-4 float-right pl-4 pr-4" type="button" onclick="ajax_submit();">Next <i class="fas fa-arrow-right"></i></button>
+               <button class="btn btn-orange btn-lg mt-4 float-left pl-4 pr-4" type="button" onclick="ajax_previous();"><i class="fas fa-arrow-left"></i> Back</button>
+             </div>
+            </div>
+            <!-- end SUBMIT BUTTON -->
+        </div>
+    </div>
+    <!------------------------------------------------------------------------->
+    <!-- end FORM -->
 
 
-<a class="btn btn-primary btn-lg btn-block" href="{% url 'o55_tenant_job_add_customer_confirmation_create' %}" role="button"><i class="fas fa-plus"></i> Add New</a>
+    <!-- RETURN-TO-TOP -->
+    <a id="return-to-top" href="#" class="btn-info btn-lg back-to-top" role="button" title="Back to top"><i class="fas fa-angle-up fa-2x"></i></a>
+    <!-- end RETURN-TO-TOP -->
+</main>
+{% endblock content %}

@@ -38,6 +38,8 @@
         // Redirect to the next page in the form.
         if (tmp_job_type !== undefined && tmp_home_support !== undefined) {
             window.location = "{% url 'o55_tenant_job_step_3_create' %}";
+        } else {
+            alert("Please select all the options!");
         }
 
     }

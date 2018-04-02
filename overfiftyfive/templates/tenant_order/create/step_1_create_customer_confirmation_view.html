@@ -1,11 +1,26 @@
+{% extends 'tenant_foundation/tenant_base.html' %}
+{% load staticfiles i18n foundation_tags humanize %}
 
+{% block title %}
+{% trans 'Clients List | Over 55 Inc.' %}
+{% endblock title %}
 
+{% block header_content %}
+{% endblock header_content %}
+
+{% block content %}
 
 <script>
-    function ajax_select(customer_id) {
-        // STEP 1 OF 2:
-        var previous_url = window.location.href;
-        localStorage.setItem("tmp_branch_previous_url", previous_url);
+    // Pre-populate the field with previous data.
+    $(document).ready(function() {
+        // var tmp_describe = localStorage.getItem("tmp_describe");
+        // $('#describe').val(tmp_describe);
+    });
+
+    function ajax_submit() {
+        // // STEP 1 OF 2:
+        // var previous_url = window.location.href;
+        // localStorage.setItem("tmp_branch_previous_url", previous_url);
 
         // STEP 2 OF 2:
         // Redirect to the next page in the form.
@@ -18,7 +33,130 @@
     }
 </script>
 
+<main id="main" role="main">
 
-<a class="btn btn-primary btn-lg btn-block" role="button" onclick="ajax_previous();"><i class="fas fa-plus"></i> Previous</a>
+    <!-- BREADCRUMB -->
+    <!------------------------------------------------------------------------->
+    <nav aria-label="breadcrumb">
+	  	<ol class="breadcrumb">
+	    	<li class="breadcrumb-item"><a href="{% url 'o55_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'o55_tenant_job_summary' %}">{% trans 'Jobs' %}</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{% trans 'Add' %}</li>
+	  	</ol>
+	</nav>
+    <!------------------------------------------------------------------------->
+    <!-- end BREADCRUMB -->
 
-<a class="btn btn-primary btn-lg btn-block" role="button" onclick="ajax_select();"><i class="fas fa-plus"></i> Add New</a>
+    <!-- BACK BUTTON -->
+    <!------------------------------------------------------------------------->
+    <div class="row">
+		<div class="col-sm-3 p-3 mb-2">
+			<a class="btn btn-primary btn-lg" href="{% url 'o55_tenant_job_summary' %}" role="button">
+                <svg class="svg-inline--fa fa-arrow-left fa-w-14" aria-hidden="true" data-fa-processed="" data-prefix="fas" data-icon="arrow-left" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                <path fill="currentColor" d="M257.5 445.1l-22.2 22.2c-9.4 9.4-24.6 9.4-33.9 0L7 273c-9.4-9.4-9.4-24.6 0-33.9L201.4 44.7c9.4-9.4 24.6-9.4 33.9 0l22.2 22.2c9.5 9.5 9.3 25-.4 34.3L136.6 216H424c13.3 0 24 10.7 24 24v32c0 13.3-10.7 24-24 24H136.6l120.5 114.8c9.8 9.3 10 24.8.4 34.3z"></path>
+            </svg><!-- <i class="fas fa-arrow-left"></i> -->&nbsp;{% trans 'Back to Jobs Home' %}</a>
+		</div>
+	</div>
+    <!------------------------------------------------------------------------->
+    <!-- end BACK BUTTON -->
+
+    <h1>Add Client</h1>
+
+    <div class="row mt-4 pt-3 mb-4 pb-2">
+       <div class="col-md-10 mx-auto p-2">
+        <p><strong>Please confirm these details before adding the residential client:</strong></p>
+        <table class="table table-bordered custom-cell-w">
+          <tbody>
+            <tr class="bg-dark">
+              <th scope="row" colspan="2" class="text-light">Personal details</th>
+            </tr>
+            <tr>
+              <th scope="row" class="bg-light">First name</th>
+              <td>Rodolfo</td>
+            </tr>
+            <tr>
+              <th scope="row" class="bg-light">Last name</th>
+              <td>Martinez</td>
+            </tr>
+            <tr>
+              <th scope="row" class="bg-light">Phone</th>
+              <td>(xxx) xxx-xxxx</td>
+            </tr>
+            <tr>
+              <th scope="row" class="bg-light">Mobile</th>
+              <td>---</td>
+            </tr>
+            <tr>
+              <th scope="row" class="bg-light">E-Mail</th>
+              <td>example@example.com</td>
+            </tr>
+            <tr>
+              <th scope="row" class="bg-light">Ok to E-Mail?</th>
+              <td>Yes</td>
+            </tr>
+            <tr>
+              <th scope="row" class="bg-light">Ok to Text?</th>
+              <td>No</td>
+            </tr>
+            <tr>
+              <th scope="row" class="bg-light">Date of Birth</th>
+              <td>30/03/1994</td>
+            </tr>
+            <tr>
+              <th scope="row" class="bg-light">Gender</th>
+              <td>Male</td>
+            </tr>
+            <tr class="bg-dark">
+              <th scope="row" colspan="2" class="text-light">Address</th>
+            </tr>
+            <tr>
+              <th scope="row" class="bg-light">Street No.</th>
+              <td>XYZ</td>
+            </tr>
+            <tr>
+              <th scope="row" class="bg-light">Street name</th>
+              <td>Southdale road</td>
+            </tr>
+            <tr>
+              <th scope="row" class="bg-light">Neighbourhood</th>
+              <td>---</td>
+            </tr>
+            <tr>
+              <th scope="row" class="bg-light">City</th>
+              <td>London</td>
+            </tr>
+            <tr>
+              <th scope="row" class="bg-light">State/Province</th>
+              <td>Ontario</td>
+            </tr>
+            <tr>
+              <th scope="row" class="bg-light">Postal code</th>
+              <td>N0L 1E0</td>
+            </tr>
+            <tr>
+              <th scope="row" class="bg-light">Country</th>
+              <td>Canada</td>
+            </tr>
+            <tr class="bg-dark">
+              <th scope="row" colspan="2" class="text-light">Skills</th>
+            </tr>
+            <tr>
+              <th scope="row" class="bg-light">Client&apos;s skills</th>
+              <td><span class="badge badge-info badge-lg">Skill 1</span> <span class="badge badge-info badge-lg">Skill 2</span>
+              <span class="badge badge-info badge-lg">HTML</span> <span class="badge badge-info badge-lg">PHP</span> <span class="badge badge-info badge-lg">Bootstrap</span> <span class="badge badge-info badge-lg">Django</span> <span class="badge badge-info badge-lg">Photoshop</span> <span class="badge badge-info badge-lg">Python</span> <span class="badge badge-info badge-lg">ASP.net</span> <span class="badge badge-info badge-lg">Android</span> <span class="badge badge-info badge-lg">jQuery</span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="form-group col-md-12 mb-3 p-0 mx-auto text-center">
+            <button class="btn btn-success btn-lg mt-4 float-right pl-4 pr-4" type="button" onclick="ajax_submit();">Next <i class="fas fa-arrow-right"></i></button>
+			<button class="btn btn-orange btn-lg mt-4 float-left pl-4 pr-4" type="button" onclick="ajax_previous();"><i class="fas fa-arrow-left"></i> Back</button>
+        </div>
+       </div>
+    </div>
+
+    <!-- RETURN-TO-TOP -->
+    <a id="return-to-top" href="#" class="btn-info btn-lg back-to-top" role="button" title="Back to top"><i class="fas fa-angle-up fa-2x"></i></a>
+    <!-- end RETURN-TO-TOP -->
+</main>
+{% endblock content %}
