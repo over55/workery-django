@@ -13,8 +13,18 @@
 <script>
     // Pre-populate the field with previous data.
     $(document).ready(function() {
-        var tmp_describe = localStorage.getItem("tmp_describe");
-        $('#describe').val(tmp_describe);
+        var tmp_skillset_ids = localStorage.getObj("tmp_skillset_ids");
+        var tmp_skillset_values = localStorage.getObj("tmp_skillset_values");
+        for (var i = 0; i < tmp_skillset_values.length; i++) {
+            // Extract our value.
+            var skill_value = tmp_skillset_values[i];
+
+            // Generate our HTML element.
+            var htmlElement = '<span class="badge badge-info badge-lg">'+skill_value+'</span>';
+
+            // Append our HTML element to the GUI.
+            $('#selected_skillsets_id').append(htmlElement)
+        }
     });
 
     // Save this field.
@@ -90,8 +100,8 @@
             </tr>
             <tr>
               <th scope="row" class="bg-light">Skill(s) Required</th>
-              <td><span class="badge badge-info badge-lg">Plumbing</span> <span class="badge badge-info badge-lg">Skill 1</span>
-              <span class="badge badge-info badge-lg">Skill 2</span>
+              <td id="selected_skillsets_id">
+                  <!-- THIS IS WHERE THE SKILLS GET LOADED -->
               </td>
             </tr>
           </tbody>
