@@ -51,8 +51,6 @@
             // Append our HTML element to the GUI.
             $('#selected_skillsets_id').append(htmlElement)
         }
-
-
     });
 
     // Save this field.
@@ -75,7 +73,10 @@
             function(success_result) {
                 console.log(success_result);
 
-                // Delete all our selected data.
+                ///////////////////////////////////
+                // Delete all our selected data. //
+                ///////////////////////////////////
+                // --- JOB ---
                 localStorage.removeItem("tmp_customer_id");
                 localStorage.removeItem("tmp_customer_name");
                 localStorage.removeItem("tmp_job_type");
@@ -85,20 +86,44 @@
                 localStorage.removeItem("tmp_skillset_ids");
                 localStorage.removeItem("tmp_skillset_values");
 
-                // Redirect to the next page in the form.
+                // --- CUSTOMER ---
+                localStorage.removeItem("tmp_order_given_name");
+                localStorage.removeItem("tmp_order_middle_name");
+                localStorage.removeItem("tmp_order_last_name");
+                localStorage.removeItem("tmp_customer_name");
+                localStorage.removeItem("tmp_customer_name");
+                localStorage.removeItem("tmp_order_dob");
+                localStorage.removeItem("tmp_order_gender");
+                localStorage.removeItem("tmp_order_ok_to_email");
+                localStorage.removeItem("tmp_order_ok_to_text");
+                localStorage.removeItem("tmp_order_street_address");
+                localStorage.removeItem("tmp_order_street_address_extra");
+                localStorage.removeItem("tmp_order_address_region");
+                localStorage.removeItem("tmp_order_address_locality");
+                localStorage.removeItem("tmp_order_address_country");
+                localStorage.removeItem("tmp_order_postal_code");
+                localStorage.removeItem("tmp_order_post_office_box_number");
+                localStorage.removeItem("tmp_order_email");
+                localStorage.removeItem("tmp_order_telephone");
+                localStorage.removeItem("tmp_order_mobile");
+                localStorage.removeItem("tmp_order_password");
+                localStorage.removeItem("tmp_order_password_repeat");
+
+                ////////////////////////////////////////////
+                // Redirect to the next page in the form. //
+                ////////////////////////////////////////////
                 window.location = "{% url 'o55_tenant_job_summary' %}";
-            },
+
+            }, // end SUCCESS
             function(error_result) {
                 console.log("ERROR");
                 console.log(error_result);
-            },
+            }, // end ERROR
             function(xhr,status) {
                 // Do nothing ...
-            }
-        );
-
-
-    }
+            } // end FINISH
+        ); // end CREATE API
+    } // end FUNC.
 
     function ajax_previous() {
         window.location = "{% url 'o55_tenant_job_step_4_create' %}";

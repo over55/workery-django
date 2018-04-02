@@ -147,6 +147,13 @@
         localStorage.setItem("tmp_order_given_name", given_name);
         localStorage.setItem("tmp_order_middle_name", middle_name);
         localStorage.setItem("tmp_order_last_name", last_name);
+        if (middle_name !== undefined && middlename !== null && middlename.length > 0) {
+            var customer_name = given_name + " " + middle_name + " " + last_name
+            localStorage.setItem("tmp_customer_name", customer_name);
+        } else {
+            var customer_name = given_name + " " + last_name
+            localStorage.setItem("tmp_customer_name", customer_name);
+        }
         localStorage.setItem("tmp_order_dob", date_of_birth);
         localStorage.setItem("tmp_order_gender", gender);
         localStorage.setItem("tmp_order_ok_to_email", ok_to_email);
