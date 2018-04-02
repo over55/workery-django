@@ -2,6 +2,9 @@
 from django.utils.translation import ugettext_lazy as _
 
 
+# The following constants are used by the "AssociateAffiliation" model.
+#
+
 AFFILIATION_TYPE_AFFILIATION_ID = 1
 AFFILIATION_TYPE_ALUMNI_OF_ID = 2
 AFFILIATION_TYPE_FUNDER_ID = 3
@@ -9,7 +12,6 @@ AFFILIATION_TYPE_MEMBER_OF_ID = 4
 AFFILIATION_TYPE_SPONSOR_ID = 5
 AFFILIATION_TYPE_OWNS_ID = 6
 AFFILIATION_TYPE_FOUNDER_ID = 7
-
 
 AFFILIATION_TYPE_OF_CHOICES = (
     (AFFILIATION_TYPE_AFFILIATION_ID, _('Affiliation')),
@@ -19,4 +21,18 @@ AFFILIATION_TYPE_OF_CHOICES = (
     (AFFILIATION_TYPE_SPONSOR_ID, _('Sponsor')),
     (AFFILIATION_TYPE_OWNS_ID, _('Owns')),
     (AFFILIATION_TYPE_FOUNDER_ID, _('Founder')),
+)
+
+
+# The following constants are used by the "Job" model.
+#
+
+RESIDENTIAL_JOB_TYPE_OF_ID = 1
+COMMERCIAL_JOB_TYPE_OF_ID = 2
+UNASSIGNED_JOB_TYPE_OF_ID = 3
+
+JOB_TYPE_OF_CHOICES = (
+    (RESIDENTIAL_JOB_TYPE_OF_ID, _('Residential Job Type')),
+    (COMMERCIAL_JOB_TYPE_OF_ID, _('Commercial Job Type')),
+    (UNASSIGNED_JOB_TYPE_OF_ID, _('Unassigned Job Type'))
 )

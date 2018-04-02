@@ -16,8 +16,9 @@ from starterkit.utils import (
     int_or_none,
     float_or_none
 )
-from shared_foundation import constants
+from shared_foundation.constants import O55_APP_DEFAULT_MONEY_CURRENCY
 from shared_foundation.models import SharedUser
+from tenant_foundation.constants import UNASSIGNED_JOB_TYPE_OF_ID, JOB_TYPE_OF_CHOICES
 from tenant_foundation.utils import *
 
 
@@ -141,8 +142,8 @@ class Order(models.Model):
         help_text=_('The service fee that the customer was charged by the associate..'),
         max_digits=10,
         decimal_places=2,
-        default_currency=constants.O55_APP_DEFAULT_MONEY_CURRENCY,
-        default=Money(0,constants.O55_APP_DEFAULT_MONEY_CURRENCY),
+        default_currency=O55_APP_DEFAULT_MONEY_CURRENCY,
+        default=Money(0,O55_APP_DEFAULT_MONEY_CURRENCY),
         blank=True,
     )
     payment_date = models.DateField(
@@ -163,6 +164,13 @@ class Order(models.Model):
     #Professional
     #Refer
     #Score
+    type_of = models.PositiveSmallIntegerField(
+        _("Type Of"),
+        help_text=_('The type of job this is.'),
+        default=UNASSIGNED_JOB_TYPE_OF_ID,
+        choices=JOB_TYPE_OF_CHOICES,
+        blank=True,
+    )
 
     #
     #  SYSTEM
