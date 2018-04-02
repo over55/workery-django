@@ -53,8 +53,50 @@
         }
     });
 
-    // Save this field.
-    function ajax_submit() {
+    function close_and_redirect() {
+        ///////////////////////////////////
+        // Delete all our selected data. //
+        ///////////////////////////////////
+        // --- JOB ---
+        localStorage.removeItem("tmp_customer_id");
+        localStorage.removeItem("tmp_customer_name");
+        localStorage.removeItem("tmp_job_type");
+        localStorage.removeItem("tmp_home_support");
+        localStorage.removeItem("tmp_describe");
+        localStorage.removeItem("tmp_skillsets");
+        localStorage.removeItem("tmp_skillset_ids");
+        localStorage.removeItem("tmp_skillset_values");
+
+        // --- CUSTOMER ---
+        localStorage.removeItem("tmp_order_given_name");
+        localStorage.removeItem("tmp_order_middle_name");
+        localStorage.removeItem("tmp_order_last_name");
+        localStorage.removeItem("tmp_customer_name");
+        localStorage.removeItem("tmp_customer_name");
+        localStorage.removeItem("tmp_order_dob");
+        localStorage.removeItem("tmp_order_gender");
+        localStorage.removeItem("tmp_order_ok_to_email");
+        localStorage.removeItem("tmp_order_ok_to_text");
+        localStorage.removeItem("tmp_order_street_address");
+        localStorage.removeItem("tmp_order_street_address_extra");
+        localStorage.removeItem("tmp_order_address_region");
+        localStorage.removeItem("tmp_order_address_locality");
+        localStorage.removeItem("tmp_order_address_country");
+        localStorage.removeItem("tmp_order_postal_code");
+        localStorage.removeItem("tmp_order_post_office_box_number");
+        localStorage.removeItem("tmp_order_email");
+        localStorage.removeItem("tmp_order_telephone");
+        localStorage.removeItem("tmp_order_mobile");
+        localStorage.removeItem("tmp_order_password");
+        localStorage.removeItem("tmp_order_password_repeat");
+
+        ////////////////////////////////////////////
+        // Redirect to the next page in the form. //
+        ////////////////////////////////////////////
+        window.location = "{% url 'o55_tenant_job_summary' %}?was_created=True";
+    }
+
+    function call_create_job(customer_id, success_callback) {
         var tmp_job_type = localStorage.getItem("tmp_job_type");
         var is_ongoing = tmp_job_type == "Ongoing" ? true : false;
         var tmp_home_support = localStorage.getItem("tmp_home_support");
@@ -62,59 +104,14 @@
 
         create_job_api(
             {
-                'customer': localStorage.getItem("tmp_customer_id"),
+                'customer': customer_id,
                 'associate': null,
                 'skill_sets': localStorage.getObj("tmp_skillset_ids"),
                 'is_ongoing': is_ongoing,
                 'is_home_support_service': is_home_support_service,
-                'customer': localStorage.getItem("tmp_customer_id"),
                 'description': localStorage.getItem("tmp_describe"),
             },
-            function(success_result) {
-                console.log(success_result);
-
-                ///////////////////////////////////
-                // Delete all our selected data. //
-                ///////////////////////////////////
-                // --- JOB ---
-                localStorage.removeItem("tmp_customer_id");
-                localStorage.removeItem("tmp_customer_name");
-                localStorage.removeItem("tmp_job_type");
-                localStorage.removeItem("tmp_home_support");
-                localStorage.removeItem("tmp_describe");
-                localStorage.removeItem("tmp_skillsets");
-                localStorage.removeItem("tmp_skillset_ids");
-                localStorage.removeItem("tmp_skillset_values");
-
-                // --- CUSTOMER ---
-                localStorage.removeItem("tmp_order_given_name");
-                localStorage.removeItem("tmp_order_middle_name");
-                localStorage.removeItem("tmp_order_last_name");
-                localStorage.removeItem("tmp_customer_name");
-                localStorage.removeItem("tmp_customer_name");
-                localStorage.removeItem("tmp_order_dob");
-                localStorage.removeItem("tmp_order_gender");
-                localStorage.removeItem("tmp_order_ok_to_email");
-                localStorage.removeItem("tmp_order_ok_to_text");
-                localStorage.removeItem("tmp_order_street_address");
-                localStorage.removeItem("tmp_order_street_address_extra");
-                localStorage.removeItem("tmp_order_address_region");
-                localStorage.removeItem("tmp_order_address_locality");
-                localStorage.removeItem("tmp_order_address_country");
-                localStorage.removeItem("tmp_order_postal_code");
-                localStorage.removeItem("tmp_order_post_office_box_number");
-                localStorage.removeItem("tmp_order_email");
-                localStorage.removeItem("tmp_order_telephone");
-                localStorage.removeItem("tmp_order_mobile");
-                localStorage.removeItem("tmp_order_password");
-                localStorage.removeItem("tmp_order_password_repeat");
-
-                ////////////////////////////////////////////
-                // Redirect to the next page in the form. //
-                ////////////////////////////////////////////
-                window.location = "{% url 'o55_tenant_job_summary' %}";
-
-            }, // end SUCCESS
+            success_callback,
             function(error_result) {
                 console.log("ERROR");
                 console.log(error_result);
@@ -123,6 +120,96 @@
                 // Do nothing ...
             } // end FINISH
         ); // end CREATE API
+    }
+
+    function call_create_customer(success_callback) {
+        // MAKE OUR API CALL TO THE BACKEND TO "CREATE" THE CUSTOMER USER.
+        create_customer_api(
+            {
+                'given_name': localStorage.getItem("tmp_order_given_name"),
+                'middle_name': localStorage.getItem("tmp_order_middle_name"),
+                'last_name': localStorage.getItem("tmp_order_last_name"),
+                'birthdate': localStorage.getItem("tmp_order_dob"),
+                'gender': localStorage.getItem("tmp_order_gender"),
+                'nationality': null,
+                'is_ok_to_email': localStorage.getItem("tmp_order_ok_to_email"),
+                'is_ok_to_text': localStorage.getItem("tmp_order_ok_to_text"),
+                'address_country': localStorage.getItem("tmp_order_address_country"),
+                'address_locality': localStorage.getItem("tmp_order_address_locality"),
+                'address_region': localStorage.getItem("tmp_order_address_region"),
+                // 'extra_comment': null,
+                'street_address': localStorage.getItem("tmp_order_street_address"),
+                'street_address_extra': localStorage.getItem("tmp_order_street_address_extra"),
+                'postal_code': localStorage.getItem("tmp_order_postal_code"),
+                'post_office_box_number': localStorage.getItem("tmp_order_post_office_box_number"),
+                'email': localStorage.getItem("tmp_order_email"),
+                // 'area_served': area_served,
+                'fax_number': null,
+                'telephone': localStorage.getItem("tmp_order_telephone"),
+                // 'telephone_extension': telephone_extension,
+                'mobile': localStorage.getItem("tmp_order_mobile"),
+                // 'fax_number': fax_number
+                'password': localStorage.getItem("tmp_order_password"),
+                'password_repeat': localStorage.getItem("tmp_order_password_repeat"),
+            },
+            success_callback,
+            function(xhr,status,error) { // Error
+                // STEP 1: Convert to JSON.
+                var err = JSON.parse(xhr.responseText);
+
+                // For debugging purposes only.
+                console.log(err);
+                $('#all_error_result').html();
+
+                // Print the error.
+                for(var prop in err) {
+                    if(err.hasOwnProperty(prop)) {
+                        var val = err[prop];
+                        console.log(val);
+                        $('#all_error_result').append("<p><b>"+prop+"</b>"+val+"</p><br />");
+                    }
+                }
+
+                $('#all_error_result').focus(); // FOCUS ON THE ERROR.
+            },
+            function() { // Finally
+                // UNLOCK THE "SUBMIT" BUTTON TO BE AVAILABLE FOR USAGE.
+                // enable_btn();
+            }
+        );
+    }
+
+    function create_customer_and_job() {
+        call_create_customer(function(customer) {
+            call_create_job(customer['id'], function() {
+                close_and_redirect();
+            });
+        });
+
+    } // end FUNC
+
+    function create_only_job(customer_id) {
+        call_create_job(customer_id, function() {
+            close_and_redirect();
+        });
+    } // end FUNC
+
+    /**
+     *  Function will either (1) create a customer with job or (2) only create
+     *  a job and then clear the session.
+     */
+    function ajax_submit() {
+        // DEVELOPERS NOTE:
+        // (1) CHECK TO SEE IF WE HAVE A UNIQUE CUSTOMER ID ASSIGNED AND THEN
+        //     CREATE JOB WITH THE UNIQUE CUSTOMER.
+        // (2) CHECK TO SEE IF WE DO NOT HAVE A UNIQUE CUSTOMER ID SO YOU WILL
+        //     HAVE TO CREATE THE CUSTOMER AND THE JOB.
+        var customer_id = localStorage.getItem("tmp_customer_id");
+        if (customer_id === undefined || customer_id === null) {
+            create_customer_and_job();
+        } else {
+            create_only_job(customer_id);
+        }
     } // end FUNC.
 
     function ajax_previous() {
