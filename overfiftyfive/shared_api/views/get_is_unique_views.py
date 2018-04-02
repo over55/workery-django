@@ -12,10 +12,10 @@ class GetIsUniqueAPIView(APIView):
     """
     permission_classes = (permissions.AllowAny,)
 
-    def get(self, request):
-        email = self.request.query_params.get('email', '').lower()
-        is_email_unique = SharedUser.objects.filter(email=email).exists()
+    def post(self, request):
+        email = self.request.POST.get('email', '').lower()
+        found_email = SharedUser.objects.filter(email=email).exists()
         return Response(
-            data=1 if is_email_unique else 0,
+            data=0 if found_email else 1,
             status=status.HTTP_200_OK
         )

@@ -10,6 +10,14 @@
 
 {% block content %}
 
+<!-- API JAVASCRIPT -->
+<!----------------------------------------------------------------------------->
+{% include 'shared_api/shared_api_js.html' %}
+<!----------------------------------------------------------------------------->
+<!-- end API JAVASCRIPT -->
+
+<!-- CUSTOM JAVASCRIPT -->
+<!----------------------------------------------------------------------------->
 <script>
     /**
      *  When page loads, the following code will be run first.
@@ -174,13 +182,38 @@
         ////////////////////////////////////////////
         // Redirect to the next page in the form. //
         ////////////////////////////////////////////
-        window.location = "{% url 'o55_tenant_job_add_customer_confirmation_create' %}";
-    }
+
+        // CASE 1 OF 2:
+        if (email === undefined || email === null || email.length == 0) {
+            window.location = "{% url 'o55_tenant_job_add_customer_confirmation_create' %}";
+        }
+
+        // CASE 2 OF 2:
+        post_is_email_unique_api(
+            email,
+            function(result) {
+                if (result === 1 || result === '1') {
+                    window.location = "{% url 'o55_tenant_job_add_customer_confirmation_create' %}";
+                } else {
+                    alert("EMAIL IS NOT UNIQUE - CANNOT CREATE CUSTOMER"); //TODO: UPDATE THE GUI.
+                    return;
+                }
+            },
+            function(json_error) {
+                alert(json_error);
+                //TODO: (1) OUTPUT THE ERROR IN A TEXT. (2) FOCUS ON THE OUTPUT.
+            }
+        ); // end API CALL
+
+    } // end FUNC
 
     function ajax_previous() {
         window.location = "{% url 'o55_tenant_job_search_or_add_create' %}";
     }
 </script>
+<!----------------------------------------------------------------------------->
+<!-- end CUSTOM JAVASCRIPT -->
+
 
 <main id="main" role="main">
 

@@ -162,4 +162,32 @@
             }
         });
     }
+
+    function post_is_email_unique_api(email, func_callback, func_error_callback)
+    {
+        // Our URL to the API endpoint.
+        var url = get_shared_domain_url("/api/get_is_unique?format=json");
+        var type = "POST"; // Insert.
+
+        jQuery.ajax({
+            url: url,
+            headers: {
+                Authorization: 'Token ' + private_api_key
+            },
+            data: {
+                'email': email
+            },
+            type: 'POST',
+            traditional: true, // Note: This allows many-to-many arrays for Django REST Framework
+            success: function(json_results){
+                func_callback(json_results);
+            },
+            error: function(xhr, status, error) {
+                func_error_callback(xhr, status, error);
+            },
+            complete: function(xhr,status) {
+                // Do nothing.
+            }
+        });
+    }
 </script>
