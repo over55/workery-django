@@ -54,7 +54,7 @@
     }
 
     function get_selected_radio_value(radiofields_name) {
-        var radios = document.getElementsByName('ok_to_email');
+        var radios = document.getElementsByName(radiofields_name);
         for (var i = 0, length = radios.length; i < length; i++) {
             if (radios[i].checked) {
                 // only one radio can be logically checked, don't check the rest
