@@ -43,7 +43,9 @@
     }
 
     function ajax_previous() {
-        window.location = localStorage.getItem("tmp_branch_previous_url");
+        var tmp_branch_previous_url = localStorage.getItem("tmp_branch_previous_url");
+        console.log(tmp_branch_previous_url);
+        window.location = tmp_branch_previous_url;
     }
 </script>
 
@@ -105,8 +107,12 @@
 			  </div>
 		  </div>
 	    	  <div class="form-group col-md-12 mb-3 p-0 mx-auto text-center">
-			<button class="btn btn-success btn-lg mt-4 float-right pl-4 pr-4" type="button" onclick="ajax_submit();">Next <i class="fas fa-arrow-right"></i></button>
-			<button class="btn btn-orange btn-lg mt-4 float-left pl-4 pr-4" type="button"><i class="fas fa-arrow-left"></i> Back</button>
+			<button class="btn btn-success btn-lg mt-4 float-right pl-4 pr-4" type="button" onclick="ajax_submit();">
+                Next <i class="fas fa-arrow-right"></i>
+            </button>
+			<button class="btn btn-orange btn-lg mt-4 float-left pl-4 pr-4" type="button" onclick="ajax_previous();">
+                <i class="fas fa-arrow-left"></i> Back
+            </button>
 		  </div>
 		</form>
 	</div>

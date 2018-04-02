@@ -13,8 +13,25 @@
 <script>
     // Pre-populate the field with previous data.
     $(document).ready(function() {
+        // Extract all our data we saved in `localStorage` system.
+        var tmp_customer_id = localStorage.getItem("tmp_customer_id");
+        var tmp_customer_name = localStorage.getItem("tmp_customer_name");
+        var tmp_job_type = localStorage.getItem("tmp_job_type");
+        var tmp_home_support = localStorage.getItem("tmp_home_support");
+        var tmp_describe = localStorage.getItem("tmp_describe");
         var tmp_skillset_ids = localStorage.getObj("tmp_skillset_ids");
         var tmp_skillset_values = localStorage.getObj("tmp_skillset_values");
+
+        $('#selected_customer_name').append(tmp_customer_name);
+
+        $('#selected_job_type_id').append(tmp_job_type);
+
+        $('#selected_home_support_id').append(tmp_home_support);
+
+        // Set our `description` field.
+        $('#selected_description_id').append(tmp_describe);
+
+        // Set our `skill_sets` field.
         for (var i = 0; i < tmp_skillset_values.length; i++) {
             // Extract our value.
             var skill_value = tmp_skillset_values[i];
@@ -25,6 +42,8 @@
             // Append our HTML element to the GUI.
             $('#selected_skillsets_id').append(htmlElement)
         }
+
+
     });
 
     // Save this field.
@@ -78,24 +97,26 @@
             </tr>
             <tr>
               <th scope="row" class="bg-light">Client Name</th>
-              <td>Rodolfo Martinez</td>
+              <td id="selected_customer_name">
+                  <!-- THE CUSTOMER NAME GETS LOADED HERE -->
+              </td>
             </tr>
             <tr>
               <th scope="row" class="bg-light">Job Type</th>
-              <td>One-Time</td>
+              <td id="selected_job_type_id">
+                  <!-- THE TYPE OF JOB GETS LOADED HERE -->
+              </td>
             </tr>
             <tr>
               <th scope="row" class="bg-light">Home Support?</th>
-              <td>No</td>
+              <td id="selected_home_support_id">
+                  <!-- THIS IS WHERE THE HOME SUPPORT BOOL GETS LOADED. -->
+              </td>
             </tr>
             <tr>
               <th scope="row" class="bg-light">Description</th>
-              <td>
-                We need to add:
-                <ul>
-                    <li>New shower in bathroom.</li>
-                    <li>New kitchen tiles.</li>
-                </ul>
+              <td id="selected_description_id">
+                <!-- THIS IS WHERE THE DESCRIPTION GETS LOADED -->
               </td>
             </tr>
             <tr>
