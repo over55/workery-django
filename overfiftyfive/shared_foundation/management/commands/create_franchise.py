@@ -2,6 +2,7 @@
 from django.conf import settings
 from django.contrib.auth.models import Group
 from django.contrib.sites.models import Site
+from django.core.management import call_command
 from django.core.management.base import BaseCommand, CommandError
 from django.db import connection # Used for django tenants.
 from django.utils.translation import ugettext_lazy as _
@@ -106,3 +107,6 @@ class Command(BaseCommand):
         domain.tenant = tenant
         domain.is_primary = False
         domain.save()
+
+        # Populate our new organization tenant with post-creation data.
+        call_command('populate_tenant_content', schema_name, verbosity=0)
