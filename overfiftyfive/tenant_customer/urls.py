@@ -1,26 +1,26 @@
 from django.conf.urls import include, url
 from django.urls import path
 from django.views.generic.base import RedirectView
-from tenant_customer.views import web_views
+from tenant_customer.views import create_view, list_view, retrieve_view, search_view, update_view
 
 
 urlpatterns = (
     # Summary
-    path('clients/', web_views.CustomerSummaryView.as_view(), name='o55_tenant_customer_summary'),
+    path('clients/', list_view.CustomerSummaryView.as_view(), name='o55_tenant_customer_summary'),
 
     # Create
-    path('clients/create/', web_views.CustomerCreateView.as_view(), name='o55_tenant_customer_create'),
+    path('clients/create/', create_view.CustomerCreateView.as_view(), name='o55_tenant_customer_create'),
 
     # List
-    path('clients/list/', web_views.CustomerListView.as_view(), name='o55_tenant_customer_list'),
+    path('clients/list/', list_view.CustomerListView.as_view(), name='o55_tenant_customer_list'),
 
     # Search
-    path('clients/search/', web_views.CustomerSearchView.as_view(), name='o55_tenant_customer_search'),
-    path('clients/search/results/', web_views.CustomerSearchResultView.as_view(), name='o55_tenant_customer_search_results'),
+    path('clients/search/', search_view.CustomerSearchView.as_view(), name='o55_tenant_customer_search'),
+    path('clients/search/results/', search_view.CustomerSearchResultView.as_view(), name='o55_tenant_customer_search_results'),
 
     # Retrieve
-    path('clients/detail/<str:template>/<int:pk>/', web_views.CustomerRetrieveView.as_view(), name='o55_tenant_customer_retrieve'),
+    path('clients/detail/<str:template>/<int:pk>/', retrieve_view.CustomerRetrieveView.as_view(), name='o55_tenant_customer_retrieve'),
 
     # Update
-    path('clients/detail/<str:template>/<int:pk>/edit/', web_views.CustomerUpdateView.as_view(), name='o55_tenant_customer_update'),
+    path('clients/detail/<str:template>/<int:pk>/edit/', update_view.CustomerUpdateView.as_view(), name='o55_tenant_customer_update'),
 )
