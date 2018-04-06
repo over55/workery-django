@@ -109,8 +109,8 @@ class Order(models.Model):
         related_name="%(app_label)s_%(class)s_category_tags_related",
     )
     is_ongoing = models.BooleanField(
-        _("Is Active"),
-        help_text=_('Track whether this order is ongoing.'),
+        _("Is ongoing"),
+        help_text=_('Track whether this order is ongoing job or one-time job.'),
         default=False,
         blank=True
     )

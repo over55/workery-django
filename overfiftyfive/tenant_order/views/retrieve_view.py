@@ -6,7 +6,7 @@ from django.utils.decorators import method_decorator
 from django.utils.translation import ugettext_lazy as _
 from shared_foundation.mixins import ExtraRequestProcessingMixin
 from tenant_api.filters.order import OrderFilter
-from tenant_foundation.models.order import Order
+from tenant_foundation.models import Customer, Order, SkillSet
 
 
 @method_decorator(login_required, name='dispatch')
@@ -32,6 +32,9 @@ class JobRetrieveView(DetailView):
 
         # Required for navigation
         modified_context['current_page'] = "jobs"
+
+        # Set our skills
+        modified_context['skillsets'] = SkillSet.objects.all()
 
         # Return our modified context.
         return modified_context

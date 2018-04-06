@@ -10,6 +10,38 @@
 
 {% block content %}
 
+<!-- API JAVASCRIPT -->
+<!----------------------------------------------------------------------------->
+{% include 'tenant_api/skillset_api_js.html' %}
+<!----------------------------------------------------------------------------->
+<!-- end API JAVASCRIPT -->
+
+<!-- CUSTOM JAVASCRIPT -->
+<!----------------------------------------------------------------------------->
+<script>
+    // // STEP 1 - Fetch the values we've saved in localStorage.
+    // var tmp_job_type = localStorage.getItem("tmp_job_type");
+    // var tmp_home_support = localStorage.getItem("tmp_home_support");
+    // console.log(tmp_job_type);
+    // console.log(tmp_home_support);
+    //
+    // // STEP 2 - Update the GUI with our saved values.
+    // $("input[name=job-type][value=" + tmp_job_type + "]").prop('checked', true);
+    // $("input[name=home-support][value=" + tmp_home_support + "]").prop('checked', true);
+
+    // Pre-populate the field with previous data.
+    $(document).ready(function() {
+        // // Populate our 'select2' chosen values.
+        // var tmp_skillsets = localStorage.getObj("tmp_skillsets");
+        // $('#skillsets').val(tmp_skillsets);
+
+        // Initialize our 'select2' element.
+        $('.js-example-basic-multiple').select2();
+    });
+</script>
+<!----------------------------------------------------------------------------->
+<!-- end CUSTOM JAVASCRIPT -->
+
 <main id="main" role="main">
 
     <!-- BREADCRUMB -->
@@ -49,6 +81,19 @@
     <!------------------------------------------------------------------------->
     <!-- end BREADCRUMB -->
 
+    <!-- NOTIFICATION -->
+    <!------------------------------------------------------------------------->
+    {% if parameters.was_modified == 'True' %}
+    <div class="alert bg-success text-white alert-dismissible fade show" role="alert">
+        Job <strong>Successfully</strong> updated.
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">×</span>
+        </button>
+    </div>
+    {% endif %}
+    <!------------------------------------------------------------------------->
+    <!-- end NOTIFICATION -->
+
     <!-- BACK BUTTON -->
     <!------------------------------------------------------------------------->
     <div class="row">
@@ -68,10 +113,118 @@
     <!------------------------------------------------------------------------->
     <div class="col-sm-5 mx-auto mt-2">
         <!-- Residential form -->
-        <div class="col-sm-12 fade show active" id="client-form" aria-labelledby="residential">
+        <div class="col-sm-12 fade show active" aria-labelledby="residential">
             <h3 class="pt-4 pb-2 text-center">Job Details</h3>
-            <form id="add-client-form" method="post" class="needs-validation" action="" novalidate>
+            <form id="add-customer-form" method="post" class="needs-validation" action="" novalidate>
+                <!-- ################################################################## -->
+                <!-- ######################## JOB DETAILS ######################## -->
+                <!-- ################################################################## -->
+                <p class="border-bottom mb-3 pb-1 text-secondary">Job Details</p>
+                <div class="form-row">
+                    <div class="form-group col-md-12 mb-4">
+                        <label for="customer">Customer</label>
+                        <p>{% if job.customer %}<a href="{% url 'o55_tenant_customer_retrieve' template job.customer.id %}">{{ job.customer }}</a>{% else %}-{% endif %}</p>
+                        <div id="customer-error" class="invalid-feedback"></div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-12 mb-4">
+                        <label for="description">Description</label>
+                        <p>{% if job.description %}{{ job.description }}{% else %}-{% endif %}</p>
+                        <div id="description-error" class="invalid-feedback"></div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-12 mb-4">
+                        <label for="skill_sets">Skill Sets</label>
+                        <p>
+                            {% for skillset in skillsets %}
+                                {% if skillset in job.skillsets %}
+                                    <span class="badge badge-info badge-lg">{{ skillset }}</span>
+                                {% endif %}
+                            {% endfor %}
+                        </p>
+                        <div id="skill_sets-error" class="invalid-feedback"></div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-12 mb-4">
+                        <label for="associate">Assigned Associate</label>
+                        <p>{% if job.associate %}<a href="{% url 'o55_tenant_member_retrieve' template job.associate.id %}">{{ job.associate }}</a>{% else %}-{% endif %}</p>
+                        <div id="associate-error" class="invalid-feedback"></div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-12 mb-4">
+                        <label for="assignment_date">Assignment Date</label>
+                        <p>{% if job.assignment_date %}{{ job.assignment_date }}{% else %}-{% endif %}</p>
+                        <div id="assignment_date-error" class="invalid-feedback"></div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-12 mb-4">
+                        <label for="is_home_support_service">Is Home Support Service</label>
+                        <p>{{ job.is_home_support_service }}</p>
+                        <div id="is_home_support_service-error" class="invalid-feedback"></div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-12 mb-4">
+                        <label for="is_ongoing">Is ongoing?</label>
+                        <p>{{ job.is_ongoing }}</p>
+                        <div id="is_ongoing-error" class="invalid-feedback"></div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-12 mb-4">
+                        <label for="is_cancelled">Is Cancelled?</label>
+                        <p>{{ job.is_cancelled }}</p>
+                        <div id="is_cancelled-error" class="invalid-feedback"></div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-12 mb-4">
+                        <label for="completion_date">Completion date</label>
+                        <p>{% if job.completion_date %}{{ job.completion_date }}{% endif %}</p>
+                        <div id="completion_date-error" class="invalid-feedback"></div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-12 mb-4">
+                        <label for="hours">Hours</label>
+                        <p>{{ job.hours }}</p>
+                        <div id="hours-error" class="invalid-feedback"></div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-12 mb-4">
+                        <label for="service_fee">Service fee</label>
+                        <p>{{ job.service_fee }}</p>
+                        <div id="service_fee-error" class="invalid-feedback"></div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-12 mb-4">
+                        <label for="payment_date">Payment Date</label>
+                        <p>{% if payment_date %}{{ job.payment_date }}{% else %}-{% endif %}</p>
+                        <div id="payment_date-error" class="invalid-feedback"></div>
+                    </div>
+                </div>
+                <!-- ################################################################## -->
+                <!-- ######################## end JOB DETAILS ######################## -->
+                <!-- ################################################################## -->
 
+                <!-- end SUBMIT BUTTON -->
+                <div class="form-group col-md-12 mb-3 mx-auto text-center">
+                    <a href="{% url 'o55_tenant_job_update' template object.id %}">
+                    <button  id="id_submit_btn"
+                        class="btn btn-warning btn-lg btn-fxw mt-4"
+                        type="button">
+                    <i class="fas fa-edit"></i>&nbsp;{% trans 'Edit Job' %}
+                    </button>
+                    </a>
+                </div>
+                <!-- end SUBMIT BUTTON -->
             </form>
         </div>
     </div>
