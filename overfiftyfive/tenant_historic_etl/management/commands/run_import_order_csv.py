@@ -191,6 +191,8 @@ class Command(BaseCommand):
                         'service_fee': local_service_fee,
                         'payment_date': local_date_paid,
                         # 'comments': comments
+                        'last_modified_by': None,
+                        'created_by': None,
                     }
                 )
 

@@ -207,6 +207,10 @@ class Command(BaseCommand):
                     'is_senior': bool(is_senior),
                     'is_support': bool(is_support),
                     'is_business': False,
+                    'last_modified_by': None,
+                    'created_by': None,
+                    'organizations': [],
+                    
                 }
             )
 

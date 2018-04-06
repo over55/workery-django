@@ -247,7 +247,10 @@ class Command(BaseCommand):
                     'is_part_time':bool_or_none(is_part_time),
                     'is_contract_time':bool_or_none(is_contract_time),
                     'is_small_job':bool_or_none(is_small_job),
-                    'how_hear':how_hear
+                    'how_hear':how_hear,
+                    'last_modified_by': None,
+                    'created_by': None,
+                    'skill_sets': [],
                 }
             )
 

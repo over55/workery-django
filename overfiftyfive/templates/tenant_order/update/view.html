@@ -30,7 +30,7 @@
          * DOCUMENTATION
          * https://select2.org/
          */
-        $('.js-data-example-ajax').select2({
+        $('#customer').select2({
             // SETUP OUR STARTUP GUI.
             placeholder: 'Select an option',
             allowClear: true,
@@ -38,7 +38,7 @@
             // OVERRIDE OUR GUI TO GET OUR DATA FROM REMOTE API WEB-SERVICE.
             ajax: {
                 // THE URL OF OUR API WEB-SERVICE.
-                url: 'http://london.overfiftyfive.com/api/customers',
+                url: "{% url 'o55_customer_list_create_api_endpoint' %}",
 
                 // THE AUTH-CREDENTIALS OF OUR API WEB-SERVICE WHICH WE WILL
                 // ATTACH WITH THIS CALL.
@@ -68,28 +68,55 @@
             }, // end AJAX
 
             // THE IS WHERE WE FORMAT OUR OUTPUT TO GUI.
-            templateResult: formatState,
+            templateResult: function formatState (state) {
+                /**
+                 *  Function used to take our JSON API results and create our own custom
+                 *  GUI elements per each returned customer.
+                 */
+                // if (!state.id) {
+                //     return  state.given_name + " " + state.last_name;
+                // }
+                var $state = $(
+                    '<span id="' + state.id + '">' + state.given_name + " " + state.last_name + '</span>'
+                );
+                return $state;
+            },
 
             templateSelection: function (data) {
-                if (data.id === '') { // adjust for custom placeholder values
-                    return 'Custom styled placeholder text';
-                }
+                // if (data.id === '') { // adjust for custom placeholder values
+                //     return 'Custom styled placeholder text';
+                // }
                 return data.given_name + " " + data.last_name;
             }
-        });
+        }); // end SELECT2
+
     }); // end Ready
 
-        /**
-         *  Function used to take our JSON API results and create our own custom
-         *  GUI elements per each returned customer.
-         */
-        function formatState (state) {
-            if (!state.id) {
-                return  state.given_name + " " + state.last_name;
-            }
+    function ajax_post_form_submission() {
+        // When we fetch from the `select2` field, we are extracting the unique
+        // ID that we rendered because our API web-service requires knowing the
+        // customers `ID` value.
+        var customer_id = $('#customer').val();
+        console.log("customer_id:",customer_id); // For debugging purposes only.
 
-            return state.given_name + " " + state.last_name;
+        var data_dict = {
+            'customer': customer_id
         };
+
+        update_customer_api(
+            {{ job.id }},
+            data_dict,
+            function(json_results) {
+                console.log(json_results);
+            },
+            function(error_json) {
+                console.log(error_json);
+            },
+            function(completed, hr){
+
+            }
+        );
+    }
 
 
 
@@ -159,7 +186,7 @@
     <div class="col-sm-5 mx-auto mt-2">
         <!-- Residential form -->
         <div class="col-sm-12 fade show active" id="client-form" aria-labelledby="residential">
-            <h3 class="pt-4 pb-2 text-center">Add Client Form</h3>
+            <h3 class="pt-4 pb-2 text-center">Edit Job Form</h3>
             <p>Use this form to fill out the client information.</p>
             <p><span class="text-secondary font-italic"><sup>*</sup>&nbsp;-&nbsp;Indicates required field to fill out.</span></p>
             <!-- Error Output -->
@@ -168,11 +195,11 @@
             <p>&nbsp;</p>
             <form id="add-client-form" method="post" class="needs-validation" action="" novalidate>
             <!-- ############ PERSON ############ -->
-            <p class="border-bottom mb-3 pb-1 text-secondary">Personal Information</p>
+            <p class="border-bottom mb-3 pb-1 text-secondary">Customer Information</p>
             <div class="form-row">
                 <div class="form-group col-md-12 mb-4">
-                    <select class="js-data-example-ajax" name="state">
-                        <option>-----------------------------------------</option>
+                    <select id="customer" name="customer">
+                        <option selected="selected" value="{{ job.customer.id }}"><span id="{{ job.customer.id }}">{{ job.customer }}</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</option>
                     </select>
                 </div>
             </div>
@@ -183,7 +210,7 @@
                     class="btn btn-success btn-lg btn-fxw mt-4"
                     onclick="ajax_post_form_submission();"
                     type="button">
-                <i class="fas fa-plus"></i>&nbsp;{% trans 'Add Client' %}
+                <i class="fas fa-plus"></i>&nbsp;{% trans 'Update Job' %}
                 </button>
             </div>
             <!-- end SUBMIT BUTTON -->
