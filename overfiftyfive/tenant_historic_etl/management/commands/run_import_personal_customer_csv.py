@@ -166,6 +166,7 @@ class Command(BaseCommand):
                         'last_name': last_name,
                         'email': email,
                         'is_active': True,
+                        'date_joined': local_project_date
                     }
                 )
 
@@ -183,13 +184,9 @@ class Command(BaseCommand):
 
             # Insert our extracted data into our database.
             customer, create = Customer.objects.update_or_create(
-                last_name=last_name,
-                given_name=first_name,
-                postal_code=postal_code,
-                street_address=address,
-                email=email,
-                join_date=local_project_date,
+                id=pk,
                 defaults={
+                    'id': pk,
                     'owner': user,
                     'last_name':last_name,
                     'given_name':first_name,
@@ -212,6 +209,13 @@ class Command(BaseCommand):
                     'is_business': False,
                 }
             )
+
+            # For debugging purposes only.
+            # self.stdout.write(
+            #     self.style.SUCCESS(_('Imported (Personal) Customer #%(id)s.') % {
+            #         'id': str(index)
+            #     })
+            # )
 
         except Exception as e:
             self.stdout.write(

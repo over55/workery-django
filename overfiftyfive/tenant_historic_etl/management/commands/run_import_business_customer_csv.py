@@ -174,14 +174,7 @@ class Command(BaseCommand):
 
             # Insert our extracted data into our database.
             customer, create = Customer.objects.update_or_create(
-                given_name=caller,
-                last_name=company,
-                telephone=phone,
-                postal_code=postal_code,
-                street_address=address,
-                address_locality=city,
-                email=email,
-                fax_number=fax,
+                id=pk,
                 defaults={
                     'owner': user,
                     'last_name':company,

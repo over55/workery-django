@@ -178,12 +178,9 @@ class Command(BaseCommand):
             # Begin processing...
             if customer and associate:
                 order, create = Order.objects.update_or_create(
-                    customer=customer,
-                    associate=associate,
-                    assignment_date=local_assign_date,
-                    completion_date=local_date_done,
-                    payment_date=local_date_paid,
+                    id=order_pk,
                     defaults={
+                        'id': order_pk,
                         'customer': customer,
                         'associate': associate,
                         'assignment_date': local_assign_date,

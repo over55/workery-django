@@ -12,7 +12,7 @@ from tenant_foundation.models.order import Order
 @method_decorator(login_required, name='dispatch')
 class JobSummaryView(ListView, ExtraRequestProcessingMixin):
     context_object_name = 'job_list'
-    queryset = Order.objects.filter(is_cancelled=False).order_by('-created')
+    queryset = Order.objects.filter(is_cancelled=False).order_by('-id')
     template_name = 'tenant_order/summary/view.html'
     paginate_by = 100
 
@@ -34,7 +34,7 @@ class JobSummaryView(ListView, ExtraRequestProcessingMixin):
 @method_decorator(login_required, name='dispatch')
 class JobListView(ListView, ExtraRequestProcessingMixin):
     context_object_name = 'job_list'
-    queryset = Order.objects.order_by('-created')
+    queryset = Order.objects.order_by('-id')
     template_name = 'tenant_order/list/view.html'
     paginate_by = 100
 
@@ -44,7 +44,7 @@ class JobListView(ListView, ExtraRequestProcessingMixin):
         return context
 
     def get_queryset(self):
-        queryset = super(JobListView, self).get_queryset().order_by('-assignment_date', '-completion_date', '-payment_date') # Get the base.
+        queryset = super(JobListView, self).get_queryset() # Get the base.
 
         # The following code will use the 'django-filter'
         filter = OrderFilter(self.request.GET, queryset=queryset)
