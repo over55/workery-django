@@ -324,16 +324,26 @@ LOGGING = {
     'filters': {
         'require_debug_false': {
             '()': 'django.utils.log.RequireDebugFalse'
-        }
+        },
+        'tenant_context': {
+            '()': 'django_tenants.log.TenantContextFilter'
+        },
+    },
+    'formatters': {
+        'tenant_context': {
+            'format': '[%(schema_name)s:%(domain_url)s] '
+            '%(levelname)-7s %(asctime)s %(message)s',
+        },
     },
     'handlers': {
         'mail_admins': {
             'level': 'ERROR',
-            'filters': ['require_debug_false'],
-            'class': 'django.utils.log.AdminEmailHandler'
+            'filters': ['require_debug_false', 'tenant_context'],
+            'class': 'django.utils.log.AdminEmailHandler',
         },
         'applogfile': {
             'level':'INFO',
+            'filters': ['tenant_context'],
             'class':'logging.handlers.RotatingFileHandler',
             'filename': os.path.join(BASE_DIR, 'debug.log'),
 
