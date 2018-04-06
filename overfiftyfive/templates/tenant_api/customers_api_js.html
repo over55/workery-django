@@ -45,4 +45,19 @@
             }
         });
     }
+
+    function get_customers(criteria, func_callback, func_error_callback)
+    {
+        var url = get_tenant_domain_url(schema_name, "/api/customers?format=json");
+        ajax_get_list(
+            url,
+            criteria,
+            function(json_results) {
+                func_callback(json_results)
+            },
+            function(error) {
+                func_error_callback(error);
+            }
+        );
+    }
 </script>

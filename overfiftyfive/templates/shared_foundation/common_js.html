@@ -50,4 +50,70 @@
         return string.charAt(0).toUpperCase() + string.slice(1);
     }
 
+    /**
+     * Source: https://remysharp.com/2010/07/21/throttling-function-calls/
+     */
+    function debounce(fn, delay) {
+        var timer = null;
+        return function () {
+            var context = this, args = arguments;
+            clearTimeout(timer);
+            timer = setTimeout(function () {
+                fn.apply(context, args);
+            }, delay);
+        };
+    }
+
+    function ajax_get_list(url, criteria, func_callback, func_error_callback)
+    {
+        // If developer has specified criteria then iterate through all the
+        // keys in the dictionary, fetch the item in the dictionary at the key
+        // and append it to the URL.
+        for(var prop in criteria) {
+            if(criteria.hasOwnProperty(prop)) {
+                url += "&";
+
+                // Generate our parameters
+                var param = "";
+                if (criteria[prop] === true) { // Handle "True" cases.
+                    param = prop + "=True";
+                }
+                else if (criteria[prop] === false) { // Handle "False" cases.
+                    param = prop + "=False";
+                }
+                else {
+                    param = prop + "=" + criteria[prop];
+                }
+
+                url += param; // Add the parameters to the URL.
+            }
+        }
+
+        // If developer has not specified what page this is for pagination
+        // then we automatically assign "&page=1" to the URL.
+        if(!criteria.hasOwnProperty('page')) {
+            url += "&page=1";
+        }
+
+        jQuery.ajax({
+            headers: {
+                'Authorization': rest_api_token
+            },
+            url: url,
+            cache: false,
+            contentType:"application/json",
+            processData: false,
+            type: 'GET',
+            success: function(json_results){
+                func_callback(json_results);
+            },
+            error: function(xhr, status, error) {
+                func_error_callback(xhr, status, error);
+            },
+            complete: function(xhr,status) {
+                // Do nothing.
+            }
+        });
+    }
+
 </script>

@@ -33,7 +33,7 @@ class JobUpdateView(DetailView):
         # Required for navigation
         modified_context['current_page'] = "jobs"
 
-        # Set our skills
+        # Set our dependencies
         modified_context['skillsets'] = SkillSet.objects.all()
 
         # Return our modified context.

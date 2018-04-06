@@ -14,6 +14,7 @@
 <!-- API JAVASCRIPT -->
 <!----------------------------------------------------------------------------->
 {% include 'tenant_api/customers_api_js.html' %}
+{% include 'tenant_api/skillset_api_js.html' %}
 <!----------------------------------------------------------------------------->
 <!-- end API JAVASCRIPT -->
 
@@ -25,8 +26,79 @@
      *  When page loads, the following code will be run first.
      */
     $(document).ready(function () {
-        // pass
-    }); // end Ready
+    //     // Whenever a key is entered, look up the users.
+    //     $('#firstname').keypress(debounce(function (event) {
+    //         // do the Ajax request
+    //         console.log("Running");
+    //         get_customers(
+    //            {
+    //                'search': $('#firstname').val()
+    //            },
+    //            function(json){
+    //                console.log(json);
+    //            },
+    //            function(error_json){
+    //                console.log(error_json);
+    //            }
+    //         );
+    //     }, 250));
+    // }); // end Ready
+
+    /*
+     * DOCUMENTATION
+     * https://select2.org/
+     */
+    $('.js-data-example-ajax').select2({
+        // SETUP OUR STARTUP GUI.
+        placeholder: 'Select an option',
+        allowClear: true,
+
+        // OVERRIDE OUR GUI TO GET OUR DATA FROM REMOTE API WEB-SERVICE.
+        ajax: {
+            url: 'http://london.overfiftyfive.com/api/customers',
+            headers: {
+                "Authorization" : rest_api_token,
+                "Content-Type" : "application/json",
+            },
+            dataType: 'json',
+            data: function (params) {
+                var query = {
+                    search: params.term,
+                }
+                // Query parameters will be ?search=[term]
+                return query;
+            },
+            processResults: function (data) {
+                // Tranforms the top-level key of the response object from 'items' to 'results'
+                return {
+                    results: data['results']
+                };
+            },
+        }, // end AJAX
+
+        // THE IS WHERE WE FORMAT OUR OUTPUT TO GUI.
+        templateResult: formatState,
+
+        templateSelection: function (data) {
+            if (data.id === '') { // adjust for custom placeholder values
+                return 'Custom styled placeholder text';
+            }
+            return data.given_name + " " + data.last_name;
+        }
+    });
+    });
+
+    /**
+     *  Function used to take our JSON API results and create our own custom
+     *  GUI elements per each returned customer.
+     */
+    function formatState (state) {
+        if (!state.id) {
+            return  state.given_name + " " + state.last_name;
+        }
+
+        return  state.given_name + " " + state.last_name;
+    };
 </script>
 <!----------------------------------------------------------------------------->
 <!-- end CUSTOM JAVASCRIPT -->
@@ -91,30 +163,39 @@
 
     <!-- FORM -->
     <!------------------------------------------------------------------------->
-    <div class="col-sm-5 mx-auto mt-2">
-        <!-- Residential form -->
-        <div class="col-sm-12 fade show active" id="client-form" aria-labelledby="residential">
-            <h3 class="pt-4 pb-2 text-center">Edit Job Form</h3>
-            <p>Use this form to fill out the client information.</p>
-            <p><span class="text-secondary font-italic"><sup>*</sup>&nbsp;-&nbsp;Indicates required field to fill out.</span></p>
-            <p>&nbsp;</p>
-            <form id="add-client-form" method="post" class="needs-validation" action="" novalidate>
-                {% comment %}
-                <!-- end SUBMIT BUTTON -->
-                <div class="form-group col-md-12 mb-3 mx-auto text-center">
-                    <button  id="id_submit_btn"
-                          class="btn btn-primary btn-lg btn-fxw mt-4"
-                        onclick="ajax_post_form_submission();"
-                          type="button"
-                      disabled="true">
-                    <i class="fas fa-check"></i>&nbsp;{% trans 'Update Job' %}
-                    </button>
+    <div class="col-md-5 mx-auto mt-2">
+		<h3 class="pt-4 pb-2 text-center">Edit Job</h3>
+
+
+
+        <!-- FORM -->
+        <!------------------------------------------------------------------------->
+        <div class="col-sm-5 mx-auto mt-2">
+            <!-- Residential form -->
+            <div class="col-sm-12 fade show active" id="client-form" aria-labelledby="residential">
+                <h3 class="pt-4 pb-2 text-center">Add Client Form</h3>
+                <p>Use this form to fill out the client information.</p>
+                <p><span class="text-secondary font-italic"><sup>*</sup>&nbsp;-&nbsp;Indicates required field to fill out.</span></p>
+                <!-- Error Output -->
+                <div id="all_error_result" name="all_error_result"></div>
+                <!-- end Error Output -->
+                <p>&nbsp;</p>
+                <form id="add-client-form" method="post" class="needs-validation" action="" novalidate>
+                <!-- ############ PERSON ############ -->
+                <p class="border-bottom mb-3 pb-1 text-secondary">Personal Information</p>
+                <div class="form-row">
+                    <div class="form-group col-md-12 mb-4">
+                        <select class="js-data-example-ajax" name="state">
+                            <option>-----------------------------------------</option>
+                        </select>
+
+                    </div>
                 </div>
-                <!-- end SUBMIT BUTTON -->
-                {% endcomment %}
-            </form>
-        </div>
-    </div>
+            </div>
+
+
+		</form>
+	</div>
     <!------------------------------------------------------------------------->
     <!-- end FORM -->
 
