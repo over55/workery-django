@@ -60,7 +60,7 @@
                 <a href="{% url 'o55_tenant_job_search' %}">{% trans 'Search' %}</a>
             </li>
             <li class="breadcrumb-item active" aria-current="page">{% trans 'Search Results' %}</li>
-            <li class="breadcrumb-item active" aria-current="page">{% trans 'Job #' %}{{ object.id }}</li>
+            <li class="breadcrumb-item active" aria-current="page">{% trans 'Job #' %}{{ object.id|intcomma }}</li>
 
             {% elif template == 'list' %}
 
