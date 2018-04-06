@@ -11,12 +11,15 @@ from django.utils.translation import ugettext_lazy as _
 from shared_foundation.models import SharedFranchise
 from shared_foundation.models import SharedUser
 from shared_foundation import utils
+from shared_foundation.decorators import public_only_or_redirect
 
 
+@public_only_or_redirect
 def user_login_master_page(request):
     return render(request, 'shared_auth/login_user/master_view.html',{})
 
 
+@public_only_or_redirect
 def user_login_redirector_master_page(request):
     if request.user.is_authenticated:
 
@@ -35,6 +38,7 @@ def user_login_redirector_master_page(request):
     return HttpResponseRedirect(reverse('o55_index_master', args=[]))
 
 
+@public_only_or_redirect
 def send_reset_password_email_master_page(request):
     return render(request, 'shared_auth/send_reset_password_email/master_view.html',{
         'has_pr_code_expired': request.GET.get('has_pr_code_expired', False),
@@ -42,10 +46,12 @@ def send_reset_password_email_master_page(request):
     })
 
 
+@public_only_or_redirect
 def send_reset_password_email_submitted_page(request):
     return render(request, 'shared_auth/send_reset_password_email/detail_view.html',{})
 
 
+@public_only_or_redirect
 def rest_password_master_page(request, pr_access_code):
     try:
         me = SharedUser.objects.get(pr_access_code=pr_access_code)
@@ -63,10 +69,12 @@ def rest_password_master_page(request, pr_access_code):
     })
 
 
+@public_only_or_redirect
 def rest_password_detail_page(request, pr_access_code): #TEST
     return render(request, 'shared_auth/reset_password/detail_view.html',{})
 
 
+@public_only_or_redirect
 def user_activation_detail_page(request, pr_access_code=None):
     try:
         me = SharedUser.objects.get(pr_access_code=pr_access_code)
@@ -83,6 +91,7 @@ def user_activation_detail_page(request, pr_access_code=None):
     return render(request, 'shared_auth/activate_user/detail_view.html',{})
 
 
+@public_only_or_redirect
 @login_required(login_url="login/")
 def user_logout_redirector_master_page(request):
     # Step 1: Delete the "auth_token" so our RESTFul API won't have a key.

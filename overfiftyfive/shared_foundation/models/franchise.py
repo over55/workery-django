@@ -58,6 +58,12 @@ class SharedFranchise(TenantMixin, AbstractSharedThing, AbstractSharedContactPoi
     def reverse(self, reverse_id, reverse_args=[]):
         return settings.O55_APP_HTTP_PROTOCOL + str(self.schema_name) + "." + settings.O55_APP_HTTP_DOMAIN + reverse(reverse_id, args=reverse_args)
 
+    def is_public(self):
+        """
+        Function returns boolean value as to whether this franchise is the
+        public or a tenant.
+        """
+        return self.schema_name == "public" or self.schema_name == "test"
 
 class SharedFranchiseDomain(DomainMixin):
     class Meta:
