@@ -13,7 +13,7 @@ def tenant_required(view_func):
     an existing (non-public) tenant or else return a forbidden error.
     """
     def wrapper(request, *args, **kwargs):
-        if not request.tenant.is_public:
+        if not request.tenant.is_public():
             return view_func(request, *args, **kwargs)
         else:
             return HttpResponseForbidden(
