@@ -28,7 +28,7 @@ from django.views.generic.base import RedirectView
 # }
 
 # Custom errors.
-# handler403 = "shared_foundation.views.http_403_page"
+handler403 = "shared_home.views.bad_request"
 handler404 = "shared_home.views.page_not_found"
 handler500 = "shared_home.views.server_error"
 

@@ -21,3 +21,9 @@ def server_error(request, template_name='shared_home/http_500.html'):
     response = render(request, 'shared_home/http_500.html',{})
     response.status_code = 500
     return response
+
+
+def bad_request(request, exception, template_name='shared_home/http_400.html'):
+    response = render(request, 'shared_home/http_400.html',{})
+    response.status_code = 400
+    return response
