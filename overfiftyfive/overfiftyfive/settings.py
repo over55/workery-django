@@ -333,7 +333,7 @@ LOGGING = {
             'class': 'django.utils.log.AdminEmailHandler'
         },
         'applogfile': {
-            'level':'DEBUG',
+            'level':'INFO',
             'class':'logging.handlers.RotatingFileHandler',
             'filename': os.path.join(BASE_DIR, 'debug.log'),
 
@@ -348,9 +348,9 @@ LOGGING = {
             'level': 'ERROR',
             'propagate': True,
         },
-        'overfiftyfive': {
+        'django': {
             'handlers': ['applogfile',],
-            'level': 'DEBUG',
+            'level': 'INFO',
         },
     }
 }
