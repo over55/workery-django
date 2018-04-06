@@ -192,7 +192,6 @@ class Command(BaseCommand):
                     'is_business': True,
                     'last_modified_by': None,
                     'created_by': None,
-                    'organizations': [],
                 }
             )
 

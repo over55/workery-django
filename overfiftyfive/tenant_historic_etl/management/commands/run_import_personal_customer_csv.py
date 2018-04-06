@@ -209,8 +209,7 @@ class Command(BaseCommand):
                     'is_business': False,
                     'last_modified_by': None,
                     'created_by': None,
-                    'organizations': [],
-                    
+
                 }
             )
 

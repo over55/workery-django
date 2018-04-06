@@ -250,7 +250,6 @@ class Command(BaseCommand):
                     'how_hear':how_hear,
                     'last_modified_by': None,
                     'created_by': None,
-                    'skill_sets': [],
                 }
             )
 

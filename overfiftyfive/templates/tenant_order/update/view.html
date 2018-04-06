@@ -13,6 +13,7 @@
 <!-- API JAVASCRIPT -->
 <!----------------------------------------------------------------------------->
 {% include 'tenant_api/customers_api_js.html' %}
+{% include 'tenant_api/jobs_api_js.html' %}
 <!----------------------------------------------------------------------------->
 <!-- end API JAVASCRIPT -->
 
@@ -100,14 +101,16 @@
         console.log("customer_id:",customer_id); // For debugging purposes only.
 
         var data_dict = {
-            'customer': customer_id
+            'customer': customer_id,
+            'associate': null, // TODO: IMPL
         };
 
-        update_customer_api(
+        update_job_api(
             {{ job.id }},
             data_dict,
             function(json_results) {
                 console.log(json_results);
+                window.location = "{% url 'o55_tenant_job_retrieve' template job.id %}?was_modified=True";
             },
             function(error_json) {
                 console.log(error_json);
@@ -207,10 +210,10 @@
             <!-- end SUBMIT BUTTON -->
             <div class="form-group col-md-12 mb-3 mx-auto text-center">
                 <button  id="id_submit_btn"
-                    class="btn btn-success btn-lg btn-fxw mt-4"
+                    class="btn btn-primary btn-lg btn-fxw mt-4"
                     onclick="ajax_post_form_submission();"
                     type="button">
-                <i class="fas fa-plus"></i>&nbsp;{% trans 'Update Job' %}
+                <i class="fas fa-check"></i>&nbsp;{% trans 'Update Job' %}
                 </button>
             </div>
             <!-- end SUBMIT BUTTON -->

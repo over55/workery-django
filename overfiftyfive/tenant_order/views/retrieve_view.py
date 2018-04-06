@@ -10,7 +10,7 @@ from tenant_foundation.models import Customer, Order, SkillSet
 
 
 @method_decorator(login_required, name='dispatch')
-class JobRetrieveView(DetailView):
+class JobRetrieveView(DetailView, ExtraRequestProcessingMixin):
     context_object_name = 'job'
     model = Order
     template_name = 'tenant_order/retrieve/view.html'
@@ -33,8 +33,10 @@ class JobRetrieveView(DetailView):
         # Required for navigation
         modified_context['current_page'] = "jobs"
 
-        # Set our skills
-        modified_context['skillsets'] = SkillSet.objects.all()
+        # DEVELOPERS NOTE:
+        # - We will extract the URL parameters and save them into our context
+        #   so we can use this to help the pagination.
+        modified_context['parameters'] = self.get_params_dict([])
 
         # Return our modified context.
         return modified_context
