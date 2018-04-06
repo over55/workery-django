@@ -107,7 +107,7 @@ class OrderListCreateSerializer(serializers.ModelSerializer):
         is_home_support_service = validated_data.get('is_home_support_service', False)
         payment_date = validated_data.get('payment_date', None)
         created_by = self.context['created_by']
-        description = validated_data.get('description', False)
+        description = validated_data.get('description', None)
 
         # Update currency price.
         service_fee = validated_data.get('service_fee', Money(0, constants.O55_APP_DEFAULT_MONEY_CURRENCY))
@@ -226,6 +226,7 @@ class OrderRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
             # 'created_by',
             # 'last_modified_by',
             'skill_sets',
+            'description',
         )
 
     def setup_eager_loading(cls, queryset):
@@ -255,6 +256,7 @@ class OrderRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         instance.payment_date = validated_data.get('payment_date', instance.payment_date)
         instance.service_fee = validated_data.get('service_fee', instance.service_fee)
         instance.last_modified_by = self.context['last_modified_by']
+        instance.description = validated_data.get('description', instance.description)
 
         # Update currency price.
         service_fee = validated_data.get('service_fee', None)

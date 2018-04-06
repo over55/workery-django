@@ -100,9 +100,12 @@
         var customer_id = $('#customer').val();
         console.log("customer_id:",customer_id); // For debugging purposes only.
 
+        var description = $('#describe').val();
+    
         var data_dict = {
             'customer': customer_id,
             'associate': null, // TODO: IMPL
+            'description': description,
         };
 
         update_job_api(
@@ -206,7 +209,19 @@
                     </select>
                 </div>
             </div>
-            <!-- ############ end LOCATION ############ -->
+            <!-- ############ end CUSTOMER ############ -->
+
+            <p class="border-bottom mb-3 pb-1 text-secondary">Describe the Job:</p>
+            <div class="form-row">
+                <div class="form-group col-md-12 mb-4">
+                    <label for="describe" class="font-b6"></label>
+                        <textarea class="form-control form-control-lg border border-primary" id="describe" name="describe" placeholder="Describe here..." rows="4" minlength="10" required>
+                            {{ job.description }}
+                        </textarea>
+                    <div id="describe-error" class="invalid-feedback"></div>
+                </div>
+            </div>
+
             <!-- end SUBMIT BUTTON -->
             <div class="form-group col-md-12 mb-3 mx-auto text-center">
                 <button  id="id_submit_btn"
