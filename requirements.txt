@@ -5,6 +5,7 @@ certifi==2018.1.18
 cffi==1.11.5
 chardet==3.0.4
 click==6.7
+coverage==4.4.2
 croniter==0.3.20
 Django==2.0.3
 django-anymail==2.0
@@ -26,8 +27,10 @@ gunicorn==19.7.1
 html5lib==1.0.1
 idna==2.6
 msgpack-python==0.5.6
+olefile==0.44
 phonenumberslite==8.9.2
 Pillow==5.0.0
+psycopg2==2.7.3.2
 psycopg2-binary==2.7.4
 py-moneyed==0.7.0
 pycparser==2.18
