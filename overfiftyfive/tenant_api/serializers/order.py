@@ -253,6 +253,7 @@ class OrderRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         instance.hours = validated_data.get('hours', instance.hours)
         instance.is_cancelled = validated_data.get('is_cancelled', instance.is_cancelled)
         instance.is_ongoing = validated_data.get('is_ongoing', instance.is_ongoing)
+        instance.is_home_support_service = validated_data.get('is_home_support_service', instance.is_home_support_service)
         instance.payment_date = validated_data.get('payment_date', instance.payment_date)
         instance.service_fee = validated_data.get('service_fee', instance.service_fee)
         instance.last_modified_by = self.context['last_modified_by']
