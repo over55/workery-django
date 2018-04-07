@@ -257,6 +257,8 @@ class OrderRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         instance.service_fee = validated_data.get('service_fee', instance.service_fee)
         instance.last_modified_by = self.context['last_modified_by']
         instance.description = validated_data.get('description', instance.description)
+        skill_sets = validated_data.get('skill_sets', instance.skill_sets)
+        instance.skill_sets.set(skill_sets)
 
         # Update currency price.
         service_fee = validated_data.get('service_fee', None)

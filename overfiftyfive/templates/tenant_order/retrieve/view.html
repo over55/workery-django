@@ -138,10 +138,10 @@
                     <div class="form-group col-md-12 mb-4">
                         <label for="skill_sets">Skill Sets</label>
                         <p>
-                            {% for skillset in skillsets %}
-                                {% if skillset in job.skillsets %}
-                                    <span class="badge badge-info badge-lg">{{ skillset }}</span>
-                                {% endif %}
+                            {% for skill_set in job.skill_sets.all %}
+                                <span class="badge badge-info badge-lg">{{ skill_set }}</span>
+                            {% empty %}
+                                -
                             {% endfor %}
                         </p>
                         <div id="skill_sets-error" class="invalid-feedback"></div>

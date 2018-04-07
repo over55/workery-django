@@ -26,6 +26,7 @@
      */
     $(document).ready(function () {
         // Initialize our datepicker jQuery code with our HTML view.
+        $('#skill_sets').select2();
 
         /*
          * DOCUMENTATION
@@ -91,6 +92,7 @@
             }
         }); // end SELECT2
 
+
     }); // end Ready
 
     function ajax_post_form_submission() {
@@ -101,11 +103,16 @@
         console.log("customer_id:",customer_id); // For debugging purposes only.
 
         var description = $('#describe').val();
-    
+        console.log("Description:", description);
+
+        var skill_sets = $('#skill_sets').val();
+        console.log("skill_sets:", skill_sets);
+
         var data_dict = {
             'customer': customer_id,
             'associate': null, // TODO: IMPL
             'description': description,
+            'skill_sets': skill_sets
         };
 
         update_job_api(
@@ -200,7 +207,7 @@
             <!-- end Error Output -->
             <p>&nbsp;</p>
             <form id="add-client-form" method="post" class="needs-validation" action="" novalidate>
-            <!-- ############ PERSON ############ -->
+            <!-- ############ CUSTOMER (REMOTE DATA) ############ -->
             <p class="border-bottom mb-3 pb-1 text-secondary">Customer Information</p>
             <div class="form-row">
                 <div class="form-group col-md-12 mb-4">
@@ -209,15 +216,26 @@
                     </select>
                 </div>
             </div>
-            <!-- ############ end CUSTOMER ############ -->
+            <!-- ############ end CUSTOMER (REMOTE DATA) ############ -->
 
             <p class="border-bottom mb-3 pb-1 text-secondary">Describe the Job:</p>
             <div class="form-row">
                 <div class="form-group col-md-12 mb-4">
                     <label for="describe" class="font-b6"></label>
-                        <textarea class="form-control form-control-lg border border-primary" id="describe" name="describe" placeholder="Describe here..." rows="4" minlength="10" required>
-                            {{ job.description }}
-                        </textarea>
+                        <textarea class="form-control form-control-lg border border-primary" id="describe" name="describe" placeholder="Describe here..." rows="4" minlength="10" required>{{ job.description }}</textarea>
+                    <div id="describe-error" class="invalid-feedback"></div>
+                </div>
+            </div>
+
+            <p class="border-bottom mb-3 pb-1 text-secondary">Please select required job skill(s):</p>
+            <div class="form-row">
+                <div class="form-group col-md-12 mb-4">
+                    <label for="describe" class="font-b6"></label>
+                    <select id="skill_sets" name="states[]" multiple="multiple">
+                        {% for skillset in skillsets %}
+                            <option value="{{ skillset.id }}" id="option_id_{{ skillset.id }}" {% if skillset in job.skill_sets.all %}selected="selected"{% endif %}>{{ skillset }}</option>
+                        {% endfor %}
+                    </select>
                     <div id="describe-error" class="invalid-feedback"></div>
                 </div>
             </div>
