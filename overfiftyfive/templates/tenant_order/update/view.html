@@ -26,6 +26,11 @@
      */
     $(document).ready(function () {
         // Initialize our datepicker jQuery code with our HTML view.
+        $( "#assignment_date" ).datepicker({
+            dateFormat: 'yy-mm-dd'  // https://stackoverflow.com/a/7500097
+        });
+
+        // Initialize our datepicker jQuery code with our HTML view.
         $('#skill_sets').select2();
 
         /*
@@ -176,11 +181,15 @@
         var skill_sets = $('#skill_sets').val();
         console.log("skill_sets:", skill_sets);
 
+        var assignment_date = $('#assignment_date').val();
+        console.log("assignment_date:", assignment_date);
+
         var data_dict = {
             'customer': customer_id,
             'associate': associate_id,
             'description': description,
-            'skill_sets': skill_sets
+            'skill_sets': skill_sets,
+            'assignment_date': assignment_date,
         };
 
         update_job_api(
@@ -322,6 +331,17 @@
                 </div>
             </div>
             <!-- ############ end ASSOCIATE (REMOTE DATA) ############ -->
+
+            <div class="form-group p-0 col-md-7 mb-4">
+                <label for="assignment_date">Assignment Date</label>
+                <div class="input-group input-group-lg">
+                    <input type="text" class="form-control form-control-lg border border-success" id="assignment_date" name="assignment_date" placeholder="yyyy-mm-dd" value="{% if job.assignment_date %}{{ job.assignment_date|date:"Y-m-d" }}{% endif %}" required>
+                    <div class="input-group-append">
+                        <span class="input-group-text assignment_date-icon bg-success border-success"><i class="far fa-calendar-alt"></i></span>
+                    </div>
+                    <div id="assignment_date-error" class="invalid-feedback"></div>
+                </div>
+            </div>
 
             <!-- end SUBMIT BUTTON -->
             <div class="form-group col-md-12 mb-3 mx-auto text-center">

@@ -333,7 +333,7 @@
                 <div class="form-group p-0 col-md-7 mb-4">
                     <label for="dob">Date of Birth</label>
                     <div class="input-group input-group-lg">
-                        <input type="text" class="form-control form-control-lg border border-success" id="dob" name="dob" placeholder="yyyy-mm-dd" required value="{% if associate.birthdate %}{{ associate.birthdate }}{% endif %}">
+                        <input type="text" class="form-control form-control-lg border border-success" id="dob" name="dob" placeholder="yyyy-mm-dd" required value="{% if associate.birthdate %}{{ associate.birthdate|date:"Y-m-d" }}{% endif %}">
                         <div class="input-group-append">
                             <span class="input-group-text dob-icon bg-success border-success"><i class="far fa-calendar-alt"></i></span>
                         </div>
