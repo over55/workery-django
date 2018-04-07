@@ -93,6 +93,72 @@
         }); // end SELECT2
 
 
+
+        /*
+         * DOCUMENTATION
+         * https://select2.org/
+         */
+        $('#associate').select2({
+            // SETUP OUR STARTUP GUI.
+            placeholder: 'Select an option',
+            allowClear: true,
+
+            // OVERRIDE OUR GUI TO GET OUR DATA FROM REMOTE API WEB-SERVICE.
+            ajax: {
+                // THE URL OF OUR API WEB-SERVICE.
+                url: "{% url 'o55_associate_list_create_api_endpoint' %}",
+
+                // THE AUTH-CREDENTIALS OF OUR API WEB-SERVICE WHICH WE WILL
+                // ATTACH WITH THIS CALL.
+                headers: {
+                    "Authorization" : rest_api_token,
+                    "Content-Type" : "application/json",
+                },
+                dataType: 'json',
+
+                // OVERRIDE OUR QUERY TO WORK WITH OUR API WEB-SERVICE.
+                data: function (params) {
+                    var query = {
+                        search: params.term,
+                    }
+                    // Query parameters will be ?search=[term]
+                    return query;
+                },
+
+                // OVERRIDE HOW WE TAKE THE API WEB-SERVICE RESULTS AND FORMAT
+                // FOR THIS LIBRARY.
+                processResults: function (data) {
+                    // Tranforms the top-level key of the response object from 'items' to 'results'
+                    return {
+                        results: data['results']
+                    };
+                },
+            }, // end AJAX
+
+            // THE IS WHERE WE FORMAT OUR OUTPUT TO GUI.
+            templateResult: function formatState (state) {
+                /**
+                 *  Function used to take our JSON API results and create our own custom
+                 *  GUI elements per each returned customer.
+                 */
+                // if (!state.id) {
+                //     return  state.given_name + " " + state.last_name;
+                // }
+                var $state = $(
+                    '<span id="' + state.id + '">' + state.given_name + " " + state.last_name + '</span>'
+                );
+                return $state;
+            },
+
+            templateSelection: function (data) {
+                // if (data.id === '') { // adjust for custom placeholder values
+                //     return 'Custom styled placeholder text';
+                // }
+                return data.given_name + " " + data.last_name;
+            }
+        }); // end SELECT2
+
+
     }); // end Ready
 
     function ajax_post_form_submission() {
@@ -101,6 +167,8 @@
         // customers `ID` value.
         var customer_id = $('#customer').val();
         console.log("customer_id:",customer_id); // For debugging purposes only.
+        var associate_id = $('#associate').val();
+        console.log("associate_id:",associate_id); // For debugging purposes only.
 
         var description = $('#describe').val();
         console.log("Description:", description);
@@ -110,7 +178,7 @@
 
         var data_dict = {
             'customer': customer_id,
-            'associate': null, // TODO: IMPL
+            'associate': associate_id,
             'description': description,
             'skill_sets': skill_sets
         };
@@ -239,6 +307,21 @@
                     <div id="describe-error" class="invalid-feedback"></div>
                 </div>
             </div>
+
+            <!-- ############ ASSOCIATE (REMOTE DATA) ############ -->
+            <p class="border-bottom mb-3 pb-1 text-secondary">Associate Member Information</p>
+            <div class="form-row">
+                <div class="form-group col-md-12 mb-4">
+                    <select id="associate" name="associate">
+                        {% if job.associate %}
+                            <option selected="selected" value="{{ job.associate.id }}"><span id="{{ job.associate.id }}">{{ job.associate }}</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</option>
+                        {% else %}
+                            <option selected="selected" value="{{ job.associate.id }}"><span id="{{ job.associate.id }}">{{ job.associate }}</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</option>
+                        {% endif %}
+                    </select>
+                </div>
+            </div>
+            <!-- ############ end ASSOCIATE (REMOTE DATA) ############ -->
 
             <!-- end SUBMIT BUTTON -->
             <div class="form-group col-md-12 mb-3 mx-auto text-center">
