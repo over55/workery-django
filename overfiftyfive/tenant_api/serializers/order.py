@@ -262,7 +262,7 @@ class OrderRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         instance.skill_sets.set(skill_sets)
 
         # Update currency price.
-        service_fee = validated_data.get('service_fee', None)
+        service_fee = validated_data.get('service_fee', instance.service_fee)
         if service_fee:
             instance.service_fee = Money(service_fee, constants.O55_APP_DEFAULT_MONEY_CURRENCY)
 

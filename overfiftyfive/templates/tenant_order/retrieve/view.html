@@ -206,7 +206,7 @@
                 <div class="form-row">
                     <div class="form-group col-md-12 mb-4">
                         <label for="payment_date">Payment Date</label>
-                        <p>{% if payment_date %}{{ job.payment_date }}{% else %}-{% endif %}</p>
+                        <p>{% if job.payment_date %}{{ job.payment_date }}{% else %}-{% endif %}</p>
                         <div id="payment_date-error" class="invalid-feedback"></div>
                     </div>
                 </div>
