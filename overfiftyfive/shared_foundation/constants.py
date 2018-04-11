@@ -24,3 +24,17 @@ CUSTOMER_GROUP_ID = 5
 #
 
 O55_APP_DEFAULT_MONEY_CURRENCY = settings.O55_APP_DEFAULT_MONEY_CURRENCY
+
+
+# The following constants are used by the "contant_point" models.
+#
+
+TELEPHONE_CONTACT_POINT_TYPE_OF_ID = 1
+MOBILE_CONTACT_POINT_TYPE_OF_ID = 2
+WORK_CONTACT_POINT_TYPE_OF_ID = 3
+
+TELEPHONE_CONTACT_POINT_TYPE_OF_CHOICES = (
+    (TELEPHONE_CONTACT_POINT_TYPE_OF_ID, _('Residential Customer')),
+    (MOBILE_CONTACT_POINT_TYPE_OF_ID, _('Commercial Customer')),
+    (WORK_CONTACT_POINT_TYPE_OF_ID, _('Unknown Customer'))
+)

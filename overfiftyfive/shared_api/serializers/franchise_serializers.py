@@ -37,7 +37,11 @@ class SharedFranchiseListSerializer(serializers.ModelSerializer):
             'hours_available',
             'product_supported',
             'telephone',
-            'mobile',
+            'telephone_type_of',
+            'telephone_extension',
+            'other_telephone',
+            'other_telephone_type_of',
+            'other_telephone_extension',
 
             # Postal ddress
             'address_country',

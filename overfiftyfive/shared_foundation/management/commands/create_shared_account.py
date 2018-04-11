@@ -26,7 +26,7 @@ class Command(BaseCommand):
         parser.add_argument('last_name', nargs='+', type=str)
         # parser.add_argument('telephone', nargs='+', type=str)
         # parser.add_argument('telephone_extension', nargs='+', type=str)
-        # parser.add_argument('mobile', nargs='+', type=str)
+        # parser.add_argument('other_telephone', nargs='+', type=str)
         # parser.add_argument('address_country', nargs='+', type=str)
         # parser.add_argument('address_locality', nargs='+', type=str)
         # parser.add_argument('address_region', nargs='+', type=str)
