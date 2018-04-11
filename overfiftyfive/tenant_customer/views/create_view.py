@@ -10,6 +10,16 @@ from tenant_foundation.models import Customer
 
 
 @method_decorator(login_required, name='dispatch')
+class PickCustomerTypeCreateView(TemplateView):
+    template_name = 'tenant_customer/create/view.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['current_page'] = "customers" # Required for navigation
+        return context
+
+
+@method_decorator(login_required, name='dispatch')
 class CustomerCreateView(TemplateView):
     template_name = 'tenant_customer/create/view.html'
 

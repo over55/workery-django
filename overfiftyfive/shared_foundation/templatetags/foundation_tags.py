@@ -30,3 +30,11 @@ def pretty_formatted_phonenumber(phone):
     See: https://github.com/daviddrysdale/python-phonenumbers
     """
     return phonenumbers.format_number(phone, phonenumbers.PhoneNumberFormat.NATIONAL)
+
+
+@register.simple_tag
+def tenant_url(schema_name, view_name):
+    if schema_name:
+        return settings.O55_APP_HTTP_PROTOCOL + schema_name + '.%s' % settings.O55_APP_HTTP_DOMAIN + reverse(view_name)
+    else:
+        return settings.O55_APP_HTTP_PROTOCOL + '%s' % settings.O55_APP_HTTP_DOMAIN + reverse(view_name)

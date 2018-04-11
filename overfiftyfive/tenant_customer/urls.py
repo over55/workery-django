@@ -9,6 +9,7 @@ urlpatterns = (
     path('clients/', list_view.CustomerSummaryView.as_view(), name='o55_tenant_customer_summary'),
 
     # Create
+    path('clients/create/pick', create_view.PickCustomerTypeCreateView.as_view(), name='o55_tenant_pick_customer_create'),
     path('clients/create/', create_view.CustomerCreateView.as_view(), name='o55_tenant_customer_create'),
 
     # List
