@@ -123,7 +123,6 @@ class Command(BaseCommand):
                 telephone=telephone,
                 telephone_extension=telephone_extension,
                 other_telephone=other_telephone,
-                other_telephone=other_telephone,
                 address_country=address_country,
                 address_locality=address_locality,
                 address_region=address_region,

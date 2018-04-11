@@ -8,6 +8,7 @@ from django.contrib.postgres.search import SearchVector, SearchVectorField
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.db.models.signals import pre_save, post_save
+from django.db import transaction
 from django.db.models import Q
 from django.dispatch import receiver
 from django.utils import timezone
@@ -94,6 +95,13 @@ class CustomerManager(models.Manager):
         ),).filter(search=keyword)
 
 
+@transaction.atomic
+def increment_customer_id_number():
+    """Function will generate a unique big-int."""
+    last_customer = Customer.objects.all().order_by('id').last();
+    return last_customer.id + 1
+
+
 class Customer(AbstractThing, AbstractContactPoint, AbstractPostalAddress, AbstractGeoCoordinate):
     class Meta:
         app_label = 'tenant_foundation'
@@ -110,6 +118,12 @@ class Customer(AbstractThing, AbstractContactPoint, AbstractPostalAddress, Abstr
         )
 
     objects = CustomerManager()
+    id = models.BigAutoField(
+       primary_key=True,
+       default = increment_customer_id_number,
+       editable=False,
+       db_index=True
+    )
 
     #
     #  PERSON FIELDS - http://schema.org/Person

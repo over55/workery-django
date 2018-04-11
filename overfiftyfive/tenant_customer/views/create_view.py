@@ -21,7 +21,17 @@ class PickCustomerTypeInCreateView(TemplateView):
 
 @method_decorator(login_required, name='dispatch')
 class ResidentialCustomerCreateView(TemplateView):
-    template_name = 'tenant_customer/create/residential_view.html'
+    template_name = 'tenant_customer/create/residential_create_view.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['current_page'] = "customers" # Required for navigation
+        return context
+
+
+@method_decorator(login_required, name='dispatch')
+class ResidentialCustomerConfirmCreateView(TemplateView):
+    template_name = 'tenant_customer/create/residential_confirm_view.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
