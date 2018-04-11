@@ -2,12 +2,12 @@
 from shared_foundation import constants
 
 
-def foundation_constants(request):
+def shared_constants(request):
     """
     Context processor will attach all our constants to every template.
     """
     return {
-        'constants': constants
+        'shared_constants': constants
     }
 
 

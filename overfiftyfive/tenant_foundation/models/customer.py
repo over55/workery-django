@@ -21,6 +21,7 @@ from starterkit.utils import (
 )
 from shared_foundation.constants import *
 from shared_foundation.models import SharedUser
+from tenant_foundation.constants import *
 from tenant_foundation.models import (
     AbstractContactPoint,
     AbstractGeoCoordinate,
@@ -169,6 +170,14 @@ class Customer(AbstractThing, AbstractContactPoint, AbstractPostalAddress, Abstr
     #  CUSTOM FIELDS
     #
 
+    type_of = models.PositiveSmallIntegerField(
+        _("Type of"),
+        help_text=_('The type of customer this is.'),
+        default=UNASSIGNED_CUSTOMER_TYPE_OF_ID,
+        blank=True,
+        choices=CUSTOMER_TYPE_OF_CHOICES,
+        db_index=True,
+    )
     is_ok_to_email = models.BooleanField(
         _("Is OK to email"),
         help_text=_('Indicates whether customer allows being reached by email'),

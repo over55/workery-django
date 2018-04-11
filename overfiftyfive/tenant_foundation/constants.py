@@ -36,3 +36,17 @@ JOB_TYPE_OF_CHOICES = (
     (COMMERCIAL_JOB_TYPE_OF_ID, _('Commercial Job Type')),
     (UNASSIGNED_JOB_TYPE_OF_ID, _('Unassigned Job Type'))
 )
+
+
+# The following constants are used by the "Customer" model.
+#
+
+UNASSIGNED_CUSTOMER_TYPE_OF_ID = 1
+RESIDENTIAL_CUSTOMER_TYPE_OF_ID = 2
+COMMERCIAL_CUSTOMER_TYPE_OF_ID = 3
+
+CUSTOMER_TYPE_OF_CHOICES = (
+    (RESIDENTIAL_CUSTOMER_TYPE_OF_ID, _('Residential Customer')),
+    (COMMERCIAL_CUSTOMER_TYPE_OF_ID, _('Commercial Customer')),
+    (UNASSIGNED_CUSTOMER_TYPE_OF_ID, _('Unknown Customer'))
+)

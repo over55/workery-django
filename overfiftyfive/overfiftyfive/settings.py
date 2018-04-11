@@ -147,8 +147,9 @@ TEMPLATES = [
                 'django.template.context_processors.i18n',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'shared_foundation.context_processors.foundation_constants', # Custom App
-                'shared_foundation.context_processors.me', # Custom App
+                'shared_foundation.context_processors.shared_constants',  # Custom App
+                'shared_foundation.context_processors.me',                # Custom App
+                'tenant_foundation.context_processors.tenant_constants',  # Custom App
             ],
         },
     },

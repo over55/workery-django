@@ -207,6 +207,7 @@
                 // 'fax_number': fax_number
                 'password': password,
                 'password_repeat': password_repeat,
+                'type_of': {{ tenant_constants.COMMERCIAL_CUSTOMER_TYPE_OF_ID }}
             },
             function(result_dict) { // Success
                 console.log(result_dict);
@@ -268,14 +269,14 @@
     <!------------------------------------------------------------------------->
     <!-- end BACK BUTTON -->
 
-    <h1>{% trans 'Add Client' %}</h1>
+    <h1>{% trans 'Add Commercial Client' %}</h1>
 
     <!-- FORM -->
     <!------------------------------------------------------------------------->
     <div class="col-sm-5 mx-auto mt-2">
         <!-- Residential form -->
         <div class="col-sm-12 fade show active" id="client-form" aria-labelledby="residential">
-            <h3 class="pt-4 pb-2 text-center">Add Client Form</h3>
+            <h3 class="pt-4 pb-2 text-center">Add Commercial Client Form</h3>
             <p>Use this form to fill out the client information.</p>
             <p><span class="text-secondary font-italic"><sup>*</sup>&nbsp;-&nbsp;Indicates required field to fill out.</span></p>
             <!-- Error Output -->

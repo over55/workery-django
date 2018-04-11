@@ -4,14 +4,14 @@
      *  Returns the exact domain without subdomains.
      */
     function get_shared_domain_url(append_url) {
-        return "{{ constants.O55_APP_HTTP_PROTOCOL }}{{ constants.O55_APP_HTTP_DOMAIN }}" + append_url;
+        return "{{ shared_constants.O55_APP_HTTP_PROTOCOL }}{{ shared_constants.O55_APP_HTTP_DOMAIN }}" + append_url;
     }
 
     /**
      *  Returns the exact domain with subdomains.
      */
     function get_tenant_domain_url(schema_name, append_url) {
-        return "{{ constants.O55_APP_HTTP_PROTOCOL }}" + schema_name + ".{{ constants.O55_APP_HTTP_DOMAIN }}" + append_url;
+        return "{{ shared_constants.O55_APP_HTTP_PROTOCOL }}" + schema_name + ".{{ shared_constants.O55_APP_HTTP_DOMAIN }}" + append_url;
     }
 
     /**

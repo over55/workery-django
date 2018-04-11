@@ -26,6 +26,7 @@ from shared_foundation.constants import CUSTOMER_GROUP_ID
 from shared_foundation.models import SharedUser
 from tenant_api.serializers.customer_affiliation import CustomerAffiliationSerializer
 # from tenant_api.serializers.customer_comment import CustomerCommentSerializer
+from tenant_foundation.constants import *
 from tenant_foundation.models import (
     # Comment,
     # CustomerComment,
@@ -108,6 +109,7 @@ class CustomerListCreateSerializer(serializers.ModelSerializer):
             'is_support',
             'job_info_read',
             'how_hear',
+            'type_of',
 
             # Misc (Read Only)
             # 'comments',
@@ -226,6 +228,7 @@ class CustomerListCreateSerializer(serializers.ModelSerializer):
             job_info_read=validated_data.get('job_info_read', False),
             how_hear=validated_data.get('how_hear', None),
             # 'organizations', #TODO: IMPLEMENT.
+            type_of=validated_data.get('type_of', UNASSIGNED_CUSTOMER_TYPE_OF_ID),
 
             # Contact Point
             email=email,
@@ -354,6 +357,7 @@ class CustomerRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
             'is_support',
             'job_info_read',
             'how_hear',
+            'type_of',
 
             # Misc (Read Only)
             # 'comments',
@@ -443,6 +447,7 @@ class CustomerRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         instance.is_support = validated_data.get('is_support', instance.is_support)
         instance.job_info_read = validated_data.get('job_info_read', instance.job_info_read)
         instance.how_hear = validated_data.get('how_hear', instance.how_hear)
+        instance.type_of=validated_data.get('type_of', instance.type_of)
 
         # # Misc (Read Only)
         instance.last_modified_by = self.context['last_modified_by']

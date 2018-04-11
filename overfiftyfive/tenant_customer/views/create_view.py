@@ -10,8 +10,8 @@ from tenant_foundation.models import Customer
 
 
 @method_decorator(login_required, name='dispatch')
-class PickCustomerTypeCreateView(TemplateView):
-    template_name = 'tenant_customer/create/view.html'
+class PickCustomerTypeInCreateView(TemplateView):
+    template_name = 'tenant_customer/create/pick_view.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -20,8 +20,18 @@ class PickCustomerTypeCreateView(TemplateView):
 
 
 @method_decorator(login_required, name='dispatch')
-class CustomerCreateView(TemplateView):
-    template_name = 'tenant_customer/create/view.html'
+class ResidentialCustomerCreateView(TemplateView):
+    template_name = 'tenant_customer/create/residential_view.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['current_page'] = "customers" # Required for navigation
+        return context
+
+
+@method_decorator(login_required, name='dispatch')
+class CommercialCustomerCreateView(TemplateView):
+    template_name = 'tenant_customer/create/commercial_view.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
