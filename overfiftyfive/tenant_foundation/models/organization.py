@@ -14,6 +14,7 @@ from starterkit.utils import (
     float_or_none
 )
 from shared_foundation.constants import *
+from tenant_foundation.constants import *
 from tenant_foundation.models import (
     AbstractContactPoint,
     AbstractGeoCoordinate,
@@ -50,6 +51,18 @@ class Organization(AbstractThing, AbstractContactPoint, AbstractPostalAddress, A
         )
 
     objects = OrganizationManager()
+
+    #
+    #  CUSTOM FIELDS
+    #
+
+    type_of = models.PositiveSmallIntegerField(
+        _("Type of"),
+        help_text=_('The type of organization this is based on Over55 internal classification.'),
+        default=UNKNOWN_ORGANIZATION_TYPE_OF_ID,
+        blank=True,
+        choices=ORGANIZATION_TYPE_OF_CHOICES,
+    )
 
     #
     #  SCHEMA FIELDS (see: Source: http://schema.org/Organization)

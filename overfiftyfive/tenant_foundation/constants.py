@@ -50,3 +50,19 @@ CUSTOMER_TYPE_OF_CHOICES = (
     (COMMERCIAL_CUSTOMER_TYPE_OF_ID, _('Commercial Customer')),
     (UNASSIGNED_CUSTOMER_TYPE_OF_ID, _('Unknown Customer'))
 )
+
+
+# The following constants are used by the "Organization" model.
+#
+
+UNKNOWN_ORGANIZATION_TYPE_OF_ID = 1
+PRIVATE_ORGANIZATION_TYPE_OF_ID = 2
+NON_PROFIT_ORGANIZATION_TYPE_OF_ID = 3
+GOVERNMENT_ORGANIZATION_TYPE_OF_ID = 4
+
+ORGANIZATION_TYPE_OF_CHOICES = (
+    (UNKNOWN_ORGANIZATION_TYPE_OF_ID, _('Unknown Organization Type')),
+    (PRIVATE_ORGANIZATION_TYPE_OF_ID, _('Private Organization Type')),
+    (NON_PROFIT_ORGANIZATION_TYPE_OF_ID, _('Non-Profit Organization Type')),
+    (GOVERNMENT_ORGANIZATION_TYPE_OF_ID, _('Government Organization')),
+)
