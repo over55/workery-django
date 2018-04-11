@@ -13,6 +13,7 @@ urlpatterns = (
     path('clients/create/residential', create_view.ResidentialCustomerCreateView.as_view(), name='o55_tenant_residential_customer_create'),
     path('clients/create/residential/confirm', create_view.ResidentialCustomerConfirmCreateView.as_view(), name='o55_tenant_residential_customer_confirm_create'),
     path('clients/create/commercial', create_view.CommercialCustomerCreateView.as_view(), name='o55_tenant_commercial_customer_create'),
+    path('clients/create/commercial/confirm', create_view.CommercialCustomerConfirmCreateView.as_view(), name='o55_tenant_commercial_customer_confirm_create'),
 
     # List
     path('clients/list/', list_view.CustomerListView.as_view(), name='o55_tenant_customer_list'),

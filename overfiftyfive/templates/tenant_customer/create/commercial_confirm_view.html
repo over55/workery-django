@@ -1,0 +1,229 @@
+{% extends 'tenant_foundation/tenant_base.html' %}
+{% load staticfiles i18n %}
+
+{% block title %}
+{% trans 'Add New Client | Over 55 Inc.' %}
+{% endblock title %}
+
+{% block header_content %}
+{% endblock header_content %}
+
+{% block content %}
+
+<!-- API JAVASCRIPT -->
+<!----------------------------------------------------------------------------->
+{% include 'tenant_api/customers_api_js.html' %}
+<!----------------------------------------------------------------------------->
+<!-- end API JAVASCRIPT -->
+
+
+<!-- CUSTOM JAVASCRIPT -->
+<!----------------------------------------------------------------------------->
+<script>
+    /**
+     *  When page loads, the following code will be run first.
+     */
+    $(document).ready(function () {
+        $('#selected_firstname').append(localStorage.getItem("tmp_commercial_customer_given_name"));
+        $('#selected_middlename').append(localStorage.getItem("tmp_commercial_customer_middle_name"));
+        $('#selected_lastname').append(localStorage.getItem("tmp_commercial_customer_last_name"));
+        $('#selected_phonenumber').append(localStorage.getItem("tmp_commercial_customer_telephone"));
+        $('#selected_other_phonenumber').append(localStorage.getItem("tmp_commercial_customer_other_telephone"));
+        $('#selected_dob').append(localStorage.getItem("tmp_commercial_customer_date_of_birth"));
+        $('#selected_gender').append(localStorage.getItem("tmp_commercial_customer_gender"));
+        $("#selected_ok_to_email").append(localStorage.getItem("tmp_commercial_customer_ok_to_email"));
+        $("#selected_ok_to_text").append(localStorage.getItem("tmp_commercial_customer_ok_to_text"));
+        $('#selected_street_address').append(localStorage.getItem("tmp_commercial_customer_street_address"));
+        $('#selected_street_address_extra').append(localStorage.getItem("tmp_commercial_customer_street_address_extra"));
+        $('#selected_address_locality').append(localStorage.getItem("tmp_commercial_customer_address_locality"));
+        $('#selected_address_region').append(localStorage.getItem("tmp_commercial_customer_address_region"));
+        $('#selected_address_country').append(localStorage.getItem("tmp_commercial_customer_address_country"));
+        $('#selected_postal_code').append(localStorage.getItem("tmp_commercial_customer_postal_code"));
+        $('#selected_post_office_box_number').append(localStorage.getItem("tmp_commercial_customer_post_office_box_number"));
+        $('#selected_email').append(localStorage.getItem("tmp_commercial_customer_email"));
+        $('#selected_telephone').append(localStorage.getItem("tmp_commercial_customer_telephone"));
+    }); // end Ready
+
+    /**
+     *  Function will unlock the submit button.
+     */
+    function disable_btn() {
+        $('#id_submit_btn').val("{% trans 'Please Wait...' %}");
+        $('#id_submit_btn').prop("disabled", true);
+    }
+
+    /**
+     *  Function will lock the submit button.
+     */
+    function enable_btn() {
+        $('#id_submit_btn').prop("disabled", false);
+        $('#id_submit_btn').val("{% trans 'Update' %}");
+    }
+
+    function ajax_previous() {
+        window.location = "{% url 'o55_tenant_commercial_customer_create' %}";
+    }
+
+
+</script>
+<!----------------------------------------------------------------------------->
+<!-- end CUSTOM JAVASCRIPT -->
+
+<main id="main" role="main">
+
+    <!-- BREADCRUMB -->
+    <!------------------------------------------------------------------------->
+    <nav aria-label="breadcrumb">
+	  	<ol class="breadcrumb">
+	    	<li class="breadcrumb-item"><a href="{% url 'o55_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'o55_tenant_customer_summary' %}">{% trans 'Clients' %}</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'o55_tenant_pick_customer_create' %}">{% trans 'Add' %}</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{% trans 'Commercial Client' %}</li>
+	  	</ol>
+	</nav>
+    <!------------------------------------------------------------------------->
+    <!-- end BREADCRUMB -->
+
+    <!-- BACK BUTTON -->
+    <!------------------------------------------------------------------------->
+    <div class="row">
+		<div class="col-sm-3 p-3 mb-2">
+			<a class="btn btn-primary btn-lg" href="{% url 'o55_tenant_customer_summary' %}" role="button">
+                <svg class="svg-inline--fa fa-arrow-left fa-w-14" aria-hidden="true" data-fa-processed="" data-prefix="fas" data-icon="arrow-left" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                <path fill="currentColor" d="M257.5 445.1l-22.2 22.2c-9.4 9.4-24.6 9.4-33.9 0L7 273c-9.4-9.4-9.4-24.6 0-33.9L201.4 44.7c9.4-9.4 24.6-9.4 33.9 0l22.2 22.2c9.5 9.5 9.3 25-.4 34.3L136.6 216H424c13.3 0 24 10.7 24 24v32c0 13.3-10.7 24-24 24H136.6l120.5 114.8c9.8 9.3 10 24.8.4 34.3z"></path>
+            </svg><!-- <i class="fas fa-arrow-left"></i> -->&nbsp;{% trans 'Back to Clients Home' %}</a>
+		</div>
+	</div>
+    <!------------------------------------------------------------------------->
+    <!-- end BACK BUTTON -->
+
+    <h1>{% trans 'Add Commercial Client' %}</h1>
+
+    <!-- FORM -->
+    <!------------------------------------------------------------------------->
+    <div class="col-md-10 mx-auto mb-4 py-2">
+     <h3 class="py-2 text-center mb-4">Commercial Customer Details Review</h3>
+     <table class="table table-bordered custom-cell-w">
+       <tbody>
+         <tr class="bg-dark">
+           <th scope="row" colspan="2" class="text-light">Summary Details</th>
+         </tr>
+         <tr>
+           <th scope="row" class="bg-light">First name</th>
+           <td id="selected_firstname" name="selected_firstname">
+               <!-- POPULATE THROUGH JS. -->
+           </td>
+         </tr>
+         <tr>
+           <th scope="row" class="bg-light">Middle name</th>
+           <td id="selected_middlename">
+               <!-- POPULATE THROUGH JS. -->
+           </td>
+         </tr>
+         <tr>
+           <th scope="row" class="bg-light">Last name</th>
+           <td id="selected_lastname">
+               <!-- POPULATE THROUGH JS. -->
+           </td>
+         </tr>
+         <tr>
+           <th scope="row" class="bg-light">Email</th>
+           <td id="selected_email">
+               <!-- POPULATE THROUGH JS. -->
+           </td>
+         </tr>
+         <tr>
+           <th scope="row" class="bg-light">Phone Number #1</th>
+           <td id="selected_phonenumber">
+             <!-- POPULATE THROUGH JS. -->
+           </td>
+         </tr>
+         <tr>
+           <th scope="row" class="bg-light">Phone Number #2</th>
+           <td id="selected_other_phonenumber">
+               <!-- POPULATE THROUGH JS. -->
+           </td>
+         </tr>
+         <tr>
+           <th scope="row" class="bg-light">Date of Birth</th>
+           <td id="selected_dob">
+               <!-- POPULATE THROUGH JS. -->
+           </td>
+         </tr>
+         <tr>
+           <th scope="row" class="bg-light">Gender</th>
+           <td id="selected_gender">
+               <!-- POPULATE THROUGH JS. -->
+           </td>
+         </tr>
+         <tr>
+           <th scope="row" class="bg-light">Okay to Email?</th>
+           <td id="selected_ok_to_email">
+               <!-- POPULATE THROUGH JS. -->
+           </td>
+         </tr>
+         <tr>
+           <th scope="row" class="bg-light">Okay to Text?</th>
+           <td id="selected_ok_to_text">
+               <!-- POPULATE THROUGH JS. -->
+           </td>
+         </tr>
+         <tr>
+           <th scope="row" class="bg-light">Stree Address</th>
+           <td id="selected_street_address">
+               <!-- POPULATE street_address JS. -->
+           </td>
+         </tr>
+         <tr>
+           <th scope="row" class="bg-light">Street Address (Extra)</th>
+           <td id="selected_street_address_extra">
+               <!-- POPULATE THROUGH JS. -->
+           </td>
+         </tr>
+         <tr>
+           <th scope="row" class="bg-light">City</th>
+           <td id="selected_address_locality">
+               <!-- POPULATE THROUGH JS. -->
+           </td>
+         </tr>
+         <tr>
+           <th scope="row" class="bg-light">Region</th>
+           <td id="selected_address_region">
+               <!-- POPULATE THROUGH JS. -->
+           </td>
+         </tr>
+         <tr>
+           <th scope="row" class="bg-light">Country</th>
+           <td id="selected_address_country">
+               <!-- POPULATE THROUGH JS. -->
+           </td>
+         </tr>
+         <tr>
+           <th scope="row" class="bg-light">Postal Code</th>
+           <td id="selected_postal_code">
+               <!-- POPULATE THROUGH JS. -->
+           </td>
+         </tr>
+         <tr>
+           <th scope="row" class="bg-light">Post Office Box Number</th>
+           <td id="selected_post_office_box_number">
+               <!-- POPULATE THROUGH JS. -->
+           </td>
+         </tr>
+       </tbody>
+     </table>
+     <div class="form-group col-md-12 mb-3 p-0 mx-auto text-center">
+         <button class="btn btn-success btn-lg mt-4 float-right pl-4 pr-4" type="submit" onclick="ajax_post_form_submission();"><i class="fas fa-plus"></i> Add Job</button>
+         <button class="btn btn-orange btn-lg mt-4 float-left pl-4 pr-4" type="button" onclick="ajax_previous();"><i class="fas fa-arrow-left"></i> Back</button>
+     </div>
+    </div>
+    <!------------------------------------------------------------------------->
+    <!-- end FORM -->
+
+
+    <!-- RETURN-TO-TOP -->
+    <a id="return-to-top" href="#" class="btn-info btn-lg back-to-top" role="button" title="Back to top"><i class="fas fa-angle-up fa-2x"></i></a>
+    <!-- end RETURN-TO-TOP -->
+</main>
+
+{% endblock content %}

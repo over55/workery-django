@@ -41,7 +41,17 @@ class ResidentialCustomerConfirmCreateView(TemplateView):
 
 @method_decorator(login_required, name='dispatch')
 class CommercialCustomerCreateView(TemplateView):
-    template_name = 'tenant_customer/create/commercial_view.html'
+    template_name = 'tenant_customer/create/commercial_create_view.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['current_page'] = "customers" # Required for navigation
+        return context
+
+
+@method_decorator(login_required, name='dispatch')
+class CommercialCustomerConfirmCreateView(TemplateView):
+    template_name = 'tenant_customer/create/commercial_confirm_view.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
