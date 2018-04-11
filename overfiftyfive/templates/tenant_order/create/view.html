@@ -117,7 +117,7 @@
         has_error |= valid_textfield_value('firstname', true, 2);
         has_error |= valid_textfield_value('lastname', true, 2);
         has_error |= valid_textfield_value('phonenumber', true, 10);
-        has_error |= valid_textfield_value('mobilenumber', false, 10);
+        has_error |= valid_textfield_value('other_phonenumber', false, 10);
         has_error |= valid_radiofields_seleciton('ok_to_email', true);
         has_error |= valid_radiofields_seleciton('ok_to_text', true);
         has_error |= valid_textfield_value('street_address', true, 3);
@@ -162,7 +162,7 @@
         // var area_served = $('#id_area_served').val();
         var telephone = $('#phonenumber').val();
         // var telephone_extension = $('#id_telephone_extension').val();
-        var mobile = $('#mobilenumber').val();
+        var other_telephone = $('#other_phonenumber').val();
         // var fax_number = $('#id_fax_number').val();
 
         // LOCK OUT THE "SUBMIT" BUTTON SO THE USER DOES NOT MAKE MULTI-CALLS.
@@ -191,8 +191,10 @@
                 // 'area_served': area_served,
                 'fax_number': null,
                 'telephone': telephone,
+                'telephone_type_of': {{ shared_constants.TELEPHONE_CONTACT_POINT_TYPE_OF_ID }},
                 // 'telephone_extension': telephone_extension,
-                'mobile': mobile,
+                'other_telephone': other_telephone,
+                'other_telephone_type_of': {{ shared_constants.MOBILE_CONTACT_POINT_TYPE_OF_ID }},
                 // 'fax_number': fax_number
             },
             function(result_dict) { // Success
@@ -319,9 +321,9 @@
                     <div id="phonenumber-error" class="invalid-feedback"></div>
                 </div>
                 <div class="form-group col-md-7 mb-4">
-                    <label for="mobilenumber">Mobile</label>
-                    <input type="text" class="form-control form-control-lg border border-success" id="mobilenumber" name="mobilenumber" placeholder="(xxx) xxx-xxxx" minlength="10" maxlength="31">
-                    <div id="mobilenumber-error" class="invalid-feedback"></div>
+                    <label for="other_phonenumber">Mobile</label>
+                    <input type="text" class="form-control form-control-lg border border-success" id="other_phonenumber" name="other_phonenumber" placeholder="(xxx) xxx-xxxx" minlength="10" maxlength="31">
+                    <div id="other_phonenumber-error" class="invalid-feedback"></div>
                 </div>
                 <div class="form-group col-md-12 mb-4">
                     <label for="email">E-Mail</label>

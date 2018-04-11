@@ -57,7 +57,7 @@ class CustomerListCreateSerializer(serializers.ModelSerializer):
     # Custom formatting of our telephone fields.
     fax_number = PhoneNumberField(allow_null=True, required=False)
     telephone = PhoneNumberField()
-    mobile = PhoneNumberField(allow_null=True, required=False)
+    other_telephone = PhoneNumberField(allow_null=True, required=False)
 
     # Add password adding.
     password = serializers.CharField(
@@ -129,7 +129,10 @@ class CustomerListCreateSerializer(serializers.ModelSerializer):
             # 'hours_available', #TODO: FIX
             'telephone',
             'telephone_extension',
-            'mobile',
+            'telephone_type_of',
+            'other_telephone',
+            'other_telephone_extension',
+            'other_telephone_type_of',
 
             # Postal Address
             'address_country',
@@ -177,9 +180,9 @@ class CustomerListCreateSerializer(serializers.ModelSerializer):
         telephone = validated_data.get('telephone', None)
         if telephone:
             telephone = phonenumbers.parse(telephone, "CA")
-        mobile = validated_data.get('mobile', None)
-        if mobile:
-            mobile = phonenumbers.parse(mobile, "CA")
+        other_telephone = validated_data.get('other_telephone', None)
+        if other_telephone:
+            other_telephone = phonenumbers.parse(other_telephone, "CA")
 
         #-------------------
         # Create our user.
@@ -239,7 +242,10 @@ class CustomerListCreateSerializer(serializers.ModelSerializer):
             # 'hours_available', #TODO: IMPLEMENT.
             telephone=telephone,
             telephone_extension=validated_data.get('telephone_extension', None),
-            mobile=mobile,
+            telephone_type_of=validated_data.get('telephone_type_of', None),
+            other_telephone=other_telephone,
+            other_telephone_extension=validated_data.get('other_telephone_extension', None),
+            other_telephone_type_of=validated_data.get('other_telephone_type_of', None),
 
             # Postal Address
             address_country=validated_data.get('address_country', None),
@@ -280,7 +286,7 @@ class CustomerListCreateSerializer(serializers.ModelSerializer):
         # validated_data['extra_comment'] = None
         validated_data['telephone'] = telephone
         validated_data['fax_number'] = fax_number
-        validated_data['mobile'] = mobile
+        validated_data['other_telephone'] = other_telephone
         validated_data['id'] = customer.id
 
         # Return our validated data.
@@ -310,7 +316,7 @@ class CustomerRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
     # Custom formatting of our telephone fields.
     fax_number = PhoneNumberField(allow_null=True, required=False)
     telephone = PhoneNumberField(allow_null=True, required=False)
-    mobile = PhoneNumberField(allow_null=True, required=False)
+    other_telephone = PhoneNumberField(allow_null=True, required=False)
 
     # Add password adding.
     password = serializers.CharField(
@@ -377,7 +383,10 @@ class CustomerRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
             # 'hours_available', #TODO: FIX
             'telephone',
             'telephone_extension',
-            'mobile',
+            'telephone_type_of',
+            'other_telephone',
+            'other_telephone_extension',
+            'other_telephone_type_of',
 
             # Postal Address
             'address_country',
@@ -460,9 +469,12 @@ class CustomerRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         instance.email = validated_data.get('email', instance.contact_type)
         instance.fax_number = validated_data.get('fax_number', instance.fax_number)
         # 'hours_available', #TODO: FIX
-        instance.telephone = validated_data.get('telephone', instance.telephone)
-        instance.telephone_extension = validated_data.get('telephone_extension', instance.telephone_extension)
-        instance.mobile = validated_data.get('mobile', instance.mobile)
+        instance.telephone=validated_data.get('telephone', None)
+        instance.telephone_extension=validated_data.get('telephone_extension', None)
+        instance.telephone_type_of=validated_data.get('telephone_type_of', None)
+        instance.other_telephone=validated_data.get('other_telephone', None)
+        instance.other_telephone_extension=validated_data.get('other_telephone_extension', None)
+        instance.other_telephone_type_of=validated_data.get('other_telephone_type_of', None)
 
         # Postal Address
         instance.address_country = validated_data.get('address_country', instance.address_country)

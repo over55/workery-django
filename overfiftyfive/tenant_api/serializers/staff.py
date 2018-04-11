@@ -58,7 +58,7 @@ class StaffListCreateSerializer(serializers.ModelSerializer):
     # Custom formatting of our telephone fields.
     fax_number = PhoneNumberField(allow_null=True, required=False)
     telephone = PhoneNumberField(allow_null=True, required=False)
-    mobile = PhoneNumberField(allow_null=True, required=False)
+    other_telephone = PhoneNumberField(allow_null=True, required=False)
 
     # Add password adding.
     password = serializers.CharField(
@@ -120,7 +120,10 @@ class StaffListCreateSerializer(serializers.ModelSerializer):
             # 'hours_available', #TODO: FIX
             'telephone',
             'telephone_extension',
-            'mobile',
+            'telephone_type_of',
+            'other_telephone',
+            'other_telephone_extension',
+            'other_telephone_type_of',
 
             # Postal Address
             'address_country',
@@ -170,13 +173,13 @@ class StaffListCreateSerializer(serializers.ModelSerializer):
         telephone = validated_data.get('telephone', None)
         if telephone:
             telephone = phonenumbers.parse(telephone, "CA")
-        mobile = validated_data.get('mobile', None)
-        if mobile:
-            mobile = phonenumbers.parse(mobile, "CA")
+        other_telephone = validated_data.get('other_telephone', None)
+        if other_telephone:
+            other_telephone = phonenumbers.parse(other_telephone, "CA")
 
         validated_data['fax_number'] = fax_number
         validated_data['telephone'] = telephone
-        validated_data['mobile'] = mobile
+        validated_data['other_telephone'] = other_telephone
 
         #---------------------------------------------------
         # Create our `Staff` object in our tenant schema.
@@ -209,7 +212,10 @@ class StaffListCreateSerializer(serializers.ModelSerializer):
             # 'hours_available', #TODO: IMPLEMENT.
             telephone=telephone,
             telephone_extension=validated_data.get('telephone_extension', None),
-            mobile=mobile,
+            telephone_type_of=validated_data.get('telephone_type_of', None),
+            other_telephone=other_telephone,
+            other_telephone_extension=validated_data.get('other_telephone_extension', None),
+            other_telephone_type_of=validated_data.get('other_telephone_type_of', None),
 
             # Postal Address
             address_country=validated_data.get('address_country', None),
@@ -323,7 +329,7 @@ class StaffRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
     # Custom formatting of our telephone fields.
     fax_number = PhoneNumberField(allow_null=True, required=False)
     telephone = PhoneNumberField(allow_null=True, required=False)
-    mobile = PhoneNumberField(allow_null=True, required=False)
+    other_telephone = PhoneNumberField(allow_null=True, required=False)
 
     # Meta Information.
     class Meta:
@@ -365,7 +371,10 @@ class StaffRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
             # 'hours_available', #TODO: FIX
             'telephone',
             'telephone_extension',
-            'mobile',
+            'telephone_type_of',
+            'other_telephone',
+            'other_telephone_extension',
+            'other_telephone_type_of',
 
             # Postal Address
             'address_country',
@@ -456,7 +465,10 @@ class StaffRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         # 'hours_available', #TODO: IMPLEMENT.
         telephone=validated_data.get('telephone', None)
         telephone_extension=validated_data.get('telephone_extension', None)
-        mobile=validated_data.get('mobile', None)
+        telephone_type_of=validated_data.get('telephone_type_of', None)
+        other_telephone=validated_data.get('other_telephone', None)
+        other_telephone_extension=validated_data.get('other_telephone_extension', None)
+        other_telephone_type_of=validated_data.get('other_telephone_type_of', None)
 
         # Postal Address
         address_country=validated_data.get('address_country', None)

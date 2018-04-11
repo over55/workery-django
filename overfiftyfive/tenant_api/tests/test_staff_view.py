@@ -229,7 +229,7 @@ class StaffListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
             'telephone': '(123) 456-7890',
             'telephone_extension': None,
             'fax_number': None,
-            'mobile': '+19876543210',
+            'other_telephone': '+19876543210',
             'extra_comment': "This is a friendly staff.",
         }), content_type='application/json')
         self.assertIsNotNone(response)

@@ -125,9 +125,9 @@
                     <div id="phonenumber-error" class="invalid-feedback"></div>
                 </div>
                 <div class="form-group col-md-7 mb-4">
-                    <label for="mobilenumber">Mobile</label>
-                    <p>{% if staff.mobile %}<a href="tel:{{ staff.mobile }}">{{ staff.mobile|pretty_formatted_phonenumber }}</a>{% else %}-{% endif %}</p>
-                    <div id="mobilenumber-error" class="invalid-feedback"></div>
+                    <label for="other_phonenumber">Phone (Other)</label>
+                    <p>{% if staff.other_telephone %}<a href="tel:{{ staff.other_telephone }}">{{ staff.other_telephone|pretty_formatted_phonenumber }}</a>{% else %}-{% endif %}</p>
+                    <div id="other_phonenumber-error" class="invalid-feedback"></div>
                 </div>
                 <div class="form-group col-md-12 mb-4">
                     <label for="email">E-Mail</label>

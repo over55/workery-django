@@ -86,7 +86,7 @@
         localStorage.removeItem("tmp_order_post_office_box_number");
         localStorage.removeItem("tmp_order_email");
         localStorage.removeItem("tmp_order_telephone");
-        localStorage.removeItem("tmp_order_mobile");
+        localStorage.removeItem("tmp_order_other_telephone");
         localStorage.removeItem("tmp_order_password");
         localStorage.removeItem("tmp_order_password_repeat");
 
@@ -146,8 +146,10 @@
                 // 'area_served': area_served,
                 'fax_number': null,
                 'telephone': localStorage.getItem("tmp_order_telephone"),
+                'telephone_type_of': {{ shared_constants.TELEPHONE_CONTACT_POINT_TYPE_OF_ID }},
                 // 'telephone_extension': telephone_extension,
-                'mobile': localStorage.getItem("tmp_order_mobile"),
+                'other_telephone': localStorage.getItem("tmp_order_other_telephone"),
+                'other_telephone_type_of': {{ shared_constants.MOBILE_CONTACT_POINT_TYPE_OF_ID }},
                 // 'fax_number': fax_number
                 'password': localStorage.getItem("tmp_order_password"),
                 'password_repeat': localStorage.getItem("tmp_order_password_repeat"),

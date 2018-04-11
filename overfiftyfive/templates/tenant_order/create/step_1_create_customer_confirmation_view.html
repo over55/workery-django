@@ -32,7 +32,7 @@
         var tmp_order_post_office_box_number = localStorage.getItem("tmp_order_post_office_box_number");
         var tmp_order_email = localStorage.getItem("tmp_order_email");
         var tmp_order_telephone = localStorage.getItem("tmp_order_telephone");
-        var tmp_order_mobile = localStorage.getItem("tmp_order_mobile");
+        var tmp_order_other_telephone = localStorage.getItem("tmp_order_other_telephone");
         var tmp_order_password = localStorage.getItem("tmp_order_password");
         var tmp_order_password_repeat = localStorage.getItem("tmp_order_password_repeat");
 
@@ -43,8 +43,8 @@
         $('#selected_middle_name').append(tmp_order_middle_name);
         $('#selected_last_name').append(tmp_order_last_name);
         $('#selected_phonenumber').append(tmp_order_telephone);
-        if (tmp_order_mobile !== undefined && tmp_order_mobile !== null && tmp_order_mobile.length > 0) {
-            $('#selected_mobilenumber').append(tmp_order_mobile);
+        if (tmp_order_other_telephone !== undefined && tmp_order_other_telephone !== null && tmp_order_other_telephone.length > 0) {
+            $('#selected_other_phonenumber').append(tmp_order_other_telephone);
         }
         if (tmp_order_email !== undefined && tmp_order_email !== null && tmp_order_email.length > 0) {
             $('#selected_email').append(tmp_order_email);
@@ -154,7 +154,7 @@
             </tr>
             <tr>
               <th scope="row" class="bg-light">Mobile</th>
-              <td id="selected_mobilenumber"><!-- PLACEHOLDER --></td>
+              <td id="selected_other_phonenumber"><!-- PLACEHOLDER --></td>
             </tr>
             <tr>
               <th scope="row" class="bg-light">E-Mail</th>

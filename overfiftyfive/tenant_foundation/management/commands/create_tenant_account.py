@@ -46,7 +46,7 @@ class Command(BaseCommand):
         parser.add_argument('last_name', nargs='+', type=str)
         parser.add_argument('telephone', nargs='+', type=str)
         parser.add_argument('telephone_extension', nargs='+', type=str)
-        parser.add_argument('mobile', nargs='+', type=str)
+        parser.add_argument('other_telephone', nargs='+', type=str)
         parser.add_argument('address_country', nargs='+', type=str)
         parser.add_argument('address_locality', nargs='+', type=str)
         parser.add_argument('address_region', nargs='+', type=str)
@@ -65,7 +65,7 @@ class Command(BaseCommand):
         last_name = options['last_name'][0]
         telephone = options['telephone'][0]
         telephone_extension = options['telephone_extension'][0]
-        mobile = options['mobile'][0]
+        other_telephone = options['other_telephone'][0]
         address_country = options['address_country'][0]
         address_locality = options['address_locality'][0]
         address_region = options['address_region'][0]
@@ -122,7 +122,8 @@ class Command(BaseCommand):
                 user=user,
                 telephone=telephone,
                 telephone_extension=telephone_extension,
-                mobile=mobile,
+                other_telephone=other_telephone,
+                other_telephone=other_telephone,
                 address_country=address_country,
                 address_locality=address_locality,
                 address_region=address_region,
@@ -139,7 +140,7 @@ class Command(BaseCommand):
                 user=user,
                 telephone=telephone,
                 telephone_extension=telephone_extension,
-                mobile=mobile,
+                other_telephone=other_telephone,
                 address_country=address_country,
                 address_locality=address_locality,
                 address_region=address_region,
@@ -156,7 +157,7 @@ class Command(BaseCommand):
                 user=user,
                 telephone=telephone,
                 telephone_extension=telephone_extension,
-                mobile=mobile,
+                other_telephone=other_telephone,
                 address_country=address_country,
                 address_locality=address_locality,
                 address_region=address_region,
