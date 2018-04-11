@@ -193,6 +193,7 @@ class Command(BaseCommand):
                     # 'middle_name':middle_name,
                     'telephone': home_phone,
                     'telephone_extension': telephone_extension,
+                    'telephone_type_of': TELEPHONE_CONTACT_POINT_TYPE_OF_ID,
                     'postal_code': postal_code,
                     'birthdate': local_birthdate,
                     'street_address': address,

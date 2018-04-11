@@ -180,6 +180,7 @@ class Command(BaseCommand):
                     'last_name':company,
                     'given_name':caller,
                     'telephone': phone,
+                    'telephone_type_of': TELEPHONE_CONTACT_POINT_TYPE_OF_ID,
                     'postal_code': postal_code,
                     'street_address': address,
                     'address_locality': city,

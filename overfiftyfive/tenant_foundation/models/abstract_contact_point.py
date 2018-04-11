@@ -4,6 +4,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.core.validators import EmailValidator
 from django.utils.translation import ugettext_lazy as _
+from shared_foundation.constants import *
 
 
 # Override the validator to have our custom message.
@@ -75,18 +76,45 @@ class AbstractContactPoint(models.Model):
         null=True,
         db_index=True,
     )
-    telephone_extension = models.CharField( # NOT STANDARD SCHEMA.
+
+    #
+    # CUSTOM FIELDS - These are not standard Schema.org fields!
+    #
+
+    telephone_type_of = models.PositiveSmallIntegerField(
+        _("Telephone type of"),
+        help_text=_('The type of phone this is. Ex: work, home, etc.'),
+        default=TELEPHONE_CONTACT_POINT_TYPE_OF_ID,
+        blank=True,
+        choices=TELEPHONE_CONTACT_POINT_TYPE_OF_CHOICES,
+    )
+    telephone_extension = models.CharField(
         _("Telephone Extension"),
         max_length=31,
-        help_text=_('The telephone extension for the number.'),
+        help_text=_('The telephone number extension.'),
         blank=True,
         null=True,
         default='',
     )
-    mobile = PhoneNumberField( # Not standard in Schema.org
-        _("Mobile"),
-        help_text=_('The mobile telephone number.'),
+    other_telephone = PhoneNumberField( # Not standard in Schema.org
+        _("Other Telephone"),
+        help_text=_('The alternative telephone number.'),
         db_index=True,
         blank=True,
         null=True
+    )
+    other_telephone_extension = models.CharField(
+        _("Other Telephone Extension"),
+        max_length=31,
+        help_text=_('The alternative telephone extension number.'),
+        blank=True,
+        null=True,
+        default='',
+    )
+    other_telephone_type_of = models.PositiveSmallIntegerField(
+        _("Other telephone type of"),
+        help_text=_('The type of phone the alternative telephone is. Ex: work, home, etc.'),
+        default=TELEPHONE_CONTACT_POINT_TYPE_OF_ID,
+        blank=True,
+        choices=TELEPHONE_CONTACT_POINT_TYPE_OF_CHOICES,
     )
