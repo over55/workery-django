@@ -43,8 +43,19 @@
         $('#selected_post_office_box_number').append(localStorage.getItem("tmp_residential_customer_post_office_box_number"));
         $('#selected_email').append(localStorage.getItem("tmp_residential_customer_email"));
         $('#selected_telephone').append(localStorage.getItem("tmp_residential_customer_telephone"));
-        // $('#password').append(localStorage.getItem("tmp_residential_customer_password"));
-        // $('#password_repeat').append(localStorage.getItem("tmp_residential_customer_password_repeat"));
+
+        // Set our `skill_sets` field.
+        var tmp_person_tag_values = localStorage.getObj("tmp_residential_customer_person_tag_values");
+        for (var i = 0; i < tmp_person_tag_values.length; i++) {
+            // Extract our value.
+            var tag_value = tmp_person_tag_values[i];
+
+            // Generate our HTML element.
+            var htmlElement = '<span class="badge badge-info badge-lg">'+tag_value+'</span>';
+
+            // Append our HTML element to the GUI.
+            $('#selected_tag_values').append(htmlElement)
+        }
     }); // end Ready
 
     /**
@@ -119,7 +130,8 @@
                 // 'fax_number': fax_number
                 'password': password,
                 'password_repeat': password_repeat,
-                'type_of': {{ tenant_constants.RESIDENTIAL_CUSTOMER_TYPE_OF_ID }}
+                'type_of': {{ tenant_constants.RESIDENTIAL_CUSTOMER_TYPE_OF_ID }},
+                'tags': localStorage.getObj("tmp_residential_customer_person_tag_ids"),
             },
             function(result_dict) { // Success
                 // FOR DEBUGGING PURPOSES ONLY.
@@ -319,6 +331,12 @@
            <th scope="row" class="bg-light">Post Office Box Number</th>
            <td id="selected_post_office_box_number">
                <!-- POPULATE THROUGH JS. -->
+           </td>
+         </tr>
+         <tr>
+           <th scope="row" class="bg-light">Tag(s)</th>
+           <td id="selected_tag_values">
+               <!-- THIS IS WHERE THE TAGS GET LOADED -->
            </td>
          </tr>
        </tbody>

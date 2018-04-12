@@ -6,7 +6,11 @@ from django.utils.decorators import method_decorator
 from django.utils.translation import ugettext_lazy as _
 from shared_foundation.mixins import ExtraRequestProcessingMixin
 from tenant_api.filters.customer import CustomerFilter
-from tenant_foundation.models import Customer
+from tenant_foundation.models import (
+    Customer,
+    SkillSet,
+    Tag
+)
 
 
 @method_decorator(login_required, name='dispatch')
@@ -26,6 +30,8 @@ class ResidentialCustomerCreateView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['current_page'] = "customers" # Required for navigation
+        context['tags'] = Tag.objects.all()
+        context['skillsets'] = SkillSet.objects.all()
         return context
 
 
@@ -46,6 +52,8 @@ class CommercialCustomerCreateView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['current_page'] = "customers" # Required for navigation
+        context['tags'] = Tag.objects.all()
+        context['skillsets'] = SkillSet.objects.all()
         return context
 
 

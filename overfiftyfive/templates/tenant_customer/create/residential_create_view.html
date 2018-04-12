@@ -29,7 +29,14 @@
             dateFormat: 'yy-mm-dd'  // https://stackoverflow.com/a/7500097
         });
 
-        // Assign previously set values.
+        // Populate our 'select2' chosen values.
+        var tmp_person_tags = localStorage.getObj("tmp_residential_customer_person_tag_ids");
+        $('#person_tags').val(tmp_person_tags);
+
+        // Initialize our 'select2' element.
+        $('#person_tags').select2();
+
+        // Populate previously set values.
         $('#firstname').val(localStorage.getItem("tmp_residential_customer_given_name"));
         $('#middlename').val(localStorage.getItem("tmp_residential_customer_middle_name"));
         $('#lastname').val(localStorage.getItem("tmp_residential_customer_last_name"));
@@ -191,6 +198,7 @@
         // var fax_number = $('#id_fax_number').val();
         var password = $('#password').val();
         var password_repeat = $('#password_repeat').val();
+        var person_tags = $('#person_tags').val();
 
         localStorage.setItem("tmp_residential_customer_given_name", given_name);
         localStorage.setItem("tmp_residential_customer_middle_name", middle_name);
@@ -212,6 +220,19 @@
         localStorage.setItem("tmp_residential_customer_password", password);
         localStorage.setItem("tmp_residential_customer_password_repeat", password_repeat);
 
+        // SAVE ARRAY OF IDS.
+        localStorage.setObj("tmp_residential_customer_person_tag_ids", person_tags);
+
+        // SAVE ARRAY OF VALUE ITEMS.
+        var person_tags_arr = [];
+        for (var i = 0; i < person_tags.length; i++) {
+            var option_id = person_tags[i];
+            var option_value = $('#person_tag_option_id_'+option_id).text();
+            person_tags_arr.push(option_value);
+        } // end FOR LOOP.
+        localStorage.setObj("tmp_residential_customer_person_tag_values", person_tags_arr);
+
+        // REDIRECT TO OUR CONFIRM PAGE.
         window.location = "{% url 'o55_tenant_residential_customer_confirm_create' %}";
     }
 </script>
@@ -339,6 +360,15 @@
                         <input type="radio" id="ok_to_text2" name="ok_to_text" value="no" class="custom-control-input form-check-input">
                         <label class="custom-control-label form-check-label" for="ok_to_text2">No</label>
                     </div>
+                </div>
+                <div class="form-group col-md-12 mb-4">
+                    <label for="tag">Tags</label>
+                    <select id="person_tags" name="person_tags" class="form-control form-control-lg border border-success" name="states[]" multiple="multiple">
+                    {% for tag in tags %}
+                        <option value="{{ tag.id }}" id="person_tag_option_id_{{ tag.id }}">{{ tag }}</option>
+                    {% endfor %}
+                    </select>
+                    <div id="person_tags-error" class="invalid-feedback"></div>
                 </div>
             </div>
             <!-- ############ end CONTACT POINT ############ -->
