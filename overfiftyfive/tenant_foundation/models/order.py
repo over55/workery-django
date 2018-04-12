@@ -5,6 +5,7 @@ from djmoney.money import Money
 from datetime import date, datetime, timedelta
 from django.conf import settings
 from django.db import models
+from django.db import transaction
 from django.contrib.postgres.search import SearchVector, SearchVectorField
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
@@ -54,6 +55,14 @@ class OrderManager(models.Manager):
             'associate__last_name',
         ),).filter(search=keyword)
 
+
+@transaction.atomic
+def increment_order_id_number():
+    """Function will generate a unique big-int."""
+    last_job_order = Order.objects.all().order_by('id').last();
+    return last_job_order.id + 1
+
+
 class Order(models.Model):
     class Meta:
         app_label = 'tenant_foundation'
@@ -70,6 +79,12 @@ class Order(models.Model):
         )
 
     objects = OrderManager()
+    id = models.BigAutoField(
+       primary_key=True,
+       default = increment_order_id_number,
+       editable=False,
+       db_index=True
+    )
 
     #
     #  FIELDS

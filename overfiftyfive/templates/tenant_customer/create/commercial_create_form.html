@@ -129,12 +129,34 @@
     }
 
     /**
-     *  Function will attempt to submit the form to the API server. This
-     *  funciton will:
-     *  (1) Lock / Unlock the submit button.
-     *  (2)
+     *  Function will confirm the email is unique with the API web-service
+     *  and then submit our form for saving in the local storage after the
+     *  fields get validated.
      */
     function ajax_post_form_submission(redirect_url) {
+        var tmp_email = $('#email').val();
+        post_is_email_unique_api(
+            tmp_email,
+            function(result) {
+                if (result === 1 || result === '1') {
+                    save_submission(redirect_url);
+                } else {
+                    alert("EMAIL ALREADY EXISTS, PLEASE PICK A NEW EMAIL ADDRESS"); //TODO: UPDATE THE GUI.
+                    return;
+                }
+            },
+            function(json_error) {
+                alert(json_error);
+                //TODO: (1) OUTPUT THE ERROR IN A TEXT. (2) FOCUS ON THE OUTPUT.
+            }
+        ); // end API CALL
+    }
+
+    /**
+     *  Function will validate the fields and then save them to the local
+     *  storage, then direct user to the link in the 'redirect_url' variable.
+     */
+    function save_submission(redirect_url) {
         // GET OUR FORM.
         var form = document.getElementById('add-client-form');
 
@@ -142,6 +164,7 @@
         var has_error = false;
         has_error |= valid_textfield_value('companyname', true, 2);
         has_error |= valid_textfield_value('companytype', true, 1);
+        has_error |= valid_textfield_value('customer_affiliation', true, 1);
         has_error |= valid_textfield_value('firstname', true, 2);
         has_error |= valid_textfield_value('lastname', true, 2);
         has_error |= valid_textfield_value('phonenumber', true, 10);
@@ -306,7 +329,7 @@
                 <label for="phonetype">&nbsp;</label>
                 <select class="custom-select form-control-lg border-primary" id="phonetype" name="phonetype" required="">
                     <option value="{{ shared_constants.TELEPHONE_CONTACT_POINT_TYPE_OF_ID }}">Landline</option>
-                    <option value="{{ shared_constants.MOBILE_CONTACT_POINT_TYPE_OF_ID }}">Mobile</option>
+                    <option value="{{ shared_constants.MOBILE_CONTACT_POINT_TYPE_OF_ID }}" selected>Mobile</option>
                     <option value="{{ shared_constants.WORK_CONTACT_POINT_TYPE_OF_ID }}">Work</option>
                 </select>
                 <div id="phonetype-error" class="invalid-feedback"></div>
@@ -320,7 +343,7 @@
                 <label for="other_phonenumber_type">&nbsp;</label>
                 <select class="custom-select form-control-lg border-success" id="other_phonenumber_type" name="other_phonenumber_type">
                     <option value="{{ shared_constants.TELEPHONE_CONTACT_POINT_TYPE_OF_ID }}">Landline</option>
-                    <option value="{{ shared_constants.MOBILE_CONTACT_POINT_TYPE_OF_ID }}">Mobile</option>
+                    <option value="{{ shared_constants.MOBILE_CONTACT_POINT_TYPE_OF_ID }}" selected>Mobile</option>
                     <option value="{{ shared_constants.WORK_CONTACT_POINT_TYPE_OF_ID }}">Work</option>
                 </select>
                 <div id="other_phonenumber_type-error" class="invalid-feedback"></div>
@@ -373,7 +396,7 @@
             </div>
             <div class="form-group col-md-7 mb-4 p-0">
                 <label for="customer_affiliation">Reletionship with company</label>
-                <select class="custom-select form-control-lg border-success" id="customer_affiliation" name="customer_affiliation" required>
+                <select class="custom-select form-control-lg border-primary" id="customer_affiliation" name="customer_affiliation" required>
                     <option value="" selected>Relationship...</option>
                     <option value="{{ tenant_constants.AFFILIATION_TYPE_AFFILIATION_ID }}" id="customer_affiliation_id_{{ tenant_constants.AFFILIATION_TYPE_AFFILIATION_ID }}">Affiliated</option>
                     <option value="{{ tenant_constants.AFFILIATION_TYPE_ALUMNI_OF_ID }}" id="customer_affiliation_id_{{ tenant_constants.AFFILIATION_TYPE_ALUMNI_OF_ID }}">Alumni of</option>

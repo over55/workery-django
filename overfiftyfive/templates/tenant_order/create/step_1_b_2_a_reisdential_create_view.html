@@ -25,22 +25,23 @@
     }
 
     function click_next_button() {
-        var tmp_email = $('#email').val();
-        post_is_email_unique_api(
-            tmp_email,
-            function(result) {
-                if (result === 1 || result === '1') {
-                    ajax_post_form_submission("{% url 'o55_tenant_job_add_residential_customer_confirmation' %}");
-                } else {
-                    alert("EMAIL ALREADY EXISTS, PLEASE PICK A NEW EMAIL ADDRESS"); //TODO: UPDATE THE GUI.
-                    return;
-                }
-            },
-            function(json_error) {
-                alert(json_error);
-                //TODO: (1) OUTPUT THE ERROR IN A TEXT. (2) FOCUS ON THE OUTPUT.
-            }
-        ); // end API CALL
+        // STEP 1 - Save the type of user this is.
+        localStorage.setItem("tmp_job_customer_type_of", {{ tenant_constants.RESIDENTIAL_CUSTOMER_TYPE_OF_ID }});
+
+        // STEP 2 - Save the users full name.
+        var customer_name = "";
+        var given_name = $('#firstname').val();
+        var middle_name = $('#middlename').val();
+        var last_name = $('#lastname').val();
+        if (middle_name !== undefined && middle_name !== null && middle_name.length != 0) {
+            customer_name = given_name + " " + middle_name + " " + last_name;
+        } else {
+            customer_name = given_name + " " + last_name;
+        }
+        localStorage.setItem("tmp_customer_name", customer_name);
+
+        // Step 3 - Redirect to next page.
+        ajax_post_form_submission("{% url 'o55_tenant_job_add_residential_customer_confirmation' %}");
     }
 </script>
 <!----------------------------------------------------------------------------->

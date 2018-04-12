@@ -11,7 +11,7 @@
 {% block content %}
 
 <script>
-    function ajax_select(customer_id, customer_name) {
+    function ajax_select(customer_id, customer_name, customer_type_of) {
         var previous_url = window.location.href;
         localStorage.setItem("tmp_branch_previous_url", previous_url);
 
@@ -19,6 +19,7 @@
         // Save the customer ID # into the users local storage.
         localStorage.setItem("tmp_customer_id", customer_id);
         localStorage.setItem("tmp_customer_name", customer_name);
+        localStorage.setItem("tmp_job_customer_type_of", customer_type_of);
 
         // STEP 2 OF 2:
         // Redirect to the next page in the form.
@@ -63,8 +64,18 @@
         <div class="col-sm-12 mx-auto mt-4">
    	   	    <div class="card bg-light mx-auto" style="width: 18rem;">
    		    <div class="card-body">
-   		       <h5 class="card-title"><a href="#"><strong>{{ customer }}</strong></a></h5>
+   		       <h5 class="card-title"><a href="{% url 'o55_tenant_customer_retrieve' 'list' customer.id %}">
+                   {% if customer.type_of == tenant_constants.RESIDENTIAL_CUSTOMER_TYPE_OF_ID %}
+                       <i class="fa fa-home fa-lg"></i>
+                   {% elif customer.type_of == tenant_constants.COMMERCIAL_CUSTOMER_TYPE_OF_ID %}
+                       <i class="fa fa-building fa-lg"></i>
+                   {% else %}
+                       <i class="fa fa-question fa-lg"></i>
+                   {% endif %}
+                   <strong>{{ customer }}</strong></a>
+               </h5>
    		    	<p class="card-text">
+
                     {{ customer.street_address }}<br>
                     {% if customer.street_address_extra %}{{ customer.street_address_extra }}<br>{% endif %}
    			        {{ customer.address_locality }}, {{ customer.address_region }}<br>
@@ -72,8 +83,10 @@
                     {% if customer.email %}<a href="tel:{{ customer.email }}">{{ customer.email }}</a>{% endif %}
    			    </p>
    		    </div>
-            <button type="button" class="btn btn-lg btn-primary float-right m-2" id="select-btn-{{ customer.id }}" onclick="ajax_select({{ customer.id }},
-            '{{ customer }}');">Select</button>
+            <button  id="select-btn-{{ customer.id }}"
+                   type="button"
+                  class="btn btn-lg btn-primary float-right m-2"
+                  onclick="ajax_select({{ customer.id }}, '{{ customer }}', {{ customer.type_of }});">Select</button>
    		</div>
    	</div>
     {% endfor %}
@@ -85,7 +98,7 @@
 		        No - use search again
 		    </button>
         </a>
-		<a href="{% url 'o55_tenant_job_add_customer_create' %}">
+		<a href="{% url 'o55_tenant_job_pick_add_customer_type' %}">
 		    <button type="button" class="btn btn-lg btn-success m-3" data-toggle="modal" data-target="#yesModal">
 		        Yes - add a new client
 		    </button>

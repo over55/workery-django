@@ -24,22 +24,7 @@
     }
 
     function click_next_button() {
-        var tmp_email = $('#email').val();
-        post_is_email_unique_api(
-            tmp_email,
-            function(result) {
-                if (result === 1 || result === '1') {
-                    ajax_post_form_submission("{% url 'o55_tenant_commercial_customer_confirm_create' %}");
-                } else {
-                    alert("EMAIL ALREADY EXISTS, PLEASE PICK A NEW EMAIL ADDRESS"); //TODO: UPDATE THE GUI.
-                    return;
-                }
-            },
-            function(json_error) {
-                alert(json_error);
-                //TODO: (1) OUTPUT THE ERROR IN A TEXT. (2) FOCUS ON THE OUTPUT.
-            }
-        ); // end API CALL
+        ajax_post_form_submission("{% url 'o55_tenant_commercial_customer_confirm_create' %}");
     }
 </script>
 <!----------------------------------------------------------------------------->
