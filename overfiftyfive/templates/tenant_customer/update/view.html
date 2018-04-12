@@ -36,6 +36,18 @@
         // Initialize our 'select2' element.
         $('#person_tags').select2();
 
+        {% if customer.is_ok_to_email == True %}
+            $("#ok_to_email").prop("checked", true);
+        {% else %}
+            $("#ok_to_email2").prop("checked", true);
+        {% endif %}
+
+        {% if customer.is_ok_to_text == True %}
+            $("#ok_to_text").prop("checked", true);
+        {% else %}
+            $("#ok_to_text2").prop("checked", true);
+        {% endif %}
+
     }); // end Ready
 
     /**
@@ -174,6 +186,17 @@
         }
         var ok_to_email = get_selected_radio_value('ok_to_email');
         var ok_to_text = get_selected_radio_value('ok_to_text');
+        if (ok_to_email == 'yes') {
+            ok_to_email = true;
+        } else {
+            ok_to_email = false;
+        }
+        if (ok_to_text == 'yes') {
+            ok_to_text = true;
+        } else {
+            ok_to_text = false;
+        }
+
         var street_address = $('#street_address').val();
         var street_address_extra = $('#street_address_extra').val();
         var address_region = $('#address_region').val();

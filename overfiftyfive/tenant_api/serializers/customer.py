@@ -482,6 +482,8 @@ class CustomerRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
             'gender',
 
             # Misc (Read/Write)
+            'is_ok_to_email',
+            'is_ok_to_text',
             'is_senior',
             'is_support',
             'job_info_read',
@@ -577,6 +579,9 @@ class CustomerRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         instance.gender = validated_data.get('gender', instance.gender)
 
         # Misc (Read/Write)
+        instance.is_ok_to_email = validated_data.get('is_ok_to_email', instance.is_ok_to_email)
+        instance.is_ok_to_text = validated_data.get('is_ok_to_text', instance.is_ok_to_text)
+        instance.is_senior = validated_data.get('is_ok_to_text', instance.is_ok_to_text)
         instance.is_senior = validated_data.get('is_senior', instance.is_senior)
         instance.is_support = validated_data.get('is_support', instance.is_support)
         instance.job_info_read = validated_data.get('job_info_read', instance.job_info_read)

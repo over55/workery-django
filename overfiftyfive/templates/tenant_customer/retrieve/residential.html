@@ -34,6 +34,16 @@
                 <p>{% if customer.gender %}{{ customer.gender }}{% else %}-{% endif %}</p>
                 <div id="gender-error" class="invalid-feedback"></div>
             </div>
+            <div class="form-group p-0 col-md-7 mb-4">
+                <label for="tags">Tags</label>
+                <p>
+                    {% for tag in customer.tags.all %}
+                        <span class="badge badge-info badge-lg" id="tag_id_{{ tag.id }}">{{ tag }}</span>
+                    {% empty %}-
+                    {% endfor %}
+                </p>
+                <div id="tags-error" class="invalid-feedback"></div>
+            </div>
         </div>
         <!-- ############ end PERSON ############ -->
         <!-- ############ CONTACT POINT ############ -->
@@ -54,13 +64,17 @@
                 <p>{% if customer.owner.email %}<a href="mailto:{{ customer.owner.email }}">{{ customer.owner.email }}</a>{% else %}-{% endif %}</p>
                 <div id="email-error" class="invalid-feedback"></div>
             </div>
-            <div class="form-group mt-2 mb-4">
+            <div class="form-group col-md-12 mb-4">
                 <p class="mb-1">Ok to E-Mail?</p>
-
+                <p>
+                    {% if customer.is_ok_to_email == True %}Yes{% else %}No{% endif %}
+                </p>
             </div>
-            <div class="form-group mt-2 mb-4">
+            <div class="form-group col-md-12 mb-4">
                 <p class="mb-1">Ok to Text?</p>
-
+                <p>
+                    {% if customer.is_ok_to_text == True %}Yes{% else %}No{% endif %}
+                </p>
             </div>
         </div>
         <!-- ############ end CONTACT POINT ############ -->
