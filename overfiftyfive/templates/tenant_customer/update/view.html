@@ -22,6 +22,20 @@
         $( "#dob" ).datepicker({
             dateFormat: 'yy-mm-dd'  // https://stackoverflow.com/a/7500097
         });
+
+        // Set the gender.
+        $('#gender').val('{% if customer.gender %}{{ customer.gender }}{% endif %}');
+
+        // // Populate our 'select2' chosen values.
+        var tag_ids = [];
+        {% for tag in customer.tags.all %}
+        tag_ids.push({{ tag.id }});
+        {% endfor %}
+        $('#person_tags').val(tag_ids);
+
+        // Initialize our 'select2' element.
+        $('#person_tags').select2();
+
     }); // end Ready
 
     /**
@@ -175,6 +189,7 @@
         // var fax_number = $('#id_fax_number').val();
         var password = $('#password').val();
         var password_repeat = $('#password_repeat').val();
+        var person_tags = $('#person_tags').val();
 
         // LOCK OUT THE "SUBMIT" BUTTON SO THE USER DOES NOT MAKE MULTI-CALLS.
         disable_btn();
@@ -189,6 +204,7 @@
                 'last_name': last_name,
                 'birthdate': date_of_birth,
                 'gender': gender,
+                'tags': person_tags,
                 'nationality': null,
                 'is_ok_to_email': ok_to_email,
                 'is_ok_to_text': ok_to_text,
@@ -204,10 +220,10 @@
                 // 'area_served': area_served,
                 'fax_number': null,
                 'telephone': telephone,
-                'telephone_type_of': {{ tenant_constants.TELEPHONE_CONTACT_POINT_TYPE_OF_ID }},
+                'telephone_type_of': {{ shared_constants.TELEPHONE_CONTACT_POINT_TYPE_OF_ID }},
                 // 'telephone_extension': telephone_extension,
                 'other_telephone': other_telephone,
-                'other_telephone_type_of': {{ tenant_constants.MOBILE_CONTACT_POINT_TYPE_OF_ID }},
+                'other_telephone_type_of': {{ shared_constants.MOBILE_CONTACT_POINT_TYPE_OF_ID }},
                 // 'fax_number': fax_number,
                 'password': password,
                 'password_repeat': password_repeat,
@@ -264,7 +280,7 @@
                 <a href="{% url 'o55_tenant_customer_search' %}">{% trans 'Search' %}</a>
             </li>
             <li class="breadcrumb-item active">{% trans 'Search Results' %}</li>
-            <li class="breadcrumb-item"><a href="{% url 'o55_tenant_customer_retrieve' template object.id %}">{% trans 'Client #' %}{{ object.id|intcomma }}</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'o55_tenant_customer_retrieve' template customer.id %}">{% trans 'Client #' %}{{ customer.id|intcomma }}</a></li>
             <li class="breadcrumb-item active" aria-current="page">{% trans 'Edit' %}</li>
 
             {% elif template == 'list' %}
@@ -272,14 +288,14 @@
             <li class="breadcrumb-item"><a href="{% url 'o55_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
             <li class="breadcrumb-item"><a href="{% url 'o55_tenant_customer_summary' %}">{% trans 'Clients' %}</a></li>
             <li class="breadcrumb-item"><a href="{% url 'o55_tenant_customer_list' %}">{% trans 'List' %}</a></li>
-            <li class="breadcrumb-item"><a href="{% url 'o55_tenant_customer_retrieve' template object.id %}">{% trans 'Client #' %}{{ object.id|intcomma }}</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'o55_tenant_customer_retrieve' template customer.id %}">{% trans 'Client #' %}{{ customer.id|intcomma }}</a></li>
             <li class="breadcrumb-item active" aria-current="page">{% trans 'Edit' %}</li>
 
             {% else %}
 
 	    	<li class="breadcrumb-item"><a href="{% url 'o55_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
             <li class="breadcrumb-item"><a href="{% url 'o55_tenant_customer_summary' %}">{% trans 'Clients' %}</a></li>
-            <li class="breadcrumb-item"><a href="{% url 'o55_tenant_customer_retrieve' template object.id %}">{% trans 'Client #' %}{{ object.id|intcomma }}</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'o55_tenant_customer_retrieve' template customer.id %}">{% trans 'Client #' %}{{ customer.id|intcomma }}</a></li>
             <li class="breadcrumb-item active" aria-current="page">{% trans 'Edit' %}</li>
 
             {% endif %}
@@ -292,7 +308,7 @@
     <!------------------------------------------------------------------------->
     <div class="row">
 		<div class="col-sm-3 p-3 mb-2">
-			<a class="btn btn-primary btn-lg" href="{% url 'o55_tenant_customer_retrieve' template object.id %}" role="button">
+			<a class="btn btn-primary btn-lg" href="{% url 'o55_tenant_customer_retrieve' template customer.id %}" role="button">
                 <svg class="svg-inline--fa fa-arrow-left fa-w-14" aria-hidden="true" data-fa-processed="" data-prefix="fas" data-icon="arrow-left" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
                 <path fill="currentColor" d="M257.5 445.1l-22.2 22.2c-9.4 9.4-24.6 9.4-33.9 0L7 273c-9.4-9.4-9.4-24.6 0-33.9L201.4 44.7c9.4-9.4 24.6-9.4 33.9 0l22.2 22.2c9.5 9.5 9.3 25-.4 34.3L136.6 216H424c13.3 0 24 10.7 24 24v32c0 13.3-10.7 24-24 24H136.6l120.5 114.8c9.8 9.3 10 24.8.4 34.3z"></path>
             </svg><!-- <i class="fas fa-arrow-left"></i> -->&nbsp;{% trans 'Back to Client Detail' %}</a>
@@ -321,7 +337,7 @@
             <div class="form-row">
                 <div class="form-group col-md-12 mb-4">
                     <label for="firstname">First name <sup>*</sup></label>
-                    <input type="text" class="form-control form-control-lg border border-primary" id="firstname" name="firstname" placeholder="First name" minlength="2" maxlength="30" required value="{% if customer.given_name %}{{ customer.given_name }}{% endif %}">
+                    <input type="text" class="form-control form-control-lg border border-primary" id="firstname" name="firstname" placeholder="First name" minlength="2" maxlength="30" required value="{% if customer.given_name %}{{ customer.given_name }}{% endif %}" autofocus>
                     <div id="firstname-error" class="invalid-feedback"></div>
                 </div>
                 <div class="form-group col-md-7 mb-4">
@@ -395,6 +411,15 @@
                         <label class="custom-control-label form-check-label" for="ok_to_text2">No</label>
                     </div>
                 </div>
+                <div class="form-group col-md-12 mb-4">
+                    <label for="tag">Tags</label>
+                    <select id="person_tags" name="person_tags" class="form-control form-control-lg border border-success" name="states[]" multiple="multiple">
+                    {% for tag in tags %}
+                        <option value="{{ tag.id }}" id="person_tag_option_id_{{ tag.id }}">{{ tag }}</option>
+                    {% endfor %}
+                    </select>
+                    <div id="person_tags-error" class="invalid-feedback"></div>
+                </div>
             </div>
             <!-- ############ end CONTACT POINT ############ -->
             <!-- ############ LOCATION ############ -->
@@ -446,7 +471,7 @@
                          name="password"
                   placeholder="{% trans 'Password' %}"
                         class="form-control form-control-lg border border-success"
-                         type="password" autofocus
+                         type="password"
                autocapitalize="off"
                     minlength="2"
                     maxlength="30" required />
@@ -458,7 +483,7 @@
                          name="password_repeat"
                   placeholder="{% trans 'Repeat Password' %}"
                         class="form-control form-control-lg border border-success"
-                         type="password" autofocus
+                         type="password"
                autocapitalize="off"
                     minlength="2"
                     maxlength="30" required />

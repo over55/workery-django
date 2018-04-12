@@ -195,6 +195,12 @@ class Staff(AbstractThing, AbstractContactPoint, AbstractPostalAddress, Abstract
         blank=True,
         null=True,
     )
+    tags = models.ManyToManyField(
+        "Tag",
+        help_text=_('The tags associated with this staff member.'),
+        blank=True,
+        related_name="%(app_label)s_%(class)s_tags_related"
+    )
 
     #
     #  FUNCTIONS

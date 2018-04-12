@@ -252,6 +252,12 @@ class Customer(AbstractThing, AbstractContactPoint, AbstractPostalAddress, Abstr
         blank=True,
         null=True,
     )
+    tags = models.ManyToManyField(
+        "Tag",
+        help_text=_('The tags associated with this customer.'),
+        blank=True,
+        related_name="%(app_label)s_%(class)s_tags_related"
+    )
 
     #
     #  PERSON FIELDS - http://schema.org/Person

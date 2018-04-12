@@ -177,6 +177,7 @@ class CustomerListCreateSerializer(serializers.ModelSerializer):
             'job_info_read',
             'how_hear',
             'type_of',
+            'tags',
 
             # Misc (Read Only)
             # 'comments',
@@ -442,8 +443,8 @@ class CustomerRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
     # Add password adding.
     password = serializers.CharField(
         write_only=True,
-        required=True,
-        allow_blank=False,
+        required=False,
+        allow_blank=True,
         max_length=63,
         style={'input_type': 'password'},
         validators = [
@@ -456,8 +457,8 @@ class CustomerRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
     )
     password_repeat = serializers.CharField(
         write_only=True,
-        required=True,
-        allow_blank=False,
+        required=False,
+        allow_blank=True,
         max_length=63,
         style={'input_type': 'password'}
     )
@@ -472,12 +473,13 @@ class CustomerRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
             'affiliations',
             # 'owner',
 
-            # Profile
+            # Person
             'given_name',
             'middle_name',
             'last_name',
             'birthdate',
             'join_date',
+            'gender',
 
             # Misc (Read/Write)
             'is_senior',
@@ -485,6 +487,7 @@ class CustomerRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
             'job_info_read',
             'how_hear',
             'type_of',
+            'tags',
 
             # Misc (Read Only)
             # 'comments',
@@ -571,6 +574,7 @@ class CustomerRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         instance.last_modified_by = self.context['last_modified_by']
         instance.birthdate = validated_data.get('birthdate', instance.birthdate)
         instance.join_date = validated_data.get('join_date', instance.join_date)
+        instance.gender = validated_data.get('gender', instance.gender)
 
         # Misc (Read/Write)
         instance.is_senior = validated_data.get('is_senior', instance.is_senior)
@@ -612,7 +616,13 @@ class CustomerRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         instance.longitude = validated_data.get('longitude', instance.longitude)
         # 'location' #TODO: FIX
 
+        # Save
         instance.save()
+
+        # Post-save
+        tags=validated_data.get('tags', instance.tags)
+        instance.tags.set(tags)
+
         print("Saved")
 
         # #---------------------------

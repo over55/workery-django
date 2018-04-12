@@ -63,6 +63,12 @@ class Organization(AbstractThing, AbstractContactPoint, AbstractPostalAddress, A
         blank=True,
         choices=ORGANIZATION_TYPE_OF_CHOICES,
     )
+    tags = models.ManyToManyField(
+        "Tag",
+        help_text=_('The tags associated with this organization.'),
+        blank=True,
+        related_name="%(app_label)s_%(class)s_tags_related"
+    )
 
     #
     #  SCHEMA FIELDS (see: Source: http://schema.org/Organization)

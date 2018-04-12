@@ -304,6 +304,12 @@ class Associate(AbstractThing, AbstractContactPoint, AbstractPostalAddress, Abst
         blank=True,
         null=True,
     )
+    tags = models.ManyToManyField(
+        "Tag",
+        help_text=_('The tags associated with this associate.'),
+        blank=True,
+        related_name="%(app_label)s_%(class)s_tags_related"
+    )
 
     #
     #  FUNCTIONS
