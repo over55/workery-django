@@ -24,6 +24,9 @@
      *  When page loads, the following code will be run first.
      */
     $(document).ready(function () {
+        $('#selected_companyname').append(localStorage.getItem("tmp_commercial_customer_company_name"));
+        $('#selected_companytype').append(localStorage.getItem("tmp_commercial_customer_company_type_value"));
+        $('#selected_relationship').append(localStorage.getItem("tmp_commercial_customer_affiliation_value"));
         $('#selected_firstname').append(localStorage.getItem("tmp_commercial_customer_given_name"));
         $('#selected_middlename').append(localStorage.getItem("tmp_commercial_customer_middle_name"));
         $('#selected_lastname').append(localStorage.getItem("tmp_commercial_customer_last_name"));
@@ -35,6 +38,7 @@
         $("#selected_ok_to_text").append(localStorage.getItem("tmp_commercial_customer_ok_to_text"));
         $('#selected_street_address').append(localStorage.getItem("tmp_commercial_customer_street_address"));
         $('#selected_street_address_extra').append(localStorage.getItem("tmp_commercial_customer_street_address_extra"));
+        $('#selected_neighbourhood').append(localStorage.getItem("tmp_commercial_customer_neighbourhood"));
         $('#selected_address_locality').append(localStorage.getItem("tmp_commercial_customer_address_locality"));
         $('#selected_address_region').append(localStorage.getItem("tmp_commercial_customer_address_region"));
         $('#selected_address_country').append(localStorage.getItem("tmp_commercial_customer_address_country"));
@@ -42,6 +46,32 @@
         $('#selected_post_office_box_number').append(localStorage.getItem("tmp_commercial_customer_post_office_box_number"));
         $('#selected_email').append(localStorage.getItem("tmp_commercial_customer_email"));
         $('#selected_telephone').append(localStorage.getItem("tmp_commercial_customer_telephone"));
+
+        // Set our `person_tag` field.
+        var tmp_person_tag_values = localStorage.getObj("tmp_commercial_customer_person_tag_values");
+        for (var i = 0; i < tmp_person_tag_values.length; i++) {
+            // Extract our value.
+            var tag_value = tmp_person_tag_values[i];
+
+            // Generate our HTML element.
+            var htmlElement = '<span class="badge badge-info badge-lg">'+tag_value+'</span>';
+
+            // Append our HTML element to the GUI.
+            $('#selected_person_tag_values').append(htmlElement)
+        } // end FOR
+
+        // Set our `person_tag` field.
+        var tmp_company_tag_values = localStorage.getObj("tmp_commercial_customer_company_tag_values");
+        for (var i = 0; i < tmp_company_tag_values.length; i++) {
+            // Extract our value.
+            var tag_value = tmp_company_tag_values[i];
+
+            // Generate our HTML element.
+            var htmlElement = '<span class="badge badge-info badge-lg">'+tag_value+'</span>';
+
+            // Append our HTML element to the GUI.
+            $('#selected_company_tag_values').append(htmlElement)
+        } // end FOR
     }); // end Ready
 
     /**
@@ -104,10 +134,10 @@
                 'extra_comment': null,
                 'street_address': localStorage.getItem("tmp_commercial_customer_street_address"),
                 'street_address_extra': localStorage.getItem("tmp_commercial_customer_street_address_extra"),
+                'area_served': localStorage.getItem("tmp_commercial_customer_neighbourhood"),
                 'postal_code': localStorage.getItem("tmp_commercial_customer_postal_code"),
                 'post_office_box_number': localStorage.getItem("tmp_commercial_customer_post_office_box_number"),
                 'email': localStorage.getItem("tmp_commercial_customer_email"),
-                // 'area_served': area_served,
                 'fax_number': null,
                 'telephone': localStorage.getItem("tmp_commercial_customer_telephone"),
                 'telephone_type_of': localStorage.getItem("tmp_commercial_customer_telephone_type_of"),
@@ -118,6 +148,7 @@
                 'password': password,
                 'password_repeat': password_repeat,
                 'type_of': {{ tenant_constants.COMMERCIAL_CUSTOMER_TYPE_OF_ID }},
+                'tags': localStorage.getObj("tmp_commercial_customer_person_tag_ids"),
 
                 // --- ORGANIZATION ---
                 'organization_name': localStorage.getItem("tmp_commercial_customer_company_name"),
@@ -130,12 +161,19 @@
                 'organization_postal_code': localStorage.getItem("tmp_commercial_customer_postal_code"),
                 'organization_post_office_box_number': localStorage.getItem("tmp_commercial_customer_post_office_box_number"),
                 'organization_customer_affiliation': localStorage.getItem("tmp_commercial_customer_affiliation"),
+                'organization_tags': localStorage.getObj("tmp_commercial_customer_company_tag_ids"),
             },
             function(result_dict) { // Success
                 // FOR DEBUGGING PURPOSES ONLY.
                 console.log(result_dict);
 
                 // RESET OUR STORED VALUES.
+                localStorage.removeItem("tmp_commercial_customer_company_name");
+                localStorage.removeItem("tmp_commercial_customer_company_type");
+                localStorage.removeItem("tmp_commercial_customer_company_type_value");
+                localStorage.removeItem("tmp_commercial_customer_neighbourhood");
+                localStorage.removeItem("tmp_commercial_customer_affiliation");
+                localStorage.removeItem("tmp_commercial_customer_affiliation_value");
                 localStorage.removeItem("tmp_commercial_customer_given_name");
                 localStorage.removeItem("tmp_commercial_customer_middle_name");
                 localStorage.removeItem("tmp_commercial_customer_last_name");
@@ -157,6 +195,8 @@
                 localStorage.removeItem("tmp_commercial_customer_other_telephone_type_of");
                 localStorage.removeItem("tmp_commercial_customer_password");
                 localStorage.removeItem("tmp_commercial_customer_password_repeat");
+                localStorage.removeItem("tmp_commercial_customer_person_tag_ids");
+                localStorage.removeItem("tmp_commercial_customer_company_tag_ids");
 
                 // REDIRECT TO SUCCESS PAGE.
                 window.location = "{% url 'o55_tenant_customer_summary' %}?was_created=True";
@@ -230,7 +270,7 @@
      <table class="table table-bordered custom-cell-w">
        <tbody>
          <tr class="bg-dark">
-           <th scope="row" colspan="2" class="text-light">Summary Details</th>
+           <th scope="row" colspan="2" class="text-light">Person Summary Details</th>
          </tr>
          <tr>
            <th scope="row" class="bg-light">First name</th>
@@ -305,6 +345,12 @@
            </td>
          </tr>
          <tr>
+           <th scope="row" class="bg-light">Neighbourhood</th>
+           <td id="selected_neighbourhood">
+               <!-- POPULATE THROUGH JS. -->
+           </td>
+         </tr>
+         <tr>
            <th scope="row" class="bg-light">City</th>
            <td id="selected_address_locality">
                <!-- POPULATE THROUGH JS. -->
@@ -334,8 +380,47 @@
                <!-- POPULATE THROUGH JS. -->
            </td>
          </tr>
+         <tr>
+           <th scope="row" class="bg-light">Tag(s)</th>
+           <td id="selected_person_tag_values">
+               <!-- THIS IS WHERE THE TAGS GET LOADED -->
+           </td>
+         </tr>
        </tbody>
      </table>
+
+     <table class="table table-bordered custom-cell-w">
+       <tbody>
+         <tr class="bg-dark">
+           <th scope="row" colspan="2" class="text-light">Company Summary Details</th>
+         </tr>
+         <tr>
+           <th scope="row" class="bg-light">Full name</th>
+           <td id="selected_companyname" name="selected_companyname">
+               <!-- POPULATE THROUGH JS. -->
+           </td>
+         </tr>
+         <tr>
+           <th scope="row" class="bg-light">Company Type</th>
+           <td id="selected_companytype" name="selected_companytype">
+               <!-- POPULATE THROUGH JS. -->
+           </td>
+         </tr>
+         <tr>
+           <th scope="row" class="bg-light">Relationship</th>
+           <td id="selected_relationship" name="selected_relationship">
+               <!-- POPULATE THROUGH JS. -->
+           </td>
+         </tr>
+         <tr>
+           <th scope="row" class="bg-light">Tag(s)</th>
+           <td id="selected_company_tag_values">
+               <!-- THIS IS WHERE THE TAGS GET LOADED -->
+           </td>
+         </tr>
+     </tbody>
+    </table>
+
      <div class="form-group col-md-12 mb-3 p-0 mx-auto text-center">
          <button class="btn btn-success btn-lg mt-4 float-right pl-4 pr-4" type="submit" onclick="ajax_post_form_submission();"><i class="fas fa-plus"></i> Add Job</button>
          <button class="btn btn-orange btn-lg mt-4 float-left pl-4 pr-4" type="button" onclick="ajax_previous();"><i class="fas fa-arrow-left"></i> Back</button>

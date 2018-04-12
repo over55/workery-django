@@ -29,6 +29,17 @@
             dateFormat: 'yy-mm-dd'  // https://stackoverflow.com/a/7500097
         });
 
+        // Populate our 'select2' chosen values.
+        var tmp_person_tags = localStorage.getObj("tmp_commercial_customer_person_tag_ids");
+        $('#person_tags').val(tmp_person_tags);
+
+        var tmp_company_tags = localStorage.getObj("tmp_commercial_customer_company_tag_ids");
+        $('#company_tags').val(tmp_company_tags);
+
+        // Initialize our 'select2' element.
+        $('#person_tags').select2();
+        $('#company_tags').select2();
+
         // Assign previously set values.
         $('#companyname').val(localStorage.getItem("tmp_commercial_customer_company_name"));
         $('#companytype').val(localStorage.getItem("tmp_commercial_customer_company_type"));
@@ -46,6 +57,7 @@
         $("input[name=ok_to_text][value=" + localStorage.getItem("tmp_commercial_customer_ok_to_text") + "]").prop('checked', true);
         $('#street_address').val(localStorage.getItem("tmp_commercial_customer_street_address"));
         $('#street_address_extra').val(localStorage.getItem("tmp_commercial_customer_street_address_extra"));
+        $('#neighbourhood').val(localStorage.getItem("tmp_commercial_customer_neighbourhood"));
         $('#address_locality').val(localStorage.getItem("tmp_commercial_customer_address_locality"));
         $('#address_region').val(localStorage.getItem("tmp_commercial_customer_address_region"));
         $('#address_country').val(localStorage.getItem("tmp_commercial_customer_address_country"));
@@ -130,6 +142,10 @@
         return false;
     }
 
+    function ajax_cancel() {
+        window.location = "{% url 'o55_tenant_pick_customer_create' %}";
+    }
+
     /**
      *  Function will attempt to submit the form to the API server. This
      *  funciton will:
@@ -154,6 +170,7 @@
         has_error |= valid_radiofields_seleciton('ok_to_text', true);
         has_error |= valid_textfield_value('street_address', true, 3);
         has_error |= valid_textfield_value('street_address_extra', false, 3)
+        has_error |= valid_textfield_value('neighbourhood', false, 2)
         has_error |= valid_textfield_value('address_locality', true, 3);
         has_error |= valid_textfield_value('address_region', true, 3);
         has_error |= valid_textfield_value('address_country', true, 3);
@@ -172,6 +189,7 @@
         // EXTRACT OUR FIELD VALUES AND SAVE THEM IN LOCAL STORAGE.
         var company_name = $('#companyname').val();
         var company_type = $('#companytype').val();
+        var company_type_value = $('#companytype_id_'+company_type).text();
         var given_name = $('#firstname').val();
         var middle_name = $('#middlename').val();
         var last_name = $('#lastname').val();
@@ -190,6 +208,7 @@
         var ok_to_text = get_selected_radio_value('ok_to_text');
         var street_address = $('#street_address').val();
         var street_address_extra = $('#street_address_extra').val();
+        var neighbourhood = $('#neighbourhood').val();
         var address_region = $('#address_region').val();
         var address_locality = $('#address_locality').val();
         var address_country = $('#address_country').val();
@@ -206,10 +225,15 @@
         var password = $('#password').val();
         var password_repeat = $('#password_repeat').val();
         var customer_affiliation = $('#customer_affiliation').val();
+        var customer_affiliation_value = $('#customer_affiliation_id_'+customer_affiliation).text();
+        var person_tags = $('#person_tags').val();
+        var company_tags = $('#company_tags').val();
 
         localStorage.setItem("tmp_commercial_customer_company_name", company_name);
         localStorage.setItem("tmp_commercial_customer_company_type", company_type);
+        localStorage.setItem("tmp_commercial_customer_company_type_value", company_type_value);
         localStorage.setItem("tmp_commercial_customer_affiliation", customer_affiliation);
+        localStorage.setItem("tmp_commercial_customer_affiliation_value", customer_affiliation_value);
         localStorage.setItem("tmp_commercial_customer_given_name", given_name);
         localStorage.setItem("tmp_commercial_customer_middle_name", middle_name);
         localStorage.setItem("tmp_commercial_customer_last_name", last_name);
@@ -219,6 +243,7 @@
         localStorage.setItem("tmp_commercial_customer_ok_to_text", ok_to_text);
         localStorage.setItem("tmp_commercial_customer_street_address", street_address);
         localStorage.setItem("tmp_commercial_customer_street_address_extra", street_address_extra);
+        localStorage.setItem("tmp_commercial_customer_neighbourhood", neighbourhood);
         localStorage.setItem("tmp_commercial_customer_address_region", address_region);
         localStorage.setItem("tmp_commercial_customer_address_locality", address_locality);
         localStorage.setItem("tmp_commercial_customer_address_country", address_country);
@@ -231,6 +256,27 @@
         localStorage.setItem("tmp_commercial_customer_other_telephone_type_of", other_telephone_type_of);
         localStorage.setItem("tmp_commercial_customer_password", password);
         localStorage.setItem("tmp_commercial_customer_password_repeat", password_repeat);
+
+        // SAVE ARRAY OF IDS.
+        localStorage.setObj("tmp_commercial_customer_person_tag_ids", person_tags);
+        localStorage.setObj("tmp_commercial_customer_company_tag_ids", company_tags);
+
+        // SAVE ARRAY OF VALUE ITEMS.
+        var person_tags_arr = [];
+        for (var i = 0; i < person_tags.length; i++) {
+            var option_id = person_tags[i];
+            var option_value = $('#person_tag_option_id_'+option_id).text();
+            person_tags_arr.push(option_value);
+        } // end FOR LOOP.
+        localStorage.setObj("tmp_commercial_customer_person_tag_values", person_tags_arr);
+
+        var company_tags_arr = [];
+        for (var i = 0; i < company_tags.length; i++) {
+            var option_id = company_tags[i];
+            var option_value = $('#company_tag_option_id_'+option_id).text();
+            company_tags_arr.push(option_value);
+        } // end FOR LOOP.
+        localStorage.setObj("tmp_commercial_customer_company_tag_values", company_tags_arr);
 
         window.location = "{% url 'o55_tenant_commercial_customer_confirm_create' %}";
     }
@@ -378,16 +424,25 @@
                     <label for="customer_affiliation">Reletionship with company</label>
                     <select class="custom-select form-control-lg border-success" id="customer_affiliation" name="customer_affiliation" required>
                         <option value="" selected>Relationship...</option>
-                        <option value="{{ tenant_constants.AFFILIATION_TYPE_AFFILIATION_ID }}">Affiliated</option>
-                        <option value="{{ tenant_constants.AFFILIATION_TYPE_ALUMNI_OF_ID }}">Alumni of</option>
-                        <option value="{{ tenant_constants.AFFILIATION_TYPE_FUNDER_ID }}">Funder</option>
-                        <option value="{{ tenant_constants.AFFILIATION_TYPE_MEMBER_OF_ID }}">Member of</option>
-                        <option value="{{ tenant_constants.AFFILIATION_TYPE_SPONSOR_ID }}">Sponsor</option>
-                        <option value="{{ tenant_constants.AFFILIATION_TYPE_OWNS_ID }}">Owns</option>
-                        <option value="{{ tenant_constants.AFFILIATION_TYPE_FOUNDER_ID }}">Founder</option>
-                        <option value="{{ tenant_constants.AFFILIATION_TYPE_EMPLOYEE_ID }}">Employee of</option>
+                        <option value="{{ tenant_constants.AFFILIATION_TYPE_AFFILIATION_ID }}" id="customer_affiliation_id_{{ tenant_constants.AFFILIATION_TYPE_AFFILIATION_ID }}">Affiliated</option>
+                        <option value="{{ tenant_constants.AFFILIATION_TYPE_ALUMNI_OF_ID }}" id="customer_affiliation_id_{{ tenant_constants.AFFILIATION_TYPE_ALUMNI_OF_ID }}">Alumni of</option>
+                        <option value="{{ tenant_constants.AFFILIATION_TYPE_FUNDER_ID }}" id="customer_affiliation_id_{{ tenant_constants.AFFILIATION_TYPE_FUNDER_ID }}">Funder</option>
+                        <option value="{{ tenant_constants.AFFILIATION_TYPE_MEMBER_OF_ID }}" id="customer_affiliation_id_{{ tenant_constants.AFFILIATION_TYPE_MEMBER_OF_ID }}">Member of</option>
+                        <option value="{{ tenant_constants.AFFILIATION_TYPE_SPONSOR_ID }}" id="customer_affiliation_id_{{ tenant_constants.AFFILIATION_TYPE_SPONSOR_ID }}">Sponsor</option>
+                        <option value="{{ tenant_constants.AFFILIATION_TYPE_OWNS_ID }}" id="customer_affiliation_id_{{ tenant_constants.AFFILIATION_TYPE_OWNS_ID }}">Owns</option>
+                        <option value="{{ tenant_constants.AFFILIATION_TYPE_FOUNDER_ID }}" id="customer_affiliation_id_{{ tenant_constants.AFFILIATION_TYPE_FOUNDER_ID }}">Founder</option>
+                        <option value="{{ tenant_constants.AFFILIATION_TYPE_EMPLOYEE_ID }}" id="customer_affiliation_id_{{ tenant_constants.AFFILIATION_TYPE_EMPLOYEE_ID }}">Employee of</option>
                     </select>
                     <div id="customer_affiliation-error" class="invalid-feedback"></div>
+                </div>
+                <div class="form-group col-md-12 mb-4">
+                    <label for="tag">Tags (Person)</label>
+                    <select id="person_tags" name="person_tags" class="form-control form-control-lg border border-success" name="states[]" multiple="multiple">
+                    {% for tag in tags %}
+                        <option value="{{ tag.id }}" id="person_tag_option_id_{{ tag.id }}">{{ tag }}</option>
+                    {% endfor %}
+                    </select>
+                    <div id="person_tags-error" class="invalid-feedback"></div>
                 </div>
             </div>
             <!-- ############ end CONTACT DETAILS ############ -->
@@ -404,9 +459,9 @@
     		        <label for="companytype">Company type <sup>*</sup></label>
     		        <select class="custom-select form-control-lg border-primary" id="companytype" name="companytype" required="">
     		            <option value="" selected="">Type...</option>
-    		            <option value="{{ tenant_constants.PRIVATE_ORGANIZATION_TYPE_OF_ID }}">Private</option>
-    		            <option value="{{ tenant_constants.NON_PROFIT_ORGANIZATION_TYPE_OF_ID }}">Non-Profit</option>
-    		            <option value="{{ tenant_constants.GOVERNMENT_ORGANIZATION_TYPE_OF_ID }}">Government</option>
+    		            <option value="{{ tenant_constants.PRIVATE_ORGANIZATION_TYPE_OF_ID }}" id="companytype_id_{{ tenant_constants.PRIVATE_ORGANIZATION_TYPE_OF_ID }}">Private</option>
+    		            <option value="{{ tenant_constants.NON_PROFIT_ORGANIZATION_TYPE_OF_ID }}" id="companytype_id_{{ tenant_constants.NON_PROFIT_ORGANIZATION_TYPE_OF_ID }}">Non-Profit</option>
+    		            <option value="{{ tenant_constants.GOVERNMENT_ORGANIZATION_TYPE_OF_ID }}" id="companytype_id_{{ tenant_constants.GOVERNMENT_ORGANIZATION_TYPE_OF_ID }}">Government</option>
                     </select>
     		        <div id="companytype-error" class="invalid-feedback"></div>
      		    </div>
@@ -450,6 +505,15 @@
                     <input type="text" class="form-control form-control-lg border border-success" id="post_office_box_number" name="post_office_box_number" placeholder="Post Office Box #" minlength="3" maxlength="255" required>
                     <div id="post_office_box_number-error" class="invalid-feedback"></div>
                 </div>
+                <div class="form-group col-md-12 mb-4">
+                    <label for="tag">Tags (Company)</label>
+                    <select id="company_tags" name="company_tags" class="form-control form-control-lg border border-success" name="states[]" multiple="multiple">
+                    {% for tag in tags %}
+                        <option value="{{ tag.id }}" id="company_tag_option_id_{{ tag.id }}">{{ tag }}</option>
+                    {% endfor %}
+                    </select>
+                    <div id="company_tags-error" class="invalid-feedback"></div>
+                </div>
             </div>
             <!-- ############ end COMPANY ADDRESS ############ -->
             <!-- ############ SECURITY ############ -->
@@ -482,20 +546,18 @@
             </div>
             <!-- ############ end SECURITY ############ -->
             <!-- end SUBMIT BUTTON -->
-            <div class="form-group col-md-12 mb-3 mx-auto text-center">
-                <button  id="id_submit_btn"
-                    class="btn btn-success btn-lg btn-fxw mt-4"
-                    onclick="ajax_post_form_submission();"
-                    type="button">
-                <i class="fas fa-plus"></i>&nbsp;{% trans 'Add Client' %}
+            <div class="form-group col-md-12 mb-3 p-0 mx-auto text-center">
+  			    <button id="id_submit_btn" class="btn btn-success btn-lg mt-4 float-right pl-4 pr-4" type="button" onclick="ajax_post_form_submission();">
+                    Next <i class="fas fa-arrow-right"></i></button>
+  			    <button class="btn btn-orange btn-lg mt-4 float-left pl-4 pr-4" type="button" onclick="ajax_cancel();">
+                    <i class="fas fa-times"></i>&nbsp;Back
                 </button>
-            </div>
+  		    </div>
             <!-- end SUBMIT BUTTON -->
         </div>
     </div>
     <!------------------------------------------------------------------------->
     <!-- end FORM -->
-
 
     <!-- RETURN-TO-TOP -->
     <a id="return-to-top" href="#" class="btn-info btn-lg back-to-top" role="button" title="Back to top"><i class="fas fa-angle-up fa-2x"></i></a>
