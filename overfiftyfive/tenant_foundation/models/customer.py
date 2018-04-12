@@ -261,7 +261,7 @@ class Customer(AbstractThing, AbstractContactPoint, AbstractPostalAddress, Abstr
         "Organization",
         help_text=_('The organizations that this customer is affiliated with.'),
         blank=True,
-        through='CustomerAffiliation'
+        through='OrganizationCustomerAffiliation'
     )
 
     #

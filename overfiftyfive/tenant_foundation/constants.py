@@ -2,7 +2,7 @@
 from django.utils.translation import ugettext_lazy as _
 
 
-# The following constants are used by the "AssociateAffiliation" model.
+# The following constants are used by the "OrganizationAssociateAffiliation" model.
 #
 
 AFFILIATION_TYPE_AFFILIATION_ID = 1
@@ -12,6 +12,7 @@ AFFILIATION_TYPE_MEMBER_OF_ID = 4
 AFFILIATION_TYPE_SPONSOR_ID = 5
 AFFILIATION_TYPE_OWNS_ID = 6
 AFFILIATION_TYPE_FOUNDER_ID = 7
+AFFILIATION_TYPE_EMPLOYEE_ID = 8
 
 AFFILIATION_TYPE_OF_CHOICES = (
     (AFFILIATION_TYPE_AFFILIATION_ID, _('Affiliation')),
@@ -21,6 +22,7 @@ AFFILIATION_TYPE_OF_CHOICES = (
     (AFFILIATION_TYPE_SPONSOR_ID, _('Sponsor')),
     (AFFILIATION_TYPE_OWNS_ID, _('Owns')),
     (AFFILIATION_TYPE_FOUNDER_ID, _('Founder')),
+    (AFFILIATION_TYPE_EMPLOYEE_ID, _('Employee')),
 )
 
 

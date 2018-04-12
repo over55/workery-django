@@ -5,21 +5,21 @@ from django.utils.translation import ugettext_lazy as _
 from tenant_foundation.constants import *
 
 
-class AssociateAffiliationManager(models.Manager):
+class OrganizationAssociateAffiliationManager(models.Manager):
     def delete_all(self):
-        items = AssociateAffiliation.objects.all()
+        items = OrganizationAssociateAffiliation.objects.all()
         for item in items.all():
             item.delete()
 
 
-class AssociateAffiliation(models.Model):
+class OrganizationAssociateAffiliation(models.Model):
     class Meta:
         app_label = 'tenant_foundation'
-        db_table = 'o55_associate_affiliations'
-        verbose_name = _('Associate Affiliation')
-        verbose_name_plural = _('Associate Affiliation')
+        db_table = 'o55_organization_associate_affiliations'
+        verbose_name = _('Organization Associate Affiliation')
+        verbose_name_plural = _('Organization Associate Affiliation')
 
-    objects = AssociateAffiliationManager()
+    objects = OrganizationAssociateAffiliationManager()
 
     #
     #  CUSTOM FIELDS

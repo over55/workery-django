@@ -32,6 +32,7 @@
         // Assign previously set values.
         $('#companyname').val(localStorage.getItem("tmp_commercial_customer_company_name"));
         $('#companytype').val(localStorage.getItem("tmp_commercial_customer_company_type"));
+        $('#customer_affiliation').val(localStorage.getItem("tmp_commercial_customer_affiliation"));
         $('#firstname').val(localStorage.getItem("tmp_commercial_customer_given_name"));
         $('#middlename').val(localStorage.getItem("tmp_commercial_customer_middle_name"));
         $('#lastname').val(localStorage.getItem("tmp_commercial_customer_last_name"));
@@ -204,9 +205,11 @@
         // var fax_number = $('#id_fax_number').val();
         var password = $('#password').val();
         var password_repeat = $('#password_repeat').val();
+        var customer_affiliation = $('#customer_affiliation').val();
 
         localStorage.setItem("tmp_commercial_customer_company_name", company_name);
         localStorage.setItem("tmp_commercial_customer_company_type", company_type);
+        localStorage.setItem("tmp_commercial_customer_affiliation", customer_affiliation);
         localStorage.setItem("tmp_commercial_customer_given_name", given_name);
         localStorage.setItem("tmp_commercial_customer_middle_name", middle_name);
         localStorage.setItem("tmp_commercial_customer_last_name", last_name);
@@ -278,27 +281,13 @@
             <!-- end Error Output -->
             <p>&nbsp;</p>
             <form id="add-client-form" method="post" class="needs-validation" action="" novalidate>
-            <!-- ############ COMPANY DETAILS ############ -->
-            <p class="border-bottom mb-3 pb-1 text-secondary">Company Details</p>
+            <!-- ############ CONTACT DETAILS ############ -->
+            <p class="border-bottom mb-3 pb-1 text-secondary">Company Contact</p>
+            <p>Please fill in the account details for the company representative.</p>
             <div class="form-row">
                 <div class="form-group col-md-12 mb-4">
-                    <label for="companyname">Company name <sup>*</sup></label>
-                    <input type="text" class="form-control form-control-lg border border-primary" id="companyname" name="companyname" placeholder="Company name" minlength="2" maxlength="30" required autofocus>
-                    <div id="companyname-error" class="invalid-feedback"></div>
-                </div>
-                <div class="form-group col-md-7 mb-4">
-    		        <label for="companytype">Company type <sup>*</sup></label>
-    		        <select class="custom-select form-control-lg border-primary" id="companytype" name="companytype" required="">
-    		            <option value="" selected="">Type...</option>
-    		            <option value="{{ tenant_constants.PRIVATE_ORGANIZATION_TYPE_OF_ID }}">Private</option>
-    		            <option value="{{ tenant_constants.NON_PROFIT_ORGANIZATION_TYPE_OF_ID }}">Non-Profit</option>
-    		            <option value="{{ tenant_constants.GOVERNMENT_ORGANIZATION_TYPE_OF_ID }}">Government</option>
-                    </select>
-    		        <div id="companytype-error" class="invalid-feedback"></div>
-     		    </div>
-                <div class="form-group col-md-12 mb-4">
 		            <label for="firstname">Contact first name <sup>*</sup></label>
-		            <input type="text" class="form-control form-control-lg border border-primary" id="firstname" name="firstname" placeholder="First name" minlength="3" required="">
+		            <input type="text" class="form-control form-control-lg border border-primary" id="firstname" name="firstname" placeholder="First name" minlength="3" required="" autofocus>
 		            <div id="firstname-error" class="invalid-feedback"></div>
 		        </div>
                 <div class="form-group col-md-12 mb-4">
@@ -319,9 +308,9 @@
                 <div class="form-group col-md-4 mb-4">
 		            <label for="phonetype">&nbsp;</label>
 		            <select class="custom-select form-control-lg border-primary" id="phonetype" name="phonetype" required="">
-		                <option value="mobile">Mobile</option>
-		                <option value="home">Home</option>
-		                <option value="work">Work</option>
+		                <option value="{{ shared_constants.TELEPHONE_CONTACT_POINT_TYPE_OF_ID }}">Landline</option>
+		                <option value="{{ shared_constants.MOBILE_CONTACT_POINT_TYPE_OF_ID }}">Mobile</option>
+		                <option value="{{ shared_constants.WORK_CONTACT_POINT_TYPE_OF_ID }}">Work</option>
 		            </select>
 		            <div id="phonetype-error" class="invalid-feedback"></div>
 		        </div>
@@ -333,9 +322,9 @@
                 <div class="form-group col-md-4 mb-4">
                     <label for="other_phonenumber_type">&nbsp;</label>
                     <select class="custom-select form-control-lg border-success" id="other_phonenumber_type" name="other_phonenumber_type">
-                        <option value="mobile">Mobile</option>
-                        <option value="home">Home</option>
-                        <option value="work">Work</option>
+                        <option value="{{ shared_constants.TELEPHONE_CONTACT_POINT_TYPE_OF_ID }}">Landline</option>
+		                <option value="{{ shared_constants.MOBILE_CONTACT_POINT_TYPE_OF_ID }}">Mobile</option>
+		                <option value="{{ shared_constants.WORK_CONTACT_POINT_TYPE_OF_ID }}">Work</option>
                     </select>
                     <div id="other_phonenumber_type-error" class="invalid-feedback"></div>
                 </div>
@@ -366,11 +355,6 @@
                         <label class="custom-control-label form-check-label" for="ok_to_text2">No</label>
                     </div>
                 </div>
-            </div>
-            <!-- ############ end COMPANY DETAILS ############ -->
-            <!-- ############ COMPANY DETAILS ############ -->
-            <p class="border-bottom mb-3 pb-1 text-secondary">Personal Details</p>
-            <div class="form-row">
                 <div class="form-group p-0 col-md-7 mb-4">
                     <label for="dob">Date of Birth</label>
                     <div class="input-group input-group-lg">
@@ -390,11 +374,42 @@
                     </select>
                     <div id="gender-error" class="invalid-feedback"></div>
                 </div>
+                <div class="form-group col-md-7 mb-4 p-0">
+                    <label for="customer_affiliation">Reletionship with company</label>
+                    <select class="custom-select form-control-lg border-success" id="customer_affiliation" name="customer_affiliation" required>
+                        <option value="" selected>Relationship...</option>
+                        <option value="{{ tenant_constants.AFFILIATION_TYPE_AFFILIATION_ID }}">Affiliated</option>
+                        <option value="{{ tenant_constants.AFFILIATION_TYPE_ALUMNI_OF_ID }}">Alumni of</option>
+                        <option value="{{ tenant_constants.AFFILIATION_TYPE_FUNDER_ID }}">Funder</option>
+                        <option value="{{ tenant_constants.AFFILIATION_TYPE_MEMBER_OF_ID }}">Member of</option>
+                        <option value="{{ tenant_constants.AFFILIATION_TYPE_SPONSOR_ID }}">Sponsor</option>
+                        <option value="{{ tenant_constants.AFFILIATION_TYPE_OWNS_ID }}">Owns</option>
+                        <option value="{{ tenant_constants.AFFILIATION_TYPE_FOUNDER_ID }}">Founder</option>
+                        <option value="{{ tenant_constants.AFFILIATION_TYPE_EMPLOYEE_ID }}">Employee of</option>
+                    </select>
+                    <div id="customer_affiliation-error" class="invalid-feedback"></div>
+                </div>
             </div>
-            <!-- ############ COMPANY DETAILS ############ -->
-            <!-- ############ end COMPANY ADDRESS ############ -->
+            <!-- ############ end CONTACT DETAILS ############ -->
+            <!-- ############ COMPANY ADDRESS ############ -->
             <p class="border-bottom mb-3 pb-1 text-secondary">Company Details</p>
+            <p>Please fill in the company details associated with the company representative.</p>
             <div class="form-row">
+                <div class="form-group col-md-12 mb-4">
+                    <label for="companyname">Company name <sup>*</sup></label>
+                    <input type="text" class="form-control form-control-lg border border-primary" id="companyname" name="companyname" placeholder="Company name" minlength="2" maxlength="30" required>
+                    <div id="companyname-error" class="invalid-feedback"></div>
+                </div>
+                <div class="form-group col-md-7 mb-4">
+    		        <label for="companytype">Company type <sup>*</sup></label>
+    		        <select class="custom-select form-control-lg border-primary" id="companytype" name="companytype" required="">
+    		            <option value="" selected="">Type...</option>
+    		            <option value="{{ tenant_constants.PRIVATE_ORGANIZATION_TYPE_OF_ID }}">Private</option>
+    		            <option value="{{ tenant_constants.NON_PROFIT_ORGANIZATION_TYPE_OF_ID }}">Non-Profit</option>
+    		            <option value="{{ tenant_constants.GOVERNMENT_ORGANIZATION_TYPE_OF_ID }}">Government</option>
+                    </select>
+    		        <div id="companytype-error" class="invalid-feedback"></div>
+     		    </div>
                 <div class="form-group col-md-12 mb-4">
                     <label for="street_address">Street Address <sup>*</sup></label>
                     <input type="text" class="form-control form-control-lg border border-primary" id="street_address" name="street_address" placeholder="Street Address" minlength="3" maxlength="255" required>

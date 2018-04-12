@@ -24,13 +24,15 @@ from rest_framework.validators import UniqueValidator
 from shared_api.custom_fields import PhoneNumberField
 from shared_foundation.constants import CUSTOMER_GROUP_ID
 from shared_foundation.models import SharedUser
-from tenant_api.serializers.customer_affiliation import CustomerAffiliationSerializer
+from tenant_api.serializers.customer_affiliation import OrganizationCustomerAffiliationSerializer
 # from tenant_api.serializers.customer_comment import CustomerCommentSerializer
 from tenant_foundation.constants import *
 from tenant_foundation.models import (
     # Comment,
     # CustomerComment,
-    Customer
+    Customer,
+    OrganizationCustomerAffiliation,
+    Organization
 )
 
 
@@ -52,7 +54,7 @@ class CustomerListCreateSerializer(serializers.ModelSerializer):
     # # will be blank during GET.
     # extra_comment = serializers.CharField(write_only=True, allow_null=True)
 
-    affiliations = CustomerAffiliationSerializer(many=True, read_only=True)
+    affiliations = OrganizationCustomerAffiliationSerializer(many=True, read_only=True)
 
     # Custom formatting of our telephone fields.
     fax_number = PhoneNumberField(allow_null=True, required=False)
@@ -80,6 +82,71 @@ class CustomerListCreateSerializer(serializers.ModelSerializer):
         allow_blank=False,
         max_length=63,
         style={'input_type': 'password'}
+    )
+
+    #
+    # Fields used for mapping to organizations.
+    #
+
+    organization_name = serializers.CharField(
+        write_only=True,
+        required=False,
+        allow_blank=True,
+        max_length=63,
+    )
+    organization_type_of = serializers.CharField(
+        write_only=True,
+        required=False,
+        allow_blank=True,
+        max_length=63,
+    )
+    organization_customer_affiliation = serializers.CharField(
+        write_only=True,
+        required=False,
+        allow_blank=True,
+        max_length=63,
+    )
+    organization_address_country = serializers.CharField(
+        write_only=True,
+        required=False,
+        allow_blank=True,
+        max_length=127,
+    )
+    organization_address_locality = serializers.CharField(
+        write_only=True,
+        required=False,
+        allow_blank=True,
+        max_length=127,
+    )
+    organization_address_region = serializers.CharField(
+        write_only=True,
+        required=False,
+        allow_blank=True,
+        max_length=127,
+    )
+    organization_post_office_box_number = serializers.CharField(
+        write_only=True,
+        required=False,
+        allow_blank=True,
+        max_length=255,
+    )
+    organization_postal_code = serializers.CharField(
+        write_only=True,
+        required=False,
+        allow_blank=True,
+        max_length=127,
+    )
+    organization_street_address = serializers.CharField(
+        write_only=True,
+        required=False,
+        allow_blank=True,
+        max_length=255,
+    )
+    organization_street_address_extra = serializers.CharField(
+        write_only=True,
+        required=False,
+        allow_blank=True,
+        max_length=255,
     )
 
     # Meta Information.
@@ -116,9 +183,21 @@ class CustomerListCreateSerializer(serializers.ModelSerializer):
             'password',
             'password_repeat',
             # 'organizations', #TODO: FIX
+            'organization_name',
+            'organization_type_of',
+            'organization_customer_affiliation',
+            'organization_address_country',
+            'organization_address_locality',
+            'organization_address_region',
+            'organization_post_office_box_number',
+            'organization_postal_code',
+            'organization_street_address',
+            'organization_street_address_extra',
 
             # # Misc (Write Only)
             # 'extra_comment',
+            'organization_name',
+            'organization_type_of',
 
             # Contact Point
             'area_served',
@@ -160,18 +239,7 @@ class CustomerListCreateSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         """
-        Override the `create` function to add extra functinality:
-
-        - Create a `User` object in the public database.
-
-        - Create a `SharedUser` object in the public database.
-
-        - Create a `Customer` object in the tenant database.
-
-        # - If user has entered text in the 'extra_comment' field then we will
-        #   a `Comment` object and attach it to the `Customer` object.
-
-        - We will attach the staff user whom created this `Customer` object.
+        Override the `create` function to add extra functinality.
         """
         # Format our telephone(s)
         fax_number = validated_data.get('fax_number', None)
@@ -209,6 +277,7 @@ class CustomerListCreateSerializer(serializers.ModelSerializer):
             password = validated_data.get('password', None)
             owner.set_password(password)
             owner.save()
+            print("INFO: Created user.")
 
         #---------------------------------------------------
         # Create our `Customer` object in our tenant schema.
@@ -230,7 +299,6 @@ class CustomerListCreateSerializer(serializers.ModelSerializer):
             is_support=validated_data.get('is_support', False),
             job_info_read=validated_data.get('job_info_read', False),
             how_hear=validated_data.get('how_hear', None),
-            # 'organizations', #TODO: IMPLEMENT.
             type_of=validated_data.get('type_of', UNASSIGNED_CUSTOMER_TYPE_OF_ID),
 
             # Contact Point
@@ -262,6 +330,59 @@ class CustomerListCreateSerializer(serializers.ModelSerializer):
             longitude=validated_data.get('longitude', None),
             # 'location' #TODO: IMPLEMENT.
         )
+        print("INFO: Created customer.")
+
+        #-----------------------------------
+        # Create or update our Organization.
+        #-----------------------------------
+        organization_name = validated_data.get('organization_name', None)
+        organization_type_of = validated_data.get('organization_type_of', None)
+        organization_address_country = validated_data.get('organization_address_country', None)
+        organization_address_locality = validated_data.get('organization_address_locality', None)
+        organization_address_region = validated_data.get('organization_address_region', None)
+        organization_post_office_box_number = validated_data.get('organization_post_office_box_number', None)
+        organization_postal_code = validated_data.get('organization_postal_code', None)
+        organization_street_address = validated_data.get('organization_street_address', None)
+        organization_street_address_extra = validated_data.get('organization_street_address_extra', None)
+
+        if organization_name and organization_type_of:
+            organization, created = Organization.objects.update_or_create(
+                name=organization_name,
+                type_of=organization_type_of,
+                defaults={
+                    'type_of': organization_type_of,
+                    'name': organization_name,
+                    'address_country': organization_address_country,
+                    'address_locality': organization_address_locality,
+                    'address_region': organization_address_region,
+                    'post_office_box_number': organization_post_office_box_number,
+                    'postal_code': organization_postal_code,
+                    'street_address': organization_street_address,
+                    'street_address_extra': organization_street_address_extra
+                }
+            )
+            if created:
+                print("INFO: Created organization.")
+                organization.owner = owner
+                organization.save()
+
+            customer.organization = organization
+            customer.save()
+
+            #--------------------------------------
+            # Organization and persons relationship
+            #--------------------------------------
+            organization_customer_affiliation = validated_data.get('organization_customer_affiliation', None)
+            OrganizationCustomerAffiliation.objects.update_or_create(
+                customer=customer,
+                organization=organization,
+                defaults={
+                    'customer': customer,
+                    'organization': organization,
+                    'type_of': organization_customer_affiliation
+                }
+            )
+            print("INFO: Created Org-Person relationship.")
 
         # #-----------------------------
         # # Create our `Comment` object.
@@ -311,7 +432,7 @@ class CustomerRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
     # # will be blank during GET.
     # extra_comment = serializers.CharField(write_only=True, allow_null=True)
 
-    affiliations = CustomerAffiliationSerializer(many=True, read_only=True)
+    affiliations = OrganizationCustomerAffiliationSerializer(many=True, read_only=True)
 
     # Custom formatting of our telephone fields.
     fax_number = PhoneNumberField(allow_null=True, required=False)

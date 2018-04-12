@@ -22,7 +22,7 @@ from shared_foundation.models import (
 from tenant_foundation.constants import *
 from tenant_foundation.models import (
     Associate,
-    AssociateAffiliation
+    OrganizationAssociateAffiliation
 )
 from tenant_foundation.utils import *
 

@@ -64,6 +64,130 @@
         window.location = "{% url 'o55_tenant_commercial_customer_create' %}";
     }
 
+    /**
+     *  Function will attempt to submit the form to the API server. This
+     *  funciton will:
+     *  (1) Lock / Unlock the submit button.
+     *  (2)
+     */
+    function ajax_post_form_submission() {
+        // LOCK OUT THE "SUBMIT" BUTTON SO THE USER DOES NOT MAKE MULTI-CALLS.
+        disable_btn();
+
+        // Generate random password and apply it automatically to the
+        // password fields if no password was selected.
+        password = localStorage.getItem("tmp_commercial_customer_password")
+        password_repeat = localStorage.getItem("tmp_commercial_customer_password_repeat")
+        if (password === undefined || password === null || password === '' || password.length == 0) {
+            var randomString = Math.random().toString(34).slice(-10);
+            randomString += "A";
+            randomString += "!";
+            password = randomString;
+            password_repeat = randomString;
+        }
+
+        // MAKE OUR API CALL TO THE BACKEND TO "CREATE" THE CUSTOMER USER.
+        create_customer_api(
+            {
+                // --- PERSON ---
+                'given_name': localStorage.getItem("tmp_commercial_customer_given_name"),
+                'middle_name': localStorage.getItem("tmp_commercial_customer_middle_name"),
+                'last_name': localStorage.getItem("tmp_commercial_customer_last_name"),
+                'birthdate': localStorage.getItem("tmp_commercial_customer_date_of_birth"),
+                'gender': localStorage.getItem("tmp_commercial_customer_gender"),
+                'nationality': null,
+                'is_ok_to_email': localStorage.getItem("tmp_commercial_customer_ok_to_email"),
+                'is_ok_to_text': localStorage.getItem("tmp_commercial_customer_ok_to_text"),
+                'address_country': localStorage.getItem("tmp_commercial_customer_address_country"),
+                'address_locality': localStorage.getItem("tmp_commercial_customer_address_locality"),
+                'address_region': localStorage.getItem("tmp_commercial_customer_address_region"),
+                'extra_comment': null,
+                'street_address': localStorage.getItem("tmp_commercial_customer_street_address"),
+                'street_address_extra': localStorage.getItem("tmp_commercial_customer_street_address_extra"),
+                'postal_code': localStorage.getItem("tmp_commercial_customer_postal_code"),
+                'post_office_box_number': localStorage.getItem("tmp_commercial_customer_post_office_box_number"),
+                'email': localStorage.getItem("tmp_commercial_customer_email"),
+                // 'area_served': area_served,
+                'fax_number': null,
+                'telephone': localStorage.getItem("tmp_commercial_customer_telephone"),
+                'telephone_type_of': localStorage.getItem("tmp_commercial_customer_telephone_type_of"),
+                // 'telephone_extension': telephone_extension,
+                'other_telephone': localStorage.getItem("tmp_commercial_customer_other_telephone"),
+                'other_telephone_type_of': localStorage.getItem("tmp_commercial_customer_other_telephone_type_of"),
+                // 'fax_number': fax_number
+                'password': password,
+                'password_repeat': password_repeat,
+                'type_of': {{ tenant_constants.COMMERCIAL_CUSTOMER_TYPE_OF_ID }},
+
+                // --- ORGANIZATION ---
+                'organization_name': localStorage.getItem("tmp_commercial_customer_company_name"),
+                'organization_type_of': localStorage.getItem("tmp_commercial_customer_company_type"),
+                'organization_address_country': localStorage.getItem("tmp_commercial_customer_address_country"),
+                'organization_address_locality': localStorage.getItem("tmp_commercial_customer_address_locality"),
+                'organization_address_region': localStorage.getItem("tmp_commercial_customer_address_region"),
+                'organization_street_address': localStorage.getItem("tmp_commercial_customer_street_address"),
+                'organization_street_address_extra': localStorage.getItem("tmp_commercial_customer_street_address_extra"),
+                'organization_postal_code': localStorage.getItem("tmp_commercial_customer_postal_code"),
+                'organization_post_office_box_number': localStorage.getItem("tmp_commercial_customer_post_office_box_number"),
+                'organization_customer_affiliation': localStorage.getItem("tmp_commercial_customer_affiliation"),
+            },
+            function(result_dict) { // Success
+                // FOR DEBUGGING PURPOSES ONLY.
+                console.log(result_dict);
+
+                // RESET OUR STORED VALUES.
+                localStorage.removeItem("tmp_commercial_customer_given_name");
+                localStorage.removeItem("tmp_commercial_customer_middle_name");
+                localStorage.removeItem("tmp_commercial_customer_last_name");
+                localStorage.removeItem("tmp_commercial_customer_date_of_birth");
+                localStorage.removeItem("tmp_commercial_customer_gender");
+                localStorage.removeItem("tmp_commercial_customer_ok_to_email");
+                localStorage.removeItem("tmp_commercial_customer_ok_to_text");
+                localStorage.removeItem("tmp_commercial_customer_street_address");
+                localStorage.removeItem("tmp_commercial_customer_street_address_extra");
+                localStorage.removeItem("tmp_commercial_customer_address_region");
+                localStorage.removeItem("tmp_commercial_customer_address_locality");
+                localStorage.removeItem("tmp_commercial_customer_address_country");
+                localStorage.removeItem("tmp_commercial_customer_postal_code");
+                localStorage.removeItem("tmp_commercial_customer_post_office_box_number");
+                localStorage.removeItem("tmp_commercial_customer_email");
+                localStorage.removeItem("tmp_commercial_customer_telephone");
+                localStorage.removeItem("tmp_commercial_customer_telephone_type_of");
+                localStorage.removeItem("tmp_commercial_customer_other_telephone");
+                localStorage.removeItem("tmp_commercial_customer_other_telephone_type_of");
+                localStorage.removeItem("tmp_commercial_customer_password");
+                localStorage.removeItem("tmp_commercial_customer_password_repeat");
+
+                // REDIRECT TO SUCCESS PAGE.
+                window.location = "{% url 'o55_tenant_customer_summary' %}?was_created=True";
+            },
+            function(xhr,status,error) { // Error
+                alert("Error: Please inform the administrator");
+
+                // STEP 1: Convert to JSON.
+                var err = JSON.parse(xhr.responseText);
+
+                // For debugging purposes only.
+                console.log(err);
+                $('#all_error_result').html();
+
+                // Print the error.
+                for(var prop in err) {
+                    if(err.hasOwnProperty(prop)) {
+                        var val = err[prop];
+                        console.log(val);
+                        $('#all_error_result').append("<p><b>"+prop+"</b>"+val+"</p><br />");
+                    }
+                }
+
+                $('#all_error_result').focus(); // FOCUS ON THE ERROR.
+            },
+            function() { // Finally
+                // UNLOCK THE "SUBMIT" BUTTON TO BE AVAILABLE FOR USAGE.
+                enable_btn();
+            }
+        );
+    }
 
 </script>
 <!----------------------------------------------------------------------------->

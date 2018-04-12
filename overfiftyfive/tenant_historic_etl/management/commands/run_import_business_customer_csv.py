@@ -33,7 +33,7 @@ from tenant_foundation.models import (
     Associate,
     # Comment,
     Customer,
-    CustomerAffiliation,
+    OrganizationCustomerAffiliation,
     Organization,
     Order,
     # OrderComment,
@@ -209,7 +209,7 @@ class Command(BaseCommand):
 
                 # Save the model.
                 organization = Organization.objects.create(name=company)
-                CustomerAffiliation.objects.create(
+                OrganizationCustomerAffiliation.objects.create(
                     customer=customer,
                     organization=organization,
                     type_of=AFFILIATION_TYPE_AFFILIATION_ID

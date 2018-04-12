@@ -5,19 +5,19 @@ from django.utils.translation import ugettext_lazy as _
 from tenant_foundation.constants import *
 
 
-class CustomerAffiliationManager(models.Manager):
+class OrganizationCustomerAffiliationManager(models.Manager):
     def delete_all(self):
-        items = CustomerAffiliation.objects.all()
+        items = OrganizationCustomerAffiliation.objects.all()
         for item in items.all():
             item.delete()
 
 
-class CustomerAffiliation(models.Model):
+class OrganizationCustomerAffiliation(models.Model):
     class Meta:
         app_label = 'tenant_foundation'
-        db_table = 'o55_customer_affiliations'
-        verbose_name = _('Customer Affiliation')
-        verbose_name_plural = _('Customer Affiliation')
+        db_table = 'o55_organization_customer_affiliations'
+        verbose_name = _('Organization Customer Affiliation')
+        verbose_name_plural = _('Organization Customer Affiliation')
         default_permissions = ()
         permissions = (
             ("can_get_customer_affiliations", "Can get customer affiliations"),
@@ -27,7 +27,7 @@ class CustomerAffiliation(models.Model):
             ("can_delete_customer_affiliation", "Can delete customer affiliation"),
         )
 
-    objects = CustomerAffiliationManager()
+    objects = OrganizationCustomerAffiliationManager()
 
     #
     #  CUSTOM FIELDS

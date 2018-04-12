@@ -12,14 +12,14 @@ from tenant_foundation.models.organization import Organization
 
 # Customer Models
 from tenant_foundation.models.customer import Customer
-from tenant_foundation.models.customer_affiliation import CustomerAffiliation
+from tenant_foundation.models.organization_customer_affiliation import OrganizationCustomerAffiliation
 
 # Staff Models
 from tenant_foundation.models.staff import Staff
 
 # Associate Models
 from tenant_foundation.models.associate import Associate
-from tenant_foundation.models.associate_affiliation import AssociateAffiliation
+from tenant_foundation.models.organization_associate_affiliation import OrganizationAssociateAffiliation
 
 # Order Models
 from tenant_foundation.models.order import Order

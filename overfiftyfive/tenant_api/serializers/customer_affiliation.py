@@ -12,15 +12,15 @@ from rest_framework import exceptions, serializers
 from rest_framework.response import Response
 from rest_framework.authtoken.models import Token
 # from tenant_api.serializers.comment import CommentListCreateSerializer
-from tenant_foundation.models import CustomerAffiliation
+from tenant_foundation.models import OrganizationCustomerAffiliation
 
 
-class CustomerAffiliationSerializer(serializers.ModelSerializer):
+class OrganizationCustomerAffiliationSerializer(serializers.ModelSerializer):
     customer = serializers.PrimaryKeyRelatedField(many=False, read_only=True)
     # organization = CommentListCreateSerializer(many=False, read_only=True)
 
     class Meta:
-        model = CustomerAffiliation
+        model = OrganizationCustomerAffiliation
         fields = (
             'customer',
             'organization',

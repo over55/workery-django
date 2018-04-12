@@ -119,7 +119,7 @@ class Associate(AbstractThing, AbstractContactPoint, AbstractPostalAddress, Abst
         "Organization",
         help_text=_('The organizations that this associate is affiliated with.'),
         blank=True,
-        through='AssociateAffiliation'
+        through='OrganizationAssociateAffiliation'
     )
 
     given_name = models.CharField(

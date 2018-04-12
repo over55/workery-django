@@ -18,7 +18,7 @@ from tenant_foundation.models import (
     Associate,
     # Comment,
     Customer,
-    CustomerAffiliation,
+    OrganizationCustomerAffiliation,
     Organization,
     Order,
     # OrderComment,
