@@ -1,8 +1,8 @@
 {% extends 'tenant_foundation/tenant_base.html' %}
-{% load staticfiles i18n %}
+{% load staticfiles i18n foundation_tags humanize %}
 
 {% block title %}
-{% trans 'Add New Client | Over 55 Inc.' %}
+{% trans 'Clients List | Over 55 Inc.' %}
 {% endblock title %}
 
 {% block header_content %}
@@ -17,10 +17,10 @@
     /**
      *  DEVELOPERS NOTE:
      *  THE FOLLOWING JAVASCRIPT FUNCTIONS MUST BE DECLARED IF YOU WANT TO CALL
-     *  THE "residential_create_form.html" FORM TEMPLATE.
+     *  THE "commercial_create_form.html" TEMPLATES.
      */
     function click_cancel_button() {
-        window.location = "{% url 'o55_tenant_pick_customer_create' %}";
+        window.location = "{% url 'o55_tenant_job_pick_add_customer_type' %}";
     }
 
     function click_next_button() {
@@ -29,7 +29,7 @@
             tmp_email,
             function(result) {
                 if (result === 1 || result === '1') {
-                    ajax_post_form_submission("{% url 'o55_tenant_commercial_customer_confirm_create' %}");
+                    ajax_post_form_submission("{% url 'o55_tenant_job_add_commercial_customer_confirmation' %}");
                 } else {
                     alert("EMAIL ALREADY EXISTS, PLEASE PICK A NEW EMAIL ADDRESS"); //TODO: UPDATE THE GUI.
                     return;
@@ -53,9 +53,8 @@
     <nav aria-label="breadcrumb">
 	  	<ol class="breadcrumb">
 	    	<li class="breadcrumb-item"><a href="{% url 'o55_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
-            <li class="breadcrumb-item"><a href="{% url 'o55_tenant_customer_summary' %}">{% trans 'Clients' %}</a></li>
-            <li class="breadcrumb-item"><a href="{% url 'o55_tenant_pick_customer_create' %}">{% trans 'Add' %}</a></li>
-            <li class="breadcrumb-item active" aria-current="page">{% trans 'Commercial Client' %}</li>
+            <li class="breadcrumb-item"><a href="{% url 'o55_tenant_job_summary' %}">{% trans 'Jobs' %}</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{% trans 'Add' %}</li>
 	  	</ol>
 	</nav>
     <!------------------------------------------------------------------------->
@@ -65,16 +64,16 @@
     <!------------------------------------------------------------------------->
     <div class="row">
 		<div class="col-sm-3 p-3 mb-2">
-			<a class="btn btn-primary btn-lg" href="{% url 'o55_tenant_customer_summary' %}" role="button">
+			<a class="btn btn-primary btn-lg" href="{% url 'o55_tenant_job_summary' %}" role="button">
                 <svg class="svg-inline--fa fa-arrow-left fa-w-14" aria-hidden="true" data-fa-processed="" data-prefix="fas" data-icon="arrow-left" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
                 <path fill="currentColor" d="M257.5 445.1l-22.2 22.2c-9.4 9.4-24.6 9.4-33.9 0L7 273c-9.4-9.4-9.4-24.6 0-33.9L201.4 44.7c9.4-9.4 24.6-9.4 33.9 0l22.2 22.2c9.5 9.5 9.3 25-.4 34.3L136.6 216H424c13.3 0 24 10.7 24 24v32c0 13.3-10.7 24-24 24H136.6l120.5 114.8c9.8 9.3 10 24.8.4 34.3z"></path>
-            </svg><!-- <i class="fas fa-arrow-left"></i> -->&nbsp;{% trans 'Back to Clients Home' %}</a>
+            </svg><!-- <i class="fas fa-arrow-left"></i> -->&nbsp;{% trans 'Back to Jobs Home' %}</a>
 		</div>
 	</div>
     <!------------------------------------------------------------------------->
     <!-- end BACK BUTTON -->
 
-    <h1>{% trans 'Add Commercial Client' %}</h1>
+    <h1>Add Client</h1>
 
     <!-- FORM WITH JS -->
     <!------------------------------------------------------------------------->
@@ -86,5 +85,4 @@
     <a id="return-to-top" href="#" class="btn-info btn-lg back-to-top" role="button" title="Back to top"><i class="fas fa-angle-up fa-2x"></i></a>
     <!-- end RETURN-TO-TOP -->
 </main>
-
 {% endblock content %}

@@ -13,22 +13,7 @@
 <script>
     // Pre-populate the field with previous data.
     $(document).ready(function() {
-        var tmp_describe = localStorage.getItem("tmp_describe");
-        $('#describe').val(tmp_describe);
     });
-
-    // Save this field.
-    function ajax_submit() {
-        var tmp_describe = $('#describe').val();
-        localStorage.setItem("tmp_describe", tmp_describe);
-
-        // Redirect to the next page in the form.
-        window.location = "{% url 'o55_tenant_job_step_4_create' %}";
-    }
-
-    function ajax_previous() {
-        window.location = "{% url 'o55_tenant_job_step_2_create' %}";
-    }
 </script>
 
 <main id="main" role="main">
@@ -58,24 +43,38 @@
     <!------------------------------------------------------------------------->
     <!-- end BACK BUTTON -->
 
-    <h1>Add Job</h1>
+    <h1>Add Client</h1>
 
-    <div class="col-md-5 mx-auto mt-2">
-		<h3 class="pt-4 pb-2 text-center">Add Job</h3>
-		<form id="residential-job" class="needs-validation" action="" novalidate>
-	    	  <div class="form-group my-3">
-		      <label for="describe" class="font-b6">Describe the Job:</label>
-		      <textarea class="form-control form-control-lg border border-primary" id="describe" name="describe" placeholder="Describe here..." rows="4" minlength="10" required>
-              </textarea>
-		      <div id="describe-error" class="invalid-feedback"></div>
-		  </div>
-		  <div class="form-group mb-3 mx-auto text-center p-0">
-			<button class="btn btn-success btn-lg mt-4 float-right pl-4 pr-4" type="button" onclick="ajax_submit();">Next <i class="fas fa-arrow-right"></i></button>
-			<button class="btn btn-orange btn-lg mt-4 float-left pl-4 pr-4" type="button" onclick="ajax_previous();"><i class="fas fa-arrow-left"></i> Back</button>
-		  </div>
-		</form>
-	</div>
-
+    <!-- FORM -->
+    <!------------------------------------------------------------------------->
+    <div class="row py-5 justify-content-md-center">
+        <div class="col-md-4 my-4 mx-3">
+            <div class="card box-shadow text-center mx-auto">
+              <div class="card-custom-top-2">
+                <i class="fas fa-home fa-3x"></i>
+                      </div>
+              <div class="card-body">
+                <h3 class="card-title">Residential</h3>
+                <p class="card-text">Add a Residential Client</p>
+                <a href="{% url 'o55_tenant_job_add_residential_customer_create' %}" class="btn btn-success btn-lg">Go <i class="fas fa-arrow-circle-right"></i></a>
+              </div>
+            </div>
+        </div>
+        <div class="col-md-4 my-4 mx-3">
+            <div class="card box-shadow text-center mx-auto">
+              <div class="card-custom-top-2">
+                <i class="fas fa-building fa-3x"></i>
+                      </div>
+              <div class="card-body">
+                <h3 class="card-title">Commercial</h3>
+                <p class="card-text">Add a Commercial Client</p>
+                <a href="{% url 'o55_tenant_job_add_commercial_customer_create' %}" class="btn btn-success btn-lg">Go <i class="fas fa-arrow-circle-right"></i></a>
+              </div>
+            </div>
+        </div>
+    </div>
+    <!------------------------------------------------------------------------->
+    <!-- end FORM -->
 
     <!-- RETURN-TO-TOP -->
     <a id="return-to-top" href="#" class="btn-info btn-lg back-to-top" role="button" title="Back to top"><i class="fas fa-angle-up fa-2x"></i></a>
