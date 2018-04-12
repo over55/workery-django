@@ -114,6 +114,8 @@
             randomString += "!";
             password = randomString;
             password_repeat = randomString;
+            localStorage.setItem("tmp_commercial_customer_password", password)
+            localStorage.setItem("tmp_commercial_customer_password_repeat", password_repeat)
         }
 
         // MAKE OUR API CALL TO THE BACKEND TO "CREATE" THE CUSTOMER USER.
@@ -196,7 +198,9 @@
                 localStorage.removeItem("tmp_commercial_customer_password");
                 localStorage.removeItem("tmp_commercial_customer_password_repeat");
                 localStorage.removeItem("tmp_commercial_customer_person_tag_ids");
+                localStorage.removeItem("tmp_commercial_customer_person_tag_values");
                 localStorage.removeItem("tmp_commercial_customer_company_tag_ids");
+                localStorage.removeItem("tmp_commercial_customer_company_tag_values");
 
                 // REDIRECT TO SUCCESS PAGE.
                 window.location = "{% url 'o55_tenant_customer_summary' %}?was_created=True";

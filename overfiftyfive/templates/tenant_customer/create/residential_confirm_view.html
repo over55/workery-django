@@ -98,6 +98,8 @@
             randomString += "!";
             password = randomString;
             password_repeat = randomString;
+            localStorage.setItem("tmp_residential_customer_password", password)
+            localStorage.setItem("tmp_residential_customer_password_repeat", password_repeat)
         }
 
         // MAKE OUR API CALL TO THE BACKEND TO "CREATE" THE CUSTOMER USER.
