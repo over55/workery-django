@@ -44,6 +44,7 @@
         $('#selected_post_office_box_number').append(localStorage.getItem("tmp_team_member_post_office_box_number"));
         $('#selected_email').append(localStorage.getItem("tmp_team_member_email"));
         $('#selected_telephone').append(localStorage.getItem("tmp_team_member_telephone"));
+        $('#selected_description').append(localStorage.getItem("tmp_team_member_description"));
 
         // Set our `skill_sets` field.
         var tmp_person_tag_values = localStorage.getObj("tmp_team_member_person_tag_values");
@@ -135,6 +136,7 @@
                 'password_repeat': password_repeat,
                 'tags': localStorage.getObj("tmp_team_member_person_tag_ids"),
                 'group_membership': parseInt(localStorage.getItem("tmp_team_member_group_membership")),
+                'description': localStorage.getItem("tmp_team_member_description"),
             },
             function(result_dict) { // Success
                 // FOR DEBUGGING PURPOSES ONLY.
@@ -163,6 +165,7 @@
                 localStorage.removeItem("tmp_team_member_password_repeat");
                 localStorage.removeItem("tmp_team_member_person_tag_ids")
                 localStorage.removeItem("tmp_team_member_person_tag_values")
+                localStorage.removeItem("tmp_team_member_description")
 
                 // REDIRECT TO SUCCESS PAGE.
                 window.location = redirect_url;
@@ -284,6 +287,12 @@
          <tr>
            <th scope="row" class="bg-light">Gender</th>
            <td id="selected_gender">
+               <!-- POPULATE THROUGH JS. -->
+           </td>
+         </tr>
+         <tr>
+           <th scope="row" class="bg-light">Description</th>
+           <td id="selected_description">
                <!-- POPULATE THROUGH JS. -->
            </td>
          </tr>

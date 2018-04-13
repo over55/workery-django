@@ -120,6 +120,7 @@
         has_error |= valid_textfield_value('other_phonenumber', false, 10);
         has_error |= valid_radiofields_seleciton('ok_to_email', true);
         has_error |= valid_radiofields_seleciton('ok_to_text', true);
+        has_error |= valid_textfield_value('describe', false, 2);
         has_error |= valid_textfield_value('street_address', true, 3);
         has_error |= valid_textfield_value('street_address_extra', false, 3)
         has_error |= valid_textfield_value('address_locality', true, 3);
@@ -165,6 +166,7 @@
         // var telephone_extension = $('#id_telephone_extension').val();
         var other_telephone = $('#other_phonenumber').val();
         // var fax_number = $('#id_fax_number').val();
+        var description = $('#describe').val();
 
         // LOCK OUT THE "SUBMIT" BUTTON SO THE USER DOES NOT MAKE MULTI-CALLS.
         disable_btn();
@@ -180,6 +182,7 @@
                 'birthdate': date_of_birth,
                 'gender': gender,
                 'nationality': null,
+                'description': description,
                 'is_ok_to_email': ok_to_email,
                 'is_ok_to_text': ok_to_text,
                 'address_country': address_country,
@@ -340,6 +343,12 @@
                         <option value="female" {% if staff.gender == 'Female' %}selected{% endif %}>Female</option>
                     </select>
                     <div id="gender-error" class="invalid-feedback"></div>
+                </div>
+                <div class="form-group col-md-12 mb-4 p-0">
+      		        <label for="describe" class="font-b6">Describe the associate:</label>
+      		        <textarea class="form-control form-control-lg border border-success" id="describe" name="describe" placeholder="Describe here..." rows="4" minlength="10" required>{% if associate.description %}{{ associate.description }}{% endif %}</textarea>
+      		        <div id="describe-error" class="invalid-feedback"></div>
+                    <small class="form-text text-muted">Maximum 1,000 characters.</small>
                 </div>
             </div>
             <!-- ############ end PERSON ############ -->
