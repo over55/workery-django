@@ -154,6 +154,7 @@ class CustomerListCreateSerializer(serializers.ModelSerializer):
             'created',
             'last_modified',
             # 'owner',
+            'description',
 
             # Person
             'given_name',
@@ -178,7 +179,7 @@ class CustomerListCreateSerializer(serializers.ModelSerializer):
             # 'comments',
             'password',
             'password_repeat',
-            'organization',
+            # 'organization',
             'organization_name',
             'organization_type_of',
             'organization_customer_affiliation',
@@ -282,6 +283,7 @@ class CustomerListCreateSerializer(serializers.ModelSerializer):
             owner=owner,
             created_by=self.context['created_by'],
             last_modified_by=self.context['created_by'],
+            description=validated_data.get('description', None),
 
             # Profile
             given_name=validated_data['given_name'],
@@ -449,6 +451,7 @@ class CustomerRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
             'created',
             'last_modified',
             # 'owner',
+            'description',
 
             # Person
             'given_name',
@@ -510,7 +513,7 @@ class CustomerRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
     def setup_eager_loading(cls, queryset):
         """ Perform necessary eager loading of data. """
         queryset = queryset.prefetch_related(
-            'owner', 'created_by', 'last_modified_by',
+            'owner', 'created_by', 'last_modified_by', 'tags',
             # 'comments'
         )
         return queryset
@@ -545,6 +548,7 @@ class CustomerRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         #---------------------------
         # Update `Customer` object.
         #---------------------------
+        instance.description = validated_data.get('description', instance.description)
         instance.email = email
         # Profile
         instance.given_name = validated_data.get('given_name', instance.given_name)

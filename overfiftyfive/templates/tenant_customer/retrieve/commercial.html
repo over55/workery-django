@@ -35,6 +35,11 @@
                 <p>{% if customer.gender %}{{ customer.gender }}{% else %}-{% endif %}</p>
                 <div id="gender-error" class="invalid-feedback"></div>
             </div>
+            <div class="form-group col-md-7 mb-4 p-0">
+                <label for="description">Description</label>
+                <p>{% if customer.description %}{{ customer.description }}{% else %}-{% endif %}</p>
+                <div id="description-error" class="invalid-feedback"></div>
+            </div>
             <div class="form-group p-0 col-md-7 mb-4">
                 <label for="tags">Tags</label>
                 <p>

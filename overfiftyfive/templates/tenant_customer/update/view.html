@@ -152,6 +152,7 @@
         has_error |= valid_textfield_value('other_phonenumber', false, 10);
         has_error |= valid_radiofields_seleciton('ok_to_email', true);
         has_error |= valid_radiofields_seleciton('ok_to_text', true);
+        has_error |= valid_textfield_value('describe', false, 2);
         has_error |= valid_textfield_value('street_address', true, 3);
         has_error |= valid_textfield_value('street_address_extra', false, 3)
         has_error |= valid_textfield_value('address_locality', true, 3);
@@ -213,6 +214,7 @@
         var password = $('#password').val();
         var password_repeat = $('#password_repeat').val();
         var person_tags = $('#person_tags').val();
+        var description = $('#describe').val();
 
         // LOCK OUT THE "SUBMIT" BUTTON SO THE USER DOES NOT MAKE MULTI-CALLS.
         disable_btn();
@@ -227,6 +229,7 @@
                 'last_name': last_name,
                 'birthdate': date_of_birth,
                 'gender': gender,
+                'description': description,
                 'tags': person_tags,
                 'nationality': null,
                 'is_ok_to_email': ok_to_email,
@@ -392,6 +395,21 @@
                     </select>
                     <div id="gender-error" class="invalid-feedback"></div>
                 </div>
+                <div class="form-group col-md-12 mb-4 p-0">
+      		      <label for="describe" class="font-b6">Describe the client:</label>
+      		      <textarea class="form-control form-control-lg border border-success" id="describe" name="describe" placeholder="Describe here..." rows="4" minlength="10" required>{% if customer.description %}{{ customer.description }}{% endif %}</textarea>
+      		      <div id="describe-error" class="invalid-feedback"></div>
+                  <small class="form-text text-muted">Maximum 1,000 characters.</small>
+                </div>
+                <div class="form-group col-md-12 mb-4">
+                    <label for="tag">Tags</label>
+                    <select id="person_tags" name="person_tags" class="form-control form-control-lg border border-success" name="states[]" multiple="multiple">
+                    {% for tag in tags %}
+                        <option value="{{ tag.id }}" id="person_tag_option_id_{{ tag.id }}">{{ tag }}</option>
+                    {% endfor %}
+                    </select>
+                    <div id="person_tags-error" class="invalid-feedback"></div>
+                </div>
             </div>
             <!-- ############ end PERSON ############ -->
             <!-- ############ CONTACT POINT ############ -->
@@ -412,7 +430,7 @@
                     <input type="email" class="form-control form-control-lg border border-success" id="email" name="email" placeholder="Email Address" maxlength="254" value="{% if customer.email %}{{ customer.email }}{% endif %}">
                     <div id="email-error" class="invalid-feedback"></div>
                 </div>
-                <div class="form-group mt-2 mb-4">
+                <div class="form-group col-md-12 mb-4">
                     <p class="mb-1">Ok to E-Mail?</p>
                     <div class="form-radio custom-control custom-radio custom-control-inline">
                         <input type="radio" id="ok_to_email" name="ok_to_email" value="yes" class="custom-control-input form-check-input">
@@ -423,7 +441,7 @@
                         <label class="custom-control-label form-check-label" for="ok_to_email2">No</label>
                     </div>
                 </div>
-                <div class="form-group mt-2 mb-4">
+                <div class="form-group col-md-12 mb-4">
                     <p class="mb-1">Ok to Text?</p>
                     <div class="form-radio custom-control custom-radio custom-control-inline">
                         <input type="radio" id="ok_to_text" name="ok_to_text" value="yes" class="custom-control-input form-check-input">
@@ -433,15 +451,6 @@
                         <input type="radio" id="ok_to_text2" name="ok_to_text" value="no" class="custom-control-input form-check-input">
                         <label class="custom-control-label form-check-label" for="ok_to_text2">No</label>
                     </div>
-                </div>
-                <div class="form-group col-md-12 mb-4">
-                    <label for="tag">Tags</label>
-                    <select id="person_tags" name="person_tags" class="form-control form-control-lg border border-success" name="states[]" multiple="multiple">
-                    {% for tag in tags %}
-                        <option value="{{ tag.id }}" id="person_tag_option_id_{{ tag.id }}">{{ tag }}</option>
-                    {% endfor %}
-                    </select>
-                    <div id="person_tags-error" class="invalid-feedback"></div>
                 </div>
             </div>
             <!-- ############ end CONTACT POINT ############ -->

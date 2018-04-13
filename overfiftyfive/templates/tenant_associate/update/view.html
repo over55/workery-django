@@ -177,7 +177,7 @@
         } else {
             date_of_birth = null;
         }
-        
+
         var gender = $('#gender').val();
         if (gender == undefined || gender == null || gender.length == 0) {
             gender = null;
@@ -408,7 +408,7 @@
                     <input type="email" class="form-control form-control-lg border border-primary" id="email" name="email" placeholder="Email Address" maxlength="254" value="{% if associate.email %}{{ associate.email }}{% endif %}" required>
                     <div id="email-error" class="invalid-feedback"></div>
                 </div>
-                <div class="form-group mt-2 mb-4">
+                <div class="form-group col-md-12 mb-4">
                     <p class="mb-1">Ok to E-Mail?</p>
                     <div class="form-radio custom-control custom-radio custom-control-inline">
                         <input type="radio" id="ok_to_email" name="ok_to_email" value="yes" class="custom-control-input form-check-input">
@@ -419,7 +419,7 @@
                         <label class="custom-control-label form-check-label" for="ok_to_email2">No</label>
                     </div>
                 </div>
-                <div class="form-group mt-2 mb-4">
+                <div class="form-group col-md-12 mb-4">
                     <p class="mb-1">Ok to Text?</p>
                     <div class="form-radio custom-control custom-radio custom-control-inline">
                         <input type="radio" id="ok_to_text" name="ok_to_text" value="yes" class="custom-control-input form-check-input">

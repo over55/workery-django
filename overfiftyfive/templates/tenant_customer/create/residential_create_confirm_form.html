@@ -25,6 +25,7 @@
         $('#selected_post_office_box_number').append(localStorage.getItem("tmp_residential_customer_post_office_box_number"));
         $('#selected_email').append(localStorage.getItem("tmp_residential_customer_email"));
         $('#selected_telephone').append(localStorage.getItem("tmp_residential_customer_telephone"));
+        $('#selected_description').append(localStorage.getItem("tmp_residential_customer_description"));
 
         // Set our `skill_sets` field.
         var tmp_person_tag_values = localStorage.getObj("tmp_residential_customer_person_tag_values");
@@ -116,6 +117,7 @@
                 'password_repeat': password_repeat,
                 'type_of': {{ tenant_constants.RESIDENTIAL_CUSTOMER_TYPE_OF_ID }},
                 'tags': localStorage.getObj("tmp_residential_customer_person_tag_ids"),
+                'description': localStorage.getItem("tmp_residential_customer_description"),
             },
             function(result_dict) { // Success
                 // FOR DEBUGGING PURPOSES ONLY.
@@ -143,6 +145,7 @@
                 localStorage.removeItem("tmp_residential_customer_password_repeat");
                 localStorage.removeItem("tmp_residential_customer_person_tag_ids")
                 localStorage.removeItem("tmp_residential_customer_person_tag_values")
+                localStorage.removeItem("tmp_residential_customer_description")
 
                 // REDIRECT TO SUCCESS PAGE.
                 window.location = redirect_url;
@@ -243,6 +246,12 @@
      <tr>
        <th scope="row" class="bg-light">Okay to Text?</th>
        <td id="selected_ok_to_text">
+           <!-- POPULATE THROUGH JS. -->
+       </td>
+     </tr>
+     <tr>
+       <th scope="row" class="bg-light">Description</th>
+       <td id="selected_description">
            <!-- POPULATE THROUGH JS. -->
        </td>
      </tr>
