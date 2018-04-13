@@ -8,6 +8,7 @@ from django.contrib.postgres.search import SearchVector, SearchVectorField
 from django.contrib.postgres.aggregates import StringAgg
 from django.core.exceptions import ValidationError
 from django.db import models
+from django.db import transaction
 from django.db.models.signals import pre_save, post_save
 from django.db.models import Q
 from django.dispatch import receiver
@@ -94,6 +95,15 @@ class AssociateManager(models.Manager):
         ),).filter(search=keyword)
 
 
+@transaction.atomic
+def increment_associate_id_number():
+    """Function will generate a unique big-int."""
+    last_associate = Associate.objects.all().order_by('id').last();
+    if last_associate:
+        return last_associate.id + 1
+    return 1
+
+
 class Associate(AbstractThing, AbstractContactPoint, AbstractPostalAddress, AbstractGeoCoordinate):
     class Meta:
         app_label = 'tenant_foundation'
@@ -110,6 +120,12 @@ class Associate(AbstractThing, AbstractContactPoint, AbstractPostalAddress, Abst
         )
 
     objects = AssociateManager()
+    id = models.BigAutoField(
+       primary_key=True,
+       default = increment_associate_id_number,
+       editable=False,
+       db_index=True
+    )
 
     #
     #  PERSON FIELDS - http://schema.org/Person

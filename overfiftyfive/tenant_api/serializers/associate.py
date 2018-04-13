@@ -102,7 +102,6 @@ class AssociateListCreateSerializer(serializers.ModelSerializer):
             'last_name',
             'birthdate',
             'join_date',
-            # 'organizations', #TODO: FIX
 
             # Misc (Read/Write)
             'hourly_salary_desired',

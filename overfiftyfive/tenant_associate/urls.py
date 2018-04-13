@@ -9,6 +9,7 @@ urlpatterns = (
     path('members/', list_view.MemberSummaryView.as_view(), name='o55_tenant_member_summary'),
 
     # Create
+    path('members/create/confirm', create_view.MemberConfirmCreateView.as_view(), name='o55_tenant_member_confirm_create'),
     path('members/create/', create_view.MemberCreateView.as_view(), name='o55_tenant_member_create'),
 
     # List
