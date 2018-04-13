@@ -25,7 +25,6 @@
         // Assign previously set values.
         $('#companyname').val(localStorage.getItem("tmp_commercial_customer_company_name"));
         $('#companytype').val(localStorage.getItem("tmp_commercial_customer_company_type"));
-        $('#customer_affiliation').val(localStorage.getItem("tmp_commercial_customer_affiliation"));
         $('#firstname').val(localStorage.getItem("tmp_commercial_customer_given_name"));
         $('#middlename').val(localStorage.getItem("tmp_commercial_customer_middle_name"));
         $('#lastname').val(localStorage.getItem("tmp_commercial_customer_last_name"));
@@ -164,7 +163,6 @@
         var has_error = false;
         has_error |= valid_textfield_value('companyname', true, 2);
         has_error |= valid_textfield_value('companytype', true, 1);
-        has_error |= valid_textfield_value('customer_affiliation', true, 1);
         has_error |= valid_textfield_value('firstname', true, 2);
         has_error |= valid_textfield_value('lastname', true, 2);
         has_error |= valid_textfield_value('phonenumber', true, 10);
@@ -229,16 +227,12 @@
         // var fax_number = $('#id_fax_number').val();
         var password = $('#password').val();
         var password_repeat = $('#password_repeat').val();
-        var customer_affiliation = $('#customer_affiliation').val();
-        var customer_affiliation_value = $('#customer_affiliation_id_'+customer_affiliation).text();
         var person_tags = $('#person_tags').val();
         var company_tags = $('#company_tags').val();
 
         localStorage.setItem("tmp_commercial_customer_company_name", company_name);
         localStorage.setItem("tmp_commercial_customer_company_type", company_type);
         localStorage.setItem("tmp_commercial_customer_company_type_value", company_type_value);
-        localStorage.setItem("tmp_commercial_customer_affiliation", customer_affiliation);
-        localStorage.setItem("tmp_commercial_customer_affiliation_value", customer_affiliation_value);
         localStorage.setItem("tmp_commercial_customer_given_name", given_name);
         localStorage.setItem("tmp_commercial_customer_middle_name", middle_name);
         localStorage.setItem("tmp_commercial_customer_last_name", last_name);
@@ -393,21 +387,6 @@
                     <option value="female">Female</option>
                 </select>
                 <div id="gender-error" class="invalid-feedback"></div>
-            </div>
-            <div class="form-group col-md-7 mb-4 p-0">
-                <label for="customer_affiliation">Reletionship with company</label>
-                <select class="custom-select form-control-lg border-primary" id="customer_affiliation" name="customer_affiliation" required>
-                    <option value="" selected>Relationship...</option>
-                    <option value="{{ tenant_constants.AFFILIATION_TYPE_AFFILIATION_ID }}" id="customer_affiliation_id_{{ tenant_constants.AFFILIATION_TYPE_AFFILIATION_ID }}">Affiliated</option>
-                    <option value="{{ tenant_constants.AFFILIATION_TYPE_ALUMNI_OF_ID }}" id="customer_affiliation_id_{{ tenant_constants.AFFILIATION_TYPE_ALUMNI_OF_ID }}">Alumni of</option>
-                    <option value="{{ tenant_constants.AFFILIATION_TYPE_FUNDER_ID }}" id="customer_affiliation_id_{{ tenant_constants.AFFILIATION_TYPE_FUNDER_ID }}">Funder</option>
-                    <option value="{{ tenant_constants.AFFILIATION_TYPE_MEMBER_OF_ID }}" id="customer_affiliation_id_{{ tenant_constants.AFFILIATION_TYPE_MEMBER_OF_ID }}">Member of</option>
-                    <option value="{{ tenant_constants.AFFILIATION_TYPE_SPONSOR_ID }}" id="customer_affiliation_id_{{ tenant_constants.AFFILIATION_TYPE_SPONSOR_ID }}">Sponsor</option>
-                    <option value="{{ tenant_constants.AFFILIATION_TYPE_OWNS_ID }}" id="customer_affiliation_id_{{ tenant_constants.AFFILIATION_TYPE_OWNS_ID }}">Owns</option>
-                    <option value="{{ tenant_constants.AFFILIATION_TYPE_FOUNDER_ID }}" id="customer_affiliation_id_{{ tenant_constants.AFFILIATION_TYPE_FOUNDER_ID }}">Founder</option>
-                    <option value="{{ tenant_constants.AFFILIATION_TYPE_EMPLOYEE_ID }}" id="customer_affiliation_id_{{ tenant_constants.AFFILIATION_TYPE_EMPLOYEE_ID }}">Employee of</option>
-                </select>
-                <div id="customer_affiliation-error" class="invalid-feedback"></div>
             </div>
             <div class="form-group col-md-12 mb-4">
                 <label for="tag">Tags (Person)</label>

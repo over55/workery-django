@@ -24,14 +24,12 @@ from rest_framework.validators import UniqueValidator
 from shared_api.custom_fields import PhoneNumberField
 from shared_foundation.constants import CUSTOMER_GROUP_ID
 from shared_foundation.models import SharedUser
-from tenant_api.serializers.customer_affiliation import OrganizationCustomerAffiliationSerializer
 # from tenant_api.serializers.customer_comment import CustomerCommentSerializer
 from tenant_foundation.constants import *
 from tenant_foundation.models import (
     # Comment,
     # CustomerComment,
     Customer,
-    OrganizationCustomerAffiliation,
     Organization
 )
 
@@ -53,8 +51,6 @@ class CustomerListCreateSerializer(serializers.ModelSerializer):
     # # comment. This field is *ONLY* to be used during the POST creation and
     # # will be blank during GET.
     # extra_comment = serializers.CharField(write_only=True, allow_null=True)
-
-    affiliations = OrganizationCustomerAffiliationSerializer(many=True, read_only=True)
 
     # Custom formatting of our telephone fields.
     fax_number = PhoneNumberField(allow_null=True, required=False)
@@ -157,7 +153,6 @@ class CustomerListCreateSerializer(serializers.ModelSerializer):
             'id',
             'created',
             'last_modified',
-            'affiliations',
             # 'owner',
 
             # Person
@@ -183,7 +178,7 @@ class CustomerListCreateSerializer(serializers.ModelSerializer):
             # 'comments',
             'password',
             'password_repeat',
-            # 'organizations', #TODO: FIX
+            'organization',
             'organization_name',
             'organization_type_of',
             'organization_customer_affiliation',
@@ -359,7 +354,7 @@ class CustomerListCreateSerializer(serializers.ModelSerializer):
                     'post_office_box_number': organization_post_office_box_number,
                     'postal_code': organization_postal_code,
                     'street_address': organization_street_address,
-                    'street_address_extra': organization_street_address_extra
+                    'street_address_extra': organization_street_address_extra,
                 }
             )
             if created:
@@ -369,21 +364,6 @@ class CustomerListCreateSerializer(serializers.ModelSerializer):
 
             customer.organization = organization
             customer.save()
-
-            #--------------------------------------
-            # Organization and persons relationship
-            #--------------------------------------
-            organization_customer_affiliation = validated_data.get('organization_customer_affiliation', None)
-            OrganizationCustomerAffiliation.objects.update_or_create(
-                customer=customer,
-                organization=organization,
-                defaults={
-                    'customer': customer,
-                    'organization': organization,
-                    'type_of': organization_customer_affiliation
-                }
-            )
-            print("INFO: Created Org-Person relationship.")
 
         # #-----------------------------
         # # Create our `Comment` object.
@@ -433,8 +413,6 @@ class CustomerRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
     # # will be blank during GET.
     # extra_comment = serializers.CharField(write_only=True, allow_null=True)
 
-    affiliations = OrganizationCustomerAffiliationSerializer(many=True, read_only=True)
-
     # Custom formatting of our telephone fields.
     fax_number = PhoneNumberField(allow_null=True, required=False)
     telephone = PhoneNumberField(allow_null=True, required=False)
@@ -470,7 +448,6 @@ class CustomerRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
             'id',
             'created',
             'last_modified',
-            'affiliations',
             # 'owner',
 
             # Person
@@ -546,7 +523,7 @@ class CustomerRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         # print(validated_data)
 
         # Get our inputs.
-        email = validated_data.get('email', instance.owner.email)
+        email = validated_data.get('email', instance.email)
 
         #---------------------------
         # Update `SharedUser` object.

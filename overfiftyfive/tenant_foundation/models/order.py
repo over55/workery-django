@@ -60,7 +60,9 @@ class OrderManager(models.Manager):
 def increment_order_id_number():
     """Function will generate a unique big-int."""
     last_job_order = Order.objects.all().order_by('id').last();
-    return last_job_order.id + 1
+    if last_job_order:
+        return last_job_order.id + 1
+    return 1
 
 
 class Order(models.Model):

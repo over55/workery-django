@@ -5,6 +5,7 @@ from datetime import date, datetime, timedelta
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.db import models
+from django.db import transaction
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 from starterkit.utils import (
@@ -29,6 +30,16 @@ class OrganizationManager(models.Manager):
         items = Organization.objects.all()
         for item in items.all():
             item.delete()
+
+
+@transaction.atomic
+def increment_organization_id_number():
+    """Function will generate a unique big-int."""
+    last_org = Organization.objects.all().order_by('id').last();
+    if last_org:
+        return last_org.id + 1
+    return 1
+
 
 class Organization(AbstractThing, AbstractContactPoint, AbstractPostalAddress, AbstractGeoCoordinate):
     """
@@ -56,6 +67,12 @@ class Organization(AbstractThing, AbstractContactPoint, AbstractPostalAddress, A
     #  CUSTOM FIELDS
     #
 
+    id = models.BigAutoField(
+       primary_key=True,
+       default = increment_organization_id_number,
+       editable=False,
+       db_index=True
+    )
     type_of = models.PositiveSmallIntegerField(
         _("Type of"),
         help_text=_('The type of organization this is based on Over55 internal classification.'),

@@ -51,12 +51,12 @@
         <p class="border-bottom mb-3 pb-1 text-secondary">Contact Point</p>
         <div class="form-row">
             <div class="form-group col-md-7 mb-4">
-                <label for="phonenumber">Phone</label>
+                <label for="phonenumber">Phone #1 - {% if customer.telephone_type_of == 1 %}Landline{% elif customer.telephone_type_of == 2 %}Mobile{% elif customer.telephone_type_of == 3 %}Work{% endif %}</label>
                 <p>{% if customer.telephone %}<a href="tel:{{ customer.telephone }}">{{ customer.telephone|pretty_formatted_phonenumber }}</a>{% else %}-{% endif %}</p>
                 <div id="phonenumber-error" class="invalid-feedback"></div>
             </div>
             <div class="form-group col-md-7 mb-4">
-                <label for="other_phonenumber">Mobile</label>
+                <label for="other_phonenumber">Phone #2 - {% if customer.other_telephone_type_of == 1 %}Landline{% elif customer.other_telephone_type_of == 2 %}Mobile{% elif customer.other_telephone_type_of == 3 %}Work{% endif %}</label>
                 <p>{% if customer.other_telephone %}<a href="tel:{{ customer.other_telephone }}">{{ customer.other_telephone|pretty_formatted_phonenumber }}</a>{% else %}-{% endif %}</p>
                 <div id="other_phonenumber-error" class="invalid-feedback"></div>
             </div>
@@ -117,9 +117,22 @@
                 <p>{% if customer.post_office_box_number %}{{ customer.post_office_box_number }}{% else %}-{% endif %}</p>
                 <div id="post_office_box_number-error" class="invalid-feedback"></div>
             </div>
+            <div class="form-group col-md-12 mb-4">
+                <label for="area_served">Neigbhourhood</label>
+                <p>{% if customer.area_served %}{{ customer.area_served }}{% else %}-{% endif %}</p>
+                <div id="area_served-error" class="invalid-feedback"></div>
+            </div>
         </div>
         <!-- ############ end LOCATION ############ -->
         <!-- ############ BUSINESS ############ -->
+        <p class="border-bottom mb-3 pb-1 text-secondary">Company Information</p>
+        <div class="form-row">
+            <div class="form-group col-md-12 mb-4">
+                <label for="companyname">Company name</label>
+                <p>{% if customer.organization %}{{ customer.organization }}{% else %}-{% endif %}</p>
+                <div id="firstname-error" class="invalid-feedback"></div>
+            </div>
+        </div>
         <!-- ############ end BUSINESS ############ -->
         <!-- end SUBMIT BUTTON -->
         <div class="form-group col-md-12 mb-3 mx-auto text-center">

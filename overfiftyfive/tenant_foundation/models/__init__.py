@@ -12,7 +12,6 @@ from tenant_foundation.models.organization import Organization
 
 # Customer Models
 from tenant_foundation.models.customer import Customer
-from tenant_foundation.models.organization_customer_affiliation import OrganizationCustomerAffiliation
 
 # Staff Models
 from tenant_foundation.models.staff import Staff

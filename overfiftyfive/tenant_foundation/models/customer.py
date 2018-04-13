@@ -99,7 +99,9 @@ class CustomerManager(models.Manager):
 def increment_customer_id_number():
     """Function will generate a unique big-int."""
     last_customer = Customer.objects.all().order_by('id').last();
-    return last_customer.id + 1
+    if last_customer:
+        return last_customer.id + 1
+    return 1
 
 
 class Customer(AbstractThing, AbstractContactPoint, AbstractPostalAddress, AbstractGeoCoordinate):
@@ -263,11 +265,12 @@ class Customer(AbstractThing, AbstractContactPoint, AbstractPostalAddress, Abstr
     #  PERSON FIELDS - http://schema.org/Person
     #
 
-    organizations = models.ManyToManyField(
+    organization = models.ForeignKey(
         "Organization",
-        help_text=_('The organizations that this customer is affiliated with.'),
+        help_text=_('The organization that this customer is affiliated with.'),
         blank=True,
-        through='OrganizationCustomerAffiliation'
+        null=True,
+        on_delete=models.SET_NULL,
     )
 
     #

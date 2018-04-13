@@ -22,7 +22,6 @@ from shared_foundation.models import (
 from tenant_foundation.constants import *
 from tenant_foundation.models import (
     Customer,
-    OrganizationCustomerAffiliation,
     Organization
 )
 from tenant_foundation.utils import *
@@ -220,12 +219,3 @@ def run_customer_and_org_importer_from_csv_file(csvfile):
                 print(e)
                 print(row)
                 print()
-
-            # If company name does not already exist then create our company now.
-            if not Organization.objects.filter(name=company).exists():
-                organization = Organization.objects.create(name=company)
-                OrganizationCustomerAffiliation.objects.create(
-                    customer=customer,
-                    organization=organization,
-                    type_of=AFFILIATION_TYPE_AFFILIATION_ID
-                )

@@ -33,7 +33,6 @@ from tenant_foundation.models import (
     Associate,
     # Comment,
     Customer,
-    OrganizationCustomerAffiliation,
     Organization,
     Order,
     # OrderComment,
@@ -172,6 +171,7 @@ class Command(BaseCommand):
             if fax:
                 fax = phonenumbers.parse(str(fax), "CA")
 
+
             # Insert our extracted data into our database.
             customer, create = Customer.objects.update_or_create(
                 id=pk,
@@ -197,28 +197,23 @@ class Command(BaseCommand):
                 }
             )
 
-            # If company name does not already exist then create our company now.
-            if not Organization.objects.filter(name=company).exists():
-                # # Used for debugging purposes only.
-                # self.stdout.write(
-                #     self.style.SUCCESS(_('Importing Organization #%(id)s with name of "%(name)s"') % {
-                #         'id': index,
-                #         'name': company
-                #     })
-                # )
+            # Save the model.
+            organization, create = Organization.objects.update_or_create(
+                name=company,
+                defaults={
+                    'owner': customer.owner,
+                    'name':company,
+                    'type_of': UNKNOWN_ORGANIZATION_TYPE_OF_ID
+                }
+            )
+            customer.organization = organization
+            customer.save()
 
-                # Save the model.
-                organization = Organization.objects.create(name=company)
-                OrganizationCustomerAffiliation.objects.create(
-                    customer=customer,
-                    organization=organization,
-                    type_of=AFFILIATION_TYPE_AFFILIATION_ID
-                )
 
         except Exception as e:
             self.stdout.write(
                 self.style.NOTICE(_('Importing (Business) Customer #%(id)s with exception "%(e)s".') % {
                     'e': str(e),
-                    'id': str(index)
+                    'id': str(pk)
                 })
             )

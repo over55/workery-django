@@ -33,7 +33,6 @@ from tenant_foundation.models import (
     # AssociateComment,
     Associate,
     # Comment,
-    OrganizationCustomerAffiliation,
     Customer,
     Organization,
     Order,

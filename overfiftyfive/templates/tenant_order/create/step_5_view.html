@@ -320,7 +320,6 @@
                 'organization_street_address_extra': localStorage.getItem("tmp_commercial_customer_street_address_extra"),
                 'organization_postal_code': localStorage.getItem("tmp_commercial_customer_postal_code"),
                 'organization_post_office_box_number': localStorage.getItem("tmp_commercial_customer_post_office_box_number"),
-                'organization_customer_affiliation': localStorage.getItem("tmp_commercial_customer_affiliation"),
                 'organization_tags': localStorage.getObj("tmp_commercial_customer_company_tag_ids"),
             },
             function(result_dict) { // Success
@@ -332,8 +331,6 @@
                 localStorage.removeItem("tmp_commercial_customer_company_type");
                 localStorage.removeItem("tmp_commercial_customer_company_type_value");
                 localStorage.removeItem("tmp_commercial_customer_neighbourhood");
-                localStorage.removeItem("tmp_commercial_customer_affiliation");
-                localStorage.removeItem("tmp_commercial_customer_affiliation_value");
                 localStorage.removeItem("tmp_commercial_customer_given_name");
                 localStorage.removeItem("tmp_commercial_customer_middle_name");
                 localStorage.removeItem("tmp_commercial_customer_last_name");
