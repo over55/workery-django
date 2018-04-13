@@ -6,6 +6,7 @@ from django.conf import settings
 from django.contrib.auth.models import User
 from django.contrib.postgres.search import SearchVector, SearchVectorField
 from django.db import models
+from django.db import transaction
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 from starterkit.utils import (
@@ -99,6 +100,15 @@ class StaffManager(models.Manager):
         ),).filter(search=keyword)
 
 
+@transaction.atomic
+def increment_staff_id_number():
+    """Function will generate a unique big-int."""
+    last_staff = Staff.objects.all().order_by('id').last();
+    if last_staff:
+        return last_staff.id + 1
+    return 1
+
+
 class Staff(AbstractThing, AbstractContactPoint, AbstractPostalAddress, AbstractGeoCoordinate):
     class Meta:
         app_label = 'tenant_foundation'
@@ -115,6 +125,12 @@ class Staff(AbstractThing, AbstractContactPoint, AbstractPostalAddress, Abstract
         )
 
     objects = StaffManager()
+    id = models.BigAutoField(
+       primary_key=True,
+       default = increment_staff_id_number,
+       editable=False,
+       db_index=True
+    )
 
     #
     #  PERSON FIELDS - http://schema.org/Person

@@ -9,6 +9,7 @@ urlpatterns = (
     path('teams/', list_view.TeamSummaryView.as_view(), name='o55_tenant_team_summary'),
 
     # Create
+    path('teams/confirm-creation/', create_view.TeamCreateConfirmView.as_view(), name='o55_tenant_team_confirm_create'),
     path('teams/create/', create_view.TeamCreateView.as_view(), name='o55_tenant_team_create'),
 
     # List

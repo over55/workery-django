@@ -34,11 +34,6 @@ from tenant_foundation.models import (
 
 class StaffListCreateSerializer(serializers.ModelSerializer):
     # owner = serializers.PrimaryKeyRelatedField(many=False, read_only=True)
-    groups = serializers.PrimaryKeyRelatedField(
-        many=True,
-        queryset=Group.objects.all(),
-        source="owner.groups"
-    )
 
     # We are overriding the `email` field to include unique email validation.
     email = serializers.EmailField(
@@ -54,6 +49,12 @@ class StaffListCreateSerializer(serializers.ModelSerializer):
     # comment. This field is *ONLY* to be used during the POST creation and
     # will be blank during GET.
     extra_comment = serializers.CharField(write_only=True, allow_null=True)
+
+    # This field is used to assign the user to the group.
+    group_membership = serializers.CharField(
+        write_only=True,
+        allow_null=False,
+    )
 
     # Custom formatting of our telephone fields.
     fax_number = PhoneNumberField(allow_null=True, required=False)
@@ -91,7 +92,7 @@ class StaffListCreateSerializer(serializers.ModelSerializer):
             'id',
             'created',
             'last_modified',
-            'groups',
+            'group_membership',
 
             # Person
             'given_name',
@@ -246,8 +247,9 @@ class StaffListCreateSerializer(serializers.ModelSerializer):
             was_email_activated=True
         )
 
-        # Attach the user to the `Staff` group.
-        user.groups.add(ASSOCIATE_GROUP_ID)
+        # Attach the user to the `group` group.
+        group_membership = validated_data.get('group_membership', None)
+        user.groups.set([int(group_membership)])
 
         # Update the password.
         password = validated_data.get('password', None)

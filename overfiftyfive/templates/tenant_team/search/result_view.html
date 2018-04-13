@@ -2,7 +2,7 @@
 {% load staticfiles i18n foundation_tags humanize %}
 
 {% block title %}
-{% trans 'Team List | Over 55 Inc.' %}
+{% trans 'Staff List | Over 55 Inc.' %}
 {% endblock title %}
 
 {% block header_content %}
@@ -37,7 +37,7 @@
                     <a href="{% url 'o55_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a>
                 </li>
                 <li class="breadcrumb-item">
-                    <a href="{% url 'o55_tenant_team_summary' %}">{% trans 'Team' %}</a>
+                    <a href="{% url 'o55_tenant_team_summary' %}">{% trans 'Staff' %}</a>
                 </li>
                 <li class="breadcrumb-item">
                     <a href="{% url 'o55_tenant_team_search' %}">{% trans 'Search' %}</a>
@@ -61,7 +61,7 @@
     <!------------------------------------------------------------------------->
     <!-- end BACK BUTTON -->
 
-    <h2>Active Team List</h2>
+    <h2>Active Staff List</h2>
     <div class="table-responsive">
         <table class="table table-striped">
             <thead>
