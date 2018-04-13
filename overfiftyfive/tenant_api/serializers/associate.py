@@ -105,6 +105,7 @@ class AssociateListCreateSerializer(serializers.ModelSerializer):
             'join_date',
             # 'tags',
             'gender',
+            'description',
 
             # Misc (Read/Write)
             'is_ok_to_email',
@@ -235,6 +236,7 @@ class AssociateListCreateSerializer(serializers.ModelSerializer):
             owner=owner,
             created_by=self.context['created_by'],
             last_modified_by=self.context['created_by'],
+            description=validated_data['description'],
 
             # Profile
             given_name=validated_data['given_name'],
@@ -364,6 +366,7 @@ class AssociateRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
             'created',
             'last_modified',
             # 'owner',
+            'description',
 
             # Profile
             'given_name',
@@ -483,6 +486,7 @@ class AssociateRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         instance.birthdate=validated_data.get('birthdate', instance.birthdate)
         instance.join_date=validated_data.get('join_date', instance.join_date)
         instance.gender = validated_data.get('gender', instance.gender)
+        instance.description = validated_data.get('description', instance.description)
 
         # Misc
         instance.is_ok_to_email=validated_data.get('is_ok_to_email', None)
