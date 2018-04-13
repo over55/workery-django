@@ -22,7 +22,7 @@ from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
 from rest_framework.validators import UniqueValidator
 from shared_api.custom_fields import PhoneNumberField
-from shared_foundation.constants import ASSOCIATE_GROUP_ID
+from shared_foundation.constants import *
 from shared_foundation.models import SharedUser
 # from tenant_api.serializers.associate_comment import AssociateCommentSerializer
 from tenant_api.serializers.skill_set import SkillSetListCreateSerializer
@@ -30,7 +30,8 @@ from tenant_foundation.models import (
     # AssociateComment,
     Associate,
     # Comment,
-    SkillSet
+    SkillSet,
+    Organization
 )
 
 
@@ -102,8 +103,12 @@ class AssociateListCreateSerializer(serializers.ModelSerializer):
             'last_name',
             'birthdate',
             'join_date',
+            # 'tags',
+            'gender',
 
             # Misc (Read/Write)
+            'is_ok_to_email',
+            'is_ok_to_text',
             'hourly_salary_desired',
             'limit_special',
             'dues_pd',
@@ -162,7 +167,7 @@ class AssociateListCreateSerializer(serializers.ModelSerializer):
     def setup_eager_loading(cls, queryset):
         """ Perform necessary eager loading of data. """
         queryset = queryset.prefetch_related(
-            'owner', 'created_by', 'last_modified_by',
+            'owner', 'created_by', 'last_modified_by', 'tags', 'skill_sets'
             # 'comments'
         )
         return queryset
@@ -217,6 +222,7 @@ class AssociateListCreateSerializer(serializers.ModelSerializer):
         password = validated_data.get('password', None)
         owner.set_password(password)
         owner.save()
+        print("INFO: Created user.")
 
         #---------------------------------------------------
         # Create our `Associate` object in our tenant schema.
@@ -236,8 +242,11 @@ class AssociateListCreateSerializer(serializers.ModelSerializer):
             middle_name=validated_data['middle_name'],
             birthdate=validated_data.get('birthdate', None),
             join_date=validated_data.get('join_date', None),
+            gender=validated_data.get('gender', None),
 
             # Misc
+            is_ok_to_email=validated_data.get('is_ok_to_email', None),
+            is_ok_to_text=validated_data.get('is_ok_to_text', None),
             hourly_salary_desired=validated_data.get('hourly_salary_desired', 0.00),
             limit_special=validated_data.get('limit_special', None),
             dues_pd=validated_data.get('dues_pd', None),
@@ -283,6 +292,7 @@ class AssociateListCreateSerializer(serializers.ModelSerializer):
             longitude=validated_data.get('longitude', None),
             # 'location' #TODO: IMPLEMENT.
         )
+        print("INFO: Created customer.")
 
         #-----------------------------
         # Set our `SkillSet` objects.
@@ -290,20 +300,20 @@ class AssociateListCreateSerializer(serializers.ModelSerializer):
         if skill_sets is not None:
             associate.skill_sets.set(skill_sets)
 
-        #-----------------------------
-        # Create our `Comment` object.
-        #-----------------------------
-        extra_comment = validated_data.get('extra_comment', None)
-        if extra_comment is not None:
-            comment = Comment.objects.create(
-                created_by=self.context['created_by'],
-                last_modified_by=self.context['created_by'],
-                text=extra_comment
-            )
-            associate_comment = AssociateComment.objects.create(
-                associate=associate,
-                comment=comment,
-            )
+        # #-----------------------------
+        # # Create our `Comment` object.
+        # #-----------------------------
+        # extra_comment = validated_data.get('extra_comment', None)
+        # if extra_comment is not None:
+        #     comment = Comment.objects.create(
+        #         created_by=self.context['created_by'],
+        #         last_modified_by=self.context['created_by'],
+        #         text=extra_comment
+        #     )
+        #     associate_comment = AssociateComment.objects.create(
+        #         associate=associate,
+        #         comment=comment,
+        #     )
 
         # Update validation data.
         # validated_data['comments'] = AssociateComment.objects.filter(associate=associate)
@@ -322,7 +332,8 @@ class AssociateRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
     # We are overriding the `email` field to include unique email validation.
     email = serializers.EmailField(
         validators=[UniqueValidator(queryset=Associate.objects.all())],
-        required=False
+        required=True,
+        allow_blank=False,
     )
 
     # All comments are created by our `create` function and not by
@@ -362,12 +373,15 @@ class AssociateRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
             'join_date',
 
             # Misc (Read/Write)
+            'is_ok_to_email',
+            'is_ok_to_text',
             # 'is_senior',
             # 'is_support',
             # 'job_info_read',
             'how_hear',
             'skill_sets',
             # 'organizations', #TODO: FIX
+            'gender',
 
             # Misc (Read Only)
             # 'comments',
@@ -410,7 +424,7 @@ class AssociateRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
     def setup_eager_loading(cls, queryset):
         """ Perform necessary eager loading of data. """
         queryset = queryset.prefetch_related(
-            'owner', 'created_by', 'last_modified_by',
+            'owner', 'created_by', 'last_modified_by', 'skill_sets',
             # 'comments'
         )
         return queryset
@@ -440,19 +454,22 @@ class AssociateRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         #---------------------------
         # Update `SharedUser` object.
         #---------------------------
-        # Update the details.
-        instance.owner.email = email
-        instance.owner.username = get_unique_username_from_email(email)
-        instance.owner.first_name = validated_data.get('given_name', instance.owner.first_name)
-        instance.owner.last_name = validated_data.get('last_name', instance.owner.last_name)
+        instance.owner, created = SharedUser.objects.update_or_create(
+            email=email,
+            defaults={
+                'email': email,
+                'first_name': validated_data.get('given_name', instance.given_name),
+                'last_name': validated_data.get('last_name', instance.last_name)
+            }
+        )
 
         # Update the password.
         password = validated_data.get('password', None)
         if password:
             instance.owner.set_password(password)
 
-        # Save the model.
-        instance.owner.save()
+            # Save the model.
+            instance.owner.save()
 
         #---------------------------
         # Update `Associate` object.
@@ -460,56 +477,58 @@ class AssociateRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         instance.email = email
 
         # Profile
-        given_name=validated_data['given_name']
-        last_name=validated_data['last_name']
-        middle_name=validated_data['middle_name']
-        birthdate=validated_data.get('birthdate', None)
-        join_date=validated_data.get('join_date', None)
+        instance.given_name=validated_data.get('given_name', instance.given_name)
+        instance.last_name=validated_data.get('last_name', instance.last_name)
+        instance.middle_name=validated_data.get('middle_name', instance.middle_name)
+        instance.birthdate=validated_data.get('birthdate', instance.birthdate)
+        instance.join_date=validated_data.get('join_date', instance.join_date)
+        instance.gender = validated_data.get('gender', instance.gender)
 
         # Misc
-        hourly_salary_desired=validated_data.get('hourly_salary_desired', 0.00)
-        limit_special=validated_data.get('limit_special', None)
-        dues_pd=validated_data.get('dues_pd', None)
-        ins_due=validated_data.get('ins_due', None)
-        police_check=validated_data.get('police_check', None)
-        drivers_license_class=validated_data.get('drivers_license_class', None)
-        has_car=validated_data.get('has_car', False)
-        has_van=validated_data.get('has_van', False)
-        has_truck=validated_data.get('has_truck', False)
-        is_full_time=validated_data.get('is_full_time', False)
-        is_part_time=validated_data.get('is_part_time', False)
-        is_contract_time=validated_data.get('is_contract_time', False)
-        is_small_job=validated_data.get('is_small_job', False)
-        how_hear=validated_data.get('how_hear', None)
+        instance.is_ok_to_email=validated_data.get('is_ok_to_email', None)
+        instance.is_ok_to_text=validated_data.get('is_ok_to_text', None)
+        instance.hourly_salary_desired=validated_data.get('hourly_salary_desired', 0.00)
+        instance.limit_special=validated_data.get('limit_special', None)
+        instance.dues_pd=validated_data.get('dues_pd', None)
+        instance.ins_due=validated_data.get('ins_due', None)
+        instance.police_check=validated_data.get('police_check', None)
+        instance.drivers_license_class=validated_data.get('drivers_license_class', None)
+        instance.has_car=validated_data.get('has_car', False)
+        instance.has_van=validated_data.get('has_van', False)
+        instance.has_truck=validated_data.get('has_truck', False)
+        instance.is_full_time=validated_data.get('is_full_time', False)
+        instance.is_part_time=validated_data.get('is_part_time', False)
+        instance.is_contract_time=validated_data.get('is_contract_time', False)
+        instance.is_small_job=validated_data.get('is_small_job', False)
+        instance.how_hear=validated_data.get('how_hear', None)
         # 'organizations', #TODO: IMPLEMENT.
 
         # Contact Point
-        area_served=validated_data.get('area_served', None)
-        available_language=validated_data.get('available_language', None)
-        contact_type=validated_data.get('contact_type', None)
-        email=email,
-        fax_number=validated_data.get('fax_number', None)
+        instance.area_served=validated_data.get('area_served', None)
+        instance.available_language=validated_data.get('available_language', None)
+        instance.contact_type=validated_data.get('contact_type', None)
+        instance.fax_number=validated_data.get('fax_number', None)
         # 'hours_available', #TODO: IMPLEMENT.
-        telephone=validated_data.get('telephone', None)
-        telephone_extension=validated_data.get('telephone_extension', None)
-        telephone_type_of=validated_data.get('telephone_type_of', None)
-        other_telephone=validated_data.get('other_telephone', None)
-        other_telephone_extension=validated_data.get('other_telephone_extension', None)
-        other_telephone_type_of=validated_data.get('other_telephone_type_of', None)
+        instance.telephone=validated_data.get('telephone', None)
+        instance.telephone_extension=validated_data.get('telephone_extension', None)
+        instance.telephone_type_of=validated_data.get('telephone_type_of', TELEPHONE_CONTACT_POINT_TYPE_OF_ID)
+        instance.other_telephone=validated_data.get('other_telephone', None)
+        instance.other_telephone_extension=validated_data.get('other_telephone_extension', None)
+        instance.other_telephone_type_of=validated_data.get('other_telephone_type_of', TELEPHONE_CONTACT_POINT_TYPE_OF_ID)
 
         # Postal Address
-        address_country=validated_data.get('address_country', None)
-        address_locality=validated_data.get('address_locality', None)
-        address_region=validated_data.get('address_region', None)
-        post_office_box_number=validated_data.get('post_office_box_number', None)
-        postal_code=validated_data.get('postal_code', None)
-        street_address=validated_data.get('street_address', None)
-        street_address_extra=validated_data.get('street_address_extra', None)
+        instance.address_country=validated_data.get('address_country', None)
+        instance.address_locality=validated_data.get('address_locality', None)
+        instance.address_region=validated_data.get('address_region', None)
+        instance.post_office_box_number=validated_data.get('post_office_box_number', None)
+        instance.postal_code=validated_data.get('postal_code', None)
+        instance.street_address=validated_data.get('street_address', None)
+        instance.street_address_extra=validated_data.get('street_address_extra', None)
 
         # Geo-coordinate
-        elevation=validated_data.get('elevation', None)
-        latitude=validated_data.get('latitude', None)
-        longitude=validated_data.get('longitude', None)
+        instance.elevation=validated_data.get('elevation', None)
+        instance.latitude=validated_data.get('latitude', None)
+        instance.longitude=validated_data.get('longitude', None)
         # 'location' #TODO: IMPLEMENT.
 
         # Save our instance.

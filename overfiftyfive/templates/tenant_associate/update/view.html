@@ -29,6 +29,31 @@
         $( "#dob" ).datepicker({
             dateFormat: 'yy-mm-dd'  // https://stackoverflow.com/a/7500097
         });
+
+        // Set the gender.
+        $('#gender').val('{% if associate.gender %}{{ associate.gender }}{% endif %}');
+
+        // // Populate our 'select2' chosen values.
+        var tag_ids = [];
+        {% for tag in associate.tags.all %}
+        tag_ids.push({{ tag.id }});
+        {% endfor %}
+        $('#person_tags').val(tag_ids);
+
+        // Initialize our 'select2' element.
+        $('#person_tags').select2();
+
+        {% if associate.is_ok_to_email == True %}
+            $("#ok_to_email").prop("checked", true);
+        {% else %}
+            $("#ok_to_email2").prop("checked", true);
+        {% endif %}
+
+        {% if associate.is_ok_to_text == True %}
+            $("#ok_to_text").prop("checked", true);
+        {% else %}
+            $("#ok_to_text2").prop("checked", true);
+        {% endif %}
     }); // end Ready
 
     /**
@@ -152,12 +177,24 @@
         } else {
             date_of_birth = null;
         }
+        
         var gender = $('#gender').val();
         if (gender == undefined || gender == null || gender.length == 0) {
             gender = null;
         }
         var ok_to_email = get_selected_radio_value('ok_to_email');
         var ok_to_text = get_selected_radio_value('ok_to_text');
+        if (ok_to_email == 'yes') {
+            ok_to_email = true;
+        } else {
+            ok_to_email = false;
+        }
+        if (ok_to_text == 'yes') {
+            ok_to_text = true;
+        } else {
+            ok_to_text = false;
+        }
+
         var street_address = $('#street_address').val();
         var street_address_extra = $('#street_address_extra').val();
         var address_region = $('#address_region').val();
@@ -319,7 +356,7 @@
             <div class="form-row">
                 <div class="form-group col-md-12 mb-4">
                     <label for="firstname">First name <sup>*</sup></label>
-                    <input type="text" class="form-control form-control-lg border border-primary" id="firstname" name="firstname" placeholder="First name" minlength="2" maxlength="30" required value="{% if associate.given_name %}{{ associate.given_name }}{% endif %}">
+                    <input type="text" class="form-control form-control-lg border border-primary" id="firstname" name="firstname" placeholder="First name" minlength="2" maxlength="30" required value="{% if associate.given_name %}{{ associate.given_name }}{% endif %}" autofocus>
                     <div id="firstname-error" class="invalid-feedback"></div>
                 </div>
                 <div class="form-group col-md-7 mb-4">
@@ -444,7 +481,7 @@
                          name="password"
                   placeholder="{% trans 'Password' %}"
                         class="form-control form-control-lg border border-success"
-                         type="password" autofocus
+                         type="password"
                autocapitalize="off"
                     minlength="2"
                     maxlength="30" required />
@@ -456,7 +493,7 @@
                          name="password_repeat"
                   placeholder="{% trans 'Repeat Password' %}"
                         class="form-control form-control-lg border border-success"
-                         type="password" autofocus
+                         type="password"
                autocapitalize="off"
                     minlength="2"
                     maxlength="30" required />

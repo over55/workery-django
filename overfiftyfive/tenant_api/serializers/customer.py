@@ -228,7 +228,7 @@ class CustomerListCreateSerializer(serializers.ModelSerializer):
     def setup_eager_loading(cls, queryset):
         """ Perform necessary eager loading of data. """
         queryset = queryset.prefetch_related(
-            'owner', 'created_by', 'last_modified_by',
+            'owner', 'created_by', 'last_modified_by', 'tags',
             # 'comments'
         )
         return queryset
