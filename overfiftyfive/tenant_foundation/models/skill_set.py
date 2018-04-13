@@ -5,6 +5,7 @@ from datetime import date, datetime, timedelta
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.db import models
+from django.db import transaction
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 from starterkit.utils import (
@@ -29,6 +30,15 @@ class SkillSetManager(models.Manager):
             item.delete()
 
 
+@transaction.atomic
+def increment_skillset_id_number():
+    """Function will generate a unique big-int."""
+    last_skillset = SkillSet.objects.all().order_by('id').last();
+    if last_skillset:
+        return last_skillset.id + 1
+    return 1
+
+
 class SkillSet(models.Model):
     class Meta:
         app_label = 'tenant_foundation'
@@ -45,6 +55,12 @@ class SkillSet(models.Model):
         )
 
     objects = SkillSetManager()
+    id = models.BigAutoField(
+       primary_key=True,
+       default=increment_skillset_id_number,
+       editable=False,
+       db_index=True
+    )
 
     #
     #  FIELDS

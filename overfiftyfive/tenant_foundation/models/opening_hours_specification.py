@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from django.db import models
+from django.db import transaction
 from django.utils.translation import ugettext_lazy as _
 from tenant_foundation.models.abstract_thing import AbstractThing
 
@@ -9,6 +10,15 @@ class OpeningHoursSpecificationManager(models.Manager):
         items = OpeningHoursSpecification.objects.all()
         for item in items.all():
             item.delete()
+
+
+@transaction.atomic
+def increment_opening_hours_specification_id_number():
+    """Function will generate a unique big-int."""
+    last_obj = OpeningHoursSpecification.objects.all().order_by('id').last();
+    if last_obj:
+        return last_obj.id + 1
+    return 1
 
 
 class OpeningHoursSpecification(AbstractThing):
@@ -32,6 +42,12 @@ class OpeningHoursSpecification(AbstractThing):
         )
 
     objects = OpeningHoursSpecificationManager()
+    id = models.BigAutoField(
+       primary_key=True,
+       default=increment_opening_hours_specification_id_number,
+       editable=False,
+       db_index=True
+    )
     closes = models.CharField(
         _("Closes"),
         max_length=15,
