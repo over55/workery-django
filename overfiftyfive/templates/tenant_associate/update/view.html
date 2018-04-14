@@ -397,8 +397,9 @@
                     <label for="gender">Gender</label>
                     <select class="custom-select form-control-lg border-success" id="gender" name="gender" required>
                         <option value="" {% if associate.gender == None %}selected{% endif %}>Gender...</option>
-                        <option value="male" {% if associate.gender == 'Male' %}selected{% endif %}>Male</option>
-                        <option value="female" {% if associate.gender == 'Female' %}selected{% endif %}>Female</option>
+                        <option value="male" {% if associate.gender == 'male' %}selected{% endif %}>Male</option>
+                        <option value="female" {% if associate.gender == 'female' %}selected{% endif %}>Female</option>
+                        <option value="prefer not to say" {% if associate.gender == 'prefer not to say' %}selected{% endif %}>Prefer not to say</option> 
                     </select>
                     <div id="gender-error" class="invalid-feedback"></div>
                 </div>

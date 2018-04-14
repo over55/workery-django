@@ -388,6 +388,7 @@
                         <option value="" {% if staff.gender == None %}selected{% endif %}>Gender...</option>
                         <option value="male" {% if staff.gender == 'Male' %}selected{% endif %}>Male</option>
                         <option value="female" {% if staff.gender == 'Female' %}selected{% endif %}>Female</option>
+                        <option value="prefer not to say"  {% if staff.gender == 'prefer not to say' %}selected{% endif %}>Prefer not to say</option>
                     </select>
                     <div id="gender-error" class="invalid-feedback"></div>
                 </div>

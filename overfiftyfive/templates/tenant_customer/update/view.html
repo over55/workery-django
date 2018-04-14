@@ -398,9 +398,10 @@
                 <div class="form-group col-md-7 mb-4 p-0">
                     <label for="gender">Gender</label>
                     <select class="custom-select form-control-lg border-success" id="gender" name="gender" required>
-                        <option value="" selected>Gender...</option>
-                        <option value="male">Male</option>
-                        <option value="female">Female</option>
+                        <option value="" {% if customer.gender == None %}selected{% endif %}>Gender...</option>
+                        <option value="male" {% if customer.gender == 'Male' %}selected{% endif %}>Male</option>
+                        <option value="female" {% if customer.gender == 'Female' %}selected{% endif %}>Female</option>
+                        <option value="prefer not to say"  {% if customer.gender == 'prefer not to say' %}selected{% endif %}>Prefer not to say</option>
                     </select>
                     <div id="gender-error" class="invalid-feedback"></div>
                 </div>
