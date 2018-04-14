@@ -57,7 +57,7 @@
     <h1>Add Job</h1>
 
 	<div class="col-sm-12 mx-auto mt-3 pt-3 mb-3 text-center">
-		<h5>We found a match for this client:</h5>
+		<h5>{% if customer_list %}We found a match for this client:{% else %}We did find any matches.{% endif %}</h5>
 	</div>
 
     {% for customer in customer_list %}
