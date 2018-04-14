@@ -106,8 +106,28 @@
             },
             success_callback,
             function(error_result) {
-                console.log("ERROR");
-                console.log(error_result);
+
+                // STEP 1: Convert to JSON.
+                var err = JSON.parse(xhr.responseText);
+
+                // For debugging purposes only.
+                console.log(err);
+
+                // STEP 2: CLEAR EXISTING TEXT.
+                $('#all_error_result').html();
+
+                // STEP 3: PRINT OUR ERROR.
+                for(var prop in err) {
+                    if(err.hasOwnProperty(prop)) {
+                        var val = err[prop];
+                        console.log(val);
+                        $('#all_error_result').append("<p><b>"+prop+"</b>"+val+"</p><br />");
+                    }
+                }
+
+                // STEP 4: FOCUS TO WHERE THE ERROR IS OCCURING.
+                $('html, body').animate({ scrollTop: $('#id_page_title').offset().top }, 'slow');
+
             }, // end ERROR
             function(xhr,status) {
                 // Do nothing ...
@@ -149,14 +169,17 @@
             },
             success_callback,
             function(xhr,status,error) { // Error
+
                 // STEP 1: Convert to JSON.
                 var err = JSON.parse(xhr.responseText);
 
                 // For debugging purposes only.
                 console.log(err);
+
+                // STEP 2: CLEAR EXISTING TEXT.
                 $('#all_error_result').html();
 
-                // Print the error.
+                // STEP 3: PRINT OUR ERROR.
                 for(var prop in err) {
                     if(err.hasOwnProperty(prop)) {
                         var val = err[prop];
@@ -165,7 +188,9 @@
                     }
                 }
 
-                $('#all_error_result').focus(); // FOCUS ON THE ERROR.
+                // STEP 4: FOCUS TO WHERE THE ERROR IS OCCURING.
+                $('html, body').animate({ scrollTop: $('#id_page_title').offset().top }, 'slow');
+
             },
             function() { // Finally
                 // UNLOCK THE "SUBMIT" BUTTON TO BE AVAILABLE FOR USAGE.
@@ -253,7 +278,28 @@
                 callback_func(result_dict);
             },
             function(xhr,status,error) { // Error
-                alert("Error: Please inform the administrator");
+
+                // STEP 1: Convert to JSON.
+                var err = JSON.parse(xhr.responseText);
+
+                // For debugging purposes only.
+                console.log(err);
+
+                // STEP 2: CLEAR EXISTING TEXT.
+                $('#all_error_result').html();
+
+                // STEP 3: PRINT OUR ERROR.
+                for(var prop in err) {
+                    if(err.hasOwnProperty(prop)) {
+                        var val = err[prop];
+                        console.log(val);
+                        $('#all_error_result').append("<p><b>"+prop+"</b>"+val+"</p><br />");
+                    }
+                }
+
+                // STEP 4: FOCUS TO WHERE THE ERROR IS OCCURING.
+                $('html, body').animate({ scrollTop: $('#id_page_title').offset().top }, 'slow');
+
             },
             function() { // Finally
                 // DO NOTHING.
@@ -361,7 +407,28 @@
                 callback_func(result_dict);
             },
             function(xhr,status,error) { // Error
-                alert("Error: Please inform the administrator");
+
+                // STEP 1: Convert to JSON.
+                var err = JSON.parse(xhr.responseText);
+
+                // For debugging purposes only.
+                console.log(err);
+
+                // STEP 2: CLEAR EXISTING TEXT.
+                $('#all_error_result').html();
+
+                // STEP 3: PRINT OUR ERROR.
+                for(var prop in err) {
+                    if(err.hasOwnProperty(prop)) {
+                        var val = err[prop];
+                        console.log(val);
+                        $('#all_error_result').append("<p><b>"+prop+"</b>"+val+"</p><br />");
+                    }
+                }
+
+                // STEP 4: FOCUS TO WHERE THE ERROR IS OCCURING.
+                $('html, body').animate({ scrollTop: $('#id_page_title').offset().top }, 'slow');
+
             },
             function() { // Finally
                 // DO NOTHING.
@@ -454,7 +521,12 @@
 
 
        <div class="col-md-10 mx-auto mb-4 py-2">
-        <h3 class="py-2 text-center mb-4">Job Summary Details</h3>
+        <h3 class="py-2 text-center mb-4" id="id_page_title">Job Summary Details</h3>
+
+        <!-- Error Output -->
+        <div id="all_error_result" name="all_error_result"></div>
+        <!-- end Error Output -->
+
         <table class="table table-bordered custom-cell-w">
           <tbody>
             <tr class="bg-dark">
