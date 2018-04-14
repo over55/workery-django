@@ -23,7 +23,9 @@
         });
     }
 
-    function update_tag_api(pk, data_dict, func_callback, func_error_callback, complete_callback) {
+
+
+    function delete_tag_api(pk, func_callback, func_error_callback, complete_callback) {
         // Reverse the URL identifier to get the full URL and replace it with
         // the PK.
         var url = "{% url 'o55_tag_retrieve_update_destroy_api_endpoint' 0 %}?format=json";
@@ -35,8 +37,7 @@
             headers: {
                 Authorization: rest_api_token
             },
-            data: data_dict,
-            type: "PUT",
+            type: "DELETE",
             traditional: true, // Note: This allows many-to-many arrays for Django REST Framework
             success: function(result_dict){
                 func_callback(result_dict); // Call back the function with the JSON results.

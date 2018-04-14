@@ -11,17 +11,17 @@
 {% block content %}
 
 <script>
-    function ajax_get_staffs() {
-        var criteria = [];
-
-        tenant_get_staffs(
-            criteria,
-            function(json_results) {
-                console.log(json_results)
+    function ajax_delete(tag_id) {
+        delete_tag_api(
+            parseInt(tag_id),
+            function(tag) {
+                window.location = "{% url 'o55_tenant_settings_tags_list' %}?was_deleted=True";
             },
-            function(error) {
-                console.debug(error);
-                // alert(error);
+            function(json_results) {
+                console.log(json_results);
+            },
+            function(xhr, status) {
+                console.log(xhr, status);
             }
         );
     }
@@ -90,7 +90,24 @@
                         {{ tag.text }}
                     </td>
                     <td>
-                        <a href="{% url 'o55_tenant_settings_tags_update' tag.id %}">{% trans 'Edit' %}</a>
+
+                        <button id="id_delete_btn"
+                             class="btn btn-danger btn-lg mt-4 float-right pl-4 pr-4"
+                              type="button"
+                           onclick="ajax_delete({{ tag.id }});">
+                         <i class="fas fa-trash"></i>
+                         {% trans 'Delete' %}
+                        </button>
+
+                        <a href="{% url 'o55_tenant_settings_tags_update' tag.id %}">
+                        <button id="id_delete_btn"
+                             class="btn btn-warning btn-lg mt-4 float-right pl-4 pr-4"
+                              type="button">
+                         <i class="fas fa-arrow-right"></i>
+                         {% trans 'Edit' %}
+                        </button>
+                        </a>
+
                     </td>
                 </tr>
                 {% endfor %}
