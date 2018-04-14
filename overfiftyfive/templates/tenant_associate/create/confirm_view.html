@@ -191,16 +191,17 @@
                 window.location = redirect_url;
             },
             function(xhr,status,error) { // Error
-                alert("Error: Please inform the administrator");
 
                 // STEP 1: Convert to JSON.
                 var err = JSON.parse(xhr.responseText);
 
                 // For debugging purposes only.
                 console.log(err);
+
+                // STEP 2: CLEAR EXISTING TEXT.
                 $('#all_error_result').html();
 
-                // Print the error.
+                // STEP 3: PRINT OUR ERROR.
                 for(var prop in err) {
                     if(err.hasOwnProperty(prop)) {
                         var val = err[prop];
@@ -209,7 +210,8 @@
                     }
                 }
 
-                $('#all_error_result').focus(); // FOCUS ON THE ERROR.
+                // STEP 4: FOCUS TO WHERE THE ERROR IS OCCURING.
+                $('html, body').animate({ scrollTop: $('#id_page_title').offset().top }, 'slow');
             },
             function() { // Finally
                 // UNLOCK THE "SUBMIT" BUTTON TO BE AVAILABLE FOR USAGE.
@@ -251,12 +253,17 @@
     <!------------------------------------------------------------------------->
     <!-- end BACK BUTTON -->
 
-    <h1>{% trans 'Add Associate Member' %}</h1>
+    <h1 id="id_page_title">{% trans 'Add Associate Member' %}</h1>
 
     <!-- FORM HTML -->
     <!------------------------------------------------------------------------->
     <div class="col-md-10 mx-auto mb-4 py-2">
      <h3 class="py-2 text-center mb-4">Associate Summary Details</h3>
+
+     <!-- Error Output -->
+     <div id="all_error_result" name="all_error_result"></div>
+     <!-- end Error Output -->
+
      <table class="table table-bordered custom-cell-w">
        <tbody>
          <tr class="bg-dark">

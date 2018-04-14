@@ -187,16 +187,16 @@
                 window.location = redirect_url;
             },
             function(xhr,status,error) { // Error
-                alert("Error: Please inform the administrator");
-
                 // STEP 1: Convert to JSON.
                 var err = JSON.parse(xhr.responseText);
 
                 // For debugging purposes only.
                 console.log(err);
+
+                // STEP 2: CLEAR EXISTING TEXT.
                 $('#all_error_result').html();
 
-                // Print the error.
+                // STEP 3: PRINT OUR ERROR.
                 for(var prop in err) {
                     if(err.hasOwnProperty(prop)) {
                         var val = err[prop];
@@ -205,7 +205,8 @@
                     }
                 }
 
-                $('#all_error_result').focus(); // FOCUS ON THE ERROR.
+                // STEP 4: FOCUS TO WHERE THE ERROR IS OCCURING.
+                $('html, body').animate({ scrollTop: $('#id_page_title').offset().top }, 'slow');
             },
             function() { // Finally
                 // UNLOCK THE "SUBMIT" BUTTON TO BE AVAILABLE FOR USAGE.
@@ -227,7 +228,7 @@
 	  	<ol class="breadcrumb">
 	    	<li class="breadcrumb-item"><a href="{% url 'o55_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
             <li class="breadcrumb-item"><a href="{% url 'o55_tenant_team_summary' %}">{% trans 'Members' %}</a></li>
-            <li class="breadcrumb-item"><a href="{% url 'o55_tenant_member_create' %}">{% trans 'Add' %}</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'o55_tenant_team_create' %}">{% trans 'Add' %}</a></li>
             <li class="breadcrumb-item active" aria-current="page">{% trans 'Staff Members' %}</li>
 	  	</ol>
 	</nav>
@@ -247,7 +248,11 @@
     <!------------------------------------------------------------------------->
     <!-- end BACK BUTTON -->
 
-    <h1>{% trans 'Add Staff Member' %}</h1>
+    <h1 id="id_page_title">{% trans 'Add Staff Member' %}</h1>
+
+    <!-- Error Output -->
+    <div id="all_error_result" name="all_error_result"></div>
+    <!-- end Error Output -->
 
     <!-- FORM HTML -->
     <!------------------------------------------------------------------------->

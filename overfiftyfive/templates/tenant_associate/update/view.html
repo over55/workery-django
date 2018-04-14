@@ -266,14 +266,17 @@
                 window.location = "{% url 'o55_tenant_member_retrieve' template associate.pk %}?was_modified=True";
             },
             function(xhr,status,error) { // Error
+
                 // STEP 1: Convert to JSON.
                 var err = JSON.parse(xhr.responseText);
 
                 // For debugging purposes only.
                 console.log(err);
+
+                // STEP 2: CLEAR EXISTING TEXT.
                 $('#all_error_result').html();
 
-                // Print the error.
+                // STEP 3: PRINT OUR ERROR.
                 for(var prop in err) {
                     if(err.hasOwnProperty(prop)) {
                         var val = err[prop];
@@ -282,7 +285,9 @@
                     }
                 }
 
-                $('#all_error_result').focus(); // FOCUS ON THE ERROR.
+                // STEP 4: FOCUS TO WHERE THE ERROR IS OCCURING.
+                $('html, body').animate({ scrollTop: $('#id_page_title').offset().top }, 'slow');
+
             },
             function() { // Finally
                 // UNLOCK THE "SUBMIT" BUTTON TO BE AVAILABLE FOR USAGE.
@@ -351,6 +356,7 @@
     <!------------------------------------------------------------------------->
     <!-- end BACK BUTTON -->
 
+    <h1 id="id_page_title">{% trans 'Edit Associate Member' %}</h1>
 
     <!-- FORM -->
     <!------------------------------------------------------------------------->
@@ -443,7 +449,7 @@
                     <div id="other_phonenumber-error" class="invalid-feedback"></div>
                 </div>
                 <div class="form-group col-md-12 mb-4">
-                    <label for="email">E-Mail</label>
+                    <label for="email">E-Mail <sup>*</sup></label>
                     <input type="email" class="form-control form-control-lg border border-primary" id="email" name="email" placeholder="Email Address" maxlength="254" value="{% if associate.email %}{{ associate.email }}{% endif %}" required>
                     <div id="email-error" class="invalid-feedback"></div>
                 </div>
