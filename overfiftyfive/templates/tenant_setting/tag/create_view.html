@@ -16,24 +16,22 @@
     }
 
     function click_submit_button() {
-        update_tag_api(
-            {{ tag.pk }},
+        var tag_text = $('#tag_text').val();
+        create_tag_api(
             {
-                'text': $('#tag_text').val()
+                'text': tag_text,
             },
             function(tag) {
-                console.log(tag);
-                window.location = "{% url 'o55_tenant_settings_tags_list' %}?was_modified=True";
+                window.location = "{% url 'o55_tenant_settings_tags_list' %}?was_created=True";
             },
-            function(json_result) {
-
+            function(json_results) {
+                console.log(json_results);
             },
-            function(x, y) {
-
+            function(xhr, status) {
+                console.log(xhr, status);
             }
         );
     }
-
 </script>
 
 <main id="main" role="main">
@@ -45,27 +43,33 @@
 	    	<li class="breadcrumb-item"><a href="{% url 'o55_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
             <li class="breadcrumb-item"><a href="{% url 'o55_tenant_settings_launchpad' %}">{% trans 'Settings' %}</a></li>
             <li class="breadcrumb-item"><a href="{% url 'o55_tenant_settings_tags_list' %}">{% trans 'Tags' %}</a></li>
-            <li class="breadcrumb-item active" aria-current="page">{% trans 'Tag' %}</li>
+            <li class="breadcrumb-item active" aria-current="page">{% trans 'Add Tag' %}</li>
 	  	</ol>
 	</nav>
     <!------------------------------------------------------------------------->
     <!-- end BREADCRUMB -->
 
-    <h1>Tag</h1>
+    <h1>Add Tag</h1>
 
     <!-- FORM -->
     <!------------------------------------------------------------------------->
     <div class="col-sm-5 mx-auto mt-2">
         <!-- Residential form -->
         <div class="col-sm-12 fade show active" id="client-form" aria-labelledby="commercial">
-            <h3 class="pt-4 pb-2 text-center">Edit Tag</h3>
+            <h3 class="pt-4 pb-2 text-center">Add Tag</h3>
             <p>Please change the text of the tag.</p>
 
             <form id="add-client-form" method="post" class="needs-validation" action="" novalidate>
                 <div class="form-row">
                     <div class="form-group col-md-12 mb-4">
                         <!-- <label for="tag_text">Text</label> -->
-                        <input type="text" class="form-control form-control-lg border border-primary" id="tag_text" name="tag_text" placeholder="Text" minlength="3" required="" autofocus value="{{ tag.text }}">
+                        <input id="tag_text"
+                             name="tag_text"
+                             type="text"
+                            class="form-control form-control-lg border border-primary"
+                      placeholder="Text"
+                        minlength="3"
+                         required="" autofocus />
                         <div id="tag_text-error" class="invalid-feedback"></div>
                     </div>
                 </div>
@@ -77,7 +81,7 @@
                      class="btn btn-primary btn-lg mt-4 float-right pl-4 pr-4"
                       type="button"
                    onclick="click_submit_button();">
-                    <i class="fas fa-check"></i> Update</button>
+                    <i class="fas fa-plus"></i> Add Tag</button>
                 <button id="id_cancel_btn"
                      class="btn btn-orange btn-lg mt-4 float-left pl-4 pr-4"
                       type="button"

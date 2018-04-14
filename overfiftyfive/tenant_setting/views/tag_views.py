@@ -19,9 +19,16 @@ class TagListView(ListView, ExtraRequestProcessingMixin):
     paginate_by = 100
 
     def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['current_page'] = "settings" # Required for navigation
-        return context
+        modified_context = super().get_context_data(**kwargs)
+        modified_context['current_page'] = "settings" # Required for navigation
+
+        # DEVELOPERS NOTE:
+        # - We will extract the URL parameters and save them into our context
+        #   so we can use this to help the pagination.
+        modified_context['parameters'] = self.get_params_dict([])
+
+        # Return our new context.
+        return modified_context
 
     def get_queryset(self):
         queryset = Tag.objects.all().order_by('id')
@@ -30,8 +37,6 @@ class TagListView(ListView, ExtraRequestProcessingMixin):
         # filter = CustomerFilter(self.request.GET, queryset=queryset)
         # queryset = filter.qs
         return queryset
-
-
 
 
 @method_decorator(login_required, name='dispatch')
@@ -53,3 +58,13 @@ class TagUpdateView(DetailView):
 
         # Return our modified context.
         return modified_context
+
+
+@method_decorator(login_required, name='dispatch')
+class TagCreateView(TemplateView):
+    template_name = 'tenant_setting/tag/create_view.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['current_page'] = "setting" # Required for navigation
+        return context

@@ -2,7 +2,7 @@
 {% load staticfiles i18n foundation_tags humanize %}
 
 {% block title %}
-{% trans 'Staff List | Over 55 Inc.' %}
+{% trans 'Tags List | Over 55 Inc.' %}
 {% endblock title %}
 
 {% block header_content %}
@@ -41,7 +41,40 @@
     <!------------------------------------------------------------------------->
     <!-- end BREADCRUMB -->
 
+    <!-- NOTIFICATION -->
+    <!------------------------------------------------------------------------->
+    {% if parameters.was_created == 'True' %}
+        <div class="alert bg-success text-white alert-dismissible fade show" role="alert">
+		    Tag <strong>Successfully</strong> created.
+		    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+		        <span aria-hidden="true">×</span>
+		    </button>
+		</div>
+    {% endif %}
+    {% if parameters.was_modified == 'True' %}
+        <div class="alert bg-success text-white alert-dismissible fade show" role="alert">
+		    Tag <strong>Successfully</strong> updated.
+		    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+		        <span aria-hidden="true">×</span>
+		    </button>
+		</div>
+    {% endif %}
+    <!------------------------------------------------------------------------->
+    <!-- end NOTIFICATION -->
+
     <h1>Tags</h1>
+    <section class="row text-center placeholders">
+        <div class="col-sm-3 placeholder">
+            <div class="rounded-circle mx-auto mt-4 mb-4 circle-200 bg-pink">
+                <a href="{% url 'o55_tenant_settings_tag_create' %}" class="d-block link-ndecor" title="Add Client">
+                    <h1 class="r-circle"><i class="fas fa-plus fa-3x"></i></h1>
+                </a>
+            </div>
+            <h4>Add</h4>
+            <div class="text-muted">Add Tag</div>
+        </div>
+    </section>
+
     <div class="table-responsive">
         <table class="table table-striped">
             <thead>
