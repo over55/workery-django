@@ -18,8 +18,12 @@
         var tmp_company_tags = localStorage.getObj("tmp_commercial_customer_company_tag_ids");
         $('#company_tags').val(tmp_company_tags);
 
+        var tmp_skill_sets = localStorage.getObj("tmp_commercial_customer_skill_set_ids");
+        $('#skill_sets').val(tmp_skill_sets);
+
         // Initialize our 'select2' element.
         $('#person_tags').select2();
+        $('#skill_sets').select2();
         $('#company_tags').select2();
 
         // Assign previously set values.
@@ -48,7 +52,7 @@
         $('#telephone').val(localStorage.getItem("tmp_commercial_customer_telephone"));
         $('#password').val(localStorage.getItem("tmp_commercial_customer_password"));
         $('#password_repeat').val(localStorage.getItem("tmp_commercial_customer_password_repeat"));
-        $('#description').val(localStorage.getItem("tmp_residential_customer_description"));
+        $('#description').val(localStorage.getItem("tmp_commercial_customer_description"));
 
     }); // end Ready
 
@@ -231,6 +235,7 @@
         var password_repeat = $('#password_repeat').val();
         var person_tags = $('#person_tags').val();
         var company_tags = $('#company_tags').val();
+        var skill_sets = $('#skill_sets').val();
         var description = $('#describe').val();
 
         localStorage.setItem("tmp_commercial_customer_company_name", company_name);
@@ -263,6 +268,7 @@
         // SAVE ARRAY OF IDS.
         localStorage.setObj("tmp_commercial_customer_person_tag_ids", person_tags);
         localStorage.setObj("tmp_commercial_customer_company_tag_ids", company_tags);
+        localStorage.setObj("tmp_commercial_customer_skill_set_ids", skill_sets);
 
         // SAVE ARRAY OF VALUE ITEMS.
         var person_tags_arr = [];
@@ -280,6 +286,15 @@
             company_tags_arr.push(option_value);
         } // end FOR LOOP.
         localStorage.setObj("tmp_commercial_customer_company_tag_values", company_tags_arr);
+
+        // SAVE ARRAY OF VALUE ITEMS. (2 of 2)
+        var skill_sets_arr = [];
+        for (var i = 0; i < skill_sets.length; i++) {
+            var option_id = skill_sets[i];
+            var option_value = $('#skill_set_option_id_'+option_id).text();
+            skill_sets_arr.push(option_value);
+        } // end FOR LOOP.
+        localStorage.setObj("tmp_commercial_customer_skill_set_values", skill_sets_arr);
 
         window.location = redirect_url;
     }
@@ -406,6 +421,15 @@
                 {% endfor %}
                 </select>
                 <div id="person_tags-error" class="invalid-feedback"></div>
+            </div>
+            <div class="form-group col-md-12 mb-4">
+                <label for="skill_sets">Skill sets</label>
+                <select id="skill_sets" name="skill_sets" class="form-control form-control-lg border border-success" name="states[]" multiple="multiple">
+                {% for skill_set in skill_sets %}
+                    <option value="{{ skill_set.id }}" id="skill_set_option_id_{{ skill_set.id }}">{{ skill_set.sub_category }}</option>
+                {% endfor %}
+                </select>
+                <div id="skill_sets-error" class="invalid-feedback"></div>
             </div>
         </div>
         <!-- ############ end PERSON ############ -->

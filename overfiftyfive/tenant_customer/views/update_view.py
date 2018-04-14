@@ -6,7 +6,11 @@ from django.utils.decorators import method_decorator
 from django.utils.translation import ugettext_lazy as _
 from shared_foundation.mixins import ExtraRequestProcessingMixin
 from tenant_api.filters.customer import CustomerFilter
-from tenant_foundation.models import Customer, Tag
+from tenant_foundation.models import (
+    Customer,
+    SkillSet,
+    Tag
+)
 
 
 @method_decorator(login_required, name='dispatch')
@@ -35,6 +39,7 @@ class CustomerUpdateView(DetailView):
 
         # Extra
         modified_context['tags'] = Tag.objects.all()
+        modified_context['skill_sets'] = SkillSet.objects.all()
 
         # Return our modified context.
         return modified_context

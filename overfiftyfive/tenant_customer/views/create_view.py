@@ -31,7 +31,7 @@ class ResidentialCustomerCreateView(TemplateView):
         context = super().get_context_data(**kwargs)
         context['current_page'] = "customers" # Required for navigation
         context['tags'] = Tag.objects.all()
-        context['skillsets'] = SkillSet.objects.all()
+        context['skill_sets'] = SkillSet.objects.all()
         return context
 
 
@@ -53,7 +53,7 @@ class CommercialCustomerCreateView(TemplateView):
         context = super().get_context_data(**kwargs)
         context['current_page'] = "customers" # Required for navigation
         context['tags'] = Tag.objects.all()
-        context['skillsets'] = SkillSet.objects.all()
+        context['skill_sets'] = SkillSet.objects.all()
         return context
 
 

@@ -53,9 +53,9 @@ class AssociateListCreateSerializer(serializers.ModelSerializer):
     # will be blank during GET.
     extra_comment = serializers.CharField(write_only=True, allow_null=True)
 
-    # The skill_sets that this associate belongs to. We will return primary
-    # keys only. This field is read/write accessible.
-    skill_sets = serializers.PrimaryKeyRelatedField(many=True, queryset=SkillSet.objects.all(), allow_null=True)
+    # # The skill_sets that this associate belongs to. We will return primary
+    # # keys only. This field is read/write accessible.
+    # skill_sets = serializers.PrimaryKeyRelatedField(many=True, queryset=SkillSet.objects.all(), allow_null=True)
 
     assigned_skill_sets = SkillSetListCreateSerializer(many=True, read_only=True)
 
@@ -228,9 +228,6 @@ class AssociateListCreateSerializer(serializers.ModelSerializer):
         #---------------------------------------------------
         # Create our `Associate` object in our tenant schema.
         #---------------------------------------------------
-        # Extract skills.
-        skill_sets = validated_data.get('skill_sets', None)
-
         # Create an "Associate".
         associate = Associate.objects.create(
             owner=owner,
@@ -299,6 +296,7 @@ class AssociateListCreateSerializer(serializers.ModelSerializer):
         #-----------------------------
         # Set our `SkillSet` objects.
         #-----------------------------
+        skill_sets = validated_data.get('skill_sets', None)
         if skill_sets is not None:
             associate.skill_sets.set(skill_sets)
 

@@ -105,6 +105,7 @@ class StaffListCreateSerializer(serializers.ModelSerializer):
 
             # Misc (Read/Write)
             'tags',
+            'skill_sets',
 
             # # Misc (Read Only)
             # 'comments',
@@ -152,6 +153,7 @@ class StaffListCreateSerializer(serializers.ModelSerializer):
             'last_modified_by',
             # 'comments'
             'tags',
+            'skill_sets',
         )
         return queryset
 
@@ -275,6 +277,13 @@ class StaffListCreateSerializer(serializers.ModelSerializer):
         if tags is not None:
             staff.tags.set(tags)
 
+        #------------------------
+        # Set our `SkillSet` objects.
+        #------------------------
+        skill_sets = validated_data.get('skill_sets', None)
+        if tags is not None:
+            staff.skill_sets.set(skill_sets)
+
         # #-----------------------------
         # # Create our `Comment` object.
         # #-----------------------------
@@ -368,6 +377,7 @@ class StaffRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
 
             # Misc (Read/Write)
             'tags',
+            'skill_sets',
             # # 'is_senior',
             # # 'is_support',
             # # 'job_info_read',
@@ -419,6 +429,7 @@ class StaffRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
             'last_modified_by',
             # 'comments'
             'tags',
+            'skill_sets',
         )
         return queryset
 
@@ -516,6 +527,13 @@ class StaffRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         tags = validated_data.get('tags', None)
         if tags is not None:
             instance.tags.set(tags)
+
+        #------------------------
+        # Set our `SkillSet` objects.
+        #------------------------
+        skill_sets = validated_data.get('skill_sets', None)
+        if tags is not None:
+            instance.skill_sets.set(skill_sets)
 
         # #---------------------------
         # # Attach our comment.

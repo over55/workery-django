@@ -33,8 +33,15 @@
         {% endfor %}
         $('#person_tags').val(tag_ids);
 
+        var skill_set_ids = [];
+        {% for skill_set in customer.skill_sets.all %}
+        skill_set_ids.push({{ skill_set.id }});
+        {% endfor %}
+        $('#skill_sets').val(skill_set_ids);
+
         // Initialize our 'select2' element.
         $('#person_tags').select2();
+        $('#skill_sets').select2();
 
         {% if customer.is_ok_to_email == True %}
             $("#ok_to_email").prop("checked", true);
@@ -214,6 +221,7 @@
         var password = $('#password').val();
         var password_repeat = $('#password_repeat').val();
         var person_tags = $('#person_tags').val();
+        var skill_sets = $('#skill_sets').val();
         var description = $('#describe').val();
 
         // LOCK OUT THE "SUBMIT" BUTTON SO THE USER DOES NOT MAKE MULTI-CALLS.
@@ -231,6 +239,7 @@
                 'gender': gender,
                 'description': description,
                 'tags': person_tags,
+                'skill_sets': skill_sets,
                 'nationality': null,
                 'is_ok_to_email': ok_to_email,
                 'is_ok_to_text': ok_to_text,
@@ -409,6 +418,15 @@
                     {% endfor %}
                     </select>
                     <div id="person_tags-error" class="invalid-feedback"></div>
+                </div>
+                <div class="form-group col-md-12 mb-4">
+                    <label for="skill_sets">Skill sets</label>
+                    <select id="skill_sets" name="skill_sets" class="form-control form-control-lg border border-success" name="states[]" multiple="multiple">
+                    {% for skill_set in skill_sets %}
+                        <option value="{{ skill_set.id }}" id="skill_set_option_id_{{ skill_set.id }}">{{ skill_set.sub_category }}</option>
+                    {% endfor %}
+                    </select>
+                    <div id="skill_sets-error" class="invalid-feedback"></div>
                 </div>
             </div>
             <!-- ############ end PERSON ############ -->

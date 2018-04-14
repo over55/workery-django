@@ -217,6 +217,12 @@ class Staff(AbstractThing, AbstractContactPoint, AbstractPostalAddress, Abstract
         blank=True,
         related_name="%(app_label)s_%(class)s_tags_related"
     )
+    skill_sets = models.ManyToManyField(
+        "SkillSet",
+        help_text=_('The skill sets this staff has.'),
+        blank=True,
+        related_name="%(app_label)s_%(class)s_skill_sets_related"
+    )
 
     #
     #  FUNCTIONS
