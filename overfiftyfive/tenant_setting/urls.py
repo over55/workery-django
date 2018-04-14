@@ -1,12 +1,16 @@
 from django.conf.urls import include, url
 from django.urls import path
 from django.views.generic.base import RedirectView
-from tenant_setting.views import launchpad_views
+from tenant_setting.views import launchpad_views, tag_views
 
 
 urlpatterns = (
     # Launchpad
     path('settings/', launchpad_views.LaunchpadView.as_view(), name='o55_tenant_settings_launchpad'),
+
+    # Tag
+    path('settings/tags/', tag_views.TagListView.as_view(), name='o55_tenant_settings_tags_list'),
+    path('settings/tag/<int:pk>/', tag_views.TagUpdateView.as_view(), name='o55_tenant_settings_tags_update'),
 
     # # Summary
     # path('teams/', list_view.TeamSummaryView.as_view(), name='o55_tenant_team_summary'),

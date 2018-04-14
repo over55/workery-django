@@ -44,6 +44,7 @@
     <div class="album py-5">
         <div class="container">
             <div class="row">
+                {% comment %}
                 <div class="col-md-4">
                     <div class="card mb-4 box-shadow">
                         <div class="card-custom-top">
@@ -58,6 +59,7 @@
                         </div>
                     </div>
                 </div>
+                {% endcomment %}
                 <div class="col-md-4">
                     <div class="card mb-4 box-shadow">
                         <div class="card-custom-top">
@@ -67,11 +69,12 @@
                             <h5 class="card-title font-weight-bold">Tags</h5>
                             <p class="card-text">Modify the tags.</p>
                             <div class="text-center">
-                                <a href="#" class="btn btn-success btn-lg" type="button">View <i class="fas fa-arrow-circle-right"></i></a>
+                                <a href="{% url 'o55_tenant_settings_tags_list' %}" class="btn btn-success btn-lg" type="button">View <i class="fas fa-arrow-circle-right"></i></a>
                             </div>
                         </div>
                     </div>
                 </div>
+                {% comment %}
                 <div class="col-md-4">
                     <div class="card mb-4 box-shadow">
                         <div class="card-custom-top">
@@ -128,6 +131,7 @@
                         </div>
                     </div>
                 </div>
+                {% endcomment %}
             </div>
         </div>
     </div>
