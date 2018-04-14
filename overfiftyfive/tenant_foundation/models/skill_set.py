@@ -84,6 +84,13 @@ class SkillSet(models.Model):
         help_text=_('The insurance requirement of this skill set.'),
         db_index=True,
     )
+    description = models.TextField(
+        _("Description"),
+        help_text=_('A description of the skill set.'),
+        blank=True,
+        null=True,
+        default='',
+    )
 
     #
     #  FUNCTIONS

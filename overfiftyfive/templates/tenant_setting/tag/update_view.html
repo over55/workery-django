@@ -19,7 +19,8 @@
         update_tag_api(
             {{ tag.pk }},
             {
-                'text': $('#tag_text').val()
+                'text': $('#tag_text').val(),
+                'description': $('#tag_desc').val()
             },
             function(tag) {
                 console.log(tag);
@@ -64,8 +65,13 @@
             <form id="add-client-form" method="post" class="needs-validation" action="" novalidate>
                 <div class="form-row">
                     <div class="form-group col-md-12 mb-4">
-                        <!-- <label for="tag_text">Text</label> -->
+                        <label for="tag_text">Text</label>
                         <input type="text" class="form-control form-control-lg border border-primary" id="tag_text" name="tag_text" placeholder="Text" minlength="3" required="" autofocus value="{{ tag.text }}">
+                        <div id="tag_text-error" class="invalid-feedback"></div>
+                    </div>
+                    <div class="form-group col-md-12 mb-4">
+                        <label for="tag_text">Description</label>
+                        <input type="text" class="form-control form-control-lg border border-primary" id="tag_desc" name="tag_desc" placeholder="Description" minlength="3" required="" autofocus value="{{ tag.description }}">
                         <div id="tag_text-error" class="invalid-feedback"></div>
                     </div>
                 </div>

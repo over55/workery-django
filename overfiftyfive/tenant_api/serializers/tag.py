@@ -20,7 +20,8 @@ class TagListCreateSerializer(serializers.ModelSerializer):
         model = Tag
         fields = (
             'id',
-            'text'
+            'text',
+            'description'
         )
 
 
@@ -32,4 +33,5 @@ class TagRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         fields = (
             'id',
             'text',
+            'description',
         )

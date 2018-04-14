@@ -73,6 +73,13 @@ class Tag(models.Model):
         db_index=True,
         unique=True
     )
+    description = models.TextField(
+        _("Description"),
+        help_text=_('A short description of this tag.'),
+        blank=True,
+        null=True,
+        default='',
+    )
 
     #
     #  FUNCTIONS
