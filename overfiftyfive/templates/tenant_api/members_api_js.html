@@ -1,7 +1,7 @@
 <script>
     function create_member_api(data_dict, func_callback, func_error_callback, complete_callback) {
         jQuery.ajax({
-            url: "{% url 'o55_associate_list_create_api_endpoint' %}",
+            url: "{% url 'o55_associate_list_create_api_endpoint' %}?format=json",
             headers: {
                 Authorization: rest_api_token
             },
@@ -23,7 +23,8 @@
     }
 
     function update_member_api(pk, data_dict, func_callback, func_error_callback, complete_callback) {
-        var url = "/api/associate/" + pk + "/";
+        var url = "{% url 'o55_associate_retrieve_update_destroy_api_endpoint' 0 %}?format=json";
+        url = url.replace("0", pk);
         jQuery.ajax({
             url: url,
             headers: {

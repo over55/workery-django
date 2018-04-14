@@ -74,8 +74,8 @@ class LoginAPIView(APIView):
         token = jwt_encode_handler(payload)
 
         # For debugging purposes only.
-        print(orig_iat)
-        print(token)
+        # print(orig_iat)
+        # print(token)
 
         #
         # Save session information.

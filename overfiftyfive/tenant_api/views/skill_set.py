@@ -25,9 +25,9 @@ class SkillSetListCreateAPIView(generics.ListCreateAPIView):
     serializer_class = SkillSetListCreateSerializer
     pagination_class = StandardResultsSetPagination
     permission_classes = (
-        # permissions.IsAuthenticated,
-        # IsAuthenticatedAndIsActivePermission,
-        # CanListCreateSkillSetPermission
+        permissions.IsAuthenticated,
+        IsAuthenticatedAndIsActivePermission,
+        CanListCreateSkillSetPermission
     )
 
     def get_queryset(self):
