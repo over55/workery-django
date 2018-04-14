@@ -39,19 +39,6 @@
             // Append our HTML element to the GUI.
             $('#selected_tag_values').append(htmlElement)
         }
-
-        // Set our `skill_sets` field.
-        var tmp_skill_set_values = localStorage.getObj("tmp_residential_customer_skill_set_values");
-        for (var i = 0; i < tmp_skill_set_values.length; i++) {
-            // Extract our value.
-            var tag_value = tmp_skill_set_values[i];
-
-            // Generate our HTML element.
-            var htmlElement = '<span class="badge badge-info badge-lg">'+tag_value+'</span>';
-
-            // Append our HTML element to the GUI.
-            $('#selected_skill_set_values').append(htmlElement)
-        }
     }); // end Ready
 
     /**
@@ -130,7 +117,6 @@
                 'password_repeat': password_repeat,
                 'type_of': {{ tenant_constants.RESIDENTIAL_CUSTOMER_TYPE_OF_ID }},
                 'tags': localStorage.getObj("tmp_residential_customer_person_tag_ids"),
-                'skill_sets': localStorage.getObj("tmp_residential_customer_skill_set_ids"),
                 'description': localStorage.getItem("tmp_residential_customer_description"),
             },
             function(result_dict) { // Success
@@ -159,8 +145,6 @@
                 localStorage.removeItem("tmp_residential_customer_password_repeat");
                 localStorage.removeItem("tmp_residential_customer_person_tag_ids")
                 localStorage.removeItem("tmp_residential_customer_person_tag_values")
-                localStorage.removeItem("tmp_residential_customer_skill_set_ids")
-                localStorage.removeItem("tmp_residential_customer_skill_set_values")
                 localStorage.removeItem("tmp_residential_customer_description")
 
                 // REDIRECT TO SUCCESS PAGE.
@@ -316,12 +300,6 @@
      <tr>
        <th scope="row" class="bg-light">Tag(s)</th>
        <td id="selected_tag_values">
-           <!-- THIS IS WHERE THE TAGS GET LOADED -->
-       </td>
-     </tr>
-     <tr>
-       <th scope="row" class="bg-light">Skill set(s)</th>
-       <td id="selected_skill_set_values">
            <!-- THIS IS WHERE THE TAGS GET LOADED -->
        </td>
      </tr>

@@ -49,16 +49,6 @@
                 </p>
                 <div id="tags-error" class="invalid-feedback"></div>
             </div>
-            <div class="form-group p-0 col-md-7 mb-4">
-                <label for="skill_sets">Skill sets</label>
-                <p>
-                    {% for skill_set in customer.skill_sets.all %}
-                        <span class="badge badge-info badge-lg" id="skill_set_id_{{ skill_set.id }}">{{ skill_set.sub_category }}</span>
-                    {% empty %}-
-                    {% endfor %}
-                </p>
-                <div id="skill_sets-error" class="invalid-feedback"></div>
-            </div>
         </div>
         <!-- ############ end PERSON ############ -->
         <!-- ############ CONTACT POINT ############ -->

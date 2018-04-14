@@ -12,13 +12,8 @@
         // Populate our 'select2' chosen values.
         var tmp_person_tags = localStorage.getObj("tmp_residential_customer_person_tag_ids");
         $('#person_tags').val(tmp_person_tags);
-
-        var tmp_skill_sets = localStorage.getObj("tmp_residential_customer_skill_set_ids");
-        $('#skill_sets').val(tmp_skill_sets);
-
         // Initialize our 'select2' element.
         $('#person_tags').select2();
-        $('#skill_sets').select2();
 
         // Populate previously set values.
         $('#firstname').val(localStorage.getItem("tmp_residential_customer_given_name"));
@@ -212,7 +207,6 @@
         var password = $('#password').val();
         var password_repeat = $('#password_repeat').val();
         var person_tags = $('#person_tags').val();
-        var skill_sets = $('#skill_sets').val();
         var description = $('#describe').val();
 
         localStorage.setItem("tmp_residential_customer_given_name", given_name);
@@ -238,7 +232,6 @@
 
         // SAVE ARRAY OF IDS.
         localStorage.setObj("tmp_residential_customer_person_tag_ids", person_tags);
-        localStorage.setObj("tmp_residential_customer_skill_set_ids", skill_sets);
 
         // SAVE ARRAY OF VALUE ITEMS. (1 of 2)
         var person_tags_arr = [];
@@ -248,15 +241,6 @@
             person_tags_arr.push(option_value);
         } // end FOR LOOP.
         localStorage.setObj("tmp_residential_customer_person_tag_values", person_tags_arr);
-
-        // SAVE ARRAY OF VALUE ITEMS. (2 of 2)
-        var skill_sets_arr = [];
-        for (var i = 0; i < skill_sets.length; i++) {
-            var option_id = skill_sets[i];
-            var option_value = $('#skill_set_option_id_'+option_id).text();
-            skill_sets_arr.push(option_value);
-        } // end FOR LOOP.
-        localStorage.setObj("tmp_residential_customer_skill_set_values", skill_sets_arr);
 
         // REDIRECT TO OUR CONFIRM PAGE.
         window.location = redirect_url;
@@ -369,15 +353,6 @@
                 {% endfor %}
                 </select>
                 <div id="person_tags-error" class="invalid-feedback"></div>
-            </div>
-            <div class="form-group col-md-12 mb-4">
-                <label for="skill_sets">Skill sets</label>
-                <select id="skill_sets" name="skill_sets" class="form-control form-control-lg border border-success" name="states[]" multiple="multiple">
-                {% for skill_set in skill_sets %}
-                    <option value="{{ skill_set.id }}" id="skill_set_option_id_{{ skill_set.id }}">{{ skill_set.sub_category }}</option>
-                {% endfor %}
-                </select>
-                <div id="skill_sets-error" class="invalid-feedback"></div>
             </div>
         </div>
         <!-- ############ end CONTACT POINT ############ -->
