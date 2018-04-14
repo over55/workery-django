@@ -16,7 +16,9 @@ from shared_foundation.decorators import public_only_or_redirect
 
 @public_only_or_redirect
 def user_login_master_page(request):
-    return render(request, 'shared_auth/login_user/master_view.html',{})
+    return render(request, 'shared_auth/login_user/master_view.html',{
+        'has_logged_out': request.GET.get('has_logged_out', None)
+    })
 
 
 @public_only_or_redirect
@@ -106,5 +108,5 @@ def user_logout_redirector_master_page(request):
     logout(request)
 
     # Step 4: Redirect to the homepage.
-    sign_in_url = settings.O55_APP_HTTP_PROTOCOL + settings.O55_APP_HTTP_DOMAIN + reverse('o55_login_master', args=[])
+    sign_in_url = settings.O55_APP_HTTP_PROTOCOL + settings.O55_APP_HTTP_DOMAIN + reverse('o55_login_master', args=[]) + "?has_logged_out=True"
     return HttpResponseRedirect(sign_in_url)

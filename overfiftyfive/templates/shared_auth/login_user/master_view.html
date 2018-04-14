@@ -67,6 +67,18 @@
 
 
 <div class="container">
+
+    {% if has_logged_out %}
+    <div class="row" id="logout-message">
+        <div class="col-md-6 mx-auto alert alert-success alert-dismissible text-center fade show" role="alert">
+        <strong>{% trans 'You have successfully logged out.' %}</strong>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        </div>
+   </div>
+   {% endif %}
+
    <div class="row">
       <div class="col-sm-12 text-center">
           <img class="img-fluid" src="{{ shared_constants.O55_APP_HTTP_PROTOCOL }}{{ shared_constants.O55_APP_HTTP_DOMAIN }}{% static 'img/over55-logo-600px.png' %}" alt="Logo" width="180px" />
