@@ -211,6 +211,7 @@
         // var fax_number = $('#id_fax_number').val();
         var password = $('#password').val();
         var password_repeat = $('#password_repeat').val();
+        var person_tags = $('#person_tags').val();
         var description = $('#describe').val();
 
         // LOCK OUT THE "SUBMIT" BUTTON SO THE USER DOES NOT MAKE MULTI-CALLS.
@@ -227,6 +228,7 @@
                 'birthdate': date_of_birth,
                 'gender': gender,
                 'description': description,
+                'tags': person_tags,
                 'nationality': null,
                 'is_ok_to_email': ok_to_email,
                 'is_ok_to_text': ok_to_text,
@@ -396,6 +398,15 @@
       		        <textarea class="form-control form-control-lg border border-success" id="describe" name="describe" placeholder="Describe here..." rows="4" minlength="10" required>{% if associate.description %}{{ associate.description }}{% endif %}</textarea>
       		        <div id="describe-error" class="invalid-feedback"></div>
                     <small class="form-text text-muted">Maximum 1,000 characters.</small>
+                </div>
+                <div class="form-group col-md-12 mb-4">
+                    <label for="tag">Tags</label>
+                    <select id="person_tags" name="person_tags" class="form-control form-control-lg border border-success" name="states[]" multiple="multiple">
+                    {% for tag in tags %}
+                        <option value="{{ tag.id }}" id="person_tag_option_id_{{ tag.id }}">{{ tag }}</option>
+                    {% endfor %}
+                    </select>
+                    <div id="person_tags-error" class="invalid-feedback"></div>
                 </div>
             </div>
             <!-- ############ end PERSON ############ -->

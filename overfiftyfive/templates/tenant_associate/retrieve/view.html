@@ -119,6 +119,16 @@
                     <p>{% if associate.description %}{{ associate.description }}{% else %}-{% endif %}</p>
                     <div id="description-error" class="invalid-feedback"></div>
                 </div>
+                <div class="form-group p-0 col-md-7 mb-4">
+                    <label for="tags">Tags</label>
+                    <p>
+                        {% for tag in associate.tags.all %}
+                            <span class="badge badge-info badge-lg" id="tag_id_{{ tag.id }}">{{ tag }}</span>
+                        {% empty %}-
+                        {% endfor %}
+                    </p>
+                    <div id="tags-error" class="invalid-feedback"></div>
+                </div>
             </div>
             <!-- ############ end PERSON ############ -->
             <!-- ############ CONTACT POINT ############ -->
