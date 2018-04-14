@@ -34,7 +34,8 @@
                 var pn_error = document.getElementById('phonenumber-error');
                 var pn_pattern = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
 
-
+                var email = document.getElementById('email');
+                var e_error = document.getElementById('email-error');
 
                 // Loop over them and prevent submission
                 $(function(){
@@ -188,11 +189,9 @@
               <div id="phonenumber-error" class="invalid-feedback"></div>
 	      </div>
 	      <div class="form-group">
-	        <label for="validationCustom04">E-mail</label>
-	        <input type="text" class="form-control form-control-lg border border-primary" id="validationCustom04" placeholder="Email ID" required>
-	        <div class="invalid-feedback">
-	          Please provide a valid E-mail ID.
-	        </div>
+	        <label for="email">E-mail</label>
+	        <input type="text" class="form-control form-control-lg border border-primary" id="email" placeholder="Email ID" required>
+	        <div id="email-error" class="invalid-feedback"></div
 	      </div>
 	    </div>
 
