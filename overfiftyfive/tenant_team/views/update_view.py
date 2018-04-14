@@ -6,7 +6,11 @@ from django.utils.decorators import method_decorator
 from django.utils.translation import ugettext_lazy as _
 from shared_foundation.mixins import ExtraRequestProcessingMixin
 from tenant_api.filters.staff import StaffFilter
-from tenant_foundation.models import Staff
+from tenant_foundation.models import (
+    Staff,
+    SkillSet,
+    Tag
+)
 
 
 @method_decorator(login_required, name='dispatch')
@@ -32,6 +36,10 @@ class TeamUpdateView(DetailView, ExtraRequestProcessingMixin):
 
         # Required for navigation
         modified_context['current_page'] = "team"
+
+        # Extra
+        modified_context['tags'] = Tag.objects.all()
+        modified_context['skill_sets'] = SkillSet.objects.all()
 
         # Return our modified context.
         return modified_context

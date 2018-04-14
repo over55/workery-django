@@ -274,7 +274,7 @@ class CustomerListCreateSerializer(serializers.ModelSerializer):
             password = validated_data.get('password', None)
             owner.set_password(password)
             owner.save()
-            print("INFO: Created user.")
+            print("INFO: Created shared user.")
 
         #---------------------------------------------------
         # Create our `Customer` object in our tenant schema.
@@ -366,6 +366,13 @@ class CustomerListCreateSerializer(serializers.ModelSerializer):
 
             customer.organization = organization
             customer.save()
+
+        #------------------------
+        # Set our `Tag` objects.
+        #------------------------
+        tags = validated_data.get('tags', None)
+        if tags is not None:
+            customer.tags.set(tags)
 
         # #-----------------------------
         # # Create our `Comment` object.
@@ -544,6 +551,7 @@ class CustomerRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
 
             # Save the model to the database.
             instance.owner.save()
+            print("INFO: Updated shared user.")
 
         #---------------------------
         # Update `Customer` object.
@@ -604,12 +612,14 @@ class CustomerRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
 
         # Save
         instance.save()
+        print("INFO: Updated the customer.")
 
-        # Post-save
-        tags=validated_data.get('tags', instance.tags)
-        instance.tags.set(tags)
-
-        print("Saved")
+        #------------------------
+        # Set our `Tag` objects.
+        #------------------------
+        tags = validated_data.get('tags', None)
+        if tags is not None:
+            instance.tags.set(tags)
 
         # #---------------------------
         # # Attach our comment.

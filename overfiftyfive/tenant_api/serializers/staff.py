@@ -101,9 +101,10 @@ class StaffListCreateSerializer(serializers.ModelSerializer):
             'last_name',
             'birthdate',
             'join_date',
+            'gender',
 
             # Misc (Read/Write)
-            #
+            'tags',
 
             # # Misc (Read Only)
             # 'comments',
@@ -150,6 +151,7 @@ class StaffListCreateSerializer(serializers.ModelSerializer):
             'created_by',
             'last_modified_by',
             # 'comments'
+            'tags',
         )
         return queryset
 
@@ -196,12 +198,13 @@ class StaffListCreateSerializer(serializers.ModelSerializer):
             last_modified_by=self.context['created_by'],
             description=validated_data.get('description', None),
 
-            # Profile
+            # Person
             given_name=validated_data['given_name'],
             last_name=validated_data['last_name'],
             middle_name=validated_data['middle_name'],
             birthdate=validated_data.get('birthdate', None),
             join_date=validated_data.get('join_date', None),
+            gender=validated_data.get('gender', None),
 
             # Misc
             # . . .
@@ -235,6 +238,7 @@ class StaffListCreateSerializer(serializers.ModelSerializer):
             longitude=validated_data.get('longitude', None),
             # 'location' #TODO: IMPLEMENT.
         )
+        print("INFO: Created staff member.")
 
         #-------------------
         # Create our user.
@@ -248,6 +252,7 @@ class StaffListCreateSerializer(serializers.ModelSerializer):
             franchise=self.context['franchise'],
             was_email_activated=True
         )
+        print("INFO: Created shared user.")
 
         # Attach the user to the `group` group.
         group_membership = validated_data.get('group_membership', None)
@@ -262,6 +267,13 @@ class StaffListCreateSerializer(serializers.ModelSerializer):
         staff.owner = user
         staff.email = email
         staff.save()
+
+        #------------------------
+        # Set our `Tag` objects.
+        #------------------------
+        tags = validated_data.get('tags', None)
+        if tags is not None:
+            staff.tags.set(tags)
 
         # #-----------------------------
         # # Create our `Comment` object.
@@ -346,14 +358,16 @@ class StaffRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
             # 'owner',
             'description',
 
-            # Profile
+            # Person
             'given_name',
             'middle_name',
             'last_name',
             'birthdate',
             'join_date',
+            'gender',
 
-            # # Misc (Read/Write)
+            # Misc (Read/Write)
+            'tags',
             # # 'is_senior',
             # # 'is_support',
             # # 'job_info_read',
@@ -404,6 +418,7 @@ class StaffRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
             'created_by',
             'last_modified_by',
             # 'comments'
+            'tags',
         )
         return queryset
 
@@ -431,17 +446,19 @@ class StaffRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         instance.owner.first_name = validated_data.get('given_name', instance.owner.first_name)
         instance.owner.last_name = validated_data.get('last_name', instance.owner.last_name)
         instance.owner.save()
+        print("INFO: Updated the shared user.")
 
         #---------------------------
         # Update `Staff` object.
         #---------------------------
-        # Profile
+        # Person
         instance.description=validated_data.get('description', None)
         instance.given_name=validated_data.get('given_name', None)
         instance.last_name=validated_data.get('last_name', None)
         instance.middle_name=validated_data.get('middle_name', None)
         instance.birthdate=validated_data.get('birthdate', None)
         instance.join_date=validated_data.get('join_date', None)
+        instance.gender=validated_data.get('gender', None)
 
         # Misc
         instance.hourly_salary_desired=validated_data.get('hourly_salary_desired', 0.00)
@@ -491,6 +508,14 @@ class StaffRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
 
         # Save our instance.
         instance.save()
+        print("INFO: Updated the staff member.")
+
+        #------------------------
+        # Set our `Tag` objects.
+        #------------------------
+        tags = validated_data.get('tags', None)
+        if tags is not None:
+            instance.tags.set(tags)
 
         # #---------------------------
         # # Attach our comment.

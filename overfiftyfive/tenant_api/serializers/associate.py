@@ -103,7 +103,6 @@ class AssociateListCreateSerializer(serializers.ModelSerializer):
             'last_name',
             'birthdate',
             'join_date',
-            # 'tags',
             'gender',
             'description',
 
@@ -125,6 +124,7 @@ class AssociateListCreateSerializer(serializers.ModelSerializer):
             'is_small_job',
             'how_hear',
             'skill_sets', # many-to-many
+            'tags',
 
             # Misc (Read Only)
             # 'comments',
@@ -223,7 +223,7 @@ class AssociateListCreateSerializer(serializers.ModelSerializer):
         password = validated_data.get('password', None)
         owner.set_password(password)
         owner.save()
-        print("INFO: Created user.")
+        print("INFO: Created shared user.")
 
         #---------------------------------------------------
         # Create our `Associate` object in our tenant schema.
@@ -302,6 +302,13 @@ class AssociateListCreateSerializer(serializers.ModelSerializer):
         if skill_sets is not None:
             associate.skill_sets.set(skill_sets)
 
+        #------------------------
+        # Set our `Tag` objects.
+        #------------------------
+        tags = validated_data.get('tags', None)
+        if tags is not None:
+            associate.tags.set(tags)
+
         # #-----------------------------
         # # Create our `Comment` object.
         # #-----------------------------
@@ -376,6 +383,7 @@ class AssociateRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
             'join_date',
 
             # Misc (Read/Write)
+            'tags',
             'is_ok_to_email',
             'is_ok_to_text',
             # 'is_senior',
@@ -427,7 +435,7 @@ class AssociateRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
     def setup_eager_loading(cls, queryset):
         """ Perform necessary eager loading of data. """
         queryset = queryset.prefetch_related(
-            'owner', 'created_by', 'last_modified_by', 'skill_sets',
+            'owner', 'created_by', 'last_modified_by', 'skill_sets', 'tags',
             # 'comments'
         )
         return queryset
@@ -465,6 +473,7 @@ class AssociateRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
                 'last_name': validated_data.get('last_name', instance.last_name)
             }
         )
+        print("INFO: Updated shared user.")
 
         # Update the password.
         password = validated_data.get('password', None)
@@ -537,12 +546,20 @@ class AssociateRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
 
         # Save our instance.
         instance.save()
+        print("INFO: Updated the associate.")
 
         #-----------------------------
         # Set our `SkillSet` objects.
         #-----------------------------
         if skill_sets is not None:
             instance.skill_sets.set(skill_sets)
+
+        #------------------------
+        # Set our `Tag` objects.
+        #------------------------
+        tags = validated_data.get('tags', None)
+        if tags is not None:
+            instance.tags.set(tags)
 
         #---------------------------
         # Attach our comment.

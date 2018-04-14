@@ -10,13 +10,6 @@
 
 {% block content %}
 
-<!-- API JAVASCRIPT -->
-<!----------------------------------------------------------------------------->
-{% include 'tenant_api/staff_api_js.html' %}
-<!----------------------------------------------------------------------------->
-<!-- end API JAVASCRIPT -->
-
-
 <!-- CUSTOM JAVASCRIPT -->
 <!----------------------------------------------------------------------------->
 <script>
@@ -28,6 +21,31 @@
         $( "#dob" ).datepicker({
             dateFormat: 'yy-mm-dd'  // https://stackoverflow.com/a/7500097
         });
+
+        // Set the gender.
+        $('#gender').val('{% if staff.gender %}{{ staff.gender }}{% endif %}');
+
+        // // Populate our 'select2' chosen values.
+        var tag_ids = [];
+        {% for tag in staff.tags.all %}
+        tag_ids.push({{ tag.id }});
+        {% endfor %}
+        $('#person_tags').val(tag_ids);
+
+        // Initialize our 'select2' element.
+        $('#person_tags').select2();
+
+        {% if staff.is_ok_to_email == True %}
+            $("#ok_to_email").prop("checked", true);
+        {% else %}
+            $("#ok_to_email2").prop("checked", true);
+        {% endif %}
+
+        {% if staff.is_ok_to_text == True %}
+            $("#ok_to_text").prop("checked", true);
+        {% else %}
+            $("#ok_to_text2").prop("checked", true);
+        {% endif %}
     }); // end Ready
 
     /**
@@ -128,6 +146,8 @@
         has_error |= valid_textfield_value('address_country', true, 3);
         has_error |= valid_textfield_value('postal_code', true, 3);
         has_error |= valid_textfield_value('post_office_box_number', false, 3);
+        has_error |= valid_textfield_value('password', false, 2);
+        has_error |= valid_textfield_value('password_repeat', false, 2);
 
         // INTERRUPT THE FORM SUBMISSION IF ANY ERRORS EXISTED AND UPDATE THE
         // GUI TO INDICATE THAT WE HAVE VALIDATED SOME FIELDS.
@@ -151,8 +171,20 @@
         if (gender == undefined || gender == null || gender.length == 0) {
             gender = null;
         }
+
         var ok_to_email = get_selected_radio_value('ok_to_email');
         var ok_to_text = get_selected_radio_value('ok_to_text');
+        if (ok_to_email == 'yes') {
+            ok_to_email = true;
+        } else {
+            ok_to_email = false;
+        }
+        if (ok_to_text == 'yes') {
+            ok_to_text = true;
+        } else {
+            ok_to_text = false;
+        }
+
         var street_address = $('#street_address').val();
         var street_address_extra = $('#street_address_extra').val();
         var address_region = $('#address_region').val();
@@ -166,6 +198,9 @@
         // var telephone_extension = $('#id_telephone_extension').val();
         var other_telephone = $('#other_phonenumber').val();
         // var fax_number = $('#id_fax_number').val();
+        var password = $('#password').val();
+        var password_repeat = $('#password_repeat').val();
+        var person_tags = $('#person_tags').val();
         var description = $('#describe').val();
 
         // LOCK OUT THE "SUBMIT" BUTTON SO THE USER DOES NOT MAKE MULTI-CALLS.
@@ -181,8 +216,9 @@
                 'last_name': last_name,
                 'birthdate': date_of_birth,
                 'gender': gender,
-                'nationality': null,
                 'description': description,
+                'tags': person_tags,
+                'nationality': null,
                 'is_ok_to_email': ok_to_email,
                 'is_ok_to_text': ok_to_text,
                 'address_country': address_country,
@@ -202,6 +238,8 @@
                 'other_telephone': other_telephone,
                 'other_telephone_type_of': {{ shared_constants.MOBILE_CONTACT_POINT_TYPE_OF_ID }},
                 // 'fax_number': fax_number
+                'password': password,
+                'password_repeat': password_repeat,
             },
             function(result_dict) { // Success
                 console.log(result_dict);
@@ -346,9 +384,18 @@
                 </div>
                 <div class="form-group col-md-12 mb-4 p-0">
       		        <label for="describe" class="font-b6">Describe the associate:</label>
-      		        <textarea class="form-control form-control-lg border border-success" id="describe" name="describe" placeholder="Describe here..." rows="4" minlength="10" required>{% if associate.description %}{{ associate.description }}{% endif %}</textarea>
+      		        <textarea class="form-control form-control-lg border border-success" id="describe" name="describe" placeholder="Describe here..." rows="4" minlength="10" required>{% if staff.description %}{{ staff.description }}{% endif %}</textarea>
       		        <div id="describe-error" class="invalid-feedback"></div>
                     <small class="form-text text-muted">Maximum 1,000 characters.</small>
+                </div>
+                <div class="form-group col-md-12 mb-4">
+                    <label for="tag">Tags</label>
+                    <select id="person_tags" name="person_tags" class="form-control form-control-lg border border-success" name="states[]" multiple="multiple">
+                    {% for tag in tags %}
+                        <option value="{{ tag.id }}" id="person_tag_option_id_{{ tag.id }}">{{ tag }}</option>
+                    {% endfor %}
+                    </select>
+                    <div id="person_tags-error" class="invalid-feedback"></div>
                 </div>
             </div>
             <!-- ############ end PERSON ############ -->
@@ -434,13 +481,35 @@
                 </div>
             </div>
             <!-- ############ end LOCATION ############ -->
-            <!-- ############ BUSINESS ############ -->
-            {% comment %}
-            <p class="border-bottom mb-3 pb-1 text-secondary">Business Information</p>
+            <!-- ############ SECURITY ############ -->
+            <p class="border-bottom mb-3 pb-1 text-secondary">Account Security</p>
             <div class="form-row">
+                <div class="form-group col-md-12 mb-4">
+                    <label for="password">Password</label>
+                    <input id="password"
+                         name="password"
+                  placeholder="{% trans 'Password' %}"
+                        class="form-control form-control-lg border border-success"
+                         type="password"
+               autocapitalize="off"
+                    minlength="2"
+                    maxlength="30" required />
+                    <div id="password-error" class="invalid-feedback"></div>
+                </div>
+                <div class="form-group col-md-12 mb-4">
+                    <label for="password_repeat">Repeat Password</label>
+                    <input id="password_repeat"
+                         name="password_repeat"
+                  placeholder="{% trans 'Repeat Password' %}"
+                        class="form-control form-control-lg border border-success"
+                         type="password"
+               autocapitalize="off"
+                    minlength="2"
+                    maxlength="30" required />
+                    <div id="password_repeat-error" class="invalid-feedback"></div>
+                </div>
             </div>
-            {% endcomment %}
-            <!-- ############ end BUSINESS ############ -->
+            <!-- ############ end SECURITY ############ -->
             <!-- end SUBMIT BUTTON -->
             <div class="form-group col-md-12 mb-3 mx-auto text-center">
                 <button  id="id_submit_btn"
