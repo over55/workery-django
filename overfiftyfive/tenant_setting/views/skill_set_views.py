@@ -13,9 +13,9 @@ from tenant_foundation.models import (
 
 
 @method_decorator(login_required, name='dispatch')
-class TagListView(ListView, ExtraRequestProcessingMixin):
-    context_object_name = 'tag_list'
-    template_name = 'tenant_setting/tag/list_view.html'
+class SkillSetListView(ListView, ExtraRequestProcessingMixin):
+    context_object_name = 'skill_set_list'
+    template_name = 'tenant_setting/skill_set/list_view.html'
     paginate_by = 100
 
     def get_context_data(self, **kwargs):
@@ -31,7 +31,7 @@ class TagListView(ListView, ExtraRequestProcessingMixin):
         return modified_context
 
     def get_queryset(self):
-        queryset = Tag.objects.all().order_by('text')
+        queryset = SkillSet.objects.all().order_by('category', 'sub_category', 'insurance_requirement')
 
         # # The following code will use the 'django-filter'
         # filter = CustomerFilter(self.request.GET, queryset=queryset)
@@ -40,10 +40,10 @@ class TagListView(ListView, ExtraRequestProcessingMixin):
 
 
 @method_decorator(login_required, name='dispatch')
-class TagUpdateView(DetailView):
-    context_object_name = 'tag'
-    model = Tag
-    template_name = 'tenant_setting/tag/update_view.html'
+class SkillSetUpdateView(DetailView):
+    context_object_name = 'skill_set'
+    model = SkillSet
+    template_name = 'tenant_setting/skill_set/update_view.html'
 
     def get_object(self):
         obj = super().get_object()  # Call the superclass
@@ -61,8 +61,8 @@ class TagUpdateView(DetailView):
 
 
 @method_decorator(login_required, name='dispatch')
-class TagCreateView(TemplateView):
-    template_name = 'tenant_setting/tag/create_view.html'
+class SkillSetCreateView(TemplateView):
+    template_name = 'tenant_setting/skill_set/create_view.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

@@ -19,7 +19,8 @@
         var tag_text = $('#tag_text').val();
         create_tag_api(
             {
-                'text': tag_text,
+                'text': $('#tag_text').val(),
+                'description': $('#tag_desc').val()
             },
             function(tag) {
                 window.location = "{% url 'o55_tenant_settings_tags_list' %}?was_created=True";
@@ -62,14 +63,13 @@
             <form id="add-client-form" method="post" class="needs-validation" action="" novalidate>
                 <div class="form-row">
                     <div class="form-group col-md-12 mb-4">
-                        <!-- <label for="tag_text">Text</label> -->
-                        <input id="tag_text"
-                             name="tag_text"
-                             type="text"
-                            class="form-control form-control-lg border border-primary"
-                      placeholder="Text"
-                        minlength="3"
-                         required="" autofocus />
+                        <label for="tag_text">Text</label>
+                        <input type="text" class="form-control form-control-lg border border-primary" id="tag_text" name="tag_text" placeholder="Text" minlength="3" required="" autofocus value="{{ tag.text }}">
+                        <div id="tag_text-error" class="invalid-feedback"></div>
+                    </div>
+                    <div class="form-group col-md-12 mb-4">
+                        <label for="tag_text">Description</label>
+                        <input type="text" class="form-control form-control-lg border border-primary" id="tag_desc" name="tag_desc" placeholder="Description" minlength="3" required="" autofocus value="{{ tag.description }}">
                         <div id="tag_text-error" class="invalid-feedback"></div>
                     </div>
                 </div>

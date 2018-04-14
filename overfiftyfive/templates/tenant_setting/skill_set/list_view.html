@@ -2,7 +2,7 @@
 {% load staticfiles i18n foundation_tags humanize %}
 
 {% block title %}
-{% trans 'Tags List | Over 55 Inc.' %}
+{% trans 'Skill Sets List | Over 55 Inc.' %}
 {% endblock title %}
 
 {% block header_content %}
@@ -11,11 +11,11 @@
 {% block content %}
 
 <script>
-    function ajax_delete(tag_id) {
-        delete_tag_api(
-            parseInt(tag_id),
-            function(tag) {
-                window.location = "{% url 'o55_tenant_settings_tags_list' %}?was_deleted=True";
+    function ajax_delete(skill_set_id) {
+        delete_skill_set_api(
+            parseInt(skill_set_id),
+            function(skill_set) {
+                window.location = "{% url 'o55_tenant_settings_skill_set_list' %}?was_deleted=True";
             },
             function(json_results) {
                 console.log(json_results);
@@ -35,7 +35,7 @@
 	  	<ol class="breadcrumb">
 	    	<li class="breadcrumb-item"><a href="{% url 'o55_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
             <li class="breadcrumb-item"><a href="{% url 'o55_tenant_settings_launchpad' %}">{% trans 'Settings' %}</a></li>
-            <li class="breadcrumb-item active" aria-current="page">{% trans 'Tags' %}</li>
+            <li class="breadcrumb-item active" aria-current="page">{% trans 'Skill Sets' %}</li>
 	  	</ol>
 	</nav>
     <!------------------------------------------------------------------------->
@@ -45,7 +45,7 @@
     <!------------------------------------------------------------------------->
     {% if parameters.was_created == 'True' %}
         <div class="alert bg-success text-white alert-dismissible fade show" role="alert">
-		    Tag <strong>Successfully</strong> created.
+		    Skill Set <strong>Successfully</strong> created.
 		    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
 		        <span aria-hidden="true">×</span>
 		    </button>
@@ -53,7 +53,7 @@
     {% endif %}
     {% if parameters.was_modified == 'True' %}
         <div class="alert bg-success text-white alert-dismissible fade show" role="alert">
-		    Tag <strong>Successfully</strong> updated.
+		    Skill Set <strong>Successfully</strong> updated.
 		    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
 		        <span aria-hidden="true">×</span>
 		    </button>
@@ -61,7 +61,7 @@
     {% endif %}
     {% if parameters.was_deleted == 'True' %}
         <div class="alert bg-success text-white alert-dismissible fade show" role="alert">
-		    Tag <strong>Successfully</strong> deleted.
+		    Skill Set <strong>Successfully</strong> deleted.
 		    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
 		        <span aria-hidden="true">×</span>
 		    </button>
@@ -70,16 +70,16 @@
     <!------------------------------------------------------------------------->
     <!-- end NOTIFICATION -->
 
-    <h1>Tags</h1>
+    <h1>Skill Sets</h1>
     <section class="row text-center placeholders">
         <div class="col-sm-3 placeholder">
             <div class="rounded-circle mx-auto mt-4 mb-4 circle-200 bg-pink">
-                <a href="{% url 'o55_tenant_settings_tag_create' %}" class="d-block link-ndecor" title="Add Client">
+                <a href="{% url 'o55_tenant_settings_skill_set_create' %}" class="d-block link-ndecor" title="Add Client">
                     <h1 class="r-circle"><i class="fas fa-plus fa-3x"></i></h1>
                 </a>
             </div>
             <h4>Add</h4>
-            <div class="text-muted">Add Tag</div>
+            <div class="text-muted">Add Skill Set</div>
         </div>
     </section>
 
@@ -87,31 +87,39 @@
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th>{% trans 'Text' %}</th>
+                    <th>{% trans 'Category' %}</th>
+                    <th>{% trans 'Sub-Category' %}</th>
+                    <th>{% trans 'Insurance Requirement' %}</th>
                     <th>{% trans 'Description' %}</th>
                     <th></th>
                 </tr>
             </thead>
             <tbody>
-                {% for tag in tag_list %}
+                {% for skill_set in skill_set_list %}
                 <tr>
                     <td>
-                        {{ tag.text }}
+                        {{ skill_set.category }}
                     </td>
                     <td>
-                        {{ tag.description }}
+                        {{ skill_set.sub_category }}
+                    </td>
+                    <td>
+                        {{ skill_set.insurance_requirement }}
+                    </td>
+                    <td>
+                        {{ skill_set.description }}
                     </td>
                     <td>
 
                         <button id="id_delete_btn"
                              class="btn btn-danger btn-lg mt-4 float-right pl-4 pr-4"
                               type="button"
-                           onclick="ajax_delete({{ tag.id }});">
+                           onclick="ajax_delete({{ skill_set.id }});">
                          <i class="fas fa-trash"></i>
                          {% trans 'Delete' %}
                         </button>
 
-                        <a href="{% url 'o55_tenant_settings_tags_update' tag.id %}">
+                        <a href="{% url 'o55_tenant_settings_skill_set_update' skill_set.id %}">
                         <button id="id_delete_btn"
                              class="btn btn-warning btn-lg mt-4 float-right pl-4 pr-4"
                               type="button">
