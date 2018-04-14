@@ -125,7 +125,7 @@
         has_error |= valid_textfield_value('street_address', true, 3);
         has_error |= valid_textfield_value('street_address_extra', false, 3)
         has_error |= valid_textfield_value('address_locality', true, 3);
-        has_error |= valid_textfield_value('address_region', true, 3);
+        has_error |= valid_textfield_value('address_region', true, 2);
         has_error |= valid_textfield_value('address_country', true, 3);
         has_error |= valid_textfield_value('postal_code', true, 3);
         has_error |= valid_textfield_value('post_office_box_number', false, 3);
@@ -383,7 +383,7 @@
                 </div>
                 <div class="form-group col-md-7 mb-4">
                     <label for="address_region">Province <sup>*</sup></label>
-                    <input type="text" class="form-control form-control-lg border border-primary" id="address_region" name="address_region" placeholder="Province" minlength="3" maxlength="127" required value="{% if staff.address_region %}{{ staff.address_region }}{% endif %}">
+                    <input type="text" class="form-control form-control-lg border border-primary" id="address_region" name="address_region" placeholder="Province" minlength="2" maxlength="127" required value="{% if staff.address_region %}{{ staff.address_region }}{% endif %}">
                     <div id="address_region-error" class="invalid-feedback"></div>
                 </div>
                 <div class="form-group col-md-7 mb-4">
