@@ -247,11 +247,11 @@
                 var mydate = new Date(date_of_birth); // Convert "MM DD, YYYY" to JS DATE
                 date_of_birth = mydate.toISOString().substring(0, 10); // Convert JS DATE to "YYYY-MM-DD"
             } else {
-                date_of_birth = null;
+                date_of_birth = '';
             }
             var gender = $('#gender').val();
             if (gender == undefined || gender == null || gender.length == 0) {
-                gender = null;
+                gender = '';
             }
             var ok_to_email = get_selected_radio_value('ok_to_email');
             var ok_to_text = get_selected_radio_value('ok_to_text');
