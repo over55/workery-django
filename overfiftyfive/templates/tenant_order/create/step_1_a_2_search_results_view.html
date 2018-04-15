@@ -59,10 +59,10 @@
 	<div class="col-sm-12 mx-auto mt-3 pt-3 mb-3 text-center">
 		<h5>{% if customer_list %}We found a match for this client:{% else %}We did find any matches.{% endif %}</h5>
 	</div>
-
+	<div class="col-sm-12 mx-auto mt-4">
+	<div class="card-deck">
     {% for customer in customer_list %}
-        <div class="col-sm-12 mx-auto mt-4">
-   	   	    <div class="card bg-light mx-auto" style="width: 18rem;">
+       	    <div class="card bg-light">
    		    <div class="card-body">
    		       <h5 class="card-title"><a href="{% url 'o55_tenant_customer_retrieve' 'list' customer.id %}">
                    {% if customer.type_of == tenant_constants.RESIDENTIAL_CUSTOMER_TYPE_OF_ID %}
@@ -73,7 +73,7 @@
                        <i class="fa fa-question fa-lg"></i>
                    {% endif %}
                    <strong>{{ customer }}</strong></a>
-               </h5>
+               		</h5>
    		    	<p class="card-text">
 
                     {{ customer.street_address }}<br>
@@ -83,14 +83,14 @@
                     {% if customer.email %}<a href="tel:{{ customer.email }}">{{ customer.email }}</a>{% endif %}
    			    </p>
    		    </div>
-            <button  id="select-btn-{{ customer.id }}"
+            	<button  id="select-btn-{{ customer.id }}"
                    type="button"
                   class="btn btn-lg btn-primary float-right m-2"
                   onclick="ajax_select({{ customer.id }}, '{{ customer }}', {{ customer.type_of }});">Select</button>
-   		</div>
-   	</div>
+   	  </div>
     {% endfor %}
-
+	</div>
+	</div>
 	<div class="col-sm-12 mx-auto mt-3 mb-3 text-center">
 		<h5>Do you wish to continue adding a NEW client?</h5>
         <a href="{% url 'o55_tenant_job_search_or_add_create' %}">
