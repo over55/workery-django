@@ -129,6 +129,7 @@
 
 
             <div class="form-group col-md-12 mb-3 mx-auto text-center">
+		<div id="form-error" class="invalid-feedback"></div>
                 <button class="btn btn-success btn-lg btn-fxw mt-3" type="submit"><i class="fas fa-search"></i> Search</button> <button type="reset" class="ml-2 btn btn-secondary btn-lg mt-3" value="Reset">Reset</button>
             </div>
         </form>
@@ -292,10 +293,13 @@
                 $(function(){
                     $('#advanced-searchForm').on('submit',function(e){
                         var oneFilled = checkFields($(this));
+			var form_error = document.getElementById('form-error');
                         if(oneFilled === true) {
                             return true;
                         }else {
-                            alert('Please fill in atleast one field and hit search.');
+				form_error.innerHTML = "Please fill in atleast one field and hit search.";
+				form_error.style.display = "block";
+				form_advanced_search.classList.add('was-validated');
                             e.preventDefault();
                         }
                     });
