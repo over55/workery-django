@@ -165,10 +165,12 @@
 
         function valid_radiofields_seleciton(radiofields_name, is_required) {
             var value = get_selected_radio_value(radiofields_name);
+	    var radiofield_error = document.getElementById(radiofields_name+'-error');
 
             if (is_required) {
                 if (value == undefined || value === null || value.length == 0) {
-                    alert("Please select radio at "+ radiofields_name);
+		    radiofield_error.innerHTML = "Please select option.";
+		    console.log(radiofields_name, "IS BLANK FIELD.");
                     return true;
                 }
             }
@@ -433,6 +435,7 @@
                     <div class="form-radio custom-control custom-radio custom-control-inline">
                         <input type="radio" id="ok_to_email2" name="ok_to_email" value="no" class="custom-control-input form-check-input">
                         <label class="custom-control-label form-check-label" for="ok_to_email2">No</label>
+			<div id="ok_to_email-error" class="invalid-feedback ml-2"></div>
                     </div>
                 </div>
                 <div class="form-group mt-2 mb-4">
@@ -444,6 +447,7 @@
                     <div class="form-radio custom-control custom-radio custom-control-inline">
                         <input type="radio" id="ok_to_text2" name="ok_to_text" value="no" class="custom-control-input form-check-input">
                         <label class="custom-control-label form-check-label" for="ok_to_text2">No</label>
+			<div id="ok_to_text-error" class="invalid-feedback ml-2"></div>
                     </div>
                 </div>
             </div>
