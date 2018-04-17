@@ -81,7 +81,6 @@ class CustomerManager(models.Manager):
         # For more details please read:
         # https://docs.djangoproject.com/en/2.0/ref/contrib/postgres/search/
         return Customer.objects.annotate(search=SearchVector(
-            'organizations__name',
             'given_name',
             'middle_name',
             'last_name',
