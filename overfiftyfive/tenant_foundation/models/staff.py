@@ -53,7 +53,7 @@ class StaffManager(models.Manager):
 
     def partial_text_search(self, keyword):
         """Function performs partial text search of various textfields."""
-        return Customer.objects.filter(
+        return Staff.objects.filter(
             Q(indexed_text__icontains=keyword) |
             Q(indexed_text__istartswith=keyword) |
             Q(indexed_text__iendswith=keyword) |
@@ -67,7 +67,7 @@ class StaffManager(models.Manager):
         # which comes with Django to utilize the 'full text search' feature.
         # For more details please read:
         # https://docs.djangoproject.com/en/2.0/ref/contrib/postgres/search/
-        return Customer.objects.annotate(search=SearchVector('indexed_text'),).filter(search=keyword)
+        return Staff.objects.annotate(search=SearchVector('indexed_text'),).filter(search=keyword)
 
 
 @transaction.atomic
