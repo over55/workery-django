@@ -53,33 +53,12 @@ class StaffManager(models.Manager):
 
     def partial_text_search(self, keyword):
         """Function performs partial text search of various textfields."""
-        return Staff.objects.filter(
-            Q(
-                Q(given_name__icontains=keyword) |
-                Q(given_name__istartswith=keyword) |
-                Q(given_name__iendswith=keyword) |
-                Q(given_name__exact=keyword)
-            ) | Q(
-                Q(middle_name__icontains=keyword) |
-                Q(middle_name__istartswith=keyword) |
-                Q(middle_name__iendswith=keyword) |
-                Q(middle_name__exact=keyword)
-            ) | Q(
-                Q(last_name__icontains=keyword) |
-                Q(last_name__istartswith=keyword) |
-                Q(last_name__iendswith=keyword) |
-                Q(last_name__exact=keyword)
-            ) | Q(
-                Q(email__icontains=keyword) |
-                Q(email__istartswith=keyword) |
-                Q(email__iendswith=keyword) |
-                Q(email__exact=keyword)
-            ) | Q(
-                Q(telephone__icontains=keyword) |
-                Q(telephone__istartswith=keyword) |
-                Q(telephone__iendswith=keyword) |
-                Q(telephone__exact=keyword)
-            )
+        return Customer.objects.filter(
+            Q(indexed_text__icontains=keyword) |
+            Q(indexed_text__istartswith=keyword) |
+            Q(indexed_text__iendswith=keyword) |
+            Q(indexed_text__exact=keyword) |
+            Q(indexed_text__icontains=keyword)
         )
 
     def full_text_search(self, keyword):
@@ -88,18 +67,7 @@ class StaffManager(models.Manager):
         # which comes with Django to utilize the 'full text search' feature.
         # For more details please read:
         # https://docs.djangoproject.com/en/2.0/ref/contrib/postgres/search/
-        return Staff.objects.annotate(search=SearchVector(
-            'given_name',
-            'middle_name',
-            'last_name',
-            # 'business',
-            # 'limit_special',
-            # 'drivers_license_class',
-            # 'how_hear',
-            'owner__email',
-            'email',
-            'telephone'
-        ),).filter(search=keyword)
+        return Customer.objects.annotate(search=SearchVector('indexed_text'),).filter(search=keyword)
 
 
 @transaction.atomic
