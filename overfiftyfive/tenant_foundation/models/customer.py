@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import csv
+import phonenumbers
 import pytz
 from datetime import date, datetime, timedelta
 from django.conf import settings
@@ -13,6 +14,7 @@ from django.db.models import Q
 from django.dispatch import receiver
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
+from django.utils.text import Truncator
 from starterkit.utils import (
     get_random_string,
     get_unique_username_from_email,
@@ -41,37 +43,11 @@ class CustomerManager(models.Manager):
     def partial_text_search(self, keyword):
         """Function performs partial text search of various textfields."""
         return Customer.objects.filter(
-            Q(
-                Q(given_name__icontains=keyword) |
-                Q(given_name__istartswith=keyword) |
-                Q(given_name__iendswith=keyword) |
-                Q(given_name__exact=keyword) |
-                Q(given_name__icontains=keyword)
-            ) | Q(
-                Q(middle_name__icontains=keyword) |
-                Q(middle_name__istartswith=keyword) |
-                Q(middle_name__iendswith=keyword) |
-                Q(middle_name__exact=keyword) |
-                Q(middle_name__icontains=keyword)
-            ) | Q(
-                Q(last_name__icontains=keyword) |
-                Q(last_name__istartswith=keyword) |
-                Q(last_name__iendswith=keyword) |
-                Q(last_name__exact=keyword) |
-                Q(last_name__icontains=keyword)
-            ) | Q(
-                Q(email__icontains=keyword) |
-                Q(email__istartswith=keyword) |
-                Q(email__iendswith=keyword) |
-                Q(email__exact=keyword) |
-                Q(email__icontains=keyword)
-            ) | Q(
-                Q(telephone__icontains=keyword) |
-                Q(telephone__istartswith=keyword) |
-                Q(telephone__iendswith=keyword) |
-                Q(telephone__exact=keyword) |
-                Q(telephone__icontains=keyword)
-            )
+            Q(indexed_text__icontains=keyword) |
+            Q(indexed_text__istartswith=keyword) |
+            Q(indexed_text__iendswith=keyword) |
+            Q(indexed_text__exact=keyword) |
+            Q(indexed_text__icontains=keyword)
         )
 
     def full_text_search(self, keyword):
@@ -80,18 +56,7 @@ class CustomerManager(models.Manager):
         # which comes with Django to utilize the 'full text search' feature.
         # For more details please read:
         # https://docs.djangoproject.com/en/2.0/ref/contrib/postgres/search/
-        return Customer.objects.annotate(search=SearchVector(
-            'given_name',
-            'middle_name',
-            'last_name',
-            # 'business',
-            # 'limit_special',
-            # 'drivers_license_class',
-            # 'how_hear',
-            'owner__email',
-            'email',
-            'telephone'
-        ),).filter(search=keyword)
+        return Customer.objects.annotate(search=SearchVector('indexed_text'),).filter(search=keyword)
 
 
 @transaction.atomic
@@ -185,6 +150,15 @@ class Customer(AbstractThing, AbstractContactPoint, AbstractPostalAddress, Abstr
     #  CUSTOM FIELDS
     #
 
+    indexed_text = models.CharField(
+        _("Indexed Text"),
+        max_length=511,
+        help_text=_('The searchable content text used by the keyword searcher function.'),
+        blank=True,
+        null=True,
+        db_index=True,
+        unique=True
+    )
     type_of = models.PositiveSmallIntegerField(
         _("Type of"),
         help_text=_('The type of customer this is.'),
@@ -287,6 +261,40 @@ class Customer(AbstractThing, AbstractContactPoint, AbstractPostalAddress, Abstr
             return str(self.given_name)+" "+str(self.middle_name)+" "+str(self.last_name)
         else:
             return str(self.given_name)+" "+str(self.last_name)
+
+    """
+    Override the `save` function to support save cached searchable terms.
+    """
+    def save(self, *args, **kwargs):
+        '''
+        The following code will populate our indexed_custom search text with
+        the latest model data before we save.
+        '''
+        search_text = str(self.id)
+        if self.given_name:
+            search_text += " " + self.given_name
+        if self.middle_name:
+            search_text += " " + self.middle_name
+        if self.last_name:
+            search_text += " " + self.last_name
+        if self.email:
+            search_text += " " + self.email
+        if self.telephone:
+            search_text += " " + phonenumbers.format_number(self.telephone, phonenumbers.PhoneNumberFormat.NATIONAL)
+            search_text += " " + phonenumbers.format_number(self.telephone, phonenumbers.PhoneNumberFormat.INTERNATIONAL)
+            search_text += " " + phonenumbers.format_number(self.telephone, phonenumbers.PhoneNumberFormat.E164)
+        if self.other_telephone:
+            search_text += " " + phonenumbers.format_number(self.other_telephone, phonenumbers.PhoneNumberFormat.NATIONAL)
+            search_text += " " + phonenumbers.format_number(self.other_telephone, phonenumbers.PhoneNumberFormat.INTERNATIONAL)
+            search_text += " " + phonenumbers.format_number(self.other_telephone, phonenumbers.PhoneNumberFormat.E164)
+        if self.description:
+            search_text += " " + self.description
+        self.indexed_text = Truncator(search_text).chars(511)
+
+        '''
+        Run our `save` function.
+        '''
+        super(Customer, self).save(*args, **kwargs)
 
 # def validate_model(sender, **kwargs):
 #     if 'raw' in kwargs and not kwargs['raw']:

@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import csv
+
 import pytz
 from datetime import date, datetime, timedelta
 from django.conf import settings
@@ -7,6 +8,7 @@ from django.contrib.auth.models import User
 from django.db import models
 from django.db import transaction
 from django.utils import timezone
+from django.utils.text import Truncator
 from django.utils.translation import ugettext_lazy as _
 from starterkit.utils import (
     get_random_string,
@@ -85,6 +87,15 @@ class Organization(AbstractThing, AbstractContactPoint, AbstractPostalAddress, A
         help_text=_('The tags associated with this organization.'),
         blank=True,
         related_name="%(app_label)s_%(class)s_tags_related"
+    )
+    indexed_text = models.CharField(
+        _("Indexed Text"),
+        max_length=511,
+        help_text=_('The searchable content text used by the keyword searcher function.'),
+        blank=True,
+        null=True,
+        db_index=True,
+        unique=True
     )
 
     #

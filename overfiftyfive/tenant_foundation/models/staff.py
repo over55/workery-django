@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import csv
+import phonenumbers
 import pytz
 from datetime import date, datetime, timedelta
 from django.conf import settings
@@ -8,6 +9,7 @@ from django.contrib.postgres.search import SearchVector, SearchVectorField
 from django.db import models
 from django.db import transaction
 from django.utils import timezone
+from django.utils.text import Truncator
 from django.utils.translation import ugettext_lazy as _
 from starterkit.utils import (
     get_random_string,
@@ -223,6 +225,15 @@ class Staff(AbstractThing, AbstractContactPoint, AbstractPostalAddress, Abstract
         blank=True,
         related_name="%(app_label)s_%(class)s_skill_sets_related"
     )
+    indexed_text = models.CharField(
+        _("Indexed Text"),
+        max_length=511,
+        help_text=_('The searchable content text used by the keyword searcher function.'),
+        blank=True,
+        null=True,
+        db_index=True,
+        unique=True
+    )
 
     #
     #  FUNCTIONS
@@ -233,3 +244,37 @@ class Staff(AbstractThing, AbstractContactPoint, AbstractPostalAddress, Abstract
             return str(self.given_name)+" "+str(self.middle_name)+" "+str(self.last_name)
         else:
             return str(self.given_name)+" "+str(self.last_name)
+
+    """
+    Override the `save` function to support save cached searchable terms.
+    """
+    def save(self, *args, **kwargs):
+        '''
+        The following code will populate our indexed_custom search text with
+        the latest model data before we save.
+        '''
+        search_text = str(self.id)
+        if self.given_name:
+            search_text += " " + self.given_name
+        if self.middle_name:
+            search_text += " " + self.middle_name
+        if self.last_name:
+            search_text += " " + self.last_name
+        if self.email:
+            search_text += " " + self.email
+        if self.telephone:
+            search_text += " " + phonenumbers.format_number(self.telephone, phonenumbers.PhoneNumberFormat.NATIONAL)
+            search_text += " " + phonenumbers.format_number(self.telephone, phonenumbers.PhoneNumberFormat.INTERNATIONAL)
+            search_text += " " + phonenumbers.format_number(self.telephone, phonenumbers.PhoneNumberFormat.E164)
+        if self.other_telephone:
+            search_text += " " + phonenumbers.format_number(self.other_telephone, phonenumbers.PhoneNumberFormat.NATIONAL)
+            search_text += " " + phonenumbers.format_number(self.other_telephone, phonenumbers.PhoneNumberFormat.INTERNATIONAL)
+            search_text += " " + phonenumbers.format_number(self.other_telephone, phonenumbers.PhoneNumberFormat.E164)
+        if self.description:
+            search_text += " " + self.description
+        self.indexed_text = Truncator(search_text).chars(511)
+
+        '''
+        Run our `save` function.
+        '''
+        super(Staff, self).save(*args, **kwargs)

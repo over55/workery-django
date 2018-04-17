@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import csv
+import phonenumbers
 import pytz
 from djmoney.money import Money
 from datetime import date, datetime, timedelta
@@ -8,6 +9,7 @@ from django.db import models
 from django.db import transaction
 from django.contrib.postgres.search import SearchVector, SearchVectorField
 from django.utils import timezone
+from django.utils.text import Truncator
 from django.utils.translation import ugettext_lazy as _
 from djmoney.models.fields import MoneyField
 from djmoney.money import Money
@@ -41,18 +43,7 @@ class OrderManager(models.Manager):
         # For more details please read:
         # https://docs.djangoproject.com/en/2.0/ref/contrib/postgres/search/
         return Order.objects.annotate(search=SearchVector(
-            'customer__email',
-            'customer__telephone',
-            'customer__other_telephone',
-            'customer__given_name',
-            'customer__middle_name',
-            'customer__last_name',
-            'associate__email',
-            'associate__telephone',
-            'associate__other_telephone',
-            'associate__given_name',
-            'associate__middle_name',
-            'associate__last_name',
+            'indexed_text',
         ),).filter(search=keyword)
 
 
@@ -188,6 +179,15 @@ class Order(models.Model):
         choices=JOB_TYPE_OF_CHOICES,
         blank=True,
     )
+    indexed_text = models.CharField(
+        _("Indexed Text"),
+        max_length=1024,
+        help_text=_('The searchable content text used by the keyword searcher function.'),
+        blank=True,
+        null=True,
+        db_index=True,
+        unique=True
+    )
 
     #
     #  SYSTEM
@@ -217,3 +217,64 @@ class Order(models.Model):
 
     def __str__(self):
         return str(self.pk)
+
+    """
+    Override the `save` function to support save cached searchable terms.
+    """
+    def save(self, *args, **kwargs):
+        '''
+        The following code will populate our indexed_custom search text with
+        the latest model data before we save.
+        '''
+        search_text = str(self.id)
+
+        if self.description:
+            search_text += " " + self.description
+
+        if self.customer:
+            if self.customer.given_name:
+                search_text += " " + self.customer.given_name
+            if self.customer.middle_name:
+                search_text += " " + self.customer.middle_name
+            if self.customer.last_name:
+                search_text += " " + self.customer.last_name
+            if self.customer.email:
+                search_text += " " + self.customer.email
+            if self.customer.telephone:
+                search_text += " " + phonenumbers.format_number(self.customer.telephone, phonenumbers.PhoneNumberFormat.NATIONAL)
+                search_text += " " + phonenumbers.format_number(self.customer.telephone, phonenumbers.PhoneNumberFormat.INTERNATIONAL)
+                search_text += " " + phonenumbers.format_number(self.customer.telephone, phonenumbers.PhoneNumberFormat.E164)
+            if self.customer.other_telephone:
+                search_text += " " + phonenumbers.format_number(self.customer.other_telephone, phonenumbers.PhoneNumberFormat.NATIONAL)
+                search_text += " " + phonenumbers.format_number(self.customer.other_telephone, phonenumbers.PhoneNumberFormat.INTERNATIONAL)
+                search_text += " " + phonenumbers.format_number(self.customer.other_telephone, phonenumbers.PhoneNumberFormat.E164)
+            if self.description:
+                search_text += " " + self.description
+
+        if self.associate:
+            if self.associate.given_name:
+                search_text += " " + self.associate.given_name
+            if self.associate.middle_name:
+                search_text += " " + self.associate.middle_name
+            if self.associate.last_name:
+                search_text += " " + self.associate.last_name
+            if self.associate.email:
+                search_text += " " + self.associate.email
+            if self.associate.telephone:
+                search_text += " " + phonenumbers.format_number(self.associate.telephone, phonenumbers.PhoneNumberFormat.NATIONAL)
+                search_text += " " + phonenumbers.format_number(self.associate.telephone, phonenumbers.PhoneNumberFormat.INTERNATIONAL)
+                search_text += " " + phonenumbers.format_number(self.associate.telephone, phonenumbers.PhoneNumberFormat.E164)
+            if self.associate.other_telephone:
+                search_text += " " + phonenumbers.format_number(self.associate.other_telephone, phonenumbers.PhoneNumberFormat.NATIONAL)
+                search_text += " " + phonenumbers.format_number(self.associate.other_telephone, phonenumbers.PhoneNumberFormat.INTERNATIONAL)
+                search_text += " " + phonenumbers.format_number(self.associate.other_telephone, phonenumbers.PhoneNumberFormat.E164)
+            if self.description:
+                search_text += " " + self.description
+
+
+        self.indexed_text = Truncator(search_text).chars(1024)
+
+        '''
+        Run our `save` function.
+        '''
+        super(Order, self).save(*args, **kwargs)
