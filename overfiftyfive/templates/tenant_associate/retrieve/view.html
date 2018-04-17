@@ -213,6 +213,18 @@
                 </div>
             </div>
             <!-- ############ end LOCATION ############ -->
+            <!-- ############ ACCOUNT ############ -->
+            <p class="border-bottom mb-3 pb-1 text-secondary">Account</p>
+            <div class="form-row">
+                <div class="form-group col-md-12 mb-4">
+                    <label for="is_active">Is active</label>
+                    <p>
+                        {% if associate.owner.is_active == True %}Yes{% else %}No{% endif %}
+                    </p>
+                    <div id="is_active-error" class="invalid-feedback"></div>
+                </div>
+            </div>
+            <!-- ############ end ACCOUNT ############ -->
             <!-- ############ BUSINESS ############ -->
             {% comment %}
             <p class="border-bottom mb-3 pb-1 text-secondary">Business Information</p>

@@ -50,6 +50,7 @@
         $('#selected_email').append(localStorage.getItem("tmp_associate_member_email"));
         $('#selected_telephone').append(localStorage.getItem("tmp_associate_member_telephone"));
         $('#selected_description').append(localStorage.getItem("tmp_associate_member_description"));
+        $('#selected_is_active').append(localStorage.getItem("tmp_associate_member_is_active"));
 
         // Set our `tags` field.
         var tmp_person_tag_values = localStorage.getObj("tmp_associate_member_person_tag_values");
@@ -156,6 +157,7 @@
                 'tags': localStorage.getObj("tmp_associate_member_person_tag_ids"),
                 'skill_sets': localStorage.getObj("tmp_associate_member_skill_set_ids"),
                 'description': localStorage.getItem("tmp_associate_member_description"),
+                'is_active': localStorage.getItem("tmp_associate_member_is_active"),
             },
             function(result_dict) { // Success
                 // FOR DEBUGGING PURPOSES ONLY.
@@ -186,6 +188,7 @@
                 localStorage.removeItem("tmp_associate_member_skill_set_ids")
                 localStorage.removeItem("tmp_associate_member_skill_set_values")
                 localStorage.removeItem("tmp_associate_member_description")
+                localStorage.removeItem("tmp_associate_member_is_active")
 
                 // REDIRECT TO SUCCESS PAGE.
                 window.location = redirect_url;
@@ -386,6 +389,12 @@
          <tr>
            <th scope="row" class="bg-light">Skill set(s)</th>
            <td id="selected_skill_set_values">
+               <!-- THIS IS WHERE THE TAGS GET LOADED -->
+           </td>
+         </tr>
+         <tr>
+           <th scope="row" class="bg-light">Is active?</th>
+           <td id="selected_is_active">
                <!-- THIS IS WHERE THE TAGS GET LOADED -->
            </td>
          </tr>

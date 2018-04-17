@@ -87,6 +87,11 @@ class AssociateListCreateSerializer(serializers.ModelSerializer):
         style={'input_type': 'password'}
     )
 
+    is_active = serializers.BooleanField(
+        write_only=True,
+        required=True,
+    )
+
     # Meta Information.
     class Meta:
         model = Associate
@@ -107,6 +112,7 @@ class AssociateListCreateSerializer(serializers.ModelSerializer):
             'description',
 
             # Misc (Read/Write)
+            'is_active',
             'is_ok_to_email',
             'is_ok_to_text',
             'hourly_salary_desired',
@@ -211,9 +217,9 @@ class AssociateListCreateSerializer(serializers.ModelSerializer):
             first_name=validated_data['given_name'],
             last_name=validated_data['last_name'],
             email=email,
-            is_active=True,
             franchise=self.context['franchise'],
             was_email_activated=True,
+            is_active = validated_data['is_active'],
         )
 
         # Attach the user to the `Associate` group.
@@ -363,6 +369,11 @@ class AssociateRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
     telephone = PhoneNumberField()
     other_telephone = PhoneNumberField(allow_null=True, required=False)
 
+    is_active = serializers.BooleanField(
+        write_only=True,
+        required=True,
+    )
+
     class Meta:
         model = Associate
         fields = (
@@ -381,6 +392,7 @@ class AssociateRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
             'join_date',
 
             # Misc (Read/Write)
+            'is_active',
             'tags',
             'is_ok_to_email',
             'is_ok_to_text',
@@ -460,6 +472,9 @@ class AssociateRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         if other_telephone is not None:
             validated_data['other_telephone'] = phonenumbers.parse(other_telephone, "CA")
 
+        # Is active.
+        is_active = validated_data.get('is_active', instance.owner.is_active)
+
         #---------------------------
         # Update `SharedUser` object.
         #---------------------------
@@ -468,7 +483,8 @@ class AssociateRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
             defaults={
                 'email': email,
                 'first_name': validated_data.get('given_name', instance.given_name),
-                'last_name': validated_data.get('last_name', instance.last_name)
+                'last_name': validated_data.get('last_name', instance.last_name),
+                'is_active': validated_data.get('is_active', instance.owner.is_active),
             }
         )
         print("INFO: Updated shared user.")

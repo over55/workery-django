@@ -61,6 +61,12 @@
         {% else %}
             $("#ok_to_text2").prop("checked", true);
         {% endif %}
+
+        {% if associate.owner.is_active == True %}
+            $("#is_active").prop("checked", true);
+        {% else %}
+            $("#is_active2").prop("checked", true);
+        {% endif %}
     }); // end Ready
 
     /**
@@ -124,8 +130,8 @@
 
     function valid_radiofields_seleciton(radiofields_name, is_required) {
         var value = get_selected_radio_value(radiofields_name);
-	var radiofield_error = document.getElementById(radiofields_name+'-error');
-	    
+	    var radiofield_error = document.getElementById(radiofields_name+'-error');
+
         if (is_required) {
             if (value == undefined || value === null || value.length == 0) {
                 radiofield_error.innerHTML = "Please select option.";
@@ -167,6 +173,7 @@
         has_error |= valid_textfield_value('post_office_box_number', false, 3);
         has_error |= valid_textfield_value('password', false, 2);
         has_error |= valid_textfield_value('password_repeat', false, 2);
+        has_error |= valid_radiofields_seleciton('is_active', true);
 
         // INTERRUPT THE FORM SUBMISSION IF ANY ERRORS EXISTED AND UPDATE THE
         // GUI TO INDICATE THAT WE HAVE VALIDATED SOME FIELDS.
@@ -223,6 +230,13 @@
         var skill_sets = $('#skill_sets').val();
         var description = $('#describe').val();
 
+        var is_active = get_selected_radio_value('is_active');
+        if (is_active == 'yes') {
+            is_active = true;
+        } else {
+            is_active = false;
+        }
+
         // LOCK OUT THE "SUBMIT" BUTTON SO THE USER DOES NOT MAKE MULTI-CALLS.
         disable_btn();
 
@@ -261,6 +275,7 @@
                 'fax_number': null,
                 'password': password,
                 'password_repeat': password_repeat,
+                'is_active': is_active,
             },
             function(result_dict) { // Success
                 console.log(result_dict);
@@ -521,7 +536,7 @@
             </div>
             <!-- ############ end LOCATION ############ -->
             <!-- ############ SECURITY ############ -->
-            <p class="border-bottom mb-3 pb-1 text-secondary">Account Security</p>
+            <p class="border-bottom mb-3 pb-1 text-secondary">Account Settings</p>
             <div class="form-row">
                 <div class="form-group col-md-12 mb-4">
                     <label for="password">Password</label>
@@ -558,6 +573,18 @@
                     minlength="2"
                     maxlength="30" required />
                     <div id="password_repeat-error" class="invalid-feedback"></div>
+                </div>
+                <div class="form-group col-md-12 mb-4">
+                    <p class="mb-1">Is active? <sup>*</sup></p>
+                    <div class="form-radio custom-control custom-radio custom-control-inline">
+                        <input type="radio" id="is_active" name="is_active" value="yes" class="custom-control-input form-check-input">
+                        <label class="custom-control-label form-check-label" for="is_active">Yes</label>
+                    </div>
+                    <div class="form-radio custom-control custom-radio custom-control-inline">
+                        <input type="radio" id="is_active2" name="is_active" value="no" class="custom-control-input form-check-input">
+                        <label class="custom-control-label form-check-label" for="is_active2">No</label>
+                        <div id="is_active-error" class="invalid-feedback ml-2"></div>
+                    </div>
                 </div>
             </div>
             <!-- ############ end SECURITY ############ -->
