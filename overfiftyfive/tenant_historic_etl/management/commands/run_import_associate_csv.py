@@ -177,6 +177,12 @@ class Command(BaseCommand):
             cell = cell.replace(' ', '')
             cell = cell.replace('.', '')
 
+            # Convert is active to be python boolean.
+            if is_active == '0':
+                is_active = False
+            if is_active == '1':
+                is_active = True
+
             # Create or update our user.
             user = None
             email = None
