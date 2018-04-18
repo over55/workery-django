@@ -73,6 +73,11 @@
                     <input type="text" class="form-control form-control-lg border border-primary" id="phonenumber" name="telephone" placeholder="(xxx) xxx-xxxx" minlength="10" maxlength="14">
                     <div id="phonenumber-error" class="invalid-feedback"></div>
                 </div>
+		<div class="form-group col-md-12 mb-4">
+	        	<label for="email-id">E-mail</label>
+	        	<input type="email" class="form-control form-control-lg border border-primary" id="email-id" name="email_id" placeholder="Email ID">
+	        	<div id="email-error" class="invalid-feedback"></div>
+	        </div>
             </div>
 
 
@@ -129,7 +134,8 @@
 
 
             <div class="form-group col-md-12 mb-3 mx-auto text-center">
-                <button class="btn btn-success btn-lg btn-fxw mt-3" type="submit"><i class="fas fa-search"></i> Search</button> <button type="reset" class="ml-2 btn btn-secondary btn-lg mt-3" value="Reset">Reset</button>
+		<div id="form-error" class="invalid-feedback"></div>
+                <button class="btn btn-success btn-lg btn-fxw mt-3" type="submit"><i class="fas fa-search"></i> Search</button> 
             </div>
         </form>
     </div>
@@ -156,6 +162,9 @@
 
                 var lastname = document.getElementById('lastname');
                 var l_error = document.getElementById('lastname-error');
+		
+		var email_id = document.getElementById('email-id');
+                var email_error = document.getElementById('email-error');
 
                 var phonenumber = document.getElementById('phonenumber');
                 var pn_error = document.getElementById('phonenumber-error');
@@ -209,6 +218,16 @@
                             form_advanced_search.classList.add('was-validated');
                             e.preventDefault();
                         }
+			if(email_id.validity.valueMissing) {
+			    email_error.innerHTML = "Field should not be blank.";
+			    form_advanced_search.classList.add('was-validated');
+			    e.preventDefault();
+			}
+			if(email_id.validity.typeMismatch || email_id.validity.tooShort) {
+			    email_error.innerHTML = "Please provide a valid E-mail ID.";
+			    form_advanced_search.classList.add('was-validated');
+			    e.preventDefault();
+			}
                         if(phonenumber.validity.valueMissing) {
                             pn_error.innerHTML = "Field should not be blank.";
                             form_advanced_search.classList.add('was-validated');
@@ -293,10 +312,13 @@
                 $(function(){
                     $('#advanced-searchForm').on('submit',function(e){
                         var oneFilled = checkFields($(this));
+			var form_error = document.getElementById('form-error');
                         if(oneFilled === true) {
                             return true;
                         }else {
-                            alert('Please fill in atleast one field and hit search.');
+                            form_error.innerHTML = "Please fill in atleast one field and hit search.";
+			    form_error.style.display = "block";
+			    form_advanced_search.classList.add('was-validated');
                             e.preventDefault();
                         }
                     });
