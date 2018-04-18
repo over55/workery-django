@@ -185,15 +185,12 @@ class Command(BaseCommand):
 
             # Create or update our user.
             user = None
-            email = None
             created = False
-            if email is not None and email != "":
+            if email is not None:
                 user, created = SharedUser.objects.update_or_create(
-                    first_name=first_name,
-                    last_name=last_name,
                     email=email,
                     defaults={
-                        'first_name': first_name,
+                        'first_name': given_name,
                         'last_name': last_name,
                         'email': email,
                         'is_active': is_active,
