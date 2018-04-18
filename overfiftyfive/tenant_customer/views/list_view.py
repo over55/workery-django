@@ -12,7 +12,6 @@ from tenant_foundation.models import Customer
 @method_decorator(login_required, name='dispatch')
 class CustomerSummaryView(ListView, ExtraRequestProcessingMixin):
     context_object_name = 'customer_list'
-    queryset = Customer.objects.order_by('-created')
     template_name = 'tenant_customer/summary/view.html'
     paginate_by = 100
 
@@ -31,15 +30,13 @@ class CustomerSummaryView(ListView, ExtraRequestProcessingMixin):
         return modified_context
 
     def get_queryset(self):
-        queryset = Customer.objects.all()
-        queryset = queryset.order_by('-created')
+        queryset = Customer.objects.all().order_by('-id')
         return queryset
 
 
 @method_decorator(login_required, name='dispatch')
 class CustomerListView(ListView, ExtraRequestProcessingMixin):
     context_object_name = 'customer_list'
-    queryset = Customer.objects.order_by('-created')
     template_name = 'tenant_customer/list/view.html'
     paginate_by = 100
 
@@ -49,7 +46,7 @@ class CustomerListView(ListView, ExtraRequestProcessingMixin):
         return context
 
     def get_queryset(self):
-        queryset = super(CustomerListView, self).get_queryset().order_by('given_name', 'last_name') # Get the base.
+        queryset = Customer.objects.all().order_by('given_name', 'last_name')
 
         # The following code will use the 'django-filter'
         filter = CustomerFilter(self.request.GET, queryset=queryset)

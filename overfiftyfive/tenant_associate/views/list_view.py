@@ -35,8 +35,7 @@ class MemberSummaryView(ListView, ExtraRequestProcessingMixin):
         return modified_context
 
     def get_queryset(self):
-        queryset = Associate.objects.filter(owner__is_active=True)
-        queryset = queryset.order_by('-id')
+        queryset = Associate.objects.filter(owner__is_active=True).order_by('-id')
         return queryset
 
 

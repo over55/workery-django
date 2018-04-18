@@ -17,7 +17,6 @@ from tenant_foundation.models import Staff
 @method_decorator(login_required, name='dispatch')
 class TeamSummaryView(ListView, ExtraRequestProcessingMixin):
     context_object_name = 'staff_list'
-    queryset = Staff.objects.order_by('-created')
     template_name = 'tenant_team/summary/view.html'
     paginate_by = 100
 
@@ -36,8 +35,7 @@ class TeamSummaryView(ListView, ExtraRequestProcessingMixin):
         return modified_context
 
     def get_queryset(self):
-        queryset = Staff.objects.all()
-        queryset = queryset.order_by('-created')
+        queryset = Staff.objects.all().order_by('-id')
         return queryset
 
 
@@ -49,7 +47,6 @@ class TeamSummaryView(ListView, ExtraRequestProcessingMixin):
 @method_decorator(login_required, name='dispatch')
 class TeamListView(ListView, ExtraRequestProcessingMixin):
     context_object_name = 'staff_list'
-    queryset = Staff.objects.order_by('-created')
     template_name = 'tenant_team/list/view.html'
     paginate_by = 100
 
@@ -59,8 +56,7 @@ class TeamListView(ListView, ExtraRequestProcessingMixin):
         return context
 
     def get_queryset(self):
-        queryset = super(TeamListView, self).get_queryset() # Get the base.
-        print(queryset)
+        queryset = Staff.objects.all().order_by('given_name', 'last_name')
 
         # The following code will use the 'django-filter'
         filter = StaffFilter(self.request.GET, queryset=queryset)
