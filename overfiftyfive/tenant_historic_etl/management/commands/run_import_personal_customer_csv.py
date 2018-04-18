@@ -107,119 +107,122 @@ class Command(BaseCommand):
         try:
             # Fetch our values.
             pk = int_or_none(row_dict[0])
-            project_date = row_dict[1]
-            last_name = row_dict[2]
-            first_name = row_dict[3]
-            home_phone = row_dict[4]
-            postal_code = row_dict[5]
-            job_info_read = row_dict[6]
-            learn_about = row_dict[7]
-            is_support = bool_or_none(row_dict[8])
-            is_senior = bool_or_none(row_dict[9])
-            birthdate = row_dict[10]
-            job_description = row_dict[11]
-            address = row_dict[12]
-            city = row_dict[13]
-            email = row_dict[14]
-            url = None
-            telephone_extension = None
+            
+            if pk > 99000: # Do not include test record.
 
-            # Minor formatting.
-            email = email.replace(';', '')
-            email = email.replace(':', '')
-            email = email.replace('NONE', '')
-            email = email.replace('N/A', '')
-            email = email.replace(' ', '')
-            email = email.lower()
-            address = '-' if address is '' else address
-            address = '-' if address is None else address
-            city = "London" if city is '' else city
-            if "www" in email.lower():
-                url = "http://"+email.lower()
-                email = ""
-            if "ext" in email.lower():
-                telephone_extension = email
-                email = ""
-            home_phone = home_phone.replace('(', '')
-            home_phone = home_phone.replace(')', '')
-            home_phone = home_phone.replace('-', '')
-            home_phone = home_phone.replace(' ', '')
-            home_phone = home_phone.replace('.', '')
-            home_phone = int_or_none(home_phone)
+                project_date = row_dict[1]
+                last_name = row_dict[2]
+                first_name = row_dict[3]
+                home_phone = row_dict[4]
+                postal_code = row_dict[5]
+                job_info_read = row_dict[6]
+                learn_about = row_dict[7]
+                is_support = bool_or_none(row_dict[8])
+                is_senior = bool_or_none(row_dict[9])
+                birthdate = row_dict[10]
+                job_description = row_dict[11]
+                address = row_dict[12]
+                city = row_dict[13]
+                email = row_dict[14]
+                url = None
+                telephone_extension = None
 
-            # Convert the datetime.
-            local_birthdate = get_utc_dt_from_toronto_dt_string(birthdate)
-            local_project_date = get_utc_dt_from_toronto_dt_string(project_date)
+                # Minor formatting.
+                email = email.replace(';', '')
+                email = email.replace(':', '')
+                email = email.replace('NONE', '')
+                email = email.replace('N/A', '')
+                email = email.replace(' ', '')
+                email = email.lower()
+                address = '-' if address is '' else address
+                address = '-' if address is None else address
+                city = "London" if city is '' else city
+                if "www" in email.lower():
+                    url = "http://"+email.lower()
+                    email = ""
+                if "ext" in email.lower():
+                    telephone_extension = email
+                    email = ""
+                home_phone = home_phone.replace('(', '')
+                home_phone = home_phone.replace(')', '')
+                home_phone = home_phone.replace('-', '')
+                home_phone = home_phone.replace(' ', '')
+                home_phone = home_phone.replace('.', '')
+                home_phone = int_or_none(home_phone)
 
-            # Create or update our user if it exists
-            user = None
-            email = None
-            created = False
-            if email is not None and email != "":
-                user, created = SharedUser.objects.update_or_create(
-                    first_name=first_name,
-                    last_name=last_name,
-                    email=email,
+                # Convert the datetime.
+                local_birthdate = get_utc_dt_from_toronto_dt_string(birthdate)
+                local_project_date = get_utc_dt_from_toronto_dt_string(project_date)
+
+                # Create or update our user if it exists
+                user = None
+                email = None
+                created = False
+                if email is not None and email != "":
+                    user, created = SharedUser.objects.update_or_create(
+                        first_name=first_name,
+                        last_name=last_name,
+                        email=email,
+                        defaults={
+                            'first_name': first_name,
+                            'last_name': last_name,
+                            'email': email,
+                            'is_active': True,
+                            'date_joined': local_project_date
+                        }
+                    )
+
+                if created:
+                    # Generate and assign the password.
+                    user.set_password(get_random_string())
+                    user.save()
+
+                    # Attach our user to the "CUSTOMER_GROUP_ID"
+                    user.groups.add(CUSTOMER_GROUP_ID)
+
+                # Format telephone number.
+                if home_phone:
+                    home_phone = phonenumbers.parse(str(home_phone), "CA")
+
+                # Insert our extracted data into our database.
+                customer, create = Customer.objects.update_or_create(
+                    id=pk,
                     defaults={
-                        'first_name': first_name,
-                        'last_name': last_name,
+                        'id': pk,
+                        'owner': user,
+                        'last_name':last_name,
+                        'given_name':first_name,
+                        # 'middle_name':middle_name,
+                        'telephone': home_phone,
+                        'telephone_extension': telephone_extension,
+                        'telephone_type_of': TELEPHONE_CONTACT_POINT_TYPE_OF_ID,
+                        'postal_code': postal_code,
+                        'birthdate': local_birthdate,
+                        'street_address': address,
+                        'address_locality': city,
+                        'address_country': 'Canada',
+                        'address_region': 'Ontario',
                         'email': email,
-                        'is_active': True,
-                        'date_joined': local_project_date
+                        'join_date': local_project_date,
+                        'job_info_read': job_info_read,
+                        'how_hear': learn_about,
+                        'description': job_description,
+                        'is_senior': bool(is_senior),
+                        'is_support': bool(is_support),
+                        'is_business': False,
+                        'last_modified_by': None,
+                        'created_by': None,
+                        'type_of': RESIDENTIAL_CUSTOMER_TYPE_OF_ID
+
                     }
                 )
 
-            if created:
-                # Generate and assign the password.
-                user.set_password(get_random_string())
-                user.save()
-
-                # Attach our user to the "CUSTOMER_GROUP_ID"
-                user.groups.add(CUSTOMER_GROUP_ID)
-
-            # Format telephone number.
-            if home_phone:
-                home_phone = phonenumbers.parse(str(home_phone), "CA")
-
-            # Insert our extracted data into our database.
-            customer, create = Customer.objects.update_or_create(
-                id=pk,
-                defaults={
-                    'id': pk,
-                    'owner': user,
-                    'last_name':last_name,
-                    'given_name':first_name,
-                    # 'middle_name':middle_name,
-                    'telephone': home_phone,
-                    'telephone_extension': telephone_extension,
-                    'telephone_type_of': TELEPHONE_CONTACT_POINT_TYPE_OF_ID,
-                    'postal_code': postal_code,
-                    'birthdate': local_birthdate,
-                    'street_address': address,
-                    'address_locality': city,
-                    'address_country': 'Canada',
-                    'address_region': 'Ontario',
-                    'email': email,
-                    'join_date': local_project_date,
-                    'job_info_read': job_info_read,
-                    'how_hear': learn_about,
-                    'description': job_description,
-                    'is_senior': bool(is_senior),
-                    'is_support': bool(is_support),
-                    'is_business': False,
-                    'last_modified_by': None,
-                    'created_by': None,
-                    'type_of': RESIDENTIAL_CUSTOMER_TYPE_OF_ID
-
-                }
-            )
-
-            # For debugging purposes only.
-            # self.stdout.write(
-            #     self.style.SUCCESS(_('Imported (Personal) Customer #%(id)s.') % {
-            #         'id': str(index)
-            #     })
-            # )
+                # For debugging purposes only.
+                # self.stdout.write(
+                #     self.style.SUCCESS(_('Imported (Personal) Customer #%(id)s.') % {
+                #         'id': str(index)
+                #     })
+                # )
 
         except Exception as e:
             self.stdout.write(
