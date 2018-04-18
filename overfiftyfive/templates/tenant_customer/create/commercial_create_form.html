@@ -342,9 +342,9 @@
             <div class="form-group col-md-4 mb-4">
                 <label for="phonetype">&nbsp;</label>
                 <select class="custom-select form-control-lg border-primary" id="phonetype" name="phonetype" required="">
+                    <option selected value="{{ shared_constants.WORK_CONTACT_POINT_TYPE_OF_ID }}">Work</option>
                     <option value="{{ shared_constants.TELEPHONE_CONTACT_POINT_TYPE_OF_ID }}">Landline</option>
-                    <option value="{{ shared_constants.MOBILE_CONTACT_POINT_TYPE_OF_ID }}" selected>Mobile</option>
-                    <option value="{{ shared_constants.WORK_CONTACT_POINT_TYPE_OF_ID }}">Work</option>
+                    <option value="{{ shared_constants.MOBILE_CONTACT_POINT_TYPE_OF_ID }}">Mobile</option>
                 </select>
                 <div id="phonetype-error" class="invalid-feedback"></div>
             </div>
@@ -356,9 +356,9 @@
             <div class="form-group col-md-4 mb-4">
                 <label for="other_phonenumber_type">&nbsp;</label>
                 <select class="custom-select form-control-lg border-success" id="other_phonenumber_type" name="other_phonenumber_type">
+                    <option selected value="{{ shared_constants.WORK_CONTACT_POINT_TYPE_OF_ID }}">Work</option>
                     <option value="{{ shared_constants.TELEPHONE_CONTACT_POINT_TYPE_OF_ID }}">Landline</option>
-                    <option value="{{ shared_constants.MOBILE_CONTACT_POINT_TYPE_OF_ID }}" selected>Mobile</option>
-                    <option value="{{ shared_constants.WORK_CONTACT_POINT_TYPE_OF_ID }}">Work</option>
+                    <option value="{{ shared_constants.MOBILE_CONTACT_POINT_TYPE_OF_ID }}">Mobile</option>
                 </select>
                 <div id="other_phonenumber_type-error" class="invalid-feedback"></div>
             </div>
