@@ -73,6 +73,11 @@
                     <input type="text" class="form-control form-control-lg border border-primary" id="phonenumber" name="telephone" placeholder="(xxx) xxx-xxxx" minlength="10" maxlength="14">
                     <div id="phonenumber-error" class="invalid-feedback"></div>
                 </div>
+		<div class="form-group col-md-12 mb-4">
+	        	<label for="email-id">E-mail</label>
+	        	<input type="email" class="form-control form-control-lg border border-primary" id="email-id" name="email_id" placeholder="Email ID">
+	        	<div id="email-error" class="invalid-feedback"></div>
+	        </div>
             </div>
 
 
@@ -156,6 +161,9 @@
 
                 var lastname = document.getElementById('lastname');
                 var l_error = document.getElementById('lastname-error');
+		
+		var email_id = document.getElementById('email-id');
+                var email_error = document.getElementById('email-error');
 
                 var phonenumber = document.getElementById('phonenumber');
                 var pn_error = document.getElementById('phonenumber-error');
@@ -209,6 +217,16 @@
                             form_advanced_search.classList.add('was-validated');
                             e.preventDefault();
                         }
+			if(email_id.validity.valueMissing) {
+			    email_error.innerHTML = "Field should not be blank.";
+			    form_advanced_search.classList.add('was-validated');
+			    e.preventDefault();
+			}
+			if(email_id.validity.typeMismatch || email_id.validity.tooShort) {
+			    email_error.innerHTML = "Please provide a valid E-mail ID.";
+			    form_advanced_search.classList.add('was-validated');
+			    e.preventDefault();
+			}
                         if(phonenumber.validity.valueMissing) {
                             pn_error.innerHTML = "Field should not be blank.";
                             form_advanced_search.classList.add('was-validated');
