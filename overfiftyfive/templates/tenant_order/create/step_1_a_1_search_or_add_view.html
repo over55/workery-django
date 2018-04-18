@@ -29,6 +29,9 @@
 
                 var lastname = document.getElementById('lastname');
                 var l_error = document.getElementById('lastname-error');
+		
+		var email_id = document.getElementById('email-id');
+                var email_error = document.getElementById('email-error');
 
                 var phonenumber = document.getElementById('phonenumber');
                 var pn_error = document.getElementById('phonenumber-error');
@@ -61,6 +64,16 @@
                             form_advanced_search.classList.add('was-validated');
                             e.preventDefault();
                         }
+			if(email_id.validity.valueMissing) {
+			    email_error.innerHTML = "Field should not be blank.";
+			    form_advanced_search.classList.add('was-validated');
+			    e.preventDefault();
+			}
+			if(email_id.validity.typeMismatch || email_id.validity.tooShort) {
+			    email_error.innerHTML = "Please provide a valid E-mail ID.";
+			    form_advanced_search.classList.add('was-validated');
+			    e.preventDefault();
+			}
                         if(phonenumber.validity.valueMissing) {
                             pn_error.innerHTML = "Field should not be blank.";
                             form_advanced_search.classList.add('was-validated');
@@ -174,35 +187,31 @@
 	<p><strong>Search for existing client:</strong></p>
     <form id="advanced-searchForm" method="get" class="needs-validation" action="{% url "o55_tenant_job_customer_search_results_create" %}" novalidate>
       <div class="form-row">
-	    <div class="col-md-12 mb-3">
-	      <div class="form-group">
+	      <div class="form-group col-md-12 mb-4">
               <label for="firstname">First name</label>
               <input type="text" class="form-control form-control-lg border border-primary" id="firstname" name="given_name" placeholder="First name" minlength="3">
               <div id="firstname-error" class="invalid-feedback"></div>
 	      </div>
-	      <div class="form-group">
+	      <div class="form-group col-md-12 mb-4">
               <label for="lastname">Last name</label>
               <input type="text" class="form-control form-control-lg border border-primary" id="lastname" name="last_name" placeholder="Last name" minlength="3">
               <div id="lastname-error" class="invalid-feedback"></div>
 	      </div>
-	      <div class="form-group">
+	      <div class="form-group col-md-7 mb-4">
               <label for="phonenumber">Phone</label>
               <input type="text" class="form-control form-control-lg border border-primary" id="phonenumber" name="telephone" placeholder="(xxx) xxx-xxxx" minlength="10" maxlength="14">
               <div id="phonenumber-error" class="invalid-feedback"></div>
 	      </div>
-	      <div class="form-group">
-	        <label for="validationCustom04">E-mail</label>
-	        <input type="text" class="form-control form-control-lg border border-primary" id="validationCustom04" placeholder="Email ID" required>
-	        <div class="invalid-feedback">
-	          Please provide a valid E-mail ID.
-	        </div>
+	      <div class="form-group col-md-12 mb-4">
+	        <label for="email-id">E-mail</label>
+	        <input type="email" class="form-control form-control-lg border border-primary" id="email-id" name="email_id" placeholder="Email ID" required>
+	        <div id="email-error" class="invalid-feedback"></div>
 	      </div>
-	    </div>
-
+	    
 	    <div class="col-md-8 mb-3 mt-2 text-center mx-auto">
 		<div id="form-error" class="invalid-feedback"></div>
 		<div class="align-self-center">
-			<button class="btn btn-success btn-lg btn-block" type="submit"><i class="fas fa-search"></i> Search</button>
+			<button class="btn btn-success btn-lg btn-block mt-3" type="submit"><i class="fas fa-search"></i> Search</button>
 	        </div>
 	    </div>
 	  </div>
