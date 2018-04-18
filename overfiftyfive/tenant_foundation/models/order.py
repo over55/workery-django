@@ -110,11 +110,11 @@ class Order(models.Model):
         blank=True,
         null=True
     )
-    category_tags = models.ManyToManyField(
+    tags = models.ManyToManyField(
         "Tag",
         help_text=_('The category tags that this order belongs to.'),
         blank=True,
-        related_name="%(app_label)s_%(class)s_category_tags_related",
+        related_name="%(app_label)s_%(class)s_tags_related",
     )
     is_ongoing = models.BooleanField(
         _("Is ongoing"),

@@ -37,6 +37,7 @@ from tenant_foundation.models import (
     Organization,
     Order,
     # OrderComment,
+    SkillSet,
     Tag
 )
 from tenant_foundation.utils import *
@@ -165,9 +166,6 @@ class Command(BaseCommand):
                 hours = 0
             hours = int(float(hours))
 
-            # Update the tag.
-            tag, create = Tag.objects.get_or_create(text=job_type)
-
             # Lookup the customer and process it if the customer exists.
             customer = Customer.objects.filter(id=int_or_none(customer_pk),).first()
 
@@ -196,8 +194,10 @@ class Command(BaseCommand):
                 )
 
                 # Added to tags.
-                if tag and order:
-                    order.category_tags.add(tag)
+                if job_type:
+                    skill_set = SkillSet.objects.filter(sub_category=job_type).last()
+                    if skill_set and order:
+                        order.skill_sets.add(skill_set)
 
                 # # Add comments.
                 # if comment:

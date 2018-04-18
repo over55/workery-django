@@ -124,7 +124,7 @@ class OrderListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
             created_by=SharedUser.objects.get(email="fherbert@overfiftyfive.com"),
             last_modified_by=None
         )
-        self.order.category_tags.set([self.tag])
+        self.order.tags.set([self.tag])
 
     @transaction.atomic
     def tearDown(self):
@@ -232,7 +232,7 @@ class OrderListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
             'street_address': '78 Riverside Drive',
             'postal_code': 'N6H 1B4',
             'assignment_date': "2018-01-30",
-            'category_tags': [self.tag.id],
+            'tags': [self.tag.id],
             'extra_comment': "This is an extra comment.",
             'skill_sets': [
                 skill_set_1.id,
@@ -247,7 +247,7 @@ class OrderListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
         self.assertIn("Ikari", str(response.data))
         self.assertIn("Rei", str(response.data))
         self.assertIn("Ayanami", str(response.data))
-        self.assertIn("[1]", str(response.data)) # category_tags
+        self.assertIn("[1]", str(response.data)) # tags
         self.assertIn("Ceramic Tile", str(response.data))
         self.assertIn("Carpentry", str(response.data))
         self.assertIn("This is an extra comment.", str(response.data))
@@ -265,7 +265,7 @@ class OrderListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
             'street_address': '78 Riverside Drive',
             'postal_code': 'N6H 1B4',
             'assignment_date': "2018-01-30",
-            'category_tags': [],
+            'tags': [],
             'extra_comment': "This is an extra comment.",
             'skill_sets': [
                 skill_set_1.id,
@@ -279,7 +279,7 @@ class OrderListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
         self.assertIn("Ikari", str(response.data))
         self.assertIn("Rei", str(response.data))
         self.assertIn("Ayanami", str(response.data))
-        self.assertIn("[]", str(response.data)) # category_tags
+        self.assertIn("[]", str(response.data)) # tags
         self.assertIn("Ceramic Tile", str(response.data))
         self.assertIn("Carpentry", str(response.data))
         self.assertIn("This is an extra comment.", str(response.data))
@@ -297,7 +297,7 @@ class OrderListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
             'street_address': '78 Riverside Drive',
             'postal_code': 'N6H 1B4',
             'assignment_date': "2018-01-30",
-            'category_tags': [],
+            'tags': [],
             'extra_comment': "This is an extra comment.",
             'skill_sets': [
                 skill_set_1.id,
@@ -363,7 +363,7 @@ class OrderListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
             'associate': self.associate.id,
             'completion_date': '2019-01-25',
             'assignment_date': "2018-01-30",
-            'category_tags': [self.tag.id],
+            'tags': [self.tag.id],
             'extra_comment': "This is an extra comment.",
             'skill_sets': [
                 skill_set_1.id,
@@ -410,7 +410,7 @@ class OrderListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
             'associate': self.associate.id,
             'completion_date': '2019-01-25',
             'assignment_date': "2018-01-30",
-            'category_tags': [],
+            'tags': [],
             'comments': []
         })
         response = self.customer_client.put(url, data=data, content_type='application/json')

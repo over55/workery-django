@@ -33,7 +33,7 @@ class OrderListCreateSerializer(serializers.ModelSerializer):
     customer_last_name = serializers.ReadOnlyField(source='customer.owner.last_name')
     # created_by = serializers.ReadOnlyField()
     # last_modified_by = serializers.ReadOnlyField()
-    category_tags = serializers.PrimaryKeyRelatedField(many=True, queryset=Tag.objects.all(), allow_null=True)
+    tags = serializers.PrimaryKeyRelatedField(many=True, queryset=Tag.objects.all(), allow_null=True)
 
     # All comments are created by our `create` function and not by
     # `django-rest-framework`.
@@ -68,7 +68,7 @@ class OrderListCreateSerializer(serializers.ModelSerializer):
             # Read / write fields.
             'assignment_date',
             'associate',
-            'category_tags',
+            'tags',
             'completion_date',
             'customer',
             'hours',
@@ -87,7 +87,7 @@ class OrderListCreateSerializer(serializers.ModelSerializer):
         """ Perform necessary eager loading of data. """
         queryset = queryset.prefetch_related(
             'associate',
-            'category_tags',
+            'tags',
             'created_by',
             'customer',
             # 'comments',
@@ -132,9 +132,9 @@ class OrderListCreateSerializer(serializers.ModelSerializer):
         #-----------------------------
         # Set our `Tags` objects.
         #-----------------------------
-        category_tags = validated_data.get('category_tags', None)
-        if category_tags is not None:
-            order.category_tags.set(category_tags)
+        tags = validated_data.get('tags', None)
+        if tags is not None:
+            order.tags.set(tags)
 
         #-----------------------------
         # Set our `SkillSet` objects.
@@ -179,7 +179,7 @@ class OrderRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
     customer_last_name = serializers.ReadOnlyField(source='customer.owner.last_name')
     # created_by = serializers.ReadOnlyField()
     # last_modified_by = serializers.ReadOnlyField()
-    category_tags = serializers.PrimaryKeyRelatedField(many=True, queryset=Tag.objects.all(), allow_null=True)
+    tags = serializers.PrimaryKeyRelatedField(many=True, queryset=Tag.objects.all(), allow_null=True)
 
     # All comments are created by our `create` function and not by
     # `django-rest-framework`.
@@ -214,7 +214,7 @@ class OrderRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
             # Read or write fields.
             'assignment_date',
             'associate',
-            'category_tags',
+            'tags',
             'completion_date',
             'customer',
             'hours',
@@ -233,7 +233,7 @@ class OrderRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         """ Perform necessary eager loading of data. """
         queryset = queryset.prefetch_related(
             'associate',
-            'category_tags',
+            'tags',
             'created_by',
             'customer',
             # 'comments',
@@ -272,9 +272,9 @@ class OrderRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         #-----------------------------
         # Set our `Tags` objects.
         #-----------------------------
-        category_tags = validated_data.get('category_tags', None)
-        if category_tags is not None:
-            instance.category_tags.set(category_tags)
+        tags = validated_data.get('tags', None)
+        if tags is not None:
+            instance.tags.set(tags)
 
         #-----------------------------
         # Set our `SkillSet` objects.
