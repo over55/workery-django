@@ -17,7 +17,6 @@ from tenant_foundation.models import Associate
 @method_decorator(login_required, name='dispatch')
 class MemberSummaryView(ListView, ExtraRequestProcessingMixin):
     context_object_name = 'associate_list'
-    queryset = Associate.objects.order_by('-created')
     template_name = 'tenant_associate/summary/view.html'
     paginate_by = 100
 
@@ -36,8 +35,8 @@ class MemberSummaryView(ListView, ExtraRequestProcessingMixin):
         return modified_context
 
     def get_queryset(self):
-        queryset = Associate.objects.all()
-        queryset = queryset.order_by('-created')
+        queryset = Associate.objects.filter(owner__is_active=True)
+        queryset = queryset.order_by('-id')
         return queryset
 
 
@@ -49,7 +48,6 @@ class MemberSummaryView(ListView, ExtraRequestProcessingMixin):
 @method_decorator(login_required, name='dispatch')
 class MemberListView(ListView, ExtraRequestProcessingMixin):
     context_object_name = 'associate_list'
-    queryset = Associate.objects.order_by('-created')
     template_name = 'tenant_associate/list/view.html'
     paginate_by = 100
 
@@ -59,6 +57,5 @@ class MemberListView(ListView, ExtraRequestProcessingMixin):
         return context
 
     def get_queryset(self):
-        queryset = super(MemberListView, self).get_queryset() # Get the base.
-        queryset = queryset.order_by('given_name', 'last_name')
+        queryset = Associate.objects.order_by('given_name', 'last_name')
         return queryset

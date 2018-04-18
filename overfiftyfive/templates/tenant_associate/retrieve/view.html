@@ -219,7 +219,11 @@
                 <div class="form-group col-md-12 mb-4">
                     <label for="is_active">Is active</label>
                     <p>
-                        {% if associate.owner.is_active == True %}Yes{% else %}No{% endif %}
+                        {% if associate.owner %}
+                            {% if associate.owner.is_active == True %}Yes{% else %}No{% endif %}
+                        {% else %}
+                            No - No account exists because email not set.
+                        {% endif %}
                     </p>
                     <div id="is_active-error" class="invalid-feedback"></div>
                 </div>

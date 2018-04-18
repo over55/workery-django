@@ -472,9 +472,6 @@ class AssociateRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         if other_telephone is not None:
             validated_data['other_telephone'] = phonenumbers.parse(other_telephone, "CA")
 
-        # Is active.
-        is_active = validated_data.get('is_active', instance.owner.is_active)
-
         #---------------------------
         # Update `SharedUser` object.
         #---------------------------
@@ -484,7 +481,7 @@ class AssociateRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
                 'email': email,
                 'first_name': validated_data.get('given_name', instance.given_name),
                 'last_name': validated_data.get('last_name', instance.last_name),
-                'is_active': validated_data.get('is_active', instance.owner.is_active),
+                'is_active': validated_data.get('is_active', False)
             }
         )
         print("INFO: Updated shared user.")

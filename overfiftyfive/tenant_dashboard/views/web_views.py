@@ -13,7 +13,7 @@ def master_page(request):
     """
     return render(request, 'tenant_dashboard/master_view.html',{
         'current_page': 'dashboard', # Required
-        'associates_count': Associate.objects.all().count(),
+        'associates_count': Associate.objects.filter(owner__is_active=True).count(),
         'customers_count': Customer.objects.all().count(),
         'jobs_count': Order.objects.all().count()
     })
