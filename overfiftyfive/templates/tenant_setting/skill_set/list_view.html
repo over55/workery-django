@@ -112,7 +112,7 @@
                     <td>
 
                         <button id="id_delete_btn"
-                             class="btn btn-danger btn-lg mt-4 float-right pl-4 pr-4"
+                             class="btn btn-danger btn-lg m-2 float-right px-4"
                               type="button"
                            onclick="ajax_delete({{ skill_set.id }});">
                          <i class="fas fa-trash"></i>
@@ -121,9 +121,9 @@
 
                         <a href="{% url 'o55_tenant_settings_skill_set_update' skill_set.id %}">
                         <button id="id_delete_btn"
-                             class="btn btn-warning btn-lg mt-4 float-right pl-4 pr-4"
+                             class="btn btn-primary btn-lg m-2 float-right px-4"
                               type="button">
-                         <i class="fas fa-arrow-right"></i>
+                         <i class="fas fa-pencil-alt"></i>
                          {% trans 'Edit' %}
                         </button>
                         </a>
