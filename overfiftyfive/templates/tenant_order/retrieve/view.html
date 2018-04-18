@@ -139,7 +139,7 @@
                         <label for="skill_sets">Skill Sets</label>
                         <p>
                             {% for skill_set in job.skill_sets.all %}
-                                <span class="badge badge-info badge-lg">{{ skill_set }}</span>
+                                <span class="badge badge-info badge-lg">{{ skill_set.sub_category }}</span>
                             {% empty %}
                                 -
                             {% endfor %}

@@ -122,10 +122,7 @@
                 <div class="form-group p-0 col-md-7 mb-4">
                     <label for="tags">Tags</label>
                     <p>
-                        {% for tag in staff.tags.all %}
-                            <span class="badge badge-info badge-lg" id="tag_id_{{ tag.id }}">{{ tag }}</span>
-                        {% empty %}-
-                        {% endfor %}
+                        {% for tag in staff.tags.all %}<span class="badge badge-info badge-lg" id="tag_id_{{ tag.id }}">{{ tag }}</span>{% empty %}-{% endfor %}
                     </p>
                     <div id="tags-error" class="invalid-feedback"></div>
                 </div>
@@ -133,8 +130,9 @@
                     <label for="skill_sets">Skill sets</label>
                     <p>
                         {% for skill_set in staff.skill_sets.all %}
-                            <span class="badge badge-info badge-lg" id="skill_set_id_{{ skill_set.id }}">{{ skill_set.sub_category }}</span>
-                        {% empty %}-
+                            <span class="badge badge-info badge-lg">{{ skill_set.sub_category }}</span>
+                        {% empty %}
+                            -
                         {% endfor %}
                     </p>
                     <div id="skill_sets-error" class="invalid-feedback"></div>
