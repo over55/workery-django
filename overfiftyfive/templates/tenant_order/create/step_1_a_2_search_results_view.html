@@ -57,10 +57,10 @@
     <h1>Add Job</h1>
 
 	<div class="col-sm-12 mx-auto mt-3 pt-3 mb-3 text-center">
-		<h5>{% if customer_list %}We found a match for this client:{% else %}We did find any matches.{% endif %}</h5>
+		<h5>{% if customer_list %}We found a match for this client:{% else %}We did not find any matches.{% endif %}</h5>
 	</div>
 	<div class="col-sm-12 mx-auto mt-4">
-	<div class="card-deck">
+	<div class="card-columns">
     {% for customer in customer_list %}
        	    <div class="card bg-light">
    		    <div class="card-body">
@@ -75,18 +75,14 @@
                    <strong>{{ customer }}</strong></a>
                		</h5>
    		    	<p class="card-text">
-
                     {{ customer.street_address }}<br>
                     {% if customer.street_address_extra %}{{ customer.street_address_extra }}<br>{% endif %}
    			        {{ customer.address_locality }}, {{ customer.address_region }}<br>
                     {% if customer.telephone %}<a href="tel:{{ customer.telephone }}">{{ customer.telephone|pretty_formatted_phonenumber }}</a>{% else %}-{% endif %}
                     {% if customer.email %}<a href="tel:{{ customer.email }}">{{ customer.email }}</a>{% endif %}
    			    </p>
+			    <button  id="select-btn-{{ customer.id }}" type="button" class="btn btn-primary btn-lg btn-block" onclick="ajax_select({{ customer.id }}, '{{ customer }}', {{ customer.type_of }});">Select</button>
    		    </div>
-            	<button  id="select-btn-{{ customer.id }}"
-                   type="button"
-                  class="btn btn-lg btn-primary float-right m-2"
-                  onclick="ajax_select({{ customer.id }}, '{{ customer }}', {{ customer.type_of }});">Select</button>
    	  </div>
     {% endfor %}
 	</div>
