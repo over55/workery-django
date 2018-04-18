@@ -114,7 +114,7 @@
                         <button id="id_delete_btn"
                              class="btn btn-danger btn-lg m-2 float-right px-4"
                               type="button"
-                           onclick="ajax_delete({{ skill_set.id }});">
+                           data-toggle="modal" data-target="#confirmDelete">
                          <i class="fas fa-trash"></i>
                          {% trans 'Delete' %}
                         </button>
@@ -127,7 +127,18 @@
                          {% trans 'Edit' %}
                         </button>
                         </a>
-
+			<!-- Modal -->
+			<div class="modal fade" id="confirmDelete" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		  		<div class="modal-dialog" role="document">
+		    			<div class="modal-content">
+		      			<div class="modal-body">
+		        			<p class="m-3 p-2">WARNING: you are about to PERMANENTLY delete this item - this action CANNOT BE UNDONE. Do you want to continue?</p>
+		        			<button type="button" class="btn btn-lg btn-secondary float-left m-2" data-dismiss="modal">No</button>
+		        			<button type="button" class="btn btn-lg btn-primary float-right m-2" id="yes_submit" onclick="ajax_delete({{ skill_set.id }});">Yes</button>
+		      			</div>
+		    			</div>
+		  		</div>
+			</div>
                     </td>
                 </tr>
                 {% endfor %}
