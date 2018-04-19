@@ -336,6 +336,12 @@
         function click_next_button() {
             ajax_post_form_submission("{% url 'o55_tenant_member_confirm_create' %}");
         }
+
+        // THIS IS WHERE YOU CAN ADD YOUR COUNTRY/PROVINCE DROPDOWN JS CODE....
+        const state = "{% static 'js/provinces.json' %}";
+        const country = "{% static 'js/countries.json' %}";
+        console.log(state);
+        console.log(country); // KANWAR - PLEASE IMPLEMENT.
     </script>
     <div class="col-sm-5 mx-auto mt-2">
         <!-- Associate form -->

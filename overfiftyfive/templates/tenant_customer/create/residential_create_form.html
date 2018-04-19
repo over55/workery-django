@@ -246,6 +246,12 @@
         // REDIRECT TO OUR CONFIRM PAGE.
         window.location = redirect_url;
     }
+
+    // THIS IS WHERE YOU CAN ADD YOUR COUNTRY/PROVINCE DROPDOWN JS CODE....
+    const state = "{% static 'js/provinces.json' %}";
+    const country = "{% static 'js/countries.json' %}";
+    console.log(state);
+    console.log(country); // KANWAR - PLEASE IMPLEMENT.
 </script>
 <div class="col-sm-5 mx-auto mt-2">
     <!-- Residential form -->

@@ -90,7 +90,7 @@
     function valid_radiofields_seleciton(radiofields_name, is_required) {
         var value = get_selected_radio_value(radiofields_name);
 	var radiofield_error = document.getElementById(radiofields_name+'-error');
-	    
+
         if (is_required) {
             if (value == undefined || value === null || value.length == 0) {
                 radiofield_error.innerHTML = "Please select option.";
@@ -237,6 +237,13 @@
             }
         );
     }
+
+    // THIS IS WHERE YOU CAN ADD YOUR COUNTRY/PROVINCE DROPDOWN JS CODE....
+    const state = "{% static 'js/provinces.json' %}";
+    const country = "{% static 'js/countries.json' %}";
+    console.log(state);
+    console.log(country); // KANWAR - PLEASE IMPLEMENT.
+
 </script>
 <!----------------------------------------------------------------------------->
 <!-- end CUSTOM JAVASCRIPT -->

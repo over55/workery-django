@@ -6,7 +6,7 @@ $(document).ready(function () {
 
 	$('#sidebarCollapse').on('click', function () {
 	    // open or close navbar
-	    $('#sidebar,#main,#sidebarCollapse,#return-to-top').toggleClass('active');
+	    $('#sidebar,#main,#sidebarCollapse,#return-to-top,body').toggleClass('active');
 
 	});
 
@@ -35,4 +35,21 @@ $(document).ready(function () {
 	    $('#advance_search_btn_x').hide();
 	    $('#advance_search_btn').show();
 	});
+
+	// ===== Residential and Commercial forms toggle ====
+	$('#residential').on('click', function () {
+	    $('#commercial-form').hide();
+	    $('#residential-form').show();
+	    $('#residential').addClass('active');
+	    $('#commercial').removeClass('active');
+	    $('#residential-form').addClass('active show');
+	});
+	$('#commercial').on('click', function () {
+	    $('#commercial-form').show();
+	    $('#residential-form').hide();
+	    $('#commercial').addClass('active');
+	    $('#commercial-form').addClass('active show');
+	    $('#residential').removeClass('active');
+	});
+
 });
