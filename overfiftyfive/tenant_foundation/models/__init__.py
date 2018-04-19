@@ -22,3 +22,6 @@ from tenant_foundation.models.organization_associate_affiliation import Organiza
 
 # Order Models
 from tenant_foundation.models.order import Order
+
+# Resource
+from tenant_foundation.models.resource_category import ResourceCategory

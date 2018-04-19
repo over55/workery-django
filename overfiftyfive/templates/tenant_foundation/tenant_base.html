@@ -95,7 +95,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">
+                        <a class="nav-link {% if current_page == 'resource' %}active{% endif %}" href="{% url 'o55_tenant_resource_category_list' %}">
                         <i class="fas fa-file-alt"></i>&nbsp;Resources
                         </a>
                     </li>

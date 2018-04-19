@@ -21,6 +21,7 @@ from tenant_foundation.models import (
     Organization,
     Order,
     # OrderComment,
+    ResourceCategory,
     SkillSet,
     Staff,
     Tag
@@ -57,6 +58,7 @@ class Command(BaseCommand):
 
         # Update content.
         self.begin_populating_skill_sets()
+        self.begin_populating_category_resources()
 
         # For debugging purposes.
         self.stdout.write(
@@ -132,5 +134,35 @@ class Command(BaseCommand):
                     'category': skill_arr[0],
                     'sub_category': skill_arr[1],
                     'insurance_requirement': skill_arr[2],
+                }
+            )
+
+    def begin_populating_category_resources(self):
+        RESOURCE_CATEGORY_ARRAY = [
+            {
+                'id': 1,
+                'icon': 'file',
+                'title': 'Forms',
+                'description': 'Access forms & documents.'
+            },{
+                'id': 2,
+                'icon': 'video',
+                'title': 'Videos',
+                'description': 'Access videos & media.'
+            },{
+                'id': 3,
+                'icon': 'cogs',
+                'title': 'System',
+                'description': 'Access system FAQs.'
+            }
+        ]
+        for resource_category in RESOURCE_CATEGORY_ARRAY:
+            ResourceCategory.objects.update_or_create(
+                id=resource_category['id'],
+                defaults={
+                    'id': resource_category['id'],
+                    'icon': resource_category['icon'],
+                    'title': resource_category['title'],
+                    'description': resource_category['description'],
                 }
             )
