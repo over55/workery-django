@@ -3,6 +3,7 @@ from tenant_foundation.models.abstract_thing import AbstractThing
 from tenant_foundation.models.abstract_contact_point import AbstractContactPoint
 from tenant_foundation.models.abstract_postal_address import AbstractPostalAddress
 from tenant_foundation.models.abstract_geo_coorindate import AbstractGeoCoordinate
+from tenant_foundation.models.abstract_person import AbstractPerson
 
 # Base Models
 from tenant_foundation.models.tag import Tag
@@ -25,3 +26,6 @@ from tenant_foundation.models.order import Order
 
 # Resource
 from tenant_foundation.models.resource_category import ResourceCategory
+
+# Partner
+from tenant_foundation.models.partner import Partner

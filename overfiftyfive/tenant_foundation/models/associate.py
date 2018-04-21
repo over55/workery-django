@@ -25,12 +25,7 @@ from starterkit.utils import (
 )
 from shared_foundation.constants import *
 from shared_foundation.models import SharedUser
-from tenant_foundation.models import (
-    AbstractContactPoint,
-    AbstractGeoCoordinate,
-    AbstractPostalAddress,
-    AbstractThing
-)
+from tenant_foundation.models import AbstractPerson
 from tenant_foundation.utils import *
 
 
@@ -68,7 +63,7 @@ def increment_associate_id_number():
     return 1
 
 
-class Associate(AbstractThing, AbstractContactPoint, AbstractPostalAddress, AbstractGeoCoordinate):
+class Associate(AbstractPerson):
     class Meta:
         app_label = 'tenant_foundation'
         db_table = 'o55_associates'
@@ -92,7 +87,7 @@ class Associate(AbstractThing, AbstractContactPoint, AbstractPostalAddress, Abst
     )
 
     #
-    #  PERSON FIELDS - http://schema.org/Person
+    #  PERSON FIELDS (EXTRA) - http://schema.org/Person
     #
 
     organizations = models.ManyToManyField(
@@ -102,30 +97,10 @@ class Associate(AbstractThing, AbstractContactPoint, AbstractPostalAddress, Abst
         through='OrganizationAssociateAffiliation'
     )
 
-    given_name = models.CharField(
-        _("Given Name"),
-        max_length=63,
-        help_text=_('The associates given name.'),
-        blank=True,
-        null=True,
-        db_index=True,
-    )
-    middle_name = models.CharField(
-        _("Middle Name"),
-        max_length=63,
-        help_text=_('The associates last name.'),
-        blank=True,
-        null=True,
-        db_index=True,
-    )
-    last_name = models.CharField(
-        _("Last Name"),
-        max_length=63,
-        help_text=_('The associates last name.'),
-        blank=True,
-        null=True,
-        db_index=True,
-    )
+    #
+    #  CUSTOM FIELDS
+    #
+
     business = models.CharField(
         _("Business"),
         max_length=63,
@@ -133,36 +108,6 @@ class Associate(AbstractThing, AbstractContactPoint, AbstractPostalAddress, Abst
         blank=True,
         null=True,
     )
-    birthdate = models.DateField(
-        _('Birthdate'),
-        help_text=_('The associates birthdate.'),
-        blank=True,
-        null=True
-    )
-    join_date = models.DateTimeField(
-        _("Join Date"),
-        help_text=_('The date the associate joined.'),
-        null=True,
-        blank=True,
-    )
-    nationality = models.CharField(
-        _("Nationality"),
-        max_length=63,
-        help_text=_('Nationality of the person.'),
-        blank=True,
-        null=True,
-    )
-    gender = models.CharField(
-        _("Gender"),
-        max_length=63,
-        help_text=_('Gender of the person. While Male and Female may be used, text strings are also acceptable for people who do not identify as a binary gender.'),
-        blank=True,
-        null=True,
-    )
-
-    #
-    #  CUSTOM FIELDS
-    #
     indexed_text = models.CharField(
         _("Indexed Text"),
         max_length=511,

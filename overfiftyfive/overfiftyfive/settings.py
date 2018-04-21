@@ -109,7 +109,8 @@ TENANT_APPS = (
     'tenant_team',
     'tenant_setting',
     'tenant_resource',
-    'tenant_help'
+    'tenant_help',
+    'tenant_partner'
     # . . .
 )
 

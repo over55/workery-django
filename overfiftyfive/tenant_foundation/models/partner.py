@@ -6,13 +6,19 @@ from datetime import date, datetime, timedelta
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.contrib.postgres.search import SearchVector, SearchVectorField
+from django.contrib.postgres.aggregates import StringAgg
+from django.core.exceptions import ValidationError
 from django.db import models
 from django.db import transaction
+from django.db.models.signals import pre_save, post_save
+from django.db.models import Q
+from django.dispatch import receiver
 from django.utils import timezone
 from django.utils.text import Truncator
 from django.utils.translation import ugettext_lazy as _
 from starterkit.utils import (
     get_random_string,
+    get_unique_username_from_email,
     generate_hash,
     int_or_none,
     float_or_none
@@ -23,32 +29,15 @@ from tenant_foundation.models import AbstractPerson
 from tenant_foundation.utils import *
 
 
-# def get_expiry_date(days=2):
-#     """Returns the current date plus paramter number of days."""
-#     return timezone.now() + timedelta(days=days)
-
-
-class StaffManager(models.Manager):
+class PartnerManager(models.Manager):
     def delete_all(self):
-        items = Staff.objects.all()
+        items = Partner.objects.all()
         for item in items.all():
             item.delete()
 
-    def get_by_email_or_none(self, email):
-        try:
-            return Staff.objects.get(owner__email=email)
-        except Staff.DoesNotExist:
-            return None
-
-    def get_by_user_or_none(self, user):
-        try:
-            return Staff.objects.get(owner=user)
-        except Staff.DoesNotExist:
-            return None
-
     def partial_text_search(self, keyword):
         """Function performs partial text search of various textfields."""
-        return Staff.objects.filter(
+        return Partner.objects.filter(
             Q(indexed_text__icontains=keyword) |
             Q(indexed_text__istartswith=keyword) |
             Q(indexed_text__iendswith=keyword) |
@@ -62,37 +51,37 @@ class StaffManager(models.Manager):
         # which comes with Django to utilize the 'full text search' feature.
         # For more details please read:
         # https://docs.djangoproject.com/en/2.0/ref/contrib/postgres/search/
-        return Staff.objects.annotate(search=SearchVector('indexed_text'),).filter(search=keyword)
+        return Partner.objects.annotate(search=SearchVector('indexed_text'),).filter(search=keyword)
 
 
 @transaction.atomic
-def increment_staff_id_number():
+def increment_partner_id_number():
     """Function will generate a unique big-int."""
-    last_staff = Staff.objects.all().order_by('id').last();
-    if last_staff:
-        return last_staff.id + 1
+    last_partner = Partner.objects.all().order_by('id').last();
+    if last_partner:
+        return last_partner.id + 1
     return 1
 
 
-class Staff(AbstractPerson):
+class Partner(AbstractPerson):
     class Meta:
         app_label = 'tenant_foundation'
-        db_table = 'o55_staff'
-        verbose_name = _('Staff')
-        verbose_name_plural = _('Staves')
+        db_table = 'o55_partners'
+        verbose_name = _('Partner')
+        verbose_name_plural = _('Partners')
         default_permissions = ()
         permissions = (
-            ("can_get_staves", "Can get staves"),
-            ("can_get_staff", "Can get staff"),
-            ("can_post_staff", "Can create staff"),
-            ("can_put_staff", "Can update staff"),
-            ("can_delete_staff", "Can delete staff"),
+            ("can_get_partners", "Can get partners"),
+            ("can_get_partner", "Can get partner"),
+            ("can_post_partner", "Can create partner"),
+            ("can_put_partner", "Can update partner"),
+            ("can_delete_partner", "Can delete partner"),
         )
 
-    objects = StaffManager()
+    objects = PartnerManager()
     id = models.BigAutoField(
        primary_key=True,
-       default = increment_staff_id_number,
+       default = increment_partner_id_number,
        editable=False,
        db_index=True
     )
@@ -101,10 +90,31 @@ class Staff(AbstractPerson):
     #  CUSTOM FIELDS
     #
 
+    indexed_text = models.CharField(
+        _("Indexed Text"),
+        max_length=511,
+        help_text=_('The searchable content text used by the keyword searcher function.'),
+        blank=True,
+        null=True,
+        db_index=True,
+        unique=True
+    )
+    is_ok_to_email = models.BooleanField(
+        _("Is OK to email"),
+        help_text=_('Indicates whether partner allows being reached by email'),
+        default=True,
+        blank=True
+    )
+    is_ok_to_text = models.BooleanField(
+        _("Is OK to text"),
+        help_text=_('Indicates whether partner allows being reached by text.'),
+        default=True,
+        blank=True
+    )
     how_hear = models.CharField(
         _("How hear"),
         max_length=2055,
-        help_text=_('How this staff member heared about this organization.'),
+        help_text=_('How partner heared about this business.'),
         blank=True,
         null=True,
     )
@@ -123,27 +133,6 @@ class Staff(AbstractPerson):
         on_delete=models.SET_NULL,
         blank=True,
         null=True,
-    )
-    tags = models.ManyToManyField(
-        "Tag",
-        help_text=_('The tags associated with this staff member.'),
-        blank=True,
-        related_name="%(app_label)s_%(class)s_tags_related"
-    )
-    skill_sets = models.ManyToManyField(
-        "SkillSet",
-        help_text=_('The skill sets this staff has.'),
-        blank=True,
-        related_name="%(app_label)s_%(class)s_skill_sets_related"
-    )
-    indexed_text = models.CharField(
-        _("Indexed Text"),
-        max_length=511,
-        help_text=_('The searchable content text used by the keyword searcher function.'),
-        blank=True,
-        null=True,
-        db_index=True,
-        unique=True
     )
 
     #
@@ -188,4 +177,11 @@ class Staff(AbstractPerson):
         '''
         Run our `save` function.
         '''
-        super(Staff, self).save(*args, **kwargs)
+        super(Partner, self).save(*args, **kwargs)
+
+
+# def validate_model(sender, **kwargs):
+#     if 'raw' in kwargs and not kwargs['raw']:
+#         kwargs['instance'].full_clean()
+#
+# pre_save.connect(validate_model, dispatch_uid='o55_partners.validate_models')

@@ -25,12 +25,7 @@ from starterkit.utils import (
 from shared_foundation.constants import *
 from shared_foundation.models import SharedUser
 from tenant_foundation.constants import *
-from tenant_foundation.models import (
-    AbstractContactPoint,
-    AbstractGeoCoordinate,
-    AbstractPostalAddress,
-    AbstractThing
-)
+from tenant_foundation.models import AbstractPerson
 from tenant_foundation.utils import *
 
 
@@ -68,7 +63,7 @@ def increment_customer_id_number():
     return 1
 
 
-class Customer(AbstractThing, AbstractContactPoint, AbstractPostalAddress, AbstractGeoCoordinate):
+class Customer(AbstractPerson):
     class Meta:
         app_label = 'tenant_foundation'
         db_table = 'o55_customers'
@@ -89,61 +84,6 @@ class Customer(AbstractThing, AbstractContactPoint, AbstractPostalAddress, Abstr
        default = increment_customer_id_number,
        editable=False,
        db_index=True
-    )
-
-    #
-    #  PERSON FIELDS - http://schema.org/Person
-    #
-
-    given_name = models.CharField(
-        _("Given Name"),
-        max_length=63,
-        help_text=_('The customers given name.'),
-        blank=True,
-        null=True,
-        db_index=True,
-    )
-    middle_name = models.CharField(
-        _("Middle Name"),
-        max_length=63,
-        help_text=_('The customers last name.'),
-        blank=True,
-        null=True,
-        db_index=True,
-    )
-    last_name = models.CharField(
-        _("Last Name"),
-        max_length=63,
-        help_text=_('The customers last name.'),
-        blank=True,
-        null=True,
-        db_index=True,
-    )
-    birthdate = models.DateField(
-        _('Birthdate'),
-        help_text=_('The customers birthdate.'),
-        blank=True,
-        null=True
-    )
-    join_date = models.DateTimeField(
-        _("Join Date"),
-        help_text=_('The date the customer joined this organization.'),
-        null=True,
-        blank=True,
-    )
-    nationality = models.CharField(
-        _("Nationality"),
-        max_length=63,
-        help_text=_('Nationality of the person.'),
-        blank=True,
-        null=True,
-    )
-    gender = models.CharField(
-        _("Gender"),
-        max_length=63,
-        help_text=_('Gender of the person. While Male and Female may be used, text strings are also acceptable for people who do not identify as a binary gender.'),
-        blank=True,
-        null=True,
     )
 
     #
@@ -241,7 +181,7 @@ class Customer(AbstractThing, AbstractContactPoint, AbstractPostalAddress, Abstr
     )
 
     #
-    #  PERSON FIELDS - http://schema.org/Person
+    #  PERSON FIELDS (EXTRA) - http://schema.org/Person
     #
 
     organization = models.ForeignKey(

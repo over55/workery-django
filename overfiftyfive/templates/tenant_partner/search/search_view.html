@@ -1,0 +1,329 @@
+{% extends 'tenant_foundation/tenant_base.html' %}
+{% load staticfiles i18n %}
+
+{% block title %}
+{% trans 'Partners Search | Over 55 Inc.' %}
+{% endblock title %}
+
+{% block header_content %}
+{% endblock header_content %}
+
+{% block content %}
+<main id="main" role="main">
+    <!-- BREADCRUMB -->
+    <!------------------------------------------------------------------------->
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'o55_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'o55_tenant_partner_summary' %}">{% trans 'Partners' %}</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{% trans 'Search' %}</li>
+        </ol>
+    </nav>
+    <!------------------------------------------------------------------------->
+    <!-- end BREADCRUMB -->
+
+    <!-- BACK BUTTON -->
+    <!------------------------------------------------------------------------->
+    <div class="row">
+		<div class="col-sm-3 p-3 mb-2">
+			<a class="btn btn-primary btn-lg" href="{% url 'o55_tenant_partner_summary' %}" role="button">
+                <svg class="svg-inline--fa fa-arrow-left fa-w-14" aria-hidden="true" data-fa-processed="" data-prefix="fas" data-icon="arrow-left" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                <path fill="currentColor" d="M257.5 445.1l-22.2 22.2c-9.4 9.4-24.6 9.4-33.9 0L7 273c-9.4-9.4-9.4-24.6 0-33.9L201.4 44.7c9.4-9.4 24.6-9.4 33.9 0l22.2 22.2c9.5 9.5 9.3 25-.4 34.3L136.6 216H424c13.3 0 24 10.7 24 24v32c0 13.3-10.7 24-24 24H136.6l120.5 114.8c9.8 9.3 10 24.8.4 34.3z"></path>
+            </svg><!-- <i class="fas fa-arrow-left"></i> -->&nbsp;{% trans 'Back to Partners Home' %}</a>
+		</div>
+	</div>
+    <!------------------------------------------------------------------------->
+    <!-- end BACK BUTTON -->
+
+    <h1>{% trans 'Partners Search' %}</h1>
+    <div id="m-search" class="col-sm-5 mx-auto mt-4 pt-4">
+        <!-- Basic Search -->
+        <form id="searchForm" method="get" class="needs-validation" action="{% url "o55_tenant_partner_search_results" %}" novalidate>
+            <div class="input-group mb-2">
+                <input type="text" class="form-control form-control-lg border border-primary" id="keyword" name="keyword" placeholder="Search..." minlength="3" required="" />
+                <div class="input-group-append">
+                    <button class="btn btn-primary btn-lg" type="submit"><i class="fas fa-search"></i></button>
+                </div>
+                <div id="search-error" class="invalid-feedback"></div>
+            </div>
+        </form>
+        <!-- Advanced Search -->
+        <div class="col-md-12 text-center">
+            <h3 class="p-2">- or -</h3>
+            <button id="advance_search_btn" class="btn btn-primary btn-lg" type="button" data-toggle="button">Advanced Search</button>
+            <button id="advance_search_btn_x" class="btn btn-dark btn-lg" type="button" data-toggle="button"><i class="fas fa-times"></i> Advanced Search</button>
+        </div>
+    </div>
+    <div id="adv-search" class="col-sm-5 mx-auto border-top mt-4">
+        <p class="mb-4 mt-4"><strong>Please fill in atleast one field and hit search</strong></p>
+        <form id="advanced-searchForm" method="get" class="needs-validation" action="{% url "o55_tenant_partner_search_results" %}" novalidate>
+            <div class="form-row">
+                <div class="form-group col-md-12 mb-4">
+                    <label for="firstname">First name</label>
+                    <input type="text" class="form-control form-control-lg border border-primary" id="firstname" name="given_name" placeholder="First name" minlength="3">
+                    <div id="firstname-error" class="invalid-feedback"></div>
+                </div>
+                <div class="form-group col-md-12 mb-4">
+                    <label for="lastname">Last name</label>
+                    <input type="text" class="form-control form-control-lg border border-primary" id="lastname" name="last_name" placeholder="Last name" minlength="3">
+                    <div id="lastname-error" class="invalid-feedback"></div>
+                </div>
+                <div class="form-group col-md-7 mb-4">
+                    <label for="phonenumber">Phone</label>
+                    <input type="text" class="form-control form-control-lg border border-primary" id="phonenumber" name="telephone" placeholder="(xxx) xxx-xxxx" minlength="10" maxlength="14">
+                    <div id="phonenumber-error" class="invalid-feedback"></div>
+                </div>
+		<div class="form-group col-md-12 mb-4">
+	        	<label for="email-id">E-mail</label>
+	        	<input type="email" class="form-control form-control-lg border border-primary" id="email-id" name="email_id" placeholder="Email ID">
+	        	<div id="email-error" class="invalid-feedback"></div>
+	        </div>
+            </div>
+
+
+            {% comment %}
+            <div class="form-row">
+                <div class="form-group col-md-7 mb-4">
+                    <label for="skill_1">Skill 1</label>
+                    <select class="custom-select form-control-lg border-success" id="skill_1" name="skill_1">
+                        <option value="" selected>Choose...</option>
+                        <option value="developer">Developer</option>
+                        <option value="designer">Designer</option>
+                        <option value="accountant">Accountant</option>
+                        <option value="manager">Manager</option>
+                    </select>
+                    <div id="s1-error" class="invalid-feedback"></div>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-7 mb-4">
+                    <label for="skill_2">Skill 2</label>
+                    <select class="custom-select form-control-lg border-success" id="skill_2" name="skill_2">
+                        <option value="" selected>Choose...</option>
+                        <option value="developer">Developer</option>
+                        <option value="designer">Designer</option>
+                        <option value="accountant">Accountant</option>
+                        <option value="manager">Manager</option>
+                    </select>
+                    <div id="s2-error" class="invalid-feedback"></div>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-7 mb-4">
+                    <label for="skill_3">Skill 3</label>
+                    <select class="custom-select form-control-lg border-success" id="skill_3" name="skill_3">
+                        <option value="" selected>Choose...</option>
+                        <option value="developer">Developer</option>
+                        <option value="designer">Designer</option>
+                        <option value="accountant">Accountant</option>
+                        <option value="manager">Manager</option>
+                    </select>
+                    <div id="s3-error" class="invalid-feedback"></div>
+                </div>
+            </div>
+            <div class="form-group mt-2 mb-4">
+                <div class="form-check custom-control custom-checkbox">
+                    <input class="form-check-input custom-control-input" type="checkbox" value="yes" id="safetyCheck" name="safetyCheck">
+                    <label class="form-check-label custom-control-label" for="safetyCheck">
+                    Has WSIB?
+                    </label>
+                    <div id="checkbox-error" class="invalid-feedback"></div>
+                </div>
+            </div>
+            {% endcomment %}
+
+
+            <div class="form-group col-md-12 mb-3 mx-auto text-center">
+		<div id="form-error" class="invalid-feedback"></div>
+                <button class="btn btn-success btn-lg btn-fxw mt-3" type="submit"><i class="fas fa-search"></i> Search</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- RETURN-TO-TOP -->
+    <a id="return-to-top" href="#" class="btn-info btn-lg back-to-top" role="button" title="Back to top"><i class="fas fa-angle-up fa-2x"></i></a>
+    <!-- end RETURN-TO-TOP -->
+</main>
+<script>
+    // Search Fields Validation
+    // Example starter JavaScript for disabling form submissions if there are invalid fields
+    (function() {
+      'use strict';
+        window.addEventListener('load', function() {
+                // Fetch all the forms fields we want to apply custom Bootstrap validation styles to
+
+                var form_advanced_search = document.getElementById('advanced-searchForm');
+                var form_search = document.getElementById('searchForm');
+                var keyword = document.getElementById('keyword');
+                var search_error = document.getElementById('search-error');
+
+                var firstname = document.getElementById('firstname');
+                var f_error = document.getElementById('firstname-error');
+
+                var lastname = document.getElementById('lastname');
+                var l_error = document.getElementById('lastname-error');
+
+		var email_id = document.getElementById('email-id');
+                var email_error = document.getElementById('email-error');
+
+                var phonenumber = document.getElementById('phonenumber');
+                var pn_error = document.getElementById('phonenumber-error');
+                var pn_pattern = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
+
+                var safetycheck = document.getElementById('safetyCheck');
+                var c_error = document.getElementById('checkbox-error');
+
+                var skill_1 = document.getElementById('skill_1');
+                var s1_error = document.getElementById('s1-error');
+                var skill_2 = document.getElementById('skill_2');
+                var s2_error = document.getElementById('s2-error');
+                var skill_3 = document.getElementById('skill_3');
+                var s3_error = document.getElementById('s3-error');
+
+                // Loop over them and prevent submission
+                $(function(){
+                    // validation for basic search field
+                    $('#searchForm').on('submit',function(e){
+                        if(keyword.validity.valueMissing) {
+                            search_error.innerHTML = "Field should not be blank.";
+                            form_search.classList.add('was-validated');
+                            e.preventDefault();
+                        }
+                        if(keyword.validity.tooShort) {
+                            search_error.innerHTML = "Fill in at least 3 characters.";
+                            form_search.classList.add('was-validated');
+                            e.preventDefault();
+                        }
+                    });
+
+                    // validation for advanced search fields
+                    $('#advanced-searchForm').on('submit',function(e){
+                        if(firstname.validity.valueMissing) {
+                            f_error.innerHTML = "Field should not be blank.";
+                            form_advanced_search.classList.add('was-validated');
+                            e.preventDefault();
+                        }
+                        if(firstname.validity.tooShort) {
+                            f_error.innerHTML = "Fill in at least 3 characters.";
+                            form_advanced_search.classList.add('was-validated');
+                            e.preventDefault();
+                        }
+                        if(lastname.validity.valueMissing) {
+                            l_error.innerHTML = "Field should not be blank.";
+                            form_advanced_search.classList.add('was-validated');
+                            e.preventDefault();
+                        }
+                        if(lastname.validity.tooShort) {
+                            l_error.innerHTML = "Fill in at least 3 characters.";
+                            form_advanced_search.classList.add('was-validated');
+                            e.preventDefault();
+                        }
+			if(email_id.validity.valueMissing) {
+			    email_error.innerHTML = "Field should not be blank.";
+			    form_advanced_search.classList.add('was-validated');
+			    e.preventDefault();
+			}
+			if(email_id.validity.typeMismatch || email_id.validity.tooShort) {
+			    email_error.innerHTML = "Please provide a valid E-mail ID.";
+			    form_advanced_search.classList.add('was-validated');
+			    e.preventDefault();
+			}
+                        if(phonenumber.validity.valueMissing) {
+                            pn_error.innerHTML = "Field should not be blank.";
+                            form_advanced_search.classList.add('was-validated');
+                            e.preventDefault();
+                        }
+                        if(phonenumber.validity.tooShort) {
+                            pn_error.innerHTML = "Fill in valid 10 digits phone number.";
+                            form_advanced_search.classList.add('was-validated');
+                            e.preventDefault();
+                        }
+                        // Phone number format validation
+                        if(!phonenumber.value.match(pn_pattern)) {
+                            if(phonenumber.value.length == 0){
+                                pn_error.style.display = "none";
+                            }else {
+                                pn_error.innerHTML = "Fill in valid 10 digits phone number.";
+                                pn_error.style.display = "block";
+                                form_advanced_search.classList.add('was-validated');
+                                e.preventDefault();
+                            }
+                        }
+
+
+                        {% comment %}
+                        if(safetycheck.validity.valueMissing) {
+                            c_error.innerHTML = "Please check this before submitting.";
+                            form_advanced_search.classList.add('was-validated');
+                            e.preventDefault();
+                        }
+                        if(skill_1.validity.valueMissing) {
+                            s1_error.innerHTML = "Please select any skill.";
+                            form_advanced_search.classList.add('was-validated');
+                            e.preventDefault();
+                        }
+                        if(skill_2.validity.valueMissing) {
+                            s2_error.innerHTML = "Please select any skill.";
+                            form_advanced_search.classList.add('was-validated');
+                            e.preventDefault();
+                        }
+                        if(skill_3.validity.valueMissing) {
+                            s3_error.innerHTML = "Please select any skill.";
+                            form_advanced_search.classList.add('was-validated');
+                            e.preventDefault();
+                        }
+                        {% endcomment %}
+
+
+                    });
+                });
+                // To hide phone field valid format error text
+                $('#phonenumber').on('input',function(){
+                        if(phonenumber.value.match(pn_pattern)) {
+                            pn_error.style.display = "none";
+                        }
+                });
+
+                 /**
+             * TOO CHECK AT LEAST ONE ADVANCED SEARCH FIELD IS FILLED
+             *
+             * 1. gather all checkboxes and radio buttons
+             * 2. gather all inputs that are not checkboxes or radios, and are not buttons (submit/button/reset)
+             * 3. get only those checkboxes and radio buttons that are checked
+             * 4. get only those field elements that have a value (spaces get trimmed)
+             * 5. if the length of both resulting collections is zero, nothing has been filled out
+             */
+                function checkFields(form) {
+                    var checks_radios = form.find(':checkbox, :radio'),
+                        inputs = form.find(':input').not(checks_radios).not('[type="submit"],[type="button"],[type="reset"]');
+
+                    var checked = checks_radios.filter(':checked');
+                    var filled = inputs.filter(function(){
+                        return $.trim($(this).val()).length > 0;
+                    });
+
+                    if(checked.length + filled.length === 0) {
+                        return false;
+                    }
+
+                    return true;
+                }
+
+                $(function(){
+                    $('#advanced-searchForm').on('submit',function(e){
+                        var oneFilled = checkFields($(this));
+			var form_error = document.getElementById('form-error');
+                        if(oneFilled === true) {
+                            return true;
+                        }else {
+                            form_error.innerHTML = "Please fill in atleast one field and hit search.";
+			    form_error.style.display = "block";
+			    form_advanced_search.classList.add('was-validated');
+                            e.preventDefault();
+                        }
+                    });
+                });
+        }, false);
+    })();
+</script>
+{% endblock content %}
