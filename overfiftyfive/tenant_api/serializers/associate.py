@@ -48,16 +48,16 @@ class AssociateListCreateSerializer(serializers.ModelSerializer):
     # `django-rest-framework`.
     # comments = AssociateCommentSerializer(many=True, read_only=True, allow_null=True)
 
-    # This is a field used in the `create` function if the user enters a
-    # comment. This field is *ONLY* to be used during the POST creation and
-    # will be blank during GET.
-    extra_comment = serializers.CharField(write_only=True, allow_null=True)
+    # # This is a field used in the `create` function if the user enters a
+    # # comment. This field is *ONLY* to be used during the POST creation and
+    # # will be blank during GET.
+    # extra_comment = serializers.CharField(write_only=True, allow_null=True)
 
     # # The skill_sets that this associate belongs to. We will return primary
     # # keys only. This field is read/write accessible.
     # skill_sets = serializers.PrimaryKeyRelatedField(many=True, queryset=SkillSet.objects.all(), allow_null=True)
 
-    assigned_skill_sets = SkillSetListCreateSerializer(many=True, read_only=True)
+    # assigned_skill_sets = SkillSetListCreateSerializer(many=True, read_only=True)
 
     # Custom formatting of our telephone fields.
     fax_number = PhoneNumberField(allow_null=True, required=False)
@@ -130,16 +130,15 @@ class AssociateListCreateSerializer(serializers.ModelSerializer):
             'is_small_job',
             'how_hear',
             'skill_sets', # many-to-many
-            'tags',
+            'tags',       # many-to-many
 
             # Misc (Read Only)
             # 'comments',
             'password',
             'password_repeat',
-            'assigned_skill_sets',
 
-            # Misc (Write Only)
-            'extra_comment',
+            # # Misc (Write Only)
+            # 'extra_comment',
 
             # Contact Point
             'area_served',
@@ -297,7 +296,7 @@ class AssociateListCreateSerializer(serializers.ModelSerializer):
             longitude=validated_data.get('longitude', None),
             # 'location' #TODO: IMPLEMENT.
         )
-        print("INFO: Created customer.")
+        print("INFO: Created associate.")
 
         #-----------------------------
         # Set our `SkillSet` objects.
@@ -333,7 +332,7 @@ class AssociateListCreateSerializer(serializers.ModelSerializer):
         validated_data['created_by'] = self.context['created_by']
         validated_data['last_modified_by'] = self.context['created_by']
         validated_data['extra_comment'] = None
-        validated_data['assigned_skill_sets'] = associate.skill_sets.all()
+        # validated_data['assigned_skill_sets'] = associate.skill_sets.all()
 
         # Return our validated data.
         return validated_data
@@ -353,16 +352,16 @@ class AssociateRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
     # `django-rest-framework`.
     # comments = AssociateCommentSerializer(many=True, read_only=True)
 
-    # This is a field used in the `create` function if the user enters a
-    # comment. This field is *ONLY* to be used during the POST creation and
-    # will be blank during GET.
-    extra_comment = serializers.CharField(write_only=True, allow_null=True)
+    # # This is a field used in the `create` function if the user enters a
+    # # comment. This field is *ONLY* to be used during the POST creation and
+    # # will be blank during GET.
+    # extra_comment = serializers.CharField(write_only=True, allow_null=True)
 
     # The skill_sets that this associate belongs to. We will return primary
     # keys only. This field is read/write accessible.
     skill_sets = serializers.PrimaryKeyRelatedField(many=True, queryset=SkillSet.objects.all(), allow_null=True)
 
-    assigned_skill_sets = SkillSetListCreateSerializer(many=True, read_only=True)
+    # assigned_skill_sets = SkillSetListCreateSerializer(many=True, read_only=True)
 
     # Custom formatting of our telephone fields.
     fax_number = PhoneNumberField(allow_null=True, required=False)
@@ -384,33 +383,43 @@ class AssociateRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
             # 'owner',
             'description',
 
-            # Profile
+            # Person
             'given_name',
             'middle_name',
             'last_name',
             'birthdate',
             'join_date',
+            'gender',
+            'description',
 
             # Misc (Read/Write)
             'is_active',
-            'tags',
             'is_ok_to_email',
             'is_ok_to_text',
-            # 'is_senior',
-            # 'is_support',
-            # 'job_info_read',
+            'hourly_salary_desired',
+            'limit_special',
+            'dues_pd',
+            'ins_due',
+            'police_check',
+            'drivers_license_class',
+            'has_car',
+            'has_van',
+            'has_truck',
+            'is_full_time',
+            'is_part_time',
+            'is_contract_time',
+            'is_small_job',
             'how_hear',
-            'skill_sets',
-            # 'organizations', #TODO: FIX
-            'gender',
+            'skill_sets', # many-to-many
+            'tags',       # many-to-many
 
             # Misc (Read Only)
             # 'comments',
-            'assigned_skill_sets',
+            # 'assigned_skill_sets',
             # 'organizations', #TODO: FIX
 
-            # Misc (Write Only)
-            'extra_comment',
+            # # Misc (Write Only)
+            # 'extra_comment',
 
             # Contact Point
             'area_served',
@@ -509,50 +518,50 @@ class AssociateRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         instance.description = validated_data.get('description', instance.description)
 
         # Misc
-        instance.is_ok_to_email=validated_data.get('is_ok_to_email', None)
-        instance.is_ok_to_text=validated_data.get('is_ok_to_text', None)
-        instance.hourly_salary_desired=validated_data.get('hourly_salary_desired', 0.00)
-        instance.limit_special=validated_data.get('limit_special', None)
-        instance.dues_pd=validated_data.get('dues_pd', None)
-        instance.ins_due=validated_data.get('ins_due', None)
-        instance.police_check=validated_data.get('police_check', None)
-        instance.drivers_license_class=validated_data.get('drivers_license_class', None)
-        instance.has_car=validated_data.get('has_car', False)
-        instance.has_van=validated_data.get('has_van', False)
-        instance.has_truck=validated_data.get('has_truck', False)
-        instance.is_full_time=validated_data.get('is_full_time', False)
-        instance.is_part_time=validated_data.get('is_part_time', False)
-        instance.is_contract_time=validated_data.get('is_contract_time', False)
-        instance.is_small_job=validated_data.get('is_small_job', False)
-        instance.how_hear=validated_data.get('how_hear', None)
+        instance.is_ok_to_email=validated_data.get('is_ok_to_email', instance.is_ok_to_email)
+        instance.is_ok_to_text=validated_data.get('is_ok_to_text', instance.is_ok_to_text)
+        instance.hourly_salary_desired=validated_data.get('hourly_salary_desired', instance.hourly_salary_desired)
+        instance.limit_special=validated_data.get('limit_special', instance.limit_special)
+        instance.dues_pd=validated_data.get('dues_pd', instance.dues_pd)
+        instance.ins_due=validated_data.get('ins_due', instance.ins_due)
+        instance.police_check=validated_data.get('police_check', instance.police_check)
+        instance.drivers_license_class=validated_data.get('drivers_license_class', instance.drivers_license_class)
+        instance.has_car=validated_data.get('has_car', instance.has_car)
+        instance.has_van=validated_data.get('has_van', instance.has_van)
+        instance.has_truck=validated_data.get('has_truck', instance.has_truck)
+        instance.is_full_time=validated_data.get('is_full_time', instance.is_full_time)
+        instance.is_part_time=validated_data.get('is_part_time', instance.is_part_time)
+        instance.is_contract_time=validated_data.get('is_contract_time', instance.is_contract_time)
+        instance.is_small_job=validated_data.get('is_small_job', instance.is_small_job)
+        instance.how_hear=validated_data.get('how_hear', instance.how_hear)
         # 'organizations', #TODO: IMPLEMENT.
 
         # Contact Point
-        instance.area_served=validated_data.get('area_served', None)
-        instance.available_language=validated_data.get('available_language', None)
-        instance.contact_type=validated_data.get('contact_type', None)
-        instance.fax_number=validated_data.get('fax_number', None)
+        instance.area_served=validated_data.get('area_served', instance.area_served)
+        instance.available_language=validated_data.get('available_language', instance.available_language)
+        instance.contact_type=validated_data.get('contact_type', instance.contact_type)
+        instance.fax_number=validated_data.get('fax_number', instance.fax_number)
         # 'hours_available', #TODO: IMPLEMENT.
-        instance.telephone=validated_data.get('telephone', None)
-        instance.telephone_extension=validated_data.get('telephone_extension', None)
+        instance.telephone=validated_data.get('telephone', instance.telephone)
+        instance.telephone_extension=validated_data.get('telephone_extension', instance.telephone_extension)
         instance.telephone_type_of=validated_data.get('telephone_type_of', TELEPHONE_CONTACT_POINT_TYPE_OF_ID)
-        instance.other_telephone=validated_data.get('other_telephone', None)
-        instance.other_telephone_extension=validated_data.get('other_telephone_extension', None)
+        instance.other_telephone=validated_data.get('other_telephone', instance.other_telephone)
+        instance.other_telephone_extension=validated_data.get('other_telephone_extension', instance.other_telephone_extension)
         instance.other_telephone_type_of=validated_data.get('other_telephone_type_of', TELEPHONE_CONTACT_POINT_TYPE_OF_ID)
 
         # Postal Address
-        instance.address_country=validated_data.get('address_country', None)
-        instance.address_locality=validated_data.get('address_locality', None)
-        instance.address_region=validated_data.get('address_region', None)
-        instance.post_office_box_number=validated_data.get('post_office_box_number', None)
-        instance.postal_code=validated_data.get('postal_code', None)
-        instance.street_address=validated_data.get('street_address', None)
-        instance.street_address_extra=validated_data.get('street_address_extra', None)
+        instance.address_country=validated_data.get('address_country', instance.address_country)
+        instance.address_locality=validated_data.get('address_locality', instance.address_locality)
+        instance.address_region=validated_data.get('address_region', instance.address_region)
+        instance.post_office_box_number=validated_data.get('post_office_box_number', instance.post_office_box_number)
+        instance.postal_code=validated_data.get('postal_code', instance.postal_code)
+        instance.street_address=validated_data.get('street_address', instance.street_address)
+        instance.street_address_extra=validated_data.get('street_address_extra', instance.street_address_extra)
 
         # Geo-coordinate
-        instance.elevation=validated_data.get('elevation', None)
-        instance.latitude=validated_data.get('latitude', None)
-        instance.longitude=validated_data.get('longitude', None)
+        instance.elevation=validated_data.get('elevation', instance.elevation)
+        instance.latitude=validated_data.get('latitude', instance.latitude)
+        instance.longitude=validated_data.get('longitude', instance.longitude)
         # 'location' #TODO: IMPLEMENT.
 
         # Save our instance.
@@ -572,28 +581,28 @@ class AssociateRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         if tags is not None:
             instance.tags.set(tags)
 
-        #---------------------------
-        # Attach our comment.
-        #---------------------------
-        extra_comment = validated_data.get('extra_comment', None)
-        if extra_comment is not None:
-            comment = Comment.objects.create(
-                created_by=self.context['last_modified_by'],
-                last_modified_by=self.context['last_modified_by'],
-                text=extra_comment
-            )
-            associate_comment = AssociateComment.objects.create(
-                associate=instance,
-                comment=comment,
-            )
+        # #---------------------------
+        # # Attach our comment.
+        # #---------------------------
+        # extra_comment = validated_data.get('extra_comment', None)
+        # if extra_comment is not None:
+        #     comment = Comment.objects.create(
+        #         created_by=self.context['last_modified_by'],
+        #         last_modified_by=self.context['last_modified_by'],
+        #         text=extra_comment
+        #     )
+        #     associate_comment = AssociateComment.objects.create(
+        #         associate=instance,
+        #         comment=comment,
+        #     )
 
         #---------------------------
         # Update validation data.
         #---------------------------
         # validated_data['comments'] = AssociateComment.objects.filter(associate=instance)
         validated_data['last_modified_by'] = self.context['last_modified_by']
-        validated_data['extra_comment'] = None
-        validated_data['assigned_skill_sets'] = instance.skill_sets.all()
+        # validated_data['extra_comment'] = None
+        # validated_data['assigned_skill_sets'] = instance.skill_sets.all()
 
         # Return our validated data.
         return validated_data

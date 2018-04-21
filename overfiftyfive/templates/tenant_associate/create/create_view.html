@@ -122,8 +122,15 @@
             $('#telephone').val(localStorage.getItem("tmp_associate_member_telephone"));
             $('#password').val(localStorage.getItem("tmp_associate_member_password"));
             $('#password_repeat').val(localStorage.getItem("tmp_associate_member_password_repeat"));
-            $('#describe').append(localStorage.getItem("tmp_associate_member_description"));
-            $('#how_hear').append(localStorage.getItem("tmp_associate_member_how_hear"));
+            $('#describe').val(localStorage.getItem("tmp_associate_member_description"));
+
+            $('#hourly_salary_desired').val(localStorage.getItem("tmp_associate_member_hourly_salary_desired"));
+            $('#limit_special').val(localStorage.getItem("tmp_associate_member_limit_special"));
+            $('#dues_pd').val(localStorage.getItem("tmp_associate_member_dues_pd"));
+            $('#ins_due').val(localStorage.getItem("tmp_associate_member_ins_due"));
+            $('#police_check').val(localStorage.getItem("tmp_associate_member_police_check"));
+            $('#drivers_license_class').val(localStorage.getItem("tmp_associate_member_drivers_license_class"));
+            $('#how_hear').val(localStorage.getItem("tmp_associate_member_how_hear"));
 
             //---------------------------//
             // RADIOFIELD INITIALIZATION //
@@ -311,6 +318,7 @@
             has_error |= valid_radiofields_seleciton('is_part_time', true);
             has_error |= valid_radiofields_seleciton('is_contract_time', true);
             has_error |= valid_radiofields_seleciton('is_small_job', true);
+            has_error |= valid_textfield_value('how_hear', false, 2);
 
             // INTERRUPT THE FORM SUBMISSION IF ANY ERRORS EXISTED AND UPDATE THE
             // GUI TO INDICATE THAT WE HAVE VALIDATED SOME FIELDS.
@@ -359,6 +367,12 @@
             var skill_sets = $('#skill_sets').val();
             var description = $('#describe').val();
             var is_active = get_selected_radio_value('is_active');
+            var hourly_salary_desired = $('#hourly_salary_desired').val();
+            var limit_special = $('#limit_special').val();
+            var dues_pd = $('#dues_pd').val();
+            var ins_due = $('#ins_due').val();
+            var police_check = $('#police_check').val();
+            var drivers_license_class = $('#drivers_license_class').val();
             var has_car = get_selected_radio_value('has_car');
             var has_van = get_selected_radio_value('has_van');
             var has_truck = get_selected_radio_value('has_truck');
@@ -393,7 +407,12 @@
             localStorage.setItem("tmp_associate_member_password_repeat", password_repeat);
             localStorage.setItem("tmp_associate_member_description", description);
             localStorage.setItem("tmp_associate_member_is_active", is_active);
-            localStorage.setItem("tmp_associate_member_ok_to_text", ok_to_text);
+            localStorage.setItem("tmp_associate_member_hourly_salary_desired", hourly_salary_desired);
+            localStorage.setItem("tmp_associate_member_limit_special", limit_special);
+            localStorage.setItem("tmp_associate_member_dues_pd", dues_pd);
+            localStorage.setItem("tmp_associate_member_ins_due", ins_due);
+            localStorage.setItem("tmp_associate_member_police_check", police_check);
+            localStorage.setItem("tmp_associate_member_drivers_license_class", drivers_license_class);
             localStorage.setItem("tmp_associate_member_has_car", has_car);
             localStorage.setItem("tmp_associate_member_has_van", has_van);
             localStorage.setItem("tmp_associate_member_has_truck", has_truck);

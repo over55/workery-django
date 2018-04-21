@@ -50,7 +50,6 @@
         $('#selected_email').append(localStorage.getItem("tmp_associate_member_email"));
         $('#selected_telephone').append(localStorage.getItem("tmp_associate_member_telephone"));
         $('#selected_description').append(localStorage.getItem("tmp_associate_member_description"));
-        $('#selected_is_active').append(localStorage.getItem("tmp_associate_member_is_active"));
 
         // Set our `tags` field.
         var tmp_person_tag_values = localStorage.getObj("tmp_associate_member_person_tag_values");
@@ -77,6 +76,27 @@
             // Append our HTML element to the GUI.
             $('#selected_skill_set_values').append(htmlElement)
         } // end FOR
+
+        // --- Account ---
+        $('#selected_is_active').append(localStorage.getItem("tmp_associate_member_is_active"));
+
+        // --- Associate Details ---
+        $('#selected_hourly_salary_desired').append(localStorage.getItem("tmp_associate_member_hourly_salary_desired"));
+        $('#selected_limit_special').append(localStorage.getItem("tmp_associate_member_limit_special"));
+        $('#selected_dues_pd').append(localStorage.getItem("tmp_associate_member_dues_pd"));
+        $('#selected_ins_pd').append(localStorage.getItem("tmp_associate_member_ins_due"));
+        $('#selected_police_check').append(localStorage.getItem("tmp_associate_member_police_check"));
+        $('#selected_drivers_license_class').append(localStorage.getItem("tmp_associate_member_drivers_license_class"));
+        $('#selected_has_car').append(localStorage.getItem("tmp_associate_member_has_car"));
+        $('#selected_has_van').append(localStorage.getItem("tmp_associate_member_has_van"));
+        $('#selected_has_truck').append(localStorage.getItem("tmp_associate_member_has_truck"));
+        $('#selected_is_full_time').append(localStorage.getItem("tmp_associate_member_is_full_time"));
+        $('#selected_is_part_time').append(localStorage.getItem("tmp_associate_member_is_part_time"));
+        $('#selected_is_contract_time').append(localStorage.getItem("tmp_associate_member_is_contract_time"));
+        $('#selected_is_small_job').append(localStorage.getItem("tmp_associate_member_is_small_job"));
+        $('#selected_how_hear').append(localStorage.getItem("tmp_associate_member_how_hear"));
+
+
     }); // end Ready
 
     /**
@@ -151,13 +171,30 @@
                 'other_telephone': localStorage.getItem("tmp_associate_member_other_telephone"),
                 'other_telephone_type_of': {{ shared_constants.MOBILE_CONTACT_POINT_TYPE_OF_ID }},
                 // 'fax_number': fax_number
-                'password': password,
-                'password_repeat': password_repeat,
-                'type_of': {{ tenant_constants.RESIDENTIAL_CUSTOMER_TYPE_OF_ID }},
                 'tags': localStorage.getObj("tmp_associate_member_person_tag_ids"),
                 'skill_sets': localStorage.getObj("tmp_associate_member_skill_set_ids"),
                 'description': localStorage.getItem("tmp_associate_member_description"),
+
+                // --- Account ---
+                'password': password,
+                'password_repeat': password_repeat,
                 'is_active': localStorage.getItem("tmp_associate_member_is_active"),
+
+                // --- Associate Details ---
+                'hourly_salary_desired': localStorage.getItem("tmp_associate_member_hourly_salary_desired"),
+                'limit_special': localStorage.getItem("tmp_associate_member_limit_special"),
+                'dues_pd': localStorage.getItem("tmp_associate_member_dues_pd"),
+                'ins_due': localStorage.getItem("tmp_associate_member_ins_due"),
+                'police_check': localStorage.getItem("tmp_associate_member_police_check"),
+                'drivers_license_class': localStorage.getItem("tmp_associate_member_drivers_license_class"),
+                'has_car': localStorage.getItem("tmp_associate_member_has_car"),
+                'has_van': localStorage.getItem("tmp_associate_member_has_van"),
+                'has_truck': localStorage.getItem("tmp_associate_member_has_truck"),
+                'is_full_time': localStorage.getItem("tmp_associate_member_is_full_time"),
+                'is_part_time': localStorage.getItem("tmp_associate_member_is_part_time"),
+                'is_contract_time': localStorage.getItem("tmp_associate_member_is_contract_time"),
+                'is_small_job': localStorage.getItem("tmp_associate_member_is_small_job"),
+                'how_hear': localStorage.getItem("tmp_associate_member_how_hear"),
             },
             function(result_dict) { // Success
                 // FOR DEBUGGING PURPOSES ONLY.
@@ -189,6 +226,22 @@
                 localStorage.removeItem("tmp_associate_member_skill_set_values")
                 localStorage.removeItem("tmp_associate_member_description")
                 localStorage.removeItem("tmp_associate_member_is_active")
+
+                // --- Associate Details ---
+                localStorage.removeItem("tmp_associate_member_hourly_salary_desired")
+                localStorage.removeItem("tmp_associate_member_limit_special")
+                localStorage.removeItem("tmp_associate_member_dues_pd")
+                localStorage.removeItem("tmp_associate_member_ins_due")
+                localStorage.removeItem("tmp_associate_member_police_check")
+                localStorage.removeItem("tmp_associate_member_drivers_license_class")
+                localStorage.removeItem("tmp_associate_member_has_car")
+                localStorage.removeItem("tmp_associate_member_has_van")
+                localStorage.removeItem("tmp_associate_member_has_truck")
+                localStorage.removeItem("tmp_associate_member_is_full_time")
+                localStorage.removeItem("tmp_associate_member_is_part_time")
+                localStorage.removeItem("tmp_associate_member_is_contract_time")
+                localStorage.removeItem("tmp_associate_member_is_small_job")
+                localStorage.removeItem("tmp_associate_member_how_hear")
 
                 // REDIRECT TO SUCCESS PAGE.
                 window.location = redirect_url;
@@ -270,7 +323,7 @@
      <table class="table table-bordered custom-cell-w">
        <tbody>
          <tr class="bg-dark">
-           <th scope="row" colspan="2" class="text-light">Summary Details</th>
+           <th scope="row" colspan="2" class="text-light">Person Details</th>
          </tr>
          <tr>
            <th scope="row" class="bg-light">First name</th>
@@ -392,14 +445,115 @@
                <!-- THIS IS WHERE THE TAGS GET LOADED -->
            </td>
          </tr>
+       </tbody>
+     </table>
+
+     <table class="table table-bordered custom-cell-w">
+       <tbody>
+         <tr class="bg-dark">
+           <th scope="row" colspan="2" class="text-light">Associate Details</th>
+         </tr>
+         <tr>
+           <th scope="row" class="bg-light">Hourly Salary Desired</th>
+           <td id="selected_hourly_salary_desired" name="hourly_salary_desired">
+               <!-- POPULATE THROUGH JS. -->
+           </td>
+         </tr>
+         <tr>
+           <th scope="row" class="bg-light">Limit Special</th>
+           <td id="selected_limit_special" name="limit_special">
+               <!-- POPULATE THROUGH JS. -->
+           </td>
+         </tr>
+         <tr>
+           <th scope="row" class="bg-light">dues_pd</th>
+           <td id="selected_dues_pd" name="dues_pd">
+               <!-- POPULATE THROUGH JS. -->
+           </td>
+         </tr>
+         <tr>
+           <th scope="row" class="bg-light">ins_pd</th>
+           <td id="selected_ins_pd" name="ins_pd">
+               <!-- POPULATE THROUGH JS. -->
+           </td>
+         </tr>
+         <tr>
+           <th scope="row" class="bg-light">police check</th>
+           <td id="selected_police_check" name="police_check">
+               <!-- POPULATE THROUGH JS. -->
+           </td>
+         </tr>
+         <tr>
+           <th scope="row" class="bg-light">drivers_license_class</th>
+           <td id="selected_drivers_license_class" name="drivers_license_class">
+               <!-- POPULATE THROUGH JS. -->
+           </td>
+         </tr>
+         <tr>
+           <th scope="row" class="bg-light">has_car</th>
+           <td id="selected_has_car" name="has_car">
+               <!-- POPULATE THROUGH JS. -->
+           </td>
+         </tr>
+         <tr>
+           <th scope="row" class="bg-light">has_van</th>
+           <td id="selected_has_van" name="has_van">
+               <!-- POPULATE THROUGH JS. -->
+           </td>
+         </tr>
+         <tr>
+           <th scope="row" class="bg-light">has_truck</th>
+           <td id="selected_has_truck" name="has_truck">
+               <!-- POPULATE THROUGH JS. -->
+           </td>
+         </tr>
+         <tr>
+           <th scope="row" class="bg-light">is_full_time</th>
+           <td id="selected_is_full_time" name="is_full_time">
+               <!-- POPULATE THROUGH JS. -->
+           </td>
+         </tr>
+         <tr>
+           <th scope="row" class="bg-light">is_part_time</th>
+           <td id="selected_is_part_time" name="is_part_time">
+               <!-- POPULATE THROUGH JS. -->
+           </td>
+         </tr>
+         <tr>
+           <th scope="row" class="bg-light">is_contract_time</th>
+           <td id="selected_is_contract_time" name="is_contract_time">
+               <!-- POPULATE THROUGH JS. -->
+           </td>
+         </tr>
+         <tr>
+           <th scope="row" class="bg-light">is_small_job</th>
+           <td id="selected_is_small_job" name="is_small_job">
+               <!-- POPULATE THROUGH JS. -->
+           </td>
+         </tr>
+         <tr>
+           <th scope="row" class="bg-light">how hear</th>
+           <td id="selected_how_hear" name="how_hear">
+               <!-- POPULATE THROUGH JS. -->
+           </td>
+         </tr>
+        </tbody>
+     </table>
+
+     <table class="table table-bordered custom-cell-w">
+       <tbody>
+         <tr class="bg-dark">
+           <th scope="row" colspan="2" class="text-light">Account Details</th>
+         </tr>
          <tr>
            <th scope="row" class="bg-light">Is active?</th>
            <td id="selected_is_active">
                <!-- THIS IS WHERE THE TAGS GET LOADED -->
            </td>
          </tr>
-       </tbody>
-     </table>
+     </body>
+    </table>
+
      <div class="form-group col-md-12 mb-3 p-0 mx-auto text-center">
          <button id="id_create_btn"
               class="btn btn-success btn-lg mt-4 float-right pl-4 pr-4"
