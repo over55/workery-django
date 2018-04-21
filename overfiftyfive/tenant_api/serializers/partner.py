@@ -289,7 +289,7 @@ class PartnerListCreateSerializer(serializers.ModelSerializer):
         # validated_data['comments'] = PartnerComment.objects.filter(partner=partner)
         validated_data['created_by'] = self.context['created_by']
         validated_data['last_modified_by'] = self.context['created_by']
-        validated_data['extra_comment'] = None
+        # validated_data['extra_comment'] = None
 
         # Return our validated data.
         return validated_data
@@ -361,7 +361,7 @@ class PartnerRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
             # 'organizations', #TODO: FIX
 
             # Misc (Write Only)
-            'extra_comment',
+            # 'extra_comment',
 
             # Contact Point
             'area_served',
@@ -531,7 +531,7 @@ class PartnerRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         #---------------------------
         # validated_data['comments'] = PartnerComment.objects.filter(partner=instance)
         validated_data['last_modified_by'] = self.context['last_modified_by']
-        validated_data['extra_comment'] = None
+        # validated_data['extra_comment'] = None
 
         # Return our validated data.
         return validated_data
