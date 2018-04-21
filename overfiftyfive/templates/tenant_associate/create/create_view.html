@@ -222,6 +222,15 @@
             return false;
         }
 
+        function get_boolean_from_selected_radio_value(radiofields_name) {
+            var value = get_selected_radio_value(radiofields_name);
+            if (value == 'yes') {
+                return true;
+            } else {
+                return false;
+            }
+        }
+
         function ajax_cancel(redirect_url) {
             window.location = redirect_url;
         }
@@ -346,8 +355,8 @@
             if (gender == undefined || gender == null || gender.length == 0) {
                 gender = '';
             }
-            var ok_to_email = get_selected_radio_value('ok_to_email');
-            var ok_to_text = get_selected_radio_value('ok_to_text');
+            var ok_to_email = get_boolean_from_selected_radio_value('ok_to_email');
+            var ok_to_text = get_boolean_from_selected_radio_value('ok_to_text');
             var street_address = $('#street_address').val();
             var street_address_extra = $('#street_address_extra').val();
             var address_region = $('#address_region').val();
@@ -366,20 +375,20 @@
             var person_tags = $('#person_tags').val();
             var skill_sets = $('#skill_sets').val();
             var description = $('#describe').val();
-            var is_active = get_selected_radio_value('is_active');
+            var is_active = get_boolean_from_selected_radio_value('is_active');
             var hourly_salary_desired = $('#hourly_salary_desired').val();
             var limit_special = $('#limit_special').val();
             var dues_pd = $('#dues_pd').val();
             var ins_due = $('#ins_due').val();
             var police_check = $('#police_check').val();
             var drivers_license_class = $('#drivers_license_class').val();
-            var has_car = get_selected_radio_value('has_car');
-            var has_van = get_selected_radio_value('has_van');
-            var has_truck = get_selected_radio_value('has_truck');
-            var is_full_time = get_selected_radio_value('is_full_time');
-            var is_part_time = get_selected_radio_value('is_part_time');
-            var is_contract_time = get_selected_radio_value('is_contract_time');
-            var is_small_job = get_selected_radio_value('is_small_job');
+            var has_car = get_boolean_from_selected_radio_value('has_car');
+            var has_van = get_boolean_from_selected_radio_value('has_van');
+            var has_truck = get_boolean_from_selected_radio_value('has_truck');
+            var is_full_time = get_boolean_from_selected_radio_value('is_full_time');
+            var is_part_time = get_boolean_from_selected_radio_value('is_part_time');
+            var is_contract_time = get_boolean_from_selected_radio_value('is_contract_time');
+            var is_small_job = get_boolean_from_selected_radio_value('is_small_job');
             var how_hear = $('#how_hear').val();
 
             //--------------------------------------------//
