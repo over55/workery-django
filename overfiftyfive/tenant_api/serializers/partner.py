@@ -48,16 +48,16 @@ class PartnerListCreateSerializer(serializers.ModelSerializer):
     # `django-rest-framework`.
     # comments = PartnerCommentSerializer(many=True, read_only=True, allow_null=True)
 
-    # This is a field used in the `create` function if the user enters a
-    # comment. This field is *ONLY* to be used during the POST creation and
-    # will be blank during GET.
-    extra_comment = serializers.CharField(write_only=True, allow_null=True)
-
-    # # The skill_sets that this partner belongs to. We will return primary
-    # # keys only. This field is read/write accessible.
-    # skill_sets = serializers.PrimaryKeyRelatedField(many=True, queryset=SkillSet.objects.all(), allow_null=True)
-
-    assigned_skill_sets = SkillSetListCreateSerializer(many=True, read_only=True)
+    # # This is a field used in the `create` function if the user enters a
+    # # comment. This field is *ONLY* to be used during the POST creation and
+    # # will be blank during GET.
+    # extra_comment = serializers.CharField(write_only=True, allow_null=True)
+    #
+    # # # The skill_sets that this partner belongs to. We will return primary
+    # # # keys only. This field is read/write accessible.
+    # # skill_sets = serializers.PrimaryKeyRelatedField(many=True, queryset=SkillSet.objects.all(), allow_null=True)
+    #
+    # assigned_skill_sets = SkillSetListCreateSerializer(many=True, read_only=True)
 
     # Custom formatting of our telephone fields.
     fax_number = PhoneNumberField(allow_null=True, required=False)
@@ -115,31 +115,15 @@ class PartnerListCreateSerializer(serializers.ModelSerializer):
             'is_active',
             'is_ok_to_email',
             'is_ok_to_text',
-            'hourly_salary_desired',
-            'limit_special',
-            'dues_pd',
-            'ins_due',
-            'police_check',
-            'drivers_license_class',
-            'has_car',
-            'has_van',
-            'has_truck',
-            'is_full_time',
-            'is_part_time',
-            'is_contract_time',
-            'is_small_job',
             'how_hear',
-            'skill_sets', # many-to-many
-            'tags',
 
             # Misc (Read Only)
             # 'comments',
             'password',
             'password_repeat',
-            'assigned_skill_sets',
 
             # Misc (Write Only)
-            'extra_comment',
+            # 'extra_comment',
 
             # Contact Point
             'area_served',
@@ -174,7 +158,9 @@ class PartnerListCreateSerializer(serializers.ModelSerializer):
     def setup_eager_loading(cls, queryset):
         """ Perform necessary eager loading of data. """
         queryset = queryset.prefetch_related(
-            'owner', 'created_by', 'last_modified_by', 'tags', 'skill_sets'
+            'owner',
+            'created_by',
+            'last_modified_by',
             # 'comments'
         )
         return queryset
@@ -252,21 +238,6 @@ class PartnerListCreateSerializer(serializers.ModelSerializer):
             # Misc
             is_ok_to_email=validated_data.get('is_ok_to_email', None),
             is_ok_to_text=validated_data.get('is_ok_to_text', None),
-            hourly_salary_desired=validated_data.get('hourly_salary_desired', 0.00),
-            limit_special=validated_data.get('limit_special', None),
-            dues_pd=validated_data.get('dues_pd', None),
-            ins_due=validated_data.get('ins_due', None),
-            police_check=validated_data.get('police_check', None),
-            drivers_license_class=validated_data.get('drivers_license_class', None),
-            has_car=validated_data.get('has_car', False),
-            has_van=validated_data.get('has_van', False),
-            has_truck=validated_data.get('has_truck', False),
-            is_full_time=validated_data.get('is_full_time', False),
-            is_part_time=validated_data.get('is_part_time', False),
-            is_contract_time=validated_data.get('is_contract_time', False),
-            is_small_job=validated_data.get('is_small_job', False),
-            how_hear=validated_data.get('how_hear', None),
-            # 'organizations', #TODO: IMPLEMENT.
 
             # Contact Point
             area_served=validated_data.get('area_served', None),
@@ -299,20 +270,6 @@ class PartnerListCreateSerializer(serializers.ModelSerializer):
         )
         print("INFO: Created customer.")
 
-        #-----------------------------
-        # Set our `SkillSet` objects.
-        #-----------------------------
-        skill_sets = validated_data.get('skill_sets', None)
-        if skill_sets is not None:
-            partner.skill_sets.set(skill_sets)
-
-        #------------------------
-        # Set our `Tag` objects.
-        #------------------------
-        tags = validated_data.get('tags', None)
-        if tags is not None:
-            partner.tags.set(tags)
-
         # #-----------------------------
         # # Create our `Comment` object.
         # #-----------------------------
@@ -333,7 +290,6 @@ class PartnerListCreateSerializer(serializers.ModelSerializer):
         validated_data['created_by'] = self.context['created_by']
         validated_data['last_modified_by'] = self.context['created_by']
         validated_data['extra_comment'] = None
-        validated_data['assigned_skill_sets'] = partner.skill_sets.all()
 
         # Return our validated data.
         return validated_data
@@ -353,16 +309,16 @@ class PartnerRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
     # `django-rest-framework`.
     # comments = PartnerCommentSerializer(many=True, read_only=True)
 
-    # This is a field used in the `create` function if the user enters a
-    # comment. This field is *ONLY* to be used during the POST creation and
-    # will be blank during GET.
-    extra_comment = serializers.CharField(write_only=True, allow_null=True)
-
-    # The skill_sets that this partner belongs to. We will return primary
-    # keys only. This field is read/write accessible.
-    skill_sets = serializers.PrimaryKeyRelatedField(many=True, queryset=SkillSet.objects.all(), allow_null=True)
-
-    assigned_skill_sets = SkillSetListCreateSerializer(many=True, read_only=True)
+    # # This is a field used in the `create` function if the user enters a
+    # # comment. This field is *ONLY* to be used during the POST creation and
+    # # will be blank during GET.
+    # extra_comment = serializers.CharField(write_only=True, allow_null=True)
+    #
+    # # The skill_sets that this partner belongs to. We will return primary
+    # # keys only. This field is read/write accessible.
+    # skill_sets = serializers.PrimaryKeyRelatedField(many=True, queryset=SkillSet.objects.all(), allow_null=True)
+    #
+    # assigned_skill_sets = SkillSetListCreateSerializer(many=True, read_only=True)
 
     # Custom formatting of our telephone fields.
     fax_number = PhoneNumberField(allow_null=True, required=False)
@@ -393,20 +349,15 @@ class PartnerRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
 
             # Misc (Read/Write)
             'is_active',
-            'tags',
             'is_ok_to_email',
             'is_ok_to_text',
             # 'is_senior',
             # 'is_support',
             # 'job_info_read',
-            'how_hear',
-            'skill_sets',
-            # 'organizations', #TODO: FIX
             'gender',
 
             # Misc (Read Only)
             # 'comments',
-            'assigned_skill_sets',
             # 'organizations', #TODO: FIX
 
             # Misc (Write Only)
@@ -445,7 +396,9 @@ class PartnerRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
     def setup_eager_loading(cls, queryset):
         """ Perform necessary eager loading of data. """
         queryset = queryset.prefetch_related(
-            'owner', 'created_by', 'last_modified_by', 'skill_sets', 'tags',
+            'owner',
+            'created_by',
+            'last_modified_by',
             # 'comments'
         )
         return queryset
@@ -459,7 +412,6 @@ class PartnerRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
 
         # Get our inputs.
         email = validated_data.get('email', instance.email)
-        skill_sets = validated_data.get('skill_sets', None)
 
         # Update telephone numbers.
         fax_number = validated_data.get('fax_number', instance.fax_number)
@@ -559,19 +511,6 @@ class PartnerRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         instance.save()
         print("INFO: Updated the partner.")
 
-        #-----------------------------
-        # Set our `SkillSet` objects.
-        #-----------------------------
-        if skill_sets is not None:
-            instance.skill_sets.set(skill_sets)
-
-        #------------------------
-        # Set our `Tag` objects.
-        #------------------------
-        tags = validated_data.get('tags', None)
-        if tags is not None:
-            instance.tags.set(tags)
-
         # #---------------------------
         # # Attach our comment.
         # #---------------------------
@@ -593,7 +532,6 @@ class PartnerRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         # validated_data['comments'] = PartnerComment.objects.filter(partner=instance)
         validated_data['last_modified_by'] = self.context['last_modified_by']
         validated_data['extra_comment'] = None
-        validated_data['assigned_skill_sets'] = instance.skill_sets.all()
 
         # Return our validated data.
         return validated_data

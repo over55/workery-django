@@ -76,7 +76,12 @@ class Command(BaseCommand):
             'can_get_staff',
             'can_post_staff',
             'can_put_staff',
-            'can_delete_staff'
+            'can_delete_staff',
+            'can_get_partners',
+            'can_get_partner',
+            'can_post_partner',
+            'can_put_partner',
+            'can_delete_partner',
         ]
         permissions = Permission.objects.filter(codename__in=permission_codenames)
         for permission in permissions.all():
@@ -125,7 +130,12 @@ class Command(BaseCommand):
             'can_get_staff',
             'can_post_staff',
             'can_put_staff',
-            'can_delete_staff'
+            'can_delete_staff',
+            'can_get_partners',
+            'can_get_partner',
+            'can_post_partner',
+            'can_put_partner',
+            'can_delete_partner',
         ]
         permissions = Permission.objects.filter(codename__in=permission_codenames)
         for permission in permissions.all():
@@ -170,7 +180,12 @@ class Command(BaseCommand):
             'can_get_staff',
             # 'can_post_staff',
             'can_put_staff',
-            # 'can_delete_staff'
+            # 'can_delete_staff',
+            'can_get_partners',
+            'can_get_partner',
+            'can_post_partner',
+            'can_put_partner',
+            'can_delete_partner',
         ]
         permissions = Permission.objects.filter(codename__in=permission_codenames)
         for permission in permissions.all():

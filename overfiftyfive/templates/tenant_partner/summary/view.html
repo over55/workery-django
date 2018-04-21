@@ -98,7 +98,7 @@
                 </tr>
             </thead>
             <tbody>
-                {% for partner in list %}
+                {% for partner in partner_list %}
                 <tr>
                     <td>{{ partner.id|intcomma }}</td>
                     <td>{% if partner.given_name %}{{ partner.given_name }}{% else %}-{% endif %}</td>

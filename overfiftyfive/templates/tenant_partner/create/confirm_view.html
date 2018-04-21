@@ -51,48 +51,22 @@
         $('#selected_telephone').append(localStorage.getItem("tmp_partner_telephone"));
         $('#selected_description').append(localStorage.getItem("tmp_partner_description"));
         $('#selected_is_active').append(localStorage.getItem("tmp_partner_is_active"));
-
-        // Set our `tags` field.
-        var tmp_person_tag_values = localStorage.getObj("tmp_partner_person_tag_values");
-        for (var i = 0; i < tmp_person_tag_values.length; i++) {
-            // Extract our value.
-            var tag_value = tmp_person_tag_values[i];
-
-            // Generate our HTML element.
-            var htmlElement = '<span class="badge badge-info badge-lg">'+tag_value+'</span>';
-
-            // Append our HTML element to the GUI.
-            $('#selected_tag_values').append(htmlElement)
-        } // end FOR
-
-        // Set our `skill_sets` field.
-        var tmp_skill_set_values = localStorage.getObj("tmp_partner_skill_set_values");
-        for (var i = 0; i < tmp_skill_set_values.length; i++) {
-            // Extract our value.
-            var tag_value = tmp_skill_set_values[i];
-
-            // Generate our HTML element.
-            var htmlElement = '<span class="badge badge-info badge-lg">'+tag_value+'</span>';
-
-            // Append our HTML element to the GUI.
-            $('#selected_skill_set_values').append(htmlElement)
-        } // end FOR
     }); // end Ready
 
     /**
      *  Function will unlock the submit button.
      */
     function disable_btn() {
-        $('#id_submit_btn').val("{% trans 'Please Wait...' %}");
-        $('#id_submit_btn').prop("disabled", true);
+        $('#id_create_btn').val("{% trans 'Please Wait...' %}");
+        $('#id_create_btn').prop("disabled", true);
     }
 
     /**
      *  Function will lock the submit button.
      */
     function enable_btn() {
-        $('#id_submit_btn').prop("disabled", false);
-        $('#id_submit_btn').val("{% trans 'Update' %}");
+        $('#id_create_btn').prop("disabled", false);
+        $('#id_create_btn').val("{% trans 'Update' %}");
     }
 
     function ajax_previous(redirect_url) {
@@ -154,8 +128,6 @@
                 'password': password,
                 'password_repeat': password_repeat,
                 'type_of': {{ tenant_constants.RESIDENTIAL_CUSTOMER_TYPE_OF_ID }},
-                'tags': localStorage.getObj("tmp_partner_person_tag_ids"),
-                'skill_sets': localStorage.getObj("tmp_partner_skill_set_ids"),
                 'description': localStorage.getItem("tmp_partner_description"),
                 'is_active': localStorage.getItem("tmp_partner_is_active"),
             },
