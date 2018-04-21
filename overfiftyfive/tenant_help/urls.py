@@ -4,5 +4,9 @@ from django.views.generic.base import RedirectView
 from tenant_help import views
 
 urlpatterns = (
-    path('help/', views.HelpListView.as_view(), name='o55_tenant_help_list'),
+    path('help/', views.HelpCategoryListView.as_view(), name='o55_tenant_help_category_list'),
+
+    path('help/category/<int:pk>/', views.HelpCategoryRetrieveView.as_view(), name='o55_tenant_help_category_retrieve'),
+
+    path('help/item/<int:pk>/', views.HelpItemRetrieveView.as_view(), name='o55_tenant_help_item_retrieve'),
 )

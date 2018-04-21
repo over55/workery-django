@@ -69,23 +69,28 @@ class ResourceItem(models.Model):
     icon = models.CharField(
         _("icon"),
         max_length=31,
-        help_text=_('The icon of this resource category.'),
+        help_text=_('The icon of this resource item.'),
         db_index=True,
-        unique=True
+        blank=True
     )
     title = models.CharField(
         _("title"),
         max_length=63,
-        help_text=_('The title of this resource category.'),
+        help_text=_('The title of this resource item.'),
         db_index=True,
-        unique=True
     )
     description = models.TextField(
         _("Description"),
-        help_text=_('A short description of this resource category.'),
+        help_text=_('A short description of this resource item.'),
         blank=True,
         null=True,
         default='',
+    )
+    category = models.ForeignKey(
+        "ResourceCategory",
+        help_text=_('The resource category this item belongs to.'),
+        related_name="%(app_label)s_%(class)s_resource_categories",
+        on_delete=models.CASCADE,
     )
 
     #

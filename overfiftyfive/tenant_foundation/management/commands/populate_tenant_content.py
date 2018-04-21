@@ -22,6 +22,8 @@ from tenant_foundation.models import (
     Order,
     # OrderComment,
     ResourceCategory,
+    ResourceItem,
+    ResourceItemSortOrder,
     SkillSet,
     Staff,
     Tag
@@ -58,7 +60,9 @@ class Command(BaseCommand):
 
         # Update content.
         self.begin_populating_skill_sets()
-        self.begin_populating_category_resources()
+        self.begin_populating_resource_categories()
+        self.begin_populating_resource_items()
+        self.begin_populating_resource_item_sort_orders()
 
         # For debugging purposes.
         self.stdout.write(
@@ -137,32 +141,186 @@ class Command(BaseCommand):
                 }
             )
 
-    def begin_populating_category_resources(self):
+    def begin_populating_resource_categories(self):
         RESOURCE_CATEGORY_ARRAY = [
+            # --- CATEGORY #1 ---
             {
                 'id': 1,
                 'icon': 'file',
                 'title': 'Forms',
                 'description': 'Access forms & documents.'
-            },{
+            },
+
+            # --- CATEGORY #2 ---
+            {
                 'id': 2,
                 'icon': 'video',
                 'title': 'Videos',
                 'description': 'Access videos & media.'
-            },{
+            },
+
+            # --- CATEGORY #3 ---
+            {
                 'id': 3,
                 'icon': 'cogs',
                 'title': 'System',
                 'description': 'Access system FAQs.'
             }
         ]
-        for resource_category in RESOURCE_CATEGORY_ARRAY:
+        for category in RESOURCE_CATEGORY_ARRAY:
             ResourceCategory.objects.update_or_create(
-                id=resource_category['id'],
+                id=category['id'],
                 defaults={
-                    'id': resource_category['id'],
-                    'icon': resource_category['icon'],
-                    'title': resource_category['title'],
-                    'description': resource_category['description'],
+                    'id': category['id'],
+                    'icon': category['icon'],
+                    'title': category['title'],
+                    'description': category['description'],
+                }
+            )
+
+    def begin_populating_resource_items(self):
+        RESOURCE_ITEMS_ARRAY = [
+            # --- CATEGORY #1 ---
+            {
+                'id': 1,
+                'icon': 'file',
+                'title': 'Resource #1',
+                'description': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+                'category': 1
+            },{
+                'id': 2,
+                'icon': 'video',
+                'title': 'Resource #2',
+                'description': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+                'category': 1
+            },{
+                'id': 3,
+                'icon': 'cogs',
+                'title': 'Resource #3',
+                'description': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+                'category': 1
+            },
+
+            # --- CATEGORY #2 ---
+            {
+                'id': 4,
+                'icon': 'file',
+                'title': 'Resource #1',
+                'description': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+                'category': 2
+            },{
+                'id': 5,
+                'icon': 'video',
+                'title': 'Resource #2',
+                'description': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+                'category': 2
+            },{
+                'id': 6,
+                'icon': 'cogs',
+                'title': 'Resource #3',
+                'description': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+                'category': 2
+            },
+
+            # --- CATEGORY #3 ---
+            {
+                'id': 7,
+                'icon': 'file',
+                'title': 'Resource #1',
+                'description': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+                'category': 3
+            },{
+                'id': 8,
+                'icon': 'video',
+                'title': 'Resource #2',
+                'description': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+                'category': 3
+            },{
+                'id': 9,
+                'icon': 'cogs',
+                'title': 'Resource #3',
+                'description': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+                'category': 3
+            }
+        ]
+        for item in RESOURCE_ITEMS_ARRAY:
+            category = ResourceCategory.objects.get(id=item['category'])
+            ResourceItem.objects.update_or_create(
+                id=item['id'],
+                defaults={
+                    'id': item['id'],
+                    'icon': item['icon'],
+                    'title': item['title'],
+                    'description': item['description'],
+                    'category': category,
+                }
+            )
+
+    def begin_populating_resource_item_sort_orders(self):
+        RESOURCE_ITEM_SORT_ORDERS_ARRAY = [
+            # --- CATEGORY #1 ---
+            {
+                'id': 1,
+                'ordering_number': 1,
+                'category': 1,
+                'item': 1
+            },{
+                'id': 2,
+                'ordering_number': 2,
+                'category': 1,
+                'item': 2
+            },{
+                'id': 3,
+                'ordering_number': 3,
+                'category': 1,
+                'item': 3
+            },
+
+            # --- CATEGORY #2 ---
+            {
+                'id': 4,
+                'ordering_number': 1,
+                'category': 2,
+                'item': 4
+            },{
+                'id': 5,
+                'ordering_number': 2,
+                'category': 2,
+                'item': 5
+            },{
+                'id': 6,
+                'ordering_number': 3,
+                'category': 2,
+                'item': 6
+            },
+
+            # --- CATEGORY #3 ---
+            {
+                'id': 7,
+                'ordering_number': 1,
+                'category': 3,
+                'item': 7
+            },{
+                'id': 8,
+                'ordering_number': 2,
+                'category': 3,
+                'item': 8
+            },{
+                'id': 9,
+                'ordering_number': 3,
+                'category': 3,
+                'item': 9
+            }
+        ]
+        for obj in RESOURCE_ITEM_SORT_ORDERS_ARRAY:
+            category = ResourceCategory.objects.get(id=obj['category'])
+            item = ResourceItem.objects.get(id=obj['item'])
+            ResourceItemSortOrder.objects.update_or_create(
+                id=obj['id'],
+                defaults={
+                    'id': obj['id'],
+                    'category': category,
+                    'item': item,
+                    'ordering_number': obj['ordering_number'],
                 }
             )

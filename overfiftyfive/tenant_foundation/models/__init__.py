@@ -26,6 +26,8 @@ from tenant_foundation.models.order import Order
 
 # Resource
 from tenant_foundation.models.resource_category import ResourceCategory
+from tenant_foundation.models.resource_item import ResourceItem
+from tenant_foundation.models.resource_item_sort_order import ResourceItemSortOrder
 
 # Partner
 from tenant_foundation.models.partner import Partner

@@ -82,6 +82,12 @@ class ResourceCategory(models.Model):
         null=True,
         default='',
     )
+    sorted_items = models.ManyToManyField(
+        "ResourceItem",
+        help_text=_('The items belonging to this category sorted by "ordering_number" field.'),
+        blank=True,
+        through='ResourceItemSortOrder'
+    )
 
     #
     #  FUNCTIONS
