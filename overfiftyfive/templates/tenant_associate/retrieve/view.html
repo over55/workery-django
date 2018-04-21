@@ -214,6 +214,109 @@
                 </div>
             </div>
             <!-- ############ end LOCATION ############ -->
+            <!-- ############ DETAILS ############ -->
+            <p class="border-bottom mb-3 pb-1 text-secondary">Details</p>
+            <div class="form-row">
+                <div class="form-group col-md-12 mb-4">
+                    <label for="is_active">Hourly salary desired</label>
+                    <p>
+                        {% if associate.hourly_salary_desired %}{{ associate.hourly_salary_desired }}{% else %}-{% endif %}
+                    </p>
+                    <div id="is_active-error" class="invalid-feedback"></div>
+                </div>
+                <div class="form-group col-md-12 mb-4">
+                    <label for="is_active">Limit special</label>
+                    <p>
+                        {% if associate.limit_special %}{{ associate.limit_special }}{% else %}-{% endif %}
+                    </p>
+                    <div id="is_active-error" class="invalid-feedback"></div>
+                </div>
+                <div class="form-group col-md-12 mb-4">
+                    <label for="is_active">dues_pd</label>
+                    <p>
+                        {% if associate.dues_pd %}{{ associate.dues_pd }}{% else %}-{% endif %}
+                    </p>
+                    <div id="is_active-error" class="invalid-feedback"></div>
+                </div>
+                <div class="form-group col-md-12 mb-4">
+                    <label for="is_active">ins_due</label>
+                    <p>
+                        {% if associate.ins_due %}{{ associate.ins_due }}{% else %}-{% endif %}
+                    </p>
+                    <div id="is_active-error" class="invalid-feedback"></div>
+                </div>
+                <div class="form-group col-md-12 mb-4">
+                    <label for="is_active">Police check</label>
+                    <p>
+                        {% if associate.police_check %}{{ associate.police_check }}{% else %}-{% endif %}
+                    </p>
+                    <div id="is_active-error" class="invalid-feedback"></div>
+                </div>
+                <div class="form-group col-md-12 mb-4">
+                    <label for="is_active">Drivers license class</label>
+                    <p>
+                        {% if associate.drivers_license_class %}{{ associate.drivers_license_class }}{% else %}-{% endif %}
+                    </p>
+                    <div id="is_active-error" class="invalid-feedback"></div>
+                </div>
+                <div class="form-group col-md-12 mb-4">
+                    <label for="is_active">has_car</label>
+                    <p>
+                        {% if associate.has_car %}Yes{% else %}No{% endif %}
+                    </p>
+                    <div id="is_active-error" class="invalid-feedback"></div>
+                </div>
+                <div class="form-group col-md-12 mb-4">
+                    <label for="is_active">Has van</label>
+                    <p>
+                        {% if associate.has_van %}Yes{% else %}No{% endif %}
+                    </p>
+                    <div id="is_active-error" class="invalid-feedback"></div>
+                </div>
+                <div class="form-group col-md-12 mb-4">
+                    <label for="is_active">Has truck</label>
+                    <p>
+                        {% if associate.has_truck %}Yes{% else %}No{% endif %}
+                    </p>
+                    <div id="is_active-error" class="invalid-feedback"></div>
+                </div>
+                <div class="form-group col-md-12 mb-4">
+                    <label for="is_active">Is full time</label>
+                    <p>
+                        {% if associate.is_full_time %}Yes{% else %}No{% endif %}
+                    </p>
+                    <div id="is_active-error" class="invalid-feedback"></div>
+                </div>
+                <div class="form-group col-md-12 mb-4">
+                    <label for="is_active">Is part time</label>
+                    <p>
+                        {% if associate.is_part_time %}Yes{% else %}No{% endif %}
+                    </p>
+                    <div id="is_active-error" class="invalid-feedback"></div>
+                </div>
+                <div class="form-group col-md-12 mb-4">
+                    <label for="is_active">Is contract time</label>
+                    <p>
+                        {% if associate.is_contract_time %}Yes{% else %}No{% endif %}
+                    </p>
+                    <div id="is_active-error" class="invalid-feedback"></div>
+                </div>
+                <div class="form-group col-md-12 mb-4">
+                    <label for="is_active">Is small job</label>
+                    <p>
+                        {% if associate.is_small_job %}Yes{% else %}No{% endif %}
+                    </p>
+                    <div id="is_active-error" class="invalid-feedback"></div>
+                </div>
+                <div class="form-group col-md-12 mb-4">
+                    <label for="is_active">How hear</label>
+                    <p>
+                        {% if associate.how_hear %}{{ associate.how_hear }}{% else %}-{% endif %}
+                    </p>
+                    <div id="is_active-error" class="invalid-feedback"></div>
+                </div>
+            </div>
+            <!-- ############ end DETAILS ############ -->
             <!-- ############ ACCOUNT ############ -->
             <p class="border-bottom mb-3 pb-1 text-secondary">Account</p>
             <div class="form-row">
@@ -231,12 +334,6 @@
             </div>
             <!-- ############ end ACCOUNT ############ -->
             <!-- ############ BUSINESS ############ -->
-            {% comment %}
-            <p class="border-bottom mb-3 pb-1 text-secondary">Business Information</p>
-            <div class="form-row">
-            </div>
-            {% endcomment %}
-            <!-- ############ end BUSINESS ############ -->
             <!-- end SUBMIT BUTTON -->
             <div class="form-group col-md-12 mb-3 mx-auto text-center">
                 <a href="{% url 'o55_tenant_member_update' template object.id %}">
