@@ -57,7 +57,7 @@
     <!------------------------------------------------------------------------->
     <!-- end BACK BUTTON -->
 
-    <h1>{% trans 'Add Associate Member' %}</h1>
+    <h1 id="id_page_title">{% trans 'Add Associate Member' %}</h1>
 
     <!-- FORM WITH JS -->
     <!------------------------------------------------------------------------->
@@ -66,10 +66,27 @@
          *  When page loads, the following code will be run first.
          */
         $(document).ready(function () {
+            //---------------------------//
+            // DATEPICKER INITIALIZATION //
+            //---------------------------//
+
             // Initialize our datepicker jQuery code with our HTML view.
             $( "#dob" ).datepicker({
                 dateFormat: 'yy-mm-dd'  // https://stackoverflow.com/a/7500097
             });
+            $( "#dues_pd" ).datepicker({
+                dateFormat: 'yy-mm-dd'  // https://stackoverflow.com/a/7500097
+            });
+            $( "#ins_due" ).datepicker({
+                dateFormat: 'yy-mm-dd'  // https://stackoverflow.com/a/7500097
+            });
+            $( "#police_check" ).datepicker({
+                dateFormat: 'yy-mm-dd'  // https://stackoverflow.com/a/7500097
+            });
+
+            //------------------------//
+            // SELECT2 INITIALIZATION //
+            //------------------------//
 
             // Populate our 'select2' chosen values.
             var tmp_person_tags = localStorage.getObj("tmp_associate_member_person_tag_ids");
@@ -82,6 +99,10 @@
             $('#person_tags').select2();
             $('#skill_sets').select2();
 
+            //--------------------------//
+            // TEXTFIELD INITIALIZATION //
+            //--------------------------//
+
             // Populate previously set values.
             $('#firstname').val(localStorage.getItem("tmp_associate_member_given_name"));
             $('#middlename').val(localStorage.getItem("tmp_associate_member_middle_name"));
@@ -90,8 +111,6 @@
             $('#other_phonenumber').val(localStorage.getItem("tmp_associate_member_other_telephone"));
             $('#dob').val(localStorage.getItem("tmp_associate_member_date_of_birth"));
             $('#gender').val(localStorage.getItem("tmp_associate_member_gender"));
-            $("input[name=ok_to_email][value=" + localStorage.getItem("tmp_associate_member_ok_to_email") + "]").prop('checked', true);
-            $("input[name=ok_to_text][value=" + localStorage.getItem("tmp_associate_member_ok_to_text") + "]").prop('checked', true);
             $('#street_address').val(localStorage.getItem("tmp_associate_member_street_address"));
             $('#street_address_extra').val(localStorage.getItem("tmp_associate_member_street_address_extra"));
             $('#address_locality').val(localStorage.getItem("tmp_associate_member_address_locality"));
@@ -104,7 +123,23 @@
             $('#password').val(localStorage.getItem("tmp_associate_member_password"));
             $('#password_repeat').val(localStorage.getItem("tmp_associate_member_password_repeat"));
             $('#describe').append(localStorage.getItem("tmp_associate_member_description"));
+            $('#how_hear').append(localStorage.getItem("tmp_associate_member_how_hear"));
+
+            //---------------------------//
+            // RADIOFIELD INITIALIZATION //
+            //---------------------------//
+
+            $("input[name=ok_to_email][value=" + localStorage.getItem("tmp_associate_member_ok_to_email") + "]").prop('checked', true);
+            $("input[name=ok_to_text][value=" + localStorage.getItem("tmp_associate_member_ok_to_text") + "]").prop('checked', true);
             $("input[name=is_active][value=" + localStorage.getItem("tmp_associate_member_is_active") + "]").prop('checked', true);
+            $("input[name=has_car][value=" + localStorage.getItem("tmp_associate_member_has_car") + "]").prop('checked', true);
+            $("input[name=has_van][value=" + localStorage.getItem("tmp_associate_member_has_van") + "]").prop('checked', true);
+            $("input[name=has_truck][value=" + localStorage.getItem("tmp_associate_member_has_truck") + "]").prop('checked', true);
+            $("input[name=is_full_time][value=" + localStorage.getItem("tmp_associate_member_is_full_time") + "]").prop('checked', true);
+            $("input[name=is_part_time][value=" + localStorage.getItem("tmp_associate_member_is_part_time") + "]").prop('checked', true);
+            $("input[name=is_contract_time][value=" + localStorage.getItem("tmp_associate_member_is_contract_time") + "]").prop('checked', true);
+            $("input[name=is_small_job][value=" + localStorage.getItem("tmp_associate_member_is_small_job") + "]").prop('checked', true);
+
         }); // end Ready
 
         /**
@@ -166,7 +201,7 @@
 
         function valid_radiofields_seleciton(radiofields_name, is_required) {
             var value = get_selected_radio_value(radiofields_name);
-	    var radiofield_error = document.getElementById(radiofields_name+'-error');
+	        var radiofield_error = document.getElementById(radiofields_name+'-error');
 
             if (is_required) {
                 if (value == undefined || value === null || value.length == 0) {
@@ -190,15 +225,44 @@
          *  fields get validated.
          */
         function ajax_post_form_submission(redirect_url) {
+            //--------------------------------//
+            // CASE 1 OF 2: NO EMAIL ENTERED. //
+            //--------------------------------//
             var tmp_email = $('#email').val();
+            if (tmp_email === undefined || tmp_email === null || tmp_email.length == 0) {
+                // STEP 1: CLEAR EXISTING TEXT.
+                $('#all_error_result').html();
+
+                // STEP 2: ADD ERROR MESSAGE.
+                $('#all_error_result').append("<p><b>No Email</b> - Please enter email before moving forward.</p><br />");
+
+                // STEP 3: SCROLL TO TWHERE THE ERROR MESSAGE IS.
+                $('html, body').animate({ scrollTop: $('#id_page_title').offset().top }, 'slow');
+
+                // STEP 4: STOP THE FUNCTION.
+                return;
+            }
+
+            //-----------------------------//
+            // CASE 2 OF 2: EMAIL ENTERED. //
+            //-----------------------------//
             post_is_email_unique_api(
                 tmp_email,
                 function(result) {
+                    // PROCEED FORWARD.
                     if (result === 1 || result === '1') {
                         save_submission(redirect_url);
+
+                    // DO NOT PROCEED FURTHER.
                     } else {
-                        alert("EMAIL ALREADY EXISTS, PLEASE PICK A NEW EMAIL ADDRESS"); //TODO: UPDATE THE GUI.
-                        return;
+                        // STEP 1: CLEAR EXISTING TEXT.
+                        $('#all_error_result').html();
+
+                        // STEP 2: ADD ERROR MESSAGE.
+                        $('#all_error_result').append("<p><b>Duplicate Email</b> - Please enter another email.</p><br />");
+
+                        // STEP 3: SCROLL TO TWHERE THE ERROR MESSAGE IS.
+                        $('html, body').animate({ scrollTop: $('#id_page_title').offset().top }, 'slow');
                     }
                 },
                 function(json_error) {
@@ -213,6 +277,10 @@
          *  storage, then direct user to the link in the 'redirect_url' variable.
          */
         function save_submission(redirect_url) {
+            //--------------------------------------//
+            // VALIDATE ALL THE FIELDS IN THIS FORM //
+            //--------------------------------------//
+
             // GET OUR FORM.
             var form = document.getElementById('add-member-form');
 
@@ -236,6 +304,13 @@
             has_error |= valid_textfield_value('password', false, 2);
             has_error |= valid_textfield_value('password_repeat', false, 2);
             has_error |= valid_radiofields_seleciton('is_active', true);
+            has_error |= valid_radiofields_seleciton('has_car', true);
+            has_error |= valid_radiofields_seleciton('has_van', true);
+            has_error |= valid_radiofields_seleciton('has_truck', true);
+            has_error |= valid_radiofields_seleciton('is_full_time', true);
+            has_error |= valid_radiofields_seleciton('is_part_time', true);
+            has_error |= valid_radiofields_seleciton('is_contract_time', true);
+            has_error |= valid_radiofields_seleciton('is_small_job', true);
 
             // INTERRUPT THE FORM SUBMISSION IF ANY ERRORS EXISTED AND UPDATE THE
             // GUI TO INDICATE THAT WE HAVE VALIDATED SOME FIELDS.
@@ -243,6 +318,10 @@
             if (has_error) {
                 return; // STOP THIS FUNCTION FROM GOING FORWARD UNTIL ERRORS FIXED.
             }
+
+            //----------------------------------------//
+            // EXTRACT THE DATA FROM THE FORM FIELDS. //
+            //----------------------------------------//
 
             // EXTRACT OUR FIELD VALUES AND SAVE THEM IN LOCAL STORAGE.
             var given_name = $('#firstname').val();
@@ -280,6 +359,18 @@
             var skill_sets = $('#skill_sets').val();
             var description = $('#describe').val();
             var is_active = get_selected_radio_value('is_active');
+            var has_car = get_selected_radio_value('has_car');
+            var has_van = get_selected_radio_value('has_van');
+            var has_truck = get_selected_radio_value('has_truck');
+            var is_full_time = get_selected_radio_value('is_full_time');
+            var is_part_time = get_selected_radio_value('is_part_time');
+            var is_contract_time = get_selected_radio_value('is_contract_time');
+            var is_small_job = get_selected_radio_value('is_small_job');
+            var how_hear = $('#how_hear').val();
+
+            //--------------------------------------------//
+            // SAVE THE EXTRACTED DATA INTO LOCAL STORAGE //
+            //--------------------------------------------//
 
             localStorage.setItem("tmp_associate_member_given_name", given_name);
             localStorage.setItem("tmp_associate_member_middle_name", middle_name);
@@ -302,6 +393,15 @@
             localStorage.setItem("tmp_associate_member_password_repeat", password_repeat);
             localStorage.setItem("tmp_associate_member_description", description);
             localStorage.setItem("tmp_associate_member_is_active", is_active);
+            localStorage.setItem("tmp_associate_member_ok_to_text", ok_to_text);
+            localStorage.setItem("tmp_associate_member_has_car", has_car);
+            localStorage.setItem("tmp_associate_member_has_van", has_van);
+            localStorage.setItem("tmp_associate_member_has_truck", has_truck);
+            localStorage.setItem("tmp_associate_member_is_full_time", is_full_time);
+            localStorage.setItem("tmp_associate_member_is_part_time", is_part_time);
+            localStorage.setItem("tmp_associate_member_is_contract_time", is_contract_time);
+            localStorage.setItem("tmp_associate_member_is_small_job", is_small_job);
+            localStorage.setItem("tmp_associate_member_how_hear", how_hear);
 
             // SAVE ARRAY OF IDS.
             localStorage.setObj("tmp_associate_member_person_tag_ids", person_tags);
@@ -329,13 +429,9 @@
             window.location = redirect_url;
         }
 
-        function click_cancel_button() {
-            window.location = "{% url 'o55_tenant_member_summary' %}";
-        }
-
-        function click_next_button() {
-            ajax_post_form_submission("{% url 'o55_tenant_member_confirm_create' %}");
-        }
+        //---------------------------------------//
+        // HANDLE THE COUNTRY / PROVINCE FIELDS. //
+        //---------------------------------------//
 
         // THIS IS WHERE YOU CAN ADD YOUR COUNTRY/PROVINCE DROPDOWN JS CODE....
         const state = "{% static 'js/provinces.json' %}";
@@ -347,6 +443,11 @@
         <!-- Associate form -->
         <div class="col-sm-12 fade show active" id="member-form" aria-labelledby="associate">
             <h3 class="pt-4 pb-2 text-center">Add Associate Member Form</h3>
+
+            <!-- Error Output -->
+            <div id="all_error_result" name="all_error_result"></div>
+            <!-- end Error Output -->
+
             <p>Use this form to fill out the member information.</p>
             <p><span class="text-secondary font-italic"><sup>*</sup>&nbsp;-&nbsp;Indicates required field to fill out.</span></p>
             <!-- Error Output -->
@@ -448,7 +549,7 @@
 			<div id="ok_to_email-error" class="invalid-feedback ml-2"></div>
                     </div>
                 </div>
-                <div class="form-group mt-2 mb-4">
+                <div class="form-group col-md-12 mb-4">
                     <p class="mb-1">Ok to Text? <sup>*</sup></p>
                     <div class="form-radio custom-control custom-radio custom-control-inline">
                         <input type="radio" id="ok_to_text" name="ok_to_text" value="yes" class="custom-control-input form-check-input">
@@ -502,6 +603,150 @@
                 </div>
             </div>
             <!-- ############ end LOCATION ############ -->
+            <!-- ############ DETAILS ############ -->
+            <p class="border-bottom mb-3 pb-1 text-secondary">Associate Details</p>
+            <div class="form-row">
+                <div class="form-group col-md-12 mb-4">
+                    <label for="hourly_salary_desired">Hourly Salary Desired</label>
+                    <input type="text" class="form-control form-control-lg border border-success" id="hourly_salary_desired" name="hourly_salary_desired" placeholder="Street Address" minlength="3" maxlength="255" required>
+                    <div id="hourly_salary_desired-error" class="invalid-feedback"></div>
+                </div>
+                <div class="form-group col-md-12 mb-4">
+                    <label for="limit_special">Limitation or special consideration</label>
+                    <input type="text" class="form-control form-control-lg border border-success" id="limit_special" name="limit_special" placeholder="Street Address" minlength="3" maxlength="255" required>
+                    <div id="limit_special-error" class="invalid-feedback"></div>
+                </div>
+                <div class="form-group p-0 col-md-7 mb-4">
+                    <label for="dues_pd">dues_pd</label>
+                    <div class="input-group input-group-lg">
+                        <input type="text" class="form-control form-control-lg border border-success" id="dues_pd" name="dues_pd" placeholder="yyyy-mm-dd" required>
+                        <div class="input-group-append">
+                            <span class="input-group-text dues_pd-icon bg-success border-success"><i class="far fa-calendar-alt"></i></span>
+                        </div>
+                        <div id="dues_pd-error" class="invalid-feedback"></div>
+                    </div>
+                </div>
+                <div class="form-group p-0 col-md-7 mb-4">
+                    <label for="ins_due">ins_due</label>
+                    <div class="input-group input-group-lg">
+                        <input type="text" class="form-control form-control-lg border border-success" id="ins_due" name="ins_due" placeholder="yyyy-mm-dd" required>
+                        <div class="input-group-append">
+                            <span class="input-group-text ins_due-icon bg-success border-success"><i class="far fa-calendar-alt"></i></span>
+                        </div>
+                        <div id="ins_due-error" class="invalid-feedback"></div>
+                    </div>
+                </div>
+                <div class="form-group p-0 col-md-7 mb-4">
+                    <label for="police_check">police_check</label>
+                    <div class="input-group input-group-lg">
+                        <input type="text" class="form-control form-control-lg border border-success" id="police_check" name="police_check" placeholder="yyyy-mm-dd" required>
+                        <div class="input-group-append">
+                            <span class="input-group-text police_check-icon bg-success border-success"><i class="far fa-calendar-alt"></i></span>
+                        </div>
+                        <div id="police_check-error" class="invalid-feedback"></div>
+                    </div>
+                </div>
+                <div class="form-group col-md-12 mb-4">
+                    <label for="drivers_license_class">Drivers license class(es):</label>
+                    <input type="text" class="form-control form-control-lg border border-success" id="drivers_license_class" name="drivers_license_class" placeholder="Street Address" minlength="3" maxlength="255" required>
+                    <div id="drivers_license_class-error" class="invalid-feedback"></div>
+                    <small id="drivers_license_class_help" class="form-text text-muted ft-indent">
+                        <svg class="svg-inline--fa fa-angle-right fa-w-8" aria-hidden="true" data-fa-processed="" data-prefix="fas" data-icon="angle-right" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512"><path fill="currentColor" d="M224.3 273l-136 136c-9.4 9.4-24.6 9.4-33.9 0l-22.6-22.6c-9.4-9.4-9.4-24.6 0-33.9l96.4-96.4-96.4-96.4c-9.4-9.4-9.4-24.6 0-33.9L54.3 103c9.4-9.4 24.6-9.4 33.9 0l136 136c9.5 9.4 9.5 24.6.1 34z"></path></svg>
+                        <!-- <i class="fas fa-angle-right"></i> -->  Write all the driver licenses earned by this associate.
+                    </small>
+                </div>
+                <div class="form-group col-md-12 mb-4">
+                    <p class="mb-1">Has car? <sup>*</sup></p>
+                    <div class="form-radio custom-control custom-radio custom-control-inline">
+                        <input type="radio" id="has_car" name="has_car" value="yes" class="custom-control-input form-check-input">
+                        <label class="custom-control-label form-check-label" for="has_car">Yes</label>
+                    </div>
+                    <div class="form-radio custom-control custom-radio custom-control-inline">
+                        <input type="radio" id="has_car2" name="has_car" value="no" class="custom-control-input form-check-input">
+                        <label class="custom-control-label form-check-label" for="has_car2">No</label>
+                        <div id="has_car-error" class="invalid-feedback ml-2"></div>
+                    </div>
+                </div>
+                <div class="form-group col-md-12 mb-4">
+                    <p class="mb-1">Has van? <sup>*</sup></p>
+                    <div class="form-radio custom-control custom-radio custom-control-inline">
+                        <input type="radio" id="has_van" name="has_van" value="yes" class="custom-control-input form-check-input">
+                        <label class="custom-control-label form-check-label" for="has_van">Yes</label>
+                    </div>
+                    <div class="form-radio custom-control custom-radio custom-control-inline">
+                        <input type="radio" id="has_van2" name="has_van" value="no" class="custom-control-input form-check-input">
+                        <label class="custom-control-label form-check-label" for="has_van2">No</label>
+                        <div id="has_van-error" class="invalid-feedback ml-2"></div>
+                    </div>
+                </div>
+                <div class="form-group col-md-12 mb-4">
+                    <p class="mb-1">Has truck? <sup>*</sup></p>
+                    <div class="form-radio custom-control custom-radio custom-control-inline">
+                        <input type="radio" id="has_truck" name="has_truck" value="yes" class="custom-control-input form-check-input">
+                        <label class="custom-control-label form-check-label" for="has_truck">Yes</label>
+                    </div>
+                    <div class="form-radio custom-control custom-radio custom-control-inline">
+                        <input type="radio" id="has_truck2" name="has_truck" value="no" class="custom-control-input form-check-input">
+                        <label class="custom-control-label form-check-label" for="has_truck2">No</label>
+                        <div id="has_truck-error" class="invalid-feedback ml-2"></div>
+                    </div>
+                </div>
+                <div class="form-group col-md-12 mb-4">
+                    <p class="mb-1">Is full time? <sup>*</sup></p>
+                    <div class="form-radio custom-control custom-radio custom-control-inline">
+                        <input type="radio" id="is_full_time" name="is_full_time" value="yes" class="custom-control-input form-check-input">
+                        <label class="custom-control-label form-check-label" for="is_full_time">Yes</label>
+                    </div>
+                    <div class="form-radio custom-control custom-radio custom-control-inline">
+                        <input type="radio" id="is_full_time2" name="is_full_time" value="no" class="custom-control-input form-check-input">
+                        <label class="custom-control-label form-check-label" for="is_full_time2">No</label>
+                        <div id="is_full_time-error" class="invalid-feedback ml-2"></div>
+                    </div>
+                </div>
+                <div class="form-group col-md-12 mb-4">
+                    <p class="mb-1">Is part time? <sup>*</sup></p>
+                    <div class="form-radio custom-control custom-radio custom-control-inline">
+                        <input type="radio" id="is_part_time" name="is_part_time" value="yes" class="custom-control-input form-check-input">
+                        <label class="custom-control-label form-check-label" for="is_part_time">Yes</label>
+                    </div>
+                    <div class="form-radio custom-control custom-radio custom-control-inline">
+                        <input type="radio" id="is_part_time2" name="is_part_time" value="no" class="custom-control-input form-check-input">
+                        <label class="custom-control-label form-check-label" for="is_part_time2">No</label>
+                        <div id="is_part_time-error" class="invalid-feedback ml-2"></div>
+                    </div>
+                </div>
+                <div class="form-group col-md-12 mb-4">
+                    <p class="mb-1">Is contract time? <sup>*</sup></p>
+                    <div class="form-radio custom-control custom-radio custom-control-inline">
+                        <input type="radio" id="is_contract_time" name="is_contract_time" value="yes" class="custom-control-input form-check-input">
+                        <label class="custom-control-label form-check-label" for="is_contract_time">Yes</label>
+                    </div>
+                    <div class="form-radio custom-control custom-radio custom-control-inline">
+                        <input type="radio" id="is_contract_time2" name="is_contract_time" value="no" class="custom-control-input form-check-input">
+                        <label class="custom-control-label form-check-label" for="is_contract_time2">No</label>
+                        <div id="is_contract_time-error" class="invalid-feedback ml-2"></div>
+                    </div>
+                </div>
+                <div class="form-group col-md-12 mb-4">
+                    <p class="mb-1">Is small job? <sup>*</sup></p>
+                    <div class="form-radio custom-control custom-radio custom-control-inline">
+                        <input type="radio" id="is_small_job" name="is_small_job" value="yes" class="custom-control-input form-check-input">
+                        <label class="custom-control-label form-check-label" for="is_small_job">Yes</label>
+                    </div>
+                    <div class="form-radio custom-control custom-radio custom-control-inline">
+                        <input type="radio" id="is_small_job2" name="is_small_job" value="no" class="custom-control-input form-check-input">
+                        <label class="custom-control-label form-check-label" for="is_small_job2">No</label>
+                        <div id="is_small_job-error" class="invalid-feedback ml-2"></div>
+                    </div>
+                </div>
+                <div class="form-group col-md-12 mb-4 p-0">
+      		        <label for="how_hear" class="font-b6">Describe how associate hear about us:</label>
+      		        <textarea class="form-control form-control-lg border border-success" id="how_hear" name="how_hear" placeholder="How here..." rows="4" minlength="10" required></textarea>
+      		        <div id="how_hear-error" class="invalid-feedback"></div>
+                    <small class="form-text text-muted">Maximum 1,000 characters.</small>
+                </div>
+            </div>
+            <!-- ############ end DETAILS ############ -->
             <!-- ############ SECURITY ############ -->
             <p class="border-bottom mb-3 pb-1 text-secondary">Account Security</p>
             <div class="form-row">

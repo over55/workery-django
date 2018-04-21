@@ -142,19 +142,19 @@ class Associate(AbstractPerson):
         blank=True,
         null=True,
     )
-    dues_pd = models.DateTimeField(
+    dues_pd = models.DateField(
         _("Deus PD"),
         help_text=_('-'),
         null=True,
         blank=True,
     )
-    ins_due = models.DateTimeField(
+    ins_due = models.DateField(
         _("Ins Due"),
         help_text=_('-'),
         null=True,
         blank=True,
     )
-    police_check = models.DateTimeField(
+    police_check = models.DateField(
         _("Police Check"),
         help_text=_('The date the associate took a police check.'),
         null=True,
