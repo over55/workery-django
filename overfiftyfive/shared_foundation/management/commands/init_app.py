@@ -82,6 +82,11 @@ class Command(BaseCommand):
             'can_post_partner',
             'can_put_partner',
             'can_delete_partner',
+            'can_get_away_logs',
+            'can_get_away_log',
+            'can_post_away_log',
+            'can_put_away_log',
+            'can_delete_away_log'
         ]
         permissions = Permission.objects.filter(codename__in=permission_codenames)
         for permission in permissions.all():
@@ -136,6 +141,11 @@ class Command(BaseCommand):
             'can_post_partner',
             'can_put_partner',
             'can_delete_partner',
+            'can_get_away_logs',
+            'can_get_away_log',
+            'can_post_away_log',
+            'can_put_away_log',
+            'can_delete_away_log'
         ]
         permissions = Permission.objects.filter(codename__in=permission_codenames)
         for permission in permissions.all():
@@ -186,6 +196,11 @@ class Command(BaseCommand):
             'can_post_partner',
             'can_put_partner',
             'can_delete_partner',
+            'can_get_away_logs',
+            'can_get_away_log',
+            'can_post_away_log',
+            'can_put_away_log',
+            'can_delete_away_log'
         ]
         permissions = Permission.objects.filter(codename__in=permission_codenames)
         for permission in permissions.all():

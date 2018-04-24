@@ -31,3 +31,6 @@ from tenant_foundation.models.resource_item_sort_order import ResourceItemSortOr
 
 # Partner
 from tenant_foundation.models.partner import Partner
+
+# Away Log
+from tenant_foundation.models.awaylog import AwayLog

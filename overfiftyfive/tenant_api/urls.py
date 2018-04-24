@@ -3,6 +3,7 @@ from rest_framework.urlpatterns import format_suffix_patterns
 from rest_framework import serializers, viewsets, routers
 from rest_framework.urlpatterns import format_suffix_patterns
 from tenant_api.views.associate import AssociateListCreateAPIView, AssociateRetrieveUpdateDestroyAPIView
+from tenant_api.views.awaylog import AwayLogListCreateAPIView, AwayLogRetrieveUpdateDestroyAPIView
 # from tenant_api.views.comment import CommentListCreateAPIView, CommentRetrieveUpdateDestroyAPIView
 from tenant_api.views.customer import CustomerListCreateAPIView, CustomerRetrieveUpdateDestroyAPIView
 from tenant_api.views.order import OrderListCreateAPIView, OrderRetrieveUpdateDestroyAPIView
@@ -13,6 +14,10 @@ from tenant_api.views.tag import TagListCreateAPIView, TagRetrieveUpdateDestroyA
 
 
 urlpatterns = [
+    # Away logs.
+    url(r'^api/away-logs$', AwayLogListCreateAPIView.as_view(), name='o55_away_log_list_create_api_endpoint'),
+    url(r'^api/away-log/(?P<pk>[^/.]+)/$', AwayLogRetrieveUpdateDestroyAPIView.as_view(), name='o55_away_log_retrieve_update_destroy_api_endpoint'),
+
     # Associates
     url(r'^api/associates$', AssociateListCreateAPIView.as_view(), name='o55_associate_list_create_api_endpoint'),
     url(r'^api/associate/(?P<pk>[^/.]+)/$', AssociateRetrieveUpdateDestroyAPIView.as_view(), name='o55_associate_retrieve_update_destroy_api_endpoint'),
