@@ -1,0 +1,161 @@
+{% extends 'tenant_foundation/tenant_base.html' %}
+{% load staticfiles i18n foundation_tags humanize %}
+
+{% block title %}
+{% trans 'Away Announcements | Over 55 Inc.' %}
+{% endblock title %}
+
+{% block header_content %}
+{% endblock header_content %}
+
+{% block content %}
+
+<script>
+    function ajax_delete(obj_id) {
+        delete_away_log_api(
+            parseInt(obj_id),
+            function(away_log) {
+                console.log(away_log);
+                window.location = "{% url 'o55_tenant_settings_away_log_list' %}?was_deleted=True";
+            },
+            function(json_results) {
+                console.log(json_results);
+            },
+            function(xhr, status) {
+                console.log(xhr, status);
+            }
+        );
+    }
+</script>
+
+<main id="main" role="main">
+
+    <!-- BREADCRUMB -->
+    <!------------------------------------------------------------------------->
+    <nav aria-label="breadcrumb">
+	  	<ol class="breadcrumb">
+	    	<li class="breadcrumb-item"><a href="{% url 'o55_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'o55_tenant_settings_launchpad' %}">{% trans 'Settings' %}</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{% trans 'Away Announcements' %}</li>
+	  	</ol>
+	</nav>
+    <!------------------------------------------------------------------------->
+    <!-- end BREADCRUMB -->
+
+    <!-- NOTIFICATION -->
+    <!------------------------------------------------------------------------->
+    {% if parameters.was_created == 'True' %}
+        <div class="alert bg-success text-white alert-dismissible fade show" role="alert">
+		    Away announcement <strong>Successfully</strong> created.
+		    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+		        <span aria-hidden="true">×</span>
+		    </button>
+		</div>
+    {% endif %}
+    {% if parameters.was_modified == 'True' %}
+        <div class="alert bg-success text-white alert-dismissible fade show" role="alert">
+		    Away announcement <strong>Successfully</strong> updated.
+		    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+		        <span aria-hidden="true">×</span>
+		    </button>
+		</div>
+    {% endif %}
+    {% if parameters.was_deleted == 'True' %}
+        <div class="alert bg-success text-white alert-dismissible fade show" role="alert">
+		    Away announcement <strong>Successfully</strong> deleted.
+		    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+		        <span aria-hidden="true">×</span>
+		    </button>
+		</div>
+    {% endif %}
+    <!------------------------------------------------------------------------->
+    <!-- end NOTIFICATION -->
+
+    <h1>Away Announcements</h1>
+    <section class="row text-center placeholders">
+        <div class="col-sm-3 placeholder">
+            <div class="rounded-circle mx-auto mt-4 mb-4 circle-200 bg-pink">
+                <a href="{% url 'o55_tenant_settings_away_log_create' %}" class="d-block link-ndecor" title="Add Client">
+                    <h1 class="r-circle"><i class="fas fa-plus fa-3x"></i></h1>
+                </a>
+            </div>
+            <h4>Add</h4>
+            <div class="text-muted">Add Skill Set</div>
+        </div>
+    </section>
+
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>{% trans 'Associate' %}</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for away_log in away_log_list %}
+                <tr>
+                    <td>
+                        {{ away_log.associate }}
+                    </td>
+                    <td>
+
+                        <button id="id_delete_btn"
+                             class="btn btn-danger btn-lg m-2 float-right px-4"
+                              type="button"
+                           data-toggle="modal" data-target="#confirmDelete">
+                         <i class="fas fa-trash"></i>
+                         {% trans 'Delete' %}
+                        </button>
+
+                        <a href="{% url 'o55_tenant_settings_away_log_update' away_log.id %}">
+                        <button id="id_delete_btn"
+                             class="btn btn-primary btn-lg m-2 float-right px-4"
+                              type="button">
+                         <i class="fas fa-pencil-alt"></i>
+                         {% trans 'Edit' %}
+                        </button>
+                        </a>
+
+                        <!-- Modal -->
+            			<div class="modal fade" id="confirmDelete" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            		  		<div class="modal-dialog" role="document">
+            		    			<div class="modal-content">
+            		      			<div class="modal-body">
+            		        			<p class="m-3 p-2">WARNING: you are about to PERMANENTLY delete this item - this action CANNOT BE UNDONE. Do you want to continue?</p>
+            		        			<button type="button" class="btn btn-lg btn-secondary float-left m-2" data-dismiss="modal">No</button>
+            		        			<button type="button" class="btn btn-lg btn-primary float-right m-2" id="yes_submit" onclick="ajax_delete({{ away_log.id }});">Yes</button>
+            		      			</div>
+            		    			</div>
+            		  		</div>
+            			</div>
+                        <!-- end Modal -->
+
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="pagination">
+        <span class="step-links">
+        {% if page_obj.has_previous %}
+        <a href="?page={{ page_obj.previous_page_number }}{{ filter_parameters }}">previous</a>
+        {% endif %}
+        <span class="current">
+        Page {{ page_obj.number }} of {{ paginator.num_pages }}.
+        </span>
+        {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}{{ filter_parameters }}">next</a>
+        {% endif %}
+        </span>
+    </div>
+
+
+
+    <!-- RETURN-TO-TOP -->
+    <a id="return-to-top" href="#" class="btn-info btn-lg back-to-top" role="button" title="Back to top"><i class="fas fa-angle-up fa-2x"></i></a>
+    <!-- end RETURN-TO-TOP -->
+</main>
+{% endblock content %}

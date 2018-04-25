@@ -1,0 +1,225 @@
+{% extends 'tenant_foundation/tenant_base.html' %}
+{% load staticfiles i18n foundation_tags humanize %}
+
+{% block title %}
+{% trans 'Add Away Announcement | Over 55 Inc.' %}
+{% endblock title %}
+
+{% block header_content %}
+{% endblock header_content %}
+
+{% block content %}
+
+<script>
+    /**
+     *  When page loads, the following code will be run first.
+     */
+    $(document).ready(function () {
+        // Initialize our datepicker jQuery code with our HTML view.
+        $( "#until_date" ).datepicker({
+            dateFormat: 'yy-mm-dd'  // https://stackoverflow.com/a/7500097
+        });
+    }); // end DOCUMENT
+
+    function click_cancel_button() {
+        window.location = "{% url 'o55_tenant_settings_away_log_list' %}";
+    }
+
+    function get_selected_radio_value(radiofields_name) {
+        var radios = document.getElementsByName(radiofields_name);
+        for (var i = 0, length = radios.length; i < length; i++) {
+            if (radios[i].checked) {
+                // only one radio can be logically checked, don't check the rest
+                return radios[i].value;
+            }
+        }
+        return null;
+    }
+
+    function valid_textfield_value(textfield_id, is_required, min_length) {
+        var textfield = document.getElementById(textfield_id);
+        var textfield_error = document.getElementById(textfield_id+'-error');
+        var value = textfield.value;
+
+        // CASE 1: BLANK FIELD.
+        if (is_required) {
+            if (value == '' || value == null || value == undefined || value.length == 0) {
+                $('#'+textfield_id).addClass('border-primary').removeClass('border-success');
+                textfield_error.innerHTML = "Field should not be blank.";
+                return true; // This means that an error occured in validation.
+            }
+        }
+
+        // CASE 2: MINIMUM LENGTH NOT MET.
+        if (value.length > 0) {              // If user entered something...
+            if (value.length < min_length) { // Validate that the minium was entered...
+                $('#'+textfield_id).addClass('border-primary').removeClass('border-success');
+                textfield_error.innerHTML = "Field requires a minimum of "+min_length+" characters.";
+                return true;
+            }
+        }
+
+        // Update the GUI to indicate this field has been updated.
+        $('#'+textfield_id).addClass('border-success').removeClass('border-primary');
+
+        // Return "false" which means no errors occured.
+        return false;
+    }
+
+    function valid_radiofields_seleciton(radiofields_name, is_required) {
+        var value = get_selected_radio_value(radiofields_name);
+        var radiofield_error = document.getElementById(radiofields_name+'-error');
+
+        if (is_required) {
+            if (value == undefined || value === null || value.length == 0) {
+                radiofield_error.innerHTML = "Please select option.";
+                console.log(radiofields_name, "IS BLANK FIELD.");
+                return true;
+            }
+        }
+
+        // Return "false" which means no errors occured.
+        return false;
+    }
+
+    function click_submit_button() {
+        // GET OUR FORM.
+        var form = document.getElementById('add-client-form');
+
+        // VALIDATE ALL OUR FORM FIELDS.
+        var has_error = false;
+        has_error |= valid_textfield_value('reason', true, 2);
+        has_error |= valid_radiofields_seleciton('until_further_notice', true);
+
+        // INTERRUPT THE FORM SUBMISSION IF ANY ERRORS EXISTED AND UPDATE THE
+        // GUI TO INDICATE THAT WE HAVE VALIDATED SOME FIELDS.
+        form.classList.add('was-validated');
+        if (has_error) {
+            return; // STOP THIS FUNCTION FROM GOING FORWARD UNTIL ERRORS FIXED.
+        }
+
+        // EXTRACT OUR FIELD VALUES AND SAVE THEM IN LOCAL STORAGE.
+        var user = $('#user').val();
+        var reason = $('#reason').val();
+        var until_further_notice = get_selected_radio_value('until_further_notice');
+        var until_date = $('#until_date').val();
+        if (until_date !== undefined && until_date != null && until_date.length > 0) {
+            var mydate = new Date(until_date); // Convert "MM DD, YYYY" to JS DATE
+            until_date = mydate.toISOString().substring(0, 10); // Convert JS DATE to "YYYY-MM-DD"
+        } else {
+            until_date = '';
+        }
+
+        // RUN THE CODE WHICH WILL SUBMIT THE JSON DATA TO THE SERVER.
+        create_away_log_api(
+            {
+                'user': user,
+                'reason': reason,
+                'until_further_notice': until_further_notice,
+                'until_date': until_date
+            },
+            function(json_error) {
+                console.log(json_error);
+                window.location = "{% url 'o55_tenant_settings_away_log_list' %}?was_modified=True";
+            },
+            function(json_result) {
+                console.log(json_result);
+            }
+        );
+    }
+</script>
+
+<main id="main" role="main">
+
+    <!-- BREADCRUMB -->
+    <!------------------------------------------------------------------------->
+    <nav aria-label="breadcrumb">
+	  	<ol class="breadcrumb">
+	    	<li class="breadcrumb-item"><a href="{% url 'o55_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'o55_tenant_settings_launchpad' %}">{% trans 'Settings' %}</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'o55_tenant_settings_away_log_list' %}">{% trans 'Away Announcements' %}</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{% trans 'Add away announcement' %}</li>
+	  	</ol>
+	</nav>
+    <!------------------------------------------------------------------------->
+    <!-- end BREADCRUMB -->
+
+    <h1>Add Away Announcement</h1>
+
+    <!-- FORM -->
+    <!------------------------------------------------------------------------->
+    <div class="col-sm-5 mx-auto mt-2">
+        <!-- Residential form -->
+        <div class="col-sm-12 fade show active" id="client-form" aria-labelledby="commercial">
+            <h3 class="pt-4 pb-2 text-center">Add Away Announcement</h3>
+            <p>Please change the text of the away announcements.</p>
+            <p><span class="text-secondary font-italic"><sup>*</sup>&nbsp;-&nbsp;Indicates required field to fill out.</span></p>
+            <form id="add-client-form" method="post" class="needs-validation" action="" novalidate>
+                <div class="form-row">
+                    <div class="form-row">
+                        <div class="form-group col-md-12 mb-4">
+                            <label for="category">User <sup>*</sup></label>
+                            <input type="text" class="form-control form-control-lg border border-primary" id="user" name="user" placeholder="Text" minlength="3" required="" autofocus value="">
+                            <div id="category-error" class="invalid-feedback"></div>
+                        </div>
+                        <div class="form-group col-md-12 mb-4">
+                            <label for="sub_category">Reason <sup>*</sup></label>
+                            <input type="text" class="form-control form-control-lg border border-primary" id="reason" name="reason" placeholder="Text" minlength="3" required="" autofocus value="">
+                            <div id="sub_category-error" class="invalid-feedback"></div>
+                        </div>
+
+                        <!-- Until further notice -->
+                        <div class="form-group col-md-12 mb-4">
+                            <p class="mb-1">Until further notice? <sup>*</sup></p>
+                            <div class="form-radio custom-control custom-radio custom-control-inline">
+                                <input type="radio" id="until_further_notice" name="until_further_notice" value="yes" class="custom-control-input form-check-input">
+                                <label class="custom-control-label form-check-label" for="until_further_notice">Yes</label>
+                            </div>
+                            <div class="form-radio custom-control custom-radio custom-control-inline">
+                                <input type="radio" id="until_further_notice2" name="until_further_notice" value="no" class="custom-control-input form-check-input">
+                                <label class="custom-control-label form-check-label" for="until_further_notice2">No</label>
+                                <div id="until_further_notice-error" class="invalid-feedback ml-2"></div>
+                            </div>
+                        </div>
+                        <!-- end Until further notice -->
+
+                        <div class="form-group p-0 col-md-7 mb-4">
+                            <label for="dob">Until Date <sup>*</sup></label>
+                            <div class="input-group input-group-lg">
+                                <input type="text" class="form-control form-control-lg border border-success" id="until_date" name="until_date" placeholder="yyyy-mm-dd" required>
+                                <div class="input-group-append">
+                                    <span class="input-group-text dob-icon bg-success border-success"><i class="far fa-calendar-alt"></i></span>
+                                </div>
+                                <div id="dob-error" class="invalid-feedback"></div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </form>
+
+            <!-- end SUBMIT BUTTON -->
+            <div class="form-group col-md-12 mb-3 p-0 mx-auto text-center">
+                <button id="id_submit_btn"
+                     class="btn btn-primary btn-lg mt-4 float-right pl-4 pr-4"
+                      type="button"
+                   onclick="click_submit_button();">
+                    <i class="fas fa-plus"></i> Add</button>
+                <button id="id_cancel_btn"
+                     class="btn btn-orange btn-lg mt-4 float-left pl-4 pr-4"
+                      type="button"
+                   onclick="click_cancel_button();">
+                    <i class="fas fa-times"></i>&nbsp;Cancel
+                </button>
+            </div>
+            <!-- end SUBMIT BUTTON -->
+
+        </div>
+    </div>
+
+
+    <!-- RETURN-TO-TOP -->
+    <a id="return-to-top" href="#" class="btn-info btn-lg back-to-top" role="button" title="Back to top"><i class="fas fa-angle-up fa-2x"></i></a>
+    <!-- end RETURN-TO-TOP -->
+</main>
+{% endblock content %}
