@@ -19,6 +19,72 @@
         $( "#until_date" ).datepicker({
             dateFormat: 'yy-mm-dd'  // https://stackoverflow.com/a/7500097
         });
+
+        /*
+         * DOCUMENTATION
+         * https://select2.org/
+         */
+        $('#associate').select2({
+            // SETUP OUR STARTUP GUI.
+            placeholder: 'Select an option',
+            allowClear: true,
+
+            // OVERRIDE OUR GUI TO GET OUR DATA FROM REMOTE API WEB-SERVICE.
+            ajax: {
+                // THE URL OF OUR API WEB-SERVICE.
+                url: "{% url 'o55_associate_list_create_api_endpoint' %}",
+
+                // THE AUTH-CREDENTIALS OF OUR API WEB-SERVICE WHICH WE WILL
+                // ATTACH WITH THIS CALL.
+                headers: {
+                    "Authorization" : rest_api_token,
+                    "Content-Type" : "application/json",
+                },
+                dataType: 'json',
+
+                // OVERRIDE OUR QUERY TO WORK WITH OUR API WEB-SERVICE.
+                data: function (params) {
+                    var query = {
+                        search: params.term,
+                    }
+                    // Query parameters will be ?search=[term]
+                    return query;
+                },
+
+                // OVERRIDE HOW WE TAKE THE API WEB-SERVICE RESULTS AND FORMAT
+                // FOR THIS LIBRARY.
+                processResults: function (data) {
+                    // Tranforms the top-level key of the response object from 'items' to 'results'
+                    return {
+                        results: data['results']
+                    };
+                },
+            }, // end AJAX
+
+            // THE IS WHERE WE FORMAT OUR OUTPUT TO GUI.
+            templateResult: function formatState (state) {
+                /**
+                 *  Function used to take our JSON API results and create our own custom
+                 *  GUI elements per each returned customer.
+                 */
+                // if (!state.id) {
+                //     return  state.given_name + " " + state.last_name;
+                // }
+                var $state = $(
+                    '<span id="' + state.id + '">' + state.given_name + " " + state.last_name + '</span>'
+                );
+                return $state;
+            },
+
+            templateSelection: function (data) {
+                // if (data.id === '') { // adjust for custom placeholder values
+                //     return 'Custom styled placeholder text';
+                // }
+                return data.given_name + " " + data.last_name;
+            }
+        }); // end SELECT2
+
+
     }); // end DOCUMENT
 
     function click_cancel_button() {
@@ -51,7 +117,7 @@
         }
 
         // CASE 2: MINIMUM LENGTH NOT MET.
-        if (value.length > 0) {              // If user entered something...
+        if (value.length > 0) {              // If associate entered something...
             if (value.length < min_length) { // Validate that the minium was entered...
                 $('#'+textfield_id).addClass('border-primary').removeClass('border-success');
                 textfield_error.innerHTML = "Field requires a minimum of "+min_length+" characters.";
@@ -99,7 +165,7 @@
         }
 
         // EXTRACT OUR FIELD VALUES AND SAVE THEM IN LOCAL STORAGE.
-        var user = $('#user').val();
+        var associate = $('#associate').val();
         var reason = $('#reason').val();
         var until_further_notice = get_selected_radio_value('until_further_notice');
         var until_date = $('#until_date').val();
@@ -113,7 +179,7 @@
         // RUN THE CODE WHICH WILL SUBMIT THE JSON DATA TO THE SERVER.
         create_away_log_api(
             {
-                'user': user,
+                'associate': associate,
                 'reason': reason,
                 'until_further_notice': until_further_notice,
                 'until_date': until_date
@@ -157,15 +223,26 @@
             <form id="add-client-form" method="post" class="needs-validation" action="" novalidate>
                 <div class="form-row">
                     <div class="form-row">
+
+
+                        <!-- ############ ASSOCIATE (REMOTE DATA) ############ -->
                         <div class="form-group col-md-12 mb-4">
-                            <label for="category">User <sup>*</sup></label>
-                            <input type="text" class="form-control form-control-lg border border-primary" id="user" name="user" placeholder="Text" minlength="3" required="" autofocus value="">
-                            <div id="category-error" class="invalid-feedback"></div>
+                            <p class="border-bottom mb-3 pb-1 text-secondary">Associate Member Information</p>
+                            <div class="form-row">
+                                <div class="form-group col-md-12 mb-4">
+                                    <select id="associate" name="associate">
+                                        <option selected="selected"><span id="">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</option>
+
+                                    </select>
+                                </div>
+                            </div>
                         </div>
+                        <!-- ############ end ASSOCIATE (REMOTE DATA) ############ -->
+
                         <div class="form-group col-md-12 mb-4">
-                            <label for="sub_category">Reason <sup>*</sup></label>
+                            <label for="reason">Reason <sup>*</sup></label>
                             <input type="text" class="form-control form-control-lg border border-primary" id="reason" name="reason" placeholder="Text" minlength="3" required="" autofocus value="">
-                            <div id="sub_category-error" class="invalid-feedback"></div>
+                            <div id="reason-error" class="invalid-feedback"></div>
                         </div>
 
                         <!-- Until further notice -->

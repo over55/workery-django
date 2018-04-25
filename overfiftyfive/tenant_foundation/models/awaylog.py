@@ -66,10 +66,10 @@ class AwayLog(models.Model):
     #  FIELDS
     #
 
-    user = models.ForeignKey(
-        SharedUser,
-        help_text=_('The user of our away log.'),
-        related_name="%(app_label)s_%(class)s_user_related",
+    associate = models.ForeignKey(
+        "Associate",
+        help_text=_('The associate of our away log.'),
+        related_name="%(app_label)s_%(class)s_associate_related",
         on_delete=models.CASCADE,
         blank=True,
         null=True

@@ -89,6 +89,8 @@
             <thead>
                 <tr>
                     <th>{% trans 'Associate' %}</th>
+                    <th>{% trans 'Created' %}
+                    <th>{% trans 'Last Modified' %}
                     <th></th>
                 </tr>
             </thead>
@@ -97,6 +99,12 @@
                 <tr>
                     <td>
                         {{ away_log.associate }}
+                    </td>
+                    <td>
+                        {{ away_log.created }}
+                    </td>
+                    <td>
+                        {{ away_log.last_modified }}
                     </td>
                     <td>
 

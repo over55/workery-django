@@ -36,7 +36,7 @@ from tenant_foundation.models import (
 
 
 class AssociateListCreateSerializer(serializers.ModelSerializer):
-    # owner = serializers.PrimaryKeyRelatedField(many=False, read_only=True)
+    owner = serializers.PrimaryKeyRelatedField(many=False, read_only=True)
 
     # We are overriding the `email` field to include unique email validation.
     email = serializers.EmailField(
@@ -100,7 +100,7 @@ class AssociateListCreateSerializer(serializers.ModelSerializer):
             'id',
             'created',
             'last_modified',
-            # 'owner',
+            'owner',
 
             # Person
             'given_name',
@@ -339,7 +339,7 @@ class AssociateListCreateSerializer(serializers.ModelSerializer):
 
 
 class AssociateRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
-    # owner = serializers.PrimaryKeyRelatedField(many=False, read_only=True)
+    owner = serializers.PrimaryKeyRelatedField(many=False, read_only=True)
 
     # We are overriding the `email` field to include unique email validation.
     email = serializers.EmailField(
@@ -380,7 +380,7 @@ class AssociateRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
             'id',
             'created',
             'last_modified',
-            # 'owner',
+            'owner',
             'description',
 
             # Person

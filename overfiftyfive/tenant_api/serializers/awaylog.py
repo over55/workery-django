@@ -20,7 +20,7 @@ class AwayLogListCreateSerializer(serializers.ModelSerializer):
         model = AwayLog
         fields = (
             'id',
-            'user',
+            'associate',
             'reason',
             'until_further_notice',
             'until_date',
@@ -38,7 +38,7 @@ class AwayLogRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         model = AwayLog
         fields = (
             'id',
-            'user',
+            'associate',
             'reason',
             'until_further_notice',
             'until_date',
