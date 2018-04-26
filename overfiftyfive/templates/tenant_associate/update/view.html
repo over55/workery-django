@@ -31,7 +31,8 @@
 
         // Initialize our datepicker jQuery code with our HTML view.
         $( "#dob" ).datepicker({
-            dateFormat: 'yy-mm-dd'  // https://stackoverflow.com/a/7500097
+            dateFormat: 'yy-mm-dd',
+	    maxDate: 'today'
         });
         $( "#dues_pd" ).datepicker({
             dateFormat: 'yy-mm-dd'  // https://stackoverflow.com/a/7500097
