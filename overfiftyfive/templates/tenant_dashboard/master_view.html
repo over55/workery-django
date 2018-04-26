@@ -63,13 +63,42 @@
 
     <!-- AWAY LOGS -->
     <div class="jumbotron">
-        <h1 class="display-4">Announcements</h1>
+        <h1 class="display-4">Away Announcements</h1>
         <p class="lead">This is a simple hero unit, a simple jumbotron-style component for calling extra attention to featured content or information.</p>
         <hr class="my-4">
-        <p>It uses utility classes for typography and spacing to space content out within the larger container.</p>
-        <p class="lead">
+        {% for awaylog in awaylogs.all %}
+            <p>
+                <strong>{{ awaylog.associate }}</strong>
+            </p>
+            <p>
+                <strong>Reason</strong>
+                {% if awaylog.reason == 1 %}
+                    {{ awaylog.reason_other }}
+                {% elif awaylog.reason == 2 %}
+                    Going on vocation
+                {% elif awaylog.reason == 3 %}
+                    Personal reasons
+                {% endif %}
+                <br />
+            </p>
+            <p>
+                <strong>Away until</strong>
+                {% if awaylog.until_further_notice == False %}
+                    {{ awaylog.until_date }}
+                {% else %}
+                    further notice.
+                {% endif %}
+            </p>
+            <p>&nbsp;</p>
+        {% empty %}
+            <p>No announcements made, feel free to create them</p>
+            <p class="lead">
+                <a class="btn btn-primary btn-lg" href="{% url 'o55_tenant_settings_away_log_list' %}" role="button">Create announcement</a>
+            </p>
+        {% endfor %}
+        <!-- <p class="lead">
             <a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a>
-        </p>
+        </p> -->
     </div>
     <!-- end AWAY LOGS -->
 
