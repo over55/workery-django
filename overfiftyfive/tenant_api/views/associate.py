@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import django_filters
-from django_filters import rest_framework as filters
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import filters
 from starterkit.drf.permissions import IsAuthenticatedAndIsActivePermission
 from django.conf.urls import url, include
 from django.shortcuts import get_list_or_404, get_object_or_404
@@ -27,6 +28,8 @@ class AssociateListCreateAPIView(generics.ListCreateAPIView):
         IsAuthenticatedAndIsActivePermission,
         CanListCreateAssociatePermission
     )
+    filter_backends = (filters.SearchFilter, DjangoFilterBackend)
+    search_fields = ('given_name', 'middle_name', 'last_name', 'email', 'telephone',)
 
     def get_queryset(self):
         """
