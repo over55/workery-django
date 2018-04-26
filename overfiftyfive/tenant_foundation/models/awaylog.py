@@ -74,9 +74,17 @@ class AwayLog(models.Model):
         blank=True,
         null=True
     )
-    reason = models.TextField(
+    reason = models.PositiveSmallIntegerField(
         _("Reason"),
-        help_text=_('A reason the associate is away.'),
+        help_text=_('The reason the user is away.'),
+        blank=True,
+        null=True,
+        default=0,
+    )
+    reason_other = models.CharField(
+        _("Reason other"),
+        help_text=_('A specific reason the user is away.'),
+        max_length=511,
         blank=True,
         null=True,
         default='',

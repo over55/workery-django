@@ -161,7 +161,11 @@
 
         // VALIDATE ALL OUR FORM FIELDS.
         var has_error = false;
-        has_error |= valid_textfield_value('reason', true, 2);
+        var reason = $('#reason').val();
+        if (reason <= 0) {
+            has_error |= true;
+        }
+        has_error |= valid_textfield_value('reason_other', false, 2);
         has_error |= valid_radiofields_seleciton('until_further_notice', true);
 
         // INTERRUPT THE FORM SUBMISSION IF ANY ERRORS EXISTED AND UPDATE THE
@@ -174,6 +178,7 @@
         // EXTRACT OUR FIELD VALUES AND SAVE THEM IN LOCAL STORAGE.
         var associate = $('#associate').val();
         var reason = $('#reason').val();
+        var reason_other = $('#reason_other').val();
         var until_further_notice = get_selected_radio_value('until_further_notice');
         var until_date = $('#until_date').val();
         if (until_date !== undefined && until_date != null && until_date.length > 0) {
@@ -235,24 +240,35 @@
 
                         <!-- ############ ASSOCIATE (REMOTE DATA) ############ -->
                         <div class="form-group col-md-12 mb-4">
-                            <p class="border-bottom mb-3 pb-1 text-secondary">Associate Member Information</p>
-                            <div class="form-row">
-                                <div class="form-group col-md-12 mb-4">
-                                    <select id="associate" name="associate">
-                                        {% if away_log.associate %}
-                                            <option selected="selected"><span id="{{ away_log.associate }}">{{ away_log.associate }}</span></option>
-                                        {% endif %}
-                                    </select>
-                                </div>
-                            </div>
+                            <label for="associate">Associate <sup>*</sup></label>
+                            <select id="associate" name="associate" class="form-control form-control-lg border border-primary" autofocus>
+                                {% if away_log.associate %}
+                                    <option selected="selected"><span id="{{ away_log.associate }}">{{ away_log.associate }}</span></option>
+                                {% endif %}
+                            </select>
                         </div>
                         <!-- ############ end ASSOCIATE (REMOTE DATA) ############ -->
 
+                        <!-- REASON -->
                         <div class="form-group col-md-12 mb-4">
                             <label for="reason">Reason <sup>*</sup></label>
-                            <input type="text" class="form-control form-control-lg border border-primary" id="reason" name="reason" placeholder="Text" minlength="3" required="" autofocus value="{{ away_log.reason }}">
+                            <select class="form-control form-control-lg border border-primary" id="reason" name="reason" required="">
+                                <option value="0">Please select reason</option>
+                                <option value="2" {% if away_log.reason == 3 %}selected="selected"{% endif %}>Going on vocation</option>
+                                <option value="3" {% if away_log.reason == 2 %}selected="selected"{% endif %}>Personal reasons</option>
+                                <option value="1" {% if away_log.reason == 1 %}selected="selected"{% endif %}>Other</option>
+                            </select>
                             <div id="reason-error" class="invalid-feedback"></div>
                         </div>
+                        <!-- end REASON -->
+
+                        <!-- REASON (OTHER) -->
+                        <div class="form-group col-md-12 mb-4">
+                            <label for="reason_other">Reason (Other)</label>
+                            <input type="text" class="form-control form-control-lg border border-primary" id="reason_other" name="reason_other" placeholder="Text" minlength="3" value="{{ away_log.reason_other }}">
+                            <div id="reason_other-error" class="invalid-feedback"></div>
+                        </div>
+                        <!-- end REASON (OTHER) -->
 
                         <!-- Until further notice -->
                         <div class="form-group col-md-12 mb-4">
