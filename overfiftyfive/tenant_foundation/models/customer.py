@@ -173,12 +173,6 @@ class Customer(AbstractPerson):
         blank=True,
         related_name="%(app_label)s_%(class)s_tags_related"
     )
-    skill_sets = models.ManyToManyField(
-        "SkillSet",
-        help_text=_('The skill sets this customer has.'),
-        blank=True,
-        related_name="%(app_label)s_%(class)s_skill_sets_related"
-    )
 
     #
     #  PERSON FIELDS (EXTRA) - http://schema.org/Person

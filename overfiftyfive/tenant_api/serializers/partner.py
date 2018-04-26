@@ -25,7 +25,6 @@ from shared_api.custom_fields import PhoneNumberField
 from shared_foundation.constants import *
 from shared_foundation.models import SharedUser
 # from tenant_api.serializers.partner_comment import PartnerCommentSerializer
-from tenant_api.serializers.skill_set import SkillSetListCreateSerializer
 from tenant_foundation.models import (
     # PartnerComment,
     Partner,
@@ -52,12 +51,6 @@ class PartnerListCreateSerializer(serializers.ModelSerializer):
     # # comment. This field is *ONLY* to be used during the POST creation and
     # # will be blank during GET.
     # extra_comment = serializers.CharField(write_only=True, allow_null=True)
-    #
-    # # # The skill_sets that this partner belongs to. We will return primary
-    # # # keys only. This field is read/write accessible.
-    # # skill_sets = serializers.PrimaryKeyRelatedField(many=True, queryset=SkillSet.objects.all(), allow_null=True)
-    #
-    # assigned_skill_sets = SkillSetListCreateSerializer(many=True, read_only=True)
 
     # Custom formatting of our telephone fields.
     fax_number = PhoneNumberField(allow_null=True, required=False)
@@ -313,12 +306,6 @@ class PartnerRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
     # # comment. This field is *ONLY* to be used during the POST creation and
     # # will be blank during GET.
     # extra_comment = serializers.CharField(write_only=True, allow_null=True)
-    #
-    # # The skill_sets that this partner belongs to. We will return primary
-    # # keys only. This field is read/write accessible.
-    # skill_sets = serializers.PrimaryKeyRelatedField(many=True, queryset=SkillSet.objects.all(), allow_null=True)
-    #
-    # assigned_skill_sets = SkillSetListCreateSerializer(many=True, read_only=True)
 
     # Custom formatting of our telephone fields.
     fax_number = PhoneNumberField(allow_null=True, required=False)

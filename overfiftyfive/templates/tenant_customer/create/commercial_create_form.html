@@ -18,12 +18,8 @@
         var tmp_company_tags = localStorage.getObj("tmp_commercial_customer_company_tag_ids");
         $('#company_tags').val(tmp_company_tags);
 
-        var tmp_skill_sets = localStorage.getObj("tmp_commercial_customer_skill_set_ids");
-        $('#skill_sets').val(tmp_skill_sets);
-
         // Initialize our 'select2' element.
         $('#person_tags').select2();
-        $('#skill_sets').select2();
         $('#company_tags').select2();
 
         // Assign previously set values.
@@ -236,7 +232,6 @@
         var password_repeat = $('#password_repeat').val();
         var person_tags = $('#person_tags').val();
         var company_tags = $('#company_tags').val();
-        var skill_sets = $('#skill_sets').val();
         var description = $('#describe').val();
 
         localStorage.setItem("tmp_commercial_customer_company_name", company_name);
@@ -269,7 +264,6 @@
         // SAVE ARRAY OF IDS.
         localStorage.setObj("tmp_commercial_customer_person_tag_ids", person_tags);
         localStorage.setObj("tmp_commercial_customer_company_tag_ids", company_tags);
-        localStorage.setObj("tmp_commercial_customer_skill_set_ids", skill_sets);
 
         // SAVE ARRAY OF VALUE ITEMS.
         var person_tags_arr = [];
@@ -288,15 +282,6 @@
         } // end FOR LOOP.
         localStorage.setObj("tmp_commercial_customer_company_tag_values", company_tags_arr);
 
-        // SAVE ARRAY OF VALUE ITEMS. (2 of 2)
-        var skill_sets_arr = [];
-        for (var i = 0; i < skill_sets.length; i++) {
-            var option_id = skill_sets[i];
-            var option_value = $('#skill_set_option_id_'+option_id).text();
-            skill_sets_arr.push(option_value);
-        } // end FOR LOOP.
-        localStorage.setObj("tmp_commercial_customer_skill_set_values", skill_sets_arr);
-
         window.location = redirect_url;
     }
 
@@ -307,30 +292,30 @@
 	  });
 	  loadState('CA');
     	});
-	  
+
         let c_dropdown = $('#address_country');
 	c_dropdown.empty();
 	c_dropdown.append('<option selected="true" disabled>Choose Country</option>');
 	c_dropdown.prop('selectedIndex', 1);
-	
+
         const state = "{% static 'js/provinces.json' %}";
         const country = "{% static 'js/countries.json' %}";
         console.log(state);
         console.log(country); // KANWAR - PLEASE IMPLEMENT.
-	
+
 	// Populate dropdown with list of countries
 	$.getJSON(country, function (data) {
 	  $.each(data, function (key, entry) {
 	    	c_dropdown.append($('<option></option>').attr('value', entry.code).text(entry.country));
 	  })
 	});
-	
+
 	function loadState(countryId){
 		let p_dropdown = $('#address_region');
 		p_dropdown.empty();
 		p_dropdown.append('<option selected="true" disabled>Choose State/Province</option>');
 		p_dropdown.prop('selectedIndex', 0);
-		
+
 		// Populate dropdown with list of provinces
 		$.getJSON(state, function (data) {
 		  $.each(data, function (key, entry) {
@@ -343,7 +328,7 @@
 			p_dropdown.prop('selectedIndex', 1);
 		}
 	}
-    
+
 </script>
 <!----------------------------------------------------------------------------->
 <!-- end FORM JAVASCRIPT -->
@@ -470,15 +455,6 @@
                 {% endfor %}
                 </select>
                 <div id="person_tags-error" class="invalid-feedback"></div>
-            </div>
-            <div class="form-group col-md-12 mb-4">
-                <label for="skill_sets">Skill sets</label>
-                <select id="skill_sets" name="skill_sets" class="form-control form-control-lg border border-success" name="states[]" multiple="multiple">
-                {% for skill_set in skill_sets %}
-                    <option value="{{ skill_set.id }}" id="skill_set_option_id_{{ skill_set.id }}">{{ skill_set.sub_category }}</option>
-                {% endfor %}
-                </select>
-                <div id="skill_sets-error" class="invalid-feedback"></div>
             </div>
         </div>
         <!-- ############ end PERSON ############ -->

@@ -42,8 +42,8 @@
             <div class="form-group p-0 col-md-7 mb-4">
                 <label for="tags">Tags</label>
                 <p>
-                    {% for skill_set in customer.skill_sets.all %}
-                        <span class="badge badge-info badge-lg">{{ skill_set.sub_category }}</span>
+                    {% for tag in customer.tags.all %}
+                        <span class="badge badge-info badge-lg">{{ tag.text }}</span>
                     {% empty %}
                         -
                     {% endfor %}

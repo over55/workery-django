@@ -174,7 +174,6 @@ class CustomerListCreateSerializer(serializers.ModelSerializer):
             'how_hear',
             'type_of',
             'tags',
-            'skill_sets',
 
             # Misc (Read Only)
             # 'comments',
@@ -230,7 +229,7 @@ class CustomerListCreateSerializer(serializers.ModelSerializer):
     def setup_eager_loading(cls, queryset):
         """ Perform necessary eager loading of data. """
         queryset = queryset.prefetch_related(
-            'owner', 'created_by', 'last_modified_by', 'tags', 'skill_sets'
+            'owner', 'created_by', 'last_modified_by', 'tags',
             # 'comments'
         )
         return queryset
@@ -375,13 +374,6 @@ class CustomerListCreateSerializer(serializers.ModelSerializer):
         if tags is not None:
             customer.tags.set(tags)
 
-        #------------------------
-        # Set our `SkillSet` objects.
-        #------------------------
-        skill_sets = validated_data.get('skill_sets', None)
-        if tags is not None:
-            customer.skill_sets.set(skill_sets)
-
         # #-----------------------------
         # # Create our `Comment` object.
         # #-----------------------------
@@ -485,7 +477,6 @@ class CustomerRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
             'how_hear',
             'type_of',
             'tags',
-            'skill_sets',
 
             # Misc (Read Only)
             # 'comments',
@@ -529,7 +520,7 @@ class CustomerRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
     def setup_eager_loading(cls, queryset):
         """ Perform necessary eager loading of data. """
         queryset = queryset.prefetch_related(
-            'owner', 'created_by', 'last_modified_by', 'tags', 'skill_sets'
+            'owner', 'created_by', 'last_modified_by', 'tags',
             # 'comments'
         )
         return queryset
@@ -629,13 +620,6 @@ class CustomerRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         tags = validated_data.get('tags', instance.tags)
         if tags is not None:
             instance.tags.set(tags)
-
-        #------------------------
-        # Set our `SkillSet` objects.
-        #------------------------
-        skill_sets = validated_data.get('skill_sets', instance.skill_sets)
-        if tags is not None:
-            instance.skill_sets.set(skill_sets)
 
         # #---------------------------
         # # Attach our comment.
