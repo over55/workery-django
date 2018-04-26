@@ -317,7 +317,7 @@
             <p class="border-bottom mb-3 pb-1 text-secondary">Customer Information</p>
             <div class="form-row">
                 <div class="form-group col-md-12 mb-4">
-                    <select id="customer" name="customer">
+                    <select id="customer" name="customer" class="form-control form-control-lg border border-primary" autofocus>
                         <option selected="selected" value="{{ job.customer.id }}"><span id="{{ job.customer.id }}">{{ job.customer }}</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</option>
                     </select>
                 </div>
@@ -337,9 +337,9 @@
             <div class="form-row">
                 <div class="form-group col-md-12 mb-4">
                     <label for="describe" class="font-b6"></label>
-                    <select id="skill_sets" name="states[]" multiple="multiple">
+                    <select id="skill_sets" name="states[]" multiple="multiple" class="form-control form-control-lg border border-primary">
                         {% for skillset in skillsets %}
-                            <option value="{{ skillset.id }}" id="option_id_{{ skillset.id }}" {% if skillset in job.skill_sets.all %}selected="selected"{% endif %}>{{ skillset }}</option>
+                            <option value="{{ skillset.id }}" id="option_id_{{ skillset.id }}" {% if skillset in job.skill_sets.all %}selected="selected"{% endif %}>{{ skillset.sub_category }}</option>
                         {% endfor %}
                     </select>
                     <div id="describe-error" class="invalid-feedback"></div>
@@ -350,7 +350,7 @@
             <p class="border-bottom mb-3 pb-1 text-secondary">Associate Member Information</p>
             <div class="form-row">
                 <div class="form-group col-md-12 mb-4">
-                    <select id="associate" name="associate">
+                    <select id="associate" name="associate" class="form-control form-control-lg border border-primary">
                         {% if job.associate %}
                             <option selected="selected" value="{{ job.associate.id }}"><span id="{{ job.associate.id }}">{{ job.associate }}</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</option>
                         {% else %}
