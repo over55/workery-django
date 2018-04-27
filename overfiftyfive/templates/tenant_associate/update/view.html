@@ -32,7 +32,7 @@
         // Initialize our datepicker jQuery code with our HTML view.
         $( "#dob" ).datepicker({
             dateFormat: 'yy-mm-dd',
-	    maxDate: 'today'
+	        maxDate: 'today'
         });
         $( "#dues_pd" ).datepicker({
             dateFormat: 'yy-mm-dd'  // https://stackoverflow.com/a/7500097
@@ -201,8 +201,8 @@
         has_error |= valid_textfield_value('street_address', true, 3);
         has_error |= valid_textfield_value('street_address_extra', false, 3)
         has_error |= valid_textfield_value('address_locality', true, 3);
-        has_error |= valid_textfield_value('address_region', true, 2);
-        has_error |= valid_textfield_value('address_country', true, 3);
+        // has_error |= valid_textfield_value('address_region', true, 2);
+        // has_error |= valid_textfield_value('address_country', true, 3);
         has_error |= valid_textfield_value('postal_code', true, 3);
         has_error |= valid_textfield_value('post_office_box_number', false, 3);
         has_error |= valid_textfield_value('password', false, 2);
@@ -249,8 +249,14 @@
         var street_address = $('#street_address').val();
         var street_address_extra = $('#street_address_extra').val();
         var address_region = $('#address_region').val();
+        if (address_region === null) {
+            address_region = "Ontario";
+        }
         var address_locality = $('#address_locality').val();
         var address_country = $('#address_country').val();
+        if (address_country === null) {
+            address_country = "Canada";
+        }
         var postal_code = $('#postal_code').val();
         var post_office_box_number = $('#post_office_box_number').val();
         var email = $('#email').val();
@@ -385,30 +391,30 @@
 	  });
 	  {% if associate.address_country %}loadState('{{associate.address_country}}');{% else %}loadState('CA');{% endif %}
     	});
-	  
+
         let c_dropdown = $('#address_country');
 	c_dropdown.empty();
 	c_dropdown.append('<option selected="true" disabled>Choose Country</option>');
 	{% if associate.address_country %}c_dropdown.val('{{associate.address_country}}');{% else %}c_dropdown.prop('selectedIndex', 1);{% endif %}
-	
+
         const state = "{% static 'js/provinces.json' %}";
         const country = "{% static 'js/countries.json' %}";
         console.log(state);
         console.log(country); // KANWAR - PLEASE IMPLEMENT.
-	
+
 	// Populate dropdown with list of countries
 	$.getJSON(country, function (data) {
 	  $.each(data, function (key, entry) {
 	    	c_dropdown.append($('<option></option>').attr('value', entry.code).text(entry.country));
 	  })
 	});
-	
+
 	function loadState(countryId){
 		let p_dropdown = $('#address_region');
 		p_dropdown.empty();
 		p_dropdown.append('<option selected="true" disabled>Choose State/Province</option>');
 		p_dropdown.prop('selectedIndex', 0);
-		
+
 		// Populate dropdown with list of provinces
 		$.getJSON(state, function (data) {
 		  $.each(data, function (key, entry) {
@@ -422,7 +428,7 @@
 			p_dropdown.prop('selectedIndex', 1);
 		}
 	}
-		 
+
 </script>
 <!----------------------------------------------------------------------------->
 <!-- end CUSTOM JAVASCRIPT -->

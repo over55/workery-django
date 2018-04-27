@@ -26,6 +26,14 @@
         ajax_post_form_submission("{% url 'o55_tenant_member_summary' %}?was_created=True");
     }
 
+    function to_yes_or_no_string(value) {
+        if (value == 'true') {
+            return 'Yes';
+        } else {
+            return 'No';
+        }
+    }
+
     /**
      *  When page loads, the following code will be run first.
      */
@@ -38,8 +46,10 @@
         $('#selected_other_phonenumber').append(localStorage.getItem("tmp_associate_member_other_telephone"));
         $('#selected_dob').append(localStorage.getItem("tmp_associate_member_date_of_birth"));
         $('#selected_gender').append(localStorage.getItem("tmp_associate_member_gender"));
-        $("#selected_ok_to_email").append(localStorage.getItem("tmp_associate_member_ok_to_email"));
-        $("#selected_ok_to_text").append(localStorage.getItem("tmp_associate_member_ok_to_text"));
+        var selected_ok_to_email = localStorage.getItem("tmp_associate_member_ok_to_email");
+        $("#selected_ok_to_email").append(to_yes_or_no_string(selected_ok_to_email));
+        var selected_ok_to_email = localStorage.getItem("tmp_associate_member_ok_to_text")
+        $("#selected_ok_to_text").append(to_yes_or_no_string(selected_ok_to_email));
         $('#selected_street_address').append(localStorage.getItem("tmp_associate_member_street_address"));
         $('#selected_street_address_extra').append(localStorage.getItem("tmp_associate_member_street_address_extra"));
         $('#selected_address_locality').append(localStorage.getItem("tmp_associate_member_address_locality"));
@@ -50,6 +60,7 @@
         $('#selected_email').append(localStorage.getItem("tmp_associate_member_email"));
         $('#selected_telephone').append(localStorage.getItem("tmp_associate_member_telephone"));
         $('#selected_description').append(localStorage.getItem("tmp_associate_member_description"));
+        $('#selected_comment').append(localStorage.getItem("tmp_associate_member_comment"));
 
         // Set our `tags` field.
         var tmp_person_tag_values = localStorage.getObj("tmp_associate_member_person_tag_values");
@@ -78,7 +89,8 @@
         } // end FOR
 
         // --- Account ---
-        $('#selected_is_active').append(localStorage.getItem("tmp_associate_member_is_active"));
+        var is_active = localStorage.getItem("tmp_associate_member_is_active");
+        $('#selected_is_active').append(to_yes_or_no_string(is_active));
 
         // --- Associate Details ---
         $('#selected_hourly_salary_desired').append(localStorage.getItem("tmp_associate_member_hourly_salary_desired"));
@@ -87,9 +99,16 @@
         $('#selected_ins_pd').append(localStorage.getItem("tmp_associate_member_ins_due"));
         $('#selected_police_check').append(localStorage.getItem("tmp_associate_member_police_check"));
         $('#selected_drivers_license_class').append(localStorage.getItem("tmp_associate_member_drivers_license_class"));
-        $('#selected_has_car').append(localStorage.getItem("tmp_associate_member_has_car"));
-        $('#selected_has_van').append(localStorage.getItem("tmp_associate_member_has_van"));
-        $('#selected_has_truck').append(localStorage.getItem("tmp_associate_member_has_truck"));
+
+        var has_car = localStorage.getItem("tmp_associate_member_has_car");
+        $('#selected_has_car').append( to_yes_or_no_string(has_car) );
+
+        var has_van = localStorage.getItem("tmp_associate_member_has_van");
+        $('#selected_has_van').append( to_yes_or_no_string(has_van) );
+
+        var has_truck = localStorage.getItem("tmp_associate_member_has_truck");
+        $('#selected_has_truck').append( to_yes_or_no_string(has_truck) );
+
         $('#selected_is_full_time').append(localStorage.getItem("tmp_associate_member_is_full_time"));
         $('#selected_is_part_time').append(localStorage.getItem("tmp_associate_member_is_part_time"));
         $('#selected_is_contract_time').append(localStorage.getItem("tmp_associate_member_is_contract_time"));
@@ -174,6 +193,7 @@
                 'tags': localStorage.getObj("tmp_associate_member_person_tag_ids"),
                 'skill_sets': localStorage.getObj("tmp_associate_member_skill_set_ids"),
                 'description': localStorage.getItem("tmp_associate_member_description"),
+                'extra_comment': localStorage.getItem("tmp_associate_member_comment"),
 
                 // --- Account ---
                 'password': password,
@@ -225,6 +245,7 @@
                 localStorage.removeItem("tmp_associate_member_skill_set_ids")
                 localStorage.removeItem("tmp_associate_member_skill_set_values")
                 localStorage.removeItem("tmp_associate_member_description")
+                localStorage.removeItem("tmp_associate_member_comment")
                 localStorage.removeItem("tmp_associate_member_is_active")
 
                 // --- Associate Details ---
@@ -443,6 +464,12 @@
            <th scope="row" class="bg-light">Skill set(s)</th>
            <td id="selected_skill_set_values">
                <!-- THIS IS WHERE THE TAGS GET LOADED -->
+           </td>
+         </tr>
+         <tr>
+           <th scope="row" class="bg-light">Additional comment(s)</th>
+           <td id="selected_comment">
+               <!-- POPULATE THROUGH JS. -->
            </td>
          </tr>
        </tbody>

@@ -6,7 +6,7 @@ from tenant_associate.views import create_view, list_view, retrieve_view, search
 
 urlpatterns = (
     # Summary
-    path('members/', list_view.MemberSummaryView.as_view(), name='o55_tenant_member_summary'),
+    path('members/summary/', list_view.MemberSummaryView.as_view(), name='o55_tenant_member_summary'),
 
     # Create
     path('members/create/confirm', create_view.MemberConfirmCreateView.as_view(), name='o55_tenant_member_confirm_create'),
@@ -20,8 +20,9 @@ urlpatterns = (
     path('members/search/results/', search_view.MemberSearchResultView.as_view(), name='o55_tenant_member_search_results'),
 
     # Retrieve
-    path('members/detail/<str:template>/<int:pk>/', retrieve_view.MemberRetrieveView.as_view(), name='o55_tenant_member_retrieve'),
+    path('members/<str:template>/detail/<int:pk>/', retrieve_view.MemberRetrieveView.as_view(), name='o55_tenant_member_retrieve'),
+    path('members/<str:template>/detail/comments/<int:pk>/', retrieve_view.MemberCommentRetrieveView.as_view(), name='o55_tenant_member_comments_retrieve'),
 
     # Update
-    path('members/detail/<str:template>/<int:pk>/edit/', update_view.MemberUpdateView.as_view(), name='o55_tenant_member_update'),
+    path('members/<str:template>/detail/<int:pk>/edit/', update_view.MemberUpdateView.as_view(), name='o55_tenant_member_update'),
 )

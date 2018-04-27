@@ -27,17 +27,15 @@ from shared_foundation.models import SharedUser
 # from tenant_api.serializers.associate_comment import AssociateCommentSerializer
 from tenant_api.serializers.skill_set import SkillSetListCreateSerializer
 from tenant_foundation.models import (
-    # AssociateComment,
+    AssociateComment,
     Associate,
-    # Comment,
+    Comment,
     SkillSet,
     Organization
 )
 
 
 class AssociateListCreateSerializer(serializers.ModelSerializer):
-    owner = serializers.PrimaryKeyRelatedField(many=False, read_only=True)
-
     # We are overriding the `email` field to include unique email validation.
     email = serializers.EmailField(
         validators=[UniqueValidator(queryset=SharedUser.objects.all())],
@@ -48,10 +46,10 @@ class AssociateListCreateSerializer(serializers.ModelSerializer):
     # `django-rest-framework`.
     # comments = AssociateCommentSerializer(many=True, read_only=True, allow_null=True)
 
-    # # This is a field used in the `create` function if the user enters a
-    # # comment. This field is *ONLY* to be used during the POST creation and
-    # # will be blank during GET.
-    # extra_comment = serializers.CharField(write_only=True, allow_null=True)
+    # This is a field used in the `create` function if the user enters a
+    # comment. This field is *ONLY* to be used during the POST creation and
+    # will be blank during GET.
+    extra_comment = serializers.CharField(write_only=True, allow_null=True)
 
     # # The skill_sets that this associate belongs to. We will return primary
     # # keys only. This field is read/write accessible.
@@ -100,7 +98,6 @@ class AssociateListCreateSerializer(serializers.ModelSerializer):
             'id',
             'created',
             'last_modified',
-            'owner',
 
             # Person
             'given_name',
@@ -138,7 +135,7 @@ class AssociateListCreateSerializer(serializers.ModelSerializer):
             'password_repeat',
 
             # # Misc (Write Only)
-            # 'extra_comment',
+            'extra_comment',
 
             # Contact Point
             'area_served',
@@ -312,20 +309,20 @@ class AssociateListCreateSerializer(serializers.ModelSerializer):
         if tags is not None:
             associate.tags.set(tags)
 
-        # #-----------------------------
-        # # Create our `Comment` object.
-        # #-----------------------------
-        # extra_comment = validated_data.get('extra_comment', None)
-        # if extra_comment is not None:
-        #     comment = Comment.objects.create(
-        #         created_by=self.context['created_by'],
-        #         last_modified_by=self.context['created_by'],
-        #         text=extra_comment
-        #     )
-        #     associate_comment = AssociateComment.objects.create(
-        #         associate=associate,
-        #         comment=comment,
-        #     )
+        #-----------------------------
+        # Create our `Comment` object.
+        #-----------------------------
+        extra_comment = validated_data.get('extra_comment', None)
+        if extra_comment is not None:
+            comment = Comment.objects.create(
+                created_by=self.context['created_by'],
+                last_modified_by=self.context['created_by'],
+                text=extra_comment
+            )
+            AssociateComment.objects.create(
+                about=associate,
+                comment=comment,
+            )
 
         # Update validation data.
         # validated_data['comments'] = AssociateComment.objects.filter(associate=associate)
@@ -339,8 +336,6 @@ class AssociateListCreateSerializer(serializers.ModelSerializer):
 
 
 class AssociateRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
-    owner = serializers.PrimaryKeyRelatedField(many=False, read_only=True)
-
     # We are overriding the `email` field to include unique email validation.
     email = serializers.EmailField(
         validators=[UniqueValidator(queryset=Associate.objects.all())],
@@ -380,7 +375,6 @@ class AssociateRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
             'id',
             'created',
             'last_modified',
-            'owner',
             'description',
 
             # Person
@@ -581,20 +575,20 @@ class AssociateRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         if tags is not None:
             instance.tags.set(tags)
 
-        # #---------------------------
-        # # Attach our comment.
-        # #---------------------------
-        # extra_comment = validated_data.get('extra_comment', None)
-        # if extra_comment is not None:
-        #     comment = Comment.objects.create(
-        #         created_by=self.context['last_modified_by'],
-        #         last_modified_by=self.context['last_modified_by'],
-        #         text=extra_comment
-        #     )
-        #     associate_comment = AssociateComment.objects.create(
-        #         associate=instance,
-        #         comment=comment,
-        #     )
+        #---------------------------
+        # Attach our comment.
+        #---------------------------
+        extra_comment = validated_data.get('extra_comment', None)
+        if extra_comment is not None:
+            comment = Comment.objects.create(
+                created_by=self.context['last_modified_by'],
+                last_modified_by=self.context['last_modified_by'],
+                text=extra_comment
+            )
+            AssociateComment.objects.create(
+                about=instance,
+                comment=comment,
+            )
 
         #---------------------------
         # Update validation data.

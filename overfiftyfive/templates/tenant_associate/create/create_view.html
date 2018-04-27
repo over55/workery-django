@@ -124,6 +124,7 @@
             $('#password').val(localStorage.getItem("tmp_associate_member_password"));
             $('#password_repeat').val(localStorage.getItem("tmp_associate_member_password_repeat"));
             $('#describe').val(localStorage.getItem("tmp_associate_member_description"));
+            $('#comment').val(localStorage.getItem("tmp_associate_member_comment"));
 
             $('#hourly_salary_desired').val(localStorage.getItem("tmp_associate_member_hourly_salary_desired"));
             $('#limit_special').val(localStorage.getItem("tmp_associate_member_limit_special"));
@@ -137,7 +138,8 @@
             // RADIOFIELD INITIALIZATION //
             //---------------------------//
 
-            $("input[name=ok_to_email][value=" + localStorage.getItem("tmp_associate_member_ok_to_email") + "]").prop('checked', true);
+            var selected_ok_to_email = localStorage.getItem("tmp_associate_member_ok_to_email");
+            $("input[name=ok_to_email][value=" + selected_ok_to_email + "]").prop('checked', true);
             $("input[name=ok_to_text][value=" + localStorage.getItem("tmp_associate_member_ok_to_text") + "]").prop('checked', true);
             $("input[name=is_active][value=" + localStorage.getItem("tmp_associate_member_is_active") + "]").prop('checked', true);
             $("input[name=has_car][value=" + localStorage.getItem("tmp_associate_member_has_car") + "]").prop('checked', true);
@@ -225,7 +227,7 @@
 
         function get_boolean_from_selected_radio_value(radiofields_name) {
             var value = get_selected_radio_value(radiofields_name);
-            if (value == 'yes') {
+            if (value == 'true') {
                 return true;
             } else {
                 return false;
@@ -311,11 +313,12 @@
             has_error |= valid_radiofields_seleciton('ok_to_email', true);
             has_error |= valid_radiofields_seleciton('ok_to_text', true);
             has_error |= valid_textfield_value('describe', false, 2);
+            has_error |= valid_textfield_value('comment', false, 2);
             has_error |= valid_textfield_value('street_address', true, 3);
             has_error |= valid_textfield_value('street_address_extra', false, 3)
             has_error |= valid_textfield_value('address_locality', true, 3);
-            has_error |= valid_textfield_value('address_region', true, 2);
-            has_error |= valid_textfield_value('address_country', true, 3);
+            // has_error |= valid_textfield_value('address_region', true, 2);
+            // has_error |= valid_textfield_value('address_country', true, 3);
             has_error |= valid_textfield_value('postal_code', true, 3);
             has_error |= valid_textfield_value('post_office_box_number', false, 3);
             has_error |= valid_textfield_value('password', false, 2);
@@ -361,8 +364,14 @@
             var street_address = $('#street_address').val();
             var street_address_extra = $('#street_address_extra').val();
             var address_region = $('#address_region').val();
+            if (address_region === null) {
+                address_region = 'Ontario';
+            }
             var address_locality = $('#address_locality').val();
             var address_country = $('#address_country').val();
+            if (address_country === null) {
+                address_country = 'Canada';
+            }
             var postal_code = $('#postal_code').val();
             var post_office_box_number = $('#post_office_box_number').val();
             var email = $('#email').val();
@@ -376,6 +385,7 @@
             var person_tags = $('#person_tags').val();
             var skill_sets = $('#skill_sets').val();
             var description = $('#describe').val();
+            var comment = $('#comment').val();
             var is_active = get_boolean_from_selected_radio_value('is_active');
             var hourly_salary_desired = $('#hourly_salary_desired').val();
             var limit_special = $('#limit_special').val();
@@ -416,6 +426,7 @@
             localStorage.setItem("tmp_associate_member_password", password);
             localStorage.setItem("tmp_associate_member_password_repeat", password_repeat);
             localStorage.setItem("tmp_associate_member_description", description);
+            localStorage.setItem("tmp_associate_member_comment", comment);
             localStorage.setItem("tmp_associate_member_is_active", is_active);
             localStorage.setItem("tmp_associate_member_hourly_salary_desired", hourly_salary_desired);
             localStorage.setItem("tmp_associate_member_limit_special", limit_special);
@@ -469,30 +480,30 @@
 	  });
 	  loadState('CA');
     	});
-	  
+
         let c_dropdown = $('#address_country');
 	c_dropdown.empty();
 	c_dropdown.append('<option selected="true" disabled>Choose Country</option>');
 	c_dropdown.prop('selectedIndex', 1);
-	
+
         const state = "{% static 'js/provinces.json' %}";
         const country = "{% static 'js/countries.json' %}";
         console.log(state);
         console.log(country); // KANWAR - PLEASE IMPLEMENT.
-	
+
 	// Populate dropdown with list of countries
 	$.getJSON(country, function (data) {
 	  $.each(data, function (key, entry) {
 	    	c_dropdown.append($('<option></option>').attr('value', entry.code).text(entry.country));
 	  })
 	});
-	
+
 	function loadState(countryId){
 		let p_dropdown = $('#address_region');
 		p_dropdown.empty();
 		p_dropdown.append('<option selected="true" disabled>Choose State/Province</option>');
 		p_dropdown.prop('selectedIndex', 0);
-		
+
 		// Populate dropdown with list of provinces
 		$.getJSON(state, function (data) {
 		  $.each(data, function (key, entry) {
@@ -505,7 +516,7 @@
 			p_dropdown.prop('selectedIndex', 1);
 		}
 	}
-		 
+
     </script>
     <div class="col-sm-5 mx-auto mt-2">
         <!-- Associate form -->
@@ -605,11 +616,11 @@
                 <div class="form-group col-md-12 mb-4">
                     <p class="mb-1">Ok to E-Mail? <sup>*</sup></p>
                     <div class="form-radio custom-control custom-radio custom-control-inline">
-                        <input type="radio" id="ok_to_email" name="ok_to_email" value="yes" class="custom-control-input form-check-input">
+                        <input type="radio" id="ok_to_email" name="ok_to_email" value="true" class="custom-control-input form-check-input">
                         <label class="custom-control-label form-check-label" for="ok_to_email">Yes</label>
                     </div>
                     <div class="form-radio custom-control custom-radio custom-control-inline">
-                        <input type="radio" id="ok_to_email2" name="ok_to_email" value="no" class="custom-control-input form-check-input">
+                        <input type="radio" id="ok_to_email2" name="ok_to_email" value="false" class="custom-control-input form-check-input">
                         <label class="custom-control-label form-check-label" for="ok_to_email2">No</label>
 			<div id="ok_to_email-error" class="invalid-feedback ml-2"></div>
                     </div>
@@ -617,11 +628,11 @@
                 <div class="form-group col-md-12 mb-4">
                     <p class="mb-1">Ok to Text? <sup>*</sup></p>
                     <div class="form-radio custom-control custom-radio custom-control-inline">
-                        <input type="radio" id="ok_to_text" name="ok_to_text" value="yes" class="custom-control-input form-check-input">
+                        <input type="radio" id="ok_to_text" name="ok_to_text" value="true" class="custom-control-input form-check-input">
                         <label class="custom-control-label form-check-label" for="ok_to_text">Yes</label>
                     </div>
                     <div class="form-radio custom-control custom-radio custom-control-inline">
-                        <input type="radio" id="ok_to_text2" name="ok_to_text" value="no" class="custom-control-input form-check-input">
+                        <input type="radio" id="ok_to_text2" name="ok_to_text" value="false" class="custom-control-input form-check-input">
                         <label class="custom-control-label form-check-label" for="ok_to_text2">No</label>
 			<div id="ok_to_text-error" class="invalid-feedback ml-2"></div>
                     </div>
@@ -725,11 +736,11 @@
                 <div class="form-group col-md-12 mb-4">
                     <p class="mb-1">Has car? <sup>*</sup></p>
                     <div class="form-radio custom-control custom-radio custom-control-inline">
-                        <input type="radio" id="has_car" name="has_car" value="yes" class="custom-control-input form-check-input">
+                        <input type="radio" id="has_car" name="has_car" value="true" class="custom-control-input form-check-input">
                         <label class="custom-control-label form-check-label" for="has_car">Yes</label>
                     </div>
                     <div class="form-radio custom-control custom-radio custom-control-inline">
-                        <input type="radio" id="has_car2" name="has_car" value="no" class="custom-control-input form-check-input">
+                        <input type="radio" id="has_car2" name="has_car" value="false" class="custom-control-input form-check-input">
                         <label class="custom-control-label form-check-label" for="has_car2">No</label>
                         <div id="has_car-error" class="invalid-feedback ml-2"></div>
                     </div>
@@ -737,11 +748,11 @@
                 <div class="form-group col-md-12 mb-4">
                     <p class="mb-1">Has van? <sup>*</sup></p>
                     <div class="form-radio custom-control custom-radio custom-control-inline">
-                        <input type="radio" id="has_van" name="has_van" value="yes" class="custom-control-input form-check-input">
+                        <input type="radio" id="has_van" name="has_van" value="true" class="custom-control-input form-check-input">
                         <label class="custom-control-label form-check-label" for="has_van">Yes</label>
                     </div>
                     <div class="form-radio custom-control custom-radio custom-control-inline">
-                        <input type="radio" id="has_van2" name="has_van" value="no" class="custom-control-input form-check-input">
+                        <input type="radio" id="has_van2" name="has_van" value="false" class="custom-control-input form-check-input">
                         <label class="custom-control-label form-check-label" for="has_van2">No</label>
                         <div id="has_van-error" class="invalid-feedback ml-2"></div>
                     </div>
@@ -749,11 +760,11 @@
                 <div class="form-group col-md-12 mb-4">
                     <p class="mb-1">Has truck? <sup>*</sup></p>
                     <div class="form-radio custom-control custom-radio custom-control-inline">
-                        <input type="radio" id="has_truck" name="has_truck" value="yes" class="custom-control-input form-check-input">
+                        <input type="radio" id="has_truck" name="has_truck" value="true" class="custom-control-input form-check-input">
                         <label class="custom-control-label form-check-label" for="has_truck">Yes</label>
                     </div>
                     <div class="form-radio custom-control custom-radio custom-control-inline">
-                        <input type="radio" id="has_truck2" name="has_truck" value="no" class="custom-control-input form-check-input">
+                        <input type="radio" id="has_truck2" name="has_truck" value="false" class="custom-control-input form-check-input">
                         <label class="custom-control-label form-check-label" for="has_truck2">No</label>
                         <div id="has_truck-error" class="invalid-feedback ml-2"></div>
                     </div>
@@ -761,11 +772,11 @@
                 <div class="form-group col-md-12 mb-4">
                     <p class="mb-1">Is full time? <sup>*</sup></p>
                     <div class="form-radio custom-control custom-radio custom-control-inline">
-                        <input type="radio" id="is_full_time" name="is_full_time" value="yes" class="custom-control-input form-check-input">
+                        <input type="radio" id="is_full_time" name="is_full_time" value="true" class="custom-control-input form-check-input">
                         <label class="custom-control-label form-check-label" for="is_full_time">Yes</label>
                     </div>
                     <div class="form-radio custom-control custom-radio custom-control-inline">
-                        <input type="radio" id="is_full_time2" name="is_full_time" value="no" class="custom-control-input form-check-input">
+                        <input type="radio" id="is_full_time2" name="is_full_time" value="false" class="custom-control-input form-check-input">
                         <label class="custom-control-label form-check-label" for="is_full_time2">No</label>
                         <div id="is_full_time-error" class="invalid-feedback ml-2"></div>
                     </div>
@@ -773,11 +784,11 @@
                 <div class="form-group col-md-12 mb-4">
                     <p class="mb-1">Is part time? <sup>*</sup></p>
                     <div class="form-radio custom-control custom-radio custom-control-inline">
-                        <input type="radio" id="is_part_time" name="is_part_time" value="yes" class="custom-control-input form-check-input">
+                        <input type="radio" id="is_part_time" name="is_part_time" value="true" class="custom-control-input form-check-input">
                         <label class="custom-control-label form-check-label" for="is_part_time">Yes</label>
                     </div>
                     <div class="form-radio custom-control custom-radio custom-control-inline">
-                        <input type="radio" id="is_part_time2" name="is_part_time" value="no" class="custom-control-input form-check-input">
+                        <input type="radio" id="is_part_time2" name="is_part_time" value="false" class="custom-control-input form-check-input">
                         <label class="custom-control-label form-check-label" for="is_part_time2">No</label>
                         <div id="is_part_time-error" class="invalid-feedback ml-2"></div>
                     </div>
@@ -785,11 +796,11 @@
                 <div class="form-group col-md-12 mb-4">
                     <p class="mb-1">Is contract time? <sup>*</sup></p>
                     <div class="form-radio custom-control custom-radio custom-control-inline">
-                        <input type="radio" id="is_contract_time" name="is_contract_time" value="yes" class="custom-control-input form-check-input">
+                        <input type="radio" id="is_contract_time" name="is_contract_time" value="true" class="custom-control-input form-check-input">
                         <label class="custom-control-label form-check-label" for="is_contract_time">Yes</label>
                     </div>
                     <div class="form-radio custom-control custom-radio custom-control-inline">
-                        <input type="radio" id="is_contract_time2" name="is_contract_time" value="no" class="custom-control-input form-check-input">
+                        <input type="radio" id="is_contract_time2" name="is_contract_time" value="false" class="custom-control-input form-check-input">
                         <label class="custom-control-label form-check-label" for="is_contract_time2">No</label>
                         <div id="is_contract_time-error" class="invalid-feedback ml-2"></div>
                     </div>
@@ -797,11 +808,11 @@
                 <div class="form-group col-md-12 mb-4">
                     <p class="mb-1">Is small job? <sup>*</sup></p>
                     <div class="form-radio custom-control custom-radio custom-control-inline">
-                        <input type="radio" id="is_small_job" name="is_small_job" value="yes" class="custom-control-input form-check-input">
+                        <input type="radio" id="is_small_job" name="is_small_job" value="true" class="custom-control-input form-check-input">
                         <label class="custom-control-label form-check-label" for="is_small_job">Yes</label>
                     </div>
                     <div class="form-radio custom-control custom-radio custom-control-inline">
-                        <input type="radio" id="is_small_job2" name="is_small_job" value="no" class="custom-control-input form-check-input">
+                        <input type="radio" id="is_small_job2" name="is_small_job" value="false" class="custom-control-input form-check-input">
                         <label class="custom-control-label form-check-label" for="is_small_job2">No</label>
                         <div id="is_small_job-error" class="invalid-feedback ml-2"></div>
                     </div>
@@ -815,8 +826,14 @@
             </div>
             <!-- ############ end DETAILS ############ -->
             <!-- ############ SECURITY ############ -->
-            <p class="border-bottom mb-3 pb-1 text-secondary">Account Security</p>
+            <p class="border-bottom mb-3 pb-1 text-secondary">Account</p>
             <div class="form-row">
+                <div class="form-group col-md-12 mb-4 p-0">
+      		      <label for="describe" class="font-b6">Additional comment(s):</label>
+      		      <textarea class="form-control form-control-lg border border-success" id="comment" name="comment" placeholder="Write any additional notes or comments here..." rows="4" minlength="10" required></textarea>
+      		      <div id="comment-error" class="invalid-feedback"></div>
+                  <small class="form-text text-muted">Maximum 1,000 characters.</small>
+                </div>
                 <div class="form-group col-md-12 mb-4">
                     <label for="password">Password</label>
                     <input id="password"
@@ -856,11 +873,11 @@
                 <div class="form-group col-md-12 mb-4">
                     <p class="mb-1">Is active? <sup>*</sup></p>
                     <div class="form-radio custom-control custom-radio custom-control-inline">
-                        <input type="radio" id="is_active" name="is_active" value="yes" class="custom-control-input form-check-input">
+                        <input type="radio" id="is_active" name="is_active" value="true" class="custom-control-input form-check-input">
                         <label class="custom-control-label form-check-label" for="is_active">Yes</label>
                     </div>
                     <div class="form-radio custom-control custom-radio custom-control-inline">
-                        <input type="radio" id="is_active2" name="is_active" value="no" class="custom-control-input form-check-input">
+                        <input type="radio" id="is_active2" name="is_active" value="false" class="custom-control-input form-check-input">
                         <label class="custom-control-label form-check-label" for="is_active2">No</label>
                         <div id="is_active-error" class="invalid-feedback ml-2"></div>
                     </div>
