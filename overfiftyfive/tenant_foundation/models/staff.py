@@ -139,6 +139,13 @@ class Staff(AbstractPerson):
         db_index=True,
         unique=True
     )
+    comments = models.ManyToManyField(
+        "Comment",
+        help_text=_('The comments belonging to this staff made by other people.'),
+        blank=True,
+        through='StaffComment',
+        related_name="%(app_label)s_%(class)s_staff_comments_related"
+    )
 
     #
     #  FUNCTIONS

@@ -38,6 +38,7 @@
         $('#password').val(localStorage.getItem("tmp_residential_customer_password"));
         $('#password_repeat').val(localStorage.getItem("tmp_residential_customer_password_repeat"));
         $('#description').val(localStorage.getItem("tmp_residential_customer_description"));
+        $('#comment').val(localStorage.getItem("tmp_residential_customer_comment"));
 
     }); // end Ready
 
@@ -123,24 +124,28 @@
      *  and then submit our form for saving in the local storage after the
      *  fields get validated.
      */
-    function ajax_post_form_submission(redirect_url) {
-        var tmp_email = $('#email').val();
-        post_is_email_unique_api(
-            tmp_email,
-            function(result) {
-                if (result === 1 || result === '1') {
-                    save_submission(redirect_url);
-                } else {
-                    alert("EMAIL ALREADY EXISTS, PLEASE PICK A NEW EMAIL ADDRESS"); //TODO: UPDATE THE GUI.
-                    return;
-                }
-            },
-            function(json_error) {
-                alert(json_error);
-                //TODO: (1) OUTPUT THE ERROR IN A TEXT. (2) FOCUS ON THE OUTPUT.
-            }
-        ); // end API CALL
-    }
+     function ajax_post_form_submission(redirect_url) {
+         var tmp_email = $('#email').val();
+         if (tmp_email === undefined || tmp_email === null || tmp_email.length <= 0) {
+             save_submission(redirect_url);
+         } else {
+             post_is_email_unique_api(
+                 tmp_email,
+                 function(result) {
+                     if (result === 1 || result === '1') {
+                         save_submission(redirect_url);
+                     } else {
+                         alert("EMAIL ALREADY EXISTS, PLEASE PICK A NEW EMAIL ADDRESS"); //TODO: UPDATE THE GUI.
+                         return;
+                     }
+                 },
+                 function(json_error) {
+                     alert(json_error);
+                     //TODO: (1) OUTPUT THE ERROR IN A TEXT. (2) FOCUS ON THE OUTPUT.
+                 }
+             ); // end API CALL
+         }
+     }
 
     /**
      *  Function will validate the fields and then save them to the local
@@ -149,6 +154,12 @@
     function save_submission(redirect_url) {
         // GET OUR FORM.
         var form = document.getElementById('add-client-form');
+
+        // TEMPORARY BUGFIX UNTIL COUNTRY FIELD IS WORKING.
+        var address_country = $('#address_country').val();
+        if (address_country === null) {
+            address_country = 'Canada';
+        }
 
         // VALIDATE ALL OUR FORM FIELDS.
         var has_error = false;
@@ -163,11 +174,12 @@
         has_error |= valid_textfield_value('street_address_extra', false, 3)
         has_error |= valid_textfield_value('address_locality', true, 3);
         has_error |= valid_textfield_value('address_region', true, 2);
-        has_error |= valid_textfield_value('address_country', true, 3);
+        // has_error |= valid_textfield_value('address_country', true, 3);
         has_error |= valid_textfield_value('postal_code', true, 3);
         has_error |= valid_textfield_value('post_office_box_number', false, 3);
         has_error |= valid_textfield_value('password', false, 2);
         has_error |= valid_textfield_value('password_repeat', false, 2);
+        has_error |= valid_textfield_value('comment', false, 2);
 
         // INTERRUPT THE FORM SUBMISSION IF ANY ERRORS EXISTED AND UPDATE THE
         // GUI TO INDICATE THAT WE HAVE VALIDATED SOME FIELDS.
@@ -210,6 +222,7 @@
         var password_repeat = $('#password_repeat').val();
         var person_tags = $('#person_tags').val();
         var description = $('#describe').val();
+        var comment = $('#comment').val();
 
         localStorage.setItem("tmp_residential_customer_given_name", given_name);
         localStorage.setItem("tmp_residential_customer_middle_name", middle_name);
@@ -231,6 +244,7 @@
         localStorage.setItem("tmp_residential_customer_password", password);
         localStorage.setItem("tmp_residential_customer_password_repeat", password_repeat);
         localStorage.setItem("tmp_residential_customer_description", description);
+        localStorage.setItem("tmp_residential_customer_comment", comment);
 
         // SAVE ARRAY OF IDS.
         localStorage.setObj("tmp_residential_customer_person_tag_ids", person_tags);
@@ -255,30 +269,30 @@
 	  });
 	  loadState('CA');
     });
-	  
+
     let c_dropdown = $('#address_country');
 	c_dropdown.empty();
 	c_dropdown.append('<option selected="true" disabled>Choose Country</option>');
 	c_dropdown.prop('selectedIndex', 1);
-	
+
         const state = "{% static 'js/provinces.json' %}";
         const country = "{% static 'js/countries.json' %}";
         console.log(state);
         console.log(country); // KANWAR - PLEASE IMPLEMENT.
-	
+
 	// Populate dropdown with list of countries
 	$.getJSON(country, function (data) {
 	  $.each(data, function (key, entry) {
 	    	c_dropdown.append($('<option></option>').attr('value', entry.code).text(entry.country));
 	  })
 	});
-	
+
 	function loadState(countryId){
 		let p_dropdown = $('#address_region');
 		p_dropdown.empty();
 		p_dropdown.append('<option selected="true" disabled>Choose State/Province</option>');
 		p_dropdown.prop('selectedIndex', 0);
-		
+
 		// Populate dropdown with list of provinces
 		$.getJSON(state, function (data) {
 		  $.each(data, function (key, entry) {
@@ -291,7 +305,7 @@
 			p_dropdown.prop('selectedIndex', 1);
 		}
 	}
-    
+
 </script>
 <div class="col-sm-5 mx-auto mt-2">
     <!-- Residential form -->
@@ -448,8 +462,14 @@
         </div>
         <!-- ############ end LOCATION ############ -->
         <!-- ############ SECURITY ############ -->
-        <p class="border-bottom mb-3 pb-1 text-secondary">Account Security</p>
+        <p class="border-bottom mb-3 pb-1 text-secondary">Account</p>
         <div class="form-row">
+            <div class="form-group col-md-12 mb-4 p-0">
+  		      <label for="comment" class="font-b6">Additional Comments:</label>
+  		      <textarea class="form-control form-control-lg border border-success" id="comment" name="comment" placeholder="Write any additional comments here..." rows="4" minlength="10" required></textarea>
+  		      <div id="comment-error" class="invalid-feedback"></div>
+              <small class="form-text text-muted">Maximum 1,000 characters.</small>
+            </div>
             <div class="form-group col-md-12 mb-4">
                 <label for="password">Password</label>
                 <input id="password"

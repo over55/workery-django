@@ -173,6 +173,13 @@ class Customer(AbstractPerson):
         blank=True,
         related_name="%(app_label)s_%(class)s_tags_related"
     )
+    comments = models.ManyToManyField(
+        "Comment",
+        help_text=_('The comments belonging to this customer made by other people.'),
+        blank=True,
+        through='CustomerComment',
+        related_name="%(app_label)s_%(class)s_customer_comments_related"
+    )
 
     #
     #  PERSON FIELDS (EXTRA) - http://schema.org/Person

@@ -158,8 +158,8 @@
         has_error |= valid_textfield_value('street_address', true, 3);
         has_error |= valid_textfield_value('street_address_extra', false, 3)
         has_error |= valid_textfield_value('address_locality', true, 3);
-        has_error |= valid_textfield_value('address_region', true, 3);
-        has_error |= valid_textfield_value('address_country', true, 3);
+        // has_error |= valid_textfield_value('address_region', true, 3);
+        // has_error |= valid_textfield_value('address_country', true, 3);
         has_error |= valid_textfield_value('postal_code', true, 3);
         has_error |= valid_textfield_value('post_office_box_number', false, 3);
         has_error |= valid_textfield_value('password', false, 2);
@@ -203,8 +203,15 @@
         var street_address = $('#street_address').val();
         var street_address_extra = $('#street_address_extra').val();
         var address_region = $('#address_region').val();
+        if (address_region === null) {
+            address_region = 'Ontario';
+        }
         var address_locality = $('#address_locality').val();
+        // TEMPORARY BUGFIX UNTIL COUNTRY FIELD IS WORKING.
         var address_country = $('#address_country').val();
+        if (address_country === null) {
+            address_country = 'Canada';
+        }
         var postal_code = $('#postal_code').val();
         var post_office_box_number = $('#post_office_box_number').val();
         var email = $('#email').val();
@@ -217,6 +224,7 @@
         var password_repeat = $('#password_repeat').val();
         var person_tags = $('#person_tags').val();
         var description = $('#describe').val();
+        var comment = $('#comment').val();
 
         // LOCK OUT THE "SUBMIT" BUTTON SO THE USER DOES NOT MAKE MULTI-CALLS.
         disable_btn();
@@ -255,6 +263,7 @@
                 // 'fax_number': fax_number,
                 'password': password,
                 'password_repeat': password_repeat,
+                'extra_comment': comment,
             },
             function(result_dict) { // Success
                 console.log(result_dict);
@@ -553,6 +562,12 @@
             <!-- ############ SECURITY ############ -->
             <p class="border-bottom mb-3 pb-1 text-secondary">Account Security</p>
             <div class="form-row">
+                <div class="form-group col-md-12 mb-4 p-0">
+      		       <label for="comment" class="font-b6">Additional Comments:</label>
+      		       <textarea class="form-control form-control-lg border border-success" id="comment" name="comment" placeholder="Write any additional comments here..." rows="4" minlength="10" required></textarea>
+      		       <div id="comment-error" class="invalid-feedback"></div>
+                   <small class="form-text text-muted">Maximum 1,000 characters.</small>
+                </div>
                 <div class="form-group col-md-12 mb-4">
                     <label for="password">Password</label>
                     <input id="password"

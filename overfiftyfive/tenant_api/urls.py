@@ -6,6 +6,7 @@ from tenant_api.views.associate import AssociateListCreateAPIView, AssociateRetr
 from tenant_api.views.awaylog import AwayLogListCreateAPIView, AwayLogRetrieveUpdateDestroyAPIView
 # from tenant_api.views.comment import CommentListCreateAPIView, CommentRetrieveUpdateDestroyAPIView
 from tenant_api.views.customer import CustomerListCreateAPIView, CustomerRetrieveUpdateDestroyAPIView
+from tenant_api.views.customer_comment import CustomerCommentListCreateAPIView
 from tenant_api.views.order import OrderListCreateAPIView, OrderRetrieveUpdateDestroyAPIView
 from tenant_api.views.partner import PartnerListCreateAPIView, PartnerRetrieveUpdateDestroyAPIView
 from tenant_api.views.skill_set import SkillSetListCreateAPIView, SkillSetRetrieveUpdateDestroyAPIView
@@ -25,6 +26,7 @@ urlpatterns = [
     # Customers
     url(r'^api/customers$', CustomerListCreateAPIView.as_view(), name='o55_customer_list_create_api_endpoint'),
     url(r'^api/customer/(?P<pk>[^/.]+)/$', CustomerRetrieveUpdateDestroyAPIView.as_view(), name='o55_customer_retrieve_update_destroy_api_endpoint'),
+    url(r'^api/customer-comments$', CustomerCommentListCreateAPIView.as_view(), name='o55_customer_comment_list_create_api_endpoint'),
 
     # Orders
     url(r'^api/orders$', OrderListCreateAPIView.as_view(), name='o55_order_list_create_api_endpoint'),

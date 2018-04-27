@@ -27,8 +27,8 @@ from shared_foundation.models import SharedUser
 # from tenant_api.serializers.customer_comment import CustomerCommentSerializer
 from tenant_foundation.constants import *
 from tenant_foundation.models import (
-    # Comment,
-    # CustomerComment,
+    Comment,
+    CustomerComment,
     Customer,
     Organization
 )
@@ -47,10 +47,10 @@ class CustomerListCreateSerializer(serializers.ModelSerializer):
     # `django-rest-framework`.
     # comments = CustomerCommentSerializer(many=True, read_only=True, allow_null=True)
 
-    # # This is a field used in the `create` function if the user enters a
-    # # comment. This field is *ONLY* to be used during the POST creation and
-    # # will be blank during GET.
-    # extra_comment = serializers.CharField(write_only=True, allow_null=True)
+    # This is a field used in the `create` function if the user enters a
+    # comment. This field is *ONLY* to be used during the POST creation and
+    # will be blank during GET.
+    extra_comment = serializers.CharField(write_only=True, allow_null=True)
 
     # Custom formatting of our telephone fields.
     fax_number = PhoneNumberField(allow_null=True, required=False)
@@ -191,8 +191,8 @@ class CustomerListCreateSerializer(serializers.ModelSerializer):
             'organization_street_address',
             'organization_street_address_extra',
 
-            # # Misc (Write Only)
-            # 'extra_comment',
+            # Misc (Write Only)
+            'extra_comment',
             'organization_name',
             'organization_type_of',
 
@@ -374,27 +374,26 @@ class CustomerListCreateSerializer(serializers.ModelSerializer):
         if tags is not None:
             customer.tags.set(tags)
 
-        # #-----------------------------
-        # # Create our `Comment` object.
-        # #-----------------------------
-        # extra_comment = validated_data.get('extra_comment', None)
-        # if extra_comment is not None:
-        #     comment = Comment.objects.create(
-        #         created_by=self.context['created_by'],
-        #         last_modified_by=self.context['created_by'],
-        #         text=extra_comment
-        #     )
-        #     customer_comment = CustomerComment.objects.create(
-        #         customer=customer,
-        #         comment=comment,
-        #         created_by=self.context['created_by'],
-        #     )
+        #-----------------------------
+        # Create our `Comment` object.
+        #-----------------------------
+        extra_comment = validated_data.get('extra_comment', None)
+        if extra_comment is not None:
+            comment = Comment.objects.create(
+                created_by=self.context['created_by'],
+                last_modified_by=self.context['created_by'],
+                text=extra_comment
+            )
+            CustomerComment.objects.create(
+                about=customer,
+                comment=comment,
+            )
 
         # Update validation data.
         # validated_data['comments'] = CustomerComment.objects.filter(customer=customer)
         validated_data['created_by'] = self.context['created_by']
         validated_data['last_modified_by'] = self.context['created_by']
-        # validated_data['extra_comment'] = None
+        validated_data['extra_comment'] = None
         validated_data['telephone'] = telephone
         validated_data['fax_number'] = fax_number
         validated_data['other_telephone'] = other_telephone
@@ -417,10 +416,10 @@ class CustomerRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
     # `django-rest-framework`.
     # comments = CustomerCommentSerializer(many=True, read_only=True)
 
-    # # This is a field used in the `create` function if the user enters a
-    # # comment. This field is *ONLY* to be used during the POST creation and
-    # # will be blank during GET.
-    # extra_comment = serializers.CharField(write_only=True, allow_null=True)
+    # This is a field used in the `create` function if the user enters a
+    # comment. This field is *ONLY* to be used during the POST creation and
+    # will be blank during GET.
+    extra_comment = serializers.CharField(write_only=True, allow_null=True)
 
     # Custom formatting of our telephone fields.
     fax_number = PhoneNumberField(allow_null=True, required=False)
@@ -479,13 +478,11 @@ class CustomerRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
             'tags',
 
             # Misc (Read Only)
-            # 'comments',
-            # 'organizations', #TODO: FIX
+            'extra_comment',
 
             # Misc (Write Only)
             'password',
             'password_repeat',
-            # 'extra_comment',
 
             # Contact Point
             'area_served',
@@ -621,28 +618,27 @@ class CustomerRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         if tags is not None:
             instance.tags.set(tags)
 
-        # #---------------------------
-        # # Attach our comment.
-        # #---------------------------
-        # extra_comment = validated_data.get('extra_comment', None)
-        # if extra_comment is not None:
-        #     comment = Comment.objects.create(
-        #         created_by=self.context['last_modified_by'],
-        #         last_modified_by=self.context['last_modified_by'],
-        #         text=extra_comment
-        #     )
-        #     customer_comment = CustomerComment.objects.create(
-        #         customer=instance,
-        #         comment=comment,
-        #         created_by=self.context['last_modified_by'],
-        #     )
+        #---------------------------
+        # Attach our comment.
+        #---------------------------
+        extra_comment = validated_data.get('extra_comment', None)
+        if extra_comment is not None:
+            comment = Comment.objects.create(
+                created_by=self.context['last_modified_by'],
+                last_modified_by=self.context['last_modified_by'],
+                text=extra_comment
+            )
+            CustomerComment.objects.create(
+                about=instance,
+                comment=comment,
+            )
 
         #---------------------------
         # Update validation data.
         #---------------------------
         # validated_data['comments'] = CustomerComment.objects.filter(customer=instance)
         validated_data['last_modified_by'] = self.context['last_modified_by']
-        # validated_data['extra_comment'] = None
+        validated_data['extra_comment'] = None
 
         # Return our validated data.
         return validated_data

@@ -244,6 +244,13 @@ class Associate(AbstractPerson):
         blank=True,
         related_name="%(app_label)s_%(class)s_tags_related"
     )
+    comments = models.ManyToManyField(
+        "Comment",
+        help_text=_('The comments belonging to this associate made by other people.'),
+        blank=True,
+        through='AssociateComment',
+        related_name="%(app_label)s_%(class)s_associate_comments_related"
+    )
 
     #
     #  FUNCTIONS

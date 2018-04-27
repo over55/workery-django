@@ -28,6 +28,7 @@
         $('#selected_email').append(localStorage.getItem("tmp_commercial_customer_email"));
         $('#selected_telephone').append(localStorage.getItem("tmp_commercial_customer_telephone"));
         $('#selected_description').append(localStorage.getItem("tmp_commercial_customer_description"));
+        $('#selected_comment').append(localStorage.getItem("tmp_commercial_customer_comment"));
 
         // Set our `person_tag` field.
         var tmp_person_tag_values = localStorage.getObj("tmp_commercial_customer_person_tag_values");
@@ -134,6 +135,7 @@
                 'type_of': {{ tenant_constants.COMMERCIAL_CUSTOMER_TYPE_OF_ID }},
                 'tags': localStorage.getObj("tmp_commercial_customer_person_tag_ids"),
                 'description': localStorage.getItem("tmp_commercial_customer_description"),
+                'extra_comment': localStorage.getItem("tmp_commercial_customer_comment"),
 
                 // --- ORGANIZATION ---
                 'organization_name': localStorage.getItem("tmp_commercial_customer_company_name"),
@@ -182,6 +184,7 @@
                 localStorage.removeItem("tmp_commercial_customer_company_tag_ids");
                 localStorage.removeItem("tmp_commercial_customer_company_tag_values");
                 localStorage.removeItem("tmp_commercial_customer_description")
+                localStorage.removeItem("tmp_commercial_customer_comment")
 
                 // REDIRECT TO SUCCESS PAGE.
                 window.location = redirect_url;
@@ -345,6 +348,12 @@
        <th scope="row" class="bg-light">Tag(s)</th>
        <td id="selected_person_tag_values">
            <!-- THIS IS WHERE THE TAGS GET LOADED -->
+       </td>
+     </tr>
+     <tr>
+       <th scope="row" class="bg-light">Additional comment(s)</th>
+       <td id="selected_comment">
+           <!-- POPULATE THROUGH JS. -->
        </td>
      </tr>
    </tbody>

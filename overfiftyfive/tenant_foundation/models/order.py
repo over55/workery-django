@@ -188,6 +188,13 @@ class Order(models.Model):
         db_index=True,
         unique=True
     )
+    comments = models.ManyToManyField(
+        "Comment",
+        help_text=_('The comments belonging to this order made by other people.'),
+        blank=True,
+        through='OrderComment',
+        related_name="%(app_label)s_%(class)s_order_comments_related"
+    )
 
     #
     #  SYSTEM
