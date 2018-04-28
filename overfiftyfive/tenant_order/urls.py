@@ -7,7 +7,7 @@ from tenant_order.views import create_views, list_view, retrieve_view, search_vi
 
 urlpatterns = (
     # Summary
-    path('jobs/', list_view.JobSummaryView.as_view(), name='o55_tenant_job_summary'),
+    path('jobs/summary/', list_view.JobSummaryView.as_view(), name='o55_tenant_job_summary'),
 
     # Create
     path('jobs/create/step-1/search-or-add', create_views.Step1A1CreateOrAddCustomerView.as_view(), name='o55_tenant_job_search_or_add_create'),
@@ -30,8 +30,9 @@ urlpatterns = (
     path('jobs/search/results/', search_view.JobSearchResultView.as_view(), name='o55_tenant_job_search_results'),
 
     # Retrieve
-    path('jobs/detail/<str:template>/<int:pk>/', retrieve_view.JobRetrieveView.as_view(), name='o55_tenant_job_retrieve'),
+    path('jobs/<str:template>/detail/<int:pk>/', retrieve_view.JobRetrieveView.as_view(), name='o55_tenant_job_retrieve'),
+    path('jobs/<str:template>/detail/<int:pk>/comments/', retrieve_view.JobCommentsRetrieveView.as_view(), name='o55_tenant_job_comments_retrieve'),
 
     # Update
-    path('jobs/detail/<str:template>/<int:pk>/edit/', update_views.JobUpdateView.as_view(), name='o55_tenant_job_update'),
+    path('jobs/<str:template>/detail/<int:pk>/edit/', update_views.JobUpdateView.as_view(), name='o55_tenant_job_update'),
 )

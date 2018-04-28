@@ -41,7 +41,7 @@ class OrderComment(models.Model):
         db_table = 'o55_order_comments'
         verbose_name = _('Order Comment')
         verbose_name_plural = _('Order Comments')
-        ordering = ('-created_at', )
+        ordering = ['-created_at']
         default_permissions = ()
         permissions = (
             ("can_get_order_comments", "Can get order comments"),

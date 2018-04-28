@@ -41,7 +41,7 @@ class AssociateComment(models.Model):
         db_table = 'o55_associate_comments'
         verbose_name = _('Associate Comment')
         verbose_name_plural = _('Associate Comments')
-        ordering = ('-created_at', )
+        ordering = ['-created_at']
         default_permissions = ()
         permissions = (
             ("can_get_associate_comments", "Can get associate comments"),

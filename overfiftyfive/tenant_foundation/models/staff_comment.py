@@ -41,7 +41,7 @@ class StaffComment(models.Model):
         db_table = 'o55_staff_comments'
         verbose_name = _('Staff Comment')
         verbose_name_plural = _('Staff Comments')
-        ordering = ('-created_at', )
+        ordering = ['-created_at']
         default_permissions = ()
         permissions = (
             ("can_get_staff_comments", "Can get staff comments"),
