@@ -10,6 +10,7 @@ from tenant_api.views.customer import CustomerListCreateAPIView, CustomerRetriev
 from tenant_api.views.customer_comment import CustomerCommentListCreateAPIView
 from tenant_api.views.order import OrderListCreateAPIView, OrderRetrieveUpdateDestroyAPIView
 from tenant_api.views.partner import PartnerListCreateAPIView, PartnerRetrieveUpdateDestroyAPIView
+from tenant_api.views.partner_comment import PartnerCommentListCreateAPIView
 from tenant_api.views.skill_set import SkillSetListCreateAPIView, SkillSetRetrieveUpdateDestroyAPIView
 from tenant_api.views.staff import StaffListCreateAPIView, StaffRetrieveUpdateDestroyAPIView
 from tenant_api.views.staff_comment import StaffCommentListCreateAPIView
@@ -38,6 +39,7 @@ urlpatterns = [
     # Partners
     url(r'^api/partners$', PartnerListCreateAPIView.as_view(), name='o55_partner_list_create_api_endpoint'),
     url(r'^api/partner/(?P<pk>[^/.]+)/$', PartnerRetrieveUpdateDestroyAPIView.as_view(), name='o55_partner_retrieve_update_destroy_api_endpoint'),
+    url(r'^api/partner-comments$', PartnerCommentListCreateAPIView.as_view(), name='o55_partner_comment_list_create_api_endpoint'),
 
     # Skill Sets
     url(r'^api/skill_sets$', SkillSetListCreateAPIView.as_view(), name='o55_skill_set_list_create_api_endpoint'),

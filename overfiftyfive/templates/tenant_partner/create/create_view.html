@@ -94,6 +94,7 @@
             $('#password').val(localStorage.getItem("tmp_partner_password"));
             $('#password_repeat').val(localStorage.getItem("tmp_partner_password_repeat"));
             $('#describe').append(localStorage.getItem("tmp_partner_description"));
+            $('#comment').append(localStorage.getItem("tmp_partner_comment"));
             $("input[name=is_active][value=" + localStorage.getItem("tmp_partner_is_active") + "]").prop('checked', true);
         }); // end Ready
 
@@ -267,6 +268,7 @@
             var password = $('#password').val();
             var password_repeat = $('#password_repeat').val();
             var description = $('#describe').val();
+            var comment = $('#comment').val();
             var is_active = get_selected_radio_value('is_active');
 
             localStorage.setItem("tmp_partner_given_name", given_name);
@@ -289,6 +291,7 @@
             localStorage.setItem("tmp_partner_password", password);
             localStorage.setItem("tmp_partner_password_repeat", password_repeat);
             localStorage.setItem("tmp_partner_description", description);
+            localStorage.setItem("tmp_partner_comment", comment);
             localStorage.setItem("tmp_partner_is_active", is_active);
 
             // REDIRECT TO OUR CONFIRM PAGE.
@@ -451,7 +454,13 @@
             </div>
             <!-- ############ end LOCATION ############ -->
             <!-- ############ SECURITY ############ -->
-            <p class="border-bottom mb-3 pb-1 text-secondary">Account Security</p>
+            <p class="border-bottom mb-3 pb-1 text-secondary">Account</p>
+            <div class="form-group col-md-12 mb-4 p-0">
+                <label for="describe" class="font-b6">Additional comment(s):</label>
+                <textarea class="form-control form-control-lg border border-success" id="comment" name="comment" placeholder="Write any additional notes or comments here..." rows="4" minlength="10" required></textarea>
+                <div id="comment-error" class="invalid-feedback"></div>
+                <small class="form-text text-muted">Maximum 1,000 characters.</small>
+            </div>
             <div class="form-row">
                 <div class="form-group col-md-12 mb-4">
                     <label for="password">Password</label>

@@ -51,6 +51,7 @@
         $('#selected_telephone').append(localStorage.getItem("tmp_partner_telephone"));
         $('#selected_description').append(localStorage.getItem("tmp_partner_description"));
         $('#selected_is_active').append(localStorage.getItem("tmp_partner_is_active"));
+        $('#selected_comment').append(localStorage.getItem("tmp_partner_comment"));
     }); // end Ready
 
     /**
@@ -130,6 +131,7 @@
                 'type_of': {{ tenant_constants.RESIDENTIAL_CUSTOMER_TYPE_OF_ID }},
                 'description': localStorage.getItem("tmp_partner_description"),
                 'is_active': localStorage.getItem("tmp_partner_is_active"),
+                'extra_comment': localStorage.getItem("tmp_partner_comment"),
             },
             function(result_dict) { // Success
                 // FOR DEBUGGING PURPOSES ONLY.
@@ -159,6 +161,7 @@
                 localStorage.removeItem("tmp_partner_person_tag_values")
                 localStorage.removeItem("tmp_partner_description")
                 localStorage.removeItem("tmp_partner_is_active")
+                localStorage.removeItem("tmp_partner_comment")
 
                 // REDIRECT TO SUCCESS PAGE.
                 window.location = redirect_url;
@@ -360,6 +363,12 @@
            <th scope="row" class="bg-light">Is active?</th>
            <td id="selected_is_active">
                <!-- THIS IS WHERE THE TAGS GET LOADED -->
+           </td>
+         </tr>
+         <tr>
+           <th scope="row" class="bg-light">Additional comment(s)</th>
+           <td id="selected_comment">
+               <!-- POPULATE THROUGH JS. -->
            </td>
          </tr>
        </tbody>

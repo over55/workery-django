@@ -6,7 +6,7 @@ from tenant_partner.views import create_view, list_view, retrieve_view, search_v
 
 urlpatterns = (
     # Summary
-    path('partners/', list_view.PartnerSummaryView.as_view(), name='o55_tenant_partner_summary'),
+    path('partners/summary/', list_view.PartnerSummaryView.as_view(), name='o55_tenant_partner_summary'),
 
     # Create
     path('partners/create/confirm', create_view.PartnerConfirmCreateView.as_view(), name='o55_tenant_partner_confirm_create'),
@@ -20,8 +20,9 @@ urlpatterns = (
     path('partners/search/results/', search_view.PartnerSearchResultView.as_view(), name='o55_tenant_partner_search_results'),
 
     # Retrieve
-    path('partners/detail/<str:template>/<int:pk>/', retrieve_view.PartnerRetrieveView.as_view(), name='o55_tenant_partner_retrieve'),
+    path('partners/<str:template>/detail/<int:pk>/', retrieve_view.PartnerRetrieveView.as_view(), name='o55_tenant_partner_retrieve'),
+    path('partners/<str:template>/detail/comments/<int:pk>/', retrieve_view.PartnerCommentsRetrieveView.as_view(), name='o55_tenant_partner_comments_retrieve'),
 
     # Update
-    path('partners/detail/<str:template>/<int:pk>/edit/', update_view.PartnerUpdateView.as_view(), name='o55_tenant_partner_update'),
+    path('partners/<str:template>/detail/<int:pk>/edit/', update_view.PartnerUpdateView.as_view(), name='o55_tenant_partner_update'),
 )

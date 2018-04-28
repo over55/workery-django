@@ -134,6 +134,13 @@ class Partner(AbstractPerson):
         blank=True,
         null=True,
     )
+    comments = models.ManyToManyField(
+        "Comment",
+        help_text=_('The comments belonging to this partner made by other people.'),
+        blank=True,
+        through='PartnerComment',
+        related_name="%(app_label)s_%(class)s_partner_comments_related"
+    )
 
     #
     #  FUNCTIONS
