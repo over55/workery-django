@@ -19,7 +19,7 @@ from tenant_foundation.models import (
 class HelpCategoryListView(ListView, ExtraRequestProcessingMixin):
     context_object_name = 'resource_category_list'
     queryset = ResourceCategory.objects.all().order_by('id')
-    template_name = 'tenant_help/category_list_view.html'
+    template_name = 'tenant_help/view.html'
     paginate_by = 100
 
     def get_context_data(self, **kwargs):
