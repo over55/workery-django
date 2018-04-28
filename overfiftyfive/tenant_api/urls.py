@@ -12,6 +12,7 @@ from tenant_api.views.order import OrderListCreateAPIView, OrderRetrieveUpdateDe
 from tenant_api.views.partner import PartnerListCreateAPIView, PartnerRetrieveUpdateDestroyAPIView
 from tenant_api.views.skill_set import SkillSetListCreateAPIView, SkillSetRetrieveUpdateDestroyAPIView
 from tenant_api.views.staff import StaffListCreateAPIView, StaffRetrieveUpdateDestroyAPIView
+from tenant_api.views.staff_comment import StaffCommentListCreateAPIView
 from tenant_api.views.tag import TagListCreateAPIView, TagRetrieveUpdateDestroyAPIView
 
 
@@ -45,6 +46,7 @@ urlpatterns = [
     # Staff
     url(r'^api/staves$', StaffListCreateAPIView.as_view(), name='o55_staff_list_create_api_endpoint'),
     url(r'^api/staff/(?P<pk>[^/.]+)/$', StaffRetrieveUpdateDestroyAPIView.as_view(), name='o55_staff_retrieve_update_destroy_api_endpoint'),
+    url(r'^api/staff-comments$', StaffCommentListCreateAPIView.as_view(), name='o55_staff_comment_list_create_api_endpoint'),
 
     # Tags
     url(r'^api/tags$', TagListCreateAPIView.as_view(), name='o55_tag_list_create_api_endpoint'),

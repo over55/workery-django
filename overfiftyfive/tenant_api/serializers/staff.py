@@ -25,7 +25,8 @@ from shared_api.custom_fields import PhoneNumberField
 from shared_foundation.constants import ASSOCIATE_GROUP_ID
 from shared_foundation.models import SharedUser
 from tenant_foundation.models import (
-    # Comment,
+    Comment,
+    StaffComment,
     Staff
 )
 
@@ -273,20 +274,20 @@ class StaffListCreateSerializer(serializers.ModelSerializer):
         if tags is not None:
             staff.tags.set(tags)
 
-        # #-----------------------------
-        # # Create our `Comment` object.
-        # #-----------------------------
-        # extra_comment = validated_data.get('extra_comment', None)
-        # if extra_comment is not None:
-        #     comment = Comment.objects.create(
-        #         created_by=self.context['created_by'],
-        #         last_modified_by=self.context['created_by'],
-        #         text=extra_comment
-        #     )
-        #     staff_comment = StaffComment.objects.create(
-        #         staff=staff,
-        #         comment=comment,
-        #     )
+        #-----------------------------
+        # Create our `Comment` object.
+        #-----------------------------
+        extra_comment = validated_data.get('extra_comment', None)
+        if extra_comment is not None:
+            comment = Comment.objects.create(
+                created_by=self.context['created_by'],
+                last_modified_by=self.context['created_by'],
+                text=extra_comment
+            )
+            staff_comment = StaffComment.objects.create(
+                about=staff,
+                comment=comment,
+            )
 
         # Update validation data.
         # validated_data['comments'] = StaffComment.objects.filter(staff=staff)
@@ -514,20 +515,20 @@ class StaffRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         if tags is not None:
             instance.tags.set(tags)
 
-        # #---------------------------
-        # # Attach our comment.
-        # #---------------------------
-        # extra_comment = validated_data.get('extra_comment', None)
-        # if extra_comment is not None:
-        #     comment = Comment.objects.create(
-        #         created_by=self.context['last_modified_by'],
-        #         last_modified_by=self.context['last_modified_by'],
-        #         text=extra_comment
-        #     )
-        #     staff_comment = StaffComment.objects.create(
-        #         staff=instance,
-        #         comment=comment,
-        #     )
+        #---------------------------
+        # Attach our comment.
+        #---------------------------
+        extra_comment = validated_data.get('extra_comment', None)
+        if extra_comment is not None:
+            comment = Comment.objects.create(
+                created_by=self.context['last_modified_by'],
+                last_modified_by=self.context['last_modified_by'],
+                text=extra_comment
+            )
+            staff_comment = StaffComment.objects.create(
+                staff=instance,
+                comment=comment,
+            )
 
         #---------------------------
         # Update validation data.

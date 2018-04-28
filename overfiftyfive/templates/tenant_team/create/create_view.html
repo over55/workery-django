@@ -32,7 +32,7 @@
     <nav aria-label="breadcrumb">
 	  	<ol class="breadcrumb">
 	    	<li class="breadcrumb-item"><a href="{% url 'o55_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
-            <li class="breadcrumb-item"><a href="{% url 'o55_tenant_team_summary' %}">{% trans 'Members' %}</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'o55_tenant_team_summary' %}">{% trans 'Staff' %}</a></li>
             <li class="breadcrumb-item active" aria-current="page">{% trans 'Add' %}</a></li>
 	  	</ol>
 	</nav>
@@ -46,7 +46,7 @@
 			<a class="btn btn-primary btn-lg" href="{% url 'o55_tenant_team_summary' %}" role="button">
                 <svg class="svg-inline--fa fa-arrow-left fa-w-14" aria-hidden="true" data-fa-processed="" data-prefix="fas" data-icon="arrow-left" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
                 <path fill="currentColor" d="M257.5 445.1l-22.2 22.2c-9.4 9.4-24.6 9.4-33.9 0L7 273c-9.4-9.4-9.4-24.6 0-33.9L201.4 44.7c9.4-9.4 24.6-9.4 33.9 0l22.2 22.2c9.5 9.5 9.3 25-.4 34.3L136.6 216H424c13.3 0 24 10.7 24 24v32c0 13.3-10.7 24-24 24H136.6l120.5 114.8c9.8 9.3 10 24.8.4 34.3z"></path>
-            </svg><!-- <i class="fas fa-arrow-left"></i> -->&nbsp;{% trans 'Back to Members Home' %}</a>
+            </svg><!-- <i class="fas fa-arrow-left"></i> -->&nbsp;{% trans 'Back to Staff Home' %}</a>
 		</div>
 	</div>
     <!------------------------------------------------------------------------->
@@ -97,6 +97,7 @@
             $('#password').val(localStorage.getItem("tmp_team_member_password"));
             $('#password_repeat').val(localStorage.getItem("tmp_team_member_password_repeat"));
             $('#describe').append(localStorage.getItem("tmp_team_member_description"));
+            $('#comment').append(localStorage.getItem("tmp_team_member_comment"));
         }); // end Ready
 
         /**
@@ -216,11 +217,12 @@
             has_error |= valid_radiofields_seleciton('ok_to_email', true);
             has_error |= valid_radiofields_seleciton('ok_to_text', true);
             has_error |= valid_textfield_value('describe', false, 2);
+            has_error |= valid_textfield_value('comment', false, 2);
             has_error |= valid_textfield_value('street_address', true, 3);
             has_error |= valid_textfield_value('street_address_extra', false, 3)
             has_error |= valid_textfield_value('address_locality', true, 3);
             has_error |= valid_textfield_value('address_region', true, 2);
-            has_error |= valid_textfield_value('address_country', true, 3);
+            // has_error |= valid_textfield_value('address_country', true, 3);
             has_error |= valid_textfield_value('postal_code', true, 3);
             has_error |= valid_textfield_value('post_office_box_number', false, 3);
             has_error |= valid_textfield_value('group_membership', true, 1);
@@ -254,8 +256,14 @@
             var street_address = $('#street_address').val();
             var street_address_extra = $('#street_address_extra').val();
             var address_region = $('#address_region').val();
+            if (address_region === null) {
+                address_region = "Ontario";
+            }
             var address_locality = $('#address_locality').val();
             var address_country = $('#address_country').val();
+            if (address_country === null) {
+                address_country = "Canada";
+            }
             var postal_code = $('#postal_code').val();
             var post_office_box_number = $('#post_office_box_number').val();
             var email = $('#email').val();
@@ -269,6 +277,7 @@
             var password_repeat = $('#password_repeat').val();
             var person_tags = $('#person_tags').val();
             var description = $('#describe').val();
+            var comment = $('#comment').val();
 
             localStorage.setItem("tmp_team_member_given_name", given_name);
             localStorage.setItem("tmp_team_member_middle_name", middle_name);
@@ -291,6 +300,7 @@
             localStorage.setItem("tmp_team_member_password", password);
             localStorage.setItem("tmp_team_member_password_repeat", password_repeat);
             localStorage.setItem("tmp_team_member_description", description);
+            localStorage.setItem("tmp_team_member_comment", comment);
 
             // SAVE ARRAY OF IDS.
             localStorage.setObj("tmp_team_member_person_tag_ids", person_tags);
@@ -512,8 +522,14 @@
             </div>
             <!-- ############ end LOCATION ############ -->
             <!-- ############ SECURITY ############ -->
-            <p class="border-bottom mb-3 pb-1 text-secondary">Account Security</p>
+            <p class="border-bottom mb-3 pb-1 text-secondary">Account</p>
             <div class="form-row">
+                <div class="form-group col-md-12 mb-4 p-0">
+      		      <label for="comment" class="font-b6">Additional comment(s)</label>
+      		      <textarea class="form-control form-control-lg border border-success" id="comment" name="comment" placeholder="Additional comments go here..." rows="4" minlength="10" required></textarea>
+      		      <div id="comment-error" class="invalid-feedback"></div>
+                  <small class="form-text text-muted">Maximum 1,000 characters.</small>
+                </div>
                 <div class="form-group col-md-7 mb-4 p-0">
                     <label for="group_membership">Account Type</label>
                     <select class="custom-select form-control-lg border-primary" id="group_membership" name="group_membership" required>

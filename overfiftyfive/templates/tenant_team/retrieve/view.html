@@ -200,9 +200,20 @@
                 </div>
             </div>
             <!-- ############ end LOCATION ############ -->
-            <!-- end SUBMIT BUTTON -->
+            <!-- COMMENTS BUTTON -->
             <div class="form-group col-md-12 mb-3 mx-auto text-center">
-                <a href="{% url 'o55_tenant_team_update' template object.id %}">
+                <a href="{% url 'o55_tenant_team_comments_retrieve' template object.id %}">
+                <button  id="id_submit_btn"
+                    class="btn btn-warning btn-lg btn-fxw mt-4"
+                    type="button">
+                <i class="fas fa-edit"></i>&nbsp;{% trans 'View Comments' %}
+                </button>
+                </a>
+            </div>
+            <!-- end COMMENTS BUTTON -->
+            <!-- EDIT BUTTON -->
+            <div class="form-group col-md-12 mb-3 mx-auto text-center">
+                <a href="{% url 'o55_tenant_team_comments_retrieve' template object.id %}">
                 <button  id="id_submit_btn"
                     class="btn btn-warning btn-lg btn-fxw mt-4"
                     type="button">
@@ -210,7 +221,7 @@
                 </button>
                 </a>
             </div>
-            <!-- end SUBMIT BUTTON -->
+            <!-- end EDIT BUTTON -->
         </div>
     </div>
     <!------------------------------------------------------------------------->

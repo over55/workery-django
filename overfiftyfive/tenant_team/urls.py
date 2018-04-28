@@ -20,8 +20,9 @@ urlpatterns = (
     path('teams/search/results/', search_view.TeamSearchResultView.as_view(), name='o55_tenant_team_search_results'),
 
     # Retrieve
-    path('teams/detail/<str:template>/<int:pk>/', retrieve_view.TeamRetrieveView.as_view(), name='o55_tenant_team_retrieve'),
+    path('teams/<str:template>/detail/<int:pk>/', retrieve_view.TeamRetrieveView.as_view(), name='o55_tenant_team_retrieve'),
+    path('teams/<str:template>/detail/<int:pk>/comments/', retrieve_view.TeamCommentRetrieveView.as_view(), name='o55_tenant_team_comments_retrieve'),
 
     # Update
-    path('teams/detail/<str:template>/<int:pk>/edit/', update_view.TeamUpdateView.as_view(), name='o55_tenant_team_update'),
+    path('teams/<str:template>/detail/<int:pk>/edit/', update_view.TeamUpdateView.as_view(), name='o55_tenant_team_update'),
 )
