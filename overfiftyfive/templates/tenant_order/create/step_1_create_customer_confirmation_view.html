@@ -21,7 +21,6 @@
         // GET FROM OUR LOCAL STORAGE //
         ////////////////////////////////
         var tmp_order_given_name = localStorage.getItem("tmp_order_given_name");
-        var tmp_order_middle_name = localStorage.getItem("tmp_order_middle_name");
         var tmp_order_last_name = localStorage.getItem("tmp_order_last_name");
         var tmp_order_dob = localStorage.getItem("tmp_order_dob");
         var tmp_order_gender = localStorage.getItem("tmp_order_gender");
@@ -44,7 +43,6 @@
         // SET OUR VALUES //
         ////////////////////
         $('#selected_first_name').append(tmp_order_given_name);
-        $('#selected_middle_name').append(tmp_order_middle_name);
         $('#selected_last_name').append(tmp_order_last_name);
         $('#selected_phonenumber').append(tmp_order_telephone);
         if (tmp_order_other_telephone !== undefined && tmp_order_other_telephone !== null && tmp_order_other_telephone.length > 0) {
@@ -143,10 +141,6 @@
             <tr>
               <th scope="row" class="bg-light">First name</th>
               <td id="selected_first_name"><!-- PLACEHOLDER --></td>
-            </tr>
-            <tr>
-              <th scope="row" class="bg-light">Middle name name</th>
-              <td id="selected_middle_name"><!-- PLACEHOLDER --></td>
             </tr>
             <tr>
               <th scope="row" class="bg-light">Last name</th>

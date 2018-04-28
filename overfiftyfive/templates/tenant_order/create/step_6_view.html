@@ -67,7 +67,6 @@
 
         // --- CUSTOMER ---
         localStorage.removeItem("tmp_order_given_name");
-        localStorage.removeItem("tmp_order_middle_name");
         localStorage.removeItem("tmp_order_last_name");
         localStorage.removeItem("tmp_customer_name");
         localStorage.removeItem("tmp_customer_name");
@@ -146,7 +145,6 @@
         create_customer_api(
             {
                 'given_name': localStorage.getItem("tmp_order_given_name"),
-                'middle_name': localStorage.getItem("tmp_order_middle_name"),
                 'last_name': localStorage.getItem("tmp_order_last_name"),
                 'birthdate': localStorage.getItem("tmp_order_dob"),
                 'gender': localStorage.getItem("tmp_order_gender"),
@@ -224,7 +222,6 @@
         create_customer_api(
             {
                 'given_name': localStorage.getItem("tmp_residential_customer_given_name"),
-                'middle_name': localStorage.getItem("tmp_residential_customer_middle_name"),
                 'last_name': localStorage.getItem("tmp_residential_customer_last_name"),
                 'birthdate': localStorage.getItem("tmp_residential_customer_date_of_birth"),
                 'gender': localStorage.getItem("tmp_residential_customer_gender"),
@@ -259,7 +256,6 @@
 
                 // RESET OUR STORED VALUES.
                 localStorage.removeItem("tmp_residential_customer_given_name");
-                localStorage.removeItem("tmp_residential_customer_middle_name");
                 localStorage.removeItem("tmp_residential_customer_last_name");
                 localStorage.removeItem("tmp_residential_customer_date_of_birth");
                 localStorage.removeItem("tmp_residential_customer_gender");
@@ -333,7 +329,6 @@
             {
                 // --- PERSON ---
                 'given_name': localStorage.getItem("tmp_commercial_customer_given_name"),
-                'middle_name': localStorage.getItem("tmp_commercial_customer_middle_name"),
                 'last_name': localStorage.getItem("tmp_commercial_customer_last_name"),
                 'birthdate': localStorage.getItem("tmp_commercial_customer_date_of_birth"),
                 'gender': localStorage.getItem("tmp_commercial_customer_gender"),
@@ -384,7 +379,6 @@
                 localStorage.removeItem("tmp_commercial_customer_company_type_value");
                 localStorage.removeItem("tmp_commercial_customer_neighbourhood");
                 localStorage.removeItem("tmp_commercial_customer_given_name");
-                localStorage.removeItem("tmp_commercial_customer_middle_name");
                 localStorage.removeItem("tmp_commercial_customer_last_name");
                 localStorage.removeItem("tmp_commercial_customer_date_of_birth");
                 localStorage.removeItem("tmp_commercial_customer_gender");

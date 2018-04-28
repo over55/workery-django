@@ -30,13 +30,8 @@
         // STEP 2 - Save the users full name.
         var customer_name = "";
         var given_name = $('#firstname').val();
-        var middle_name = $('#middlename').val();
         var last_name = $('#lastname').val();
-        if (middle_name !== undefined && middle_name !== null && middle_name.length != 0) {
-            customer_name = given_name + " " + middle_name + " " + last_name;
-        } else {
-            customer_name = given_name + " " + last_name;
-        }
+        customer_name = given_name + " " + last_name;
         localStorage.setItem("tmp_customer_name", customer_name);
 
         // Step 3 - Redirect to next page.

@@ -27,7 +27,6 @@
     $(document).ready(function () {
         var firstname = localStorage.getItem("tmp_team_member_given_name");
         $('#selected_firstname').append(firstname);
-        $('#selected_middlename').append(localStorage.getItem("tmp_team_member_middle_name"));
         $('#selected_lastname').append(localStorage.getItem("tmp_team_member_last_name"));
         $('#selected_phonenumber').append(localStorage.getItem("tmp_team_member_telephone"));
         $('#selected_other_phonenumber').append(localStorage.getItem("tmp_team_member_other_telephone"));
@@ -109,7 +108,6 @@
         create_staff_api(
             {
                 'given_name': localStorage.getItem("tmp_team_member_given_name"),
-                'middle_name': localStorage.getItem("tmp_team_member_middle_name"),
                 'last_name': localStorage.getItem("tmp_team_member_last_name"),
                 'birthdate': localStorage.getItem("tmp_team_member_date_of_birth"),
                 'gender': localStorage.getItem("tmp_team_member_gender"),
@@ -145,7 +143,6 @@
 
                 // RESET OUR STORED VALUES.
                 localStorage.removeItem("tmp_team_member_given_name");
-                localStorage.removeItem("tmp_team_member_middle_name");
                 localStorage.removeItem("tmp_team_member_last_name");
                 localStorage.removeItem("tmp_team_member_date_of_birth");
                 localStorage.removeItem("tmp_team_member_gender");
@@ -252,12 +249,6 @@
          <tr>
            <th scope="row" class="bg-light">First name</th>
            <td id="selected_firstname" name="selected_firstname">
-               <!-- POPULATE THROUGH JS. -->
-           </td>
-         </tr>
-         <tr>
-           <th scope="row" class="bg-light">Middle name</th>
-           <td id="selected_middlename">
                <!-- POPULATE THROUGH JS. -->
            </td>
          </tr>

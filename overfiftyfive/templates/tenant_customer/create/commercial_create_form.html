@@ -27,7 +27,6 @@
         $('#companyname').val(localStorage.getItem("tmp_commercial_customer_company_name"));
         $('#companytype').val(localStorage.getItem("tmp_commercial_customer_company_type"));
         $('#firstname').val(localStorage.getItem("tmp_commercial_customer_given_name"));
-        $('#middlename').val(localStorage.getItem("tmp_commercial_customer_middle_name"));
         $('#lastname').val(localStorage.getItem("tmp_commercial_customer_last_name"));
         $('#phonenumber').val(localStorage.getItem("tmp_commercial_customer_telephone"));
         $('#phonetype').val(localStorage.getItem("tmp_commercial_customer_telephone_type_of"));
@@ -210,7 +209,6 @@
         var company_type = $('#companytype').val();
         var company_type_value = $('#companytype_id_'+company_type).text();
         var given_name = $('#firstname').val();
-        var middle_name = $('#middlename').val();
         var last_name = $('#lastname').val();
         var date_of_birth = $('#dob').val();
         if (date_of_birth !== undefined && date_of_birth != null && date_of_birth.length > 0) {
@@ -252,7 +250,6 @@
         localStorage.setItem("tmp_commercial_customer_company_type", company_type);
         localStorage.setItem("tmp_commercial_customer_company_type_value", company_type_value);
         localStorage.setItem("tmp_commercial_customer_given_name", given_name);
-        localStorage.setItem("tmp_commercial_customer_middle_name", middle_name);
         localStorage.setItem("tmp_commercial_customer_last_name", last_name);
         localStorage.setItem("tmp_commercial_customer_date_of_birth", date_of_birth);
         localStorage.setItem("tmp_commercial_customer_gender", gender);
@@ -368,11 +365,6 @@
                 <label for="firstname">Contact first name <sup>*</sup></label>
                 <input type="text" class="form-control form-control-lg border border-primary" id="firstname" name="firstname" placeholder="First name" minlength="3" required="" autofocus>
                 <div id="firstname-error" class="invalid-feedback"></div>
-            </div>
-            <div class="form-group col-md-12 mb-4">
-                <label for="middlename">Contact middle name</label>
-                <input type="text" class="form-control form-control-lg border border-success" id="middlename" name="middlename" placeholder="Middle name" minlength="3" required="">
-                <div id="middlename-error" class="invalid-feedback"></div>
             </div>
             <div class="form-group col-md-12 mb-4">
                 <label for="lastname">Contact last name <sup>*</sup></label>

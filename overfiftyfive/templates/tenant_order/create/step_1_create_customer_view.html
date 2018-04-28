@@ -45,7 +45,6 @@
         // GET FROM OUR LOCAL STORAGE //
         ////////////////////////////////
         var tmp_order_given_name = localStorage.getItem("tmp_order_given_name");
-        var tmp_order_middle_name = localStorage.getItem("tmp_order_middle_name");
         var tmp_order_last_name = localStorage.getItem("tmp_order_last_name");
         var tmp_order_dob = localStorage.getItem("tmp_order_dob");
         var tmp_order_gender = localStorage.getItem("tmp_order_gender");
@@ -68,7 +67,6 @@
         // SET OUR VALUES //
         ////////////////////
         $('#firstname').val(tmp_order_given_name);
-        $('#middlename').val(tmp_order_middle_name);
         $('#lastname').val(tmp_order_last_name);
         if (tmp_order_dob !== undefined && tmp_order_dob !== null && tmp_order_dob.length > 0) {
             $('#dob').val(tmp_order_dob);
@@ -125,7 +123,6 @@
         // EXTRACT OUR FIELD VALUES. //
         ///////////////////////////////
         var given_name = $('#firstname').val();
-        var middle_name = $('#middlename').val();
         var last_name = $('#lastname').val();
         var date_of_birth = $('#dob').datepicker('getDate');
         if (date_of_birth !== null) {
@@ -158,15 +155,9 @@
         // SAVE TO OUR LOCAL STORAGE //
         ///////////////////////////////
         localStorage.setItem("tmp_order_given_name", given_name);
-        localStorage.setItem("tmp_order_middle_name", middle_name);
         localStorage.setItem("tmp_order_last_name", last_name);
-        if (middle_name !== undefined && middlename !== null && middlename.length > 0) {
-            var customer_name = given_name + " " + middle_name + " " + last_name
-            localStorage.setItem("tmp_customer_name", customer_name);
-        } else {
-            var customer_name = given_name + " " + last_name
-            localStorage.setItem("tmp_customer_name", customer_name);
-        }
+        var customer_name = given_name + " " + last_name
+        localStorage.setItem("tmp_customer_name", customer_name);
         localStorage.setItem("tmp_order_dob", date_of_birth);
         localStorage.setItem("tmp_order_gender", gender);
         localStorage.setItem("tmp_order_ok_to_email", ok_to_email);
@@ -269,11 +260,6 @@
                     <label for="firstname">First name <sup>*</sup></label>
                     <input type="text" class="form-control form-control-lg border border-primary" id="firstname" name="firstname" placeholder="First name" minlength="2" maxlength="30" required>
                     <div id="firstname-error" class="invalid-feedback"></div>
-                </div>
-                <div class="form-group col-md-7 mb-4">
-                    <label for="middlename">Middle name <sup>*</sup></label>
-                    <input type="text" class="form-control form-control-lg border border-primary" id="middlename" name="middlename" placeholder="Middle name" minlength="2" maxlength="30" required>
-                    <div id="middlename-error" class="invalid-feedback"></div>
                 </div>
                 <div class="form-group col-md-12 mb-4">
                     <label for="lastname">Last name <sup>*</sup></label>

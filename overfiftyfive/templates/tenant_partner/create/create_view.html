@@ -74,7 +74,6 @@
 
             // Populate previously set values.
             $('#firstname').val(localStorage.getItem("tmp_partner_given_name"));
-            $('#middlename').val(localStorage.getItem("tmp_partner_middle_name"));
             $('#lastname').val(localStorage.getItem("tmp_partner_last_name"));
             $('#phonenumber').val(localStorage.getItem("tmp_partner_telephone"));
             $('#other_phonenumber').val(localStorage.getItem("tmp_partner_other_telephone"));
@@ -237,7 +236,6 @@
 
             // EXTRACT OUR FIELD VALUES AND SAVE THEM IN LOCAL STORAGE.
             var given_name = $('#firstname').val();
-            var middle_name = $('#middlename').val();
             var last_name = $('#lastname').val();
             var date_of_birth = $('#dob').val();
             if (date_of_birth !== undefined && date_of_birth != null && date_of_birth.length > 0) {
@@ -272,7 +270,6 @@
             var is_active = get_selected_radio_value('is_active');
 
             localStorage.setItem("tmp_partner_given_name", given_name);
-            localStorage.setItem("tmp_partner_middle_name", middle_name);
             localStorage.setItem("tmp_partner_last_name", last_name);
             localStorage.setItem("tmp_partner_date_of_birth", date_of_birth);
             localStorage.setItem("tmp_partner_gender", gender);
@@ -330,11 +327,6 @@
                     <label for="firstname">First name <sup>*</sup></label>
                     <input type="text" class="form-control form-control-lg border border-primary" id="firstname" name="firstname" placeholder="First name" minlength="2" maxlength="30" required autofocus>
                     <div id="firstname-error" class="invalid-feedback"></div>
-                </div>
-                <div class="form-group col-md-7 mb-4">
-                    <label for="middlename">Middle name</label>
-                    <input type="text" class="form-control form-control-lg border border-success" id="middlename" name="middlename" placeholder="Middle name" minlength="2" maxlength="30" required>
-                    <div id="middlename-error" class="invalid-feedback"></div>
                 </div>
                 <div class="form-group col-md-12 mb-4">
                     <label for="lastname">Last name <sup>*</sup></label>

@@ -143,7 +143,6 @@
         var password = $('#password').val();
         var password_repeat = $('#password_repeat').val();
         var given_name = $('#firstname').val();
-        var middle_name = $('#middlename').val();
         var last_name = $('#lastname').val();
         var date_of_birth = $('#dob').val();
         if (date_of_birth !== undefined && date_of_birth != null && date_of_birth.length > 0) {
@@ -183,7 +182,6 @@
                 'password': password,
                 'password_repeat': password_repeat,
                 'given_name': given_name,
-                'middle_name': middle_name,
                 'last_name': last_name,
                 'birthdate': date_of_birth,
                 'gender': gender,
@@ -245,30 +243,30 @@
 	  });
 	  {% if staff.address_country %}loadState('{{staff.address_country}}');{% else %}loadState('CA');{% endif %}
     });
-	  
+
         let c_dropdown = $('#address_country');
 	c_dropdown.empty();
 	c_dropdown.append('<option selected="true" disabled>Choose Country</option>');
 	{% if staff.address_country %}c_dropdown.val('{{staff.address_country}}');{% else %}c_dropdown.prop('selectedIndex', 1);{% endif %}
-	
+
         const state = "{% static 'js/provinces.json' %}";
         const country = "{% static 'js/countries.json' %}";
         console.log(state);
         console.log(country); // KANWAR - PLEASE IMPLEMENT.
-	
+
 	// Populate dropdown with list of countries
 	$.getJSON(country, function (data) {
 	  $.each(data, function (key, entry) {
 	    	c_dropdown.append($('<option></option>').attr('value', entry.code).text(entry.country));
 	  })
 	});
-	
+
 	function loadState(countryId){
 		let p_dropdown = $('#address_region');
 		p_dropdown.empty();
 		p_dropdown.append('<option selected="true" disabled>Choose State/Province</option>');
 		p_dropdown.prop('selectedIndex', 0);
-		
+
 		// Populate dropdown with list of provinces
 		$.getJSON(state, function (data) {
 		  $.each(data, function (key, entry) {
@@ -336,11 +334,6 @@
                     <label for="firstname">First name <sup>*</sup></label>
                     <input type="text" class="form-control form-control-lg border border-primary" id="firstname" name="firstname" placeholder="First name" minlength="2" maxlength="30" required value="{% if staff.given_name %}{{ staff.given_name }}{% endif %}">
                     <div id="firstname-error" class="invalid-feedback"></div>
-                </div>
-                <div class="form-group col-md-7 mb-4">
-                    <label for="middlename">Middle name</label>
-                    <input type="text" class="form-control form-control-lg border border-success" id="middlename" name="middlename" placeholder="Middle name" minlength="2" maxlength="30" required value="{% if staff.middle_name %}{{ staff.middle_name }}{% endif %}">
-                    <div id="middlename-error" class="invalid-feedback"></div>
                 </div>
                 <div class="form-group col-md-12 mb-4">
                     <label for="lastname">Last name <sup>*</sup></label>
