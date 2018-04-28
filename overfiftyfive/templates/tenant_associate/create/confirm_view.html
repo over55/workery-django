@@ -114,7 +114,14 @@
         $('#selected_is_small_job').append(localStorage.getItem("tmp_associate_member_is_small_job"));
         $('#selected_how_hear').append(localStorage.getItem("tmp_associate_member_how_hear"));
 
-
+        // The following code continously checks to see if the current user
+        // is assigned to the email.
+        $('#email').keypress(debounce(function (event) {
+            // do the Ajax request
+            var email = $('#email').val();
+            console.log(email);
+        }, 250));
+        
     }); // end Ready
 
     /**

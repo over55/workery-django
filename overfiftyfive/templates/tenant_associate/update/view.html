@@ -87,6 +87,14 @@
         {% if associate.is_contract_time == True %}$("#is_contract_time").prop("checked", true);{% else %}$("#is_contract_time2").prop("checked", true);{% endif %}
         {% if associate.is_small_job == True %}$("#is_small_job").prop("checked", true);{% else %}$("#is_small_job2").prop("checked", true);{% endif %}
 
+        // The following code continously checks to see if the current user
+        // is assigned to the email.
+        $('#email').keypress(debounce(function (event) {
+            // do the Ajax request
+            var email = $('#email').val();
+            console.log(email);
+        }, 250));
+
     }); // end Ready
 
     /**

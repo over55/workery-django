@@ -95,6 +95,15 @@
             $('#describe').append(localStorage.getItem("tmp_partner_description"));
             $('#comment').append(localStorage.getItem("tmp_partner_comment"));
             $("input[name=is_active][value=" + localStorage.getItem("tmp_partner_is_active") + "]").prop('checked', true);
+
+            // The following code continously checks to see if the current user
+            // is assigned to the email.
+            $('#email').keypress(debounce(function (event) {
+                // do the Ajax request
+                var email = $('#email').val();
+                console.log(email);
+            }, 250));
+
         }); // end Ready
 
         /**

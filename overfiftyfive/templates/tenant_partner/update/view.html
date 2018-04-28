@@ -44,6 +44,15 @@
         {% else %}
             $("#is_active2").prop("checked", true);
         {% endif %}
+
+        // The following code continously checks to see if the current user
+        // is assigned to the email.
+        $('#email').keypress(debounce(function (event) {
+            // do the Ajax request
+            var email = $('#email').val();
+            console.log(email);
+        }, 250));
+        
     }); // end Ready
 
     /**
