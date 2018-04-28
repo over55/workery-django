@@ -165,3 +165,13 @@ class Step5View(TemplateView):
         context = super().get_context_data(**kwargs)
         context['current_page'] = "jobs"
         return context
+
+
+@method_decorator(login_required, name='dispatch')
+class Step6View(TemplateView):
+    template_name = 'tenant_order/create/step_6_view.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['current_page'] = "jobs"
+        return context

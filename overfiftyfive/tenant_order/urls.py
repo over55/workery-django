@@ -21,6 +21,7 @@ urlpatterns = (
     path('jobs/create/step-3/', create_views.Step3View.as_view(), name='o55_tenant_job_step_3_create'),
     path('jobs/create/step-4/', create_views.Step4View.as_view(), name='o55_tenant_job_step_4_create'),
     path('jobs/create/step-5/', create_views.Step5View.as_view(), name='o55_tenant_job_step_5_create'),
+    path('jobs/create/step-6/', create_views.Step6View.as_view(), name='o55_tenant_job_step_6_create'),
 
     # List
     path('jobs/list/', list_view.JobListView.as_view(), name='o55_tenant_job_list'),
