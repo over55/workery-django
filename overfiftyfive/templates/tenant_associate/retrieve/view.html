@@ -9,7 +9,34 @@
 {% endblock header_content %}
 
 {% block content %}
+<script defer src="https://use.fontawesome.com/releases/v5.0.4/js/all.js"></script>
+<script>
+    $(document).ready(function () {
+        $( "#id_detail_form" ).hide();
 
+        var $star_rating = $('.star-rating .fa-star');
+        var $star_rating_value = $('.star-rating');
+        var SetRatingStar = function() {
+          return $star_rating.each(function() {
+            if (parseInt($star_rating_value.data('rating')) >= parseInt($(this).data('rating'))) {
+              return $(this).removeClass('far').addClass('fas');
+            } else if(Math.round($star_rating_value.data('rating')) == parseInt($(this).data('rating'))) {
+              return $(this).removeClass('fa-star').addClass('fas fa-star-half');
+            } else {
+              return $(this).removeClass('fas').addClass('far');
+            }
+          });
+        };
+        SetRatingStar();
+    });
+
+    function click_view_more_button() {
+        $( "#id_master_form" ).hide();
+        $( "#id_detail_form" ).show();
+    }
+
+
+</script>
 <main id="main" role="main">
 
     <!-- BREADCRUMB -->
@@ -77,55 +104,21 @@
 
     <h1>{% trans 'View Associate Member' %}</h1>
 
-    <!-- FORM -->
-    <!------------------------------------------------------------------------->
-    <div class="col-sm-5 mx-auto mt-2">
-        <!-- Residential form -->
-        <div class="col-sm-12 fade show active" aria-labelledby="residential">
-            <h3 class="pt-4 pb-2 text-center">Associate Member Details</h3>
-            <form id="add-associate-form" method="post" class="needs-validation" action="" novalidate>
-            <!-- ############ PERSON ############ -->
-            <p class="border-bottom mb-3 pb-1 text-secondary">Personal Information</p>
-            <div class="form-row">
-                <div class="form-group col-md-12 mb-4">
-                    <label for="firstname">First name</label>
-                    <p>{% if associate.given_name %}{{ associate.given_name }}{% else %}-{% endif %}</p>
-                    <div id="firstname-error" class="invalid-feedback"></div>
+    <div class="row mt-4 pt-3 mb-4 pb-2">
+
+        <!-- MASTER FORM -->
+        <!--------------------------------------------------------------------->
+        <div class="col-md-10 mx-auto rounded bg-light border p-2" id="id_master_form">
+            <div class="row">
+                <div class="col-sm-5">
+                    <img src="{% static 'img/placeholder.png' %}" class="img-fluid rounded" alt="Profile Picture">
                 </div>
-                <div class="form-group col-md-12 mb-4">
-                    <label for="lastname">Last name</label>
-                    <p>{% if associate.last_name %}{{ associate.last_name }}{% else %}-{% endif %}</p>
-                    <div id="lastname-error" class="invalid-feedback"></div>
-                </div>
-                <div class="form-group p-0 col-md-7 mb-4">
-                    <label for="dob">Date of Birth</label>
-                    <div class="input-group input-group-lg">
-                        <p>{% if associate.birthdate %}{{ associate.birthdate }}{% else %}-{% endif %}</p>
-                        <div id="dob-error" class="invalid-feedback"></div>
-                    </div>
-                </div>
-                <div class="form-group col-md-7 mb-4 p-0">
-                    <label for="gender">Gender</label>
-                    <p>{% if associate.gender %}{{ associate.gender }}{% else %}-{% endif %}</p>
-                    <div id="gender-error" class="invalid-feedback"></div>
-                </div>
-                <div class="form-group col-md-7 mb-4 p-0">
-                    <label for="description">Description</label>
-                    <p>{% if associate.description %}{{ associate.description }}{% else %}-{% endif %}</p>
-                    <div id="description-error" class="invalid-feedback"></div>
-                </div>
-                <div class="form-group p-0 col-md-7 mb-4">
-                    <label for="tags">Tags</label>
-                    <p>
-                        {% for tag in associate.tags.all %}
-                            <span class="badge badge-info badge-lg" id="tag_id_{{ tag.id }}">{{ tag }}</span>
-                        {% empty %}-
-                        {% endfor %}
-                    </p>
-                    <div id="tags-error" class="invalid-feedback"></div>
-                </div>
-                <div class="form-group p-0 col-md-7 mb-4">
-                    <label for="skill_sets">Skill sets</label>
+                <div class="col-sm-7 px-4 py-3">
+                    <h3>{{ associate.given_name }}&nbsp;{{ associate.last_name }}</h3>
+                    <p class="text-muted">{{ associate.address_locality }},&nbsp;{{ associate.address_region }},&nbsp;{{ associate.address_country }}&nbsp;<i class="fas fa-map-marker-alt"></i></p>
+                    <p><i class="fas fa-envelope"></i>&nbsp;{% if associate.owner.email %}<a href="mailto:{{ associate.owner.email }}">{{ associate.owner.email }}</a>{% else %}-{% endif %}</p>
+                    <p><i class="fas fa-phone-square"></i>&nbsp;{% if associate.telephone %}<a href="tel:{{ associate.telephone }}">{{ associate.telephone|pretty_formatted_phonenumber }}</a>{% else %}-{% endif %}</p>
+                    <p class="m-0"><strong>Skills:</strong></p>
                     <p>
                         {% for skill_set in associate.skill_sets.all %}
                             <span class="badge badge-info badge-lg">{{ skill_set.sub_category }}</span>
@@ -133,228 +126,317 @@
                             -
                         {% endfor %}
                     </p>
-                    <div id="skill_sets-error" class="invalid-feedback"></div>
+                    <div class="col-sm-12 p-0">
+                        <!-- Client or User Profile rating div starts here -->
+                        <p class="m-0"><strong>Ratings:</strong></p>
+                        <div class="star-rating" data-rating="4.5">
+                            <!-- Give client rating ouptput value to this data-rating attribute -->
+                            <span class="far fa-star" data-rating="1"></span>
+                            <span class="far fa-star" data-rating="2"></span>
+                            <span class="far fa-star" data-rating="3"></span>
+                            <span class="far fa-star" data-rating="4"></span>
+                            <span class="far fa-star" data-rating="5"></span>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <!-- ############ end PERSON ############ -->
-            <!-- ############ CONTACT POINT ############ -->
-            <p class="border-bottom mb-3 pb-1 text-secondary">Contact Point</p>
-            <div class="form-row">
-                <div class="form-group col-md-7 mb-4">
-                    <label for="phonenumber">Phone</label>
-                    <p>{% if associate.telephone %}<a href="tel:{{ associate.telephone }}">{{ associate.telephone|pretty_formatted_phonenumber }}</a>{% else %}-{% endif %}</p>
-                    <div id="phonenumber-error" class="invalid-feedback"></div>
-                </div>
-                <div class="form-group col-md-7 mb-4">
-                    <label for="other_phonenumber">Mobile</label>
-                    <p>{% if associate.other_telephone %}<a href="tel:{{ associate.other_telephone }}">{{ associate.other_telephone|pretty_formatted_phonenumber }}</a>{% else %}-{% endif %}</p>
-                    <div id="other_phonenumber-error" class="invalid-feedback"></div>
-                </div>
-                <div class="form-group col-md-12 mb-4">
-                    <label for="email">E-Mail</label>
-                    <p>{% if associate.owner.email %}<a href="mailto:{{ associate.owner.email }}">{{ associate.owner.email }}</a>{% else %}-{% endif %}</p>
-                    <div id="email-error" class="invalid-feedback"></div>
-                </div>
-                <div class="form-group col-md-12 mb-4">
-                    <p class="mb-1">Ok to E-Mail?</p>
-                    <p>
-                        {% if associate.is_ok_to_email == True %}Yes{% else %}No{% endif %}
-                    </p>
-                </div>
-                <div class="form-group col-md-12 mb-4">
-                    <p class="mb-1">Ok to Text?</p>
-                    <p>
-                        {% if associate.is_ok_to_text == True %}Yes{% else %}No{% endif %}
-                    </p>
-                </div>
-            </div>
-            <!-- ############ end CONTACT POINT ############ -->
-            <!-- ############ LOCATION ############ -->
-            <p class="border-bottom mb-3 pb-1 text-secondary">Postal Address</p>
-            <div class="form-row">
-                <div class="form-group col-md-12 mb-4">
-                    <label for="street_address">Street Address</label>
-                    <p>{% if associate.street_address %}{{ associate.street_address }}{% else %}-{% endif %}</p>
-                    <div id="street_address-error" class="invalid-feedback"></div>
-                </div>
-                <div class="form-group col-md-12 mb-4">
-                    <label for="street_address_extra">Street Address (Extra)</label>
-                    <p>{% if associate.street_address_extra %}{{ associate.street_address_extra }}{% else %}-{% endif %}</p>
-                    <div id="street_address_extra-error" class="invalid-feedback"></div>
-                </div>
-                <div class="form-group col-md-12 mb-4">
-                    <label for="address_locality">City</label>
-                    <p>{% if associate.address_locality %}{{ associate.address_locality }}{% else %}-{% endif %}</p>
-                    <div id="address_locality-error" class="invalid-feedback"></div>
-                </div>
-                <div class="form-group col-md-12 mb-4">
-                    <label for="address_region">Province</label>
-                    <p>{% if associate.address_region %}{{ associate.address_region }}{% else %}-{% endif %}</p>
-                    <div id="address_region-error" class="invalid-feedback"></div>
-                </div>
-                <div class="form-group col-md-12 mb-4">
-                    <label for="address_country">Country</label>
-                    <p>{% if associate.address_country %}{{ associate.address_country }}{% else %}-{% endif %}</p>
-                    <div id="address_country-error" class="invalid-feedback"></div>
-                </div>
-                <div class="form-group col-md-12 mb-4">
-                    <label for="postal_code">Postal Code</label>
-                    <p>{% if associate.postal_code %}{{ associate.postal_code }}{% else %}-{% endif %}</p>
-                    <div id="postal_code-error" class="invalid-feedback"></div>
-                </div>
-                <div class="form-group col-md-12 mb-4">
-                    <label for="post_office_box_number">Post Office Box # </label>
-                    <p>{% if associate.post_office_box_number %}{{ associate.post_office_box_number }}{% else %}-{% endif %}</p>
-                    <div id="post_office_box_number-error" class="invalid-feedback"></div>
-                </div>
-            </div>
-            <!-- ############ end LOCATION ############ -->
-            <!-- ############ DETAILS ############ -->
-            <p class="border-bottom mb-3 pb-1 text-secondary">Details</p>
-            <div class="form-row">
-                <div class="form-group col-md-12 mb-4">
-                    <label for="is_active">Hourly salary desired</label>
-                    <p>
-                        {% if associate.hourly_salary_desired %}{{ associate.hourly_salary_desired }}{% else %}-{% endif %}
-                    </p>
-                    <div id="is_active-error" class="invalid-feedback"></div>
-                </div>
-                <div class="form-group col-md-12 mb-4">
-                    <label for="is_active">Limit special</label>
-                    <p>
-                        {% if associate.limit_special %}{{ associate.limit_special }}{% else %}-{% endif %}
-                    </p>
-                    <div id="is_active-error" class="invalid-feedback"></div>
-                </div>
-                <div class="form-group col-md-12 mb-4">
-                    <label for="is_active">dues_pd</label>
-                    <p>
-                        {% if associate.dues_pd %}{{ associate.dues_pd }}{% else %}-{% endif %}
-                    </p>
-                    <div id="is_active-error" class="invalid-feedback"></div>
-                </div>
-                <div class="form-group col-md-12 mb-4">
-                    <label for="is_active">ins_due</label>
-                    <p>
-                        {% if associate.ins_due %}{{ associate.ins_due }}{% else %}-{% endif %}
-                    </p>
-                    <div id="is_active-error" class="invalid-feedback"></div>
-                </div>
-                <div class="form-group col-md-12 mb-4">
-                    <label for="is_active">Police check</label>
-                    <p>
-                        {% if associate.police_check %}{{ associate.police_check }}{% else %}-{% endif %}
-                    </p>
-                    <div id="is_active-error" class="invalid-feedback"></div>
-                </div>
-                <div class="form-group col-md-12 mb-4">
-                    <label for="is_active">Drivers license class</label>
-                    <p>
-                        {% if associate.drivers_license_class %}{{ associate.drivers_license_class }}{% else %}-{% endif %}
-                    </p>
-                    <div id="is_active-error" class="invalid-feedback"></div>
-                </div>
-                <div class="form-group col-md-12 mb-4">
-                    <label for="is_active">has_car</label>
-                    <p>
-                        {% if associate.has_car %}Yes{% else %}No{% endif %}
-                    </p>
-                    <div id="is_active-error" class="invalid-feedback"></div>
-                </div>
-                <div class="form-group col-md-12 mb-4">
-                    <label for="is_active">Has van</label>
-                    <p>
-                        {% if associate.has_van %}Yes{% else %}No{% endif %}
-                    </p>
-                    <div id="is_active-error" class="invalid-feedback"></div>
-                </div>
-                <div class="form-group col-md-12 mb-4">
-                    <label for="is_active">Has truck</label>
-                    <p>
-                        {% if associate.has_truck %}Yes{% else %}No{% endif %}
-                    </p>
-                    <div id="is_active-error" class="invalid-feedback"></div>
-                </div>
-                <div class="form-group col-md-12 mb-4">
-                    <label for="is_active">Is full time</label>
-                    <p>
-                        {% if associate.is_full_time %}Yes{% else %}No{% endif %}
-                    </p>
-                    <div id="is_active-error" class="invalid-feedback"></div>
-                </div>
-                <div class="form-group col-md-12 mb-4">
-                    <label for="is_active">Is part time</label>
-                    <p>
-                        {% if associate.is_part_time %}Yes{% else %}No{% endif %}
-                    </p>
-                    <div id="is_active-error" class="invalid-feedback"></div>
-                </div>
-                <div class="form-group col-md-12 mb-4">
-                    <label for="is_active">Is contract time</label>
-                    <p>
-                        {% if associate.is_contract_time %}Yes{% else %}No{% endif %}
-                    </p>
-                    <div id="is_active-error" class="invalid-feedback"></div>
-                </div>
-                <div class="form-group col-md-12 mb-4">
-                    <label for="is_active">Is small job</label>
-                    <p>
-                        {% if associate.is_small_job %}Yes{% else %}No{% endif %}
-                    </p>
-                    <div id="is_active-error" class="invalid-feedback"></div>
-                </div>
-                <div class="form-group col-md-12 mb-4">
-                    <label for="is_active">How hear</label>
-                    <p>
-                        {% if associate.how_hear %}{{ associate.how_hear }}{% else %}-{% endif %}
-                    </p>
-                    <div id="is_active-error" class="invalid-feedback"></div>
-                </div>
-            </div>
-            <!-- ############ end DETAILS ############ -->
-            <!-- ############ ACCOUNT ############ -->
-            <p class="border-bottom mb-3 pb-1 text-secondary">Account</p>
-            <div class="form-row">
-                <div class="form-group col-md-12 mb-4">
-                    <label for="is_active">Is active</label>
-                    <p>
-                        {% if associate.owner %}
-                            {% if associate.owner.is_active == True %}Yes{% else %}No{% endif %}
-                        {% else %}
-                            No - No account exists because email not set.
-                        {% endif %}
-                    </p>
-                    <div id="is_active-error" class="invalid-feedback"></div>
-                </div>
-            </div>
-            <!-- ############ end ACCOUNT ############ -->
-            <!-- ############ BUSINESS ############ -->
-            <!-- end COMMENTS BUTTON -->
-            <div class="form-group col-md-12 mb-3 mx-auto text-center">
-                <a href="{% url 'o55_tenant_member_comments_retrieve' template object.id %}">
-                <button  id="id_submit_btn"
-                    class="btn btn-warning btn-lg btn-fxw mt-4"
-                    type="button">
-                <i class="fas fa-edit"></i>&nbsp;{% trans 'View Comments' %}
-                </button>
-                </a>
-            </div>
-            <!-- end COMMENTS BUTTON -->
-            <!-- end EDIT BUTTON -->
-            <div class="form-group col-md-12 mb-3 mx-auto text-center">
-                <a href="{% url 'o55_tenant_member_update' template object.id %}">
-                <button  id="id_submit_btn"
-                    class="btn btn-warning btn-lg btn-fxw mt-4"
-                    type="button">
-                <i class="fas fa-edit"></i>&nbsp;{% trans 'Edit Member' %}
-                </button>
-                </a>
-            </div>
-            <!-- end EDIT BUTTON -->
         </div>
+        <!--------------------------------------------------------------------->
+        <!-- end MASTER FORM -->
+
+        <!-- DETAIL FORM -->
+        <!------------------------------------------------------------------------->
+        <div class="col-sm-5 mx-auto mt-2" id="id_detail_form">
+            <!-- Residential form -->
+            <div class="col-sm-12 fade show active" aria-labelledby="residential">
+                <h3 class="pt-4 pb-2 text-center">Associate Member Details</h3>
+                <form id="add-associate-form" method="post" class="needs-validation" action="" novalidate>
+                <!-- ############ PERSON ############ -->
+                <p class="border-bottom mb-3 pb-1 text-secondary">Personal Information</p>
+                <div class="form-row">
+                    <div class="form-group col-md-12 mb-4">
+                        <label for="firstname">First name</label>
+                        <p>{% if associate.given_name %}{{ associate.given_name }}{% else %}-{% endif %}</p>
+                        <div id="firstname-error" class="invalid-feedback"></div>
+                    </div>
+                    <div class="form-group col-md-12 mb-4">
+                        <label for="lastname">Last name</label>
+                        <p>{% if associate.last_name %}{{ associate.last_name }}{% else %}-{% endif %}</p>
+                        <div id="lastname-error" class="invalid-feedback"></div>
+                    </div>
+                    <div class="form-group p-0 col-md-7 mb-4">
+                        <label for="dob">Date of Birth</label>
+                        <div class="input-group input-group-lg">
+                            <p>{% if associate.birthdate %}{{ associate.birthdate }}{% else %}-{% endif %}</p>
+                            <div id="dob-error" class="invalid-feedback"></div>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-7 mb-4 p-0">
+                        <label for="gender">Gender</label>
+                        <p>{% if associate.gender %}{{ associate.gender }}{% else %}-{% endif %}</p>
+                        <div id="gender-error" class="invalid-feedback"></div>
+                    </div>
+                    <div class="form-group col-md-7 mb-4 p-0">
+                        <label for="description">Description</label>
+                        <p>{% if associate.description %}{{ associate.description }}{% else %}-{% endif %}</p>
+                        <div id="description-error" class="invalid-feedback"></div>
+                    </div>
+                    <div class="form-group p-0 col-md-7 mb-4">
+                        <label for="tags">Tags</label>
+                        <p>
+                            {% for tag in associate.tags.all %}
+                                <span class="badge badge-info badge-lg" id="tag_id_{{ tag.id }}">{{ tag }}</span>
+                            {% empty %}-
+                            {% endfor %}
+                        </p>
+                        <div id="tags-error" class="invalid-feedback"></div>
+                    </div>
+                    <div class="form-group p-0 col-md-7 mb-4">
+                        <label for="skill_sets">Skill sets</label>
+                        <p>
+                            {% for skill_set in associate.skill_sets.all %}
+                                <span class="badge badge-info badge-lg">{{ skill_set.sub_category }}</span>
+                            {% empty %}
+                                -
+                            {% endfor %}
+                        </p>
+                        <div id="skill_sets-error" class="invalid-feedback"></div>
+                    </div>
+                </div>
+                <!-- ############ end PERSON ############ -->
+                <!-- ############ CONTACT POINT ############ -->
+                <p class="border-bottom mb-3 pb-1 text-secondary">Contact Point</p>
+                <div class="form-row">
+                    <div class="form-group col-md-7 mb-4">
+                        <label for="phonenumber">Phone</label>
+                        <p>{% if associate.telephone %}<a href="tel:{{ associate.telephone }}">{{ associate.telephone|pretty_formatted_phonenumber }}</a>{% else %}-{% endif %}</p>
+                        <div id="phonenumber-error" class="invalid-feedback"></div>
+                    </div>
+                    <div class="form-group col-md-7 mb-4">
+                        <label for="other_phonenumber">Mobile</label>
+                        <p>{% if associate.other_telephone %}<a href="tel:{{ associate.other_telephone }}">{{ associate.other_telephone|pretty_formatted_phonenumber }}</a>{% else %}-{% endif %}</p>
+                        <div id="other_phonenumber-error" class="invalid-feedback"></div>
+                    </div>
+                    <div class="form-group col-md-12 mb-4">
+                        <label for="email">E-Mail</label>
+                        <p>{% if associate.owner.email %}<a href="mailto:{{ associate.owner.email }}">{{ associate.owner.email }}</a>{% else %}-{% endif %}</p>
+                        <div id="email-error" class="invalid-feedback"></div>
+                    </div>
+                    <div class="form-group col-md-12 mb-4">
+                        <p class="mb-1">Ok to E-Mail?</p>
+                        <p>
+                            {% if associate.is_ok_to_email == True %}Yes{% else %}No{% endif %}
+                        </p>
+                    </div>
+                    <div class="form-group col-md-12 mb-4">
+                        <p class="mb-1">Ok to Text?</p>
+                        <p>
+                            {% if associate.is_ok_to_text == True %}Yes{% else %}No{% endif %}
+                        </p>
+                    </div>
+                </div>
+                <!-- ############ end CONTACT POINT ############ -->
+                <!-- ############ LOCATION ############ -->
+                <p class="border-bottom mb-3 pb-1 text-secondary">Postal Address</p>
+                <div class="form-row">
+                    <div class="form-group col-md-12 mb-4">
+                        <label for="street_address">Street Address</label>
+                        <p>{% if associate.street_address %}{{ associate.street_address }}{% else %}-{% endif %}</p>
+                        <div id="street_address-error" class="invalid-feedback"></div>
+                    </div>
+                    <div class="form-group col-md-12 mb-4">
+                        <label for="street_address_extra">Street Address (Extra)</label>
+                        <p>{% if associate.street_address_extra %}{{ associate.street_address_extra }}{% else %}-{% endif %}</p>
+                        <div id="street_address_extra-error" class="invalid-feedback"></div>
+                    </div>
+                    <div class="form-group col-md-12 mb-4">
+                        <label for="address_locality">City</label>
+                        <p>{% if associate.address_locality %}{{ associate.address_locality }}{% else %}-{% endif %}</p>
+                        <div id="address_locality-error" class="invalid-feedback"></div>
+                    </div>
+                    <div class="form-group col-md-12 mb-4">
+                        <label for="address_region">Province</label>
+                        <p>{% if associate.address_region %}{{ associate.address_region }}{% else %}-{% endif %}</p>
+                        <div id="address_region-error" class="invalid-feedback"></div>
+                    </div>
+                    <div class="form-group col-md-12 mb-4">
+                        <label for="address_country">Country</label>
+                        <p>{% if associate.address_country %}{{ associate.address_country }}{% else %}-{% endif %}</p>
+                        <div id="address_country-error" class="invalid-feedback"></div>
+                    </div>
+                    <div class="form-group col-md-12 mb-4">
+                        <label for="postal_code">Postal Code</label>
+                        <p>{% if associate.postal_code %}{{ associate.postal_code }}{% else %}-{% endif %}</p>
+                        <div id="postal_code-error" class="invalid-feedback"></div>
+                    </div>
+                    <div class="form-group col-md-12 mb-4">
+                        <label for="post_office_box_number">Post Office Box # </label>
+                        <p>{% if associate.post_office_box_number %}{{ associate.post_office_box_number }}{% else %}-{% endif %}</p>
+                        <div id="post_office_box_number-error" class="invalid-feedback"></div>
+                    </div>
+                </div>
+                <!-- ############ end LOCATION ############ -->
+                <!-- ############ DETAILS ############ -->
+                <p class="border-bottom mb-3 pb-1 text-secondary">Details</p>
+                <div class="form-row">
+                    <div class="form-group col-md-12 mb-4">
+                        <label for="is_active">Hourly salary desired</label>
+                        <p>
+                            {% if associate.hourly_salary_desired %}{{ associate.hourly_salary_desired }}{% else %}-{% endif %}
+                        </p>
+                        <div id="is_active-error" class="invalid-feedback"></div>
+                    </div>
+                    <div class="form-group col-md-12 mb-4">
+                        <label for="is_active">Limit special</label>
+                        <p>
+                            {% if associate.limit_special %}{{ associate.limit_special }}{% else %}-{% endif %}
+                        </p>
+                        <div id="is_active-error" class="invalid-feedback"></div>
+                    </div>
+                    <div class="form-group col-md-12 mb-4">
+                        <label for="is_active">dues_pd</label>
+                        <p>
+                            {% if associate.dues_pd %}{{ associate.dues_pd }}{% else %}-{% endif %}
+                        </p>
+                        <div id="is_active-error" class="invalid-feedback"></div>
+                    </div>
+                    <div class="form-group col-md-12 mb-4">
+                        <label for="is_active">ins_due</label>
+                        <p>
+                            {% if associate.ins_due %}{{ associate.ins_due }}{% else %}-{% endif %}
+                        </p>
+                        <div id="is_active-error" class="invalid-feedback"></div>
+                    </div>
+                    <div class="form-group col-md-12 mb-4">
+                        <label for="is_active">Police check</label>
+                        <p>
+                            {% if associate.police_check %}{{ associate.police_check }}{% else %}-{% endif %}
+                        </p>
+                        <div id="is_active-error" class="invalid-feedback"></div>
+                    </div>
+                    <div class="form-group col-md-12 mb-4">
+                        <label for="is_active">Drivers license class</label>
+                        <p>
+                            {% if associate.drivers_license_class %}{{ associate.drivers_license_class }}{% else %}-{% endif %}
+                        </p>
+                        <div id="is_active-error" class="invalid-feedback"></div>
+                    </div>
+                    <div class="form-group col-md-12 mb-4">
+                        <label for="is_active">has_car</label>
+                        <p>
+                            {% if associate.has_car %}Yes{% else %}No{% endif %}
+                        </p>
+                        <div id="is_active-error" class="invalid-feedback"></div>
+                    </div>
+                    <div class="form-group col-md-12 mb-4">
+                        <label for="is_active">Has van</label>
+                        <p>
+                            {% if associate.has_van %}Yes{% else %}No{% endif %}
+                        </p>
+                        <div id="is_active-error" class="invalid-feedback"></div>
+                    </div>
+                    <div class="form-group col-md-12 mb-4">
+                        <label for="is_active">Has truck</label>
+                        <p>
+                            {% if associate.has_truck %}Yes{% else %}No{% endif %}
+                        </p>
+                        <div id="is_active-error" class="invalid-feedback"></div>
+                    </div>
+                    <div class="form-group col-md-12 mb-4">
+                        <label for="is_active">Is full time</label>
+                        <p>
+                            {% if associate.is_full_time %}Yes{% else %}No{% endif %}
+                        </p>
+                        <div id="is_active-error" class="invalid-feedback"></div>
+                    </div>
+                    <div class="form-group col-md-12 mb-4">
+                        <label for="is_active">Is part time</label>
+                        <p>
+                            {% if associate.is_part_time %}Yes{% else %}No{% endif %}
+                        </p>
+                        <div id="is_active-error" class="invalid-feedback"></div>
+                    </div>
+                    <div class="form-group col-md-12 mb-4">
+                        <label for="is_active">Is contract time</label>
+                        <p>
+                            {% if associate.is_contract_time %}Yes{% else %}No{% endif %}
+                        </p>
+                        <div id="is_active-error" class="invalid-feedback"></div>
+                    </div>
+                    <div class="form-group col-md-12 mb-4">
+                        <label for="is_active">Is small job</label>
+                        <p>
+                            {% if associate.is_small_job %}Yes{% else %}No{% endif %}
+                        </p>
+                        <div id="is_active-error" class="invalid-feedback"></div>
+                    </div>
+                    <div class="form-group col-md-12 mb-4">
+                        <label for="is_active">How hear</label>
+                        <p>
+                            {% if associate.how_hear %}{{ associate.how_hear }}{% else %}-{% endif %}
+                        </p>
+                        <div id="is_active-error" class="invalid-feedback"></div>
+                    </div>
+                </div>
+                <!-- ############ end DETAILS ############ -->
+                <!-- ############ ACCOUNT ############ -->
+                <p class="border-bottom mb-3 pb-1 text-secondary">Account</p>
+                <div class="form-row">
+                    <div class="form-group col-md-12 mb-4">
+                        <label for="is_active">Is active</label>
+                        <p>
+                            {% if associate.owner %}
+                                {% if associate.owner.is_active == True %}Yes{% else %}No{% endif %}
+                            {% else %}
+                                No - No account exists because email not set.
+                            {% endif %}
+                        </p>
+                        <div id="is_active-error" class="invalid-feedback"></div>
+                    </div>
+                </div>
+                <!-- ############ end ACCOUNT ############ -->
+
+            </div>
+        </div>
+
+        <!------------------------------------------------------------------------->
+        <!-- end DETAIL FORM -->
+
+
+        <!-- end COMMENTS BUTTON -->
+        <div class="form-group col-md-12 mb-3 mx-auto text-center">
+            <a onclick="click_view_more_button();">
+                <button  id="id_submit_btn"
+                    class="btn btn-warning btn-lg btn-fxw mt-4"
+                    type="button">
+                <i class="fas fa-edit"></i>&nbsp;{% trans 'View More ...' %}
+                </button>
+            </a>
+        </div>
+        <!-- end COMMENTS BUTTON -->
+        <!-- end COMMENTS BUTTON -->
+        <div class="form-group col-md-12 mb-3 mx-auto text-center">
+            <a href="{% url 'o55_tenant_member_comments_retrieve' template object.id %}">
+            <button  id="id_submit_btn"
+                class="btn btn-warning btn-lg btn-fxw mt-4"
+                type="button">
+            <i class="fas fa-edit"></i>&nbsp;{% trans 'View Comments' %}
+            </button>
+            </a>
+        </div>
+        <!-- end COMMENTS BUTTON -->
+        <!-- end EDIT BUTTON -->
+        <div class="form-group col-md-12 mb-3 mx-auto text-center">
+            <a href="{% url 'o55_tenant_member_update' template object.id %}">
+            <button  id="id_submit_btn"
+                class="btn btn-warning btn-lg btn-fxw mt-4"
+                type="button">
+            <i class="fas fa-edit"></i>&nbsp;{% trans 'Edit Member' %}
+            </button>
+            </a>
+        </div>
+        <!-- end EDIT BUTTON -->
     </div>
-    <!------------------------------------------------------------------------->
-    <!-- end FORM -->
 
     <!-- RETURN-TO-TOP -->
     <a id="return-to-top" href="#" class="btn-info btn-lg back-to-top" role="button" title="Back to top"><i class="fas fa-angle-up fa-2x"></i></a>
