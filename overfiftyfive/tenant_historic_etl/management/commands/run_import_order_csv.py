@@ -32,11 +32,11 @@ from shared_foundation.models import (
 from tenant_foundation.constants import *
 from tenant_foundation.models import (
     Associate,
-    # Comment,
+    Comment,
     Customer,
     Organization,
     Order,
-    # OrderComment,
+    OrderComment,
     SkillSet,
     Tag
 )
@@ -131,8 +131,8 @@ class Command(BaseCommand):
             hours = row_dict[18]
             service_fee = row_dict[19]
             date_paid = row_dict[20]
-            comment = row_dict[21]
-            follow_up_comment = row_dict[22]
+            comment_text = row_dict[21]
+            follow_up_comment_text = row_dict[22]
             workmanship = row_dict[23]
             time_and_budget = row_dict[24]
             punctual = row_dict[25]
@@ -187,7 +187,6 @@ class Command(BaseCommand):
                         'hours':  int(hours),
                         'service_fee': local_service_fee,
                         'payment_date': local_date_paid,
-                        # 'comments': comments
                         'last_modified_by': None,
                         'created_by': None,
                     }
@@ -199,23 +198,39 @@ class Command(BaseCommand):
                     if skill_set and order:
                         order.skill_sets.add(skill_set)
 
-                # # Add comments.
-                # if comment:
-                #     OrderComment.objects.create(
-                #         order=order,
-                #         comment=Comment.objects.create(
-                #             text=comment
-                #         )
-                #     )
-                #
-                # # Added follow up comment.
-                # if follow_up_comment:
-                #     OrderComment.objects.create(
-                #         order=order,
-                #         comment=Comment.objects.create(
-                #             text=follow_up_comment
-                #         )
-                #     )
+                # Add comments.
+                if comment_text:
+                    # Use an existing comment if it exists!
+                    comment = Comment.objects.filter(text=comment_text).first()
+                    if comment is None:
+                        comment = Comment.objects.create(text=comment_text)
+
+                    # Map user commment to job.
+                    OrderComment.objects.update_or_create(
+                        about=order,
+                        comment=comment,
+                        defaults={
+                            'about': order,
+                            'comment': comment
+                        }
+                    )
+
+                # Added follow up comment.
+                if follow_up_comment_text:
+                    # Use an existing follow up comment if it exists!
+                    comment = Comment.objects.filter(text=follow_up_comment_text).first()
+                    if comment is None:
+                        comment = Comment.objects.create(text=follow_up_comment_text)
+
+                    # Map user follow up commment to job.
+                    OrderComment.objects.update_or_create(
+                        about=order,
+                        comment=comment,
+                        defaults={
+                            'about': order,
+                            'comment': comment
+                        }
+                    )
 
         except Exception as e:
             if not "list index out of range" in str(e):

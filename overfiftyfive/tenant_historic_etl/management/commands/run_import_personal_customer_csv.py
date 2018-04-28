@@ -31,11 +31,12 @@ from shared_foundation.models import (
 from tenant_foundation.constants import *
 from tenant_foundation.models import (
     Associate,
-    # Comment,
+    Comment,
     Customer,
+    CustomerComment,
     Organization,
     Order,
-    # OrderComment,
+    OrderComment,
     Tag
 )
 from tenant_foundation.utils import *

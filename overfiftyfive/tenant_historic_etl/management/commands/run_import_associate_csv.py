@@ -30,14 +30,11 @@ from shared_foundation.models import (
 )
 from tenant_foundation.constants import *
 from tenant_foundation.models import (
-    # AssociateComment,
+    AssociateComment,
     Associate,
-    # Comment,
+    Comment,
     Customer,
-    Organization,
-    Order,
-    # OrderComment,
-    Tag
+    Organization
 )
 from tenant_foundation.utils import *
 
@@ -258,21 +255,20 @@ class Command(BaseCommand):
             )
 
             # Create our comments.
-            # comment, created_comment = Comment.objects.update_or_create(
-            #     text=comments_text,
-            #     defaults={
-            #         'text': comments_text
-            #     }
-            # )
-            # AssociateComment.objects.update_or_create(
-            #     associate=associate,
-            #     comment=comment,
-            #     defaults={
-            #         'associate': associate,
-            #         'comment': comment
-            #     }
-            # )
-            # # associate.comments.set(comment)
+            comment, created_comment = Comment.objects.update_or_create(
+                text=comments_text,
+                defaults={
+                    'text': comments_text
+                }
+            )
+            AssociateComment.objects.update_or_create(
+                about=associate,
+                comment=comment,
+                defaults={
+                    'about': associate,
+                    'comment': comment
+                }
+            )
 
             # For debugging purposes.
             # print(associate, create)
