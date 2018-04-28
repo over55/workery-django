@@ -57,7 +57,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         # Get the user inputs.
         schema_name = options['schema_name'][0]
-        group_id = options['group_id'][0]
+        group_id = int(options['group_id'][0])
         email = options['email'][0]
         password = options['password'][0]
         first_name = options['first_name'][0]
@@ -98,7 +98,7 @@ class Command(BaseCommand):
             was_email_activated=True
 
         )
-        self.stdout.write(self.style.SUCCESS(_('Created a "User" object.')))
+        self.stdout.write(self.style.SUCCESS(_('Created a "SharedUser" object.')))
 
         # Generate and assign the password.
         user.set_password(password)
@@ -107,7 +107,7 @@ class Command(BaseCommand):
         # Generate the private access key.
         token = Token.objects.create(user=user)
 
-        self.stdout.write(self.style.SUCCESS(_('Created a "SharedUser" object.')))
+        self.stdout.write(self.style.SUCCESS(_('Created a "Token" object.')))
 
         # Attach our user to the group.
         user.groups.add(group_id)
@@ -116,9 +116,12 @@ class Command(BaseCommand):
         connection.set_schema(franchise.schema_name, True) # Switch to Tenant.
 
         # Create `Manager` or `Frontline Staff`.
-        if group_id == constants.MANAGEMENT_GROUP_ID and group_id == constants.FRONTLINE_GROUP_ID:
+        if group_id == constants.MANAGEMENT_GROUP_ID or group_id == constants.FRONTLINE_GROUP_ID:
             Staff.objects.create(
-                user=user,
+                owner=user,
+                given_name=first_name,
+                last_name=last_name,
+                email=email,
                 telephone=telephone,
                 telephone_extension=telephone_extension,
                 other_telephone=other_telephone,
@@ -135,7 +138,10 @@ class Command(BaseCommand):
         # Create `Associate`.
         if group_id == constants.ASSOCIATE_GROUP_ID:
             Associate.objects.create(
-                user=user,
+                owner=user,
+                given_name=first_name,
+                last_name=last_name,
+                email=email,
                 telephone=telephone,
                 telephone_extension=telephone_extension,
                 other_telephone=other_telephone,
@@ -152,7 +158,10 @@ class Command(BaseCommand):
         # Create `Customer`.
         if group_id == constants.CUSTOMER_GROUP_ID:
             Customer.objects.create(
-                user=user,
+                owner=user,
+                given_name=first_name,
+                last_name=last_name,
+                email=email,
                 telephone=telephone,
                 telephone_extension=telephone_extension,
                 other_telephone=other_telephone,
