@@ -6,6 +6,7 @@ from tenant_foundation.models import (
     AwayLog,
     Customer,
     Order
+    # Task
 )
 
 
@@ -19,5 +20,6 @@ def master_page(request):
         'associates_count': Associate.objects.filter(owner__is_active=True).count(),
         'customers_count': Customer.objects.all().count(),
         'jobs_count': Order.objects.all().count(),
-        'awaylogs': AwayLog.objects.all()
+        # 'tasks_count': Task.objects.all().count(),
+        'awaylogs': AwayLog.objects.all(),
     })
