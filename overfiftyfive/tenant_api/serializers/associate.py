@@ -121,9 +121,6 @@ class AssociateListCreateSerializer(serializers.ModelSerializer):
             'has_car',
             'has_van',
             'has_truck',
-            'is_full_time',
-            'is_part_time',
-            'is_contract_time',
             'is_small_job',
             'how_hear',
             'skill_sets', # many-to-many
@@ -257,9 +254,6 @@ class AssociateListCreateSerializer(serializers.ModelSerializer):
             has_car=validated_data.get('has_car', False),
             has_van=validated_data.get('has_van', False),
             has_truck=validated_data.get('has_truck', False),
-            is_full_time=validated_data.get('is_full_time', False),
-            is_part_time=validated_data.get('is_part_time', False),
-            is_contract_time=validated_data.get('is_contract_time', False),
             is_small_job=validated_data.get('is_small_job', False),
             how_hear=validated_data.get('how_hear', None),
             # 'organizations', #TODO: IMPLEMENT.
@@ -399,9 +393,6 @@ class AssociateRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
             'has_car',
             'has_van',
             'has_truck',
-            'is_full_time',
-            'is_part_time',
-            'is_contract_time',
             'is_small_job',
             'how_hear',
             'skill_sets', # many-to-many
@@ -523,9 +514,6 @@ class AssociateRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         instance.has_car=validated_data.get('has_car', instance.has_car)
         instance.has_van=validated_data.get('has_van', instance.has_van)
         instance.has_truck=validated_data.get('has_truck', instance.has_truck)
-        instance.is_full_time=validated_data.get('is_full_time', instance.is_full_time)
-        instance.is_part_time=validated_data.get('is_part_time', instance.is_part_time)
-        instance.is_contract_time=validated_data.get('is_contract_time', instance.is_contract_time)
         instance.is_small_job=validated_data.get('is_small_job', instance.is_small_job)
         instance.how_hear=validated_data.get('how_hear', instance.how_hear)
         # 'organizations', #TODO: IMPLEMENT.

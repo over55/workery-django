@@ -456,9 +456,6 @@ class PartnerRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         instance.has_car=validated_data.get('has_car', False)
         instance.has_van=validated_data.get('has_van', False)
         instance.has_truck=validated_data.get('has_truck', False)
-        instance.is_full_time=validated_data.get('is_full_time', False)
-        instance.is_part_time=validated_data.get('is_part_time', False)
-        instance.is_contract_time=validated_data.get('is_contract_time', False)
         instance.is_small_job=validated_data.get('is_small_job', False)
         instance.how_hear=validated_data.get('how_hear', None)
         # 'organizations', #TODO: IMPLEMENT.

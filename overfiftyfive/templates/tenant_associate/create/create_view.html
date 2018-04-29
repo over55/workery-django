@@ -144,9 +144,6 @@
             $("input[name=has_car][value=" + localStorage.getItem("tmp_associate_member_has_car") + "]").prop('checked', true);
             $("input[name=has_van][value=" + localStorage.getItem("tmp_associate_member_has_van") + "]").prop('checked', true);
             $("input[name=has_truck][value=" + localStorage.getItem("tmp_associate_member_has_truck") + "]").prop('checked', true);
-            $("input[name=is_full_time][value=" + localStorage.getItem("tmp_associate_member_is_full_time") + "]").prop('checked', true);
-            $("input[name=is_part_time][value=" + localStorage.getItem("tmp_associate_member_is_part_time") + "]").prop('checked', true);
-            $("input[name=is_contract_time][value=" + localStorage.getItem("tmp_associate_member_is_contract_time") + "]").prop('checked', true);
             $("input[name=is_small_job][value=" + localStorage.getItem("tmp_associate_member_is_small_job") + "]").prop('checked', true);
 
         }); // end Ready
@@ -326,9 +323,6 @@
             has_error |= valid_radiofields_seleciton('has_car', true);
             has_error |= valid_radiofields_seleciton('has_van', true);
             has_error |= valid_radiofields_seleciton('has_truck', true);
-            has_error |= valid_radiofields_seleciton('is_full_time', true);
-            has_error |= valid_radiofields_seleciton('is_part_time', true);
-            has_error |= valid_radiofields_seleciton('is_contract_time', true);
             has_error |= valid_radiofields_seleciton('is_small_job', true);
             has_error |= valid_textfield_value('how_hear', false, 2);
 
@@ -394,9 +388,6 @@
             var has_car = get_boolean_from_selected_radio_value('has_car');
             var has_van = get_boolean_from_selected_radio_value('has_van');
             var has_truck = get_boolean_from_selected_radio_value('has_truck');
-            var is_full_time = get_boolean_from_selected_radio_value('is_full_time');
-            var is_part_time = get_boolean_from_selected_radio_value('is_part_time');
-            var is_contract_time = get_boolean_from_selected_radio_value('is_contract_time');
             var is_small_job = get_boolean_from_selected_radio_value('is_small_job');
             var how_hear = $('#how_hear').val();
 
@@ -434,9 +425,6 @@
             localStorage.setItem("tmp_associate_member_has_car", has_car);
             localStorage.setItem("tmp_associate_member_has_van", has_van);
             localStorage.setItem("tmp_associate_member_has_truck", has_truck);
-            localStorage.setItem("tmp_associate_member_is_full_time", is_full_time);
-            localStorage.setItem("tmp_associate_member_is_part_time", is_part_time);
-            localStorage.setItem("tmp_associate_member_is_contract_time", is_contract_time);
             localStorage.setItem("tmp_associate_member_is_small_job", is_small_job);
             localStorage.setItem("tmp_associate_member_how_hear", how_hear);
 
@@ -759,42 +747,6 @@
                         <input type="radio" id="has_truck2" name="has_truck" value="false" class="custom-control-input form-check-input">
                         <label class="custom-control-label form-check-label" for="has_truck2">No</label>
                         <div id="has_truck-error" class="invalid-feedback ml-2"></div>
-                    </div>
-                </div>
-                <div class="form-group col-md-12 mb-4">
-                    <p class="mb-1">Is full time? <sup>*</sup></p>
-                    <div class="form-radio custom-control custom-radio custom-control-inline">
-                        <input type="radio" id="is_full_time" name="is_full_time" value="true" class="custom-control-input form-check-input">
-                        <label class="custom-control-label form-check-label" for="is_full_time">Yes</label>
-                    </div>
-                    <div class="form-radio custom-control custom-radio custom-control-inline">
-                        <input type="radio" id="is_full_time2" name="is_full_time" value="false" class="custom-control-input form-check-input">
-                        <label class="custom-control-label form-check-label" for="is_full_time2">No</label>
-                        <div id="is_full_time-error" class="invalid-feedback ml-2"></div>
-                    </div>
-                </div>
-                <div class="form-group col-md-12 mb-4">
-                    <p class="mb-1">Is part time? <sup>*</sup></p>
-                    <div class="form-radio custom-control custom-radio custom-control-inline">
-                        <input type="radio" id="is_part_time" name="is_part_time" value="true" class="custom-control-input form-check-input">
-                        <label class="custom-control-label form-check-label" for="is_part_time">Yes</label>
-                    </div>
-                    <div class="form-radio custom-control custom-radio custom-control-inline">
-                        <input type="radio" id="is_part_time2" name="is_part_time" value="false" class="custom-control-input form-check-input">
-                        <label class="custom-control-label form-check-label" for="is_part_time2">No</label>
-                        <div id="is_part_time-error" class="invalid-feedback ml-2"></div>
-                    </div>
-                </div>
-                <div class="form-group col-md-12 mb-4">
-                    <p class="mb-1">Is contract time? <sup>*</sup></p>
-                    <div class="form-radio custom-control custom-radio custom-control-inline">
-                        <input type="radio" id="is_contract_time" name="is_contract_time" value="true" class="custom-control-input form-check-input">
-                        <label class="custom-control-label form-check-label" for="is_contract_time">Yes</label>
-                    </div>
-                    <div class="form-radio custom-control custom-radio custom-control-inline">
-                        <input type="radio" id="is_contract_time2" name="is_contract_time" value="false" class="custom-control-input form-check-input">
-                        <label class="custom-control-label form-check-label" for="is_contract_time2">No</label>
-                        <div id="is_contract_time-error" class="invalid-feedback ml-2"></div>
                     </div>
                 </div>
                 <div class="form-group col-md-12 mb-4">

@@ -107,10 +107,6 @@
 
         var has_truck = localStorage.getItem("tmp_associate_member_has_truck");
         $('#selected_has_truck').append( to_yes_or_no_string(has_truck) );
-
-        $('#selected_is_full_time').append(localStorage.getItem("tmp_associate_member_is_full_time"));
-        $('#selected_is_part_time').append(localStorage.getItem("tmp_associate_member_is_part_time"));
-        $('#selected_is_contract_time').append(localStorage.getItem("tmp_associate_member_is_contract_time"));
         $('#selected_is_small_job').append(localStorage.getItem("tmp_associate_member_is_small_job"));
         $('#selected_how_hear').append(localStorage.getItem("tmp_associate_member_how_hear"));
 
@@ -121,7 +117,7 @@
             var email = $('#email').val();
             console.log(email);
         }, 250));
-        
+
     }); // end Ready
 
     /**
@@ -216,9 +212,6 @@
                 'has_car': localStorage.getItem("tmp_associate_member_has_car"),
                 'has_van': localStorage.getItem("tmp_associate_member_has_van"),
                 'has_truck': localStorage.getItem("tmp_associate_member_has_truck"),
-                'is_full_time': localStorage.getItem("tmp_associate_member_is_full_time"),
-                'is_part_time': localStorage.getItem("tmp_associate_member_is_part_time"),
-                'is_contract_time': localStorage.getItem("tmp_associate_member_is_contract_time"),
                 'is_small_job': localStorage.getItem("tmp_associate_member_is_small_job"),
                 'how_hear': localStorage.getItem("tmp_associate_member_how_hear"),
             },
@@ -263,9 +256,6 @@
                 localStorage.removeItem("tmp_associate_member_has_car")
                 localStorage.removeItem("tmp_associate_member_has_van")
                 localStorage.removeItem("tmp_associate_member_has_truck")
-                localStorage.removeItem("tmp_associate_member_is_full_time")
-                localStorage.removeItem("tmp_associate_member_is_part_time")
-                localStorage.removeItem("tmp_associate_member_is_contract_time")
                 localStorage.removeItem("tmp_associate_member_is_small_job")
                 localStorage.removeItem("tmp_associate_member_how_hear")
 
@@ -530,24 +520,6 @@
          <tr>
            <th scope="row" class="bg-light">has_truck</th>
            <td id="selected_has_truck" name="has_truck">
-               <!-- POPULATE THROUGH JS. -->
-           </td>
-         </tr>
-         <tr>
-           <th scope="row" class="bg-light">is_full_time</th>
-           <td id="selected_is_full_time" name="is_full_time">
-               <!-- POPULATE THROUGH JS. -->
-           </td>
-         </tr>
-         <tr>
-           <th scope="row" class="bg-light">is_part_time</th>
-           <td id="selected_is_part_time" name="is_part_time">
-               <!-- POPULATE THROUGH JS. -->
-           </td>
-         </tr>
-         <tr>
-           <th scope="row" class="bg-light">is_contract_time</th>
-           <td id="selected_is_contract_time" name="is_contract_time">
                <!-- POPULATE THROUGH JS. -->
            </td>
          </tr>

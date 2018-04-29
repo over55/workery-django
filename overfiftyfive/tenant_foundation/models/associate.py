@@ -185,24 +185,6 @@ class Associate(AbstractPerson):
         default=False,
         blank=True
     )
-    is_full_time = models.BooleanField(
-        _("Is Full Time"),
-        help_text=_('Indicates whether associate is full time or not.'),
-        default=False,
-        blank=True
-    )
-    is_part_time = models.BooleanField(
-        _("Is Part Time"),
-        help_text=_('Indicates whether associate is part time or not.'),
-        default=False,
-        blank=True
-    )
-    is_contract_time = models.BooleanField(
-        _("Is Contract Time"),
-        help_text=_('Indicates whether associate is contracted or not.'),
-        default=False,
-        blank=True
-    )
     is_small_job = models.BooleanField(
         _("Is Small Job"),
         help_text=_('Indicates whether associate is employed for small jobs or not.'),
