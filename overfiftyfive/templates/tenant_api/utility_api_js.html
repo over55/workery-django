@@ -1,0 +1,29 @@
+<script>
+    function post_find_customer_matching(email, organization_name, func_callback, func_error_callback)
+    {
+        // Our URL to the API endpoint.
+        var url = get_tenant_domain_url(schema_name, "/api/utility/find-customer-matching?format=json");
+
+        jQuery.ajax({
+            url: url,
+            headers: {
+                Authorization: rest_api_token
+            },
+            data: {
+                'email': email,
+                'organization_name': organization_name
+            },
+            type: 'GET',
+            traditional: true, // Note: This allows many-to-many arrays for Django REST Framework
+            success: function(json_results){
+                func_callback(json_results);
+            },
+            error: function(xhr, status, error) {
+                func_error_callback(xhr, status, error);
+            },
+            complete: function(xhr,status) {
+                // Do nothing.
+            }
+        });
+    }
+</script>

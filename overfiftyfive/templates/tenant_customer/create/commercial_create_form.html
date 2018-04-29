@@ -55,8 +55,9 @@
         // is assigned to the company.
         $('#companyname').keypress(debounce(function (event) {
             // do the Ajax request
-            var companyname = $('#companyname').val();
-            console.log(companyname);
+            var company_name = $('#companyname').val();
+            var email = $('#email').val();
+            lookup_customer_by_company_name_and_email(company_name, email);
         }, 250));
 
         // The following code continously checks to see if the current user
@@ -64,10 +65,56 @@
         $('#email').keypress(debounce(function (event) {
             // do the Ajax request
             var email = $('#email').val();
-            console.log(email);
+            lookup_customer_by_email(email);
         }, 250));
 
     }); // end Ready
+
+    function lookup_customer_by_company_name_and_email(company_name, email) {
+        //
+        post_find_customer_matching(
+            email,
+            company_name,
+            function(json_result) {
+
+                var count = Object.keys(json_result).length;
+                console.log(count);
+
+                if (count > 0) {
+                    alert("Company already exists. Please pick another name or find the customer which holds that company and update the customer accordingly.");
+
+                    //TODO: INTEGRATE THIS WITH THE COMPANY NAME FIELD.
+                } // end COUNT > 0
+
+            },
+            function(error_result) {
+                console.log(error_result);
+            }
+        );
+    }
+
+    function lookup_customer_by_email(email) {
+        //
+        post_find_customer_matching(
+            email,
+            null,
+            function(json_result) {
+
+                var count = Object.keys(json_result).length;
+                console.log(count);
+
+                if (count > 0) {
+                    alert("Email already exists. Please pick another email.");
+
+                    //TODO: INTEGRATE THIS WITH THE EMAIL FIELD.
+                } // end COUNT > 0
+
+            },
+            function(error_result) {
+                console.log(error_result);
+            }
+        );
+    }
 
     /**
      *  Function will unlock the submit button.
@@ -205,8 +252,8 @@
         has_error |= valid_textfield_value('street_address_extra', false, 3)
         has_error |= valid_textfield_value('neighbourhood', false, 2)
         has_error |= valid_textfield_value('address_locality', true, 3);
-        has_error |= valid_textfield_value('address_region', true, 2);
-        has_error |= valid_textfield_value('address_country', true, 3);
+        // has_error |= valid_textfield_value('address_region', true, 2);
+        // has_error |= valid_textfield_value('address_country', true, 3);
         has_error |= valid_textfield_value('postal_code', true, 3);
         has_error |= valid_textfield_value('post_office_box_number', false, 3);
         has_error |= valid_textfield_value('password', false, 2);
