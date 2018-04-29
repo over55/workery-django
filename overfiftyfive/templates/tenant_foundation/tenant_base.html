@@ -60,7 +60,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">
+                        <a class="nav-link {% if current_page == 'task' %}active{% endif %}" href="{% url 'o55_tenant_task_list' %}">
                         <i class="fa fa-list-ol"></i>&nbsp;Tasks
                         </a>
                     </li>
