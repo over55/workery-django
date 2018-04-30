@@ -94,3 +94,26 @@ class AssociateRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIVie
         self.check_object_permissions(request, associate)  # Validate permissions.
         associate.delete()
         return Response(data=[], status=status.HTTP_200_OK)
+
+
+class AssociateCreateValidationAPIView(generics.ListCreateAPIView):
+    """
+    API endpoint strictly used for POST creation validations of the associate
+    model.
+    """
+    serializer_class = AssociateListCreateSerializer
+    permission_classes = (
+        permissions.IsAuthenticated,
+        IsAuthenticatedAndIsActivePermission,
+        CanListCreateAssociatePermission
+    )
+    def post(self, request, format=None):
+        """
+        Create
+        """
+        serializer = AssociateListCreateSerializer(data=request.data, context={
+            'created_by': request.user,
+            'franchise': request.tenant
+        })
+        serializer.is_valid(raise_exception=True)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)

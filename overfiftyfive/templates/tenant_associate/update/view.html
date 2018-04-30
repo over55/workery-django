@@ -186,46 +186,6 @@
      */
     function ajax_post_form_submission() {
 
-        //--------------------------------------//
-        // VALIDATE ALL THE FIELDS IN THIS FORM //
-        //--------------------------------------//
-
-        // GET OUR FORM.
-        var form = document.getElementById('update-associate-form');
-
-        // VALIDATE ALL OUR FORM FIELDS.
-        var has_error = false;
-        has_error |= valid_textfield_value('email', true, 2);
-        has_error |= valid_textfield_value('firstname', true, 2);
-        has_error |= valid_textfield_value('lastname', true, 2);
-        has_error |= valid_textfield_value('phonenumber', true, 10);
-        has_error |= valid_textfield_value('other_phonenumber', false, 10);
-        has_error |= valid_radiofields_seleciton('ok_to_email', true);
-        has_error |= valid_radiofields_seleciton('ok_to_text', true);
-        has_error |= valid_textfield_value('describe', false, 2);
-        has_error |= valid_textfield_value('street_address', true, 3);
-        has_error |= valid_textfield_value('street_address_extra', false, 3)
-        has_error |= valid_textfield_value('address_locality', true, 3);
-        // has_error |= valid_textfield_value('address_region', true, 2);
-        // has_error |= valid_textfield_value('address_country', true, 3);
-        has_error |= valid_textfield_value('postal_code', true, 3);
-        has_error |= valid_textfield_value('post_office_box_number', false, 3);
-        has_error |= valid_textfield_value('password', false, 2);
-        has_error |= valid_textfield_value('password_repeat', false, 2);
-        has_error |= valid_radiofields_seleciton('is_active', true);
-        has_error |= valid_radiofields_seleciton('has_car', true);
-        has_error |= valid_radiofields_seleciton('has_van', true);
-        has_error |= valid_radiofields_seleciton('has_truck', true);
-        has_error |= valid_radiofields_seleciton('is_small_job', true);
-        has_error |= valid_textfield_value('how_hear', false, 2);
-
-        // INTERRUPT THE FORM SUBMISSION IF ANY ERRORS EXISTED AND UPDATE THE
-        // GUI TO INDICATE THAT WE HAVE VALIDATED SOME FIELDS.
-        form.classList.add('was-validated');
-        if (has_error) {
-            return; // STOP THIS FUNCTION FROM GOING FORWARD UNTIL ERRORS FIXED.
-        }
-
         //----------------------------------------//
         // EXTRACT THE DATA FROM THE FORM FIELDS. //
         //----------------------------------------//
@@ -288,9 +248,11 @@
         // LOCK OUT THE "SUBMIT" BUTTON SO THE USER DOES NOT MAKE MULTI-CALLS.
         disable_btn();
 
-        //----------------------------------------------//
-        // SUBMIT THE FORM DATA TO THE API-WEB SERVICE. //
-        //----------------------------------------------//
+        //--------------------------------------------------------------------//
+        // SUBMIT THE FORM DATA TO THE API-WEB SERVICE TO BE (1) VALIDATED    //
+        // AND (2) IF SUCCESSFULL THEN UPDATE THE DATA ELSE (3) TAKE THE      //
+        // RETURNED VALUES AND GENERATE THE APPROPRIATE ERROR MESSAGE.
+        //--------------------------------------------------------------------//
 
         // MAKE OUR API CALL TO THE BACKEND TO "CREATE" THE MEMBER USER.
         update_member_api(
@@ -357,19 +319,29 @@
                 console.log(err);
 
                 // STEP 2: CLEAR EXISTING TEXT.
-                $('#all_error_result').html();
+                $('#all_error_result').html("");
 
-                // STEP 3: PRINT OUR ERROR.
+                // STEP 3: PRINT OUR ERROR IN THE TOP ERROR PANEL.
                 for(var prop in err) {
                     if(err.hasOwnProperty(prop)) {
                         var val = err[prop];
-                        console.log(val);
                         $('#all_error_result').append("<p><b>"+prop+"</b>"+val+"</p><br />");
                     }
                 }
 
                 // STEP 4: FOCUS TO WHERE THE ERROR IS OCCURING.
                 $('html, body').animate({ scrollTop: $('#id_page_title').offset().top }, 'slow');
+
+                // STEP 5: ADD ERROR MESSAGES TO THE FIELDS.
+                for(var prop in err) {
+                    if(err.hasOwnProperty(prop)) {
+                        var val = err[prop];
+                        console.log("KEY", prop);
+                        console.log("VALUE", val);
+
+                        //TODO: IMPLEMENT - Attach the message to the field.
+                    }
+                }
 
             },
             function() { // Finally
@@ -385,7 +357,7 @@
 	    loadState($(this).find(':selected').val())
 	  });
 	  {% if associate.address_country %}loadState('{{associate.address_country}}');{% else %}loadState('CA');{% endif %}
-    	
+
         let c_dropdown = $('#address_country');
 	c_dropdown.empty();
 	c_dropdown.append('<option selected="true" disabled>Choose Country</option>');

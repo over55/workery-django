@@ -73,7 +73,7 @@
             // Initialize our datepicker jQuery code with our HTML view.
             $( "#dob" ).datepicker({
                 dateFormat: 'yy-mm-dd',
-		maxDate: 'today'
+		        maxDate: 'today'
             });
             $( "#dues_pd" ).datepicker({
                 dateFormat: 'yy-mm-dd'  // https://stackoverflow.com/a/7500097
@@ -234,57 +234,8 @@
             window.location = redirect_url;
         }
 
-        /**
-         *  Function will confirm the email is unique with the API web-service
-         *  and then submit our form for saving in the local storage after the
-         *  fields get validated.
-         */
         function ajax_post_form_submission(redirect_url) {
-            //--------------------------------//
-            // CASE 1 OF 2: NO EMAIL ENTERED. //
-            //--------------------------------//
-            var tmp_email = $('#email').val();
-            if (tmp_email === undefined || tmp_email === null || tmp_email.length == 0) {
-                // STEP 1: CLEAR EXISTING TEXT.
-                $('#all_error_result').html();
-
-                // STEP 2: ADD ERROR MESSAGE.
-                $('#all_error_result').append("<p><b>No Email</b> - Please enter email before moving forward.</p><br />");
-
-                // STEP 3: SCROLL TO TWHERE THE ERROR MESSAGE IS.
-                $('html, body').animate({ scrollTop: $('#id_page_title').offset().top }, 'slow');
-
-                // STEP 4: STOP THE FUNCTION.
-                return;
-            }
-
-            //-----------------------------//
-            // CASE 2 OF 2: EMAIL ENTERED. //
-            //-----------------------------//
-            post_is_email_unique_api(
-                tmp_email,
-                function(result) {
-                    // PROCEED FORWARD.
-                    if (result === 1 || result === '1') {
-                        save_submission(redirect_url);
-
-                    // DO NOT PROCEED FURTHER.
-                    } else {
-                        // STEP 1: CLEAR EXISTING TEXT.
-                        $('#all_error_result').html();
-
-                        // STEP 2: ADD ERROR MESSAGE.
-                        $('#all_error_result').append("<p><b>Duplicate Email</b> - Please enter another email.</p><br />");
-
-                        // STEP 3: SCROLL TO TWHERE THE ERROR MESSAGE IS.
-                        $('html, body').animate({ scrollTop: $('#id_page_title').offset().top }, 'slow');
-                    }
-                },
-                function(json_error) {
-                    alert(json_error);
-                    //TODO: (1) OUTPUT THE ERROR IN A TEXT. (2) FOCUS ON THE OUTPUT.
-                }
-            ); // end API CALL
+            save_submission(redirect_url);
         }
 
         /**
@@ -292,50 +243,10 @@
          *  storage, then direct user to the link in the 'redirect_url' variable.
          */
         function save_submission(redirect_url) {
-            //--------------------------------------//
-            // VALIDATE ALL THE FIELDS IN THIS FORM //
-            //--------------------------------------//
 
-            // GET OUR FORM.
-            var form = document.getElementById('add-member-form');
-
-            // VALIDATE ALL OUR FORM FIELDS.
-            var has_error = false;
-            has_error |= valid_textfield_value('email', true, 2);
-            has_error |= valid_textfield_value('firstname', true, 2);
-            has_error |= valid_textfield_value('lastname', true, 2);
-            has_error |= valid_textfield_value('phonenumber', true, 10);
-            has_error |= valid_textfield_value('other_phonenumber', false, 10);
-            has_error |= valid_radiofields_seleciton('ok_to_email', true);
-            has_error |= valid_radiofields_seleciton('ok_to_text', true);
-            has_error |= valid_textfield_value('describe', false, 2);
-            has_error |= valid_textfield_value('comment', false, 2);
-            has_error |= valid_textfield_value('street_address', true, 3);
-            has_error |= valid_textfield_value('street_address_extra', false, 3)
-            has_error |= valid_textfield_value('address_locality', true, 3);
-            // has_error |= valid_textfield_value('address_region', true, 2);
-            // has_error |= valid_textfield_value('address_country', true, 3);
-            has_error |= valid_textfield_value('postal_code', true, 3);
-            has_error |= valid_textfield_value('post_office_box_number', false, 3);
-            has_error |= valid_textfield_value('password', false, 2);
-            has_error |= valid_textfield_value('password_repeat', false, 2);
-            has_error |= valid_radiofields_seleciton('is_active', true);
-            has_error |= valid_radiofields_seleciton('has_car', true);
-            has_error |= valid_radiofields_seleciton('has_van', true);
-            has_error |= valid_radiofields_seleciton('has_truck', true);
-            has_error |= valid_radiofields_seleciton('is_small_job', true);
-            has_error |= valid_textfield_value('how_hear', false, 2);
-
-            // INTERRUPT THE FORM SUBMISSION IF ANY ERRORS EXISTED AND UPDATE THE
-            // GUI TO INDICATE THAT WE HAVE VALIDATED SOME FIELDS.
-            form.classList.add('was-validated');
-            if (has_error) {
-                return; // STOP THIS FUNCTION FROM GOING FORWARD UNTIL ERRORS FIXED.
-            }
-
-            //----------------------------------------//
-            // EXTRACT THE DATA FROM THE FORM FIELDS. //
-            //----------------------------------------//
+            //----------------------------------------------------------------//
+            //             EXTRACT THE DATA FROM THE FORM FIELDS.             //
+            //----------------------------------------------------------------//
 
             // EXTRACT OUR FIELD VALUES AND SAVE THEM IN LOCAL STORAGE.
             var given_name = $('#firstname').val();
@@ -391,9 +302,9 @@
             var is_small_job = get_boolean_from_selected_radio_value('is_small_job');
             var how_hear = $('#how_hear').val();
 
-            //--------------------------------------------//
-            // SAVE THE EXTRACTED DATA INTO LOCAL STORAGE //
-            //--------------------------------------------//
+            //----------------------------------------------------------------//
+            //             SAVE THE EXTRACTED DATA INTO LOCAL STORAGE         //
+            //----------------------------------------------------------------//
 
             localStorage.setItem("tmp_associate_member_given_name", given_name);
             localStorage.setItem("tmp_associate_member_last_name", last_name);
@@ -450,8 +361,122 @@
             } // end FOR LOOP.
             localStorage.setObj("tmp_associate_member_skill_set_values", skill_sets_arr);
 
-            // REDIRECT TO OUR CONFIRM PAGE.
-            window.location = redirect_url;
+            //----------------------------------------------------------------//
+            //      GENERATE RANDOM PASSWORD IF NO PASSWORD WAS ENETERED      //
+            //----------------------------------------------------------------//
+
+            // Generate random password and apply it automatically to the
+            // password fields if no password was selected.
+            password = localStorage.getItem("tmp_associate_member_password")
+            password_repeat = localStorage.getItem("tmp_associate_member_password_repeat")
+            if (password === undefined || password === null || password === '' || password.length == 0) {
+                var randomString = Math.random().toString(34).slice(-10);
+                randomString += "A";
+                randomString += "!";
+                password = randomString;
+                password_repeat = randomString;
+            }
+
+            //----------------------------------------------------------------//
+            //              VALIDATE ALL THE FIELDS IN THIS FORM              //
+            //----------------------------------------------------------------//
+
+            // MAKE OUR API CALL TO THE BACKEND TO "CREATE" THE CUSTOMER USER.
+            validate_create_member_api(
+                {
+                    'given_name': localStorage.getItem("tmp_associate_member_given_name"),
+                    'middle_name': null,
+                    'last_name': localStorage.getItem("tmp_associate_member_last_name"),
+                    'birthdate': localStorage.getItem("tmp_associate_member_date_of_birth"),
+                    'gender': localStorage.getItem("tmp_associate_member_gender"),
+                    'nationality': null,
+                    'is_ok_to_email': localStorage.getItem("tmp_associate_member_ok_to_email"),
+                    'is_ok_to_text': localStorage.getItem("tmp_associate_member_ok_to_text"),
+                    'address_country': localStorage.getItem("tmp_associate_member_address_country"),
+                    'address_locality': localStorage.getItem("tmp_associate_member_address_locality"),
+                    'address_region': localStorage.getItem("tmp_associate_member_address_region"),
+                    'extra_comment': null,
+                    'street_address': localStorage.getItem("tmp_associate_member_street_address"),
+                    'street_address_extra': localStorage.getItem("tmp_associate_member_street_address_extra"),
+                    'postal_code': localStorage.getItem("tmp_associate_member_postal_code"),
+                    'post_office_box_number': localStorage.getItem("tmp_associate_member_post_office_box_number"),
+                    'email': localStorage.getItem("tmp_associate_member_email"),
+                    // 'area_served': area_served,
+                    'fax_number': null,
+                    'telephone': localStorage.getItem("tmp_associate_member_telephone"),
+                    'telephone_type_of': {{ shared_constants.TELEPHONE_CONTACT_POINT_TYPE_OF_ID }},
+                    // 'telephone_extension': telephone_extension,
+                    'other_telephone': localStorage.getItem("tmp_associate_member_other_telephone"),
+                    'other_telephone_type_of': {{ shared_constants.MOBILE_CONTACT_POINT_TYPE_OF_ID }},
+                    // 'fax_number': fax_number
+                    'tags': localStorage.getObj("tmp_associate_member_person_tag_ids"),
+                    'skill_sets': localStorage.getObj("tmp_associate_member_skill_set_ids"),
+                    'description': localStorage.getItem("tmp_associate_member_description"),
+                    'extra_comment': localStorage.getItem("tmp_associate_member_comment"),
+
+                    // --- Account ---
+                    'password': password,
+                    'password_repeat': password_repeat,
+                    'is_active': localStorage.getItem("tmp_associate_member_is_active"),
+
+                    // --- Associate Details ---
+                    'hourly_salary_desired': localStorage.getItem("tmp_associate_member_hourly_salary_desired"),
+                    'limit_special': localStorage.getItem("tmp_associate_member_limit_special"),
+                    'dues_pd': localStorage.getItem("tmp_associate_member_dues_pd"),
+                    'ins_due': localStorage.getItem("tmp_associate_member_ins_due"),
+                    'police_check': localStorage.getItem("tmp_associate_member_police_check"),
+                    'drivers_license_class': localStorage.getItem("tmp_associate_member_drivers_license_class"),
+                    'has_car': localStorage.getItem("tmp_associate_member_has_car"),
+                    'has_van': localStorage.getItem("tmp_associate_member_has_van"),
+                    'has_truck': localStorage.getItem("tmp_associate_member_has_truck"),
+                    'is_small_job': localStorage.getItem("tmp_associate_member_is_small_job"),
+                    'how_hear': localStorage.getItem("tmp_associate_member_how_hear"),
+                },
+                function(result_dict) { // Success
+                    // FOR DEBUGGING PURPOSES ONLY.
+                    console.log(result_dict);
+
+                    // REDIRECT TO CONFIRM PAGE.
+                    window.location = redirect_url;
+                },
+                function(xhr,status,error) { // Error
+
+                    // STEP 1: Convert to JSON.
+                    var err = JSON.parse(xhr.responseText);
+
+                    // For debugging purposes only.
+                    console.log(err);
+
+                    // STEP 2: CLEAR EXISTING TEXT.
+                    $('#all_error_result').html("");
+
+                    // STEP 3: PRINT OUR ERROR IN THE TOP ERROR PANEL.
+                    for(var prop in err) {
+                        if(err.hasOwnProperty(prop)) {
+                            var val = err[prop];
+                            $('#all_error_result').append("<p><b>"+prop+"</b>"+val+"</p><br />");
+                        }
+                    }
+
+                    // STEP 4: FOCUS TO WHERE THE ERROR IS OCCURING.
+                    $('html, body').animate({ scrollTop: $('#id_page_title').offset().top }, 'slow');
+
+                    // STEP 5: ADD ERROR MESSAGES TO THE FIELDS.
+                    for(var prop in err) {
+                        if(err.hasOwnProperty(prop)) {
+                            var val = err[prop];
+                            console.log("KEY", prop);
+                            console.log("VALUE", val);
+
+                            //TODO: IMPLEMENT - Attach the message to the field.
+                        }
+                    }
+                },
+                function() { // Finally
+                    // UNLOCK THE "SUBMIT" BUTTON TO BE AVAILABLE FOR USAGE.
+                    enable_btn();
+                }
+            ); // end VALIDATE FUNC.
         }
 
         //---------------------------------------//
