@@ -96,10 +96,10 @@ class AssociateRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIVie
         return Response(data=[], status=status.HTTP_200_OK)
 
 
-class AssociateCreateValidationAPIView(generics.ListCreateAPIView):
+class AssociateCreateValidationAPIView(generics.CreateAPIView):
     """
     API endpoint strictly used for POST creation validations of the associate
-    model.
+    model before an actual POST create API call is made.
     """
     serializer_class = AssociateListCreateSerializer
     permission_classes = (

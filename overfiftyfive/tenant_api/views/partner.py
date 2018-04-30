@@ -91,3 +91,23 @@ class PartnerRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView)
         self.check_object_permissions(request, partner)  # Validate permissions.
         partner.delete()
         return Response(data=[], status=status.HTTP_200_OK)
+
+
+class PartnerCreateValidationAPIView(generics.CreateAPIView):
+    serializer_class = PartnerListCreateSerializer
+    permission_classes = (
+        permissions.IsAuthenticated,
+        IsAuthenticatedAndIsActivePermission,
+        CanListCreatePartnerPermission
+    )
+
+    def post(self, request, format=None):
+        """
+        Create
+        """
+        serializer = PartnerListCreateSerializer(data=request.data, context={
+            'created_by': request.user,
+            'franchise': request.tenant
+        })
+        serializer.is_valid(raise_exception=True)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)

@@ -91,3 +91,23 @@ class StaffRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
         self.check_object_permissions(request, staff)  # Validate permissions.
         staff.delete()
         return Response(data=[], status=status.HTTP_200_OK)
+
+
+class StaffCreateValidationAPIView(generics.ListCreateAPIView):
+    serializer_class = StaffListCreateSerializer
+    permission_classes = (
+        permissions.IsAuthenticated,
+        IsAuthenticatedAndIsActivePermission,
+        CanListCreateStaffPermission
+    )
+
+    def post(self, request, format=None):
+        """
+        Create
+        """
+        serializer = StaffListCreateSerializer(data=request.data, context={
+            'created_by': request.user,
+            'franchise': request.tenant
+        })
+        serializer.is_valid(raise_exception=True)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)

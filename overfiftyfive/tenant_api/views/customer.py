@@ -92,3 +92,27 @@ class CustomerRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView
         self.check_object_permissions(request, customer)  # Validate permissions.
         customer.delete()
         return Response(data=[], status=status.HTTP_200_OK)
+
+
+class CustomerCreateValidationAPIView(generics.CreateAPIView):
+    """
+    API endpoint strictly used for POST creation validations of the customer
+    model before an actual POST create API call is made.
+    """
+    serializer_class = CustomerListCreateSerializer
+    permission_classes = (
+        permissions.IsAuthenticated,
+        IsAuthenticatedAndIsActivePermission,
+        CanListCreateCustomerPermission
+    )
+
+    def post(self, request, format=None):
+        """
+        Create
+        """
+        serializer = CustomerListCreateSerializer(data=request.data, context={
+            'created_by': request.user,
+            'franchise': request.tenant
+        })
+        serializer.is_valid(raise_exception=True)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)

@@ -6,14 +6,14 @@ from tenant_api.views.associate import AssociateListCreateAPIView, AssociateRetr
 from tenant_api.views.associate_comment import AssociateCommentListCreateAPIView
 from tenant_api.views.awaylog import AwayLogListCreateAPIView, AwayLogRetrieveUpdateDestroyAPIView
 # from tenant_api.views.comment import CommentListCreateAPIView, CommentRetrieveUpdateDestroyAPIView
-from tenant_api.views.customer import CustomerListCreateAPIView, CustomerRetrieveUpdateDestroyAPIView
+from tenant_api.views.customer import CustomerListCreateAPIView, CustomerRetrieveUpdateDestroyAPIView, CustomerCreateValidationAPIView
 from tenant_api.views.customer_comment import CustomerCommentListCreateAPIView
 from tenant_api.views.order import OrderListCreateAPIView, OrderRetrieveUpdateDestroyAPIView
 from tenant_api.views.order_comment import OrderCommentListCreateAPIView
-from tenant_api.views.partner import PartnerListCreateAPIView, PartnerRetrieveUpdateDestroyAPIView
+from tenant_api.views.partner import PartnerListCreateAPIView, PartnerRetrieveUpdateDestroyAPIView, PartnerCreateValidationAPIView
 from tenant_api.views.partner_comment import PartnerCommentListCreateAPIView
 from tenant_api.views.skill_set import SkillSetListCreateAPIView, SkillSetRetrieveUpdateDestroyAPIView
-from tenant_api.views.staff import StaffListCreateAPIView, StaffRetrieveUpdateDestroyAPIView
+from tenant_api.views.staff import StaffListCreateAPIView, StaffRetrieveUpdateDestroyAPIView, StaffCreateValidationAPIView
 from tenant_api.views.staff_comment import StaffCommentListCreateAPIView
 from tenant_api.views.tag import TagListCreateAPIView, TagRetrieveUpdateDestroyAPIView
 from tenant_api.views.utility import FindCustomerMatchingAPIView
@@ -32,6 +32,7 @@ urlpatterns = [
 
     # Customers
     url(r'^api/customers$', CustomerListCreateAPIView.as_view(), name='o55_customer_list_create_api_endpoint'),
+    url(r'^api/customers/validate$', CustomerCreateValidationAPIView.as_view(), name='o55_customer_create_validate_api_endpoint'),
     url(r'^api/customer/(?P<pk>[^/.]+)/$', CustomerRetrieveUpdateDestroyAPIView.as_view(), name='o55_customer_retrieve_update_destroy_api_endpoint'),
     url(r'^api/customer-comments$', CustomerCommentListCreateAPIView.as_view(), name='o55_customer_comment_list_create_api_endpoint'),
 
@@ -51,6 +52,7 @@ urlpatterns = [
 
     # Staff
     url(r'^api/staves$', StaffListCreateAPIView.as_view(), name='o55_staff_list_create_api_endpoint'),
+    url(r'^api/staves/validate$', StaffCreateValidationAPIView.as_view(), name='o55_staff_create_validate_api_endpoint'),
     url(r'^api/staff/(?P<pk>[^/.]+)/$', StaffRetrieveUpdateDestroyAPIView.as_view(), name='o55_staff_retrieve_update_destroy_api_endpoint'),
     url(r'^api/staff-comments$', StaffCommentListCreateAPIView.as_view(), name='o55_staff_comment_list_create_api_endpoint'),
 
