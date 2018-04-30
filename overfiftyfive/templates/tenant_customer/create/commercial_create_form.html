@@ -9,12 +9,12 @@
         // Initialize our datepicker jQuery code with our HTML view.
         $( "#dob" ).datepicker({
             dateFormat: 'yy-mm-dd',
-	    maxDate: 'today'
+	        maxDate: 'today'
         });
-	
+
 	let phn_type = $('#phonetype');
 	phn_type.prop('selectedIndex', 2);
-	    
+
         // Populate our 'select2' chosen values.
         var tmp_person_tags = localStorage.getObj("tmp_commercial_customer_person_tag_ids");
         $('#person_tags').val(tmp_person_tags);
@@ -196,32 +196,8 @@
         window.location = redirect_url;
     }
 
-    /**
-     *  Function will confirm the email is unique with the API web-service
-     *  and then submit our form for saving in the local storage after the
-     *  fields get validated.
-     */
     function ajax_post_form_submission(redirect_url) {
-        var tmp_email = $('#email').val();
-        if (tmp_email === undefined || tmp_email === null || tmp_email.length <= 0) {
-            save_submission(redirect_url);
-        } else {
-            post_is_email_unique_api(
-                tmp_email,
-                function(result) {
-                    if (result === 1 || result === '1') {
-                        save_submission(redirect_url);
-                    } else {
-                        alert("EMAIL ALREADY EXISTS, PLEASE PICK A NEW EMAIL ADDRESS"); //TODO: UPDATE THE GUI.
-                        return;
-                    }
-                },
-                function(json_error) {
-                    alert(json_error);
-                    //TODO: (1) OUTPUT THE ERROR IN A TEXT. (2) FOCUS ON THE OUTPUT.
-                }
-            ); // end API CALL
-        }
+        save_submission(redirect_url);
     }
 
     /**
@@ -229,46 +205,10 @@
      *  storage, then direct user to the link in the 'redirect_url' variable.
      */
     function save_submission(redirect_url) {
-        // GET OUR FORM.
-        var form = document.getElementById('add-client-form');
 
-        // TEMPORARY BUGFIX UNTIL COUNTRY FIELD IS WORKING.
-        var address_country = $('#address_country').val();
-        if (address_country === null) {
-            address_country = 'Canada';
-        }
-
-        // VALIDATE ALL OUR FORM FIELDS.
-        var has_error = false;
-        has_error |= valid_textfield_value('companyname', true, 2);
-        has_error |= valid_textfield_value('companytype', true, 1);
-        has_error |= valid_textfield_value('firstname', true, 2);
-        has_error |= valid_textfield_value('lastname', true, 2);
-        has_error |= valid_textfield_value('phonenumber', true, 10);
-        has_error |= valid_textfield_value('phonetype', true, 1);
-        has_error |= valid_textfield_value('other_phonenumber', false, 10);
-        has_error |= valid_textfield_value('other_phonenumber_type', false, 1);
-        has_error |= valid_textfield_value('describe', false, 2);
-        has_error |= valid_radiofields_seleciton('ok_to_email', true);
-        has_error |= valid_radiofields_seleciton('ok_to_text', true);
-        has_error |= valid_textfield_value('street_address', true, 3);
-        has_error |= valid_textfield_value('street_address_extra', false, 3)
-        has_error |= valid_textfield_value('neighbourhood', false, 2)
-        has_error |= valid_textfield_value('address_locality', true, 3);
-        // has_error |= valid_textfield_value('address_region', true, 2);
-        // has_error |= valid_textfield_value('address_country', true, 3);
-        has_error |= valid_textfield_value('postal_code', true, 3);
-        has_error |= valid_textfield_value('post_office_box_number', false, 3);
-        has_error |= valid_textfield_value('password', false, 2);
-        has_error |= valid_textfield_value('password_repeat', false, 2);
-        has_error |= valid_textfield_value('comment', false, 2);
-
-        // INTERRUPT THE FORM SUBMISSION IF ANY ERRORS EXISTED AND UPDATE THE
-        // GUI TO INDICATE THAT WE HAVE VALIDATED SOME FIELDS.
-        form.classList.add('was-validated');
-        if (has_error) {
-            return; // STOP THIS FUNCTION FROM GOING FORWARD UNTIL ERRORS FIXED.
-        }
+        //----------------------------------------------------------------//
+        //             EXTRACT THE DATA FROM THE FORM FIELDS.             //
+        //----------------------------------------------------------------//
 
         // EXTRACT OUR FIELD VALUES AND SAVE THEM IN LOCAL STORAGE.
         var company_name = $('#companyname').val();
@@ -293,8 +233,14 @@
         var street_address_extra = $('#street_address_extra').val();
         var neighbourhood = $('#neighbourhood').val();
         var address_region = $('#address_region').val();
+        if (address_region == null) {
+            address_region = "Ontario";
+        }
         var address_locality = $('#address_locality').val();
         var address_country = $('#address_country').val();
+        if (address_country == null) {
+            address_country = "Canada";
+        }
         var postal_code = $('#postal_code').val();
         var post_office_box_number = $('#post_office_box_number').val();
         var email = $('#email').val();
@@ -311,6 +257,10 @@
         var company_tags = $('#company_tags').val();
         var description = $('#describe').val();
         var comment = $('#comment').val();
+
+        //----------------------------------------------------------------//
+        //             SAVE THE EXTRACTED DATA INTO LOCAL STORAGE         //
+        //----------------------------------------------------------------//
 
         localStorage.setItem("tmp_commercial_customer_company_name", company_name);
         localStorage.setItem("tmp_commercial_customer_company_type", company_type);
@@ -360,8 +310,122 @@
         } // end FOR LOOP.
         localStorage.setObj("tmp_commercial_customer_company_tag_values", company_tags_arr);
 
-        window.location = redirect_url;
-    }
+        //----------------------------------------------------------------//
+        //      GENERATE RANDOM PASSWORD IF NO PASSWORD WAS ENETERED      //
+        //----------------------------------------------------------------//
+
+        // Generate random password and apply it automatically to the
+        // password fields if no password was selected.
+        password = localStorage.getItem("tmp_associate_member_password")
+        password_repeat = localStorage.getItem("tmp_associate_member_password_repeat")
+        if (password === undefined || password === null || password === '' || password.length == 0) {
+            var randomString = Math.random().toString(34).slice(-10);
+            randomString += "A";
+            randomString += "!";
+            password = randomString;
+            password_repeat = randomString;
+        }
+
+        //----------------------------------------------------------------//
+        //              VALIDATE ALL THE FIELDS IN THIS FORM              //
+        //----------------------------------------------------------------//
+
+        // MAKE OUR API CALL TO THE BACKEND TO "CREATE" THE CUSTOMER USER.
+        validate_create_customer_api(
+            {
+                // --- PERSON ---
+                'given_name': localStorage.getItem("tmp_commercial_customer_given_name"),
+                'middle_name': null,
+                'last_name': localStorage.getItem("tmp_commercial_customer_last_name"),
+                'birthdate': localStorage.getItem("tmp_commercial_customer_date_of_birth"),
+                'gender': localStorage.getItem("tmp_commercial_customer_gender"),
+                'nationality': null,
+                'is_ok_to_email': localStorage.getItem("tmp_commercial_customer_ok_to_email"),
+                'is_ok_to_text': localStorage.getItem("tmp_commercial_customer_ok_to_text"),
+                'address_country': localStorage.getItem("tmp_commercial_customer_address_country"),
+                'address_locality': localStorage.getItem("tmp_commercial_customer_address_locality"),
+                'address_region': localStorage.getItem("tmp_commercial_customer_address_region"),
+                'extra_comment': null,
+                'street_address': localStorage.getItem("tmp_commercial_customer_street_address"),
+                'street_address_extra': localStorage.getItem("tmp_commercial_customer_street_address_extra"),
+                'area_served': localStorage.getItem("tmp_commercial_customer_neighbourhood"),
+                'postal_code': localStorage.getItem("tmp_commercial_customer_postal_code"),
+                'post_office_box_number': localStorage.getItem("tmp_commercial_customer_post_office_box_number"),
+                'email': localStorage.getItem("tmp_commercial_customer_email"),
+                'fax_number': null,
+                'telephone': localStorage.getItem("tmp_commercial_customer_telephone"),
+                'telephone_type_of': localStorage.getItem("tmp_commercial_customer_telephone_type_of"),
+                // 'telephone_extension': telephone_extension,
+                'other_telephone': localStorage.getItem("tmp_commercial_customer_other_telephone"),
+                'other_telephone_type_of': localStorage.getItem("tmp_commercial_customer_other_telephone_type_of"),
+                // 'fax_number': fax_number
+                'password': password,
+                'password_repeat': password_repeat,
+                'type_of': {{ tenant_constants.COMMERCIAL_CUSTOMER_TYPE_OF_ID }},
+                'tags': localStorage.getObj("tmp_commercial_customer_person_tag_ids"),
+                'description': localStorage.getItem("tmp_commercial_customer_description"),
+                'extra_comment': localStorage.getItem("tmp_commercial_customer_comment"),
+
+                // --- ORGANIZATION ---
+                'organization_name': localStorage.getItem("tmp_commercial_customer_company_name"),
+                'organization_type_of': localStorage.getItem("tmp_commercial_customer_company_type"),
+                'organization_address_country': localStorage.getItem("tmp_commercial_customer_address_country"),
+                'organization_address_locality': localStorage.getItem("tmp_commercial_customer_address_locality"),
+                'organization_address_region': localStorage.getItem("tmp_commercial_customer_address_region"),
+                'organization_street_address': localStorage.getItem("tmp_commercial_customer_street_address"),
+                'organization_street_address_extra': localStorage.getItem("tmp_commercial_customer_street_address_extra"),
+                'organization_postal_code': localStorage.getItem("tmp_commercial_customer_postal_code"),
+                'organization_post_office_box_number': localStorage.getItem("tmp_commercial_customer_post_office_box_number"),
+                'organization_tags': localStorage.getObj("tmp_commercial_customer_company_tag_ids"),
+            },
+            function(result_dict) { // Success
+                // FOR DEBUGGING PURPOSES ONLY.
+                console.log(result_dict);
+
+                // REDIRECT TO CONFIRM PAGE.
+                window.location = redirect_url;
+            },
+            function(xhr,status,error) { // Error
+
+                // STEP 1: Convert to JSON.
+                var err = JSON.parse(xhr.responseText);
+
+                // For debugging purposes only.
+                console.log(err);
+
+                // STEP 2: CLEAR EXISTING TEXT.
+                $('#all_error_result').html("");
+
+                // STEP 3: PRINT OUR ERROR IN THE TOP ERROR PANEL.
+                for(var prop in err) {
+                    if(err.hasOwnProperty(prop)) {
+                        var val = err[prop];
+                        $('#all_error_result').append("<p><b>"+prop+"</b>"+val+"</p><br />");
+                    }
+                }
+
+                // STEP 4: FOCUS TO WHERE THE ERROR IS OCCURING.
+                $('html, body').animate({ scrollTop: $('#id_page_title').offset().top }, 'slow');
+
+                // STEP 5: ADD ERROR MESSAGES TO THE FIELDS.
+                for(var prop in err) {
+                    if(err.hasOwnProperty(prop)) {
+                        var val = err[prop];
+                        console.log("KEY", prop);
+                        console.log("VALUE", val);
+
+                        //TODO: IMPLEMENT - Attach the message to the field.
+                    }
+                }
+
+            },
+            function() { // Finally
+                // UNLOCK THE "SUBMIT" BUTTON TO BE AVAILABLE FOR USAGE.
+                enable_btn();
+            }
+        ); // end VALIDATE FUNC.
+
+    } // end SUBMIT FUNCTION.
 
     // THIS IS WHERE YOU CAN ADD YOUR COUNTRY/PROVINCE DROPDOWN JS CODE....
     $(function(){
@@ -369,7 +433,7 @@
 	    loadState($(this).find(':selected').val())
 	  });
 	  loadState('CA');
-    	
+
         let c_dropdown = $('#address_country');
 	c_dropdown.empty();
 	c_dropdown.append('<option selected="true" disabled>Choose Country</option>');
@@ -414,7 +478,7 @@
 <div class="col-sm-5 mx-auto mt-2">
     <!-- Residential form -->
     <div class="col-sm-12 fade show active" id="client-form" aria-labelledby="commercial">
-        <h3 class="pt-4 pb-2 text-center">Commercial</h3>
+        <h3 class="pt-4 pb-2 text-center" id="id_page_title">Commercial</h3>
         <p>Use this form to fill out the company information.</p>
         <p><span class="text-secondary font-italic"><sup>*</sup>&nbsp;-&nbsp;Indicates required field to fill out.</span></p>
         <!-- Error Output -->

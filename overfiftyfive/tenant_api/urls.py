@@ -43,6 +43,7 @@ urlpatterns = [
 
     # Partners
     url(r'^api/partners$', PartnerListCreateAPIView.as_view(), name='o55_partner_list_create_api_endpoint'),
+    url(r'^api/partners/validate$', PartnerCreateValidationAPIView.as_view(), name='o55_partner_create_validate_api_endpoint'),
     url(r'^api/partner/(?P<pk>[^/.]+)/$', PartnerRetrieveUpdateDestroyAPIView.as_view(), name='o55_partner_retrieve_update_destroy_api_endpoint'),
     url(r'^api/partner-comments$', PartnerCommentListCreateAPIView.as_view(), name='o55_partner_comment_list_create_api_endpoint'),
 

@@ -35,7 +35,35 @@ from tenant_foundation.models import (
 
 
 class CustomerListCreateSerializer(serializers.ModelSerializer):
-    # owner = serializers.PrimaryKeyRelatedField(many=False, read_only=True)
+    # OVERRIDE THE MODEL FIELDS AND ENFORCE THE FOLLOWING CUSTOM VALIDATION RULES.
+    given_name = serializers.CharField(
+        required=True,
+        allow_blank=False,
+    )
+    last_name = serializers.CharField(
+        required=True,
+        allow_blank=False,
+    )
+    address_country = serializers.CharField(
+        required=True,
+        allow_blank=False,
+    )
+    address_region = serializers.CharField(
+        required=True,
+        allow_blank=False,
+    )
+    address_locality = serializers.CharField(
+        required=True,
+        allow_blank=False,
+    )
+    postal_code = serializers.CharField(
+        required=True,
+        allow_blank=False,
+    )
+    street_address = serializers.CharField(
+        required=True,
+        allow_blank=False,
+    )
 
     # We are overriding the `email` field to include unique email validation.
     email = serializers.EmailField(
@@ -54,7 +82,7 @@ class CustomerListCreateSerializer(serializers.ModelSerializer):
 
     # Custom formatting of our telephone fields.
     fax_number = PhoneNumberField(allow_null=True, required=False)
-    telephone = PhoneNumberField()
+    telephone = PhoneNumberField(allow_null=False, required=True,)
     other_telephone = PhoneNumberField(allow_null=True, required=False)
 
     # Add password adding.
@@ -225,6 +253,14 @@ class CustomerListCreateSerializer(serializers.ModelSerializer):
             'longitude',
             # 'location' #TODO: FIX
         )
+
+    def validate_telephone(self, value):
+        """
+        Include validation on no-blanks
+        """
+        if value is None:
+            raise serializers.ValidationError("This field may not be blank.")
+        return value
 
     def setup_eager_loading(cls, queryset):
         """ Perform necessary eager loading of data. """
