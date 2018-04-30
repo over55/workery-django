@@ -111,6 +111,9 @@ class PartnerListCreateSerializer(serializers.ModelSerializer):
     is_active = serializers.BooleanField(
         write_only=True,
         required=True,
+        error_messages={
+            "invalid": "Please pick either 'Yes' or 'No' choice."
+        }
     )
 
     # Meta Information.
@@ -174,6 +177,18 @@ class PartnerListCreateSerializer(serializers.ModelSerializer):
             'longitude',
             # 'location' #TODO: FIX
         )
+        extra_kwargs = {
+            "is_ok_to_email": {
+                "error_messages": {
+                    "invalid": "Please pick either 'Yes' or 'No' choice."
+                }
+            },
+            "is_ok_to_text": {
+                "error_messages": {
+                    "invalid": "Please pick either 'Yes' or 'No' choice."
+                }
+            }
+        }
 
     def validate_telephone(self, value):
         """

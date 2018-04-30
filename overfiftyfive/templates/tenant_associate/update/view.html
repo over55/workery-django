@@ -40,6 +40,12 @@
         $( "#commercial_insurance_expiry_date" ).datepicker({
             dateFormat: 'yy-mm-dd'  // https://stackoverflow.com/a/7500097
         });
+        $( "#auto_insurance_expiry_date" ).datepicker({
+            dateFormat: 'yy-mm-dd'  // https://stackoverflow.com/a/7500097
+        });
+        $( "#wsib_insurance_date" ).datepicker({
+            dateFormat: 'yy-mm-dd'  // https://stackoverflow.com/a/7500097
+        });
         $( "#police_check" ).datepicker({
             dateFormat: 'yy-mm-dd'  // https://stackoverflow.com/a/7500097
         });
@@ -237,6 +243,8 @@
         var limit_special = $('#limit_special').val();
         var dues_date = $('#dues_date').val();
         var commercial_insurance_expiry_date = $('#commercial_insurance_expiry_date').val();
+        var auto_insurance_expiry_date = $('#auto_insurance_expiry_date').val();
+        var wsib_insurance_date = $('#wsib_insurance_date').val();
         var police_check = $('#police_check').val();
         var drivers_license_class = $('#drivers_license_class').val();
         var has_car = get_boolean_from_selected_radio_value('has_car');
@@ -298,6 +306,8 @@
                 'limit_special': limit_special,
                 'dues_date': dues_date,
                 'commercial_insurance_expiry_date': commercial_insurance_expiry_date,
+                'auto_insurance_expiry_date': auto_insurance_expiry_date,
+                'wsib_insurance_date': wsib_insurance_date,
                 'police_check': police_check,
                 'drivers_license_class': drivers_license_class,
                 'has_car': has_car,
@@ -557,7 +567,7 @@
                     <div class="form-radio custom-control custom-radio custom-control-inline">
                         <input type="radio" id="ok_to_email2" name="ok_to_email" value="no" class="custom-control-input form-check-input">
                         <label class="custom-control-label form-check-label" for="ok_to_email2">No</label>
-			<div id="ok_to_email-error" class="invalid-feedback ml-2"></div>
+			            <div id="ok_to_email-error" class="invalid-feedback ml-2"></div>
                     </div>
                 </div>
                 <div class="form-group col-md-12 mb-4">
@@ -569,7 +579,7 @@
                     <div class="form-radio custom-control custom-radio custom-control-inline">
                         <input type="radio" id="ok_to_text2" name="ok_to_text" value="no" class="custom-control-input form-check-input">
                         <label class="custom-control-label form-check-label" for="ok_to_text2">No</label>
-			<div id="ok_to_text-error" class="invalid-feedback ml-2"></div>
+			            <div id="ok_to_text-error" class="invalid-feedback ml-2"></div>
                     </div>
                 </div>
             </div>
@@ -632,9 +642,9 @@
                     <div id="limit_special-error" class="invalid-feedback"></div>
                 </div>
                 <div class="form-group p-0 col-md-7 mb-4">
-                    <label for="dues_date">dues_date</label>
+                    <label for="dues_date">Dues Date</label>
                     <div class="input-group input-group-lg">
-                        <input type="text" class="form-control form-control-lg border border-success" id="dues_date" name="dues_date" placeholder="yyyy-mm-dd" value="{% if associate.dues_date %}{{ associate.dues_date|date:"Y-m-d" }}{% endif %}">
+                        <input type="text" class="form-control form-control-lg border border-success" id="dues_date" name="dues_date" placeholder="yyyy-mm-dd" value="{% if associate.dues_date %}{{ associate.dues_date|date:"Y-m-d" }}{% endif %}" required>
                         <div class="input-group-append">
                             <span class="input-group-text dues_date-icon bg-success border-success"><i class="far fa-calendar-alt"></i></span>
                         </div>
@@ -642,13 +652,33 @@
                     </div>
                 </div>
                 <div class="form-group p-0 col-md-7 mb-4">
-                    <label for="commercial_insurance_expiry_date">commercial_insurance_expiry_date</label>
+                    <label for="commercial_insurance_expiry_date">Commercial Insurance Expiry Date</label>
                     <div class="input-group input-group-lg">
-                        <input type="text" class="form-control form-control-lg border border-success" id="commercial_insurance_expiry_date" name="commercial_insurance_expiry_date" placeholder="yyyy-mm-dd" value="{% if associate.commercial_insurance_expiry_date  %}{{ associate.commercial_insurance_expiry_date|date:"Y-m-d" }}{% endif %}">
+                        <input type="text" class="form-control form-control-lg border border-success" id="commercial_insurance_expiry_date" name="commercial_insurance_expiry_date" placeholder="yyyy-mm-dd" value="{% if associate.commercial_insurance_expiry_date %}{{ associate.commercial_insurance_expiry_date|date:"Y-m-d" }}{% endif %}" required>
                         <div class="input-group-append">
                             <span class="input-group-text commercial_insurance_expiry_date-icon bg-success border-success"><i class="far fa-calendar-alt"></i></span>
                         </div>
                         <div id="commercial_insurance_expiry_date-error" class="invalid-feedback"></div>
+                    </div>
+                </div>
+                <div class="form-group p-0 col-md-7 mb-4">
+                    <label for="auto_insurance_expiry_date">Auto Insurance Expiry Date</label>
+                    <div class="input-group input-group-lg">
+                        <input type="text" class="form-control form-control-lg border border-success" id="auto_insurance_expiry_date" name="auto_insurance_expiry_date" placeholder="yyyy-mm-dd" value="{% if associate.auto_insurance_expiry_date %}{{ associate.auto_insurance_expiry_date|date:"Y-m-d" }}{% endif %}" required>
+                        <div class="input-group-append">
+                            <span class="input-group-text auto_insurance_expiry_date-icon bg-success border-success"><i class="far fa-calendar-alt"></i></span>
+                        </div>
+                        <div id="auto_insurance_expiry_date-error" class="invalid-feedback"></div>
+                    </div>
+                </div>
+                <div class="form-group p-0 col-md-7 mb-4">
+                    <label for="wsib_insurance_date">WSIB Insurance Date</label>
+                    <div class="input-group input-group-lg">
+                        <input type="text" class="form-control form-control-lg border border-success" id="wsib_insurance_date" name="wsib_insurance_date" placeholder="yyyy-mm-dd" value="{% if associate.wsib_insurance_date %}{{ associate.wsib_insurance_date|date:"Y-m-d" }}{% endif %}" required>
+                        <div class="input-group-append">
+                            <span class="input-group-text wsib_insurance_date-icon bg-success border-success"><i class="far fa-calendar-alt"></i></span>
+                        </div>
+                        <div id="wsib_insurance_date-error" class="invalid-feedback"></div>
                     </div>
                 </div>
                 <div class="form-group p-0 col-md-7 mb-4">

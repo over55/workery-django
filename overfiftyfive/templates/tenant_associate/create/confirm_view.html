@@ -96,6 +96,8 @@
         $('#selected_limit_special').append(localStorage.getItem("tmp_associate_member_limit_special"));
         $('#selected_dues_date').append(localStorage.getItem("tmp_associate_member_dues_date"));
         $('#selected_ins_pd').append(localStorage.getItem("tmp_associate_member_commercial_insurance_expiry_date"));
+        $('#selected_auto_insurance_expiry_date').append(localStorage.getItem("tmp_associate_member_auto_insurance_expiry_date"));
+        $('#selected_wsib_insurance_date').append(localStorage.getItem("tmp_associate_member_wsib_insurance_date"));
         $('#selected_police_check').append(localStorage.getItem("tmp_associate_member_police_check"));
         $('#selected_drivers_license_class').append(localStorage.getItem("tmp_associate_member_drivers_license_class"));
 
@@ -207,6 +209,8 @@
                 'limit_special': localStorage.getItem("tmp_associate_member_limit_special"),
                 'dues_date': localStorage.getItem("tmp_associate_member_dues_date"),
                 'commercial_insurance_expiry_date': localStorage.getItem("tmp_associate_member_commercial_insurance_expiry_date"),
+                'auto_insurance_expiry_date': localStorage.getItem("tmp_associate_member_auto_insurance_expiry_date"),
+                'wsib_insurance_date': localStorage.getItem("tmp_associate_member_wsib_insurance_date"),
                 'police_check': localStorage.getItem("tmp_associate_member_police_check"),
                 'drivers_license_class': localStorage.getItem("tmp_associate_member_drivers_license_class"),
                 'has_car': localStorage.getItem("tmp_associate_member_has_car"),
@@ -251,6 +255,8 @@
                 localStorage.removeItem("tmp_associate_member_limit_special")
                 localStorage.removeItem("tmp_associate_member_dues_date")
                 localStorage.removeItem("tmp_associate_member_commercial_insurance_expiry_date")
+                localStorage.removeItem("tmp_associate_member_auto_insurance_expiry_date")
+                localStorage.removeItem("tmp_associate_member_wsib_insurance_date")
                 localStorage.removeItem("tmp_associate_member_police_check")
                 localStorage.removeItem("tmp_associate_member_drivers_license_class")
                 localStorage.removeItem("tmp_associate_member_has_car")
@@ -490,6 +496,18 @@
          <tr>
            <th scope="row" class="bg-light">ins_pd</th>
            <td id="selected_ins_pd" name="ins_pd">
+               <!-- POPULATE THROUGH JS. -->
+           </td>
+         </tr>
+         <tr>
+           <th scope="row" class="bg-light">auto_insurance_expiry_date</th>
+           <td id="selected_auto_insurance_expiry_date" name="auto_insurance_expiry_date">
+               <!-- POPULATE THROUGH JS. -->
+           </td>
+         </tr>
+         <tr>
+           <th scope="row" class="bg-light">wsib_insurance_date</th>
+           <td id="selected_wsib_insurance_date" name="wsib_insurance_date">
                <!-- POPULATE THROUGH JS. -->
            </td>
          </tr>
