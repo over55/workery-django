@@ -213,6 +213,20 @@
                 <!-- ################################################################## -->
                 <!-- ######################## end JOB DETAILS ######################## -->
                 <!-- ################################################################## -->
+
+
+                <!-- COMMENTS BUTTON -->
+                <div class="form-group col-md-12 mb-3 mx-auto text-center">
+                    <a href="{% url 'o55_tenant_job_activity_sheet_retrieve' template object.id %}">
+                    <button  id="id_submit_btn"
+                        class="btn btn-warning btn-lg btn-fxw mt-4"
+                        type="button">
+                    <i class="fas fa-edit"></i>&nbsp;{% trans 'View Activity Sheet' %}
+                    </button>
+                    </a>
+                </div>
+                <!-- end COMMENTS BUTTON -->
+
                 <!-- COMMENTS BUTTON -->
                 <div class="form-group col-md-12 mb-3 mx-auto text-center">
                     <a href="{% url 'o55_tenant_job_comments_retrieve' template object.id %}">

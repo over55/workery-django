@@ -217,6 +217,13 @@ class Order(models.Model):
         blank=True,
         null=True
     )
+    activity_sheet = models.ManyToManyField(
+        "Associate",
+        help_text=_('The activity sheet items related to the associates who accepted or rejected this order.'),
+        blank=True,
+        through='ActivitySheetItem',
+        related_name="%(app_label)s_%(class)s_activity_sheet_items_related"
+    )
 
     #
     #  FUNCTIONS

@@ -42,3 +42,4 @@ from tenant_foundation.models.customer_comment import CustomerComment
 from tenant_foundation.models.order_comment import OrderComment
 from tenant_foundation.models.staff_comment import StaffComment
 from tenant_foundation.models.partner_comment import PartnerComment
+from tenant_foundation.models.activity_sheet_item import ActivitySheetItem
