@@ -69,7 +69,7 @@
             // Initialize our datepicker jQuery code with our HTML view.
             $( "#dob" ).datepicker({
                 dateFormat: 'yy-mm-dd',
-		maxDate: 'today'
+		        maxDate: 'today'
             });
 
             // Populate previously set values.
@@ -183,28 +183,8 @@
             window.location = redirect_url;
         }
 
-        /**
-         *  Function will confirm the email is unique with the API web-service
-         *  and then submit our form for saving in the local storage after the
-         *  fields get validated.
-         */
         function ajax_post_form_submission(redirect_url) {
-            var tmp_email = $('#email').val();
-            post_is_email_unique_api(
-                tmp_email,
-                function(result) {
-                    if (result === 1 || result === '1') {
-                        save_submission(redirect_url);
-                    } else {
-                        alert("EMAIL ALREADY EXISTS, PLEASE PICK A NEW EMAIL ADDRESS"); //TODO: UPDATE THE GUI.
-                        return;
-                    }
-                },
-                function(json_error) {
-                    alert(json_error);
-                    //TODO: (1) OUTPUT THE ERROR IN A TEXT. (2) FOCUS ON THE OUTPUT.
-                }
-            ); // end API CALL
+            save_submission(redirect_url);
         }
 
         /**
@@ -212,36 +192,10 @@
          *  storage, then direct user to the link in the 'redirect_url' variable.
          */
         function save_submission(redirect_url) {
-            // GET OUR FORM.
-            var form = document.getElementById('add-partner-form');
 
-            // VALIDATE ALL OUR FORM FIELDS.
-            var has_error = false;
-            has_error |= valid_textfield_value('email', true, 2);
-            has_error |= valid_textfield_value('firstname', true, 2);
-            has_error |= valid_textfield_value('lastname', true, 2);
-            has_error |= valid_textfield_value('phonenumber', true, 10);
-            has_error |= valid_textfield_value('other_phonenumber', false, 10);
-            has_error |= valid_radiofields_seleciton('ok_to_email', true);
-            has_error |= valid_radiofields_seleciton('ok_to_text', true);
-            has_error |= valid_textfield_value('describe', false, 2);
-            has_error |= valid_textfield_value('street_address', true, 3);
-            has_error |= valid_textfield_value('street_address_extra', false, 3)
-            has_error |= valid_textfield_value('address_locality', true, 3);
-            has_error |= valid_textfield_value('address_region', true, 2);
-            has_error |= valid_textfield_value('address_country', true, 3);
-            has_error |= valid_textfield_value('postal_code', true, 3);
-            has_error |= valid_textfield_value('post_office_box_number', false, 3);
-            has_error |= valid_textfield_value('password', false, 2);
-            has_error |= valid_textfield_value('password_repeat', false, 2);
-            has_error |= valid_radiofields_seleciton('is_active', true);
-
-            // INTERRUPT THE FORM SUBMISSION IF ANY ERRORS EXISTED AND UPDATE THE
-            // GUI TO INDICATE THAT WE HAVE VALIDATED SOME FIELDS.
-            form.classList.add('was-validated');
-            if (has_error) {
-                return; // STOP THIS FUNCTION FROM GOING FORWARD UNTIL ERRORS FIXED.
-            }
+            //----------------------------------------------------------------//
+            //             EXTRACT THE DATA FROM THE FORM FIELDS.             //
+            //----------------------------------------------------------------//
 
             // EXTRACT OUR FIELD VALUES AND SAVE THEM IN LOCAL STORAGE.
             var given_name = $('#firstname').val();
@@ -278,6 +232,10 @@
             var comment = $('#comment').val();
             var is_active = get_selected_radio_value('is_active');
 
+            //----------------------------------------------------------------//
+            //             SAVE THE EXTRACTED DATA INTO LOCAL STORAGE         //
+            //----------------------------------------------------------------//
+
             localStorage.setItem("tmp_partner_given_name", given_name);
             localStorage.setItem("tmp_partner_last_name", last_name);
             localStorage.setItem("tmp_partner_date_of_birth", date_of_birth);
@@ -300,9 +258,108 @@
             localStorage.setItem("tmp_partner_comment", comment);
             localStorage.setItem("tmp_partner_is_active", is_active);
 
-            // REDIRECT TO OUR CONFIRM PAGE.
-            window.location = redirect_url;
-        }
+            //----------------------------------------------------------------//
+            //      GENERATE RANDOM PASSWORD IF NO PASSWORD WAS ENETERED      //
+            //----------------------------------------------------------------//
+
+            // Generate random password and apply it automatically to the
+            // password fields if no password was selected.
+            password = localStorage.getItem("tmp_associate_member_password")
+            password_repeat = localStorage.getItem("tmp_associate_member_password_repeat")
+            if (password === undefined || password === null || password === '' || password.length == 0) {
+                var randomString = Math.random().toString(34).slice(-10);
+                randomString += "A";
+                randomString += "!";
+                password = randomString;
+                password_repeat = randomString;
+            }
+
+            //----------------------------------------------------------------//
+            //              VALIDATE ALL THE FIELDS IN THIS FORM              //
+            //----------------------------------------------------------------//
+
+            // MAKE OUR API CALL TO THE BACKEND TO "CREATE" THE OBJECT.
+            validate_partner_customer_api(
+                {
+                    'given_name': localStorage.getItem("tmp_partner_given_name"),
+                    'middle_name': null,
+                    'last_name': localStorage.getItem("tmp_partner_last_name"),
+                    'birthdate': localStorage.getItem("tmp_partner_date_of_birth"),
+                    'gender': localStorage.getItem("tmp_partner_gender"),
+                    'nationality': null,
+                    'is_ok_to_email': localStorage.getItem("tmp_partner_ok_to_email"),
+                    'is_ok_to_text': localStorage.getItem("tmp_partner_ok_to_text"),
+                    'address_country': localStorage.getItem("tmp_partner_address_country"),
+                    'address_locality': localStorage.getItem("tmp_partner_address_locality"),
+                    'address_region': localStorage.getItem("tmp_partner_address_region"),
+                    'extra_comment': null,
+                    'street_address': localStorage.getItem("tmp_partner_street_address"),
+                    'street_address_extra': localStorage.getItem("tmp_partner_street_address_extra"),
+                    'postal_code': localStorage.getItem("tmp_partner_postal_code"),
+                    'post_office_box_number': localStorage.getItem("tmp_partner_post_office_box_number"),
+                    'email': localStorage.getItem("tmp_partner_email"),
+                    // 'area_served': area_served,
+                    'fax_number': null,
+                    'telephone': localStorage.getItem("tmp_partner_telephone"),
+                    'telephone_type_of': {{ shared_constants.TELEPHONE_CONTACT_POINT_TYPE_OF_ID }},
+                    // 'telephone_extension': telephone_extension,
+                    'other_telephone': localStorage.getItem("tmp_partner_other_telephone"),
+                    'other_telephone_type_of': {{ shared_constants.MOBILE_CONTACT_POINT_TYPE_OF_ID }},
+                    // 'fax_number': fax_number
+                    'password': password,
+                    'password_repeat': password_repeat,
+                    'type_of': {{ tenant_constants.RESIDENTIAL_CUSTOMER_TYPE_OF_ID }},
+                    'description': localStorage.getItem("tmp_partner_description"),
+                    'is_active': localStorage.getItem("tmp_partner_is_active"),
+                    'extra_comment': localStorage.getItem("tmp_partner_comment"),
+                },
+                function(result_dict) { // Success
+                    // FOR DEBUGGING PURPOSES ONLY.
+                    console.log(result_dict);
+
+                    // REDIRECT TO CONFIRM PAGE.
+                    window.location = redirect_url;
+                },
+                function(xhr,status,error) { // Error
+
+                    // STEP 1: Convert to JSON.
+                    var err = JSON.parse(xhr.responseText);
+
+                    // For debugging purposes only.
+                    console.log(err);
+
+                    // STEP 2: CLEAR EXISTING TEXT.
+                    $('#all_error_result').html("");
+
+                    // STEP 3: PRINT OUR ERROR IN THE TOP ERROR PANEL.
+                    for(var prop in err) {
+                        if(err.hasOwnProperty(prop)) {
+                            var val = err[prop];
+                            $('#all_error_result').append("<p><b>"+prop+"</b>"+val+"</p><br />");
+                        }
+                    }
+
+                    // STEP 4: FOCUS TO WHERE THE ERROR IS OCCURING.
+                    $('html, body').animate({ scrollTop: $('#id_page_title').offset().top }, 'slow');
+
+                    // STEP 5: ADD ERROR MESSAGES TO THE FIELDS.
+                    for(var prop in err) {
+                        if(err.hasOwnProperty(prop)) {
+                            var val = err[prop];
+                            console.log("KEY", prop);
+                            console.log("VALUE", val);
+
+                            //TODO: IMPLEMENT - Attach the message to the field.
+                        }
+                    }
+                },
+                function() { // Finally
+                    // UNLOCK THE "SUBMIT" BUTTON TO BE AVAILABLE FOR USAGE.
+                    enable_btn();
+                }
+            ); // end VALIDATE FUNC.
+
+        } // end FUNC.
 
         function click_cancel_button() {
             window.location = "{% url 'o55_tenant_partner_summary' %}";
@@ -321,7 +378,7 @@
     <div class="col-sm-5 mx-auto mt-2">
         <!-- Associate form -->
         <div class="col-sm-12 fade show active" id="partner-form" aria-labelledby="associate">
-            <h3 class="pt-4 pb-2 text-center">Add Partner Form</h3>
+            <h3 class="pt-4 pb-2 text-center" id="id_page_title">Add Partner Form</h3>
             <p>Use this form to fill out the partner information.</p>
             <p><span class="text-secondary font-italic"><sup>*</sup>&nbsp;-&nbsp;Indicates required field to fill out.</span></p>
             <!-- Error Output -->

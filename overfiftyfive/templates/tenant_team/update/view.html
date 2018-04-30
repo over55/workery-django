@@ -36,18 +36,6 @@
         // Initialize our 'select2' element.
         $('#person_tags').select2();
 
-        {% if staff.is_ok_to_email == True %}
-            $("#ok_to_email").prop("checked", true);
-        {% else %}
-            $("#ok_to_email2").prop("checked", true);
-        {% endif %}
-
-        {% if staff.is_ok_to_text == True %}
-            $("#ok_to_text").prop("checked", true);
-        {% else %}
-            $("#ok_to_text2").prop("checked", true);
-        {% endif %}
-
         // The following code continously checks to see if the current user
         // is assigned to the email.
         $('#email').keypress(debounce(function (event) {
@@ -55,7 +43,7 @@
             var email = $('#email').val();
             console.log(email);
         }, 250));
-        
+
     }); // end Ready
 
     /**
@@ -136,34 +124,10 @@
      *  (2)
      */
     function ajax_post_form_submission() {
-        // GET OUR FORM.
-        var form = document.getElementById('update-staff-form');
 
-        // VALIDATE ALL OUR FORM FIELDS.
-        var has_error = false;
-        has_error |= valid_textfield_value('firstname', true, 2);
-        has_error |= valid_textfield_value('lastname', true, 2);
-        has_error |= valid_textfield_value('phonenumber', true, 10);
-        has_error |= valid_textfield_value('other_phonenumber', false, 10);
-        has_error |= valid_radiofields_seleciton('ok_to_email', true);
-        has_error |= valid_radiofields_seleciton('ok_to_text', true);
-        has_error |= valid_textfield_value('describe', false, 2);
-        has_error |= valid_textfield_value('street_address', true, 3);
-        has_error |= valid_textfield_value('street_address_extra', false, 3)
-        has_error |= valid_textfield_value('address_locality', true, 3);
-        has_error |= valid_textfield_value('address_region', true, 2);
-        has_error |= valid_textfield_value('address_country', true, 3);
-        has_error |= valid_textfield_value('postal_code', true, 3);
-        has_error |= valid_textfield_value('post_office_box_number', false, 3);
-        has_error |= valid_textfield_value('password', false, 2);
-        has_error |= valid_textfield_value('password_repeat', false, 2);
-
-        // INTERRUPT THE FORM SUBMISSION IF ANY ERRORS EXISTED AND UPDATE THE
-        // GUI TO INDICATE THAT WE HAVE VALIDATED SOME FIELDS.
-        form.classList.add('was-validated');
-        if (has_error) {
-            return; // STOP THIS FUNCTION FROM GOING FORWARD UNTIL ERRORS FIXED.
-        }
+        //----------------------------------------------------------------//
+        //             EXTRACT THE DATA FROM THE FORM FIELDS.             //
+        //----------------------------------------------------------------//
 
         // EXTRACT OUR FIELD VALUES.
         var given_name = $('#firstname').val();
@@ -178,19 +142,6 @@
         var gender = $('#gender').val();
         if (gender == undefined || gender == null || gender.length == 0) {
             gender = '';
-        }
-
-        var ok_to_email = get_selected_radio_value('ok_to_email');
-        var ok_to_text = get_selected_radio_value('ok_to_text');
-        if (ok_to_email == 'yes') {
-            ok_to_email = true;
-        } else {
-            ok_to_email = false;
-        }
-        if (ok_to_text == 'yes') {
-            ok_to_text = true;
-        } else {
-            ok_to_text = false;
         }
 
         var street_address = $('#street_address').val();
@@ -214,6 +165,12 @@
         // LOCK OUT THE "SUBMIT" BUTTON SO THE USER DOES NOT MAKE MULTI-CALLS.
         disable_btn();
 
+        //--------------------------------------------------------------------//
+        // SUBMIT THE FORM DATA TO THE API-WEB SERVICE TO BE (1) VALIDATED    //
+        // AND (2) IF SUCCESSFULL THEN UPDATE THE DATA ELSE (3) TAKE THE      //
+        // RETURNED VALUES AND GENERATE THE APPROPRIATE ERROR MESSAGE.        //
+        //--------------------------------------------------------------------//
+
         // MAKE OUR API CALL TO THE BACKEND TO "CREATE" THE MEMBER USER.
         update_staff_api(
             {{ staff.id }}, // Staff PK
@@ -227,8 +184,6 @@
                 'description': description,
                 'tags': person_tags,
                 'nationality': null,
-                'is_ok_to_email': ok_to_email,
-                'is_ok_to_text': ok_to_text,
                 'address_country': address_country,
                 'address_locality': address_locality,
                 'address_region': address_region,
@@ -261,7 +216,7 @@
                 console.log(err);
 
                 // STEP 2: CLEAR EXISTING TEXT.
-                $('#all_error_result').html();
+                $('#all_error_result').html("");
 
                 // STEP 3: PRINT OUR ERROR.
                 for(var prop in err) {
@@ -288,7 +243,7 @@
 	    loadState($(this).find(':selected').val())
 	  });
 	  {% if staff.address_country %}loadState('{{staff.address_country}}');{% else %}loadState('CA');{% endif %}
-    
+
         let c_dropdown = $('#address_country');
 	c_dropdown.empty();
 	c_dropdown.append('<option selected="true" disabled>Choose Country</option>');
@@ -470,28 +425,6 @@
                     <label for="email">E-Mail <sup>*</sup></label>
                     <input type="email" class="form-control form-control-lg border border-primary" id="email" name="email" placeholder="Email Address" maxlength="254" value="{% if staff.email %}{{ staff.email }}{% endif %}">
                     <div id="email-error" class="invalid-feedback"></div>
-                </div>
-                <div class="form-group col-md-12 mb-4">
-                    <p class="mb-1">Ok to E-Mail? <sup>*</sup></p>
-                    <div class="form-radio custom-control custom-radio custom-control-inline">
-                        <input type="radio" id="ok_to_email" name="ok_to_email" value="yes" class="custom-control-input form-check-input">
-                        <label class="custom-control-label form-check-label" for="ok_to_email">Yes</label>
-                    </div>
-                    <div class="form-radio custom-control custom-radio custom-control-inline">
-                        <input type="radio" id="ok_to_email2" name="ok_to_email" value="no" class="custom-control-input form-check-input">
-                        <label class="custom-control-label form-check-label" for="ok_to_email2">No</label>
-                    </div>
-                </div>
-                <div class="form-group col-md-12 mb-4">
-                    <p class="mb-1">Ok to Text? <sup>*</sup></p>
-                    <div class="form-radio custom-control custom-radio custom-control-inline">
-                        <input type="radio" id="ok_to_text" name="ok_to_text" value="yes" class="custom-control-input form-check-input">
-                        <label class="custom-control-label form-check-label" for="ok_to_text">Yes</label>
-                    </div>
-                    <div class="form-radio custom-control custom-radio custom-control-inline">
-                        <input type="radio" id="ok_to_text2" name="ok_to_text" value="no" class="custom-control-input form-check-input">
-                        <label class="custom-control-label form-check-label" for="ok_to_text2">No</label>
-                    </div>
                 </div>
             </div>
             <!-- ############ end CONTACT POINT ############ -->

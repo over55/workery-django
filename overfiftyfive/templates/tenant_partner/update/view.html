@@ -52,7 +52,7 @@
             var email = $('#email').val();
             console.log(email);
         }, 250));
-        
+
     }); // end Ready
 
     /**
@@ -137,37 +137,11 @@
      *  (2)
      */
     function ajax_post_form_submission() {
-        // GET OUR FORM.
-        var form = document.getElementById('update-partner-form');
 
-        // VALIDATE ALL OUR FORM FIELDS.
-        var has_error = false;
-        has_error |= valid_textfield_value('email', true, 2);
-        has_error |= valid_textfield_value('firstname', true, 2);
-        has_error |= valid_textfield_value('lastname', true, 2);
-        has_error |= valid_textfield_value('phonenumber', true, 10);
-        has_error |= valid_textfield_value('other_phonenumber', false, 10);
-        has_error |= valid_radiofields_seleciton('ok_to_email', true);
-        has_error |= valid_radiofields_seleciton('ok_to_text', true);
-        has_error |= valid_textfield_value('describe', false, 2);
-        has_error |= valid_textfield_value('street_address', true, 3);
-        has_error |= valid_textfield_value('street_address_extra', false, 3)
-        has_error |= valid_textfield_value('address_locality', true, 3);
-        has_error |= valid_textfield_value('address_region', true, 2);
-        has_error |= valid_textfield_value('address_country', true, 3);
-        has_error |= valid_textfield_value('postal_code', true, 3);
-        has_error |= valid_textfield_value('post_office_box_number', false, 3);
-        has_error |= valid_textfield_value('password', false, 2);
-        has_error |= valid_textfield_value('password_repeat', false, 2);
-        has_error |= valid_radiofields_seleciton('is_active', true);
-
-        // INTERRUPT THE FORM SUBMISSION IF ANY ERRORS EXISTED AND UPDATE THE
-        // GUI TO INDICATE THAT WE HAVE VALIDATED SOME FIELDS.
-        form.classList.add('was-validated');
-        if (has_error) {
-            return; // STOP THIS FUNCTION FROM GOING FORWARD UNTIL ERRORS FIXED.
-        }
-
+        //----------------------------------------------------------------//
+        //             EXTRACT THE DATA FROM THE FORM FIELDS.             //
+        //----------------------------------------------------------------//
+        
         // EXTRACT OUR FIELD VALUES.
         var given_name = $('#firstname').val();
         var last_name = $('#lastname').val();
@@ -223,6 +197,12 @@
         // LOCK OUT THE "SUBMIT" BUTTON SO THE USER DOES NOT MAKE MULTI-CALLS.
         disable_btn();
 
+        //--------------------------------------------------------------------//
+        // SUBMIT THE FORM DATA TO THE API-WEB SERVICE TO BE (1) VALIDATED    //
+        // AND (2) IF SUCCESSFULL THEN UPDATE THE DATA ELSE (3) TAKE THE      //
+        // RETURNED VALUES AND GENERATE THE APPROPRIATE ERROR MESSAGE.        //
+        //--------------------------------------------------------------------//
+
         // MAKE OUR API CALL TO THE BACKEND TO "CREATE" THE MEMBER USER.
         update_partner_api(
             {{ partner.id }}, // Staff PK
@@ -271,7 +251,7 @@
                 console.log(err);
 
                 // STEP 2: CLEAR EXISTING TEXT.
-                $('#all_error_result').html();
+                $('#all_error_result').html('');
 
                 // STEP 3: PRINT OUR ERROR.
                 for(var prop in err) {

@@ -32,8 +32,6 @@
         $('#selected_other_phonenumber').append(localStorage.getItem("tmp_team_member_other_telephone"));
         $('#selected_dob').append(localStorage.getItem("tmp_team_member_date_of_birth"));
         $('#selected_gender').append(localStorage.getItem("tmp_team_member_gender"));
-        $("#selected_ok_to_email").append(localStorage.getItem("tmp_team_member_ok_to_email"));
-        $("#selected_ok_to_text").append(localStorage.getItem("tmp_team_member_ok_to_text"));
         $('#selected_street_address').append(localStorage.getItem("tmp_team_member_street_address"));
         $('#selected_street_address_extra').append(localStorage.getItem("tmp_team_member_street_address_extra"));
         $('#selected_address_locality').append(localStorage.getItem("tmp_team_member_address_locality"));
@@ -122,8 +120,6 @@
                 'birthdate': localStorage.getItem("tmp_team_member_date_of_birth"),
                 'gender': localStorage.getItem("tmp_team_member_gender"),
                 'nationality': null,
-                'is_ok_to_email': localStorage.getItem("tmp_team_member_ok_to_email"),
-                'is_ok_to_text': localStorage.getItem("tmp_team_member_ok_to_text"),
                 'address_country': localStorage.getItem("tmp_team_member_address_country"),
                 'address_locality': localStorage.getItem("tmp_team_member_address_locality"),
                 'address_region': localStorage.getItem("tmp_team_member_address_region"),
@@ -156,8 +152,6 @@
                 localStorage.removeItem("tmp_team_member_last_name");
                 localStorage.removeItem("tmp_team_member_date_of_birth");
                 localStorage.removeItem("tmp_team_member_gender");
-                localStorage.removeItem("tmp_team_member_ok_to_email");
-                localStorage.removeItem("tmp_team_member_ok_to_text");
                 localStorage.removeItem("tmp_team_member_street_address");
                 localStorage.removeItem("tmp_team_member_street_address_extra");
                 localStorage.removeItem("tmp_team_member_address_region");
@@ -301,18 +295,6 @@
          <tr>
            <th scope="row" class="bg-light">Description</th>
            <td id="selected_description">
-               <!-- POPULATE THROUGH JS. -->
-           </td>
-         </tr>
-         <tr>
-           <th scope="row" class="bg-light">Okay to Email?</th>
-           <td id="selected_ok_to_email">
-               <!-- POPULATE THROUGH JS. -->
-           </td>
-         </tr>
-         <tr>
-           <th scope="row" class="bg-light">Okay to Text?</th>
-           <td id="selected_ok_to_text">
                <!-- POPULATE THROUGH JS. -->
            </td>
          </tr>
