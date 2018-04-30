@@ -123,8 +123,8 @@ class Command(BaseCommand):
             ldn_area = row_dict[16]              # LONDAREA
             hourly_salary_desired = row_dict[17] # HRLYSALDESIR
             limit_special = row_dict[18]         # LIMITSPECIAL
-            dues_pd = row_dict[19]               # DUES PD
-            ins_due = row_dict[20]               # INS DUE
+            dues_date = row_dict[19]               # DUES PD
+            commercial_insurance_expiry_date = row_dict[20]               # INS DUE
             police_check = row_dict[21]          # POLCHK
             drivers_license_class = row_dict[22] # DRLICCLASS
             comments_text = row_dict[23]         # COMMENTS
@@ -140,8 +140,8 @@ class Command(BaseCommand):
             # Convert the datetime.
             local_birthdate = get_dt_from_toronto_timezone_ms_access_dt_string(birthdate)
             local_join_date = get_dt_from_toronto_timezone_ms_access_dt_string(join_date)
-            local_dues_pd = get_dt_from_toronto_timezone_ms_access_dt_string(dues_pd)
-            local_ins_due = get_dt_from_toronto_timezone_ms_access_dt_string(ins_due)
+            local_dues_date = get_dt_from_toronto_timezone_ms_access_dt_string(dues_date)
+            local_commercial_insurance_expiry_date = get_dt_from_toronto_timezone_ms_access_dt_string(commercial_insurance_expiry_date)
             local_police_check = get_dt_from_toronto_timezone_ms_access_dt_string(police_check)
 
             # Minor formatting.
@@ -236,17 +236,14 @@ class Command(BaseCommand):
                     'area_served':ldn_area,
                     'hourly_salary_desired':int_or_none(hourly_salary_desired),
                     'limit_special':limit_special,
-                    'dues_pd':local_dues_pd,
-                    'ins_due':local_ins_due,
+                    'dues_date':local_dues_date,
+                    'commercial_insurance_expiry_date':local_commercial_insurance_expiry_date,
                     'police_check':local_police_check,
                     'drivers_license_class':drivers_license_class,
                     # 'comments':comments,
                     'has_car':bool_or_none(has_van),
                     'has_van':bool_or_none(has_van),
                     'has_truck':bool_or_none(has_truck),
-                    'is_full_time':bool_or_none(is_full_time),
-                    'is_part_time':bool_or_none(is_part_time),
-                    'is_contract_time':bool_or_none(is_contract_time),
                     'is_small_job':bool_or_none(is_small_job),
                     'how_hear':how_hear,
                     'last_modified_by': None,

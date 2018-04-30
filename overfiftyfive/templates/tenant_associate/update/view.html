@@ -34,10 +34,10 @@
             dateFormat: 'yy-mm-dd',
 	        maxDate: 'today'
         });
-        $( "#dues_pd" ).datepicker({
+        $( "#dues_date" ).datepicker({
             dateFormat: 'yy-mm-dd'  // https://stackoverflow.com/a/7500097
         });
-        $( "#ins_due" ).datepicker({
+        $( "#commercial_insurance_expiry_date" ).datepicker({
             dateFormat: 'yy-mm-dd'  // https://stackoverflow.com/a/7500097
         });
         $( "#police_check" ).datepicker({
@@ -235,8 +235,8 @@
         var is_active = get_boolean_from_selected_radio_value('is_active');
         var hourly_salary_desired = $('#hourly_salary_desired').val();
         var limit_special = $('#limit_special').val();
-        var dues_pd = $('#dues_pd').val();
-        var ins_due = $('#ins_due').val();
+        var dues_date = $('#dues_date').val();
+        var commercial_insurance_expiry_date = $('#commercial_insurance_expiry_date').val();
         var police_check = $('#police_check').val();
         var drivers_license_class = $('#drivers_license_class').val();
         var has_car = get_boolean_from_selected_radio_value('has_car');
@@ -296,8 +296,8 @@
                 // --- Associate Details ---
                 'hourly_salary_desired': hourly_salary_desired,
                 'limit_special': limit_special,
-                'dues_pd': dues_pd,
-                'ins_due': ins_due,
+                'dues_date': dues_date,
+                'commercial_insurance_expiry_date': commercial_insurance_expiry_date,
                 'police_check': police_check,
                 'drivers_license_class': drivers_license_class,
                 'has_car': has_car,
@@ -632,23 +632,23 @@
                     <div id="limit_special-error" class="invalid-feedback"></div>
                 </div>
                 <div class="form-group p-0 col-md-7 mb-4">
-                    <label for="dues_pd">dues_pd</label>
+                    <label for="dues_date">dues_date</label>
                     <div class="input-group input-group-lg">
-                        <input type="text" class="form-control form-control-lg border border-success" id="dues_pd" name="dues_pd" placeholder="yyyy-mm-dd" value="{% if associate.dues_pd %}{{ associate.dues_pd|date:"Y-m-d" }}{% endif %}">
+                        <input type="text" class="form-control form-control-lg border border-success" id="dues_date" name="dues_date" placeholder="yyyy-mm-dd" value="{% if associate.dues_date %}{{ associate.dues_date|date:"Y-m-d" }}{% endif %}">
                         <div class="input-group-append">
-                            <span class="input-group-text dues_pd-icon bg-success border-success"><i class="far fa-calendar-alt"></i></span>
+                            <span class="input-group-text dues_date-icon bg-success border-success"><i class="far fa-calendar-alt"></i></span>
                         </div>
-                        <div id="dues_pd-error" class="invalid-feedback"></div>
+                        <div id="dues_date-error" class="invalid-feedback"></div>
                     </div>
                 </div>
                 <div class="form-group p-0 col-md-7 mb-4">
-                    <label for="ins_due">ins_due</label>
+                    <label for="commercial_insurance_expiry_date">commercial_insurance_expiry_date</label>
                     <div class="input-group input-group-lg">
-                        <input type="text" class="form-control form-control-lg border border-success" id="ins_due" name="ins_due" placeholder="yyyy-mm-dd" value="{% if associate.ins_due  %}{{ associate.ins_due|date:"Y-m-d" }}{% endif %}">
+                        <input type="text" class="form-control form-control-lg border border-success" id="commercial_insurance_expiry_date" name="commercial_insurance_expiry_date" placeholder="yyyy-mm-dd" value="{% if associate.commercial_insurance_expiry_date  %}{{ associate.commercial_insurance_expiry_date|date:"Y-m-d" }}{% endif %}">
                         <div class="input-group-append">
-                            <span class="input-group-text ins_due-icon bg-success border-success"><i class="far fa-calendar-alt"></i></span>
+                            <span class="input-group-text commercial_insurance_expiry_date-icon bg-success border-success"><i class="far fa-calendar-alt"></i></span>
                         </div>
-                        <div id="ins_due-error" class="invalid-feedback"></div>
+                        <div id="commercial_insurance_expiry_date-error" class="invalid-feedback"></div>
                     </div>
                 </div>
                 <div class="form-group p-0 col-md-7 mb-4">

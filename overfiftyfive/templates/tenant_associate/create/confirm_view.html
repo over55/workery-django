@@ -94,8 +94,8 @@
         // --- Associate Details ---
         $('#selected_hourly_salary_desired').append(localStorage.getItem("tmp_associate_member_hourly_salary_desired"));
         $('#selected_limit_special').append(localStorage.getItem("tmp_associate_member_limit_special"));
-        $('#selected_dues_pd').append(localStorage.getItem("tmp_associate_member_dues_pd"));
-        $('#selected_ins_pd').append(localStorage.getItem("tmp_associate_member_ins_due"));
+        $('#selected_dues_date').append(localStorage.getItem("tmp_associate_member_dues_date"));
+        $('#selected_ins_pd').append(localStorage.getItem("tmp_associate_member_commercial_insurance_expiry_date"));
         $('#selected_police_check').append(localStorage.getItem("tmp_associate_member_police_check"));
         $('#selected_drivers_license_class').append(localStorage.getItem("tmp_associate_member_drivers_license_class"));
 
@@ -205,8 +205,8 @@
                 // --- Associate Details ---
                 'hourly_salary_desired': localStorage.getItem("tmp_associate_member_hourly_salary_desired"),
                 'limit_special': localStorage.getItem("tmp_associate_member_limit_special"),
-                'dues_pd': localStorage.getItem("tmp_associate_member_dues_pd"),
-                'ins_due': localStorage.getItem("tmp_associate_member_ins_due"),
+                'dues_date': localStorage.getItem("tmp_associate_member_dues_date"),
+                'commercial_insurance_expiry_date': localStorage.getItem("tmp_associate_member_commercial_insurance_expiry_date"),
                 'police_check': localStorage.getItem("tmp_associate_member_police_check"),
                 'drivers_license_class': localStorage.getItem("tmp_associate_member_drivers_license_class"),
                 'has_car': localStorage.getItem("tmp_associate_member_has_car"),
@@ -249,8 +249,8 @@
                 // --- Associate Details ---
                 localStorage.removeItem("tmp_associate_member_hourly_salary_desired")
                 localStorage.removeItem("tmp_associate_member_limit_special")
-                localStorage.removeItem("tmp_associate_member_dues_pd")
-                localStorage.removeItem("tmp_associate_member_ins_due")
+                localStorage.removeItem("tmp_associate_member_dues_date")
+                localStorage.removeItem("tmp_associate_member_commercial_insurance_expiry_date")
                 localStorage.removeItem("tmp_associate_member_police_check")
                 localStorage.removeItem("tmp_associate_member_drivers_license_class")
                 localStorage.removeItem("tmp_associate_member_has_car")
@@ -482,8 +482,8 @@
            </td>
          </tr>
          <tr>
-           <th scope="row" class="bg-light">dues_pd</th>
-           <td id="selected_dues_pd" name="dues_pd">
+           <th scope="row" class="bg-light">dues_date</th>
+           <td id="selected_dues_date" name="dues_date">
                <!-- POPULATE THROUGH JS. -->
            </td>
          </tr>

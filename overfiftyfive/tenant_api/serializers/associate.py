@@ -144,8 +144,10 @@ class AssociateListCreateSerializer(serializers.ModelSerializer):
             'is_ok_to_text',
             'hourly_salary_desired',
             'limit_special',
-            'dues_pd',
-            'ins_due',
+            'dues_date',
+            'commercial_insurance_expiry_date',
+            'auto_insurance_expiry_date',
+            'wsib_insurance_date',
             'police_check',
             'drivers_license_class',
             'has_car',
@@ -285,8 +287,8 @@ class AssociateListCreateSerializer(serializers.ModelSerializer):
             is_ok_to_text=validated_data.get('is_ok_to_text', None),
             hourly_salary_desired=validated_data.get('hourly_salary_desired', 0.00),
             limit_special=validated_data.get('limit_special', None),
-            dues_pd=validated_data.get('dues_pd', None),
-            ins_due=validated_data.get('ins_due', None),
+            dues_date=validated_data.get('dues_date', None),
+            commercial_insurance_expiry_date=validated_data.get('commercial_insurance_expiry_date', None),
             police_check=validated_data.get('police_check', None),
             drivers_license_class=validated_data.get('drivers_license_class', None),
             has_car=validated_data.get('has_car', False),
@@ -424,8 +426,10 @@ class AssociateRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
             'is_ok_to_text',
             'hourly_salary_desired',
             'limit_special',
-            'dues_pd',
-            'ins_due',
+            'dues_date',
+            'commercial_insurance_expiry_date',
+            'auto_insurance_expiry_date',
+            'wsib_insurance_date',
             'police_check',
             'drivers_license_class',
             'has_car',
@@ -545,8 +549,8 @@ class AssociateRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         instance.is_ok_to_text=validated_data.get('is_ok_to_text', instance.is_ok_to_text)
         instance.hourly_salary_desired=validated_data.get('hourly_salary_desired', instance.hourly_salary_desired)
         instance.limit_special=validated_data.get('limit_special', instance.limit_special)
-        instance.dues_pd=validated_data.get('dues_pd', instance.dues_pd)
-        instance.ins_due=validated_data.get('ins_due', instance.ins_due)
+        instance.dues_date=validated_data.get('dues_date', instance.dues_date)
+        instance.commercial_insurance_expiry_date=validated_data.get('commercial_insurance_expiry_date', instance.commercial_insurance_expiry_date)
         instance.police_check=validated_data.get('police_check', instance.police_check)
         instance.drivers_license_class=validated_data.get('drivers_license_class', instance.drivers_license_class)
         instance.has_car=validated_data.get('has_car', instance.has_car)

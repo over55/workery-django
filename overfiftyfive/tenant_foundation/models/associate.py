@@ -142,14 +142,26 @@ class Associate(AbstractPerson):
         blank=True,
         null=True,
     )
-    dues_pd = models.DateField(
-        _("Deus PD"),
+    dues_date = models.DateField(
+        _("Membership Dues Date"),
         help_text=_('-'),
         null=True,
         blank=True,
     )
-    ins_due = models.DateField(
-        _("Ins Due"),
+    commercial_insurance_expiry_date = models.DateField(
+        _("Commercial Insurance Expiry Date"),
+        help_text=_('-'),
+        null=True,
+        blank=True,
+    )
+    auto_insurance_expiry_date = models.DateField(
+        _("Auto Insurance Expiry Date"),
+        help_text=_('-'),
+        null=True,
+        blank=True,
+    )
+    wsib_insurance_date = models.DateField(
+        _("WSIB Insurance Date"),
         help_text=_('-'),
         null=True,
         blank=True,

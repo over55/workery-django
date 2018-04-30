@@ -54,8 +54,8 @@ def run_associates_importer_from_csv_file(csvfile):
             ldn_area = row[16]              # LONDAREA
             hourly_salary_desired = row[17] # HRLYSALDESIR
             limit_special = row[18]         # LIMITSPECIAL
-            dues_pd = row[19]               # DUES PD
-            ins_due = row[20]               # INS DUE
+            dues_date = row[19]               # DUES PD
+            commercial_insurance_expiry_date = row[20]               # INS DUE
             police_check = row[21]          # POLCHK
             drivers_license_class = row[22] # DRLICCLASS
             comments = row[23]              # COMMENTS
@@ -71,8 +71,8 @@ def run_associates_importer_from_csv_file(csvfile):
             # Convert the datetime.
             local_birthdate = get_dt_from_toronto_timezone_ms_access_dt_string(birthdate)
             local_join_date = get_dt_from_toronto_timezone_ms_access_dt_string(join_date)
-            local_dues_pd = get_dt_from_toronto_timezone_ms_access_dt_string(dues_pd)
-            local_ins_due = get_dt_from_toronto_timezone_ms_access_dt_string(ins_due)
+            local_dues_date = get_dt_from_toronto_timezone_ms_access_dt_string(dues_date)
+            local_commercial_insurance_expiry_date = get_dt_from_toronto_timezone_ms_access_dt_string(commercial_insurance_expiry_date)
             local_police_check = get_dt_from_toronto_timezone_ms_access_dt_string(police_check)
 
             # Minor formatting.
@@ -151,8 +151,8 @@ def run_associates_importer_from_csv_file(csvfile):
                         'area_served':ldn_area,
                         'hourly_salary_desired':int_or_none(hourly_salary_desired),
                         'limit_special':limit_special,
-                        'dues_pd':local_dues_pd,
-                        'ins_due':local_ins_due,
+                        'dues_date':local_dues_date,
+                        'commercial_insurance_expiry_date':local_commercial_insurance_expiry_date,
                         'police_check':local_police_check,
                         'drivers_license_class':drivers_license_class,
                         'comments':comments,
