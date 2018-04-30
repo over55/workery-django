@@ -43,6 +43,7 @@
         $('#selected_telephone').append(localStorage.getItem("tmp_team_member_telephone"));
         $('#selected_description').append(localStorage.getItem("tmp_team_member_description"));
         $('#selected_comment').append(localStorage.getItem("tmp_team_member_comment"));
+        $('#selected_is_active').append(localStorage.getItem("tmp_team_member_is_active"));
 
         // Set our `Tag` field.
         var tmp_person_tag_values = localStorage.getObj("tmp_team_member_person_tag_values");
@@ -142,6 +143,7 @@
                 'group_membership': parseInt(localStorage.getItem("tmp_team_member_group_membership")),
                 'description': localStorage.getItem("tmp_team_member_description"),
                 'extra_comment': localStorage.getItem("tmp_team_member_comment"),
+                'is_active': localStorage.getItem("tmp_team_member_is_active"),
             },
             function(result_dict) { // Success
                 // FOR DEBUGGING PURPOSES ONLY.
@@ -169,6 +171,7 @@
                 localStorage.removeItem("tmp_team_member_person_tag_values")
                 localStorage.removeItem("tmp_team_member_description")
                 localStorage.removeItem("tmp_team_member_comment")
+                localStorage.removeItem("tmp_team_member_is_active")
 
                 // REDIRECT TO SUCCESS PAGE.
                 window.location = redirect_url;
@@ -349,6 +352,12 @@
          <tr>
            <th scope="row" class="bg-light">Additional Comment(s)</th>
            <td id="selected_comment">
+               <!-- POPULATE THROUGH JS. -->
+           </td>
+         </tr>
+         <tr>
+           <th scope="row" class="bg-light">Is Active</th>
+           <td id="selected_is_active">
                <!-- POPULATE THROUGH JS. -->
            </td>
          </tr>

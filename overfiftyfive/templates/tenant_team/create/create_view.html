@@ -95,6 +95,9 @@
             $('#password_repeat').val(localStorage.getItem("tmp_team_member_password_repeat"));
             $('#describe').append(localStorage.getItem("tmp_team_member_description"));
             $('#comment').append(localStorage.getItem("tmp_team_member_comment"));
+
+            // Radio buttons.
+            $("input[name=is_active][value=" + localStorage.getItem("tmp_team_member_is_active") + "]").prop('checked', true);
         }); // end Ready
 
         /**
@@ -230,6 +233,7 @@
             var person_tags = $('#person_tags').val();
             var description = $('#describe').val();
             var comment = $('#comment').val();
+            var is_active = get_selected_radio_value('is_active');
 
             //----------------------------------------------------------------//
             //             SAVE THE EXTRACTED DATA INTO LOCAL STORAGE         //
@@ -254,6 +258,7 @@
             localStorage.setItem("tmp_team_member_password_repeat", password_repeat);
             localStorage.setItem("tmp_team_member_description", description);
             localStorage.setItem("tmp_team_member_comment", comment);
+            localStorage.setItem("tmp_team_member_is_active", is_active);
 
             // SAVE ARRAY OF IDS.
             localStorage.setObj("tmp_team_member_person_tag_ids", person_tags);
@@ -314,6 +319,7 @@
                     // 'fax_number': fax_number
                     'password': password,
                     'password_repeat': password_repeat,
+                    'is_active': localStorage.getItem("tmp_team_member_is_active"),
                     'tags': localStorage.getObj("tmp_team_member_person_tag_ids"),
                     'group_membership': parseInt(localStorage.getItem("tmp_team_member_group_membership")),
                     'description': localStorage.getItem("tmp_team_member_description"),
@@ -596,6 +602,18 @@
                     minlength="2"
                     maxlength="30" required />
                     <div id="password_repeat-error" class="invalid-feedback"></div>
+                </div>
+                <div class="form-group col-md-12 mb-4">
+                    <p class="mb-1">Is active? <sup>*</sup></p>
+                    <div class="form-radio custom-control custom-radio custom-control-inline">
+                        <input type="radio" id="is_active" name="is_active" value="true" class="custom-control-input form-check-input">
+                        <label class="custom-control-label form-check-label" for="is_active">Yes</label>
+                    </div>
+                    <div class="form-radio custom-control custom-radio custom-control-inline">
+                        <input type="radio" id="is_active2" name="is_active" value="false" class="custom-control-input form-check-input">
+                        <label class="custom-control-label form-check-label" for="is_active2">No</label>
+                        <div id="is_active-error" class="invalid-feedback ml-2"></div>
+                    </div>
                 </div>
             </div>
             <!-- ############ end SECURITY ############ -->

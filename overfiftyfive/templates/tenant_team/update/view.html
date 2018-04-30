@@ -44,6 +44,9 @@
             console.log(email);
         }, 250));
 
+        {% if staff.owner.is_active == True %}$("#is_active").prop("checked", true);{% else %}$("#is_active2").prop("checked", true);{% endif %}
+
+
     }); // end Ready
 
     /**
@@ -147,8 +150,14 @@
         var street_address = $('#street_address').val();
         var street_address_extra = $('#street_address_extra').val();
         var address_region = $('#address_region').val();
+        if (address_region == null) {
+            address_region = "Ontario"
+        }
         var address_locality = $('#address_locality').val();
         var address_country = $('#address_country').val();
+        if (address_country == null) {
+            address_country = "Canada";
+        }
         var postal_code = $('#postal_code').val();
         var post_office_box_number = $('#post_office_box_number').val();
         var email = $('#email').val();
@@ -392,7 +401,7 @@
                     <div id="gender-error" class="invalid-feedback"></div>
                 </div>
                 <div class="form-group col-md-12 mb-4 p-0">
-      		        <label for="describe" class="font-b6">Describe the associate:</label>
+      		        <label for="describe" class="font-b6">Describe the staff:</label>
       		        <textarea class="form-control form-control-lg border border-success" id="describe" name="describe" placeholder="Describe here..." rows="4" minlength="10" required>{% if staff.description %}{{ staff.description }}{% endif %}</textarea>
       		        <div id="describe-error" class="invalid-feedback"></div>
                     <small class="form-text text-muted">Maximum 1,000 characters.</small>
@@ -509,6 +518,18 @@
                     minlength="2"
                     maxlength="30" required />
                     <div id="password_repeat-error" class="invalid-feedback"></div>
+                </div>
+                <div class="form-group col-md-12 mb-4">
+                    <p class="mb-1">Is active? <sup>*</sup></p>
+                    <div class="form-radio custom-control custom-radio custom-control-inline">
+                        <input type="radio" id="is_active" name="is_active" value="yes" class="custom-control-input form-check-input">
+                        <label class="custom-control-label form-check-label" for="is_active">Yes</label>
+                    </div>
+                    <div class="form-radio custom-control custom-radio custom-control-inline">
+                        <input type="radio" id="is_active2" name="is_active" value="no" class="custom-control-input form-check-input">
+                        <label class="custom-control-label form-check-label" for="is_active2">No</label>
+                        <div id="is_active-error" class="invalid-feedback ml-2"></div>
+                    </div>
                 </div>
             </div>
             <!-- ############ end SECURITY ############ -->

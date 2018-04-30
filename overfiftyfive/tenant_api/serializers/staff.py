@@ -110,6 +110,13 @@ class StaffListCreateSerializer(serializers.ModelSerializer):
         max_length=63,
         style={'input_type': 'password'}
     )
+    is_active = serializers.BooleanField(
+        write_only=True,
+        required=True,
+        error_messages={
+            "invalid": _("Please pick either 'Yes' or 'No' choice.")
+        }
+    )
 
     # Meta Information.
     class Meta:
@@ -132,6 +139,7 @@ class StaffListCreateSerializer(serializers.ModelSerializer):
 
             # Misc (Read/Write)
             'tags',
+            'is_active',
 
             # # Misc (Read Only)
             # 'comments',
@@ -283,7 +291,7 @@ class StaffListCreateSerializer(serializers.ModelSerializer):
             first_name=validated_data['given_name'],
             last_name=validated_data['last_name'],
             email=email,
-            is_active=True,
+            is_active=validated_data['is_active'],
             franchise=self.context['franchise'],
             was_email_activated=True
         )
@@ -366,6 +374,13 @@ class StaffRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         max_length=63,
         style={'input_type': 'password'}
     )
+    is_active = serializers.BooleanField(
+        write_only=True,
+        required=True,
+        error_messages={
+            "invalid": _("Please pick either 'Yes' or 'No' choice.")
+        }
+    )
 
     # All comments are created by our `create` function and not by
     # # `django-rest-framework`.
@@ -402,6 +417,7 @@ class StaffRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
 
             # Misc (Read/Write)
             'tags',
+            'is_active',
             # # 'is_senior',
             # # 'is_support',
             # # 'job_info_read',
@@ -479,6 +495,7 @@ class StaffRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         instance.owner.username = get_unique_username_from_email(email)
         instance.owner.first_name = validated_data.get('given_name', instance.owner.first_name)
         instance.owner.last_name = validated_data.get('last_name', instance.owner.last_name)
+        instance.owner.is_active = validated_data.get('is_active', instance.owner.last_name)
         instance.owner.save()
         print("INFO: Updated the shared user.")
 
