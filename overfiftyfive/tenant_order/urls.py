@@ -34,6 +34,7 @@ urlpatterns = (
     path('jobs/<str:template>/detail/<int:pk>/', retrieve_view.JobRetrieveView.as_view(), name='o55_tenant_job_retrieve'),
     path('jobs/<str:template>/detail/<int:pk>/comments/', retrieve_view.JobCommentsRetrieveView.as_view(), name='o55_tenant_job_comments_retrieve'),
     path('jobs/<str:template>/detail/<int:pk>/activity-sheet/', retrieve_view.JobActivitySheetRetrieveView.as_view(), name='o55_tenant_job_activity_sheet_retrieve'),
+    path('jobs/<str:template>/detail/<int:pk>/activity-sheet/create', retrieve_view.JobActivitySheetCreateAndRetrieveView.as_view(), name='o55_tenant_job_activity_sheet_retrieve_and_create'),
 
     # Update
     path('jobs/<str:template>/detail/<int:pk>/edit/', update_views.JobUpdateView.as_view(), name='o55_tenant_job_update'),

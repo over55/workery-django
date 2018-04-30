@@ -95,7 +95,8 @@ function click_add_button() {
 	    	<li class="breadcrumb-item"><a href="{% url 'o55_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
             <li class="breadcrumb-item"><a href="{% url 'o55_tenant_job_summary' %}">{% trans 'Jobs' %}</a></li>
             <li class="breadcrumb-item"><a href="{% url 'o55_tenant_job_retrieve' template job.id %}">{% trans 'Job #' %}{{ job.id|intcomma }}</a></li>
-            <li class="breadcrumb-item active" aria-current="page">{% trans 'Job Activity Sheet' %}</li>
+            <li class="breadcrumb-item"><a href="{% url 'o55_tenant_job_activity_sheet_retrieve' template job.id %}">Job Activity Sheet</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{% trans 'Assign' %}</li>
 
             {% endif %}
 	  	</ol>
@@ -121,10 +122,10 @@ function click_add_button() {
     <!------------------------------------------------------------------------->
     <div class="row">
 		<div class="col-sm-3 p-3 mb-2">
-			<a class="btn btn-primary btn-lg" href="{% url 'o55_tenant_job_retrieve' template job.id %}" role="button">
+			<a class="btn btn-primary btn-lg" href="{% url 'o55_tenant_job_activity_sheet_retrieve' template job.id %}" role="button">
                 <svg class="svg-inline--fa fa-arrow-left fa-w-14" aria-hidden="true" data-fa-processed="" data-prefix="fas" data-icon="arrow-left" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
                 <path fill="currentColor" d="M257.5 445.1l-22.2 22.2c-9.4 9.4-24.6 9.4-33.9 0L7 273c-9.4-9.4-9.4-24.6 0-33.9L201.4 44.7c9.4-9.4 24.6-9.4 33.9 0l22.2 22.2c9.5 9.5 9.3 25-.4 34.3L136.6 216H424c13.3 0 24 10.7 24 24v32c0 13.3-10.7 24-24 24H136.6l120.5 114.8c9.8 9.3 10 24.8.4 34.3z"></path>
-            </svg><!-- <i class="fas fa-arrow-left"></i> -->&nbsp;{% trans 'Back to Job Details' %}</a>
+            </svg><!-- <i class="fas fa-arrow-left"></i> -->&nbsp;{% trans 'Back to Job Activity Sheet' %}</a>
 		</div>
 	</div>
     <!------------------------------------------------------------------------->
@@ -134,68 +135,48 @@ function click_add_button() {
 
     <!-- FORM -->
     <!------------------------------------------------------------------------->
-    <h2>Available Associates</h2>
-    <div class="table-responsive">
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>{% trans '#' %}</th>
-                    <th>{% trans 'Name' %}</th>
-                    <th>{% trans 'Total Contact Count' %}</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for associate in available_associates_list %}
-                <tr>
-                    <td>{{ associate.id|intcomma }}</td>
-                    <td>{{ associate }}</td>
-                    <td>{{ associate.activity_sheet.count }}</td>
-                    <td>
-                        <a href="{% url 'o55_tenant_job_activity_sheet_retrieve_and_create' template job.id %}">Assign</a>
-                    </td>
-                </tr>
-                {% empty %}
-                No jobs yet.
-                {% endfor %}
-            </tbody>
-        </table>
+    <div class="col-sm-5 mx-auto mt-2">
+        <!-- Associate form -->
+        <div class="col-sm-12 fade show active" id="member-form" aria-labelledby="associate">
+            <h3 class="pt-4 pb-2 text-center">Assign Form</h3>
+
+            <!-- Error Output -->
+            <div id="all_error_result" name="all_error_result"></div>
+            <!-- end Error Output -->
+
+            <p>Use this form to fill out the member information.</p>
+            <p><span class="text-secondary font-italic"><sup>*</sup>&nbsp;-&nbsp;Indicates required field to fill out.</span></p>
+            <p>&nbsp;</p>
+            <form id="add-member-form" method="post" class="needs-validation" action="" novalidate>
+            <!-- ############ PERSON ############ -->
+
+            <div class="form-group col-md-12 mb-4">
+                <p class="mb-1">Accepted Job? <sup>*</sup></p>
+                <div class="form-radio custom-control custom-radio custom-control-inline">
+                    <input type="radio" id="ok_to_text" name="ok_to_text" value="true" class="custom-control-input form-check-input">
+                    <label class="custom-control-label form-check-label" for="ok_to_text">Yes</label>
+                </div>
+                <div class="form-radio custom-control custom-radio custom-control-inline">
+                    <input type="radio" id="ok_to_text2" name="ok_to_text" value="false" class="custom-control-input form-check-input">
+                    <label class="custom-control-label form-check-label" for="ok_to_text2">No</label>
+                    <div id="ok_to_text-error" class="invalid-feedback ml-2"></div>
+                </div>
+            </div>
+            <div class="form-group col-md-12 mb-4 p-0">
+                <label for="comment" class="font-b6">Comment</label>
+                <textarea class="form-control form-control-lg border border-success" id="comment" name="comment" placeholder="How here..." rows="4" minlength="10" required></textarea>
+                <div id="comment-error" class="invalid-feedback"></div>
+                <small class="form-text text-muted">Maximum 1,000 characters.</small>
+            </div>
+            <button id="id_submit_btn"
+                 class="btn btn-success btn-lg mt-4 float-right pl-4 pr-4"
+                  type="button"
+               onclick="click_next_button();">
+                Assign <i class="fas fa-arrow-right"></i></button>
+        </div>
     </div>
     <!------------------------------------------------------------------------->
     <!-- end FORM -->
-
-    <br />
-    <br />
-
-
-    <!-- FORM -->
-    <!------------------------------------------------------------------------->
-    <h2>Activity Sheet Items</h2>
-    <div class="table-responsive">
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>{% trans '#' %}</th>
-                    <th>{% trans 'Name' %}</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for item in job.activity_sheet.all %}
-                <tr>
-                    <td>{{ item.id|intcomma }}</td>
-                    <td>{{ item}}</td>
-                    <td></td>
-                </tr>
-                {% empty %}
-                No activity sheet items yet.
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
-    <!------------------------------------------------------------------------->
-    <!-- end FORM -->
-
 
 
     <!-- RETURN-TO-TOP -->
