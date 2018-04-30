@@ -106,12 +106,12 @@ class JobActivitySheetRetrieveView(DetailView, ExtraRequestProcessingMixin):
         #   so we can use this to help the pagination.
         modified_context['parameters'] = self.get_params_dict([])
 
-        # Find all the associates that match the job skill criteria.
+        # Find all the unique associates that match the job skill criteria
+        # for the job.
         job = modified_context['job']
         skill_set_pks = job.skill_sets.values_list('pk', flat=True)
-        print(skill_set_pks)
-        available_associates = Associate.objects.filter(skill_sets__in=skill_set_pks)
-        print(available_associates)
+        available_associates = Associate.objects.filter(skill_sets__in=skill_set_pks).distinct()
+        modified_context['available_associates_list'] = available_associates
 
         # Return our modified context.
         return modified_context
