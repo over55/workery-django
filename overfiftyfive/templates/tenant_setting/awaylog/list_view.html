@@ -2,7 +2,7 @@
 {% load staticfiles i18n foundation_tags humanize %}
 
 {% block title %}
-{% trans 'Away Announcements | Over 55 Inc.' %}
+{% trans 'Announcements | Over 55 Inc.' %}
 {% endblock title %}
 
 {% block header_content %}
@@ -36,7 +36,7 @@
 	  	<ol class="breadcrumb">
 	    	<li class="breadcrumb-item"><a href="{% url 'o55_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
             <li class="breadcrumb-item"><a href="{% url 'o55_tenant_settings_launchpad' %}">{% trans 'Settings' %}</a></li>
-            <li class="breadcrumb-item active" aria-current="page">{% trans 'Away Announcements' %}</li>
+            <li class="breadcrumb-item active" aria-current="page">{% trans 'Announcements' %}</li>
 	  	</ol>
 	</nav>
     <!------------------------------------------------------------------------->
@@ -46,7 +46,7 @@
     <!------------------------------------------------------------------------->
     {% if parameters.was_created == 'True' %}
         <div class="alert bg-success text-white alert-dismissible fade show" role="alert">
-		    Away announcement <strong>Successfully</strong> created.
+		    Announcement <strong>Successfully</strong> created.
 		    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
 		        <span aria-hidden="true">×</span>
 		    </button>
@@ -54,7 +54,7 @@
     {% endif %}
     {% if parameters.was_modified == 'True' %}
         <div class="alert bg-success text-white alert-dismissible fade show" role="alert">
-		    Away announcement <strong>Successfully</strong> updated.
+		    Announcement <strong>Successfully</strong> updated.
 		    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
 		        <span aria-hidden="true">×</span>
 		    </button>
@@ -62,7 +62,7 @@
     {% endif %}
     {% if parameters.was_deleted == 'True' %}
         <div class="alert bg-success text-white alert-dismissible fade show" role="alert">
-		    Away announcement <strong>Successfully</strong> deleted.
+		    Announcement <strong>Successfully</strong> deleted.
 		    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
 		        <span aria-hidden="true">×</span>
 		    </button>
@@ -71,7 +71,7 @@
     <!------------------------------------------------------------------------->
     <!-- end NOTIFICATION -->
 
-    <h1>Away Announcements</h1>
+    <h1>Announcements</h1>
     <section class="row text-center placeholders">
         <div class="col-sm-3 placeholder">
             <div class="rounded-circle mx-auto mt-4 mb-4 circle-200 bg-pink">
