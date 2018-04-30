@@ -303,13 +303,13 @@
 	    loadState($(this).find(':selected').val())
 	  });
 	  {% if customer.address_country %}loadState('{{customer.address_country}}');{% else %}loadState('CA');{% endif %}
-    });
-
+    
         let c_dropdown = $('#address_country');
 	c_dropdown.empty();
 	c_dropdown.append('<option selected="true" disabled>Choose Country</option>');
 	{% if customer.address_country %}c_dropdown.val('{{customer.address_country}}');{% else %}c_dropdown.prop('selectedIndex', 1);{% endif %}
-
+    });
+											 
         const state = "{% static 'js/provinces.json' %}";
         const country = "{% static 'js/countries.json' %}";
         console.log(state);
