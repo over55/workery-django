@@ -68,10 +68,60 @@
             lookup_customer_by_email(email);
         }, 250));
 
+	// THIS IS WHERE YOU CAN ADD YOUR COUNTRY/PROVINCE DROPDOWN JS CODE....
+    $(function(){
+	  $('#address_country').change(function(){
+	    loadState($(this).find(':selected').val())
+	  });
+	  loadState('CA');
+    });
+	
+        // this is test to fix phoetype issue
+	var phn_type = $('#phonetype');
+	phn_type.prop('selectedIndex', 0);
+
+        let c_dropdown = $('#address_country');
+	c_dropdown.empty();
+	c_dropdown.append('<option selected="true" disabled>Choose Country</option>');
+	c_dropdown.prop('selectedIndex', 1);
+    
+        const state = "{% static 'js/provinces.json' %}";
+        const country = "{% static 'js/countries.json' %}";
+        
+	console.log(state);
+        console.log(country); // KANWAR - PLEASE IMPLEMENT.
+
+	// Populate dropdown with list of countries
+	$.getJSON(country, function (data) {
+	  $.each(data, function (key, entry) {
+	    	c_dropdown.append($('<option></option>').attr('value', entry.code).text(entry.country));
+	  })
+	});
+    
     }); // end Ready
 
+    function loadState(countryId){
+		let p_dropdown = $('#address_region');
+		p_dropdown.empty();
+		p_dropdown.append('<option selected="true" disabled>Choose State/Province</option>');
+		p_dropdown.prop('selectedIndex', 0);
+
+		// Populate dropdown with list of provinces
+		$.getJSON(state, function (data) {
+		  $.each(data, function (key, entry) {
+		    if(entry.country == countryId){
+		    	p_dropdown.append($('<option></option>').attr('value', entry.short).text(entry.name));
+		    }
+		  })
+		});
+		if(countryId == 'CA'){
+			p_dropdown.prop('selectedIndex', 1);
+		}
+    }
+    // end country/province dropdown function
+	
     function lookup_customer_by_company_name_and_email(company_name, email) {
-        //
+      
         post_find_customer_matching(
             email,
             company_name,
@@ -423,52 +473,6 @@
         ); // end VALIDATE FUNC.
 
     } // end SUBMIT FUNCTION.
-
-    // THIS IS WHERE YOU CAN ADD YOUR COUNTRY/PROVINCE DROPDOWN JS CODE....
-    $(function(){
-	  $('#address_country').change(function(){
-	    loadState($(this).find(':selected').val())
-	  });
-	  loadState('CA');
-    // this is test to fix phoetype issue
-	let phn_type = $('#phonetype');
-	phn_type.prop('selectedIndex', 0);
-
-        let c_dropdown = $('#address_country');
-	c_dropdown.empty();
-	c_dropdown.append('<option selected="true" disabled>Choose Country</option>');
-	c_dropdown.prop('selectedIndex', 1);
-    
-        const state = "{% static 'js/provinces.json' %}";
-        const country = "{% static 'js/countries.json' %}";
-        console.log(state);
-        console.log(country); // KANWAR - PLEASE IMPLEMENT.
-
-	// Populate dropdown with list of countries
-	$.getJSON(country, function (data) {
-	  $.each(data, function (key, entry) {
-	    	c_dropdown.append($('<option></option>').attr('value', entry.code).text(entry.country));
-	  })
-	});
-    });
-	function loadState(countryId){
-		let p_dropdown = $('#address_region');
-		p_dropdown.empty();
-		p_dropdown.append('<option selected="true" disabled>Choose State/Province</option>');
-		p_dropdown.prop('selectedIndex', 0);
-
-		// Populate dropdown with list of provinces
-		$.getJSON(state, function (data) {
-		  $.each(data, function (key, entry) {
-		    if(entry.country == countryId){
-		    	p_dropdown.append($('<option></option>').attr('value', entry.short).text(entry.name));
-		    }
-		  })
-		});
-		if(countryId == 'CA'){
-			p_dropdown.prop('selectedIndex', 1);
-		}
-	}
 
 </script>
 <!----------------------------------------------------------------------------->
