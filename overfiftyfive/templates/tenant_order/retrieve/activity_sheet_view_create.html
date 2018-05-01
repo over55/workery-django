@@ -18,18 +18,22 @@
  *  (2)
  */
 function click_add_button() {
+    var has_accepted_job = get_selected_radio_value('has_accepted_job');
+
     //
-    create_job_comment_api(
+    create_activity_sheet_item_api(
         {
-            'about': {{ job.id }},
-            'extra_text': $('#comment').val(),
+            'order': {{ job.id }},
+            'associate': {{ parameters.associate_id }},
+            'comment': $('#comment').val(),
+            'has_accepted_job': has_accepted_job,
         },
         function(result_dict) { // Success
             // FOR DEBUGGING PURPOSES ONLY.
             console.log(result_dict);
 
             // REDIRECT TO SUCCESS PAGE.
-            location.reload(true);
+            window.location = "{% url 'o55_tenant_job_activity_sheet_retrieve' template job.id %}";
         },
         function(xhr,status,error) { // Error
             // STEP 1: Convert to JSON.
@@ -58,6 +62,17 @@ function click_add_button() {
             // enable_btn();
         }
     );
+}
+
+function get_selected_radio_value(radiofields_name) {
+    var radios = document.getElementsByName(radiofields_name);
+    for (var i = 0, length = radios.length; i < length; i++) {
+        if (radios[i].checked) {
+            // only one radio can be logically checked, don't check the rest
+            return radios[i].value;
+        }
+    }
+    return null;
 }
 </script>
 
@@ -153,13 +168,13 @@ function click_add_button() {
             <div class="form-group col-md-12 mb-4">
                 <p class="mb-1">Accepted Job? <sup>*</sup></p>
                 <div class="form-radio custom-control custom-radio custom-control-inline">
-                    <input type="radio" id="ok_to_text" name="ok_to_text" value="true" class="custom-control-input form-check-input">
-                    <label class="custom-control-label form-check-label" for="ok_to_text">Yes</label>
+                    <input type="radio" id="has_accepted_job" name="has_accepted_job" value="true" class="custom-control-input form-check-input">
+                    <label class="custom-control-label form-check-label" for="has_accepted_job">Yes</label>
                 </div>
                 <div class="form-radio custom-control custom-radio custom-control-inline">
-                    <input type="radio" id="ok_to_text2" name="ok_to_text" value="false" class="custom-control-input form-check-input">
-                    <label class="custom-control-label form-check-label" for="ok_to_text2">No</label>
-                    <div id="ok_to_text-error" class="invalid-feedback ml-2"></div>
+                    <input type="radio" id="has_accepted_job2" name="has_accepted_job" value="false" class="custom-control-input form-check-input">
+                    <label class="custom-control-label form-check-label" for="has_accepted_job2">No</label>
+                    <div id="has_accepted_job-error" class="invalid-feedback ml-2"></div>
                 </div>
             </div>
             <div class="form-group col-md-12 mb-4 p-0">
@@ -171,7 +186,7 @@ function click_add_button() {
             <button id="id_submit_btn"
                  class="btn btn-success btn-lg mt-4 float-right pl-4 pr-4"
                   type="button"
-               onclick="click_next_button();">
+               onclick="click_add_button();">
                 Assign <i class="fas fa-arrow-right"></i></button>
         </div>
     </div>

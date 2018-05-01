@@ -19,9 +19,9 @@ from shared_foundation.constants import *
 from tenant_foundation.utils import *
 
 
-class ActivitySheetManager(models.Manager):
+class ActivitySheetItemManager(models.Manager):
     def delete_all(self):
-        items = ActivitySheet.objects.all()
+        items = ActivitySheetItem.objects.all()
         for item in items.all():
             item.delete()
 
@@ -29,7 +29,7 @@ class ActivitySheetManager(models.Manager):
 @transaction.atomic
 def increment_activity_sheet_item_id_number():
     """Function will generate a unique big-int."""
-    last_resource_item = ActivitySheet.objects.all().order_by('id').last();
+    last_resource_item = ActivitySheetItem.objects.all().order_by('id').last();
     if last_resource_item:
         return last_resource_item.id + 1
     return 1
@@ -51,7 +51,7 @@ class ActivitySheetItem(models.Model):
             ("can_delete_activity_sheet_item", "Can delete activity sheet"),
         )
 
-    objects = ActivitySheetManager()
+    objects = ActivitySheetItemManager()
     id = models.BigAutoField(
        primary_key=True,
        default=increment_activity_sheet_item_id_number,
@@ -65,13 +65,13 @@ class ActivitySheetItem(models.Model):
 
     order = models.ForeignKey(
         "Order",
-        help_text=_('The order associated with thie activity sheet.'),
+        help_text=_('The order associated with thie activity sheet item.'),
         related_name="%(app_label)s_%(class)s_orders_related",
         on_delete=models.CASCADE,
     )
     associate = models.ForeignKey(
         "Associate",
-        help_text=_('The associate with this activity sheet.'),
+        help_text=_('The associate with this activity sheet item.'),
         related_name="%(app_label)s_%(class)s_associate_related",
         on_delete=models.CASCADE,
     )
@@ -89,7 +89,7 @@ class ActivitySheetItem(models.Model):
     created_at = models.DateTimeField(auto_now_add=True, db_index=True)
     created_by = models.ForeignKey(
         SharedUser,
-        help_text=_('The user whom created this activity sheet.'),
+        help_text=_('The user whom created this activity sheet item.'),
         related_name="%(app_label)s_%(class)s_created_by_related",
         on_delete=models.SET_NULL,
         blank=True,

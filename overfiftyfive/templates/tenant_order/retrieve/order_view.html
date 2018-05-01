@@ -214,6 +214,38 @@
                 <!-- ######################## end JOB DETAILS ######################## -->
                 <!-- ################################################################## -->
 
+                <!-- ACTIVITY SHEET -->
+                <!------------------------------------------------------------->
+                <h2>Activity Sheet</h2>
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>{% trans 'ID #' %}</th>
+                                <th>{% trans 'Order ID' %}</th>
+                                <th>{% trans 'Has Accepted?' %}</th>
+                                <th>{% trans 'Created At' %}</th>
+                                <th>{% trans 'Reason' %}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for activity_sheet_item in activity_sheet_items.all %}
+                            <tr>
+                                <td>{{ activity_sheet_item.id|intcomma }}</td>
+                                <td><a href="{% url 'o55_tenant_job_retrieve' template activity_sheet_item.order.id %}">{{ activity_sheet_item.order.id|intcomma }}</a></td>
+                                <td>{{ activity_sheet_item.has_accepted_job }}</td>
+                                <td>{{ activity_sheet_item.created_at }}</td>
+                                <td>{{ activity_sheet_item.comment }}</td>
+                            </tr>
+                            {% empty %}
+                            No jobs yet.
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <!------------------------------------------------------------->
+                <!-- end ACTIVITY SHEET -->
+
 
                 <!-- COMMENTS BUTTON -->
                 <div class="form-group col-md-12 mb-3 mx-auto text-center">

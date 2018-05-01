@@ -139,7 +139,7 @@ function click_add_button() {
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th>{% trans '#' %}</th>
+                    <th>{% trans 'Associate ID #' %}</th>
                     <th>{% trans 'Name' %}</th>
                     <th>{% trans 'Total Contact Count' %}</th>
                     <th></th>
@@ -152,7 +152,7 @@ function click_add_button() {
                     <td>{{ associate }}</td>
                     <td>{{ associate.activity_sheet.count }}</td>
                     <td>
-                        <a href="{% url 'o55_tenant_job_activity_sheet_retrieve_and_create' template job.id %}">Assign</a>
+                        <a href="{% url 'o55_tenant_job_activity_sheet_retrieve_and_create' template job.id %}?associate_id={{ associate.id }}">Assign</a>
                     </td>
                 </tr>
                 {% empty %}
@@ -175,16 +175,18 @@ function click_add_button() {
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th>{% trans '#' %}</th>
+                    <th>{% trans 'ID #' %}</th>
                     <th>{% trans 'Name' %}</th>
+                    <th>{% trans 'Has Accepted?' %}</th>
                     <th></th>
                 </tr>
             </thead>
             <tbody>
-                {% for item in job.activity_sheet.all %}
+                {% for item in existing_activity_sheet.all %}
                 <tr>
                     <td>{{ item.id|intcomma }}</td>
-                    <td>{{ item}}</td>
+                    <td>{{ item.associate }}</td>
+                    <td>{{ item.has_accepted_job }}</td>
                     <td></td>
                 </tr>
                 {% empty %}

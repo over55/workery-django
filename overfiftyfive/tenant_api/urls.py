@@ -17,6 +17,7 @@ from tenant_api.views.staff import StaffListCreateAPIView, StaffRetrieveUpdateDe
 from tenant_api.views.staff_comment import StaffCommentListCreateAPIView
 from tenant_api.views.tag import TagListCreateAPIView, TagRetrieveUpdateDestroyAPIView
 from tenant_api.views.utility import FindCustomerMatchingAPIView
+from tenant_api.views.activite_sheet_item import ActivitySheetItemListCreateAPIView
 
 
 urlpatterns = [
@@ -38,6 +39,7 @@ urlpatterns = [
 
     # Orders
     url(r'^api/orders$', OrderListCreateAPIView.as_view(), name='o55_order_list_create_api_endpoint'),
+    url(r'^api/orders/activity-sheet-item$', ActivitySheetItemListCreateAPIView.as_view(), name='o55_order_activity_sheet_item_list_create_api_endpoint'),
     url(r'^api/order/(?P<pk>[^/.]+)/$', OrderRetrieveUpdateDestroyAPIView.as_view(), name='o55_order_retrieve_update_destroy_api_endpoint'),
     url(r'^api/order-comments$', OrderCommentListCreateAPIView.as_view(), name='o55_job_comment_list_create_api_endpoint'),
 

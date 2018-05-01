@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
 from django.contrib.auth.decorators import login_required
+from django.db.models import Q
 from django.views.generic.edit import CreateView, FormView, UpdateView
 from django.views.generic import DetailView, ListView, TemplateView
 from django.utils.decorators import method_decorator
 from django.utils.translation import ugettext_lazy as _
 from shared_foundation.mixins import ExtraRequestProcessingMixin
 from tenant_api.filters.order import OrderFilter
-from tenant_foundation.models import Associate, Customer, Order, SkillSet
+from tenant_foundation.models import ActivitySheetItem, Associate, Customer, Order, SkillSet
 
 
 @method_decorator(login_required, name='dispatch')
@@ -37,6 +38,11 @@ class JobRetrieveView(DetailView, ExtraRequestProcessingMixin):
         # - We will extract the URL parameters and save them into our context
         #   so we can use this to help the pagination.
         modified_context['parameters'] = self.get_params_dict([])
+
+        # Fetch all the activity sheets we already have
+        modified_context['activity_sheet_items'] = ActivitySheetItem.objects.filter(
+           order=modified_context['job']
+        )
 
         # Return our modified context.
         return modified_context
@@ -104,12 +110,29 @@ class JobActivitySheetRetrieveView(DetailView, ExtraRequestProcessingMixin):
         #   so we can use this to help the pagination.
         modified_context['parameters'] = self.get_params_dict([])
 
-        # Find all the unique associates that match the job skill criteria
-        # for the job.
         job = modified_context['job']
+
+        # STEP 1 - Find all the items belonging to this job and get the `pk` values.
+        activity_sheet_associate_pks = ActivitySheetItem.objects.filter(
+           order=job
+        ).values_list('associate_id', flat=True)
+
+        # STEP 2 -
+        # (a) Find all the unique associates that match the job skill criteria
+        #     for the job.
+        # (b) Find all the unique associates which do not have any activity
+        #     sheet items created previously.
         skill_set_pks = job.skill_sets.values_list('pk', flat=True)
-        available_associates = Associate.objects.filter(skill_sets__in=skill_set_pks).distinct()
+        available_associates = Associate.objects.filter(
+           Q(skill_sets__in=skill_set_pks) &
+           ~Q(id__in=activity_sheet_associate_pks)
+        ).distinct()
         modified_context['available_associates_list'] = available_associates
+
+        # STEP 3 - Fetch all the activity sheets we already have
+        modified_context['existing_activity_sheet'] = ActivitySheetItem.objects.filter(
+           order=job
+        )
 
         # Return our modified context.
         return modified_context

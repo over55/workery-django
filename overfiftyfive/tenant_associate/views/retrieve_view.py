@@ -6,7 +6,7 @@ from django.utils.decorators import method_decorator
 from django.utils.translation import ugettext_lazy as _
 from shared_foundation.mixins import ExtraRequestProcessingMixin
 from tenant_api.filters.associate import AssociateFilter
-from tenant_foundation.models import Associate
+from tenant_foundation.models import ActivitySheetItem, Associate
 
 
 @method_decorator(login_required, name='dispatch')
@@ -37,6 +37,9 @@ class MemberRetrieveView(DetailView, ExtraRequestProcessingMixin):
         # - We will extract the URL parameters and save them into our context
         #   so we can use this to help the pagination.
         modified_context['parameters'] = self.get_params_dict([])
+
+        associate = modified_context['associate']
+        modified_context['activity_sheet_items'] = ActivitySheetItem.objects.filter(associate=associate)
 
         # Return our modified context.
         return modified_context
