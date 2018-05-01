@@ -17,7 +17,8 @@
     $(document).ready(function () {
         // Initialize our datepicker jQuery code with our HTML view.
         $( "#until_date" ).datepicker({
-            dateFormat: 'yy-mm-dd'  // https://stackoverflow.com/a/7500097
+            dateFormat: 'yy-mm-dd',
+	    minDate: 1
         });
 
         /*
