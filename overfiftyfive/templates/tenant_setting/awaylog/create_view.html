@@ -86,7 +86,7 @@
         }); // end SELECT2
 	
 	$('#reason').on('change',function(){
-        	if( $(this).val()==="other"){
+        	if( $(this).val()==="other" || $(this).val()===1){
         		$("#reason_other").show();
         	}
         	else{
@@ -265,7 +265,7 @@
                         <!-- ############ ASSOCIATE (REMOTE DATA) ############ -->
                         <div class="form-group col-md-12 mb-4">
                             <label for="associate">Associate <sup>*</sup></label>
-                            <select id="associate" name="associate" class="form-control form-control-lg border border-primary" autofocus>
+                            <select id="associate" name="associate" class="form-control form-control-lg border border-primary" required="" autofocus>
                             </select>
                         </div>
                         <!-- ############ end ASSOCIATE (REMOTE DATA) ############ -->
@@ -307,7 +307,7 @@
                         <div class="form-group p-0 col-md-7 mb-4">
                             <label for="dob">Until Date <sup>*</sup></label>
                             <div class="input-group input-group-lg">
-                                <input type="text" class="form-control form-control-lg border border-success" id="until_date" name="until_date" placeholder="yyyy-mm-dd" required>
+                                <input type="text" class="form-control form-control-lg border border-success" id="until_date" name="until_date" placeholder="yyyy-mm-dd" required="">
                                 <div class="input-group-append">
                                     <span class="input-group-text dob-icon bg-success border-success"><i class="far fa-calendar-alt"></i></span>
                                 </div>
