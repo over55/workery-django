@@ -35,8 +35,9 @@
          */
         $('#associate').select2({
             // SETUP OUR STARTUP GUI.
-            placeholder: 'Select an option',
+            placeholder: 'Please select an associate',
             allowClear: true,
+	    width: '100%',
 
             // OVERRIDE OUR GUI TO GET OUR DATA FROM REMOTE API WEB-SERVICE.
             ajax: {
@@ -76,9 +77,9 @@
                  *  Function used to take our JSON API results and create our own custom
                  *  GUI elements per each returned customer.
                  */
-                // if (!state.id) {
-                //     return  state.given_name + " " + state.last_name;
-                // }
+                if (!state.id) {
+                     return  "Please enter 1 or more characters";
+                }
                 var $state = $(
                     '<span id="' + state.id + '">' + state.given_name + " " + state.last_name + '</span>'
                 );
@@ -86,13 +87,21 @@
             },
 
             templateSelection: function (data) {
-                // if (data.id === '') { // adjust for custom placeholder values
-                //     return 'Custom styled placeholder text';
-                // }
+                if (data.id === '') { // adjust for custom placeholder values
+                    return 'Please select an associate';
+                }
                 return data.given_name + " " + data.last_name;
             }
         }); // end SELECT2
 
+	$('#reason').on('change',function(){
+        	if( $(this).val()===1 || $(this).val()==="other" ){
+        		$("#reason_other").show();
+        	}
+        	else{
+        		$("#reason_other").hide();
+        	}
+        });
 
     }); // end DOCUMENT
 
