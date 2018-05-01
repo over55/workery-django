@@ -64,7 +64,6 @@
                     <th>{% trans 'Client' %}</th>
                     <th>{% trans 'Associate' %}</th>
                     <th>{% trans 'Assigned Date' %}</th>
-                    <th>{% trans 'Ongoing' %}</th>
                     <th>{% trans 'Completion Date' %}</th>
                     <th>{% trans 'Status' %}</th>
                     <th></th>
@@ -86,7 +85,6 @@
                     <td>{% if job.customer %}{{ job.customer }}{% else %}-{% endif %}</td>
                     <td>{% if job.associate %}{{ job.associate }}{% else %}-{% endif %}</td>
                     <td>{% if job.assignment_date %}{{ job.assignment_date }}{% else %}-{% endif %}</td>
-                    <td>{{ job.is_ongoing }}</td>
                     <td>{% if job.completion_date %}{{ job.completion_date }}{% else %}-{% endif %}</td>
                     <td>
                         {% if job.is_cancelled %}
