@@ -41,7 +41,7 @@
   </head>
 <body>
     <header class="navbar navbar-dark fixed-top bg-dark justify-content-between">
-          <a class="navbar-brand" href="{% url 'o55_tenant_dashboard_master' %}"><img class="img-fluid" src="" alt="{% trans 'Over 55 (London) Inc.' %}"></a>
+          <a class="navbar-brand" href="{% url 'o55_tenant_dashboard_master' %}"><img class="img-fluid" src="{{ shared_constants.O55_APP_HTTP_PROTOCOL }}{{ shared_constants.O55_APP_HTTP_DOMAIN }}{% static 'img/compressed-logo.png' %}" alt="{% trans 'Over 55 (London) Inc.' %}" width="200px" /></a>
           <button class="navbar-toggler" type="button" id="sidebarCollapse">
       		<i class="fa fa-bars"></i>
     	  </button>
