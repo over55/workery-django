@@ -87,6 +87,7 @@
         <table class="table table-striped">
             <thead>
                 <tr>
+                    <th>{% trans 'ID #' %}</th>
                     <th>{% trans 'Category' %}</th>
                     <th>{% trans 'Sub-Category' %}</th>
                     <th>{% trans 'Insurance Requirement' %}</th>
@@ -97,6 +98,9 @@
             <tbody>
                 {% for skill_set in skill_set_list %}
                 <tr>
+                    <td>
+                        {{ skill_set.id }}
+                    </td>
                     <td>
                         {{ skill_set.category }}
                     </td>
