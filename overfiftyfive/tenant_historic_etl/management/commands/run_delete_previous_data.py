@@ -30,7 +30,7 @@ from shared_foundation.models import (
 from tenant_foundation.constants import *
 from tenant_foundation.models import (
     Associate,
-    # Comment,
+    Comment,
     Customer,
     Organization,
     Order,
@@ -86,7 +86,7 @@ class Command(BaseCommand):
         Associate.objects.delete_all()
         Tag.objects.delete_all()
         Organization.objects.delete_all()
-        # Comment.objects.delete_all()
+        Comment.objects.delete_all()
         # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
         # Used for debugging purposes.

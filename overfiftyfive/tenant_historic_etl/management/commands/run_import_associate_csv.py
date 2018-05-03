@@ -180,6 +180,20 @@ class Command(BaseCommand):
             if is_active == '1':
                 is_active = True
 
+            # Finally title the words.
+            if given_name:
+                given_name = given_name.title()
+            if last_name:
+                last_name = last_name.title()
+            if address:
+                address = address.title()
+            if city:
+                city = city.title()
+            if province:
+                province = province.title()
+            if area_served:
+                area_served = area_served.title()
+
             # Create or update our user.
             user = None
             created = False

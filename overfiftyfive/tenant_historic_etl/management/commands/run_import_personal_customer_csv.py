@@ -152,6 +152,16 @@ class Command(BaseCommand):
             local_birthdate = get_utc_dt_from_toronto_dt_string(birthdate)
             local_project_date = get_utc_dt_from_toronto_dt_string(project_date)
 
+            # Finally title the words.
+            if first_name:
+                first_name = first_name.title()
+            if last_name:
+                last_name = last_name.title()
+            if address:
+                address = address.title()
+            if city:
+                city = city.title()
+
             # Create or update our user if it exists
             user = None
             email = None
