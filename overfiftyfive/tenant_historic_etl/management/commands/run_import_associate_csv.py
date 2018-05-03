@@ -191,8 +191,8 @@ class Command(BaseCommand):
                 city = city.title()
             if province:
                 province = province.title()
-            if area_served:
-                area_served = area_served.title()
+            if ldn_area:
+                ldn_area = ldn_area.title()
 
             # Create or update our user.
             user = None
