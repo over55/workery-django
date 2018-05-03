@@ -62,8 +62,7 @@
     <!-- AWAY LOGS -->
     <div class="jumbotron">
         <h1 class="display-4">Away Announcements</h1>
-        <hr class="my-4">
-        <div class="table-responsive-sm">
+        <div class="table-responsive-sm my-3">
           <table class="table">
               <thead>
                 <tr>
@@ -97,12 +96,16 @@
                 <tr>
                     <td colspan="3">
                         <p>No announcements made, feel free to create them</p>
+                    </td>
+                </tr>
+                {% endfor %}
+                <tr>
+                    <td colspan="3">
                         <p class="lead">
                             <a class="btn btn-primary btn-lg" href="{% url 'o55_tenant_settings_away_log_list' %}" role="button">Create announcement</a>
                         </p>
                     </td>
                 </tr>
-                {% endfor %}
               </tbody>
           </table>
         </div>
