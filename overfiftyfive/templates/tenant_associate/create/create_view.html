@@ -73,7 +73,7 @@
             // Initialize our datepicker jQuery code with our HTML view.
             $( "#dob" ).datepicker({
                 dateFormat: 'yy-mm-dd',
-		        maxDate: 'today'
+		maxDate: 'today'
             });
             $( "#dues_date" ).datepicker({
                 dateFormat: 'yy-mm-dd'  // https://stackoverflow.com/a/7500097
@@ -154,6 +154,50 @@
             $("input[name=has_truck][value=" + localStorage.getItem("tmp_associate_member_has_truck") + "]").prop('checked', true);
             $("input[name=is_small_job][value=" + localStorage.getItem("tmp_associate_member_is_small_job") + "]").prop('checked', true);
 
+	// THIS IS WHERE YOU CAN ADD YOUR COUNTRY/PROVINCE DROPDOWN JS CODE....
+	$(function(){
+	  $('#address_country').change(function(){
+	    loadState($(this).find(':selected').val())
+	  });
+	  loadState('CA');
+	});
+	    
+        let c_dropdown = $('#address_country');
+	c_dropdown.empty();
+	c_dropdown.append('<option selected="true" disabled>Choose Country</option>');
+	c_dropdown.prop('selectedIndex', 1);
+    
+        const state = "{% static 'js/provinces.json' %}";
+        const country = "{% static 'js/countries.json' %}";
+        
+	console.log(state);
+        console.log(country); // KANWAR - PLEASE IMPLEMENT.
+	// Populate dropdown with list of countries
+	$.getJSON(country, function (data) {
+	  $.each(data, function (key, entry) {
+	    	c_dropdown.append($('<option></option>').attr('value', entry.code).text(entry.country));
+	  })
+	});
+    
+	function loadState(countryId){
+		let p_dropdown = $('#address_region');
+		p_dropdown.empty();
+		p_dropdown.append('<option selected="true" disabled>Choose State/Province</option>');
+		p_dropdown.prop('selectedIndex', 0);
+		// Populate dropdown with list of provinces
+		$.getJSON(state, function (data) {
+		  $.each(data, function (key, entry) {
+		    if(entry.country == countryId){
+		    	p_dropdown.append($('<option></option>').attr('value', entry.short).text(entry.name));
+		    }
+		  })
+		});
+		if(countryId == 'CA'){
+			p_dropdown.prop('selectedIndex', 1);
+		}
+    	}
+    	// end country/province dropdown function
+		
         }); // end Ready
 
         /**
@@ -492,55 +536,6 @@
                 }
             ); // end VALIDATE FUNC.
         }
-
-        //---------------------------------------//
-        // HANDLE THE COUNTRY / PROVINCE FIELDS. //
-        //---------------------------------------//
-
-        // THIS IS WHERE YOU CAN ADD YOUR COUNTRY/PROVINCE DROPDOWN JS CODE....
-        $(function(){
-	  $('#address_country').change(function(){
-	    loadState($(this).find(':selected').val())
-	  });
-	  loadState('CA');
-
-        let c_dropdown = $('#address_country');
-	c_dropdown.empty();
-	c_dropdown.append('<option selected="true" disabled>Choose Country</option>');
-	c_dropdown.prop('selectedIndex', 1);
-
-	});
-
-        const state = "{% static 'js/provinces.json' %}";
-        const country = "{% static 'js/countries.json' %}";
-        console.log(state);
-        console.log(country); // KANWAR - PLEASE IMPLEMENT.
-
-	// Populate dropdown with list of countries
-	$.getJSON(country, function (data) {
-	  $.each(data, function (key, entry) {
-	    	c_dropdown.append($('<option></option>').attr('value', entry.code).text(entry.country));
-	  })
-	});
-
-	function loadState(countryId){
-		let p_dropdown = $('#address_region');
-		p_dropdown.empty();
-		p_dropdown.append('<option selected="true" disabled>Choose State/Province</option>');
-		p_dropdown.prop('selectedIndex', 0);
-
-		// Populate dropdown with list of provinces
-		$.getJSON(state, function (data) {
-		  $.each(data, function (key, entry) {
-		    if(entry.country == countryId){
-		    	p_dropdown.append($('<option></option>').attr('value', entry.short).text(entry.name));
-		    }
-		  })
-		});
-		if(countryId == 'CA'){
-			p_dropdown.prop('selectedIndex', 1);
-		}
-	}
 
     </script>
     <div class="col-sm-5 mx-auto mt-2">
