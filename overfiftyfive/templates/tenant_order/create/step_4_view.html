@@ -100,7 +100,7 @@
 
               <select id="skillsets" name="skillsets" class="js-example-basic-multiple" name="states[]" multiple="multiple">
               {% for skillset in skillsets %}
-                <option value="{{ skillset.id }}" id="option_id_{{ skillset.id }}">{{ skillset }}</option>
+                <option value="{{ skillset.id }}" id="option_id_{{ skillset.id }}">{{ skillset.sub_category }}</option>
               {% endfor %}
               </select>
 
