@@ -131,36 +131,49 @@ function click_add_button() {
 
     <h1>{% trans 'View Comments about Client' %}</h1>
 
-    <!-- FORM -->
-    <!------------------------------------------------------------------------->
-    {% for comment in customer.comments.all %}
-        <p>
-            <strong>By</strong> - {{ comment.created_by.first_name }} {{ comment.created_by.last_name }}
-        </p>
-        <p>
-            <strong>Submitted</strong> - {{ comment.created_at }}
-        </p>
-        <p>
-            <strong>Text</strong> - {{ comment.text }}
-        </p>
+    <div class="container">
+        <div class="row align-items-start">
+            <!-- <h1>Comments/Notes Screen</h1> -->
+            <div class="col-lg-12">
 
-        <br />
-    {% endfor %}
+                <!-- FORM -->
+                <!------------------------------------------------------------------------->
+                {% for comment in customer.comments.all %}
+                    <!-- Item -->
+                    <div class="media mt-4">
+                        <img class="mr-3 img-head" src="{% static 'img/placeholder.png' %}" alt="Image">
+                        <div class="media-body">
+                            <div class="row">
+                                <h5 class="mt-0 col-sm-10"><strong>{{ comment.created_by.first_name }} {{ comment.created_by.last_name }}</strong></h5>
+                                <h6 class="col-sm-2 text-secondary text-right">{{ comment.created_at|date:"N j, Y"}} <br> {{ comment.created_at|date:"P"}} </h6>
+                            </div>
+                            <p>{{ comment.text }}</p>
+                        </div>
+                    </div>
+                    <!-- end Item -->
+                {% endfor %}
 
-    <div class="form-group col-md-12 mb-4 p-0">
-      <label for="comment" class="font-b6">Comment:</label>
-      <textarea class="form-control form-control-lg border border-success" id="comment" name="comment" placeholder="Write any additional comments here..." rows="4" minlength="10" required></textarea>
-      <div id="comment-error" class="invalid-feedback"></div>
-      <small class="form-text text-muted">Maximum 1,000 characters.</small>
+                <hr class="my-4">
+                <!-- Add note form -->
+                <form>
+                    <div class="form-group">
+                        <label for="comment">Add Comment/Note: </label>
+                        <textarea class="form-control form-control-lg border border-primary" id="comment" name="comment" placeholder="Write a note here..." rows="4" required></textarea>
+                        <small id="comment-error" class="form-text text-muted">Maximum 1,000 characters.</small>
+                    </div>
+                    <button id="id_submit_btn"
+                         class="btn btn-lg float-right pl-4 pr-4 btn-primary"
+                          type="button"
+                       onclick="click_add_button();">
+                        Add Note <i class="fas fa-arrow-right"></i></button>
+                </form>
+
+                <!------------------------------------------------------------------------->
+                <!-- end FORM -->
+
+            </div>
+        </div>
     </div>
-    <!------------------------------------------------------------------------->
-    <!-- end FORM -->
-
-    <button id="id_submit_btn"
-         class="btn btn-success btn-lg mt-4 float-right pl-4 pr-4"
-          type="button"
-       onclick="click_add_button();">
-        Add <i class="fas fa-arrow-right"></i></button>
 
     <!-- RETURN-TO-TOP -->
     <a id="return-to-top" href="#" class="btn-info btn-lg back-to-top" role="button" title="Back to top"><i class="fas fa-angle-up fa-2x"></i></a>
