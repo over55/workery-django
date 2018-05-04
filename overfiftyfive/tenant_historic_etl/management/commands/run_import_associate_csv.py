@@ -258,7 +258,6 @@ class Command(BaseCommand):
                     'has_car':bool_or_none(has_van),
                     'has_van':bool_or_none(has_van),
                     'has_truck':bool_or_none(has_truck),
-                    'is_small_job':bool_or_none(is_small_job),
                     'how_hear':how_hear,
                     'last_modified_by': None,
                     'created_by': None,
