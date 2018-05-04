@@ -88,7 +88,6 @@
         {% if associate.has_car == True %}$("#has_car").prop("checked", true);{% else %}$("#has_car2").prop("checked", true);{% endif %}
         {% if associate.has_van == True %}$("#has_van").prop("checked", true);{% else %}$("#has_van2").prop("checked", true);{% endif %}
         {% if associate.has_truck == True %}$("#has_truck").prop("checked", true);{% else %}$("#has_truck2").prop("checked", true);{% endif %}
-        {% if associate.is_small_job == True %}$("#is_small_job").prop("checked", true);{% else %}$("#is_small_job2").prop("checked", true);{% endif %}
 
         // The following code continously checks to see if the current user
         // is assigned to the email.
@@ -250,7 +249,6 @@
         var has_car = get_boolean_from_selected_radio_value('has_car');
         var has_van = get_boolean_from_selected_radio_value('has_van');
         var has_truck = get_boolean_from_selected_radio_value('has_truck');
-        var is_small_job = get_boolean_from_selected_radio_value('is_small_job');
         var how_hear = $('#how_hear').val();
 
         // LOCK OUT THE "SUBMIT" BUTTON SO THE USER DOES NOT MAKE MULTI-CALLS.
@@ -313,7 +311,6 @@
                 'has_car': has_car,
                 'has_van': has_van,
                 'has_truck': has_truck,
-                'is_small_job': is_small_job,
                 'how_hear': how_hear,
             },
             function(result_dict) { // Success
@@ -734,18 +731,6 @@
                         <input type="radio" id="has_truck2" name="has_truck" value="no" class="custom-control-input form-check-input">
                         <label class="custom-control-label form-check-label" for="has_truck2">No</label>
                         <div id="has_truck-error" class="invalid-feedback ml-2"></div>
-                    </div>
-                </div>
-                <div class="form-group col-md-12 mb-4">
-                    <p class="mb-1">Is small job? <sup>*</sup></p>
-                    <div class="form-radio custom-control custom-radio custom-control-inline">
-                        <input type="radio" id="is_small_job" name="is_small_job" value="yes" class="custom-control-input form-check-input">
-                        <label class="custom-control-label form-check-label" for="is_small_job">Yes</label>
-                    </div>
-                    <div class="form-radio custom-control custom-radio custom-control-inline">
-                        <input type="radio" id="is_small_job2" name="is_small_job" value="no" class="custom-control-input form-check-input">
-                        <label class="custom-control-label form-check-label" for="is_small_job2">No</label>
-                        <div id="is_small_job-error" class="invalid-feedback ml-2"></div>
                     </div>
                 </div>
                 <div class="form-group col-md-12 mb-4 p-0">

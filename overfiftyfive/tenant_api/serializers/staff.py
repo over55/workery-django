@@ -521,7 +521,6 @@ class StaffRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         instance.has_car=validated_data.get('has_car', False)
         instance.has_van=validated_data.get('has_van', False)
         instance.has_truck=validated_data.get('has_truck', False)
-        instance.is_small_job=validated_data.get('is_small_job', False)
         instance.how_hear=validated_data.get('how_hear', None)
         # 'organizations', #TODO: IMPLEMENT.
 

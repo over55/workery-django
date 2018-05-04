@@ -25,7 +25,6 @@ class PartnerFilter(django_filters.FilterSet):
             # 'has_car',
             # 'has_van',
             # 'has_truck',
-            # 'is_small_job',
             # 'how_hear',
             # 'skill_sets',
             # 'created_by',

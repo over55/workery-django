@@ -65,7 +65,6 @@ def run_associates_importer_from_csv_file(csvfile):
             is_full_time = row[27]          # Full Time
             is_part_time = row[28]          # Part Time
             is_contract_time = row[29]      # Contract
-            is_small_job = row[30]          # Small Jobs
             how_hear = row[31]              # How Hear
 
             # Convert the datetime.
@@ -162,7 +161,6 @@ def run_associates_importer_from_csv_file(csvfile):
                         'is_full_time':bool_or_none(is_full_time),
                         'is_part_time':bool_or_none(is_part_time),
                         'is_contract_time':bool_or_none(is_contract_time),
-                        'is_small_job':bool_or_none(is_small_job),
                         'how_hear':how_hear
                     }
                 )

@@ -109,7 +109,6 @@
 
         var has_truck = localStorage.getItem("tmp_associate_member_has_truck");
         $('#selected_has_truck').append( to_yes_or_no_string(has_truck) );
-        $('#selected_is_small_job').append(localStorage.getItem("tmp_associate_member_is_small_job"));
         $('#selected_how_hear').append(localStorage.getItem("tmp_associate_member_how_hear"));
 
         // The following code continously checks to see if the current user
@@ -216,7 +215,6 @@
                 'has_car': localStorage.getItem("tmp_associate_member_has_car"),
                 'has_van': localStorage.getItem("tmp_associate_member_has_van"),
                 'has_truck': localStorage.getItem("tmp_associate_member_has_truck"),
-                'is_small_job': localStorage.getItem("tmp_associate_member_is_small_job"),
                 'how_hear': localStorage.getItem("tmp_associate_member_how_hear"),
             },
             function(result_dict) { // Success
@@ -262,7 +260,6 @@
                 localStorage.removeItem("tmp_associate_member_has_car")
                 localStorage.removeItem("tmp_associate_member_has_van")
                 localStorage.removeItem("tmp_associate_member_has_truck")
-                localStorage.removeItem("tmp_associate_member_is_small_job")
                 localStorage.removeItem("tmp_associate_member_how_hear")
 
                 // REDIRECT TO SUCCESS PAGE.
@@ -538,12 +535,6 @@
          <tr>
            <th scope="row" class="bg-light">has_truck</th>
            <td id="selected_has_truck" name="has_truck">
-               <!-- POPULATE THROUGH JS. -->
-           </td>
-         </tr>
-         <tr>
-           <th scope="row" class="bg-light">is_small_job</th>
-           <td id="selected_is_small_job" name="is_small_job">
                <!-- POPULATE THROUGH JS. -->
            </td>
          </tr>

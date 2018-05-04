@@ -197,12 +197,6 @@ class Associate(AbstractPerson):
         default=False,
         blank=True
     )
-    is_small_job = models.BooleanField(
-        _("Is Small Job"),
-        help_text=_('Indicates whether associate is employed for small jobs or not.'),
-        default=False,
-        blank=True
-    )
     how_hear = models.CharField(
         _("How hear"),
         max_length=2055,

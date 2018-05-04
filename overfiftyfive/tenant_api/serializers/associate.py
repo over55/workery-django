@@ -156,7 +156,6 @@ class AssociateListCreateSerializer(serializers.ModelSerializer):
             'has_car',
             'has_van',
             'has_truck',
-            'is_small_job',
             'how_hear',
             'skill_sets', # many-to-many
             'tags',       # many-to-many
@@ -220,11 +219,6 @@ class AssociateListCreateSerializer(serializers.ModelSerializer):
                 }
             },
             "has_truck": {
-                "error_messages": {
-                    "invalid": "Please pick either 'Yes' or 'No' choice."
-                }
-            },
-            "is_small_job": {
                 "error_messages": {
                     "invalid": "Please pick either 'Yes' or 'No' choice."
                 }
@@ -329,7 +323,6 @@ class AssociateListCreateSerializer(serializers.ModelSerializer):
             has_car=validated_data.get('has_car', False),
             has_van=validated_data.get('has_van', False),
             has_truck=validated_data.get('has_truck', False),
-            is_small_job=validated_data.get('is_small_job', False),
             how_hear=validated_data.get('how_hear', None),
             # 'organizations', #TODO: IMPLEMENT.
 
@@ -470,7 +463,6 @@ class AssociateRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
             'has_car',
             'has_van',
             'has_truck',
-            'is_small_job',
             'how_hear',
             'skill_sets', # many-to-many
             'tags',       # many-to-many
@@ -591,7 +583,6 @@ class AssociateRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         instance.has_car=validated_data.get('has_car', instance.has_car)
         instance.has_van=validated_data.get('has_van', instance.has_van)
         instance.has_truck=validated_data.get('has_truck', instance.has_truck)
-        instance.is_small_job=validated_data.get('is_small_job', instance.is_small_job)
         instance.how_hear=validated_data.get('how_hear', instance.how_hear)
         # 'organizations', #TODO: IMPLEMENT.
 

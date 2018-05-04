@@ -152,7 +152,6 @@
             $("input[name=has_car][value=" + localStorage.getItem("tmp_associate_member_has_car") + "]").prop('checked', true);
             $("input[name=has_van][value=" + localStorage.getItem("tmp_associate_member_has_van") + "]").prop('checked', true);
             $("input[name=has_truck][value=" + localStorage.getItem("tmp_associate_member_has_truck") + "]").prop('checked', true);
-            $("input[name=is_small_job][value=" + localStorage.getItem("tmp_associate_member_is_small_job") + "]").prop('checked', true);
 
 	// THIS IS WHERE YOU CAN ADD YOUR COUNTRY/PROVINCE DROPDOWN JS CODE....
 	$(function(){
@@ -161,15 +160,15 @@
 	  });
 	  loadState('CA');
 	});
-	    
+
         let c_dropdown = $('#address_country');
 	c_dropdown.empty();
 	c_dropdown.append('<option selected="true" disabled>Choose Country</option>');
 	c_dropdown.prop('selectedIndex', 1);
-    
+
         const state = "{% static 'js/provinces.json' %}";
         const country = "{% static 'js/countries.json' %}";
-        
+
 	console.log(state);
         console.log(country); // KANWAR - PLEASE IMPLEMENT.
 	// Populate dropdown with list of countries
@@ -178,7 +177,7 @@
 	    	c_dropdown.append($('<option></option>').attr('value', entry.code).text(entry.country));
 	  })
 	});
-    
+
 	function loadState(countryId){
 		let p_dropdown = $('#address_region');
 		p_dropdown.empty();
@@ -197,7 +196,7 @@
 		}
     	}
     	// end country/province dropdown function
-		
+
         }); // end Ready
 
         /**
@@ -353,7 +352,6 @@
             var has_car = get_selected_radio_value('has_car');
             var has_van = get_selected_radio_value('has_van');
             var has_truck = get_selected_radio_value('has_truck');
-            var is_small_job = get_selected_radio_value('is_small_job');
             var how_hear = $('#how_hear').val();
 
             //----------------------------------------------------------------//
@@ -392,7 +390,6 @@
             localStorage.setItem("tmp_associate_member_has_car", has_car);
             localStorage.setItem("tmp_associate_member_has_van", has_van);
             localStorage.setItem("tmp_associate_member_has_truck", has_truck);
-            localStorage.setItem("tmp_associate_member_is_small_job", is_small_job);
             localStorage.setItem("tmp_associate_member_how_hear", how_hear);
 
             // SAVE ARRAY OF IDS.
@@ -487,7 +484,6 @@
                     'has_car': localStorage.getItem("tmp_associate_member_has_car"),
                     'has_van': localStorage.getItem("tmp_associate_member_has_van"),
                     'has_truck': localStorage.getItem("tmp_associate_member_has_truck"),
-                    'is_small_job': localStorage.getItem("tmp_associate_member_is_small_job"),
                     'how_hear': localStorage.getItem("tmp_associate_member_how_hear"),
                 },
                 function(result_dict) { // Success
@@ -802,18 +798,6 @@
                         <input type="radio" id="has_truck2" name="has_truck" value="false" class="custom-control-input form-check-input">
                         <label class="custom-control-label form-check-label" for="has_truck2">No</label>
                         <div id="has_truck-error" class="invalid-feedback ml-2"></div>
-                    </div>
-                </div>
-                <div class="form-group col-md-12 mb-4">
-                    <p class="mb-1">Is small job? <sup>*</sup></p>
-                    <div class="form-radio custom-control custom-radio custom-control-inline">
-                        <input type="radio" id="is_small_job" name="is_small_job" value="true" class="custom-control-input form-check-input">
-                        <label class="custom-control-label form-check-label" for="is_small_job">Yes</label>
-                    </div>
-                    <div class="form-radio custom-control custom-radio custom-control-inline">
-                        <input type="radio" id="is_small_job2" name="is_small_job" value="false" class="custom-control-input form-check-input">
-                        <label class="custom-control-label form-check-label" for="is_small_job2">No</label>
-                        <div id="is_small_job-error" class="invalid-feedback ml-2"></div>
                     </div>
                 </div>
                 <div class="form-group col-md-12 mb-4 p-0">
