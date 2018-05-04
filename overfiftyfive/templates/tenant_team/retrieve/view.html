@@ -268,41 +268,44 @@
 
         <!------------------------------------------------------------------------->
         <!-- end DETAIL FORM -->
-
-        <!-- VIEW MORE BUTTON -->
-        <div class="form-group col-md-12 mb-3 mx-auto text-center">
-            <a onclick="click_view_more_button();">
-                <button  id="id_submit_btn"
-                    class="btn btn-warning btn-lg btn-fxw mt-4"
-                    type="button">
-                <i class="fas fa-edit"></i>&nbsp;{% trans 'View More ...' %}
-                </button>
-            </a>
+	<div class="form-group col-md-10 mb-3 mx-auto text-center">
+	    <div class="row">
+		<!-- VIEW MORE BUTTON -->
+		<div class="col-sm-4">
+		    <a onclick="click_view_more_button();">
+			<button  id="id_submit_btn"
+			    class="btn btn-primary btn-lg btn-fxw mt-4"
+			    type="button">
+			<i class="fas fa-search"></i>&nbsp;{% trans 'View More ...' %}
+			</button>
+		    </a>
+		</div>
+		<!-- end VIEW MORE BUTTON -->
+		<!-- COMMENTS BUTTON -->
+		<div class="col-sm-4">
+		    <a href="{% url 'o55_tenant_team_comments_retrieve' template object.id %}">
+		    <button  id="id_submit_btn"
+			class="btn btn-success btn-lg btn-fxw mt-4"
+			type="button">
+		    <i class="far fa-comments"></i>&nbsp;{% trans 'View Comments' %}
+		    </button>
+		    </a>
+		</div>
+		<!-- end COMMENTS BUTTON -->
+		<!-- EDIT BUTTON -->
+		<div class="col-sm-4">
+		    <a href="{% url 'o55_tenant_team_update' template object.id %}">
+		    <button  id="id_submit_btn"
+			class="btn btn-orange btn-lg btn-fxw mt-4"
+			type="button">
+		    <i class="fas fa-pencil-alt"></i>&nbsp;{% trans 'Edit Client' %}
+		    </button>
+		    </a>
+		</div>
+		<!-- end EDIT BUTTON -->
+	    </div>
         </div>
-        <!-- end VIEW MORE BUTTON -->
-        <!-- COMMENTS BUTTON -->
-        <div class="form-group col-md-12 mb-3 mx-auto text-center">
-            <a href="{% url 'o55_tenant_team_comments_retrieve' template object.id %}">
-            <button  id="id_submit_btn"
-                class="btn btn-warning btn-lg btn-fxw mt-4"
-                type="button">
-            <i class="fas fa-edit"></i>&nbsp;{% trans 'View Comments' %}
-            </button>
-            </a>
-        </div>
-        <!-- end COMMENTS BUTTON -->
-        <!-- end EDIT BUTTON -->
-        <div class="form-group col-md-12 mb-3 mx-auto text-center">
-            <a href="{% url 'o55_tenant_team_update' template object.id %}">
-            <button  id="id_submit_btn"
-                class="btn btn-warning btn-lg btn-fxw mt-4"
-                type="button">
-            <i class="fas fa-edit"></i>&nbsp;{% trans 'Edit Client' %}
-            </button>
-            </a>
-        </div>
-        <!-- end EDIT BUTTON -->
-
+		
     </div>
 
     <!-- RETURN-TO-TOP -->
