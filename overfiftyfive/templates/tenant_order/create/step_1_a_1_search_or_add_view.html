@@ -29,7 +29,7 @@
 
                 var lastname = document.getElementById('lastname');
                 var l_error = document.getElementById('lastname-error');
-		
+
 		var email_id = document.getElementById('email-id');
                 var email_error = document.getElementById('email-error');
 
@@ -180,9 +180,35 @@
 
     <h1>{% trans 'Add Job' %}</h1>
 
+    <!-- STEP NAVIGATION -->
+    <!------------------------------------------------------------------------->
+    <div class="row">
+        <div class="step-navigation">
+            <div id="step-1" class="st-grey active">
+                <span class="num">1.</span><span class="">Search Existing and Add</span>
+            </div>
+            <div id="step-2" class="st-grey">
+                <span class="num">2.</span><span class="">Job Type</span>
+            </div>
+            <div id="step-3" class="st-grey">
+                <span class="num">3.</span><span class="">Describe Job</span>
+            </div>
+            <div id="step-4" class="st-grey">
+                <span class="num">4.</span><span class="">Skills Required</span>
+            </div>
+            <div id="step-5" class="st-grey">
+                <span class="num">5.</span><span class="">Comments</span>
+            </div>
+            <div id="step-6" class="st-grey">
+                <span class="num">6.</span><span class="">Review</span>
+            </div>
+        </div>
+    </div>
+    <!------------------------------------------------------------------------->
+    <!-- end STEP NAVIGATION -->
+
     <!-- FORM -->
     <!------------------------------------------------------------------------->
-
     <div class="col-sm-6 mx-auto mt-4 pt-2">
 	<p><strong>Search for existing client:</strong></p>
     <form id="advanced-searchForm" method="get" class="needs-validation" action="{% url "o55_tenant_job_customer_search_results_create" %}" novalidate>
@@ -207,7 +233,7 @@
 	        <input type="email" class="form-control form-control-lg border border-primary" id="email-id" name="email_id" placeholder="Email ID">
 	        <div id="email-error" class="invalid-feedback"></div>
 	      </div>
-	    
+
 	    <div class="col-md-8 mb-3 mt-2 text-center mx-auto">
 		<div id="form-error" class="invalid-feedback"></div>
 		<div class="align-self-center">

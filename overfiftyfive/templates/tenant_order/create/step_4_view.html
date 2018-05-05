@@ -86,6 +86,41 @@
 
     <h1>Add Job</h1>
 
+
+    <!-- STEP NAVIGATION -->
+    <!------------------------------------------------------------------------->
+    <div class="row">
+	   <div class="step-navigation">
+		<div id="step-1" class="st-grey">
+            <a href="{% url 'o55_tenant_job_search_or_add_create' %}">
+			    <span class="num">1.</span><span class="">Search Existing and Add</span>
+            </a>
+		</div>
+		<div id="step-2" class="st-grey">
+            <a href="{% url 'o55_tenant_job_step_2_create' %}">
+			    <span class="num">2.</span><span class="">Job Type</span>
+            </a>
+		</div>
+		<div id="step-3" class="st-grey">
+            <a href="{% url 'o55_tenant_job_step_3_create' %}">
+                <span class="num">3.</span><span class="">Describe Job</span>
+            </a>
+		</div>
+		<div id="step-4" class="st-grey active">
+			<span class="num">4.</span><span class="">Skills Required</span>
+		</div>
+        <div id="step-5" class="st-grey">
+            <span class="num">5.</span><span class="">Comments</span>
+		</div>
+        <div id="step-6" class="st-grey">
+			<span class="num">6.</span><span class="">Review</span>
+		</div>
+	   </div>
+	</div>
+    <!------------------------------------------------------------------------->
+    <!-- end STEP NAVIGATION -->
+
+
     <div class="col-md-5 mx-auto mt-2">
 		<h3 class="pt-4 pb-2 text-center">Add Job</h3>
 
