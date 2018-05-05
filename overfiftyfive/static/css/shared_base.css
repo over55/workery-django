@@ -502,16 +502,6 @@ table.custom-cell-w tr th{width:35% !important;}
 	margin: 5px auto 10px;
 }
 }
-.field-select2 .select2 .select2-selection {
-    padding: .5rem 0.8rem !important;
-    font-size: 1.25rem !important;
-    line-height: 1.5 !important;
-    height: calc(2.875rem + 2px) !important;
-    border: 1px solid #007bff !important;
-}
-.field-select2 .select2 .select2-selection__arrow {
-    height: calc(2.875rem + 2px) !important;
-}
 .img-head {
 	width: 64px;
 	height: auto;
