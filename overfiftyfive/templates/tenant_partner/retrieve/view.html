@@ -293,9 +293,9 @@
 		<div class="col-sm-4">
 		    <a onclick="click_view_more_button();">
 			<button  id="id_submit_btn"
-			    class="btn btn-warning btn-lg btn-fxw mt-4"
+			    class="btn btn-primary btn-lg btn-fxw mt-4"
 			    type="button">
-			<i class="fas fa-edit"></i>&nbsp;{% trans 'View More ...' %}
+			<i class="fas fa-search"></i>&nbsp;{% trans 'View More ...' %}
 			</button>
 		    </a>
 		</div>
@@ -304,9 +304,9 @@
 		<div class="col-sm-4">
 		    <a href="{% url 'o55_tenant_partner_comments_retrieve' template object.id %}">
 		    <button  id="id_submit_btn"
-			class="btn btn-warning btn-lg btn-fxw mt-4"
+			class="btn btn-success btn-lg btn-fxw mt-4"
 			type="button">
-		    <i class="fas fa-edit"></i>&nbsp;{% trans 'View Comments' %}
+		    <i class="far fa-comments"></i>&nbsp;{% trans 'View Comments' %}
 		    </button>
 		    </a>
 		</div>
@@ -315,9 +315,9 @@
 		<div class="col-sm-4">
 		    <a href="{% url 'o55_tenant_partner_update' template object.id %}">
 		    <button  id="id_submit_btn"
-			class="btn btn-warning btn-lg btn-fxw mt-4"
+			class="btn btn-orange btn-lg btn-fxw mt-4"
 			type="button">
-		    <i class="fas fa-edit"></i>&nbsp;{% trans 'Edit Client' %}
+		    <i class="fas fa-pencil-alt"></i>&nbsp;{% trans 'Edit Client' %}
 		    </button>
 		    </a>
 		</div>
