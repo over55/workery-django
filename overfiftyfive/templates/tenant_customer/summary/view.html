@@ -90,7 +90,6 @@
             <thead>
                 <tr>
                     <th></th>
-                    <th>{% trans '#' %}</th>
                     <th>{% trans 'First Name' %}</th>
                     <th>{% trans 'Last Name' %}</th>
                     <th>{% trans 'Phone' %}</th>
@@ -110,7 +109,6 @@
                             <i class="fa fa-question fa-lg"></i>
                         {% endif %}
                     </td>
-                    <td>{{ customer.id|intcomma }}</td>
                     <td>{% if customer.given_name %}{{ customer.given_name }}{% else %}-{% endif %}</td>
                     <td>{% if customer.last_name %}{{ customer.last_name }}{% else %}-{% endif %}</td>
                     <td>
