@@ -73,7 +73,6 @@
             <thead>
                 <tr>
                     <th></th>
-                    <th>{% trans '#' %}</th>
                     <th>{% trans 'Client' %}</th>
                     <th>{% trans 'Associate' %}</th>
                     <th>{% trans 'Assigned Date' %}</th>
@@ -94,7 +93,6 @@
                             <i class="fa fa-question fa-lg"></i>
                         {% endif %}
                     </td>
-                    <td>{{ job.id|intcomma }}</td>
                     <td>{% if job.customer %}{{ job.customer }}{% else %}-{% endif %}</td>
                     <td>{% if job.associate %}{{ job.associate }}{% else %}-{% endif %}</td>
                     <td>{% if job.assignment_date %}{{ job.assignment_date }}{% else %}-{% endif %}</td>
