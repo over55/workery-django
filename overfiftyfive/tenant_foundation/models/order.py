@@ -25,11 +25,6 @@ from tenant_foundation.constants import UNASSIGNED_JOB_TYPE_OF_ID, JOB_TYPE_OF_C
 from tenant_foundation.utils import *
 
 
-# def get_expiry_date(days=2):
-#     """Returns the current date plus paramter number of days."""
-#     return timezone.now() + timedelta(days=days)
-
-
 class OrderManager(models.Manager):
     def delete_all(self):
         items = Order.objects.all()
@@ -54,6 +49,12 @@ def increment_order_id_number():
     if last_job_order:
         return last_job_order.id + 1
     return 1
+
+
+@transaction.atomic
+def get_todays_date(days=0):
+    """Returns the current date plus paramter number of days."""
+    return timezone.now() + timedelta(days=days)
 
 
 class Order(models.Model):
@@ -133,6 +134,12 @@ class Order(models.Model):
         help_text=_('Track whether this order was cancelled.'),
         default=False,
         blank=True
+    )
+    start_date = models.DateField(
+        _('Start Date'),
+        help_text=_('The date that this order will begin.'),
+        blank=True,
+        default=get_todays_date
     )
     completion_date = models.DateField(
         _('Completion Date'),

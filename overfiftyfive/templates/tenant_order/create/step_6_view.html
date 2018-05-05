@@ -24,6 +24,7 @@
         var tmp_comment = localStorage.getItem("tmp_comment");
         var tmp_skillset_ids = localStorage.getObj("tmp_skillset_ids");
         var tmp_skillset_values = localStorage.getObj("tmp_skillset_values");
+        var tmp_start_date = localStorage.getItem("tmp_start_date");
 
         $('#selected_customer_name').append(tmp_customer_name);
 
@@ -64,6 +65,7 @@
         localStorage.removeItem("tmp_skillset_ids");
         localStorage.removeItem("tmp_skillset_values");
         localStorage.removeItem("tmp_comment");
+        localStorage.removeItem("tmp_start_date");
 
         // --- CUSTOMER ---
         localStorage.removeItem("tmp_order_given_name");
@@ -98,6 +100,7 @@
         var is_ongoing = tmp_job_type == "Ongoing" ? true : false;
         var tmp_home_support = localStorage.getItem("tmp_home_support");
         var is_home_support_service = tmp_home_support == "Yes" ? true : false;
+        var start_date = localStorage.getItem("start_date");
 
         create_job_api(
             {
@@ -108,6 +111,7 @@
                 'is_home_support_service': is_home_support_service,
                 'description': localStorage.getItem("tmp_describe"),
                 'extra_comment': localStorage.getItem("tmp_comment"),
+                'start_date': start_date
             },
             success_callback,
             function(error_result) {
