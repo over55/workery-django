@@ -89,7 +89,6 @@
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th>{% trans '#' %}</th>
                     <th>{% trans 'First Name' %}</th>
                     <th>{% trans 'Last Name' %}</th>
                     <th>{% trans 'Phone' %}</th>
@@ -100,7 +99,6 @@
             <tbody>
                 {% for member in associate_list %}
                 <tr>
-                    <td>{{ member.id|intcomma }}</td>
                     <td>{% if member.given_name %}{{ member.given_name }}{% else %}-{% endif %}</td>
                     <td>{% if member.last_name %}{{ member.last_name }}{% else %}-{% endif %}</td>
                     <td>
