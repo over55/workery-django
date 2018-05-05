@@ -34,6 +34,9 @@ from tenant_foundation.models.resource_item_sort_order import ResourceItemSortOr
 from tenant_foundation.models.partner import Partner
 
 # Away Log
+from tenant_foundation.models.taskitem import TaskItem
+
+# Tasks
 from tenant_foundation.models.awaylog import AwayLog
 
 # Comment related objects

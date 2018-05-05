@@ -6,9 +6,10 @@ from tenant_task import views
 
 
 urlpatterns = (
-    # Summary
-    path('tasks/', views.ActiveTaskListView.as_view(), name='o55_tenant_task_list'),
+    # Active List
+    path('pending-tasks/', views.ActiveTaskListView.as_view(), name='o55_tenant_task_list'),
+    path('closed-tasks/', views.ClosedTaskListView.as_view(), name='o55_tenant_closed_task_list'),
 
-    # # Retrieve
-    # path('task/<int:pk>/', views.ResourceCategoryRetrieveView.as_view(), name='o55_tenant_resource_category_retrieve'),
+    # Update / Retrieve
+    path('task/<int:pk>/', views.TaskRetrieveUpdateView.as_view(), name='o55_tenant_task_retrieve_update'),
 )

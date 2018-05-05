@@ -202,6 +202,12 @@ class Order(models.Model):
         through='OrderComment',
         related_name="%(app_label)s_%(class)s_order_comments_related"
     )
+    follow_up_days_number = models.PositiveSmallIntegerField(
+        _("Follow Up Days Number"),
+        help_text=_('The number of days from now to follow up on for the ongoing job.'),
+        default=0,
+        blank=True,
+    )
 
     #
     #  SYSTEM

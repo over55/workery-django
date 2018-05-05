@@ -66,6 +66,7 @@
         localStorage.removeItem("tmp_skillset_values");
         localStorage.removeItem("tmp_comment");
         localStorage.removeItem("tmp_start_date");
+        localStorage.removeItem("tmp_follow_up_days_number");
 
         // --- CUSTOMER ---
         localStorage.removeItem("tmp_order_given_name");
@@ -111,7 +112,8 @@
                 'is_home_support_service': is_home_support_service,
                 'description': localStorage.getItem("tmp_describe"),
                 'extra_comment': localStorage.getItem("tmp_comment"),
-                'start_date': start_date
+                'start_date': start_date,
+                'follow_up_days_number': localStorage.getItem("tmp_follow_up_days_number0")
             },
             success_callback,
             function(error_result) {

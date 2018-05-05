@@ -17,12 +17,14 @@ from shared_api.custom_fields import PhoneNumberField
 from shared_foundation import constants
 # from tenant_api.serializers.order_comment import OrderCommentSerializer
 from tenant_api.serializers.skill_set import SkillSetListCreateSerializer
+from tenant_foundation.constants import *
 from tenant_foundation.models import (
     Comment,
     OrderComment,
     Order,
     SkillSet,
-    Tag
+    Tag,
+    TaskItem
 )
 
 
@@ -77,7 +79,8 @@ class OrderListCreateSerializer(serializers.ModelSerializer):
             # 'last_modified_by',
             'skill_sets',
             'description',
-            'start_date'
+            'start_date',
+            'follow_up_days_number'
         )
 
     def setup_eager_loading(cls, queryset):
@@ -106,6 +109,7 @@ class OrderListCreateSerializer(serializers.ModelSerializer):
         created_by = self.context['created_by']
         description = validated_data.get('description', None)
         start_date = validated_data.get('start_date', timezone.now())
+        follow_up_days_number = validated_data.get('follow_up_days_number', 0)
 
         # Update currency price.
         service_fee = validated_data.get('service_fee', Money(0, constants.O55_APP_DEFAULT_MONEY_CURRENCY))
@@ -125,7 +129,8 @@ class OrderListCreateSerializer(serializers.ModelSerializer):
             created_by=created_by,
             last_modified_by=None,
             description=description,
-            start_date=start_date
+            start_date=start_date,
+            follow_up_days_number=follow_up_days_number
         )
 
         #-----------------------------
@@ -156,6 +161,20 @@ class OrderListCreateSerializer(serializers.ModelSerializer):
                 about=order,
                 comment=comment,
             )
+
+        #-----------------------------
+        # Create our first task.
+        #-----------------------------
+        first_task = TaskItem.objects.create(
+            created_by=self.context['created_by'],
+            last_modified_by=self.context['created_by'],
+            type_of = ASSIGNED_ASSOCIATE_TASK_ITEM_TYPE_OF_ID,
+            due_date = order.start_date,
+            is_closed = False,
+            job = order,
+            title = _('Assign an Associate'),
+            description = _('Please assign an associate to this job.')
+        )
 
         # Update validation data.
         # validated_data['comments'] = OrderComment.objects.filter(order=order)
@@ -223,7 +242,8 @@ class OrderRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
             # 'last_modified_by',
             'skill_sets',
             'description',
-            'start_date'
+            'start_date',
+            'follow_up_days_number'
         )
 
     def setup_eager_loading(cls, queryset):
@@ -258,6 +278,7 @@ class OrderRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         skill_sets = validated_data.get('skill_sets', instance.skill_sets)
         instance.skill_sets.set(skill_sets)
         instance.start_date = validated_data.get('start_date', instance.start_date)
+        instance.follow_up_days_number = validated_data.get('follow_up_days_number', instance.follow_up_days_number)
 
         # Update currency price.
         service_fee = validated_data.get('service_fee', instance.service_fee)

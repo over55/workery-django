@@ -68,3 +68,17 @@ ORGANIZATION_TYPE_OF_CHOICES = (
     (NON_PROFIT_ORGANIZATION_TYPE_OF_ID, _('Non-Profit Organization Type')),
     (GOVERNMENT_ORGANIZATION_TYPE_OF_ID, _('Government Organization')),
 )
+
+
+# The following constants are used by the "Customer" model.
+#
+
+ASSIGNED_ASSOCIATE_TASK_ITEM_TYPE_OF_ID = 1
+FOLLOW_UP_IS_JOB_COMPLETE_TASK_ITEM_TYPE_OF_ID = 2
+FOLLOW_UP_CUSTOMER_SURVEY_TASK_ITEM_TYPE_OF_ID = 3
+
+TASK_ITEM_TYPE_OF_CHOICES = (
+    (ASSIGNED_ASSOCIATE_TASK_ITEM_TYPE_OF_ID, _('Assign associate')),
+    (FOLLOW_UP_IS_JOB_COMPLETE_TASK_ITEM_TYPE_OF_ID, _('Follow up is job complete')),
+    (FOLLOW_UP_CUSTOMER_SURVEY_TASK_ITEM_TYPE_OF_ID, _('Follow up customer survey'))
+)

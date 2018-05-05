@@ -23,25 +23,24 @@
     <!------------------------------------------------------------------------->
     <!-- end BREADCRUMB -->
 
-    <h1>{% trans 'Pending Tasks' %}</h1>
+    <h1>{% trans 'Closed Tasks' %}</h1>
 
     <!-- STEP NAVIGATION -->
     <!------------------------------------------------------------------------->
     <div class="row">
         <div class="step-navigation">
-            <div id="step-1" class="st-grey active">
-                <span class="">Pending Tasks</span>
-            </div>
-            <div id="step-2" class="st-grey">
-                <a href="{% url 'o55_tenant_closed_task_list' %}">
-                    <span class="">Closed Tasks</span>
+            <div id="step-1" class="st-grey">
+                <a href="{% url 'o55_tenant_task_list' %}">
+                    <span class="">Pending Tasks</span>
                 </a>
+            </div>
+            <div id="step-2" class="st-grey active">
+                <span class="">Closed Tasks</span>
             </div>
         </div>
     </div>
     <!------------------------------------------------------------------------->
     <!-- end STEP NAVIGATION -->
-
 
     <div class="table-responsive">
         <table class="table table-striped">
@@ -60,7 +59,7 @@
                     <td>{% if task_item.job.customer %}{{ task_item.job.customer }}{% else %}{% trans 'Unassigned' %}{% endif %}</td>
                     <td>{% if task_item.job.associate %}{{ task_item.job.associate }}{% else %}{% trans 'Unassigned' %}{% endif %}</td>
                     <td>
-                        <a href="{% url 'o55_tenant_task_retrieve_update' task_item.id %}?page={{ page_obj.number }}">{% trans 'View' %}</a>
+                        <a href="">{% trans 'View' %}</a>
                     </td>
                 </tr>
                 {% empty %}
