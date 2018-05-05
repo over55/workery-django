@@ -59,7 +59,30 @@
     <!------------------------------------------------------------------------->
     <!-- end BACK BUTTON -->
 
+
     <h1 id="id_page_title">{% trans 'Add Commercial Client' %}</h1>
+
+
+    <!-- STEP NAVIGATION -->
+    <!------------------------------------------------------------------------->
+    <div class="row">
+        <div class="step-navigation">
+            <div id="step-1" class="st-grey">
+                <a href="{% url 'o55_tenant_pick_customer_create' %}">
+                    <span class="num">1.</span><span class="">Pick Type</span>
+                </a>
+            </div>
+            <div id="step-2" class="st-grey active">
+                <span class="num">2.</span><span class="">Details</span>
+            </div>
+            <div id="step-3" class="st-grey">
+                <span class="num">3.</span><span class="">Review</span>
+            </div>
+        </div>
+    </div>
+    <!------------------------------------------------------------------------->
+    <!-- end STEP NAVIGATION -->
+    
 
     <!-- FORM WITH JS -->
     <!------------------------------------------------------------------------->
