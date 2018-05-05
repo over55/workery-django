@@ -2,7 +2,7 @@
 {% load staticfiles i18n foundation_tags humanize %}
 
 {% block title %}
-{% trans 'Add Away Announcement | Over 55 Inc.' %}
+{% trans 'Add Announcement | Over 55 Inc.' %}
 {% endblock title %}
 
 {% block header_content %}
@@ -236,27 +236,25 @@
 	  	<ol class="breadcrumb">
 	    	<li class="breadcrumb-item"><a href="{% url 'o55_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
             <li class="breadcrumb-item"><a href="{% url 'o55_tenant_settings_launchpad' %}">{% trans 'Settings' %}</a></li>
-            <li class="breadcrumb-item"><a href="{% url 'o55_tenant_settings_away_log_list' %}">{% trans 'Away Announcements' %}</a></li>
-            <li class="breadcrumb-item active" aria-current="page">{% trans 'Add away announcement' %}</li>
+            <li class="breadcrumb-item"><a href="{% url 'o55_tenant_settings_away_log_list' %}">{% trans 'Announcements' %}</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{% trans 'Add announcement' %}</li>
 	  	</ol>
 	</nav>
     <!------------------------------------------------------------------------->
     <!-- end BREADCRUMB -->
 
-    <h1 id="id_page_title">Add Away Announcement</h1>
+    <h1 id="id_page_title">Add Announcement</h1>
 
     <!-- FORM -->
     <!------------------------------------------------------------------------->
     <div class="col-sm-5 mx-auto mt-2">
         <!-- Residential form -->
         <div class="col-sm-12 fade show active" id="client-form" aria-labelledby="commercial">
-            <h3 class="pt-4 pb-2 text-center">Add Away Announcement</h3>
-
+            
             <!-- Error Output -->
             <div id="all_error_result" name="all_error_result"></div>
             <!-- end Error Output -->
 
-            <p>Please change the text of the away announcements.</p>
             <p><span class="text-secondary font-italic"><sup>*</sup>&nbsp;-&nbsp;Indicates required field to fill out.</span></p>
             <form id="add-client-form" method="post" class="needs-validation" action="" novalidate>
                 <div class="form-row">
