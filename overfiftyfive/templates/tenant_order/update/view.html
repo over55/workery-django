@@ -38,8 +38,9 @@
          */
         $('#customer').select2({
             // SETUP OUR STARTUP GUI.
-            placeholder: 'Select an option',
+            placeholder: 'Select customer',
             allowClear: true,
+	    width: '100%',
 
             // OVERRIDE OUR GUI TO GET OUR DATA FROM REMOTE API WEB-SERVICE.
             ajax: {
@@ -79,9 +80,9 @@
                  *  Function used to take our JSON API results and create our own custom
                  *  GUI elements per each returned customer.
                  */
-                // if (!state.id) {
-                //     return  state.given_name + " " + state.last_name;
-                // }
+                if (!state.id) {
+                     return  "Please enter 1 or more characters";
+                }
                 var $state = $(
                     '<span id="' + state.id + '">' + state.given_name + " " + state.last_name + '</span>'
                 );
@@ -89,9 +90,9 @@
             },
 
             templateSelection: function (data) {
-                // if (data.id === '') { // adjust for custom placeholder values
-                //     return 'Custom styled placeholder text';
-                // }
+                if (data.id === '') { // adjust for custom placeholder values
+                    return 'Please select customer';
+                }
                 return data.given_name + " " + data.last_name;
             }
         }); // end SELECT2
@@ -104,8 +105,9 @@
          */
         $('#associate').select2({
             // SETUP OUR STARTUP GUI.
-            placeholder: 'Select an option',
+            placeholder: 'Select an associate',
             allowClear: true,
+	    width: '100%',
 
             // OVERRIDE OUR GUI TO GET OUR DATA FROM REMOTE API WEB-SERVICE.
             ajax: {
@@ -145,9 +147,9 @@
                  *  Function used to take our JSON API results and create our own custom
                  *  GUI elements per each returned customer.
                  */
-                // if (!state.id) {
-                //     return  state.given_name + " " + state.last_name;
-                // }
+                if (!state.id) {
+                     return  "Please enter 1 or more characters";
+                }
                 var $state = $(
                     '<span id="' + state.id + '">' + state.given_name + " " + state.last_name + '</span>'
                 );
@@ -155,9 +157,9 @@
             },
 
             templateSelection: function (data) {
-                // if (data.id === '') { // adjust for custom placeholder values
-                //     return 'Custom styled placeholder text';
-                // }
+                if (data.id === '') { // adjust for custom placeholder values
+                    return 'Please select an associate';
+                }
                 return data.given_name + " " + data.last_name;
             }
         }); // end SELECT2
@@ -319,7 +321,7 @@
             <div class="form-row">
                 <div class="form-group col-md-12 mb-4">
                     <select id="customer" name="customer" class="form-control form-control-lg border border-primary" autofocus>
-                        <option selected="selected" value="{{ job.customer.id }}"><span id="{{ job.customer.id }}">{{ job.customer }}</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</option>
+                        <option selected="selected" value="{{ job.customer.id }}"><span id="{{ job.customer.id }}">{{ job.customer }}</span></option>
                     </select>
                 </div>
             </div>
@@ -353,9 +355,9 @@
                 <div class="form-group col-md-12 mb-4">
                     <select id="associate" name="associate" class="form-control form-control-lg border border-primary">
                         {% if job.associate %}
-                            <option selected="selected" value="{{ job.associate.id }}"><span id="{{ job.associate.id }}">{{ job.associate }}</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</option>
+                            <option selected="selected" value="{{ job.associate.id }}"><span id="{{ job.associate.id }}">{{ job.associate }}</span></option>
                         {% else %}
-                            <option selected="selected" value="{{ job.associate.id }}"><span id="{{ job.associate.id }}">{{ job.associate }}</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</option>
+                            <option selected="selected" value="{{ job.associate.id }}"><span id="{{ job.associate.id }}">{{ job.associate }}</span></option>
                         {% endif %}
                     </select>
                 </div>
