@@ -138,4 +138,4 @@ class TaskItem(models.Model):
     #
 
     def __str__(self):
-        return str(self.text)
+        return str(self.id)

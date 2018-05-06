@@ -18,6 +18,7 @@ from tenant_api.views.staff_comment import StaffCommentListCreateAPIView
 from tenant_api.views.tag import TagListCreateAPIView, TagRetrieveUpdateDestroyAPIView
 from tenant_api.views.utility import FindCustomerMatchingAPIView
 from tenant_api.views.activite_sheet_item import ActivitySheetItemListCreateAPIView
+from tenant_api.views.task_activity_sheet import ActivitySheetItemCreateAPIView
 
 
 urlpatterns = [
@@ -62,6 +63,9 @@ urlpatterns = [
     # Tags
     url(r'^api/tags$', TagListCreateAPIView.as_view(), name='o55_tag_list_create_api_endpoint'),
     url(r'^api/tag/(?P<pk>[^/.]+)/$', TagRetrieveUpdateDestroyAPIView.as_view(), name='o55_tag_retrieve_update_destroy_api_endpoint'),
+
+    # Tasks
+    url(r'^api/tasks/activity_sheet/assign$', ActivitySheetItemCreateAPIView.as_view(), name='o55_activity_sheet_assign_api_endpoint'),
 
     # Utility
     url(r'^api/utility/find-customer-matching$', FindCustomerMatchingAPIView.as_view(), name='o55_find_customer_matching_api_endpoint'),

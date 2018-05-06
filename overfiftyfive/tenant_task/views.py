@@ -22,6 +22,15 @@ class PendingTaskListView(ListView, ExtraRequestProcessingMixin):
         # Required for navigation
         modified_context['current_page'] = "task"
 
+        # DEVELOPERS NOTE:
+        # - We will extract the URL parameters and save them into our context
+        #   so we can use this to help the pagination.
+        modified_context['parameters'] = self.get_params_dict([])
+
+        # Get count of total tasks.
+        modified_context['pending_count'] = TaskItem.objects.filter(is_closed=False).count()
+        modified_context['closed_count'] = TaskItem.objects.filter(is_closed=True).count()
+
         # Return our modified context.
         return modified_context
 
@@ -38,6 +47,15 @@ class ClosedTaskListView(ListView, ExtraRequestProcessingMixin):
 
         # Required for navigation
         modified_context['current_page'] = "task"
+
+        # DEVELOPERS NOTE:
+        # - We will extract the URL parameters and save them into our context
+        #   so we can use this to help the pagination.
+        modified_context['parameters'] = self.get_params_dict([])
+
+        # Get count of total tasks.
+        modified_context['pending_count'] = TaskItem.objects.filter(is_closed=False).count()
+        modified_context['closed_count'] = TaskItem.objects.filter(is_closed=True).count()
 
         # Return our modified context.
         return modified_context

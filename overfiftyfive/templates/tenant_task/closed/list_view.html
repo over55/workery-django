@@ -32,12 +32,12 @@
             <div id="step-1" class="st-grey">
                 <a href="{% url 'o55_tenant_task_list' %}">
                     <i class="fas fa-clock"></i>
-                    <span class="">Pending Tasks</span>
+                    <span class="">Pending Tasks ({{ pending_count|intcomma }})</span>
                 </a>
             </div>
             <div id="step-2" class="st-grey active">
                 <i class="fas fa-check-circle"></i>
-                <span class="">Closed Tasks</span>
+                <span class="">Closed Tasks ({{ closed_count|intcomma }})</span>
             </div>
         </div>
     </div>

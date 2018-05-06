@@ -23,7 +23,7 @@ function click_add_button() {
     //
     create_activity_sheet_item_api(
         {
-            'order': {{ job.id }},
+            'task_item': {{ task_item.id }},
             'associate': {{ parameters.associate_id }},
             'comment': $('#comment').val(),
             'has_accepted_job': has_accepted_job,
@@ -32,8 +32,14 @@ function click_add_button() {
             // FOR DEBUGGING PURPOSES ONLY.
             console.log(result_dict);
 
-            // REDIRECT TO SUCCESS PAGE.
-            window.location = "{% url 'o55_tenant_pending_task_activity_sheet_retrieve' task_item.id %}";
+            // REDIRECT.
+            if (has_accepted_job == "true") {
+                // REDIRECT TO SUCCESS PAGE.
+                window.location = "{% url 'o55_tenant_task_list' %}?was_closed=True";
+            } else {
+                // REDIRECT BACK TO ACTIVITY PAGE.
+                window.location = "{% url 'o55_tenant_pending_task_activity_sheet_retrieve' task_item.id %}?was_modified=True";
+            }
         },
         function(xhr,status,error) { // Error
             // STEP 1: Convert to JSON.
