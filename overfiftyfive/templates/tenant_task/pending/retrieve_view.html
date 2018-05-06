@@ -83,6 +83,32 @@
                    </a>
               </td>
             </tr>
+            <tr>
+              <th scope="row" class="bg-light">Required Action</th>
+              <td id="selected_comment_id">
+                  {% if task_item.type_of == 1 %}
+                  <div class="col-sm-4">
+                      <a href="{% url 'o55_tenant_pending_task_retrieve_for_activity_sheet_retrieve' task_item.id %}">
+                      <button  id="id_submit_btn"
+                          class="btn btn-primary btn-lg btn-fxw mt-4"
+                          type="button">
+                      <i class="fas fa-search"></i>&nbsp;{% trans 'Assign Associate' %}
+                      </button>
+                      </a>
+                  </div>
+                  {% elif task_item.type_of == 2 %}
+                  <div class="col-sm-4">
+                      <a href="{% url 'o55_tenant_pending_task_retrieve_and_complete_create' task_item.id %}">
+                      <button  id="id_submit_btn"
+                          class="btn btn-primary btn-lg btn-fxw mt-4"
+                          type="button">
+                      <i class="fas fa-check-square"></i>&nbsp;{% trans 'Complete Job' %}
+                      </button>
+                      </a>
+                  </div>
+                  {% endif %}
+              </td>
+            </tr>
           </tbody>
         </table>
        </div>
@@ -91,15 +117,17 @@
        <div class="form-group col-md-10 mb-3 mx-auto text-center">
    	    <div class="row">
    		<!-- COMMENTS BUTTON -->
-                   <div class="col-sm-4">
-                       <a href="{% url 'o55_tenant_pending_task_retrieve_for_activity_sheet_retrieve' task_item.id %}">
-                       <button  id="id_submit_btn"
-                           class="btn btn-primary btn-lg btn-fxw mt-4"
-                           type="button">
-                       <i class="fas fa-search"></i>&nbsp;{% trans 'View Activity Sheet' %}
-                       </button>
-                       </a>
-                   </div>
+        {% if task_item.type_of != 1 %}
+        <div class="col-sm-4">
+            <a href="{% url 'o55_tenant_pending_task_retrieve_and_unassign_create' task_item.id %}">
+            <button  id="id_submit_btn"
+                class="btn btn-primary btn-lg btn-fxw mt-4"
+                type="button">
+            <i class="fas fa-window-close"></i>&nbsp;{% trans 'Unassign Associate' %}
+            </button>
+            </a>
+        </div>
+        {% endif %}
                    <!-- end COMMENTS BUTTON -->
 
                    <!-- COMMENTS BUTTON -->
@@ -108,7 +136,7 @@
                        <button  id="id_submit_btn"
                            class="btn btn-success btn-lg btn-fxw mt-4"
                            type="button">
-                       <i class="far fa-check-square"></i>&nbsp;{% trans 'Close Job' %}
+                       <i class="far fa-minus-square"></i>&nbsp;{% trans 'Close Job' %}
                        </button>
                        </a>
                    </div>
