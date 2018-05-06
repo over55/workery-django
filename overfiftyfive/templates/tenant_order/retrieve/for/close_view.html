@@ -18,9 +18,15 @@
         // PLUG IN EVENT LISTENER ON REASON DROPDOWN CHANGE.
         $('#reason').on('change',function(){
             if( $(this).val()==="other" || $(this).val()===1){
+                $("#customer_satisfaction_survey_div").hide();
                 $("#reason_other_div").show();
             }
+            else if( $(this).val()==="4" || $(this).val()===4){
+                $("#customer_satisfaction_survey_div").show();
+                $("#reason_other_div").hide();
+            }
             else{
+                $("#customer_satisfaction_survey_div").hide();
                 $("#reason_other_div").hide();
             }
         });
@@ -38,9 +44,107 @@
         {% endif %}
     }
 
+    function get_selected_radio_value(radiofields_name) {
+        var radios = document.getElementsByName(radiofields_name);
+        for (var i = 0, length = radios.length; i < length; i++) {
+            if (radios[i].checked) {
+
+                // only one radio can be logically checked, don't check the rest
+                var value = radios[i].value;
+                if (value == "yes" ) {
+                    return true;
+                } else {
+                    return false;
+                }
+
+            }
+        }
+        return null;
+    }
+
     //
     function click_submit_button() {
-        //
+        // If there was another reason, track it down.
+        var reason = $('#reason').val();
+        if ( reason == 'other' ) {
+            reason = 1;
+        }
+
+        // Get our "Customer Survey".
+        var was_job_satisfactory = get_selected_radio_value('was_job_satisfactory');
+        var was_job_finished_on_time_and_on_budget = get_selected_radio_value('was_job_finished_on_time_and_on_budget');
+        var was_associate_punctual = get_selected_radio_value('was_associate_punctual');
+        var was_associate_professional = get_selected_radio_value('was_associate_professional');
+        var would_customer_refer_our_organization = get_selected_radio_value('would_customer_refer_our_organization');
+
+        // If the user did not select the job was completed reason then we will
+        // set these values as false so our API web-service does not return any
+        // 400 validation errors.
+        if (reason !== "4") {
+            was_job_satisfactory = false;
+            was_job_finished_on_time_and_on_budget = false;
+            was_associate_punctual = false;
+            was_associate_professional = false;
+            would_customer_refer_our_organization = false;
+        }
+
+        // For debugging purposes only.
+        console.log("job", "{{ job.id }}");
+        console.log("reason", reason);
+        console.log("additional_comment", $('#comment').val());
+        console.log("was_job_satisfactory", was_job_satisfactory);
+        console.log("was_job_finished_on_time_and_on_budget", was_job_finished_on_time_and_on_budget);
+        console.log("was_associate_punctual", was_associate_punctual);
+        console.log("was_associate_professional", was_associate_professional);
+        console.log("would_customer_refer_our_organization", would_customer_refer_our_organization);
+
+        // Submit to our API web-service.
+        create_order_close_api(
+            {
+                'job': {{ job.id }},
+                'reason': reason,
+                'reason_other': $('#reason_other').val(),
+                'additional_comment': $('#comment').val(),
+                'was_job_satisfactory': was_job_satisfactory,
+                'was_job_finished_on_time_and_on_budget': was_job_finished_on_time_and_on_budget,
+                'was_associate_punctual': was_associate_punctual,
+                'was_associate_professional': was_associate_professional,
+                'would_customer_refer_our_organization': would_customer_refer_our_organization
+            },
+            function(result_dict) { // Success
+                // FOR DEBUGGING PURPOSES ONLY.
+                console.log(result_dict);
+
+                // REDIRECT TO SUCCESS PAGE.
+                window.location = "{% url 'o55_tenant_task_list' %}?was_closed=True";
+            },
+            function(xhr,status,error) { // Error
+                // STEP 1: Convert to JSON.
+                var err = JSON.parse(xhr.responseText);
+
+                // For debugging purposes only.
+                console.log(err);
+
+                // STEP 2: CLEAR EXISTING TEXT.
+                $('#all_error_result').html("");
+
+                // STEP 3: PRINT OUR ERROR.
+                for(var prop in err) {
+                    if(err.hasOwnProperty(prop)) {
+                        var val = err[prop];
+                        console.log(val);
+                        $('#all_error_result').append("<p><b>"+prop+"</b> "+val+"</p><br />");
+                    }
+                }
+
+                // STEP 4: FOCUS TO WHERE THE ERROR IS OCCURING.
+                $('html, body').animate({ scrollTop: $('#id_page_title').offset().top }, 'slow');
+            },
+            function() { // Finally
+                // UNLOCK THE "SUBMIT" BUTTON TO BE AVAILABLE FOR USAGE.
+                // enable_btn();
+            }
+        );
     }
 </script>
 
@@ -90,7 +194,7 @@
     <!------------------------------------------------------------------------->
     <!-- end NOTIFICATION -->
 
-    <h1>{% trans 'Close Job' %}</h1>
+    <h1 id="id_page_title">{% trans 'Close Job' %}</h1>
 
     <div class="container">
         <div class="row align-items-start">
@@ -117,10 +221,10 @@
                                         <option value="0" selected="selected">Please select reason</option>
                                         <option value="2">Quote was too high</option>
                                         <option value="3">Job completed by someone else</option>
-                                        <option value="3">Job completed by Associate</option>
-                                        <option value="3">Work no longer needed</option>
-                                        <option value="3">Client not satisfied with Associate</option>
-                                        <option value="3">Client did work themselves</option>
+                                        <option value="4">Job completed by Associate</option>
+                                        <option value="5">Work no longer needed</option>
+                                        <option value="6">Client not satisfied with Associate</option>
+                                        <option value="7">Client did work themselves</option>
                                         <option value="other">Other</option>
                                     </select>
                                     <div id="reason-error" class="invalid-feedback"></div>
@@ -135,8 +239,91 @@
                                 </div>
                                 <!-- end REASON (OTHER) -->
 
+                                <!-- CUSTOMER SUVERY -->
+                                <!--------------------------------------------->
+                                <div id="customer_satisfaction_survey_div" style="display: none;">
+
+                                    <!-- was_job_satisfactory -->
+                                    <div class="form-group col-md-12 mb-4">
+                                        <p class="mb-1">Was the quality of the work satisfactory? <sup>*</sup></p>
+                                        <div class="form-radio custom-control custom-radio custom-control-inline">
+                                            <input type="radio" id="was_job_satisfactory" name="was_job_satisfactory" value="yes" class="custom-control-input form-check-input">
+                                            <label class="custom-control-label form-check-label" for="was_job_satisfactory">Yes</label>
+                                        </div>
+                                        <div class="form-radio custom-control custom-radio custom-control-inline">
+                                            <input type="radio" id="was_job_satisfactory2" name="was_job_satisfactory" value="no" class="custom-control-input form-check-input">
+                                            <label class="custom-control-label form-check-label" for="was_job_satisfactory2">No</label>
+                                            <div id="was_job_satisfactory-error" class="invalid-feedback ml-2"></div>
+                                        </div>
+                                    </div>
+                                    <!-- end was_job_satisfactory -->
+
+                                    <!-- was_job_finished_on_time_and_on_budget -->
+                                    <div class="form-group col-md-12 mb-4">
+                                        <p class="mb-1">Was the work completed on time and on budget? <sup>*</sup></p>
+                                        <div class="form-radio custom-control custom-radio custom-control-inline">
+                                            <input type="radio" id="was_job_finished_on_time_and_on_budget" name="was_job_finished_on_time_and_on_budget" value="yes" class="custom-control-input form-check-input">
+                                            <label class="custom-control-label form-check-label" for="was_job_finished_on_time_and_on_budget">Yes</label>
+                                        </div>
+                                        <div class="form-radio custom-control custom-radio custom-control-inline">
+                                            <input type="radio" id="was_job_finished_on_time_and_on_budget2" name="was_job_finished_on_time_and_on_budget" value="no" class="custom-control-input form-check-input">
+                                            <label class="custom-control-label form-check-label" for="was_job_finished_on_time_and_on_budget2">No</label>
+                                            <div id="was_job_finished_on_time_and_on_budget-error" class="invalid-feedback ml-2"></div>
+                                        </div>
+                                    </div>
+                                    <!-- end was_job_finished_on_time_and_on_budget -->
+
+                                    <!-- was_associate_punctual -->
+                                    <div class="form-group col-md-12 mb-4">
+                                        <p class="mb-1">Was the Associate Member punctual? <sup>*</sup></p>
+                                        <div class="form-radio custom-control custom-radio custom-control-inline">
+                                            <input type="radio" id="was_associate_punctual" name="was_associate_punctual" value="yes" class="custom-control-input form-check-input">
+                                            <label class="custom-control-label form-check-label" for="was_associate_punctual">Yes</label>
+                                        </div>
+                                        <div class="form-radio custom-control custom-radio custom-control-inline">
+                                            <input type="radio" id="was_associate_punctual2" name="was_associate_punctual" value="no" class="custom-control-input form-check-input">
+                                            <label class="custom-control-label form-check-label" for="was_associate_punctual2">No</label>
+                                            <div id="was_associate_punctual-error" class="invalid-feedback ml-2"></div>
+                                        </div>
+                                    </div>
+                                    <!-- end was_associate_punctual -->
+
+                                    <!-- was_associate_professional -->
+                                    <div class="form-group col-md-12 mb-4">
+                                        <p class="mb-1">Was the Associate Member professional? <sup>*</sup></p>
+                                        <div class="form-radio custom-control custom-radio custom-control-inline">
+                                            <input type="radio" id="was_associate_professional" name="was_associate_professional" value="yes" class="custom-control-input form-check-input">
+                                            <label class="custom-control-label form-check-label" for="was_associate_professional">Yes</label>
+                                        </div>
+                                        <div class="form-radio custom-control custom-radio custom-control-inline">
+                                            <input type="radio" id="was_associate_professional2" name="was_associate_professional" value="no" class="custom-control-input form-check-input">
+                                            <label class="custom-control-label form-check-label" for="was_associate_professional2">No</label>
+                                            <div id="was_associate_professional-error" class="invalid-feedback ml-2"></div>
+                                        </div>
+                                    </div>
+                                    <!-- end was_associate_professional -->
+
+                                    <!-- would_customer_refer_our_organization -->
+                                    <div class="form-group col-md-12 mb-4">
+                                        <p class="mb-1">Would you refer Over55 to a friend of family member?&nbsp;<sup>*</sup></p>
+                                        <div class="form-radio custom-control custom-radio custom-control-inline">
+                                            <input type="radio" id="would_customer_refer_our_organization" name="would_customer_refer_our_organization" value="yes" class="custom-control-input form-check-input">
+                                            <label class="custom-control-label form-check-label" for="would_customer_refer_our_organization">Yes</label>
+                                        </div>
+                                        <div class="form-radio custom-control custom-radio custom-control-inline">
+                                            <input type="radio" id="would_customer_refer_our_organization2" name="would_customer_refer_our_organization" value="no" class="custom-control-input form-check-input">
+                                            <label class="custom-control-label form-check-label" for="would_customer_refer_our_organization2">No</label>
+                                            <div id="would_customer_refer_our_organization-error" class="invalid-feedback ml-2"></div>
+                                        </div>
+                                    </div>
+                                    <!-- end would_customer_refer_our_organization -->
+
+                                </div>
+                                <!--------------------------------------------->
+                                <!-- end CUSTOMER SURVEY -->
+
                                 <div class="form-group col-md-12 mb-4">
-                                    <label for="comment">Comments</label>
+                                    <label for="comment">Additional Comments:</label>
                                     <textarea class="form-control form-control-lg border border-primary" id="comment" name="comment" placeholder="Write a note here..." rows="4" required></textarea>
                                     <div id="comment-error" class="invalid-feedback"></div>
                                 </div>

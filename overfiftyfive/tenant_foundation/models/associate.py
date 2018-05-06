@@ -246,6 +246,12 @@ class Associate(AbstractPerson):
         through='ActivitySheetItem',
         related_name="%(app_label)s_%(class)s_activity_sheet_items_related"
     )
+    score = models.FloatField(
+        _("Score"),
+        help_text=_('The score with this associated.'),
+        blank=True,
+        default=0
+    )
 
     #
     #  FUNCTIONS

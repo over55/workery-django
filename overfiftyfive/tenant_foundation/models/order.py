@@ -208,6 +208,21 @@ class Order(models.Model):
         default=0,
         blank=True,
     )
+    closing_reason = models.PositiveSmallIntegerField(
+        _("Closing Reason"),
+        help_text=_('The reason for this job order closing.'),
+        blank=True,
+        null=True,
+        default=0,
+    )
+    closing_reason_other = models.CharField(
+        _("Closing Reason other"),
+        help_text=_('A specific reason this job order was closed.'),
+        max_length=1024,
+        blank=True,
+        null=True,
+        default='',
+    )
 
     #
     #  SYSTEM
@@ -236,6 +251,42 @@ class Order(models.Model):
         blank=True,
         through='ActivitySheetItem',
         related_name="%(app_label)s_%(class)s_activity_sheet_items_related"
+    )
+    was_job_satisfactory = models.BooleanField(
+        _("Was job satisfactory?"),
+        help_text=_('Customer Survey Q1: Was the quality of the work satisfactory?'),
+        default=True,
+        blank=True
+    )
+    was_job_finished_on_time_and_on_budget = models.BooleanField(
+        _("Was job finished on time and on budget?"),
+        help_text=_('Customer Survey Q2: Was the work completed on time and on budget?'),
+        default=True,
+        blank=True
+    )
+    was_associate_punctual = models.BooleanField(
+        _("Was associate punctual?"),
+        help_text=_('Customer Survey Q3: Was the Associate Member punctual?'),
+        default=True,
+        blank=True
+    )
+    was_associate_professional = models.BooleanField(
+        _("Was associate professional?"),
+        help_text=_('Customer Survey Q4: Was the Associate Member professional?'),
+        default=True,
+        blank=True
+    )
+    would_customer_refer_our_organization = models.BooleanField(
+        _("Would customer refer our organization?"),
+        help_text=_('Customer Survey Q5: Would you refer Over55 to a friend of family member?'),
+        default=True,
+        blank=True
+    )
+    score = models.PositiveSmallIntegerField(
+        _("Score"),
+        help_text=_('The score number earned at the completion of this date.'),
+        default=0,
+        blank=True,
     )
 
     #
