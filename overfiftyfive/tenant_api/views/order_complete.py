@@ -12,14 +12,12 @@ from tenant_api.permissions.order import (
    CanListCreateOrderPermission,
    CanRetrieveUpdateDestroyOrderPermission
 )
-from tenant_api.serializers.activity_sheet_item import (
-    ActivitySheetItemCreateSerializer,
-)
+from tenant_api.serializers.order_complete import OrderCompleteCreateSerializer
 from tenant_foundation.models import ActivitySheetItem
 
 
-class ActivitySheetItemCreateAPIView(generics.CreateAPIView):
-    serializer_class = ActivitySheetItemCreateSerializer
+class OrderCompleteCreateAPIView(generics.CreateAPIView):
+    serializer_class = OrderCompleteCreateSerializer
     permission_classes = (
         permissions.IsAuthenticated,
         IsAuthenticatedAndIsActivePermission,
@@ -30,7 +28,7 @@ class ActivitySheetItemCreateAPIView(generics.CreateAPIView):
         """
         Create
         """
-        serializer = ActivitySheetItemCreateSerializer(data=request.data, context={
+        serializer = OrderCompleteCreateSerializer(data=request.data, context={
             'user': request.user,
             'franchise': request.tenant
         })

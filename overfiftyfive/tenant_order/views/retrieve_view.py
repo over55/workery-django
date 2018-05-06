@@ -41,7 +41,7 @@ class JobRetrieveView(DetailView, ExtraRequestProcessingMixin):
 
         # Fetch all the activity sheets we already have
         modified_context['activity_sheet_items'] = ActivitySheetItem.objects.filter(
-           order=modified_context['job']
+           job=modified_context['job']
         )
 
         # Return our modified context.

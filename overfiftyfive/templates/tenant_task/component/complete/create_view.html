@@ -23,56 +23,49 @@ function click_back_button() {
  *  (2)
  */
 function click_add_button() {
-    var has_accepted_job = get_selected_radio_value('has_accepted_job');
+    var has_agreed_to_meet = get_selected_radio_value('has_agreed_to_meet');
 
-    //
-    // create_activity_sheet_item_api(
-    //     {
-    //         'job': {{ task_item.job.id }},
-    //         'associate': {{ parameters.associate_id }},
-    //         'comment': $('#comment').val(),
-    //         'has_accepted_job': has_accepted_job,
-    //     },
-    //     function(result_dict) { // Success
-    //         // FOR DEBUGGING PURPOSES ONLY.
-    //         console.log(result_dict);
-    //
-    //         // REDIRECT.
-    //         if (has_accepted_job == "true") {
-    //             // REDIRECT TO SUCCESS PAGE.
-    //             window.location = "{% url 'o55_tenant_task_list' %}?was_closed=True";
-    //         } else {
-    //             // REDIRECT BACK TO ACTIVITY PAGE.
-    //             window.location = "{% url 'o55_tenant_pending_task_retrieve_for_activity_sheet_retrieve' task_item.id %}?was_modified=True";
-    //         }
-    //     },
-    //     function(xhr,status,error) { // Error
-    //         // STEP 1: Convert to JSON.
-    //         var err = JSON.parse(xhr.responseText);
-    //
-    //         // For debugging purposes only.
-    //         console.log(err);
-    //
-    //         // // STEP 2: CLEAR EXISTING TEXT.
-    //         // $('#all_error_result').html();
-    //         //
-    //         // // STEP 3: PRINT OUR ERROR.
-    //         // for(var prop in err) {
-    //         //     if(err.hasOwnProperty(prop)) {
-    //         //         var val = err[prop];
-    //         //         console.log(val);
-    //         //         $('#all_error_result').append("<p><b>"+prop+"</b>"+val+"</p><br />");
-    //         //     }
-    //         // }
-    //         //
-    //         // // STEP 4: FOCUS TO WHERE THE ERROR IS OCCURING.
-    //         // $('html, body').animate({ scrollTop: $('#id_page_title').offset().top }, 'slow');
-    //     },
-    //     function() { // Finally
-    //         // UNLOCK THE "SUBMIT" BUTTON TO BE AVAILABLE FOR USAGE.
-    //         // enable_btn();
-    //     }
-    // );
+
+    create_order_complete_api(
+        {
+            'job': {{ task_item.job.id }},
+            'comment': $('#comment').val(),
+            'has_agreed_to_meet': has_agreed_to_meet,
+        },
+        function(result_dict) { // Success
+            // FOR DEBUGGING PURPOSES ONLY.
+            console.log(result_dict);
+
+            // REDIRECT.
+            window.location = "{% url 'o55_tenant_task_list' %}?was_closed=True";
+        },
+        function(xhr,status,error) { // Error
+            // STEP 1: Convert to JSON.
+            var err = JSON.parse(xhr.responseText);
+
+            // For debugging purposes only.
+            console.log(err);
+
+            // // STEP 2: CLEAR EXISTING TEXT.
+            // $('#all_error_result').html();
+            //
+            // // STEP 3: PRINT OUR ERROR.
+            // for(var prop in err) {
+            //     if(err.hasOwnProperty(prop)) {
+            //         var val = err[prop];
+            //         console.log(val);
+            //         $('#all_error_result').append("<p><b>"+prop+"</b>"+val+"</p><br />");
+            //     }
+            // }
+            //
+            // // STEP 4: FOCUS TO WHERE THE ERROR IS OCCURING.
+            // $('html, body').animate({ scrollTop: $('#id_page_title').offset().top }, 'slow');
+        },
+        function() { // Finally
+            // UNLOCK THE "SUBMIT" BUTTON TO BE AVAILABLE FOR USAGE.
+            // enable_btn();
+        }
+    );
 }
 
 function get_selected_radio_value(radiofields_name) {
@@ -142,17 +135,17 @@ function get_selected_radio_value(radiofields_name) {
             <div class="form-group col-md-12 mb-4">
                 <p class="mb-1">Have the Client and Associate Member agreed to meet? <sup>*</sup></p>
                 <div class="form-radio custom-control custom-radio custom-control-inline">
-                    <input type="radio" id="has_accepted_job" name="has_accepted_job" value="true" class="custom-control-input form-check-input">
-                    <label class="custom-control-label form-check-label" for="has_accepted_job">Yes</label>
+                    <input type="radio" id="has_agreed_to_meet" name="has_agreed_to_meet" value="true" class="custom-control-input form-check-input">
+                    <label class="custom-control-label form-check-label" for="has_agreed_to_meet">Yes</label>
                 </div>
                 <div class="form-radio custom-control custom-radio custom-control-inline">
-                    <input type="radio" id="has_accepted_job2" name="has_accepted_job" value="false" class="custom-control-input form-check-input">
-                    <label class="custom-control-label form-check-label" for="has_accepted_job2">No</label>
-                    <div id="has_accepted_job-error" class="invalid-feedback ml-2"></div>
+                    <input type="radio" id="has_agreed_to_meet2" name="has_agreed_to_meet" value="false" class="custom-control-input form-check-input">
+                    <label class="custom-control-label form-check-label" for="has_agreed_to_meet2">No</label>
+                    <div id="has_agreed_to_meet-error" class="invalid-feedback ml-2"></div>
                 </div>
             </div>
             <div class="form-group col-md-12 mb-4 p-0">
-                <label for="comment" class="font-b6">Comment&nbsp;<sup>*</sup></label>
+                <label for="comment" class="font-b6">Any comments?</label>
                 <textarea class="form-control form-control-lg border border-success" id="comment" name="comment" placeholder="How here..." rows="4" minlength="10" required></textarea>
                 <div id="comment-error" class="invalid-feedback"></div>
                 <small class="form-text text-muted">Maximum 1,000 characters.</small>

@@ -30,6 +30,7 @@ from tenant_foundation.models import (
     ActivitySheetItem,
     Associate,
     Order,
+    OrderComment,
     Organization,
     TaskItem
 )
@@ -81,6 +82,7 @@ class ActivitySheetItemCreateSerializer(serializers.Serializer):
             # STEP 4 - Lookup the most recent task which has not been closed
             #          for the particular job order.
             task_item = TaskItem.objects.filter(
+                type_of=ASSIGNED_ASSOCIATE_TASK_ITEM_TYPE_OF_ID,
                 job=job,
                 is_closed=False
             ).order_by('due_date').first()
