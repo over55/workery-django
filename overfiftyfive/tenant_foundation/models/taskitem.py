@@ -51,7 +51,7 @@ class TaskItem(models.Model):
     class Meta:
         app_label = 'tenant_foundation'
         db_table = 'o55_task_items'
-        ordering = ['-due_date']
+        ordering = ['due_date']
         verbose_name = _('TaskItem')
         verbose_name_plural = _('TaskItems')
         default_permissions = ()

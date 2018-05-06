@@ -11,6 +11,11 @@
 {% block content %}
 
 <script>
+
+function click_back_button() {
+    window.location = "{% url 'o55_tenant_pending_task_retrieve_for_activity_sheet_retrieve' task_item.id %}";
+}
+
 /**
  *  Function will attempt to submit the form to the API server. This
  *  funciton will:
@@ -99,20 +104,30 @@ function get_selected_radio_value(radiofields_name) {
     <!------------------------------------------------------------------------->
     <!-- end BREADCRUMB -->
 
-    <!-- BACK BUTTON -->
+
+
+    <!-- STEP NAVIGATION -->
     <!------------------------------------------------------------------------->
     <div class="row">
-		<div class="col-sm-3 p-3 mb-2">
-			<a class="btn btn-primary btn-lg" href="{% url 'o55_tenant_pending_task_retrieve_for_activity_sheet_retrieve' task_item.id %}" role="button">
-                <svg class="svg-inline--fa fa-arrow-left fa-w-14" aria-hidden="true" data-fa-processed="" data-prefix="fas" data-icon="arrow-left" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
-                <path fill="currentColor" d="M257.5 445.1l-22.2 22.2c-9.4 9.4-24.6 9.4-33.9 0L7 273c-9.4-9.4-9.4-24.6 0-33.9L201.4 44.7c9.4-9.4 24.6-9.4 33.9 0l22.2 22.2c9.5 9.5 9.3 25-.4 34.3L136.6 216H424c13.3 0 24 10.7 24 24v32c0 13.3-10.7 24-24 24H136.6l120.5 114.8c9.8 9.3 10 24.8.4 34.3z"></path>
-            </svg><!-- <i class="fas fa-arrow-left"></i> -->&nbsp;{% trans 'Back to Job Activity Sheet' %}</a>
-		</div>
-	</div>
+        <div class="step-navigation">
+            <div id="step-1" class="st-grey">
+                <a href="{% url 'o55_tenant_pending_task_retrieve' task_item.id %}">
+                    <span class="num">1.</span><span class="">Overview</span>
+                </a>
+            </div>
+            <div id="step-2" class="st-grey">
+                <a href="{% url 'o55_tenant_pending_task_retrieve_for_activity_sheet_retrieve' task_item.id %}">
+                    <span class="num">2.</span><span class="">Activity Sheet</span>
+                </a>
+            </div>
+            <div id="step-3" class="st-grey active">
+                <span class="num">3.</span><span class="">Assignment</span>
+            </div>
+        </div>
+    </div>
     <!------------------------------------------------------------------------->
-    <!-- end BACK BUTTON -->
+    <!-- end STEP NAVIGATION -->
 
-    <h1 id="id_page_title">{% trans 'Assign Associate' %}</h1>
 
     <!-- FORM -->
     <!------------------------------------------------------------------------->
@@ -125,7 +140,7 @@ function get_selected_radio_value(radiofields_name) {
             <!-- end Error Output -->
 
             <p><span class="text-secondary font-italic"><sup>*</sup>&nbsp;-&nbsp;Indicates required field to fill out.</span></p>
-            <p>&nbsp;</p>
+
             <form id="add-member-form" method="post" class="needs-validation" action="" novalidate>
             <!-- ############ PERSON ############ -->
 
@@ -147,11 +162,18 @@ function get_selected_radio_value(radiofields_name) {
                 <div id="comment-error" class="invalid-feedback"></div>
                 <small class="form-text text-muted">Maximum 1,000 characters.</small>
             </div>
+
+            <button id="id_submit_btn"
+                 class="btn btn-primary btn-lg mt-4 float-left pl-4 pr-4"
+                  type="button"
+               onclick="click_back_button();">
+                <i class="fas fa-arrow-left"></i>&nbsp;Back</button>
             <button id="id_submit_btn"
                  class="btn btn-success btn-lg mt-4 float-right pl-4 pr-4"
                   type="button"
                onclick="click_add_button();">
                 Assign <i class="fas fa-arrow-right"></i></button>
+
         </div>
     </div>
     <!------------------------------------------------------------------------->

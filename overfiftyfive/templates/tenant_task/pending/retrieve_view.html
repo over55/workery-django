@@ -26,6 +26,27 @@
     <!-- end BREADCRUMB -->
 
 
+    <!-- STEP NAVIGATION -->
+    <!------------------------------------------------------------------------->
+    <div class="row">
+        <div class="step-navigation">
+            <div id="step-1" class="st-grey active">
+                <span class="num">1.</span><span class="">Overview</span>
+            </div>
+            {% if task_item.type_of == 1 %}
+                <div id="step-2" class="st-grey">
+                    <span class="num">2.</span><span class="">Activity Sheet</span>
+                </div>
+                <div id="step-3" class="st-grey">
+                    <span class="num">3.</span><span class="">Assignment</span>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+    <!------------------------------------------------------------------------->
+    <!-- end STEP NAVIGATION -->
+
+
     <!-- -->
     <div class="col-md-10 mx-auto mb-4 py-2">
         <!-- <h3 class="py-2 text-center mb-4" id="id_page_title">Job Summary Details</h3> -->
@@ -92,7 +113,7 @@
                       <button  id="id_submit_btn"
                           class="btn btn-primary btn-lg btn-fxw mt-4"
                           type="button">
-                      <i class="fas fa-search"></i>&nbsp;{% trans 'Complete Task' %}
+                      <i class="fas fa-arrow-right"></i>&nbsp;{% trans 'Begin' %}
                       </button>
                       </a>
                   </div>
@@ -102,7 +123,7 @@
                       <button  id="id_submit_btn"
                           class="btn btn-primary btn-lg btn-fxw mt-4"
                           type="button">
-                      <i class="fas fa-check-square"></i>&nbsp;{% trans 'Complete Task' %}
+                      <i class="fas fa-arrow-right"></i>&nbsp;{% trans 'Begin' %}
                       </button>
                       </a>
                   </div>
