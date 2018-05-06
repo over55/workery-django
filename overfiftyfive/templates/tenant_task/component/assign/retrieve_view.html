@@ -1,59 +1,50 @@
 {% extends 'tenant_foundation/tenant_base.html' %}
 {% load staticfiles i18n humanize foundation_tags %}
-
 {% block title %}
 {% trans 'Client List | Over 55 Inc.' %}
 {% endblock title %}
-
 {% block header_content %}
 {% endblock header_content %}
-
 {% block content %}
-
 <script>
-
-function click_back_button() {
-    window.location = "{% url 'o55_tenant_pending_task_retrieve' task_item.id %}";
-}
+    function click_back_button() {
+        window.location = "{% url 'o55_tenant_pending_task_retrieve' task_item.id %}";
+    }
 
 </script>
-
 <main id="main" role="main">
-
     <!-- BREADCRUMB -->
     <!------------------------------------------------------------------------->
     <nav aria-label="breadcrumb">
-	  	<ol class="breadcrumb">
+        <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="{% url 'o55_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
             <li class="breadcrumb-item"><a href="{% url 'o55_tenant_task_list' %}">{% trans 'Pending Tasks' %}</a></li>
             <li class="breadcrumb-item"><a href="{% url 'o55_tenant_pending_task_retrieve' task_item.id %}">{% trans 'Task #' %}{{ task_item.id|intcomma }}</a></li>
-	    	<li class="breadcrumb-item active" aria-current="page">{% trans 'Activity Sheet' %}</li>
-	  	</ol>
-	  	</ol>
-	</nav>
+            <li class="breadcrumb-item active" aria-current="page">{% trans 'Activity Sheet' %}</li>
+        </ol>
+        </ol>
+    </nav>
     <!------------------------------------------------------------------------->
     <!-- end BREADCRUMB -->
-
     <!-- NOTIFICATION -->
     <!------------------------------------------------------------------------->
     {% if parameters.was_modified == 'True' %}
     <div class="alert bg-success text-white alert-dismissible fade show" role="alert">
         Activity sheet was <strong>successfully</strong> updated.
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">×</span>
+        <span aria-hidden="true">×</span>
         </button>
     </div>
     {% endif %}
     <!------------------------------------------------------------------------->
     <!-- end NOTIFICATION -->
-
     <!-- STEP NAVIGATION -->
     <!------------------------------------------------------------------------->
     <div class="row">
         <div class="step-navigation">
             <div id="step-1" class="st-grey">
                 <a href="{% url 'o55_tenant_pending_task_retrieve' task_item.id %}">
-                    <span class="num">1.</span><span class="">Overview</span>
+                <span class="num">1.</span><span class="">Overview</span>
                 </a>
             </div>
             <div id="step-2" class="st-grey active">
@@ -66,7 +57,6 @@ function click_back_button() {
     </div>
     <!------------------------------------------------------------------------->
     <!-- end STEP NAVIGATION -->
-
     <!-- FORM -->
     <!------------------------------------------------------------------------->
     <h2>Available Associates</h2>
@@ -98,11 +88,8 @@ function click_back_button() {
     </div>
     <!------------------------------------------------------------------------->
     <!-- end FORM -->
-
     <br />
     <br />
-
-
     <!-- FORM -->
     <!------------------------------------------------------------------------->
     <h2>Activity Sheet Items</h2>
@@ -133,25 +120,23 @@ function click_back_button() {
     <!------------------------------------------------------------------------->
     <!-- end FORM -->
 
-    <!-- FORM -->
+    <!-- BOTTOM NAVIGATION -->
     <!------------------------------------------------------------------------->
     <div class="col-sm-5 mx-auto mt-2">
         <!-- Associate form -->
         <div class="col-sm-12 fade show active" id="member-form" aria-labelledby="associate">
-    <button id="id_submit_btn"
-         class="btn btn-primary btn-lg mt-4 float-left pl-4 pr-4"
-          type="button"
-       onclick="click_back_button();">
-        <i class="fas fa-arrow-left"></i>&nbsp;Back</button>
+            <button id="id_submit_btn"
+                class="btn btn-primary btn-lg mt-4 float-left pl-4 pr-4"
+                type="button"
+                onclick="click_back_button();">
+            <i class="fas fa-arrow-left"></i>&nbsp;Back</button>
+        </div>
     </div>
-</div>
-
-
+    <!------------------------------------------------------------------------->
+    <!-- end BOTTOM NAVIGATION -->
 
     <!-- RETURN-TO-TOP -->
     <a id="return-to-top" href="#" class="btn-info btn-lg back-to-top" role="button" title="Back to top"><i class="fas fa-angle-up fa-2x"></i></a>
     <!-- end RETURN-TO-TOP -->
-
 </main>
-
 {% endblock content %}

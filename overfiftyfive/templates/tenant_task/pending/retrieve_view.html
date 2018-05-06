@@ -1,31 +1,23 @@
 {% extends 'tenant_foundation/tenant_base.html' %}
 {% load staticfiles i18n foundation_tags humanize %}
-
 {% block title %}
-{% trans 'Tag | Over 55 Inc.' %}
+{% trans 'Task #' %}{{ task_item.id|intcomma }} {% trans '| Over 55 Inc.' %}
 {% endblock title %}
-
 {% block header_content %}
 {% endblock header_content %}
-
 {% block content %}
-
-
 <main id="main" role="main">
-
     <!-- BREADCRUMB -->
     <!------------------------------------------------------------------------->
     <nav aria-label="breadcrumb">
-	  	<ol class="breadcrumb">
-	    	<li class="breadcrumb-item"><a href="{% url 'o55_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'o55_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
             <li class="breadcrumb-item"><a href="{% url 'o55_tenant_task_list' %}">{% trans 'Pending Tasks' %}</a></li>
-	    	<li class="breadcrumb-item active" aria-current="page">{% trans 'Task #' %}{{ task_item.id|intcomma }}</li>
-	  	</ol>
-	</nav>
+            <li class="breadcrumb-item active" aria-current="page">{% trans 'Task #' %}{{ task_item.id|intcomma }}</li>
+        </ol>
+    </nav>
     <!------------------------------------------------------------------------->
     <!-- end BREADCRUMB -->
-
-
     <!-- STEP NAVIGATION -->
     <!------------------------------------------------------------------------->
     <div class="row">
@@ -34,149 +26,141 @@
                 <span class="num">1.</span><span class="">Overview</span>
             </div>
             {% if task_item.type_of == 1 %}
-                <div id="step-2" class="st-grey">
-                    <span class="num">2.</span><span class="">Activity Sheet</span>
-                </div>
-                <div id="step-3" class="st-grey">
-                    <span class="num">3.</span><span class="">Assignment</span>
-                </div>
+            <div id="step-2" class="st-grey">
+                <span class="num">2.</span><span class="">Activity Sheet</span>
+            </div>
+            <div id="step-3" class="st-grey">
+                <span class="num">3.</span><span class="">Assignment</span>
+            </div>
             {% endif %}
         </div>
     </div>
     <!------------------------------------------------------------------------->
     <!-- end STEP NAVIGATION -->
-
-
     <!-- -->
     <div class="col-md-10 mx-auto mb-4 py-2">
         <!-- <h3 class="py-2 text-center mb-4" id="id_page_title">Job Summary Details</h3> -->
-
         <table class="table table-bordered custom-cell-w">
-          <tbody>
-            <tr class="bg-dark">
-              <th scope="row" colspan="2" class="text-light">Task Details</th>
-            </tr>
-            <tr>
-              <th scope="row" class="bg-light">Task</th>
-              <td>
-                    {{ task_item.title }}
-              </td>
-            </tr>
-            <tr>
-              <th scope="row" class="bg-light">Description</th>
-              <td>
-                    {{ task_item.description }}
-              </td>
-            </tr>
-            <tr>
-              <th scope="row" class="bg-light">Job #</th>
-              <td id="selected_skillsets_id">
-                   <a href="{% url 'o55_tenant_job_retrieve' 'summary' task_item.job.id %}">
-                       {{ task_item.job.id|intcomma }}
-                   </a>
-              </td>
-            </tr>
-            <tr>
-              <th scope="row" class="bg-light">Created At</th>
-              <td id="selected_job_type_id">
-                   {{ task_item.created_at }}
-              </td>
-            </tr>
-            <tr>
-              <th scope="row" class="bg-light">Created by</th>
-              <td id="selected_home_support_id">
-                <a href="">
-                   {{ task_item.created_by.get_full_name }}
-                 </a>
-              </td>
-            </tr>
-            <tr>
-              <th scope="row" class="bg-light">Last Modified At</th>
-              <td id="selected_description_id">
-                   {{ task_item.last_modified_at }}
-              </td>
-            </tr>
-            <tr>
-              <th scope="row" class="bg-light">Last Modified By</th>
-              <td id="selected_comment_id">
-                  <a href="">
-                   {{ task_item.last_modified_by.get_full_name }}
-                   </a>
-              </td>
-            </tr>
-            <tr>
-              <th scope="row" class="bg-light">Required Action</th>
-              <td id="selected_comment_id">
-                  {% if task_item.type_of == 1 %}
-                  <div class="col-sm-4">
-                      <a href="{% url 'o55_tenant_pending_task_retrieve_for_activity_sheet_retrieve' task_item.id %}">
-                      <button  id="id_submit_btn"
-                          class="btn btn-primary btn-lg btn-fxw mt-4"
-                          type="button">
-                      <i class="fas fa-arrow-right"></i>&nbsp;{% trans 'Begin' %}
-                      </button>
-                      </a>
-                  </div>
-                  {% elif task_item.type_of == 2 %}
-                  <div class="col-sm-4">
-                      <a href="{% url 'o55_tenant_pending_task_retrieve_and_complete_create' task_item.id %}">
-                      <button  id="id_submit_btn"
-                          class="btn btn-primary btn-lg btn-fxw mt-4"
-                          type="button">
-                      <i class="fas fa-arrow-right"></i>&nbsp;{% trans 'Begin' %}
-                      </button>
-                      </a>
-                  </div>
-                  {% endif %}
-              </td>
-            </tr>
-          </tbody>
+            <tbody>
+                <tr class="bg-dark">
+                    <th scope="row" colspan="2" class="text-light">Task Details</th>
+                </tr>
+                <tr>
+                    <th scope="row" class="bg-light">Task</th>
+                    <td>
+                        {{ task_item.title }}
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row" class="bg-light">Description</th>
+                    <td>
+                        {{ task_item.description }}
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row" class="bg-light">Job #</th>
+                    <td id="selected_skillsets_id">
+                        <a href="{% url 'o55_tenant_job_retrieve' 'summary' task_item.job.id %}">
+                        {{ task_item.job.id|intcomma }}
+                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row" class="bg-light">Created At</th>
+                    <td id="selected_job_type_id">
+                        {{ task_item.created_at }}
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row" class="bg-light">Created by</th>
+                    <td id="selected_home_support_id">
+                        <a href="">
+                        {{ task_item.created_by.get_full_name }}
+                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row" class="bg-light">Last Modified At</th>
+                    <td id="selected_description_id">
+                        {{ task_item.last_modified_at }}
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row" class="bg-light">Last Modified By</th>
+                    <td id="selected_comment_id">
+                        <a href="">
+                        {{ task_item.last_modified_by.get_full_name }}
+                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row" class="bg-light">Required Action</th>
+                    <td id="selected_comment_id">
+                        {% if task_item.type_of == 1 %}
+                        <div class="col-sm-4">
+                            <a href="{% url 'o55_tenant_pending_task_retrieve_for_activity_sheet_retrieve' task_item.id %}">
+                            <button  id="id_submit_btn"
+                                class="btn btn-primary btn-lg btn-fxw mt-4"
+                                type="button">
+                            <i class="fas fa-arrow-right"></i>&nbsp;{% trans 'Begin' %}
+                            </button>
+                            </a>
+                        </div>
+                        {% elif task_item.type_of == 2 %}
+                        <div class="col-sm-4">
+                            <a href="{% url 'o55_tenant_pending_task_retrieve_and_complete_create' task_item.id %}">
+                            <button  id="id_submit_btn"
+                                class="btn btn-primary btn-lg btn-fxw mt-4"
+                                type="button">
+                            <i class="fas fa-arrow-right"></i>&nbsp;{% trans 'Begin' %}
+                            </button>
+                            </a>
+                        </div>
+                        {% endif %}
+                    </td>
+                </tr>
+            </tbody>
         </table>
-       </div>
-
-
-       <div class="form-group col-md-10 mb-3 mx-auto text-center">
-   	    <div class="row">
-   		<!-- COMMENTS BUTTON -->
-        {% if task_item.type_of != 1 %}
-        <div class="col-sm-4">
-            <a href="{% url 'o55_tenant_pending_task_retrieve_and_unassign_create' task_item.id %}">
-            <button  id="id_submit_btn"
-                class="btn btn-primary btn-lg btn-fxw mt-4"
-                type="button">
-            <i class="fas fa-window-close"></i>&nbsp;{% trans 'Unassign Associate from Job' %}
-            </button>
-            </a>
+    </div>
+    <div class="form-group col-md-10 mb-3 mx-auto text-center">
+        <div class="row">
+            <!-- COMMENTS BUTTON -->
+            {% if task_item.type_of != 1 %}
+            <div class="col-sm-4">
+                <a href="{% url 'o55_tenant_pending_task_retrieve_and_unassign_create' task_item.id %}">
+                <button  id="id_submit_btn"
+                    class="btn btn-primary btn-lg btn-fxw mt-4"
+                    type="button">
+                <i class="fas fa-window-close"></i>&nbsp;{% trans 'Unassign Associate from Job' %}
+                </button>
+                </a>
+            </div>
+            {% endif %}
+            <!-- end COMMENTS BUTTON -->
+            <!-- COMMENTS BUTTON -->
+            <div class="col-sm-4">
+                <a href="{% url 'o55_tenant_pending_task_retrieve_and_close_create' task_item.id %}">
+                <button  id="id_submit_btn"
+                    class="btn btn-success btn-lg btn-fxw mt-4"
+                    type="button">
+                <i class="far fa-minus-square"></i>&nbsp;{% trans 'Close Job' %}
+                </button>
+                </a>
+            </div>
+            <!-- end COMMENTS BUTTON -->
+            <!-- end SUBMIT BUTTON -->
+            <div class="col-sm-4">
+                <a href="{% url 'o55_tenant_pending_task_retrieve_and_postpone_create' task_item.id %}">
+                <button  id="id_submit_btn"
+                    class="btn btn-orange btn-lg btn-fxw mt-4"
+                    type="button">
+                <i class="fas fa-clock"></i>&nbsp;{% trans 'Postpone Job' %}
+                </button>
+                </a>
+            </div>
+            <!-- end SUBMIT BUTTON -->
         </div>
-        {% endif %}
-                   <!-- end COMMENTS BUTTON -->
-
-                   <!-- COMMENTS BUTTON -->
-                   <div class="col-sm-4">
-                       <a href="{% url 'o55_tenant_pending_task_retrieve_and_close_create' task_item.id %}">
-                       <button  id="id_submit_btn"
-                           class="btn btn-success btn-lg btn-fxw mt-4"
-                           type="button">
-                       <i class="far fa-minus-square"></i>&nbsp;{% trans 'Close Job' %}
-                       </button>
-                       </a>
-                   </div>
-                   <!-- end COMMENTS BUTTON -->
-                   <!-- end SUBMIT BUTTON -->
-                   <div class="col-sm-4">
-                       <a href="{% url 'o55_tenant_pending_task_retrieve_and_postpone_create' task_item.id %}">
-                       <button  id="id_submit_btn"
-                           class="btn btn-orange btn-lg btn-fxw mt-4"
-                           type="button">
-                       <i class="fas fa-clock"></i>&nbsp;{% trans 'Postpone Job' %}
-                       </button>
-                       </a>
-                   </div>
-                   <!-- end SUBMIT BUTTON -->
-   	    </div>
-   	</div>
-
-
+    </div>
     <!-- RETURN-TO-TOP -->
     <a id="return-to-top" href="#" class="btn-info btn-lg back-to-top" role="button" title="Back to top"><i class="fas fa-angle-up fa-2x"></i></a>
     <!-- end RETURN-TO-TOP -->
