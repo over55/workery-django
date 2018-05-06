@@ -60,8 +60,8 @@
                 <tr>
                     <th scope="row" class="bg-light">Job #</th>
                     <td id="selected_skillsets_id">
-                        <a href="{% url 'o55_tenant_job_retrieve' 'summary' task_item.job.id %}">
-                        {{ task_item.job.id|intcomma }}
+                        <a href="{% url 'o55_tenant_job_retrieve' 'summary' task_item.job.id %}" target="_blank">
+                        {{ task_item.job.id|intcomma }}&nbsp;<i class="fas fa-link"></i>
                         </a>
                     </td>
                 </tr>
@@ -74,8 +74,8 @@
                 <tr>
                     <th scope="row" class="bg-light">Created by</th>
                     <td id="selected_home_support_id">
-                        <a href="">
-                        {{ task_item.created_by.get_full_name }}
+                        <a href="" target="_blank">
+                        {{ task_item.created_by.get_full_name }}&nbsp;<i class="fas fa-link"></i>
                         </a>
                     </td>
                 </tr>
@@ -87,9 +87,9 @@
                 </tr>
                 <tr>
                     <th scope="row" class="bg-light">Last Modified By</th>
-                    <td id="selected_comment_id">
+                    <td id="selected_comment_id" target="_blank">
                         <a href="">
-                        {{ task_item.last_modified_by.get_full_name }}
+                        {{ task_item.last_modified_by.get_full_name }}&nbsp;<i class="fas fa-link"></i>
                         </a>
                     </td>
                 </tr>
