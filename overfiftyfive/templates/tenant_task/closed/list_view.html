@@ -17,7 +17,7 @@
     <nav aria-label="breadcrumb">
 	  	<ol class="breadcrumb">
 	    	<li class="breadcrumb-item"><a href="{% url 'o55_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
-	    	<li class="breadcrumb-item active" aria-current="page">{% trans 'Tasks' %}</li>
+	    	<li class="breadcrumb-item active" aria-current="page">{% trans 'Closed Tasks' %}</li>
 	  	</ol>
 	</nav>
     <!------------------------------------------------------------------------->
@@ -31,10 +31,12 @@
         <div class="step-navigation">
             <div id="step-1" class="st-grey">
                 <a href="{% url 'o55_tenant_task_list' %}">
+                    <i class="fas fa-clock"></i>
                     <span class="">Pending Tasks</span>
                 </a>
             </div>
             <div id="step-2" class="st-grey active">
+                <i class="fas fa-check-circle"></i>
                 <span class="">Closed Tasks</span>
             </div>
         </div>
@@ -47,6 +49,7 @@
             <thead>
                 <tr>
                     <th>{% trans 'Due Date' %}</th>
+                    <th>{% trans 'Task' %}</th>
                     <th>{% trans 'Client Name' %}</th>
                     <th>{% trans 'Associate Name' %}</th>
                     <th></th>
@@ -56,8 +59,21 @@
                 {% for task_item in task_list %}
                 <tr>
                     <td>{{ task_item.due_date }}</td>
-                    <td>{% if task_item.job.customer %}{{ task_item.job.customer }}{% else %}{% trans 'Unassigned' %}{% endif %}</td>
-                    <td>{% if task_item.job.associate %}{{ task_item.job.associate }}{% else %}{% trans 'Unassigned' %}{% endif %}</td>
+                    <td>{{ task_item.title }}</td>
+                    <td>
+                        {% if task_item.job.customer %}
+                            <a href="{% url 'o55_tenant_customer_retrieve' 'summary' task_item.job.customer.id %}">{{ task_item.job.customer }}</a>
+                        {% else %}
+                            {% trans 'Unassigned' %}
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if task_item.job.associate %}
+                            <a href="{% url 'o55_tenant_member_retrieve' 'summary' task_item.job.associate.id %}">{{ task_item.job.associate }}</a>
+                        {% else %}
+                            {% trans 'Unassigned' %}
+                        {% endif %}
+                    </td>
                     <td>
                         <a href="">{% trans 'View' %}</a>
                     </td>

@@ -114,7 +114,7 @@ class TaskItem(models.Model):
     #  SYSTEM FIELDS
     #
 
-    created = models.DateTimeField(auto_now_add=True, db_index=True)
+    created_at = models.DateTimeField(auto_now_add=True, db_index=True)
     created_by = models.ForeignKey(
         SharedUser,
         help_text=_('The user whom created this order.'),
@@ -123,7 +123,7 @@ class TaskItem(models.Model):
         blank=True,
         null=True
     )
-    last_modified = models.DateTimeField(auto_now=True)
+    last_modified_at = models.DateTimeField(auto_now=True)
     last_modified_by = models.ForeignKey(
         SharedUser,
         help_text=_('The user whom last modified this order.'),
