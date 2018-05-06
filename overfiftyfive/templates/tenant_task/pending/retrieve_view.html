@@ -139,7 +139,7 @@
             <!-- end COMMENTS BUTTON -->
             <!-- COMMENTS BUTTON -->
             <div class="col-sm-4">
-                <a href="{% url 'o55_tenant_pending_task_retrieve_and_close_create' task_item.id %}">
+                <a href="{% url 'o55_tenant_job_retrieve_for_close_create' 'task' task_item.job.id %}?task_id={{ task_item.id }}">
                 <button  id="id_submit_btn"
                     class="btn btn-success btn-lg btn-fxw mt-4"
                     type="button">

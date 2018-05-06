@@ -32,7 +32,9 @@ urlpatterns = (
 
     # Retrieve
     path('jobs/<str:template>/detail/<int:pk>/', retrieve_view.JobRetrieveView.as_view(), name='o55_tenant_job_retrieve'),
-    path('jobs/<str:template>/detail/<int:pk>/comments/', retrieve_view.JobCommentsRetrieveView.as_view(), name='o55_tenant_job_comments_retrieve'),
+    path('jobs/<str:template>/detail/<int:pk>/comments/', retrieve_view.JobRetrieveForCommentsListAndCreateView.as_view(), name='o55_tenant_job_comments_retrieve'),
+    path('jobs/<str:template>/detail/<int:pk>/close/', retrieve_view.JobRetrieveForCloseCreateView.as_view(), name='o55_tenant_job_retrieve_for_close_create'),
+
     # Update
     path('jobs/<str:template>/detail/<int:pk>/edit/', update_views.JobUpdateView.as_view(), name='o55_tenant_job_update'),
 )

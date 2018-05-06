@@ -18,7 +18,7 @@
         // Initialize our datepicker jQuery code with our HTML view.
         $( "#until_date" ).datepicker({
             dateFormat: 'yy-mm-dd',
-	    minDate: 1
+	        minDate: 1
         });
 
         /*
@@ -29,7 +29,7 @@
             // SETUP OUR STARTUP GUI.
             placeholder: 'Please select an associate',
             allowClear: true,
-	    width: '100%',
+	        width: '100%',
 
             // OVERRIDE OUR GUI TO GET OUR DATA FROM REMOTE API WEB-SERVICE.
             ajax: {
@@ -85,7 +85,7 @@
                 return data.given_name + " " + data.last_name;
             }
         }); // end SELECT2
-	
+
 	$('#reason').on('change',function(){
         	if( $(this).val()==="other" || $(this).val()===1){
         		$("#reason_other").show();
@@ -250,7 +250,7 @@
     <div class="col-sm-5 mx-auto mt-2">
         <!-- Residential form -->
         <div class="col-sm-12 fade show active" id="client-form" aria-labelledby="commercial">
-            
+
             <!-- Error Output -->
             <div id="all_error_result" name="all_error_result"></div>
             <!-- end Error Output -->
