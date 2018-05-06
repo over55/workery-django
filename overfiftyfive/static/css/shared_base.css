@@ -506,3 +506,18 @@ table.custom-cell-w tr th{width:35% !important;}
 	width: 64px;
 	height: auto;
 }
+.form-error {
+	width: 100%;
+    	margin-top: .25rem;
+    	font-size: 80%;
+    	color: #ffffff;
+}
+.error-block {
+	display: block !important;
+}
+.alert-error {
+	display: none;
+	color: #ffffff;
+    	background-color: #dc3545;
+    	border-color: #bd2130;
+}
