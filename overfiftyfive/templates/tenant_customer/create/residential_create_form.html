@@ -344,7 +344,7 @@
                 for(var prop in err) {
                     if(err.hasOwnProperty(prop)) {
                         var val = err[prop];
-                        $('#all_error_result').append("<p><b>"+prop+"</b>"+val+"</p><br />");
+                        $('#all_error_result').append("<div class='form-error'><b>"+prop+":</b> "+val+" </div>");
                     }
                 }
 
@@ -372,12 +372,14 @@
     } // end FUNCTION
 
 </script>
-<div class="col-sm-5 mx-auto mt-2">
+<div class="col-sm-6 mx-auto mt-2">
     <!-- Residential form -->
     <div class="col-sm-12 fade show active" id="client-form" aria-labelledby="residential">
         <p><span class="text-secondary font-italic"><sup>*</sup>&nbsp;-&nbsp;Indicates required field to fill out.</span></p>
         <!-- Error Output -->
-        <div id="all_error_result" name="all_error_result"></div>
+        <div id="all_error_result" name="all_error_result" class="alert alert-error fade show" role="alert">
+		<strong>There were errors during registration:</strong>    
+	</div>
         <!-- end Error Output -->
         <p>&nbsp;</p>
         <form id="add-client-form" method="post" class="needs-validation" action="" novalidate>
