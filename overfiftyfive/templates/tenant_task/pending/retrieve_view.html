@@ -92,7 +92,7 @@
    	    <div class="row">
    		<!-- COMMENTS BUTTON -->
                    <div class="col-sm-4">
-                       <a href="{% url 'o55_tenant_pending_task_activity_sheet_retrieve' task_item.id %}">
+                       <a href="{% url 'o55_tenant_pending_task_retrieve_for_activity_sheet_retrieve' task_item.id %}">
                        <button  id="id_submit_btn"
                            class="btn btn-primary btn-lg btn-fxw mt-4"
                            type="button">
@@ -104,7 +104,7 @@
 
                    <!-- COMMENTS BUTTON -->
                    <div class="col-sm-4">
-                       <a href="">
+                       <a href="{% url 'o55_tenant_pending_task_retrieve_and_close_create' task_item.id %}">
                        <button  id="id_submit_btn"
                            class="btn btn-success btn-lg btn-fxw mt-4"
                            type="button">
@@ -115,7 +115,7 @@
                    <!-- end COMMENTS BUTTON -->
                    <!-- end SUBMIT BUTTON -->
                    <div class="col-sm-4">
-                       <a href="">
+                       <a href="{% url 'o55_tenant_pending_task_retrieve_and_postpone_create' task_item.id %}">
                        <button  id="id_submit_btn"
                            class="btn btn-orange btn-lg btn-fxw mt-4"
                            type="button">

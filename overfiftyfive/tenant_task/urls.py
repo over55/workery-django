@@ -10,8 +10,16 @@ urlpatterns = (
     path('pending-tasks/', views.PendingTaskListView.as_view(), name='o55_tenant_task_list'),
     path('closed-tasks/', views.ClosedTaskListView.as_view(), name='o55_tenant_closed_task_list'),
 
-    # Update / Retrieve
+    # Retrieve
     path('pending-tasks/<int:pk>/', views.PendingTaskRetrieveView.as_view(), name='o55_tenant_pending_task_retrieve'),
-    path('pending-tasks/<int:pk>/activity-sheet/', views.PendingTaskRetrieveActivitySheetView.as_view(), name='o55_tenant_pending_task_activity_sheet_retrieve'),
-    path('pending-tasks/<int:pk>/activity-sheet/create', views.PendingTaskRetrieveActivitySheetAndAssignAssociateView.as_view(), name='o55_tenant_pending_task_activity_sheet_retrieve_and_create'),
+
+    # Activity Sheets
+    path('pending-tasks/<int:pk>/activity-sheet/', views.PendingTaskRetrieveForActivitySheetView.as_view(), name='o55_tenant_pending_task_retrieve_for_activity_sheet_retrieve'),
+    path('pending-tasks/<int:pk>/activity-sheet/create', views.PendingTaskRetrieveForActivitySheetAndAssignAssociateCreateView.as_view(), name='o55_tenant_pending_task_retrieve_for_activity_sheet_retrieve_and_create'),
+
+    # Close
+    path('pending-tasks/<int:pk>/close/', views.PendingTaskRetrieveAndCloseCreateView.as_view(), name='o55_tenant_pending_task_retrieve_and_close_create'),
+    path('pending-tasks/<int:pk>/postpone/', views.PendingTaskRetrieveAndPostponeCreateView.as_view(), name='o55_tenant_pending_task_retrieve_and_postpone_create'),
+
+
 )
