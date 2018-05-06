@@ -223,6 +223,24 @@ class OrderCloseCreateSerializer(serializers.Serializer):
         # For debugging purposes only.
         print("INFO: Closed task #", str(task_item.id))
 
+        #---------------------------------#
+        # Ongoing jobs require new ticket #
+        #---------------------------------#
+        if job.is_ongoing:
+            next_task = TaskItem.objects.create(
+                type_of = FOLLOW_UP_CUSTOMER_SURVEY_TASK_ITEM_TYPE_OF_ID,
+                title = _('7 day follow up'),
+                description = _('Please call up the client and perform the satisfaction survey.'),
+                due_date = get_todays_date_plus_days(7),
+                is_closed = False,
+                job = task_item.job,
+                created_by = self.context['user'],
+                last_modified_by = self.context['user']
+            )
+
+            # For debugging purposes only.
+            print("INFO: Created task #", str(next_task.id))
+
         #--------------------#
         # Updated the output #
         #--------------------#
