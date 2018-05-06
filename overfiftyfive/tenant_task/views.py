@@ -108,7 +108,7 @@ class PendingTaskRetrieveForActivitySheetView(DetailView, ExtraRequestProcessing
 
         # STEP 1 - Find all the items belonging to this job and get the `pk` values.
         activity_sheet_associate_pks = ActivitySheetItem.objects.filter(
-           order=task_item.job
+           job=task_item.job
         ).values_list('associate_id', flat=True)
 
         # STEP 2 -
@@ -125,7 +125,7 @@ class PendingTaskRetrieveForActivitySheetView(DetailView, ExtraRequestProcessing
 
         # STEP 3 - Fetch all the activity sheets we already have
         modified_context['existing_activity_sheet'] = ActivitySheetItem.objects.filter(
-           order=task_item.job
+           job=task_item.job
         )
 
         # Return our modified context.

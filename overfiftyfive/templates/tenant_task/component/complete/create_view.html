@@ -1,0 +1,184 @@
+{% extends 'tenant_foundation/tenant_base.html' %}
+{% load staticfiles i18n humanize foundation_tags %}
+
+{% block title %}
+{% trans 'Client List | Over 55 Inc.' %}
+{% endblock title %}
+
+{% block header_content %}
+{% endblock header_content %}
+
+{% block content %}
+
+<script>
+
+function click_back_button() {
+    window.location = "{% url 'o55_tenant_pending_task_retrieve' task_item.id %}";
+}
+
+/**
+ *  Function will attempt to submit the form to the API server. This
+ *  funciton will:
+ *  (1) Lock / Unlock the submit button.
+ *  (2)
+ */
+function click_add_button() {
+    var has_accepted_job = get_selected_radio_value('has_accepted_job');
+
+    //
+    // create_activity_sheet_item_api(
+    //     {
+    //         'job': {{ task_item.job.id }},
+    //         'associate': {{ parameters.associate_id }},
+    //         'comment': $('#comment').val(),
+    //         'has_accepted_job': has_accepted_job,
+    //     },
+    //     function(result_dict) { // Success
+    //         // FOR DEBUGGING PURPOSES ONLY.
+    //         console.log(result_dict);
+    //
+    //         // REDIRECT.
+    //         if (has_accepted_job == "true") {
+    //             // REDIRECT TO SUCCESS PAGE.
+    //             window.location = "{% url 'o55_tenant_task_list' %}?was_closed=True";
+    //         } else {
+    //             // REDIRECT BACK TO ACTIVITY PAGE.
+    //             window.location = "{% url 'o55_tenant_pending_task_retrieve_for_activity_sheet_retrieve' task_item.id %}?was_modified=True";
+    //         }
+    //     },
+    //     function(xhr,status,error) { // Error
+    //         // STEP 1: Convert to JSON.
+    //         var err = JSON.parse(xhr.responseText);
+    //
+    //         // For debugging purposes only.
+    //         console.log(err);
+    //
+    //         // // STEP 2: CLEAR EXISTING TEXT.
+    //         // $('#all_error_result').html();
+    //         //
+    //         // // STEP 3: PRINT OUR ERROR.
+    //         // for(var prop in err) {
+    //         //     if(err.hasOwnProperty(prop)) {
+    //         //         var val = err[prop];
+    //         //         console.log(val);
+    //         //         $('#all_error_result').append("<p><b>"+prop+"</b>"+val+"</p><br />");
+    //         //     }
+    //         // }
+    //         //
+    //         // // STEP 4: FOCUS TO WHERE THE ERROR IS OCCURING.
+    //         // $('html, body').animate({ scrollTop: $('#id_page_title').offset().top }, 'slow');
+    //     },
+    //     function() { // Finally
+    //         // UNLOCK THE "SUBMIT" BUTTON TO BE AVAILABLE FOR USAGE.
+    //         // enable_btn();
+    //     }
+    // );
+}
+
+function get_selected_radio_value(radiofields_name) {
+    var radios = document.getElementsByName(radiofields_name);
+    for (var i = 0, length = radios.length; i < length; i++) {
+        if (radios[i].checked) {
+            // only one radio can be logically checked, don't check the rest
+            return radios[i].value;
+        }
+    }
+    return null;
+}
+</script>
+
+<main id="main" role="main">
+
+    <!-- BREADCRUMB -->
+    <!------------------------------------------------------------------------->
+    <nav aria-label="breadcrumb">
+	  	<ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'o55_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'o55_tenant_task_list' %}">{% trans 'Pending Tasks' %}</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'o55_tenant_pending_task_retrieve' task_item.id %}">{% trans 'Task #' %}{{ task_item.id|intcomma }}</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'o55_tenant_pending_task_retrieve_for_activity_sheet_retrieve' task_item.id %}">{% trans 'Activity Sheet' %}</a></li>
+	    	<li class="breadcrumb-item active" aria-current="page">{% trans 'Activity Sheet' %}</li>
+	  	</ol>
+	  	</ol>
+	</nav>
+    <!------------------------------------------------------------------------->
+    <!-- end BREADCRUMB -->
+
+
+
+    <!-- STEP NAVIGATION -->
+    <!------------------------------------------------------------------------->
+    <div class="row">
+        <div class="step-navigation">
+            <div id="step-1" class="st-grey">
+                <a href="{% url 'o55_tenant_pending_task_retrieve' task_item.id %}">
+                    <span class="num">1.</span><span class="">Overview</span>
+                </a>
+            </div>
+            <div id="step-2" class="st-grey active">
+                <span class="num">2.</span><span class="">Complet Task</span>
+            </div>
+        </div>
+    </div>
+    <!------------------------------------------------------------------------->
+    <!-- end STEP NAVIGATION -->
+
+
+    <!-- FORM -->
+    <!------------------------------------------------------------------------->
+    <div class="col-sm-5 mx-auto mt-2">
+        <!-- Associate form -->
+        <div class="col-sm-12 fade show active" id="member-form" aria-labelledby="associate">
+
+            <!-- Error Output -->
+            <div id="all_error_result" name="all_error_result"></div>
+            <!-- end Error Output -->
+
+            <p><span class="text-secondary font-italic"><sup>*</sup>&nbsp;-&nbsp;Indicates required field to fill out.</span></p>
+
+            <form id="add-member-form" method="post" class="needs-validation" action="" novalidate>
+            <!-- ############ PERSON ############ -->
+
+            <div class="form-group col-md-12 mb-4">
+                <p class="mb-1">Have the Client and Associate Member agreed to meet? <sup>*</sup></p>
+                <div class="form-radio custom-control custom-radio custom-control-inline">
+                    <input type="radio" id="has_accepted_job" name="has_accepted_job" value="true" class="custom-control-input form-check-input">
+                    <label class="custom-control-label form-check-label" for="has_accepted_job">Yes</label>
+                </div>
+                <div class="form-radio custom-control custom-radio custom-control-inline">
+                    <input type="radio" id="has_accepted_job2" name="has_accepted_job" value="false" class="custom-control-input form-check-input">
+                    <label class="custom-control-label form-check-label" for="has_accepted_job2">No</label>
+                    <div id="has_accepted_job-error" class="invalid-feedback ml-2"></div>
+                </div>
+            </div>
+            <div class="form-group col-md-12 mb-4 p-0">
+                <label for="comment" class="font-b6">Comment&nbsp;<sup>*</sup></label>
+                <textarea class="form-control form-control-lg border border-success" id="comment" name="comment" placeholder="How here..." rows="4" minlength="10" required></textarea>
+                <div id="comment-error" class="invalid-feedback"></div>
+                <small class="form-text text-muted">Maximum 1,000 characters.</small>
+            </div>
+
+            <button id="id_submit_btn"
+                 class="btn btn-primary btn-lg mt-4 float-left pl-4 pr-4"
+                  type="button"
+               onclick="click_back_button();">
+                <i class="fas fa-arrow-left"></i>&nbsp;Back</button>
+            <button id="id_submit_btn"
+                 class="btn btn-success btn-lg mt-4 float-right pl-4 pr-4"
+                  type="button"
+               onclick="click_add_button();">
+                Assign <i class="fas fa-arrow-right"></i></button>
+
+        </div>
+    </div>
+    <!------------------------------------------------------------------------->
+    <!-- end FORM -->
+
+
+    <!-- RETURN-TO-TOP -->
+    <a id="return-to-top" href="#" class="btn-info btn-lg back-to-top" role="button" title="Back to top"><i class="fas fa-angle-up fa-2x"></i></a>
+    <!-- end RETURN-TO-TOP -->
+
+</main>
+
+{% endblock content %}

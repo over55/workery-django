@@ -63,10 +63,10 @@ class ActivitySheetItem(models.Model):
     #  FIELDS
     #
 
-    order = models.ForeignKey(
+    job = models.ForeignKey(
         "Order",
-        help_text=_('The order associated with thie activity sheet item.'),
-        related_name="%(app_label)s_%(class)s_orders_related",
+        help_text=_('The job associated with thie activity sheet item.'),
+        related_name="%(app_label)s_%(class)s_jobs_related",
         on_delete=models.CASCADE,
     )
     associate = models.ForeignKey(
@@ -101,4 +101,4 @@ class ActivitySheetItem(models.Model):
     #
 
     def __str__(self):
-        return str(self.order)+" "+str(self.associate)+" - "+str(self.id)
+        return str(self.job)+" "+str(self.associate)+" - "+str(self.id)

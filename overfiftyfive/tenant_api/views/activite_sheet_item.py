@@ -13,33 +13,25 @@ from tenant_api.permissions.order import (
    CanRetrieveUpdateDestroyOrderPermission
 )
 from tenant_api.serializers.activity_sheet_item import (
-    ActivitySheetItemListCreateSerializer,
+    ActivitySheetItemCreateSerializer,
 )
 from tenant_foundation.models import ActivitySheetItem
 
 
-class ActivitySheetItemListCreateAPIView(generics.ListCreateAPIView):
-    serializer_class = ActivitySheetItemListCreateSerializer
-    pagination_class = StandardResultsSetPagination
+class ActivitySheetItemCreateAPIView(generics.CreateAPIView):
+    serializer_class = ActivitySheetItemCreateSerializer
     permission_classes = (
         permissions.IsAuthenticated,
         IsAuthenticatedAndIsActivePermission,
         CanListCreateOrderPermission
     )
 
-    def get_queryset(self):
-        """
-        List
-        """
-        queryset = ActivitySheetItem.objects.all().order_by('-created')
-        return queryset
-
     def post(self, request, format=None):
         """
         Create
         """
-        serializer = ActivitySheetItemListCreateSerializer(data=request.data, context={
-            'created_by': request.user,
+        serializer = ActivitySheetItemCreateSerializer(data=request.data, context={
+            'user': request.user,
             'franchise': request.tenant
         })
         serializer.is_valid(raise_exception=True)
