@@ -93,8 +93,16 @@
                             <i class="fa fa-question fa-lg"></i>
                         {% endif %}
                     </td>
-                    <td>{% if job.customer %}{{ job.customer }}{% else %}-{% endif %}</td>
-                    <td>{% if job.associate %}{{ job.associate }}{% else %}-{% endif %}</td>
+                    <td>
+                        {% if job.customer %}
+                            <a href="{% url 'o55_tenant_customer_retrieve' 'summary' job.customer.id %}" target="_blank">{{ job.customer }}&nbsp;<i class="fas fa-link"></i></a>
+                        {% else %}-{% endif %}
+                    </td>
+                    <td>
+                        {% if job.associate %}
+                            <a href="{% url 'o55_tenant_member_retrieve' 'summary' job.associate.id %}" target="_blank">{{ job.associate }}&nbsp;<i class="fas fa-link"></i></a>
+                        {% else %}-{% endif %}
+                    </td>
                     <td>{% if job.assignment_date %}{{ job.assignment_date }}{% else %}-{% endif %}</td>
                     <td>{{ job.is_ongoing }}</td>
                     <td>{% if job.completion_date %}{{ job.completion_date }}{% else %}-{% endif %}</td>
