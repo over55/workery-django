@@ -7,7 +7,7 @@ from django.utils.decorators import method_decorator
 from django.utils.translation import ugettext_lazy as _
 from shared_foundation.mixins import ExtraRequestProcessingMixin
 from tenant_api.filters.order import OrderFilter
-from tenant_foundation.models import ActivitySheetItem, Associate, Customer, Order, SkillSet
+from tenant_foundation.models import ActivitySheetItem, Associate, Customer, Order, SkillSet, TaskItem
 
 
 @method_decorator(login_required, name='dispatch')
@@ -76,8 +76,6 @@ class JobFullRetrieveView(DetailView, ExtraRequestProcessingMixin):
         return modified_context
 
 
-
-
 @method_decorator(login_required, name='dispatch')
 class JobRetrieveForActivitySheetListView(DetailView, ExtraRequestProcessingMixin):
     context_object_name = 'job'
@@ -109,6 +107,45 @@ class JobRetrieveForActivitySheetListView(DetailView, ExtraRequestProcessingMixi
 
         # Fetch all the activity sheets we already have
         modified_context['activity_sheet_items'] = ActivitySheetItem.objects.filter(
+           job=modified_context['job']
+        )
+
+        # Return our modified context.
+        return modified_context
+
+
+
+@method_decorator(login_required, name='dispatch')
+class JobRetrieveForTasksListView(DetailView, ExtraRequestProcessingMixin):
+    context_object_name = 'job'
+    model = Order
+    template_name = 'tenant_order/retrieve/for/task_list_view.html'
+
+    def get_object(self):
+        order = super().get_object()  # Call the superclass
+        return order                  # Return the object
+
+    def get_context_data(self, **kwargs):
+        # Get the context of this class based view.
+        modified_context = super().get_context_data(**kwargs)
+
+        # Validate the template selected.
+        template = self.kwargs['template']
+        if template not in ['search', 'summary', 'list', 'task']:
+            from django.core.exceptions import PermissionDenied
+            raise PermissionDenied(_('You entered wrong format.'))
+        modified_context['template'] = template
+
+        # Required for navigation
+        modified_context['current_page'] = "jobs"
+
+        # DEVELOPERS NOTE:
+        # - We will extract the URL parameters and save them into our context
+        #   so we can use this to help the pagination.
+        modified_context['parameters'] = self.get_params_dict([])
+
+        # Fetch all the activity sheets we already have
+        modified_context['task_items'] = TaskItem.objects.filter(
            job=modified_context['job']
         )
 

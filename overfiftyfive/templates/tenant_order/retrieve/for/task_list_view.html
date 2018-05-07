@@ -11,54 +11,6 @@
 {% block content %}
 
 <script>
-/**
- *  Function will attempt to submit the form to the API server. This
- *  funciton will:
- *  (1) Lock / Unlock the submit button.
- *  (2)
- */
-function click_add_button() {
-    //
-    create_job_comment_api(
-        {
-            'about': {{ job.id }},
-            'extra_text': $('#comment').val(),
-        },
-        function(result_dict) { // Success
-            // FOR DEBUGGING PURPOSES ONLY.
-            console.log(result_dict);
-
-            // REDIRECT TO SUCCESS PAGE.
-            location.reload(true);
-        },
-        function(xhr,status,error) { // Error
-            // STEP 1: Convert to JSON.
-            var err = JSON.parse(xhr.responseText);
-
-            // For debugging purposes only.
-            console.log(err);
-
-            // // STEP 2: CLEAR EXISTING TEXT.
-            // $('#all_error_result').html();
-            //
-            // // STEP 3: PRINT OUR ERROR.
-            // for(var prop in err) {
-            //     if(err.hasOwnProperty(prop)) {
-            //         var val = err[prop];
-            //         console.log(val);
-            //         $('#all_error_result').append("<p><b>"+prop+"</b>"+val+"</p><br />");
-            //     }
-            // }
-            //
-            // // STEP 4: FOCUS TO WHERE THE ERROR IS OCCURING.
-            // $('html, body').animate({ scrollTop: $('#id_page_title').offset().top }, 'slow');
-        },
-        function() { // Finally
-            // UNLOCK THE "SUBMIT" BUTTON TO BE AVAILABLE FOR USAGE.
-            // enable_btn();
-        }
-    );
-}
 </script>
 
 <main id="main" role="main">
@@ -148,77 +100,49 @@ function click_add_button() {
                     <i class="far fa-address-book"></i>&nbsp;<span class="">Activity Sheet</span>
                 </a>
             </div>
-            <div class="st-grey">
-                <a href="{% url 'o55_tenant_job_retrieve_for_tasks_list' template job.id %}">
-                    <i class="far fa-clock"></i>&nbsp;<span class="">Tasks</span>
-                </a>
-            </div>
             <div class="st-grey active">
-                <i class="far fa-comments"></i>&nbsp;<span class="">Comments</span>
+                <i class="far fa-clock"></i>&nbsp;<span class="">Tasks</span>
+            </div>
+            <div class="st-grey">
+                <a href="{% url 'o55_tenant_job_comments_retrieve' template job.id %}">
+                    <i class="far fa-comments"></i>&nbsp;<span class="">Comments</span>
+                </a>
             </div>
         </div>
     </div>
     <!------------------------------------------------------------------------->
     <!-- end STEP NAVIGATION -->
 
-    <div class="container">
-        <div class="row align-items-start">
-            <!-- <h1>Comments/Notes Screen</h1> -->
-            <div class="col-lg-12">
-                <h3 class="py-2 text-center mb-4" id="id_page_title">Job Comments</h3>
+    <!-- FORM -->
+    <!------------------------------------------------------------------------->
+    <div class="col-md-10 mx-auto mb-4 py-2">
+        <h3 class="py-2 text-center mb-4" id="id_page_title">Tasks</h3>
+        <form id="add-customer-form" method="post" class="needs-validation" action="" novalidate>
+            <!-- ACTIVITY SHEET -->
+            <!------------------------------------------------------------->
+            {% for task_item in task_items.all %}
+                <table class="table table-bordered custom-cell-w">
+                    <tbody>
+                        <tr class="bg-dark">
+                            <th scope="row" colspan="2" class="text-light">Summary Details</th>
+                        </tr>
+                        <tr>
+                            <th scope="row" class="bg-light">Client Name</th>
+                            <td id="selected_customer_name">
+                                {% if job.customer %}<a href="{% url 'o55_tenant_customer_retrieve' template job.customer.id %}" target="_blank">{{ job.customer }}&nbsp;<i class="fas fa-link"></i></a>{% else %}-{% endif %}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <br />
+            {% endfor %}
+            <!------------------------------------------------------------->
+            <!-- end ACTIVITY SHEET -->
 
-                <!-- FORM -->
-                <!------------------------------------------------------------------------->
-                {% for comment in job.comments.all %}
-                    <!-- Item -->
-                    <div class="media mt-4">
-                        <img class="mr-3 img-head" src="{% static 'img/placeholder.png' %}" alt="Image">
-                        <div class="media-body">
-                            <div class="row">
-                                <h5 class="mt-0 col-sm-10">
-                                    <strong>
-                                        {% if comment.created_by %}
-                                            {{ comment.created_by.first_name }} {{ comment.created_by.last_name }}
-                                        {% else %}
-                                            {% trans 'Legacy' %}
-                                        {% endif %}
-                                    </strong>
-                                </h5>
-                                <h6 class="col-sm-2 text-secondary text-right">
-                                    {% if comment.created_by %}
-                                        {{ comment.created_at|date:"N j, Y"}} <br> {{ comment.created_at|date:"P"}}
-                                    {% else %}
-                                        {% trans '-' %}
-                                    {% endif %}
-                                </h6>
-                            </div>
-                            <p>{{ comment.text }}</p>
-                        </div>
-                    </div>
-                    <!-- end Item -->
-                {% endfor %}
-
-                <hr class="my-4">
-                <!-- Add note form -->
-                <form>
-                    <div class="form-group">
-                        <label for="comment">Add Comment/Note: </label>
-                        <textarea class="form-control form-control-lg border border-primary" id="comment" name="comment" placeholder="Write a note here..." rows="4" required></textarea>
-                        <small id="comment-error" class="form-text text-muted">Maximum 1,000 characters.</small>
-                    </div>
-                    <button id="id_submit_btn"
-                         class="btn btn-lg float-right pl-4 pr-4 btn-primary"
-                          type="button"
-                       onclick="click_add_button();">
-                        Add Note <i class="fas fa-arrow-right"></i></button>
-                </form>
-
-                <!------------------------------------------------------------------------->
-                <!-- end FORM -->
-
-            </div>
-        </div>
+        </form>
     </div>
+    <!------------------------------------------------------------------------->
+    <!-- end FORM -->
 
     <!-- RETURN-TO-TOP -->
     <a id="return-to-top" href="#" class="btn-info btn-lg back-to-top" role="button" title="Back to top"><i class="fas fa-angle-up fa-2x"></i></a>

@@ -106,7 +106,9 @@
                 </a>
             </div>
             <div class="st-grey">
-                <i class="far fa-clock"></i>&nbsp;<span class="">Tasks</span>
+                <a href="{% url 'o55_tenant_job_retrieve_for_tasks_list' template job.id %}">
+                    <i class="far fa-clock"></i>&nbsp;<span class="">Tasks</span>
+                </a>
             </div>
             <div class="st-grey">
                 <a href="{% url 'o55_tenant_job_comments_retrieve' template job.id %}">
