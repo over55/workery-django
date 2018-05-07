@@ -21,6 +21,7 @@ from tenant_api.views.order_activite_sheet_item import ActivitySheetItemCreateAP
 from tenant_api.views.order_complete import OrderCompleteCreateAPIView
 from tenant_api.views.order_close import OrderCloseCreateAPIView
 from tenant_api.views.order_postpone import OrderPostponeCreateAPIView
+from tenant_api.views.order_unassign import OrderUnassignCreateAPIView
 
 
 urlpatterns = [
@@ -47,10 +48,10 @@ urlpatterns = [
 
     # Orders - Update
     url(r'^api/orders/activity-sheet-item/assign$', ActivitySheetItemCreateAPIView.as_view(), name='o55_order_activity_sheet_item_create_api_endpoint'),
-    # url(r'^api/orders/activity-sheet-item/unassign$', ActivitySheetItemDestroyAPIView.as_view(), name='o55_order_activity_sheet_item_destroy_api_endpoint'),
     url(r'^api/orders/complete$', OrderCompleteCreateAPIView.as_view(), name='o55_order_order_complete_create_api_endpoint'),
     url(r'^api/orders/close$', OrderCloseCreateAPIView.as_view(), name='o55_order_order_close_create_api_endpoint'),
     url(r'^api/orders/postpone$', OrderPostponeCreateAPIView.as_view(), name='o55_order_order_postpone_create_api_endpoint'),
+    url(r'^api/orders/activity-sheet-item/unassign$', OrderUnassignCreateAPIView.as_view(), name='o55_order_order_unassign_create_api_endpoint'),
 
     # Partners
     url(r'^api/partners$', PartnerListCreateAPIView.as_view(), name='o55_partner_list_create_api_endpoint'),

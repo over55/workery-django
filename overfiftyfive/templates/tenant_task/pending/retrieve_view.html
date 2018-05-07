@@ -143,7 +143,7 @@
             <!-- UNASSIGN BUTTON -->
             {% if task_item.type_of != 1 %}
             <div class="col-sm-4">
-                <a href="{% url 'o55_tenant_pending_task_retrieve_and_unassign_create' task_item.id %}">
+                <a href="{% url 'o55_tenant_job_retrieve_for_unassign_create' 'task' task_item.job.id %}?task_id={{ task_item.id }}">
                 <button  id="id_submit_btn"
                     class="btn btn-primary btn-lg btn-fxw mt-4"
                     type="button">

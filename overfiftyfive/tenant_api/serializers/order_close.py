@@ -78,7 +78,6 @@ class OrderCloseCreateSerializer(serializers.Serializer):
 
         1. If 'reason' == 1 then make sure 'reason_other' was inputted.
         2. If 'reason' == 4 then make sure the Customer survey fields where inputted.
-        3. Make sure an open task exists.
         """
         # CASE 1 - Other reason
         if data['reason'] == 1:
@@ -91,13 +90,6 @@ class OrderCloseCreateSerializer(serializers.Serializer):
             reason_other = data['reason_other']
             print("reason_other", reason_other)
             #TODO: IMPLEMENT.
-
-        task_item = TaskItem.objects.filter(
-            job=data['job'],
-            is_closed=False
-        ).order_by('due_date').first()
-        if task_item is None:
-            raise serializers.ValidationError(_("Cannot find any pending tasks, please go back to the list page."))
 
         # Return our data.
         return data
@@ -139,17 +131,21 @@ class OrderCloseCreateSerializer(serializers.Serializer):
             # For debugging purposes only.
             print("INFO: Job comment created.")
 
-        #------------------#
-        # Lookup our Task. #
-        #------------------#
-        task_item = TaskItem.objects.filter(
-            type_of=FOLLOW_UP_CUSTOMER_SURVEY_TASK_ITEM_TYPE_OF_ID,
+        #----------------------------------------#
+        # Lookup our Task(s) and close them all. #
+        #----------------------------------------#
+        task_items = TaskItem.objects.filter(
             job=job,
             is_closed=False
-        ).order_by('due_date').first()
-
-        # For debugging purposes only.
-        print("INFO: Found task #", str(task_item.id))
+        )
+        for task_item in task_items.all():
+            print("INFO: Found task #", str(task_item.id))
+            task_item.reason = reason
+            task_item.reason_other = reason_other
+            task_item.is_closed = True
+            task_item.last_modified_by = self.context['user']
+            task_item.save()
+            print("INFO: Closed task #", str(task_item.id))
 
         # ------------------------
         # --- JOB IS CANCELLED ---
@@ -221,28 +217,18 @@ class OrderCloseCreateSerializer(serializers.Serializer):
             # For debugging purposes only.
             print("INFO: Assocate is calculated as:", total_score)
 
-        #----------------#
-        # Close the task #
-        #----------------#
-        task_item.is_closed = True
-        task_item.last_modified_by = self.context['user']
-        task_item.save()
-
-        # For debugging purposes only.
-        print("INFO: Closed task #", str(task_item.id))
-
         #---------------------------------#
         # Ongoing jobs require new ticket #
         #---------------------------------#
         if job.is_ongoing:
-            follow_up_days_number = int(task_item.job.follow_up_days_number)
+            follow_up_days_number = int(job.follow_up_days_number)
             next_task_item = TaskItem.objects.create(
                 type_of = FOLLOW_UP_CUSTOMER_SURVEY_TASK_ITEM_TYPE_OF_ID,
                 title = _('7 day follow up'),
                 description = _('Please call up the client and perform the satisfaction survey.'),
                 due_date = get_todays_date_plus_days(follow_up_days_number),
                 is_closed = False,
-                job = task_item.job,
+                job = job,
                 created_by = self.context['user'],
                 last_modified_by = self.context['user']
             )
