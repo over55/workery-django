@@ -103,6 +103,27 @@ class TaskItem(models.Model):
         blank=True,
         db_index=True
     )
+    was_postponed = models.BooleanField(
+        _("Was postponed"),
+        help_text=_('Was this task postponed?'),
+        default=False,
+        blank=True,
+    )
+    closing_reason = models.PositiveSmallIntegerField(
+        _("Closing Reason"),
+        help_text=_('The reason for this task was closed.'),
+        blank=True,
+        null=True,
+        default=0,
+    )
+    closing_reason_other = models.CharField(
+        _("Closing Reason other"),
+        help_text=_('A specific reason this task was closed.'),
+        max_length=1024,
+        blank=True,
+        null=True,
+        default='',
+    )
     job = models.ForeignKey(
         "Order",
         help_text=_('The job order that this task is referencing.'),
