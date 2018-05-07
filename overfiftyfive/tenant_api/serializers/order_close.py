@@ -87,9 +87,7 @@ class OrderCloseCreateSerializer(serializers.Serializer):
 
         # CASE 2 - Job done by associate
         elif data['reason'] == 4:
-            reason_other = data['reason_other']
-            print("reason_other", reason_other)
-            #TODO: IMPLEMENT.
+            pass #TODO: IMPLEMENT.
 
         # Return our data.
         return data

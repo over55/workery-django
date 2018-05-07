@@ -62,6 +62,20 @@ class OrderUnassignCreateSerializer(serializers.Serializer):
             'additional_comment',
         )
 
+    def validate(self, data):
+        """
+        Override the validator to provide additional custom validation based
+        on our custom logic.
+
+        1. If 'reason' == 1 then make sure 'reason_other' was inputted.
+        """
+        # CASE 1 - Other reason
+        if data['reason'] == 1:
+            reason_other = data['reason_other']
+            if reason_other == "":
+                raise serializers.ValidationError(_("Please provide a reason as to why you chose the \"Other\" option."))
+        return data  # Return our data.
+
     def create(self, validated_data):
         """
         Override the `create` function to add extra functinality.
