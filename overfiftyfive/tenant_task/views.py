@@ -118,7 +118,7 @@ class PendingTaskRetrieveForActivitySheetView(DetailView, ExtraRequestProcessing
         #     sheet items created previously.
         # (c) FInd all unique associates which have active accounts.
         # (d) If an Associate has an active Announcement attached to them,
-        #     they should be uneligible for a job. 
+        #     they should be uneligible for a job.
         skill_set_pks = task_item.job.skill_sets.values_list('pk', flat=True)
         available_associates = Associate.objects.filter(
            Q(skill_sets__in=skill_set_pks) &
@@ -158,69 +158,6 @@ class PendingTaskRetrieveForActivitySheetAndAssignAssociateCreateView(DetailView
         # - We will extract the URL parameters and save them into our context
         #   so we can use this to help the pagination.
         modified_context['parameters'] = self.get_params_dict([])
-
-        # Return our modified context.
-        return modified_context
-
-
-@method_decorator(login_required, name='dispatch')
-class PendingTaskRetrieveAndUnassignCreateView(DetailView, ExtraRequestProcessingMixin):
-    context_object_name = 'task_item'
-    model = TaskItem
-    template_name = 'tenant_task/component/unassign/create_view.html'
-
-    def get_object(self):
-        order = super().get_object()  # Call the superclass
-        return order                  # Return the object
-
-    def get_context_data(self, **kwargs):
-        # Get the context of this class based view.
-        modified_context = super().get_context_data(**kwargs)
-
-        # Required for navigation
-        modified_context['current_page'] = "task"
-
-        # Return our modified context.
-        return modified_context
-
-
-@method_decorator(login_required, name='dispatch')
-class PendingTaskRetrieveAndCloseCreateView(DetailView, ExtraRequestProcessingMixin):
-    context_object_name = 'task_item'
-    model = TaskItem
-    template_name = 'tenant_task/component/close/create_view.html'
-
-    def get_object(self):
-        order = super().get_object()  # Call the superclass
-        return order                  # Return the object
-
-    def get_context_data(self, **kwargs):
-        # Get the context of this class based view.
-        modified_context = super().get_context_data(**kwargs)
-
-        # Required for navigation
-        modified_context['current_page'] = "task"
-
-        # Return our modified context.
-        return modified_context
-
-
-@method_decorator(login_required, name='dispatch')
-class PendingTaskRetrieveAndPostponeCreateView(DetailView, ExtraRequestProcessingMixin):
-    context_object_name = 'task_item'
-    model = TaskItem
-    template_name = 'tenant_task/component/postpone/create_view.html'
-
-    def get_object(self):
-        order = super().get_object()  # Call the superclass
-        return order                  # Return the object
-
-    def get_context_data(self, **kwargs):
-        # Get the context of this class based view.
-        modified_context = super().get_context_data(**kwargs)
-
-        # Required for navigation
-        modified_context['current_page'] = "task"
 
         # Return our modified context.
         return modified_context

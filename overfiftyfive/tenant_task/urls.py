@@ -17,15 +17,6 @@ urlpatterns = (
     path('pending-tasks/<int:pk>/activity-sheet/', views.PendingTaskRetrieveForActivitySheetView.as_view(), name='o55_tenant_pending_task_retrieve_for_activity_sheet_retrieve'),
     path('pending-tasks/<int:pk>/activity-sheet/create', views.PendingTaskRetrieveForActivitySheetAndAssignAssociateCreateView.as_view(), name='o55_tenant_pending_task_retrieve_for_activity_sheet_retrieve_and_create'),
 
-    # Close
-    path('pending-tasks/<int:pk>/close/', views.PendingTaskRetrieveAndCloseCreateView.as_view(), name='o55_tenant_pending_task_retrieve_and_close_create'),
-
-    # Postpone
-    path('pending-tasks/<int:pk>/postpone/', views.PendingTaskRetrieveAndPostponeCreateView.as_view(), name='o55_tenant_pending_task_retrieve_and_postpone_create'),
-
-    # Unassign
-    path('pending-tasks/<int:pk>/unassign/', views.PendingTaskRetrieveAndUnassignCreateView.as_view(), name='o55_tenant_pending_task_retrieve_and_unassign_create'),
-
     # Complete
     path('pending-tasks/<int:pk>/complete/', views.PendingTaskRetrieveAndCompleteCreateView.as_view(), name='o55_tenant_pending_task_retrieve_and_complete_create'),
 
