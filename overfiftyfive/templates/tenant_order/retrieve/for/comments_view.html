@@ -79,23 +79,20 @@ function click_add_button() {
                 <a href="{% url 'o55_tenant_job_search' %}">{% trans 'Search' %}</a>
             </li>
             <li class="breadcrumb-item active">{% trans 'Search Results' %}</li>
-            <li class="breadcrumb-item"><a href="{% url 'o55_tenant_job_retrieve' template job.id %}">{% trans 'Job #' %}{{ job.id|intcomma }}</a></li>
-            <li class="breadcrumb-item active" aria-current="page">{% trans 'Comments' %}</li>
+            <li class="breadcrumb-item active" aria-current="page">{% trans 'Job #' %}{{ job.id|intcomma }}</li>
 
             {% elif template == 'list' %}
 
             <li class="breadcrumb-item"><a href="{% url 'o55_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
             <li class="breadcrumb-item"><a href="{% url 'o55_tenant_job_summary' %}">{% trans 'Jobs' %}</a></li>
             <li class="breadcrumb-item"><a href="{% url 'o55_tenant_job_list' %}">{% trans 'List' %}</a></li>
-            <li class="breadcrumb-item"><a href="{% url 'o55_tenant_job_retrieve' template job.id %}">{% trans 'Job #' %}{{ job.id|intcomma }}</a></li>
-            <li class="breadcrumb-item active" aria-current="page">{% trans 'Comments' %}</li>
+            <li class="breadcrumb-item active" aria-current="page">{% trans 'Job #' %}{{ job.id|intcomma }}</li>
 
             {% else %}
 
 	    	<li class="breadcrumb-item"><a href="{% url 'o55_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
             <li class="breadcrumb-item"><a href="{% url 'o55_tenant_job_summary' %}">{% trans 'Jobs' %}</a></li>
-            <li class="breadcrumb-item"><a href="{% url 'o55_tenant_job_retrieve' template job.id %}">{% trans 'Job #' %}{{ job.id|intcomma }}</a></li>
-            <li class="breadcrumb-item active" aria-current="page">{% trans 'Comments' %}</li>
+            <li class="breadcrumb-item active" aria-current="page">{% trans 'Job #' %}{{ job.id|intcomma }}</li>
 
             {% endif %}
 	  	</ol>
