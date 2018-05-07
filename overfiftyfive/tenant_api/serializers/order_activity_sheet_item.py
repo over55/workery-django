@@ -44,7 +44,12 @@ class ActivitySheetItemCreateSerializer(serializers.Serializer):
     job = serializers.PrimaryKeyRelatedField(many=False, queryset=Order.objects.all(), required=True)
     associate = serializers.PrimaryKeyRelatedField(many=False, queryset=Associate.objects.all(), required=True)
     comment = serializers.CharField(required=True)
-    has_accepted_job = serializers.BooleanField(required=True)
+    has_accepted_job = serializers.BooleanField(
+        required=True,
+        error_messages={
+            "invalid": "Please pick either 'Yes' or 'No' choice."
+        }
+    )
 
     # Meta Information.
     class Meta:

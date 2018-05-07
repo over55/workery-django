@@ -53,20 +53,20 @@ function click_add_button() {
             // For debugging purposes only.
             console.log(err);
 
-            // // STEP 2: CLEAR EXISTING TEXT.
-            // $('#all_error_result').html();
-            //
-            // // STEP 3: PRINT OUR ERROR.
-            // for(var prop in err) {
-            //     if(err.hasOwnProperty(prop)) {
-            //         var val = err[prop];
-            //         console.log(val);
-            //         $('#all_error_result').append("<p><b>"+prop+"</b>"+val+"</p><br />");
-            //     }
-            // }
-            //
-            // // STEP 4: FOCUS TO WHERE THE ERROR IS OCCURING.
-            // $('html, body').animate({ scrollTop: $('#id_page_title').offset().top }, 'slow');
+            // STEP 2: CLEAR EXISTING TEXT.
+            $('#all_error_result').html("");
+
+            // STEP 3: PRINT OUR ERROR.
+            for(var prop in err) {
+                if(err.hasOwnProperty(prop)) {
+                    var val = err[prop];
+                    console.log(val);
+                    $('#all_error_result').append("<p><b>"+prop+"</b>"+val+"</p><br />");
+                }
+            }
+
+            // STEP 4: FOCUS TO WHERE THE ERROR IS OCCURING.
+            $('html, body').animate({ scrollTop: $('#id_step_navigation').offset().top }, 'slow');
         },
         function() { // Finally
             // UNLOCK THE "SUBMIT" BUTTON TO BE AVAILABLE FOR USAGE.
@@ -108,7 +108,7 @@ function get_selected_radio_value(radiofields_name) {
 
     <!-- STEP NAVIGATION -->
     <!------------------------------------------------------------------------->
-    <div class="row">
+    <div class="row" id="id_step_navigation">
         <div class="step-navigation">
             <div id="step-1" class="st-grey">
                 <a href="{% url 'o55_tenant_pending_task_retrieve' task_item.id %}">
