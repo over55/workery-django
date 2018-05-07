@@ -18,27 +18,6 @@
 
 <!-- CUSTOM JAVASCRIPT -->
 <!----------------------------------------------------------------------------->
-<script>
-    // // STEP 1 - Fetch the values we've saved in localStorage.
-    // var tmp_job_type = localStorage.getItem("tmp_job_type");
-    // var tmp_home_support = localStorage.getItem("tmp_home_support");
-    // console.log(tmp_job_type);
-    // console.log(tmp_home_support);
-    //
-    // // STEP 2 - Update the GUI with our saved values.
-    // $("input[name=job-type][value=" + tmp_job_type + "]").prop('checked', true);
-    // $("input[name=home-support][value=" + tmp_home_support + "]").prop('checked', true);
-
-    // Pre-populate the field with previous data.
-    $(document).ready(function() {
-        // // Populate our 'select2' chosen values.
-        // var tmp_skillsets = localStorage.getObj("tmp_skillsets");
-        // $('#skillsets').val(tmp_skillsets);
-
-        // Initialize our 'select2' element.
-        $('.js-example-basic-multiple').select2();
-    });
-</script>
 <!----------------------------------------------------------------------------->
 <!-- end CUSTOM JAVASCRIPT -->
 
@@ -108,6 +87,36 @@
     <!-- end BACK BUTTON -->
 
     <h1>{% trans 'View Job' %}</h1>
+
+    <!-- STEP NAVIGATION -->
+    <!------------------------------------------------------------------------->
+    <div class="row">
+        <div class="step-navigation">
+            <div class="st-grey">
+                <a href="{% url 'o55_tenant_job_retrieve' template job.id %}">
+                    <i class="far fa-id-badge"></i>&nbsp;<span class="">Summary</span>
+                </a>
+            </div>
+            <div class="st-grey active">
+                <i class="far fa-id-card"></i>&nbsp;<span class="">Details</span>
+            </div>
+            <div class="st-grey">
+                <a href="{% url 'o55_tenant_job_retrieve_for_activity_sheet_list' template job.id %}">
+                    <i class="far fa-address-book"></i>&nbsp;<span class="">Activity Sheet</span>
+                </a>
+            </div>
+            <div class="st-grey">
+                <i class="far fa-clock"></i>&nbsp;<span class="">Tasks</span>
+            </div>
+            <div class="st-grey">
+                <a href="{% url 'o55_tenant_job_comments_retrieve' template job.id %}">
+                    <i class="far fa-comments"></i>&nbsp;<span class="">Comments</span>
+                </a>
+            </div>
+        </div>
+    </div>
+    <!------------------------------------------------------------------------->
+    <!-- end STEP NAVIGATION -->
 
     <!-- FORM -->
     <!------------------------------------------------------------------------->
@@ -215,41 +224,6 @@
                 <!-- ######################## end JOB DETAILS ######################## -->
                 <!-- ################################################################## -->
 
-                <!-- ACTIVITY SHEET -->
-                <!------------------------------------------------------------->
-                <h2>Activity Sheet</h2>
-                <div class="table-responsive">
-                    <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th>{% trans 'ID #' %}</th>
-                                <th>{% trans 'Order ID' %}</th>
-                                <th>{% trans 'Has Accepted?' %}</th>
-                                <th>{% trans 'Created At' %}</th>
-                                <th>{% trans 'Reason' %}</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for activity_sheet_item in activity_sheet_items.all %}
-                            <tr>
-                                <td>{{ activity_sheet_item.id|intcomma }}</td>
-                                <td>
-                                    <a href="{% url 'o55_tenant_job_retrieve' template activity_sheet_item.job.id %}">
-                                        {{ activity_sheet_item.job.id|intcomma }}
-                                    </a>
-                                </td>
-                                <td>{{ activity_sheet_item.has_accepted_job }}</td>
-                                <td>{{ activity_sheet_item.created_at }}</td>
-                                <td>{{ activity_sheet_item.comment }}</td>
-                            </tr>
-                            {% empty %}
-                            No jobs yet.
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
-                <!------------------------------------------------------------->
-                <!-- end ACTIVITY SHEET -->
 	</div>
 	<div class="form-group col-md-10 mb-3 mx-auto text-center">
 	    <div class="row">

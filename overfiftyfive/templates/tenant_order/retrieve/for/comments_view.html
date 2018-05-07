@@ -130,12 +130,43 @@ function click_add_button() {
     <!------------------------------------------------------------------------->
     <!-- end BACK BUTTON -->
 
-    <h1>{% trans 'View Comments about Job' %}</h1>
+    <h1>{% trans 'View Job' %}</h1>
+
+    <!-- STEP NAVIGATION -->
+    <!------------------------------------------------------------------------->
+    <div class="row">
+        <div class="step-navigation">
+            <div class="st-grey">
+                <a href="{% url 'o55_tenant_job_retrieve' template job.id %}">
+                    <i class="far fa-id-badge"></i>&nbsp;<span class="">Summary</span>
+                </a>
+            </div>
+            <div class="st-grey">
+                <a href="{% url 'o55_tenant_job_full_retrieve' template job.id %}">
+                    <i class="far fa-id-card"></i>&nbsp;<span class="">Details</span>
+                </a>
+            </div>
+            <div class="st-grey">
+                <a href="{% url 'o55_tenant_job_retrieve_for_activity_sheet_list' template job.id %}">
+                    <i class="far fa-address-book"></i>&nbsp;<span class="">Activity Sheet</span>
+                </a>
+            </div>
+            <div class="st-grey">
+                <i class="far fa-clock"></i>&nbsp;<span class="">Tasks</span>
+            </div>
+            <div class="st-grey active">
+                <i class="far fa-comments"></i>&nbsp;<span class="">Comments</span>
+            </div>
+        </div>
+    </div>
+    <!------------------------------------------------------------------------->
+    <!-- end STEP NAVIGATION -->
 
     <div class="container">
         <div class="row align-items-start">
             <!-- <h1>Comments/Notes Screen</h1> -->
             <div class="col-lg-12">
+                <h3 class="py-2 text-center mb-4" id="id_page_title">Job Comments</h3>
 
                 <!-- FORM -->
                 <!------------------------------------------------------------------------->
