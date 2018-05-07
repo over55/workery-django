@@ -23,10 +23,10 @@
                        {% trans 'You can return to your' %}&nbsp;<a href="{{ shared_constants.O55_APP_HTTP_PROTOCOL }}{{ request.tenant.schema_name }}.{{ shared_constants.O55_APP_HTTP_DOMAIN }}{% url 'o55_tenant_dashboard_master' %}">{% trans 'dashboard.' %}</a>
                     {% endif %}
                 {% endif %}
-                {% trans 'For immediate help, contact' %}&nbsp;<a href="mailto:support@o55.ca">{% trans 'support.' %}</a></p>
+                {% trans 'For immediate help, contact' %}&nbsp;<a href="mailto:support@workery.ca">{% trans 'support.' %}</a></p>
             <br/>
             <h4>{% trans 'Phone:' %}&nbsp;<a href="{% trans 'tel:+15194381111' %}">{% trans '(519)438-1111' %}</a></h4>
-            <h4>{% trans 'E-Mail:' %}&nbsp;<a href="{% trans 'mailto:support@o55.ca' %}">{% trans 'support@o55.ca' %}</a></h4>
+            <h4>{% trans 'E-Mail:' %}&nbsp;<a href="{% trans 'mailto:support@workery.ca' %}">{% trans 'support@workery.ca' %}</a></h4>
             <br/>
             <br/>
             {% if request.user.is_authenticated %}
