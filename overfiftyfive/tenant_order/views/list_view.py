@@ -12,7 +12,10 @@ from tenant_foundation.models.order import Order
 @method_decorator(login_required, name='dispatch')
 class JobSummaryView(ListView, ExtraRequestProcessingMixin):
     context_object_name = 'job_list'
-    queryset = Order.objects.filter(is_cancelled=False).order_by('-id')
+    queryset = Order.objects.filter(
+        is_cancelled=False,
+        completion_date__isnull=True
+    ).order_by('-id')
     template_name = 'tenant_order/summary/view.html'
     paginate_by = 100
 

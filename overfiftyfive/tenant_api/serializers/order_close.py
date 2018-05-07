@@ -78,6 +78,7 @@ class OrderCloseCreateSerializer(serializers.Serializer):
 
         1. If 'reason' == 1 then make sure 'reason_other' was inputted.
         2. If 'reason' == 4 then make sure the Customer survey fields where inputted.
+        3. Make sure an open task exists.
         """
         # CASE 1 - Other reason
         if data['reason'] == 1:
@@ -91,6 +92,13 @@ class OrderCloseCreateSerializer(serializers.Serializer):
             print("reason_other", reason_other)
             #TODO: IMPLEMENT.
 
+        task_item = TaskItem.objects.filter(
+            job=data['job'],
+            is_closed=False
+        ).order_by('due_date').first()
+        if task_item is None:
+            raise serializers.ValidationError(_("Cannot find any pending tasks, please go back to the list page."))
+
         # Return our data.
         return data
 
@@ -98,6 +106,9 @@ class OrderCloseCreateSerializer(serializers.Serializer):
         """
         Override the `create` function to add extra functinality.
         """
+        # For debugging purposes only.
+        print("INFO: Input at", str(validated_data))
+        
         #--------------------------#
         # Get validated POST data. #
         #--------------------------#
@@ -110,9 +121,6 @@ class OrderCloseCreateSerializer(serializers.Serializer):
         was_associate_punctual = validated_data.get('was_associate_punctual', False)
         was_associate_professional = validated_data.get('was_associate_professional', False)
         would_customer_refer_our_organization = validated_data.get('would_customer_refer_our_organization', False)
-
-        # For debugging purposes only.
-        print("INFO: Input at", str(validated_data))
 
         #------------------------------------------#
         # Create any additional optional comments. #

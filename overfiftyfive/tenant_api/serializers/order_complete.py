@@ -53,10 +53,28 @@ class OrderCompleteCreateSerializer(serializers.Serializer):
             'has_agreed_to_meet',
         )
 
+    def validate(self, data):
+        """
+        Override the final validation to include additional extras. Any
+        validation error will be populated in the "non_field_errors" field.
+        """
+        # Confirm that we have an assignment task open.
+        task_item = TaskItem.objects.filter(
+            type_of=FOLLOW_UP_IS_JOB_COMPLETE_TASK_ITEM_TYPE_OF_ID,
+            job=data['job'],
+            is_closed=False
+        ).order_by('due_date').first()
+        if task_item is None:
+            raise serializers.ValidationError(_("Task no longer exists, please go back to the list page."))
+        return data
+
     def create(self, validated_data):
         """
         Override the `create` function to add extra functinality.
         """
+        # For debugging purposes only.
+        print("INFO: Input at", str(validated_data))
+
         # STEP 1 - Get validated POST data.
         job = validated_data.get('job', None)
         comment_text = validated_data.get('comment', None)
@@ -83,13 +101,16 @@ class OrderCompleteCreateSerializer(serializers.Serializer):
             is_closed=False
         ).order_by('due_date').first()
 
-        # For debugging purposes onlyself.
-        print(task_item)
+        # For debugging purposes only.
+        print("INFO: Found task #", str(task_item.id))
 
         # STEP 4 - Update our TaskItem if job was accepted.
         task_item.is_closed = True
         task_item.last_modified_by = self.context['user']
         task_item.save()
+
+        # For debugging purposes only.
+        print("INFO: Task #", str(task_item.id), "was closed")
 
         if has_agreed_to_meet:
 
@@ -105,6 +126,9 @@ class OrderCompleteCreateSerializer(serializers.Serializer):
                 last_modified_by = self.context['user']
             )
 
+            # For debugging purposes only.
+            print("INFO: Task #", str(next_task.id), "was created")
+
         else:
 
             # STEP 5 - Create our new task for following up.
@@ -118,6 +142,9 @@ class OrderCompleteCreateSerializer(serializers.Serializer):
                 created_by = self.context['user'],
                 last_modified_by = self.context['user']
             )
+
+            # For debugging purposes only.
+            print("INFO: Task #", str(next_task.id), "was created")
 
         # # STEP 6 - Assign our new variables and return the validated data.
         # validated_data['id'] = obj.id

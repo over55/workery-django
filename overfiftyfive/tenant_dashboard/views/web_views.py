@@ -17,9 +17,16 @@ def master_page(request):
     """
     return render(request, 'tenant_dashboard/master_view.html',{
         'current_page': 'dashboard', # Required
-        'associates_count': Associate.objects.filter(owner__is_active=True).count(),
+        'associates_count': Associate.objects.filter(
+            owner__is_active=True
+        ).count(),
         'customers_count': Customer.objects.all().count(),
-        'jobs_count': Order.objects.filter(completion_date__isnull=True).count(),
-        'tasks_count': TaskItem.objects.filter(is_closed=False).count(),
+        'jobs_count': Order.objects.filter(
+            is_cancelled=False,
+            completion_date__isnull=True
+        ).count(),
+        'tasks_count': TaskItem.objects.filter(
+            is_closed=False
+        ).count(),
         'awaylogs': AwayLog.objects.all(),
     })

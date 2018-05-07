@@ -99,6 +99,7 @@
                 <tr>
                     <th>{% trans 'Name' %}</th>
                     <th>{% trans 'Has Accepted?' %}</th>
+                    <th>{% trans 'Comment' %}</th>
                     <th></th>
                 </tr>
             </thead>
@@ -109,6 +110,7 @@
                         <a href="{% url 'o55_tenant_member_retrieve' 'summary' item.associate.id %}" target="_blank">{{ item.associate }}&nbsp;<i class="fas fa-link"></i></a>
                     </td>
                     <td>{{ item.has_accepted_job }}</td>
+                    <td>{{ item.comment }}</td>
                     <td></td>
                 </tr>
                 {% empty %}

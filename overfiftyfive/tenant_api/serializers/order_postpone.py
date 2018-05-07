@@ -68,6 +68,9 @@ class OrderPostponeCreateSerializer(serializers.Serializer):
         """
         Override the `create` function to add extra functinality.
         """
+        # For debugging purposes only.
+        print("INFO: Input at", str(validated_data))
+        
         #-------------------------#
         # Get validated POST data #
         #-------------------------#
@@ -134,6 +137,6 @@ class OrderPostponeCreateSerializer(serializers.Serializer):
         # For debugging purposes only.
         print("INFO: Task #", str(next_task_item.id), "was created b/c of postponement.")
 
-        # STEP 5 - Assign our new variables and return the validated data.
+        # Assign our new variables and return the validated data.
         validated_data['id'] = next_task_item.id
         return validated_data
