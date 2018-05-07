@@ -66,13 +66,11 @@ class AwayLog(models.Model):
     #  FIELDS
     #
 
-    associate = models.ForeignKey(
+    associate = models.OneToOneField(
         "Associate",
         help_text=_('The associate of our away log.'),
         related_name="%(app_label)s_%(class)s_associate_related",
         on_delete=models.CASCADE,
-        blank=True,
-        null=True
     )
     reason = models.PositiveSmallIntegerField(
         _("Reason"),

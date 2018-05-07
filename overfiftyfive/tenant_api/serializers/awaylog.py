@@ -25,12 +25,40 @@ class AwayLogListCreateSerializer(serializers.ModelSerializer):
             'reason_other',
             'until_further_notice',
             'until_date',
-            'created',
-            'created_by',
-            'last_modified',
-            'last_modified_by'
         )
 
+    def create(self, validated_data):
+        """
+        Override the `create` function to add extra functinality.
+        """
+        #-----------------------------
+        # Get our inputs.
+        #-----------------------------
+        associate = validated_data.get('associate', None)
+        reason = validated_data.get('reason', None)
+        until_further_notice = validated_data.get('until_further_notice', False)
+        until_date = validated_data.get('until_date', None)
+
+        #-----------------------------
+        # Create our `AwayLog` object.
+        #-----------------------------
+        # Create our log.
+        log = AwayLog.objects.create(
+            associate=associate,
+            reason=reason,
+            until_further_notice=until_further_notice,
+            until_date=until_date,
+            created_by=self.context['created_by'],
+            last_modified_by=self.context['created_by'],
+        )
+
+        # Save our away information to the associate.
+        associate.away_log = log
+        associate.save()
+
+        # Return our validated data.
+        validated_data['id'] = log.id
+        return validated_data
 
 
 class AwayLogRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
@@ -44,8 +72,4 @@ class AwayLogRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
             'reason_other',
             'until_further_notice',
             'until_date',
-            'created',
-            'created_by',
-            'last_modified',
-            'last_modified_by'
         )

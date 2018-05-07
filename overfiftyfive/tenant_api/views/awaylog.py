@@ -39,7 +39,10 @@ class AwayLogListCreateAPIView(generics.ListCreateAPIView):
         """
         Create
         """
-        serializer = AwayLogListCreateSerializer(data=request.data)
+        serializer = AwayLogListCreateSerializer(data=request.data, context={
+            'created_by': request.user,
+            'franchise': request.tenant
+        })
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)

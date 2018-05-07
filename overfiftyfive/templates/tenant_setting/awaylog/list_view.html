@@ -113,7 +113,7 @@
                         <button id="id_delete_btn"
                              class="btn btn-danger btn-lg m-2 float-right px-4"
                               type="button"
-                           data-toggle="modal" data-target="#confirmDelete">
+                           onclick="ajax_delete({{ away_log.id }});">
                          <i class="fas fa-trash"></i>
                          {% trans 'Delete' %}
                         </button>

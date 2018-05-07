@@ -252,6 +252,14 @@ class Associate(AbstractPerson):
         blank=True,
         default=0
     )
+    away_log = models.ForeignKey(
+        "AwayLog",
+        help_text=_('The object referencing our Assocaites away log (if they have one).'),
+        related_name="%(app_label)s_%(class)s_away_info_related",
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True,
+    )
 
     #
     #  FUNCTIONS

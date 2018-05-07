@@ -6,7 +6,7 @@ from django.views.generic import DetailView, ListView, TemplateView
 from django.utils.decorators import method_decorator
 from django.utils.translation import ugettext_lazy as _
 from shared_foundation.mixins import ExtraRequestProcessingMixin
-from tenant_foundation.models import ActivitySheetItem, Associate, Customer, TaskItem
+from tenant_foundation.models import ActivitySheetItem, Associate, AwayLog, Customer, TaskItem
 
 
 @method_decorator(login_required, name='dispatch')
@@ -116,10 +116,15 @@ class PendingTaskRetrieveForActivitySheetView(DetailView, ExtraRequestProcessing
         #     for the job.
         # (b) Find all the unique associates which do not have any activity
         #     sheet items created previously.
+        # (c) FInd all unique associates which have active accounts.
+        # (d) If an Associate has an active Announcement attached to them,
+        #     they should be uneligible for a job. 
         skill_set_pks = task_item.job.skill_sets.values_list('pk', flat=True)
         available_associates = Associate.objects.filter(
            Q(skill_sets__in=skill_set_pks) &
-           ~Q(id__in=activity_sheet_associate_pks)
+           ~Q(id__in=activity_sheet_associate_pks) &
+           Q(owner__is_active=True) &
+           Q(away_log__isnull=True)
         ).distinct()
         modified_context['available_associates_list'] = available_associates
 
