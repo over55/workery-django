@@ -116,7 +116,7 @@
     <!-- FORM -->
     <!------------------------------------------------------------------------->
     <div class="col-md-10 mx-auto mb-4 py-2">
-        <h3 class="py-2 text-center mb-4" id="id_page_title">Tasks</h3>
+        <h3 class="py-2 text-center mb-4" id="id_page_title">Tasks Log</h3>
         <form id="add-customer-form" method="post" class="needs-validation" action="" novalidate>
             <!-- ACTIVITY SHEET -->
             <!------------------------------------------------------------->
@@ -124,12 +124,92 @@
                 <table class="table table-bordered custom-cell-w">
                     <tbody>
                         <tr class="bg-dark">
-                            <th scope="row" colspan="2" class="text-light">Summary Details</th>
+                            <th scope="row" colspan="2" class="text-light">Task ID #{{ task_item.id|intcomma }} - Task Details</th>
                         </tr>
                         <tr>
-                            <th scope="row" class="bg-light">Client Name</th>
-                            <td id="selected_customer_name">
-                                {% if job.customer %}<a href="{% url 'o55_tenant_customer_retrieve' template job.customer.id %}" target="_blank">{{ job.customer }}&nbsp;<i class="fas fa-link"></i></a>{% else %}-{% endif %}
+                            <th scope="row" class="bg-light">Staff</th>
+                            <td id="selected_staff_name">
+                                {% if task_item.created_by %}<a href="{% url 'o55_tenant_team_retrieve_from_user_id_redirect' template task_item.created_by.id %}" target="_blank">{{ task_item.created_by.get_full_name }}&nbsp;<i class="fas fa-link"></i></a>{% else %}-{% endif %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row" class="bg-light">Created at</th>
+                            <td id="selected_created_at">
+                                {% if task_item.created_at %}{{ task_item.created_at }}{% else %}-{% endif %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row" class="bg-light">Title</th>
+                            <td id="selected_title">
+                                {{ task_item.title }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row" class="bg-light">Description</th>
+                            <td id="selected_description">
+                                {{ task_item.description }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row" class="bg-light">Due date</th>
+                            <td id="selected_due_date">
+                                {% if task_item.due_date %}{{ task_item.due_date }}{% else %}-{% endif %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row" class="bg-light">Is closed?</th>
+                            <td id="selected_is_closed">
+                                {% if task_item.is_closed %}{{ task_item.is_closed }}{% else %}-{% endif %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row" class="bg-light">Was postponed?</th>
+                            <td id="selected_is_closed">
+                                {% if task_item.was_postponed %}{{ task_item.was_postponed }}{% else %}-{% endif %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row" class="bg-light">Closed reason</th>
+                            <td id="selected_closing_reason">
+                                {% if task_item.is_closed %}
+                                    {% if task_item.was_postponed %}
+
+                                       {% if task_item.closing_reason == 0 %}
+                                           -
+                                       {% elif task_item.closing_reason == 2 %}
+                                           Client needs more time
+                                       {% elif task_item.closing_reason == 3 %}
+                                           Associate needs more time
+                                       {% elif task_item.closing_reason == 4 %}
+                                           Weather
+                                       {% else %}
+                                           {{ task_item.closing_reason_other }}
+                                       {% endif %}
+
+                                    {% else %}
+
+                                        {% if task_item.closing_reason == 0 %}
+                                            -
+                                        {% elif task_item.closing_reason == 2 %}
+                                            Quote was too high
+                                        {% elif task_item.closing_reason == 3 %}
+                                            Job completed by someone else
+                                        {% elif task_item.closing_reason == 4 %}
+                                            Job completed by Associate
+                                        {% elif task_item.closing_reason == 5 %}
+                                            Work no longer needed
+                                        {% elif task_item.closing_reason == 6 %}
+                                            Client not satisfied with Associate
+                                        {% elif task_item.closing_reason == 7 %}
+                                            Client did work themselves
+                                        {% else %}
+                                            {{ task_item.closing_reason_other }}
+                                        {% endif %}
+
+                                    {% endif %}
+                                {% else %}
+                                    -
+                                {% endif %}
                             </td>
                         </tr>
                     </tbody>

@@ -147,7 +147,7 @@ class JobRetrieveForTasksListView(DetailView, ExtraRequestProcessingMixin):
         # Fetch all the activity sheets we already have
         modified_context['task_items'] = TaskItem.objects.filter(
            job=modified_context['job']
-        )
+        ).order_by('-last_modified_at')
 
         # Return our modified context.
         return modified_context

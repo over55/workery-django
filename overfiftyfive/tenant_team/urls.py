@@ -22,6 +22,7 @@ urlpatterns = (
     # Retrieve
     path('teams/<str:template>/detail/<int:pk>/', retrieve_view.TeamRetrieveView.as_view(), name='o55_tenant_team_retrieve'),
     path('teams/<str:template>/detail/<int:pk>/comments/', retrieve_view.TeamCommentRetrieveView.as_view(), name='o55_tenant_team_comments_retrieve'),
+    path('teams/<str:template>/detail/<int:pk>/redirect-from-user-id-to-staff-id/', retrieve_view.staff_redirect_from_user_id_to_staff_id, name='o55_tenant_team_retrieve_from_user_id_redirect'),
 
     # Update
     path('teams/<str:template>/detail/<int:pk>/edit/', update_view.TeamUpdateView.as_view(), name='o55_tenant_team_update'),

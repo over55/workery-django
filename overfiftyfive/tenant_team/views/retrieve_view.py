@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponseBadRequest, HttpResponseRedirect
 from django.views.generic.edit import CreateView, FormView, UpdateView
 from django.views.generic import DetailView, ListView, TemplateView
 from django.utils.decorators import method_decorator
@@ -73,3 +74,12 @@ class TeamCommentRetrieveView(DetailView, ExtraRequestProcessingMixin):
 
         # Return our modified context.
         return modified_context
+
+
+def staff_redirect_from_user_id_to_staff_id(request, template, pk):
+    from django.urls import reverse
+    staff = Staff.objects.filter(owner__id=pk).first()
+    if staff:
+        return HttpResponseRedirect(reverse('o55_tenant_team_retrieve', args=[template, pk]))
+    else:
+        return HttpResponseBadRequest(_('Cannot find user id.'))
