@@ -98,7 +98,9 @@
                 {% for away_log in away_log_list %}
                 <tr>
                     <td>
-                        {{ away_log.associate }}
+                        {% if away_log.associate %}
+                            <a href="{% url 'o55_tenant_member_retrieve' 'summary' away_log.associate.id %}" target="_blank">{{ away_log.associate }}&nbsp;<i class="fas fa-link"></i></a>
+                        {% else %}-{% endif %}
                     </td>
                     <td>
                         {{ away_log.created }}
