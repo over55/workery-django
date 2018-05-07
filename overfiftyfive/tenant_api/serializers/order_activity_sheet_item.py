@@ -76,7 +76,7 @@ class ActivitySheetItemCreateSerializer(serializers.Serializer):
         """
         # For debugging purposes only.
         print("INFO: Input at", str(validated_data))
-        
+
         # STEP 1 - Get validated POST data.
         job = validated_data.get('job', None)
         associate = validated_data.get('associate', None)
@@ -125,7 +125,7 @@ class ActivitySheetItemCreateSerializer(serializers.Serializer):
             print("INFO: Task #", str(task_item.id), "was closed.")
 
             # STEP 5 - Create our new task for following up.
-            next_task = TaskItem.objects.create(
+            next_task_item = TaskItem.objects.create(
                 type_of = FOLLOW_UP_IS_JOB_COMPLETE_TASK_ITEM_TYPE_OF_ID,
                 title = _('48 hour follow up'),
                 description = _('Please call up the client and confirm that the associate and client have agreed on scheduled meeting date in the future.'),

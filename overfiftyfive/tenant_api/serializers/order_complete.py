@@ -115,7 +115,7 @@ class OrderCompleteCreateSerializer(serializers.Serializer):
         if has_agreed_to_meet:
 
             # STEP 5 - Create our new task for following up.
-            next_task = TaskItem.objects.create(
+            next_task_item = TaskItem.objects.create(
                 type_of = FOLLOW_UP_CUSTOMER_SURVEY_TASK_ITEM_TYPE_OF_ID,
                 title = _('7 day follow up'),
                 description = _('Please call up the client and perform the satisfaction survey.'),
@@ -127,12 +127,12 @@ class OrderCompleteCreateSerializer(serializers.Serializer):
             )
 
             # For debugging purposes only.
-            print("INFO: Task #", str(next_task.id), "was created")
+            print("INFO: Task #", str(next_task_item.id), "was created")
 
         else:
 
             # STEP 5 - Create our new task for following up.
-            next_task = TaskItem.objects.create(
+            next_task_item = TaskItem.objects.create(
                 type_of = FOLLOW_UP_CUSTOMER_SURVEY_TASK_ITEM_TYPE_OF_ID,
                 title = _('24 hour follow up'),
                 description = _('Please call up the client and confirm that the associate and client have agreed on scheduled meeting date in the future.'),
@@ -144,7 +144,7 @@ class OrderCompleteCreateSerializer(serializers.Serializer):
             )
 
             # For debugging purposes only.
-            print("INFO: Task #", str(next_task.id), "was created")
+            print("INFO: Task #", str(next_task_item.id), "was created")
 
         # # STEP 6 - Assign our new variables and return the validated data.
         # validated_data['id'] = obj.id

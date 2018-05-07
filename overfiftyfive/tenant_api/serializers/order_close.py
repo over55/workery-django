@@ -108,7 +108,7 @@ class OrderCloseCreateSerializer(serializers.Serializer):
         """
         # For debugging purposes only.
         print("INFO: Input at", str(validated_data))
-        
+
         #--------------------------#
         # Get validated POST data. #
         #--------------------------#
@@ -236,7 +236,7 @@ class OrderCloseCreateSerializer(serializers.Serializer):
         #---------------------------------#
         if job.is_ongoing:
             follow_up_days_number = int(task_item.job.follow_up_days_number)
-            next_task = TaskItem.objects.create(
+            next_task_item = TaskItem.objects.create(
                 type_of = FOLLOW_UP_CUSTOMER_SURVEY_TASK_ITEM_TYPE_OF_ID,
                 title = _('7 day follow up'),
                 description = _('Please call up the client and perform the satisfaction survey.'),
@@ -248,7 +248,7 @@ class OrderCloseCreateSerializer(serializers.Serializer):
             )
 
             # For debugging purposes only.
-            print("INFO: Created task #", str(next_task.id))
+            print("INFO: Created task #", str(next_task_item.id))
 
         #--------------------#
         # Updated the output #
