@@ -53,7 +53,7 @@ class MemberSearchResultView(ListView, ExtraRequestProcessingMixin):
             queryset = Associate.objects.full_text_search(keyword)
             queryset = queryset.order_by('-created')
         else:
-            queryset = super(MemberListView, self).get_queryset()
+            queryset = super(MemberSearchResultView, self).get_queryset()
 
         # The following code will use the 'django-filter'
         filter = AssociateFilter(self.request.GET, queryset=queryset)
