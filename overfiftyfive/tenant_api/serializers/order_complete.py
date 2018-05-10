@@ -129,6 +129,10 @@ class OrderCompleteCreateSerializer(serializers.Serializer):
             # For debugging purposes only.
             print("INFO: Task #", str(next_task_item.id), "was created")
 
+            # Attach our next job.
+            job.latest_pending_task = next_task_item
+            job.save()
+
         else:
 
             # STEP 5 - Create our new task for following up.
@@ -145,6 +149,10 @@ class OrderCompleteCreateSerializer(serializers.Serializer):
 
             # For debugging purposes only.
             print("INFO: Task #", str(next_task_item.id), "was created")
+
+            # Attach our next job.
+            job.latest_pending_task = next_task_item
+            job.save()
 
         # # STEP 6 - Assign our new variables and return the validated data.
         # validated_data['id'] = obj.id

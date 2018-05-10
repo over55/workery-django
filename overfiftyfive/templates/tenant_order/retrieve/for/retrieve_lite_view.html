@@ -202,7 +202,7 @@
                 </tr>
                 <tr>
                     <th scope="row" class="bg-light">Status</th>
-                    <td id="selected_description_id">
+                    <td id="selected_status">
                         {% if job.is_cancelled %}
                             {% trans 'Cancelled' %}
                         {% else %}
@@ -214,6 +214,16 @@
                         {% endif %}
                     </td>
                 </tr>
+                {% if job.latest_pending_task %}
+                <tr>
+                    <th scope="row" class="bg-light">Required Task</th>
+                    <td id="selected_latest_pending_task">
+                        <a href="{% url 'o55_tenant_pending_task_retrieve' job.latest_pending_task.id %}" target="_blank">
+                            Task ID #{{ job.latest_pending_task }} - {{ job.latest_pending_task.title }}&nbsp;<i class="fas fa-link"></i>
+                        </a>
+                    </td>
+                </tr>
+                {% endif %}
             </tbody>
         </table>
         {% comment %}

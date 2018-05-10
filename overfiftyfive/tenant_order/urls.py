@@ -31,7 +31,7 @@ urlpatterns = (
     path('jobs/search/results/', search_view.JobSearchResultView.as_view(), name='o55_tenant_job_search_results'),
 
     # Retrieve
-    path('jobs/<str:template>/detail/<int:pk>/', retrieve_view.JobRetrieveView.as_view(), name='o55_tenant_job_retrieve'),
+    path('jobs/<str:template>/detail/<int:pk>/', retrieve_view.JobLiteRetrieveView.as_view(), name='o55_tenant_job_retrieve'),
     path('jobs/<str:template>/detail/<int:pk>/full/', retrieve_view.JobFullRetrieveView.as_view(), name='o55_tenant_job_full_retrieve'),
     path('jobs/<str:template>/detail/<int:pk>/activity-sheet/', retrieve_view.JobRetrieveForActivitySheetListView.as_view(), name='o55_tenant_job_retrieve_for_activity_sheet_list'),
     path('jobs/<str:template>/detail/<int:pk>/tasks/', retrieve_view.JobRetrieveForTasksListView.as_view(), name='o55_tenant_job_retrieve_for_tasks_list'),

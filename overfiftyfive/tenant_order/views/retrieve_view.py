@@ -11,7 +11,7 @@ from tenant_foundation.models import ActivitySheetItem, Associate, Customer, Ord
 
 
 @method_decorator(login_required, name='dispatch')
-class JobRetrieveView(DetailView, ExtraRequestProcessingMixin):
+class JobLiteRetrieveView(DetailView, ExtraRequestProcessingMixin):
     context_object_name = 'job'
     model = Order
     template_name = 'tenant_order/retrieve/for/retrieve_lite_view.html'

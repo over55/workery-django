@@ -223,6 +223,14 @@ class Order(models.Model):
         null=True,
         default='',
     )
+    latest_pending_task = models.ForeignKey(
+        "TaskItem",
+        help_text=_('The latest pending task of our job order.'),
+        related_name="%(app_label)s_%(class)s_latest_pending_task_related",
+        on_delete=models.CASCADE,
+        blank=True,
+        null=True
+    )
 
     #
     #  SYSTEM

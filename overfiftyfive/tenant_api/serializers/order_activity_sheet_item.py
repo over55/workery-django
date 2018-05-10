@@ -144,6 +144,10 @@ class ActivitySheetItemCreateSerializer(serializers.Serializer):
             # For debugging purposes only.
             print("INFO: Task #", str(next_task_item.id), "was created.")
 
+            # Attached our new TaskItem to the Job.
+            job.latest_pending_task = next_task_item
+            job.save()
+
         # STEP 5 - Assign our new variables and return the validated data.
         validated_data['id'] = obj.id
         return validated_data

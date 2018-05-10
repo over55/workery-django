@@ -155,6 +155,7 @@ class OrderCloseCreateSerializer(serializers.Serializer):
             job.last_modified_by = self.context['user']
             job.is_cancelled = True
             job.completion_date = get_todays_date_plus_days(0)
+            job.latest_pending_task = None
             job.save()
 
             # For debugging purposes only.
@@ -173,6 +174,7 @@ class OrderCloseCreateSerializer(serializers.Serializer):
             job.last_modified_by = self.context['user']
             job.is_cancelled = False
             job.completion_date = get_todays_date_plus_days(0)
+            job.latest_pending_task = None
 
             # STEP 2 - Save the results.
             job.was_job_satisfactory = was_job_satisfactory
@@ -233,6 +235,10 @@ class OrderCloseCreateSerializer(serializers.Serializer):
 
             # For debugging purposes only.
             print("INFO: Created task #", str(next_task_item.id))
+
+            # Attach our next job.
+            job.latest_pending_task = next_task_item
+            job.save()
 
         #--------------------#
         # Updated the output #

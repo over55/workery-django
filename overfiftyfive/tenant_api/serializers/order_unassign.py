@@ -148,6 +148,10 @@ class OrderUnassignCreateSerializer(serializers.Serializer):
         # For debugging purposes only.
         print("INFO: Assignment Task #", str(next_task_item.id), "was created b/c of unassignment.")
 
+        # Attach our next job.
+        job.latest_pending_task = next_task_item
+        job.save()
+
         # Assign our new variables and return the validated data.
         validated_data['id'] = next_task_item.id
         return validated_data
