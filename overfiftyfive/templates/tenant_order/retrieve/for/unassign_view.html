@@ -31,13 +31,13 @@
 
     function click_cancel_button() {
         {% if template == 'search' %}
-        window.location = "";
+        window.location = "{% url 'o55_tenant_job_retrieve' template job.id %}";
         {% elif template == 'task' %}
         window.location = "{% url 'o55_tenant_pending_task_retrieve' parameters.task_id %}";
         {% elif template == 'list' %}
-        window.location = "";
+        window.location = "{% url 'o55_tenant_job_retrieve' template job.id %}";
         {% else %}
-        window.location = "";
+        window.location = "{% url 'o55_tenant_job_retrieve' template job.id %}";
         {% endif %}
     }
 
@@ -62,7 +62,11 @@
                 console.log(result_dict);
 
                 // REDIRECT TO SUCCESS PAGE.
+                {% if template == 'task' %}
                 window.location = "{% url 'o55_tenant_task_list' %}?was_closed=True";
+                {% else %}
+                window.location = "{% url 'o55_tenant_job_retrieve' template job.id %}?was_closed=True";
+                {% endif %}
             },
             function(xhr,status,error) { // Error
                 // STEP 1: Convert to JSON.
@@ -102,7 +106,18 @@
 	  	<ol class="breadcrumb">
             {% if template == 'search' %}
 
-            TODO
+            <li class="breadcrumb-item">
+                <a href="{% url 'o55_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a>
+            </li>
+            <li class="breadcrumb-item">
+                <a href="{% url 'o55_tenant_job_summary' %}">{% trans 'Jobs' %}</a>
+            </li>
+            <li class="breadcrumb-item">
+                <a href="{% url 'o55_tenant_job_search' %}">{% trans 'Search' %}</a>
+            </li>
+            <li class="breadcrumb-item">{% trans 'Search Results' %}</li>
+            <li class="breadcrumb-item"><a href="{% url 'o55_tenant_job_retrieve' template job.id %}">{% trans 'Job #' %}{{ object.id|intcomma }}</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{% trans 'Unassigning Associate from Job' %}</li>
 
             {% elif template == 'task' %}
 
@@ -111,14 +126,20 @@
             <li class="breadcrumb-item"><a href="{% url 'o55_tenant_pending_task_retrieve' parameters.task_id %}">{% trans 'Task #' %}{{ parameters.task_id|intcomma }}</a></li>
             <li class="breadcrumb-item active" aria-current="page">{% trans 'Unassigning Associate from Job' %}</li>
 
-
             {% elif template == 'list' %}
 
-            TODO
+            <li class="breadcrumb-item"><a href="{% url 'o55_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'o55_tenant_job_summary' %}">{% trans 'Jobs' %}</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'o55_tenant_job_list' %}">{% trans 'List' %}</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'o55_tenant_job_retrieve' template job.id %}">{% trans 'Job #' %}{{ object.id|intcomma }}</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{% trans 'Unassigning Associate from Job' %}</li>
 
             {% else %}
 
-	    	TODO
+            <li class="breadcrumb-item"><a href="{% url 'o55_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'o55_tenant_job_summary' %}">{% trans 'Jobs' %}</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'o55_tenant_job_retrieve' template job.id %}">{% trans 'Job #' %}{{ object.id|intcomma }}</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{% trans 'Unassigning Associate from Job' %}</li>
 
             {% endif %}
 	  	</ol>

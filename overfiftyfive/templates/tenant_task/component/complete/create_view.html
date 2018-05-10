@@ -89,8 +89,7 @@ function get_selected_radio_value(radiofields_name) {
             <li class="breadcrumb-item"><a href="{% url 'o55_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
             <li class="breadcrumb-item"><a href="{% url 'o55_tenant_task_list' %}">{% trans 'Pending Tasks' %}</a></li>
             <li class="breadcrumb-item"><a href="{% url 'o55_tenant_pending_task_retrieve' task_item.id %}">{% trans 'Task #' %}{{ task_item.id|intcomma }}</a></li>
-            <li class="breadcrumb-item"><a href="{% url 'o55_tenant_pending_task_retrieve_for_activity_sheet_retrieve' task_item.id %}">{% trans 'Activity Sheet' %}</a></li>
-	    	<li class="breadcrumb-item active" aria-current="page">{% trans 'Activity Sheet' %}</li>
+	    	<li class="breadcrumb-item active" aria-current="page">{{ task_item.title }}</li>
 	  	</ol>
 	  	</ol>
 	</nav>
