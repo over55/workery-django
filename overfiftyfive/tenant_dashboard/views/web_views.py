@@ -23,7 +23,8 @@ def master_page(request):
         'customers_count': Customer.objects.all().count(),
         'jobs_count': Order.objects.filter(
             is_cancelled=False,
-            completion_date__isnull=True
+            completion_date__isnull=True,
+            payment_date__isnull=True
         ).count(),
         'tasks_count': TaskItem.objects.filter(
             is_closed=False

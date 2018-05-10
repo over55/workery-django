@@ -98,7 +98,7 @@
                         {% if job.is_cancelled %}
                             {% trans 'Cancelled' %}
                         {% else %}
-                            {% if job.completion_date %}
+                            {% if job.completion_date or job.payment_date %}
                                 {% trans 'Completed' %}
                             {% else %}
                                 {% trans 'Pending' %}
