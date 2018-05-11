@@ -557,6 +557,7 @@ class AssociateRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
 
             # Save the model.
             instance.owner.save()
+            print("INFO: Password was updated.")
 
         #---------------------------
         # Update `Associate` object.

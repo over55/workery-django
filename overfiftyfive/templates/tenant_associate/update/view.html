@@ -67,9 +67,16 @@
         {% endfor %}
         $('#skill_sets').val(skill_set_ids);
 
+        var vehicle_type_ids = [];
+        {% for vehicle_type in associate.vehicle_types.all %}
+        vehicle_type_ids.push({{ vehicle_type.id }});
+        {% endfor %}
+        $('#vehicle_types').val(vehicle_type_ids);
+
         // Initialize our 'select2' element.
         $('#person_tags').select2();
         $('#skill_sets').select2();
+        $('#vehicle_types').select2();
 
         //----------------------------------------//
         // TEXTFIELD / SELECTFIELD INITIALIZATION //
@@ -96,7 +103,7 @@
             var email = $('#email').val();
             console.log(email);
         }, 250));
-																    
+
 	// THIS IS WHERE YOU CAN ADD YOUR COUNTRY/PROVINCE DROPDOWN JS CODE....
 	$(function(){
 	  $('#address_country').change(function(){
@@ -139,7 +146,7 @@
 		if(countryId == 'CA'){
 			p_dropdown.prop('selectedIndex', 1);
 		}
-	}															    
+	}
 
     }); // end Ready
 
@@ -279,6 +286,7 @@
         var password_repeat = $('#password_repeat').val();
         var person_tags = $('#person_tags').val();
         var skill_sets = $('#skill_sets').val();
+        var vehicle_types = $('#vehicle_types').val();
         var description = $('#describe').val();
 
         var is_active = get_boolean_from_selected_radio_value('is_active');
@@ -317,6 +325,7 @@
                 'description': description,
                 'tags': person_tags,
                 'skill_sets': skill_sets,
+                'vehicle_types': vehicle_types,
                 'nationality': null,
                 'is_ok_to_email': ok_to_email,
                 'is_ok_to_text': ok_to_text,
@@ -687,7 +696,7 @@
                     </div>
                 </div>
                 <div class="form-group col-md-12 mb-4">
-                    <label for="drivers_license_class">Drivers license class(es):</label>
+                    <label for="drivers_license_class">Drivers license class(es)</label>
                     <input type="text" class="form-control form-control-lg border border-success" id="drivers_license_class" name="drivers_license_class" placeholder="Drivers license class(es)" minlength="3" maxlength="255" value="{% if associate.drivers_license_class %}{{ associate.drivers_license_class }}{% endif %}">
                     <div id="drivers_license_class-error" class="invalid-feedback"></div>
                     <small id="drivers_license_class_help" class="form-text text-muted ft-indent">
@@ -696,40 +705,13 @@
                     </small>
                 </div>
                 <div class="form-group col-md-12 mb-4">
-                    <p class="mb-1">Has car? <sup>*</sup></p>
-                    <div class="form-radio custom-control custom-radio custom-control-inline">
-                        <input type="radio" id="has_car" name="has_car" value="yes" class="custom-control-input form-check-input">
-                        <label class="custom-control-label form-check-label" for="has_car">Yes</label>
-                    </div>
-                    <div class="form-radio custom-control custom-radio custom-control-inline">
-                        <input type="radio" id="has_car2" name="has_car" value="no" class="custom-control-input form-check-input">
-                        <label class="custom-control-label form-check-label" for="has_car2">No</label>
-                        <div id="has_car-error" class="invalid-feedback ml-2"></div>
-                    </div>
-                </div>
-                <div class="form-group col-md-12 mb-4">
-                    <p class="mb-1">Has van? <sup>*</sup></p>
-                    <div class="form-radio custom-control custom-radio custom-control-inline">
-                        <input type="radio" id="has_van" name="has_van" value="yes" class="custom-control-input form-check-input">
-                        <label class="custom-control-label form-check-label" for="has_van">Yes</label>
-                    </div>
-                    <div class="form-radio custom-control custom-radio custom-control-inline">
-                        <input type="radio" id="has_van2" name="has_van" value="no" class="custom-control-input form-check-input">
-                        <label class="custom-control-label form-check-label" for="has_van2">No</label>
-                        <div id="has_van-error" class="invalid-feedback ml-2"></div>
-                    </div>
-                </div>
-                <div class="form-group col-md-12 mb-4">
-                    <p class="mb-1">Has truck? <sup>*</sup></p>
-                    <div class="form-radio custom-control custom-radio custom-control-inline">
-                        <input type="radio" id="has_truck" name="has_truck" value="yes" class="custom-control-input form-check-input">
-                        <label class="custom-control-label form-check-label" for="has_truck">Yes</label>
-                    </div>
-                    <div class="form-radio custom-control custom-radio custom-control-inline">
-                        <input type="radio" id="has_truck2" name="has_truck" value="no" class="custom-control-input form-check-input">
-                        <label class="custom-control-label form-check-label" for="has_truck2">No</label>
-                        <div id="has_truck-error" class="invalid-feedback ml-2"></div>
-                    </div>
+                    <label for="vehicle_types">Vehicle(s)</label>
+                    <select id="vehicle_types" name="vehicle_types" class="form-control form-control-lg border border-success" name="states[]" multiple="multiple">
+                    {% for vehicle_type in associate.vehicle_types.all %}
+                        <option value="{{ vehicle_type.id }}" id="vehicle_type_option_id_{{ vehicle_type.id }}">{{ vehicle_type.text }}</option>
+                    {% endfor %}
+                    </select>
+                    <div id="vehicle_types-error" class="invalid-feedback"></div>
                 </div>
                 <div class="form-group col-md-12 mb-4 p-0">
       		        <label for="how_hear" class="font-b6">Describe how associate hear about us:</label>
