@@ -29,5 +29,5 @@ def master_page(request):
         'tasks_count': TaskItem.objects.filter(
             is_closed=False
         ).count(),
-        'awaylogs': AwayLog.objects.all(),
+        'awaylogs': AwayLog.objects.filter(was_deleted=False),
     })

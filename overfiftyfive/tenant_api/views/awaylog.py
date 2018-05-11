@@ -86,5 +86,8 @@ class AwayLogRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView)
         """
         obj = get_object_or_404(AwayLog, pk=pk)
         self.check_object_permissions(request, obj)  # Validate permissions.
-        obj.delete()
+        obj.was_deleted = True
+        obj.save()
+        obj.associate.away_log = None
+        obj.associate.save()
         return Response(data=[], status=status.HTTP_200_OK)

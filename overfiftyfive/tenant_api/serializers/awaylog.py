@@ -27,6 +27,20 @@ class AwayLogListCreateSerializer(serializers.ModelSerializer):
             'until_date',
         )
 
+    def validate_associate(self, value):
+        """
+        Include validation so no existing AWayLog objects exist which where
+        not deleted.
+        """
+        if value:
+            has_existing_log = AwayLog.objects.filter(
+                associate=value,
+                was_deleted=False
+            ).exists()
+            if has_existing_log:
+                raise serializers.ValidationError("Cannot create a new log entry, you must delete the previous log entry before creating a new one!")
+        return value
+
     def create(self, validated_data):
         """
         Override the `create` function to add extra functinality.
@@ -38,6 +52,7 @@ class AwayLogListCreateSerializer(serializers.ModelSerializer):
         reason = validated_data.get('reason', None)
         until_further_notice = validated_data.get('until_further_notice', False)
         until_date = validated_data.get('until_date', None)
+        print("INFO: Input data:", str(validated_data))
 
         #-----------------------------
         # Create our `AwayLog` object.

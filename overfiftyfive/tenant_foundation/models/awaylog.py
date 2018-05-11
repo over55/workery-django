@@ -66,7 +66,7 @@ class AwayLog(models.Model):
     #  FIELDS
     #
 
-    associate = models.OneToOneField(
+    associate = models.ForeignKey(
         "Associate",
         help_text=_('The associate of our away log.'),
         related_name="%(app_label)s_%(class)s_associate_related",
@@ -98,6 +98,13 @@ class AwayLog(models.Model):
         help_text=_('The date that this user will return on.'),
         blank=True,
         null=True
+    )
+    was_deleted = models.BooleanField(
+        _("Was deleted"),
+        help_text=_('Track whether this away log was deleted or not.'),
+        default=False,
+        blank=True,
+        db_index=True
     )
 
     #

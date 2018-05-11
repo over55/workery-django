@@ -31,7 +31,7 @@ class AwayLogListView(ListView, ExtraRequestProcessingMixin):
         return modified_context
 
     def get_queryset(self):
-        queryset = AwayLog.objects.all().order_by('-id')
+        queryset = AwayLog.objects.filter(was_deleted=False).order_by('-id')
 
         # # The following code will use the 'django-filter'
         # filter = CustomerFilter(self.request.GET, queryset=queryset)
