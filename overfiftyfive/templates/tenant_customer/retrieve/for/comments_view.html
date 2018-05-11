@@ -123,7 +123,7 @@ function click_add_button() {
 			<a class="btn btn-primary btn-lg" href="{% url 'o55_tenant_customer_lite_retrieve' template customer.id %}" role="button">
                 <svg class="svg-inline--fa fa-arrow-left fa-w-14" aria-hidden="true" data-fa-processed="" data-prefix="fas" data-icon="arrow-left" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
                 <path fill="currentColor" d="M257.5 445.1l-22.2 22.2c-9.4 9.4-24.6 9.4-33.9 0L7 273c-9.4-9.4-9.4-24.6 0-33.9L201.4 44.7c9.4-9.4 24.6-9.4 33.9 0l22.2 22.2c9.5 9.5 9.3 25-.4 34.3L136.6 216H424c13.3 0 24 10.7 24 24v32c0 13.3-10.7 24-24 24H136.6l120.5 114.8c9.8 9.3 10 24.8.4 34.3z"></path>
-            </svg><!-- <i class="fas fa-arrow-left"></i> -->&nbsp;{% trans 'Back to Customer\'s Detail' %}</a>
+            </svg><!-- <i class="fas fa-arrow-left"></i> -->&nbsp;{% trans 'Back to Client\'s Detail' %}</a>
 		</div>
 	</div>
     <!------------------------------------------------------------------------->
@@ -145,6 +145,11 @@ function click_add_button() {
                     <i class="fa fa-id-card"></i>&nbsp;<span class="">Details</span>
                 </a>
             </div>
+            <div class="st-grey">
+                <a href="{% url 'o55_tenant_customer_retrieve_for_jobs_list' template customer.id %}">
+                    <i class="fa fa-wrench"></i>&nbsp;<span class="">Jobs</span>
+                </a>
+            </div>
             <div class="st-grey active">
                 <i class="fa fa-comments"></i>&nbsp;<span class="">Comments</span>
             </div>
@@ -157,7 +162,7 @@ function click_add_button() {
         <div class="row align-items-start">
             <!-- <h1>Comments/Notes Screen</h1> -->
             <div class="col-lg-12">
-                <h3 class="py-2 text-center mb-4" id="id_page_title">Customer Comments</h3>
+                <h3 class="py-2 text-center mb-4" id="id_page_title">Client Comments</h3>
 
                 <!-- FORM -->
                 <!------------------------------------------------------------------------->
