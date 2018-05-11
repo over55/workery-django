@@ -79,7 +79,7 @@ function click_add_button() {
                 <a href="{% url 'o55_tenant_member_search' %}">{% trans 'Search' %}</a>
             </li>
             <li class="breadcrumb-item active">{% trans 'Search Results' %}</li>
-            <li class="breadcrumb-item"><a href="{% url 'o55_tenant_member_retrieve' template associate.id %}">{% trans 'Member #' %}{{ associate.id|intcomma }}</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'o55_tenant_member_lite_retrieve' template associate.id %}">{% trans 'Member #' %}{{ associate.id|intcomma }}</a></li>
             <li class="breadcrumb-item active" aria-current="page">{% trans 'Comments' %}</li>
 
             {% elif template == 'list' %}
@@ -87,14 +87,14 @@ function click_add_button() {
             <li class="breadcrumb-item"><a href="{% url 'o55_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
             <li class="breadcrumb-item"><a href="{% url 'o55_tenant_member_summary' %}">{% trans 'Member' %}</a></li>
             <li class="breadcrumb-item"><a href="{% url 'o55_tenant_member_list' %}">{% trans 'List' %}</a></li>
-            <li class="breadcrumb-item"><a href="{% url 'o55_tenant_member_retrieve' template associate.id %}">{% trans 'Member #' %}{{ associate.id|intcomma }}</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'o55_tenant_member_lite_retrieve' template associate.id %}">{% trans 'Member #' %}{{ associate.id|intcomma }}</a></li>
             <li class="breadcrumb-item active" aria-current="page">{% trans 'Comments' %}</li>
 
             {% else %}
 
 	    	<li class="breadcrumb-item"><a href="{% url 'o55_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
             <li class="breadcrumb-item"><a href="{% url 'o55_tenant_member_summary' %}">{% trans 'Member' %}</a></li>
-            <li class="breadcrumb-item"><a href="{% url 'o55_tenant_member_retrieve' template associate.id %}">{% trans 'Member #' %}{{ associate.id|intcomma }}</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'o55_tenant_member_lite_retrieve' template associate.id %}">{% trans 'Member #' %}{{ associate.id|intcomma }}</a></li>
             <li class="breadcrumb-item active" aria-current="page">{% trans 'Comments' %}</li>
 
             {% endif %}
@@ -121,21 +121,61 @@ function click_add_button() {
     <!------------------------------------------------------------------------->
     <div class="row">
 		<div class="col-sm-3 p-3 mb-2">
-			<a class="btn btn-primary btn-lg" href="{% url 'o55_tenant_member_retrieve' template associate.id %}" role="button">
+			<a class="btn btn-primary btn-lg" href="{% if template == 'search' %}{% url 'o55_tenant_member_search' %}{% elif template == 'list' %}{% url 'o55_tenant_member_list' %}{% else %}{% url 'o55_tenant_member_summary' %}{% endif %}" role="button">
                 <svg class="svg-inline--fa fa-arrow-left fa-w-14" aria-hidden="true" data-fa-processed="" data-prefix="fas" data-icon="arrow-left" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
                 <path fill="currentColor" d="M257.5 445.1l-22.2 22.2c-9.4 9.4-24.6 9.4-33.9 0L7 273c-9.4-9.4-9.4-24.6 0-33.9L201.4 44.7c9.4-9.4 24.6-9.4 33.9 0l22.2 22.2c9.5 9.5 9.3 25-.4 34.3L136.6 216H424c13.3 0 24 10.7 24 24v32c0 13.3-10.7 24-24 24H136.6l120.5 114.8c9.8 9.3 10 24.8.4 34.3z"></path>
-            </svg><!-- <i class="fas fa-arrow-left"></i> -->&nbsp;{% trans 'Back to Member\'s Detail' %}</a>
+            </svg><!-- <i class="fas fa-arrow-left"></i> -->&nbsp;{% if template == 'search' %}{% trans 'Back to Search' %}{% elif template == 'list' %}{% trans 'Back to Member\'s List' %}{% else %}{% trans 'Back to Member\'s Home' %}{% endif %}</a>
 		</div>
 	</div>
     <!------------------------------------------------------------------------->
     <!-- end BACK BUTTON -->
 
-    <h1>{% trans 'View Comments about Member' %}</h1>
+    <h1>{% trans 'View Associate Member' %}</h1>
+
+    <!-- STEP NAVIGATION -->
+    <!------------------------------------------------------------------------->
+    <div class="row">
+        <div class="step-navigation">
+            <div class="st-grey">
+                <a href="{% url 'o55_tenant_member_lite_retrieve' template associate.id %}">
+                    <i class="far fa-id-badge"></i>&nbsp;<span class="">Summary</span>
+                </a>
+            </div>
+            <div class="st-grey">
+                <a href="{% url 'o55_tenant_member_full_retrieve' template associate.id %}">
+                    <i class="far fa-id-card"></i>&nbsp;<span class="">Details</span>
+                </a>
+            </div>
+            <div class="st-grey active">
+                <i class="far fa-comments"></i>&nbsp;<span class="">Comments</span>
+            </div>
+            {% comment %}
+            <div class="st-grey">
+                <a href="{% url 'o55_tenant_job_retrieve_for_activity_sheet_list' template job.id %}">
+                    <i class="far fa-address-book"></i>&nbsp;<span class="">Activity Sheet</span>
+                </a>
+            </div>
+            <div class="st-grey">
+                <a href="{% url 'o55_tenant_job_retrieve_for_tasks_list' template job.id %}">
+                    <i class="far fa-clock"></i>&nbsp;<span class="">Tasks</span>
+                </a>
+            </div>
+            <div class="st-grey">
+                <a href="{% url 'o55_tenant_job_comments_retrieve' template job.id %}">
+                    <i class="far fa-comments"></i>&nbsp;<span class="">Comments</span>
+                </a>
+            </div>
+            {% endcomment %}
+        </div>
+    </div>
+    <!------------------------------------------------------------------------->
+    <!-- end STEP NAVIGATION -->
 
     <div class="container">
         <div class="row align-items-start">
             <!-- <h1>Comments/Notes Screen</h1> -->
             <div class="col-lg-12">
+                <h3 class="py-2 text-center mb-4" id="id_page_title">Associate Comments</h3>
 
                 <!-- FORM -->
                 <!------------------------------------------------------------------------->

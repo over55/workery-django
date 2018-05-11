@@ -85,7 +85,7 @@
                     </td>
                     <td>{% if member.owner.email %}<a href="mailto:{{ member.owner.email }}">{{ member.owner.email }}</a>{% else %}-{% endif %}</td>
                     <td>
-                        <a href="{% url 'o55_tenant_member_retrieve' 'search' member.id %}?page={{ page_obj.number }}{{ filter_parameters }}">{% trans 'View' %}</a>
+                        <a href="{% url 'o55_tenant_member_lite_retrieve' 'search' member.id %}?page={{ page_obj.number }}{{ filter_parameters }}">{% trans 'View' %}</a>
                     </td>
                 </tr>
                 {% empty %}

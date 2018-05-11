@@ -143,7 +143,7 @@
                         {% for activity_sheet_item in activity_sheet_items.all %}
                         <tr>
                             <td>
-                                {% if activity_sheet_item.job.associate %}<a href="{% url 'o55_tenant_member_retrieve' 'summary' activity_sheet_item.job.associate.id %}" target="_blank">{{ activity_sheet_item.job.associate }}&nbsp;<i class="fas fa-link"></i></a>{% else %}-{% endif %}
+                                {% if activity_sheet_item.job.associate %}<a href="{% url 'o55_tenant_member_lite_retrieve' 'summary' activity_sheet_item.job.associate.id %}" target="_blank">{{ activity_sheet_item.job.associate }}&nbsp;<i class="fas fa-link"></i></a>{% else %}-{% endif %}
                             </td>
                             <td>{{ activity_sheet_item.has_accepted_job }}</td>
                             <td>{{ activity_sheet_item.created_at }}</td>

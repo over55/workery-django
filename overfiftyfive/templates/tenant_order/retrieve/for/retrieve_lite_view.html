@@ -145,7 +145,7 @@
                 <tr>
                     <th scope="row" class="bg-light">Associate Name</th>
                     <td id="selected_associate_name">
-                        {% if job.associate %}<a href="{% url 'o55_tenant_member_retrieve' template job.associate.id %}" target="_blank">{{ job.associate }}&nbsp;<i class="fas fa-link"></i></a>{% else %}-{% endif %}
+                        {% if job.associate %}<a href="{% url 'o55_tenant_member_lite_retrieve' template job.associate.id %}" target="_blank">{{ job.associate }}&nbsp;<i class="fas fa-link"></i></a>{% else %}-{% endif %}
                     </td>
                 </tr>
                 <tr>

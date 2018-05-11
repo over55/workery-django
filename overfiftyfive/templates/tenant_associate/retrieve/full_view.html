@@ -13,8 +13,6 @@
 <script defer src="https://use.fontawesome.com/releases/v5.0.4/js/all.js"></script>
 <script>
     $(document).ready(function () {
-        $( "#id_detail_form" ).hide();
-
         var $star_rating = $('.star-rating .fa-star');
         var $star_rating_value = $('.star-rating');
         var SetRatingStar = function() {
@@ -30,11 +28,6 @@
         };
         SetRatingStar();
     });
-
-    function click_view_more_button() {
-        $( "#id_master_form" ).hide();
-        $( "#id_detail_form" ).show();
-    }
 </script>
 
 <main id="main" role="main">
@@ -104,45 +97,29 @@
 
     <h1>{% trans 'View Associate Member' %}</h1>
 
-    <div class="row mt-4 pt-3 mb-4 pb-2">
-
-        <!-- MASTER FORM -->
-        <!--------------------------------------------------------------------->
-        <div class="col-md-10 mx-auto rounded bg-light border p-2" id="id_master_form">
-            <div class="row">
-                <div class="col-sm-5">
-                    <img src="{% static 'img/placeholder.png' %}" class="img-fluid rounded" alt="Profile Picture">
-                </div>
-                <div class="col-sm-7 px-4 py-3">
-                    <h3>{{ associate.given_name }}&nbsp;{{ associate.last_name }}</h3>
-                    <p class="text-muted">{{ associate.address_locality }},&nbsp;{{ associate.address_region }},&nbsp;{{ associate.address_country }}&nbsp;<i class="fas fa-map-marker-alt"></i></p>
-                    <p><i class="fas fa-envelope"></i>&nbsp;{% if associate.owner.email %}<a href="mailto:{{ associate.owner.email }}">{{ associate.owner.email }}</a>{% else %}-{% endif %}</p>
-                    <p><i class="fas fa-phone-square"></i>&nbsp;{% if associate.telephone %}<a href="tel:{{ associate.telephone }}">{{ associate.telephone|pretty_formatted_phonenumber }}</a>{% else %}-{% endif %}</p>
-                    <p class="m-0"><strong>Skills:</strong></p>
-                    <p>
-                        {% for skill_set in associate.skill_sets.all %}
-                            <span class="badge badge-info badge-lg">{{ skill_set.sub_category }}</span>
-                        {% empty %}
-                            -
-                        {% endfor %}
-                    </p>
-                    <div class="col-sm-12 p-0">
-                        <!-- Client or User Profile rating div starts here -->
-                        <p class="m-0"><strong>Ratings:</strong></p>
-                        <div class="star-rating" data-rating="4.5">
-                            <!-- Give client rating ouptput value to this data-rating attribute -->
-                            <span class="far fa-star" data-rating="1"></span>
-                            <span class="far fa-star" data-rating="2"></span>
-                            <span class="far fa-star" data-rating="3"></span>
-                            <span class="far fa-star" data-rating="4"></span>
-                            <span class="far fa-star" data-rating="5"></span>
-                        </div>
-                    </div>
-                </div>
+    <!-- STEP NAVIGATION -->
+    <!------------------------------------------------------------------------->
+    <div class="row">
+        <div class="step-navigation">
+            <div class="st-grey">
+                <a href="{% url 'o55_tenant_member_lite_retrieve' template associate.id %}">
+                    <i class="far fa-id-badge"></i>&nbsp;<span class="">Summary</span>
+                </a>
+            </div>
+            <div class="st-grey active">
+                <i class="far fa-id-card"></i>&nbsp;<span class="">Details</span>
+            </div>
+            <div class="st-grey">
+                <a href="{% url 'o55_tenant_member_comments_retrieve' template associate.id %}">
+                    <i class="far fa-comments"></i>&nbsp;<span class="">Comments</span>
+                </a>
             </div>
         </div>
-        <!--------------------------------------------------------------------->
-        <!-- end MASTER FORM -->
+    </div>
+    <!------------------------------------------------------------------------->
+    <!-- end STEP NAVIGATION -->
+
+    <div class="row mt-4 pt-3 mb-4 pb-2">
 
         <!-- DETAIL FORM -->
         <!------------------------------------------------------------------------->
@@ -398,25 +375,7 @@
 
         <div class="form-group col-md-10 mb-3 mx-auto text-center">
 		<div class="row">
-		    <!-- VIEW MORE BUTTON -->
-		    <div class="col-sm-4">
-			    <a onclick="click_view_more_button();">
-			    <button  id="id_submit_btn" class="btn btn-primary btn-lg btn-fxw mt-4" type="button">
-				<i class="fas fa-search"></i>&nbsp;{% trans 'View More ...' %}
-			    </button>
-			    </a>
-		    </div>
-		    <!-- end VIEW MORE BUTTON -->
-		    <!-- COMMENTS BUTTON -->
-		    <div class="col-sm-4">
-			    <a href="{% url 'o55_tenant_member_comments_retrieve' template object.id %}">
-			    <button  id="id_submit_btn"	class="btn btn-success btn-lg btn-fxw mt-4" type="button">
-			    	<i class="far fa-comments"></i>&nbsp;{% trans 'View Comments' %}
-			    </button>
-			    </a>
-		    </div>
-		    <!-- end COMMENTS BUTTON -->
-        	    <!-- end EDIT BUTTON -->
+        	<!-- end EDIT BUTTON -->
 		    <div class="col-sm-4">
 			    <a href="{% url 'o55_tenant_member_update' template object.id %}">
 			    <button  id="id_submit_btn"	class="btn btn-orange btn-lg btn-fxw mt-4" type="button">

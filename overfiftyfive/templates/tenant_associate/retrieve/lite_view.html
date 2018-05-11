@@ -1,0 +1,202 @@
+{% extends 'tenant_foundation/tenant_base.html' %}
+{% load staticfiles i18n humanize foundation_tags %}
+
+{% block title %}
+{% trans 'Member List | Workery' %}
+{% endblock title %}
+
+{% block header_content %}
+{% endblock header_content %}
+
+{% block content %}
+
+<script defer src="https://use.fontawesome.com/releases/v5.0.4/js/all.js"></script>
+<script>
+    $(document).ready(function () {
+        var $star_rating = $('.star-rating .fa-star');
+        var $star_rating_value = $('.star-rating');
+        var SetRatingStar = function() {
+          return $star_rating.each(function() {
+            if (parseInt($star_rating_value.data('rating')) >= parseInt($(this).data('rating'))) {
+              return $(this).removeClass('far').addClass('fas');
+            } else if(Math.round($star_rating_value.data('rating')) == parseInt($(this).data('rating'))) {
+              return $(this).removeClass('fa-star').addClass('fas fa-star-half');
+            } else {
+              return $(this).removeClass('fas').addClass('far');
+            }
+          });
+        };
+        SetRatingStar();
+    });
+</script>
+
+<main id="main" role="main">
+
+    <!-- BREADCRUMB -->
+    <!------------------------------------------------------------------------->
+    <nav aria-label="breadcrumb">
+	  	<ol class="breadcrumb">
+            {% if template == 'search' %}
+
+            <li class="breadcrumb-item">
+                <a href="{% url 'o55_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a>
+            </li>
+            <li class="breadcrumb-item">
+                <a href="{% url 'o55_tenant_member_summary' %}">{% trans 'Members' %}</a>
+            </li>
+            <li class="breadcrumb-item">
+                <a href="{% url 'o55_tenant_member_search' %}">{% trans 'Search' %}</a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">{% trans 'Search Results' %}</li>
+            <li class="breadcrumb-item active" aria-current="page">{% trans 'Member #' %}{{ object.id }}</li>
+
+            {% elif template == 'list' %}
+
+            <li class="breadcrumb-item"><a href="{% url 'o55_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'o55_tenant_member_summary' %}">{% trans 'Members' %}</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'o55_tenant_member_list' %}">{% trans 'List' %}</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{% trans 'Member #' %}{{ object.id|intcomma }}</li>
+
+            {% else %}
+
+	    	<li class="breadcrumb-item"><a href="{% url 'o55_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'o55_tenant_member_summary' %}">{% trans 'Members' %}</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{% trans 'Member #' %}{{ object.id|intcomma }}</li>
+
+            {% endif %}
+	  	</ol>
+	</nav>
+    <!------------------------------------------------------------------------->
+    <!-- end BREADCRUMB -->
+
+    <!-- NOTIFICATION -->
+    <!------------------------------------------------------------------------->
+    {% if parameters.was_modified == 'True' %}
+    <div class="alert bg-success text-white alert-dismissible fade show" role="alert">
+        Associate Member <strong>Successfully</strong> updated.
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">×</span>
+        </button>
+    </div>
+    {% endif %}
+    <!------------------------------------------------------------------------->
+    <!-- end NOTIFICATION -->
+
+    <!-- BACK BUTTON -->
+    <!------------------------------------------------------------------------->
+    <div class="row">
+		<div class="col-sm-3 p-3 mb-2">
+			<a class="btn btn-primary btn-lg" href="{% if template == 'search' %}{% url 'o55_tenant_member_search' %}{% elif template == 'list' %}{% url 'o55_tenant_member_list' %}{% else %}{% url 'o55_tenant_member_summary' %}{% endif %}" role="button">
+                <svg class="svg-inline--fa fa-arrow-left fa-w-14" aria-hidden="true" data-fa-processed="" data-prefix="fas" data-icon="arrow-left" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                <path fill="currentColor" d="M257.5 445.1l-22.2 22.2c-9.4 9.4-24.6 9.4-33.9 0L7 273c-9.4-9.4-9.4-24.6 0-33.9L201.4 44.7c9.4-9.4 24.6-9.4 33.9 0l22.2 22.2c9.5 9.5 9.3 25-.4 34.3L136.6 216H424c13.3 0 24 10.7 24 24v32c0 13.3-10.7 24-24 24H136.6l120.5 114.8c9.8 9.3 10 24.8.4 34.3z"></path>
+            </svg><!-- <i class="fas fa-arrow-left"></i> -->&nbsp;{% if template == 'search' %}{% trans 'Back to Search' %}{% elif template == 'list' %}{% trans 'Back to Member\'s List' %}{% else %}{% trans 'Back to Member\'s Home' %}{% endif %}</a>
+		</div>
+	</div>
+    <!------------------------------------------------------------------------->
+    <!-- end BACK BUTTON -->
+
+    <h1>{% trans 'View Associate Member' %}</h1>
+
+    <!-- STEP NAVIGATION -->
+    <!------------------------------------------------------------------------->
+    <div class="row">
+        <div class="step-navigation">
+            <div class="st-grey active">
+                <i class="far fa-id-badge"></i>&nbsp;<span class="">Summary</span>
+            </div>
+            <div class="st-grey">
+                <a href="{% url 'o55_tenant_member_full_retrieve' template associate.id %}">
+                    <i class="far fa-id-card"></i>&nbsp;<span class="">Details</span>
+                </a>
+            </div>
+            <div class="st-grey">
+                <a href="{% url 'o55_tenant_member_comments_retrieve' template associate.id %}">
+                    <i class="far fa-comments"></i>&nbsp;<span class="">Comments</span>
+                </a>
+            </div>
+            {% comment %}
+            <div class="st-grey">
+                <a href="{% url 'o55_tenant_job_retrieve_for_activity_sheet_list' template job.id %}">
+                    <i class="far fa-address-book"></i>&nbsp;<span class="">Activity Sheet</span>
+                </a>
+            </div>
+            <div class="st-grey">
+                <a href="{% url 'o55_tenant_job_retrieve_for_tasks_list' template job.id %}">
+                    <i class="far fa-clock"></i>&nbsp;<span class="">Tasks</span>
+                </a>
+            </div>
+            <div class="st-grey">
+                <a href="{% url 'o55_tenant_job_comments_retrieve' template job.id %}">
+                    <i class="far fa-comments"></i>&nbsp;<span class="">Comments</span>
+                </a>
+            </div>
+            {% endcomment %}
+        </div>
+    </div>
+    <!------------------------------------------------------------------------->
+    <!-- end STEP NAVIGATION -->
+
+    <div class="row mt-4 pt-3 mb-4 pb-2">
+
+        <!-- MASTER FORM -->
+        <!--------------------------------------------------------------------->
+        <div class="col-md-10 mx-auto rounded bg-light border p-2" id="id_master_form">
+            <div class="row">
+                <div class="col-sm-5">
+                    <img src="{% static 'img/placeholder.png' %}" class="img-fluid rounded" alt="Profile Picture">
+                </div>
+                <div class="col-sm-7 px-4 py-3">
+                    <h3>{{ associate.given_name }}&nbsp;{{ associate.last_name }}</h3>
+                    <p class="text-muted">{{ associate.address_locality }},&nbsp;{{ associate.address_region }},&nbsp;{{ associate.address_country }}&nbsp;<i class="fas fa-map-marker-alt"></i></p>
+                    <p><i class="fas fa-envelope"></i>&nbsp;{% if associate.owner.email %}<a href="mailto:{{ associate.owner.email }}">{{ associate.owner.email }}</a>{% else %}-{% endif %}</p>
+                    <p><i class="fas fa-phone-square"></i>&nbsp;{% if associate.telephone %}<a href="tel:{{ associate.telephone }}">{{ associate.telephone|pretty_formatted_phonenumber }}</a>{% else %}-{% endif %}</p>
+                    <p class="m-0"><strong>Skills:</strong></p>
+                    <p>
+                        {% for skill_set in associate.skill_sets.all %}
+                            <span class="badge badge-info badge-lg">{{ skill_set.sub_category }}</span>
+                        {% empty %}
+                            -
+                        {% endfor %}
+                    </p>
+                    <div class="col-sm-12 p-0">
+                        <!-- Client or User Profile rating div starts here -->
+                        <p class="m-0"><strong>Ratings:</strong></p>
+                        <div class="star-rating" data-rating="4.5">
+                            <!-- Give client rating ouptput value to this data-rating attribute -->
+                            <span class="far fa-star" data-rating="1"></span>
+                            <span class="far fa-star" data-rating="2"></span>
+                            <span class="far fa-star" data-rating="3"></span>
+                            <span class="far fa-star" data-rating="4"></span>
+                            <span class="far fa-star" data-rating="5"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--------------------------------------------------------------------->
+        <!-- end MASTER FORM -->
+
+
+        <div class="form-group col-md-10 mb-3 mx-auto text-center">
+		<div class="row">
+        	<!-- end EDIT BUTTON -->
+		    <div class="col-sm-4">
+			    <a href="{% url 'o55_tenant_member_update' template object.id %}">
+			    <button  id="id_submit_btn"	class="btn btn-orange btn-lg btn-fxw mt-4" type="button">
+			    	<i class="fas fa-pencil-alt"></i>&nbsp;{% trans 'Edit Member' %}
+			    </button>
+			    </a>
+		    </div>
+		    <!-- end EDIT BUTTON -->
+		</div>
+        </div>
+
+    </div>
+
+    <!-- RETURN-TO-TOP -->
+    <a id="return-to-top" href="#" class="btn-info btn-lg back-to-top" role="button" title="Back to top"><i class="fas fa-angle-up fa-2x"></i></a>
+    <!-- end RETURN-TO-TOP -->
+
+</main>
+
+{% endblock content %}
