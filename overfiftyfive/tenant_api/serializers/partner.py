@@ -116,6 +116,79 @@ class PartnerListCreateSerializer(serializers.ModelSerializer):
         }
     )
 
+    #
+    # Fields used for mapping to organizations.
+    #
+
+    organization_name = serializers.CharField(
+        source="organization.name",
+        write_only=True,
+        required=True,
+        allow_blank=False,
+        max_length=63,
+        validators=[
+            UniqueValidator(
+                queryset=Organization.objects.all(),
+            )
+        ],
+    )
+    organization_type_of = serializers.CharField(
+        source="organization.type_of",
+        write_only=True,
+        required=True,
+        allow_blank=True,
+        max_length=63,
+    )
+    organization_address_country = serializers.CharField(
+        source="organization.address_country",
+        write_only=True,
+        required=False,
+        allow_blank=True,
+        max_length=127,
+    )
+    organization_address_locality = serializers.CharField(
+        source="organization.address_locality",
+        write_only=True,
+        required=False,
+        allow_blank=True,
+        max_length=127,
+    )
+    organization_address_region = serializers.CharField(
+        source="organization.address_region",
+        write_only=True,
+        required=False,
+        allow_blank=True,
+        max_length=127,
+    )
+    organization_post_office_box_number = serializers.CharField(
+        source="organization.post_office_box_number",
+        write_only=True,
+        required=False,
+        allow_blank=True,
+        max_length=255,
+    )
+    organization_postal_code = serializers.CharField(
+        source="organization.postal_code",
+        write_only=True,
+        required=False,
+        allow_blank=True,
+        max_length=127,
+    )
+    organization_street_address = serializers.CharField(
+        source="organization.street_address",
+        write_only=True,
+        required=False,
+        allow_blank=True,
+        max_length=255,
+    )
+    organization_street_address_extra = serializers.CharField(
+        source="organization.street_address_extra",
+        write_only=True,
+        required=False,
+        allow_blank=True,
+        max_length=255,
+    )
+
     # Meta Information.
     class Meta:
         model = Partner
@@ -147,6 +220,15 @@ class PartnerListCreateSerializer(serializers.ModelSerializer):
 
             # Misc (Write Only)
             'extra_comment',
+            'organization_name',
+            'organization_type_of',
+            'organization_address_country',
+            'organization_address_locality',
+            'organization_address_region',
+            'organization_post_office_box_number',
+            'organization_postal_code',
+            'organization_street_address',
+            'organization_street_address_extra',
 
             # Contact Point
             'area_served',
@@ -195,6 +277,14 @@ class PartnerListCreateSerializer(serializers.ModelSerializer):
         Include validation on no-blanks
         """
         if value is None:
+            raise serializers.ValidationError("This field may not be blank.")
+        return value
+
+    def validate_organization_type_of(self, value):
+        """
+        Include validation on no-blanks or "null" types
+        """
+        if value is None or value == "null":
             raise serializers.ValidationError("This field may not be blank.")
         return value
 
@@ -250,15 +340,18 @@ class PartnerListCreateSerializer(serializers.ModelSerializer):
             was_email_activated=True,
             is_active = validated_data['is_active'],
         )
+        print("INFO: Created shared user.")
 
         # Attach the user to the `Partner` group.
         owner.groups.add(ASSOCIATE_GROUP_ID)
+        print("INFO: Set shared user group.")
 
         # Update the password.
         password = validated_data.get('password', None)
         owner.set_password(password)
         owner.save()
-        print("INFO: Created shared user.")
+        print("INFO: Set shared user password.")
+
 
         #---------------------------------------------------
         # Create our `Partner` object in our tenant schema.
@@ -311,7 +404,45 @@ class PartnerListCreateSerializer(serializers.ModelSerializer):
             longitude=validated_data.get('longitude', None),
             # 'location' #TODO: IMPLEMENT.
         )
-        print("INFO: Created customer.")
+        print("INFO: Created partner.")
+
+        #-----------------------------------
+        # Create or update our Organization.
+        #-----------------------------------
+        organization_name = validated_data.get('organization_name', None)
+        organization_type_of = validated_data.get('organization_type_of', None)
+        organization_address_country = validated_data.get('organization_address_country', None)
+        organization_address_locality = validated_data.get('organization_address_locality', None)
+        organization_address_region = validated_data.get('organization_address_region', None)
+        organization_post_office_box_number = validated_data.get('organization_post_office_box_number', None)
+        organization_postal_code = validated_data.get('organization_postal_code', None)
+        organization_street_address = validated_data.get('organization_street_address', None)
+        organization_street_address_extra = validated_data.get('organization_street_address_extra', None)
+
+        if organization_name and organization_type_of:
+            organization, created = Organization.objects.update_or_create(
+                name=organization_name,
+                type_of=organization_type_of,
+                defaults={
+                    'type_of': organization_type_of,
+                    'name': organization_name,
+                    'address_country': organization_address_country,
+                    'address_locality': organization_address_locality,
+                    'address_region': organization_address_region,
+                    'post_office_box_number': organization_post_office_box_number,
+                    'postal_code': organization_postal_code,
+                    'street_address': organization_street_address,
+                    'street_address_extra': organization_street_address_extra,
+                }
+            )
+            if created:
+                organization.owner = owner
+                organization.save()
+                print("INFO: Created organization.")
+
+            partner.organization = organization
+            partner.save()
+            print("INFO: Attached created organization to partner.")
 
         #-----------------------------
         # Create our `Comment` object.
@@ -323,10 +454,13 @@ class PartnerListCreateSerializer(serializers.ModelSerializer):
                 last_modified_by=self.context['created_by'],
                 text=extra_comment
             )
+            print("INFO: Created comment.")
+            
             PartnerComment.objects.create(
                 about=partner,
                 comment=comment,
             )
+            print("INFO: Attached comment to partner.")
 
         # Update validation data.
         # validated_data['comments'] = PartnerComment.objects.filter(partner=partner)

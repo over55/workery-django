@@ -47,7 +47,7 @@
         });
     }
 
-    function validate_partner_customer_api(data_dict, func_callback, func_error_callback, complete_callback) {
+    function partner_create_validate_api(data_dict, func_callback, func_error_callback, complete_callback) {
         jQuery.ajax({
             url: "{% url 'o55_partner_create_validate_api_endpoint' %}?format=json",
             headers: {

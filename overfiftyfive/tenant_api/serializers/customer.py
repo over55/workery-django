@@ -113,60 +113,68 @@ class CustomerListCreateSerializer(serializers.ModelSerializer):
     #
 
     organization_name = serializers.CharField(
+        source="organization.name",
         write_only=True,
-        required=False,
-        allow_blank=True,
+        required=True,
+        allow_blank=False,
         max_length=63,
+        validators=[
+            UniqueValidator(
+                queryset=Organization.objects.all(),
+            )
+        ],
     )
     organization_type_of = serializers.CharField(
+        source="organization.type_of",
         write_only=True,
-        required=False,
-        allow_blank=True,
-        max_length=63,
-    )
-    organization_customer_affiliation = serializers.CharField(
-        write_only=True,
-        required=False,
+        required=True,
         allow_blank=True,
         max_length=63,
     )
     organization_address_country = serializers.CharField(
+        source="organization.address_country",
         write_only=True,
         required=False,
         allow_blank=True,
         max_length=127,
     )
     organization_address_locality = serializers.CharField(
+        source="organization.address_locality",
         write_only=True,
         required=False,
         allow_blank=True,
         max_length=127,
     )
     organization_address_region = serializers.CharField(
+        source="organization.address_region",
         write_only=True,
         required=False,
         allow_blank=True,
         max_length=127,
     )
     organization_post_office_box_number = serializers.CharField(
+        source="organization.post_office_box_number",
         write_only=True,
         required=False,
         allow_blank=True,
         max_length=255,
     )
     organization_postal_code = serializers.CharField(
+        source="organization.postal_code",
         write_only=True,
         required=False,
         allow_blank=True,
         max_length=127,
     )
     organization_street_address = serializers.CharField(
+        source="organization.street_address",
         write_only=True,
         required=False,
         allow_blank=True,
         max_length=255,
     )
     organization_street_address_extra = serializers.CharField(
+        source="organization.street_address_extra",
         write_only=True,
         required=False,
         allow_blank=True,
@@ -210,7 +218,6 @@ class CustomerListCreateSerializer(serializers.ModelSerializer):
             # 'organization',
             'organization_name',
             'organization_type_of',
-            'organization_customer_affiliation',
             'organization_address_country',
             'organization_address_locality',
             'organization_address_region',
@@ -221,8 +228,6 @@ class CustomerListCreateSerializer(serializers.ModelSerializer):
 
             # Misc (Write Only)
             'extra_comment',
-            'organization_name',
-            'organization_type_of',
 
             # Contact Point
             'area_served',
@@ -277,8 +282,11 @@ class CustomerListCreateSerializer(serializers.ModelSerializer):
     def setup_eager_loading(cls, queryset):
         """ Perform necessary eager loading of data. """
         queryset = queryset.prefetch_related(
-            'owner', 'created_by', 'last_modified_by', 'tags',
-            # 'comments'
+            'owner',
+            'created_by',
+            'last_modified_by',
+            'tags',
+            'comments'
         )
         return queryset
 
@@ -414,6 +422,7 @@ class CustomerListCreateSerializer(serializers.ModelSerializer):
 
             customer.organization = organization
             customer.save()
+            print("INFO: Attached created organization to customer.")
 
         #------------------------
         # Set our `Tag` objects.
@@ -565,8 +574,11 @@ class CustomerRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
     def setup_eager_loading(cls, queryset):
         """ Perform necessary eager loading of data. """
         queryset = queryset.prefetch_related(
-            'owner', 'created_by', 'last_modified_by', 'tags',
-            # 'comments'
+            'owner',
+            'created_by',
+            'last_modified_by',
+            'tags',
+            'comments'
         )
         return queryset
 

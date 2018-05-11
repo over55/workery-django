@@ -87,6 +87,18 @@ class Partner(AbstractPerson):
     )
 
     #
+    #  PERSON FIELDS (EXTRA) - http://schema.org/Person
+    #
+
+    organization = models.ForeignKey(
+        "Organization",
+        help_text=_('The organization that this partner that is affiliated with.'),
+        blank=True,
+        null=True,
+        on_delete=models.SET_NULL,
+    )
+
+    #
     #  CUSTOM FIELDS
     #
 

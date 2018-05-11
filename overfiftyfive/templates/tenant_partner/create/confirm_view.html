@@ -25,13 +25,21 @@
     function click_submit_button() {
         ajax_post_form_submission("{% url 'o55_tenant_partner_summary' %}?was_created=True");
     }
+</script>
+<!----------------------------------------------------------------------------->
+<!-- end CUSTOM JAVASCRIPT -->
 
+
+<!-- FORM JAVASCRIPT -->
+<!----------------------------------------------------------------------------->
+<script>
     /**
      *  When page loads, the following code will be run first.
      */
     $(document).ready(function () {
-        var firstname = localStorage.getItem("tmp_partner_given_name");
-        $('#selected_firstname').append(firstname);
+        $('#selected_companyname').append(localStorage.getItem("tmp_partner_company_name"));
+        $('#selected_companytype').append(localStorage.getItem("tmp_partner_company_type_value"));
+        $('#selected_firstname').append(localStorage.getItem("tmp_partner_given_name"));
         $('#selected_lastname').append(localStorage.getItem("tmp_partner_last_name"));
         $('#selected_phonenumber').append(localStorage.getItem("tmp_partner_telephone"));
         $('#selected_other_phonenumber').append(localStorage.getItem("tmp_partner_other_telephone"));
@@ -41,6 +49,7 @@
         $("#selected_ok_to_text").append(localStorage.getItem("tmp_partner_ok_to_text"));
         $('#selected_street_address').append(localStorage.getItem("tmp_partner_street_address"));
         $('#selected_street_address_extra').append(localStorage.getItem("tmp_partner_street_address_extra"));
+        $('#selected_neighbourhood').append(localStorage.getItem("tmp_partner_neighbourhood"));
         $('#selected_address_locality').append(localStorage.getItem("tmp_partner_address_locality"));
         $('#selected_address_region').append(localStorage.getItem("tmp_partner_address_region"));
         $('#selected_address_country').append(localStorage.getItem("tmp_partner_address_country"));
@@ -49,28 +58,53 @@
         $('#selected_email').append(localStorage.getItem("tmp_partner_email"));
         $('#selected_telephone').append(localStorage.getItem("tmp_partner_telephone"));
         $('#selected_description').append(localStorage.getItem("tmp_partner_description"));
-        $('#selected_is_active').append(localStorage.getItem("tmp_partner_is_active"));
         $('#selected_comment').append(localStorage.getItem("tmp_partner_comment"));
+
+        // Set our `person_tag` field.
+        var tmp_person_tag_values = localStorage.getObj("tmp_partner_person_tag_values");
+        for (var i = 0; i < tmp_person_tag_values.length; i++) {
+            // Extract our value.
+            var tag_value = tmp_person_tag_values[i];
+
+            // Generate our HTML element.
+            var htmlElement = '<span class="badge badge-info badge-lg">'+tag_value+'</span>';
+
+            // Append our HTML element to the GUI.
+            $('#selected_person_tag_values').append(htmlElement)
+        } // end FOR
+
+        // Set our `person_tag` field.
+        var tmp_company_tag_values = localStorage.getObj("tmp_partner_company_tag_values");
+        for (var i = 0; i < tmp_company_tag_values.length; i++) {
+            // Extract our value.
+            var tag_value = tmp_company_tag_values[i];
+
+            // Generate our HTML element.
+            var htmlElement = '<span class="badge badge-info badge-lg">'+tag_value+'</span>';
+
+            // Append our HTML element to the GUI.
+            $('#selected_company_tag_values').append(htmlElement)
+        } // end FOR
     }); // end Ready
 
     /**
      *  Function will unlock the submit button.
      */
     function disable_btn() {
-        $('#id_create_btn').val("{% trans 'Please Wait...' %}");
-        $('#id_create_btn').prop("disabled", true);
+        $('#id_submit_btn').val("{% trans 'Please Wait...' %}");
+        $('#id_submit_btn').prop("disabled", true);
     }
 
     /**
      *  Function will lock the submit button.
      */
     function enable_btn() {
-        $('#id_create_btn').prop("disabled", false);
-        $('#id_create_btn').val("{% trans 'Update' %}");
+        $('#id_submit_btn').prop("disabled", false);
+        $('#id_submit_btn').val("{% trans 'Update' %}");
     }
 
-    function ajax_previous(redirect_url) {
-        window.location = redirect_url;
+    function ajax_previous() {
+        window.location = "{% url 'o55_tenant_partner_create' %}";
     }
 
     /**
@@ -100,6 +134,7 @@
         // MAKE OUR API CALL TO THE BACKEND TO "CREATE" THE CUSTOMER USER.
         create_partner_api(
             {
+                // --- PERSON ---
                 'given_name': localStorage.getItem("tmp_partner_given_name"),
                 'middle_name': null,
                 'last_name': localStorage.getItem("tmp_partner_last_name"),
@@ -114,29 +149,45 @@
                 'extra_comment': null,
                 'street_address': localStorage.getItem("tmp_partner_street_address"),
                 'street_address_extra': localStorage.getItem("tmp_partner_street_address_extra"),
+                'area_served': localStorage.getItem("tmp_partner_neighbourhood"),
                 'postal_code': localStorage.getItem("tmp_partner_postal_code"),
                 'post_office_box_number': localStorage.getItem("tmp_partner_post_office_box_number"),
                 'email': localStorage.getItem("tmp_partner_email"),
-                // 'area_served': area_served,
                 'fax_number': null,
                 'telephone': localStorage.getItem("tmp_partner_telephone"),
-                'telephone_type_of': {{ shared_constants.TELEPHONE_CONTACT_POINT_TYPE_OF_ID }},
+                'telephone_type_of': localStorage.getItem("tmp_partner_telephone_type_of"),
                 // 'telephone_extension': telephone_extension,
                 'other_telephone': localStorage.getItem("tmp_partner_other_telephone"),
-                'other_telephone_type_of': {{ shared_constants.MOBILE_CONTACT_POINT_TYPE_OF_ID }},
+                'other_telephone_type_of': localStorage.getItem("tmp_partner_other_telephone_type_of"),
                 // 'fax_number': fax_number
                 'password': password,
                 'password_repeat': password_repeat,
-                'type_of': {{ tenant_constants.RESIDENTIAL_CUSTOMER_TYPE_OF_ID }},
+                'type_of': {{ tenant_constants.COMMERCIAL_CUSTOMER_TYPE_OF_ID }},
+                'tags': localStorage.getObj("tmp_partner_person_tag_ids"),
                 'description': localStorage.getItem("tmp_partner_description"),
-                'is_active': localStorage.getItem("tmp_partner_is_active"),
                 'extra_comment': localStorage.getItem("tmp_partner_comment"),
+
+                // --- ORGANIZATION ---
+                'organization_name': localStorage.getItem("tmp_partner_company_name"),
+                'organization_type_of': localStorage.getItem("tmp_partner_company_type"),
+                'organization_address_country': localStorage.getItem("tmp_partner_address_country"),
+                'organization_address_locality': localStorage.getItem("tmp_partner_address_locality"),
+                'organization_address_region': localStorage.getItem("tmp_partner_address_region"),
+                'organization_street_address': localStorage.getItem("tmp_partner_street_address"),
+                'organization_street_address_extra': localStorage.getItem("tmp_partner_street_address_extra"),
+                'organization_postal_code': localStorage.getItem("tmp_partner_postal_code"),
+                'organization_post_office_box_number': localStorage.getItem("tmp_partner_post_office_box_number"),
+                'organization_tags': localStorage.getObj("tmp_partner_company_tag_ids"),
             },
             function(result_dict) { // Success
                 // FOR DEBUGGING PURPOSES ONLY.
                 console.log(result_dict);
 
                 // RESET OUR STORED VALUES.
+                localStorage.removeItem("tmp_partner_company_name");
+                localStorage.removeItem("tmp_partner_company_type");
+                localStorage.removeItem("tmp_partner_company_type_value");
+                localStorage.removeItem("tmp_partner_neighbourhood");
                 localStorage.removeItem("tmp_partner_given_name");
                 localStorage.removeItem("tmp_partner_last_name");
                 localStorage.removeItem("tmp_partner_date_of_birth");
@@ -152,20 +203,22 @@
                 localStorage.removeItem("tmp_partner_post_office_box_number");
                 localStorage.removeItem("tmp_partner_email");
                 localStorage.removeItem("tmp_partner_telephone");
+                localStorage.removeItem("tmp_partner_telephone_type_of");
                 localStorage.removeItem("tmp_partner_other_telephone");
+                localStorage.removeItem("tmp_partner_other_telephone_type_of");
                 localStorage.removeItem("tmp_partner_password");
                 localStorage.removeItem("tmp_partner_password_repeat");
-                localStorage.removeItem("tmp_partner_person_tag_ids")
-                localStorage.removeItem("tmp_partner_person_tag_values")
+                localStorage.removeItem("tmp_partner_person_tag_ids");
+                localStorage.removeItem("tmp_partner_person_tag_values");
+                localStorage.removeItem("tmp_partner_company_tag_ids");
+                localStorage.removeItem("tmp_partner_company_tag_values");
                 localStorage.removeItem("tmp_partner_description")
-                localStorage.removeItem("tmp_partner_is_active")
                 localStorage.removeItem("tmp_partner_comment")
 
                 // REDIRECT TO SUCCESS PAGE.
                 window.location = redirect_url;
             },
             function(xhr,status,error) { // Error
-
                 // STEP 1: Convert to JSON.
                 var err = JSON.parse(xhr.responseText);
 
@@ -193,10 +246,10 @@
             }
         );
     }
+
 </script>
 <!----------------------------------------------------------------------------->
-<!-- end CUSTOM JAVASCRIPT -->
-
+<!-- end FORM JAVASCRIPT -->
 
 
 <main id="main" role="main">
@@ -229,149 +282,167 @@
 
     <h1 id="id_page_title">{% trans 'Add Partner' %}</h1>
 
+
     <!-- FORM HTML -->
     <!------------------------------------------------------------------------->
     <div class="col-md-10 mx-auto mb-4 py-2">
-     <h3 class="py-2 text-center mb-4">Partner Summary Details</h3>
-
-     <!-- Error Output -->
-     <div id="all_error_result" name="all_error_result"></div>
-     <!-- end Error Output -->
-
-     <table class="table table-bordered custom-cell-w">
-       <tbody>
-         <tr class="bg-dark">
-           <th scope="row" colspan="2" class="text-light">Summary Details</th>
-         </tr>
-         <tr>
-           <th scope="row" class="bg-light">First name</th>
-           <td id="selected_firstname" name="selected_firstname">
-               <!-- POPULATE THROUGH JS. -->
-           </td>
-         </tr>
-         <tr>
-           <th scope="row" class="bg-light">Last name</th>
-           <td id="selected_lastname">
-               <!-- POPULATE THROUGH JS. -->
-           </td>
-         </tr>
-         <tr>
-           <th scope="row" class="bg-light">Email</th>
-           <td id="selected_email">
-               <!-- POPULATE THROUGH JS. -->
-           </td>
-         </tr>
-         <tr>
-           <th scope="row" class="bg-light">Phone Number #1</th>
-           <td id="selected_phonenumber">
-             <!-- POPULATE THROUGH JS. -->
-           </td>
-         </tr>
-         <tr>
-           <th scope="row" class="bg-light">Phone Number #2</th>
-           <td id="selected_other_phonenumber">
-               <!-- POPULATE THROUGH JS. -->
-           </td>
-         </tr>
-         <tr>
-           <th scope="row" class="bg-light">Date of Birth</th>
-           <td id="selected_dob">
-               <!-- POPULATE THROUGH JS. -->
-           </td>
-         </tr>
-         <tr>
-           <th scope="row" class="bg-light">Gender</th>
-           <td id="selected_gender">
-               <!-- POPULATE THROUGH JS. -->
-           </td>
-         </tr>
-         <tr>
-           <th scope="row" class="bg-light">Description</th>
-           <td id="selected_description">
-               <!-- POPULATE THROUGH JS. -->
-           </td>
-         </tr>
-         <tr>
-           <th scope="row" class="bg-light">Okay to Email?</th>
-           <td id="selected_ok_to_email">
-               <!-- POPULATE THROUGH JS. -->
-           </td>
-         </tr>
-         <tr>
-           <th scope="row" class="bg-light">Okay to Text?</th>
-           <td id="selected_ok_to_text">
-               <!-- POPULATE THROUGH JS. -->
-           </td>
-         </tr>
-         <tr>
-           <th scope="row" class="bg-light">Stree Address</th>
-           <td id="selected_street_address">
-               <!-- POPULATE street_address JS. -->
-           </td>
-         </tr>
-         <tr>
-           <th scope="row" class="bg-light">Street Address (Extra)</th>
-           <td id="selected_street_address_extra">
-               <!-- POPULATE THROUGH JS. -->
-           </td>
-         </tr>
-         <tr>
-           <th scope="row" class="bg-light">City</th>
-           <td id="selected_address_locality">
-               <!-- POPULATE THROUGH JS. -->
-           </td>
-         </tr>
-         <tr>
-           <th scope="row" class="bg-light">Region</th>
-           <td id="selected_address_region">
-               <!-- POPULATE THROUGH JS. -->
-           </td>
-         </tr>
-         <tr>
-           <th scope="row" class="bg-light">Country</th>
-           <td id="selected_address_country">
-               <!-- POPULATE THROUGH JS. -->
-           </td>
-         </tr>
-         <tr>
-           <th scope="row" class="bg-light">Postal Code</th>
-           <td id="selected_postal_code">
-               <!-- POPULATE THROUGH JS. -->
-           </td>
-         </tr>
-         <tr>
-           <th scope="row" class="bg-light">Post Office Box Number</th>
-           <td id="selected_post_office_box_number">
-               <!-- POPULATE THROUGH JS. -->
-           </td>
-         </tr>
-         <tr>
-           <th scope="row" class="bg-light">Tag(s)</th>
-           <td id="selected_tag_values">
-               <!-- THIS IS WHERE THE TAGS GET LOADED -->
-           </td>
-         </tr>
-         <tr>
-           <th scope="row" class="bg-light">Is active?</th>
-           <td id="selected_is_active">
-               <!-- THIS IS WHERE THE TAGS GET LOADED -->
-           </td>
-         </tr>
-         <tr>
-           <th scope="row" class="bg-light">Additional comment(s)</th>
-           <td id="selected_comment">
-               <!-- POPULATE THROUGH JS. -->
-           </td>
-         </tr>
-       </tbody>
-     </table>
-     <div class="form-group col-md-12 mb-3 p-0 mx-auto text-center">
-         <button id="id_create_btn"
-              class="btn btn-success btn-lg mt-4 float-right pl-4 pr-4"
-               type="button"
-            onclick="click_submit_button();"><i class="fas fa-plus"></i> Add Partner</button>
-         <button class="btn btn-orange btn-lg mt-4 float-left pl-4 pr-4" type="button" onclick="click_previous_button();"><i class="fas fa-arrow-left"></i> Back</button>
-     </div>
+        <table class="table table-bordered custom-cell-w">
+            <tbody>
+                <tr class="bg-dark">
+                    <th scope="row" colspan="2" class="text-light">Company Summary Details</th>
+                </tr>
+                <tr>
+                    <th scope="row" class="bg-light">Full name</th>
+                    <td id="selected_companyname" name="selected_companyname">
+                        <!-- POPULATE THROUGH JS. -->
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row" class="bg-light">Company Type</th>
+                    <td id="selected_companytype" name="selected_companytype">
+                        <!-- POPULATE THROUGH JS. -->
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row" class="bg-light">Tag(s)</th>
+                    <td id="selected_company_tag_values">
+                        <!-- THIS IS WHERE THE TAGS GET LOADED -->
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <h3 class="py-2 text-center mb-4">Commercial Customer Details Review</h3>
+        <table class="table table-bordered custom-cell-w">
+            <tbody>
+                <tr class="bg-dark">
+                    <th scope="row" colspan="2" class="text-light">Person Summary Details</th>
+                </tr>
+                <tr>
+                    <th scope="row" class="bg-light">First name</th>
+                    <td id="selected_firstname" name="selected_firstname">
+                        <!-- POPULATE THROUGH JS. -->
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row" class="bg-light">Last name</th>
+                    <td id="selected_lastname">
+                        <!-- POPULATE THROUGH JS. -->
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row" class="bg-light">Email</th>
+                    <td id="selected_email">
+                        <!-- POPULATE THROUGH JS. -->
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row" class="bg-light">Phone Number #1</th>
+                    <td id="selected_phonenumber">
+                        <!-- POPULATE THROUGH JS. -->
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row" class="bg-light">Phone Number #2</th>
+                    <td id="selected_other_phonenumber">
+                        <!-- POPULATE THROUGH JS. -->
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row" class="bg-light">Date of Birth</th>
+                    <td id="selected_dob">
+                        <!-- POPULATE THROUGH JS. -->
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row" class="bg-light">Gender</th>
+                    <td id="selected_gender">
+                        <!-- POPULATE THROUGH JS. -->
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row" class="bg-light">Okay to Email?</th>
+                    <td id="selected_ok_to_email">
+                        <!-- POPULATE THROUGH JS. -->
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row" class="bg-light">Okay to Text?</th>
+                    <td id="selected_ok_to_text">
+                        <!-- POPULATE THROUGH JS. -->
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row" class="bg-light">Description</th>
+                    <td id="selected_description">
+                        <!-- POPULATE THROUGH JS. -->
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row" class="bg-light">Stree Address</th>
+                    <td id="selected_street_address">
+                        <!-- POPULATE street_address JS. -->
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row" class="bg-light">Street Address (Extra)</th>
+                    <td id="selected_street_address_extra">
+                        <!-- POPULATE THROUGH JS. -->
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row" class="bg-light">Neighbourhood</th>
+                    <td id="selected_neighbourhood">
+                        <!-- POPULATE THROUGH JS. -->
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row" class="bg-light">City</th>
+                    <td id="selected_address_locality">
+                        <!-- POPULATE THROUGH JS. -->
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row" class="bg-light">Region</th>
+                    <td id="selected_address_region">
+                        <!-- POPULATE THROUGH JS. -->
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row" class="bg-light">Country</th>
+                    <td id="selected_address_country">
+                        <!-- POPULATE THROUGH JS. -->
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row" class="bg-light">Postal Code</th>
+                    <td id="selected_postal_code">
+                        <!-- POPULATE THROUGH JS. -->
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row" class="bg-light">Post Office Box Number</th>
+                    <td id="selected_post_office_box_number">
+                        <!-- POPULATE THROUGH JS. -->
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row" class="bg-light">Tag(s)</th>
+                    <td id="selected_person_tag_values">
+                        <!-- THIS IS WHERE THE TAGS GET LOADED -->
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row" class="bg-light">Additional comment(s)</th>
+                    <td id="selected_comment">
+                        <!-- POPULATE THROUGH JS. -->
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="form-group col-md-12 mb-3 p-0 mx-auto text-center">
+            <button id="id_create_btn" class="btn btn-success btn-lg mt-4 float-right pl-4 pr-4" type="button" onclick="click_submit_button();"><i class="fas fa-plus"></i> Add Client</button>
+            <button class="btn btn-orange btn-lg mt-4 float-left pl-4 pr-4" type="button" onclick="click_previous_button();"><i class="fas fa-arrow-left"></i> Back</button>
+        </div>
     </div>
     <!------------------------------------------------------------------------->
     <!-- end FORM HTML -->
