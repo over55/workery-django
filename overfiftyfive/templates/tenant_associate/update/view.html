@@ -368,7 +368,7 @@
             },
             function(result_dict) { // Success
                 console.log(result_dict);
-                window.location = "{% url 'o55_tenant_member_lite_retrieve' template associate.pk %}?was_modified=True";
+                window.location = "{% url 'o55_tenant_member_full_retrieve' template associate.pk %}?was_modified=True";
             },
             function(xhr,status,error) { // Error
 

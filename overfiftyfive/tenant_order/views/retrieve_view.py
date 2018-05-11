@@ -14,7 +14,7 @@ from tenant_foundation.models import ActivitySheetItem, Associate, Customer, Ord
 class JobLiteRetrieveView(DetailView, ExtraRequestProcessingMixin):
     context_object_name = 'job'
     model = Order
-    template_name = 'tenant_order/retrieve/for/retrieve_lite_view.html'
+    template_name = 'tenant_order/retrieve/lite_view.html'
 
     def get_object(self):
         order = super().get_object()  # Call the superclass
@@ -47,7 +47,7 @@ class JobLiteRetrieveView(DetailView, ExtraRequestProcessingMixin):
 class JobFullRetrieveView(DetailView, ExtraRequestProcessingMixin):
     context_object_name = 'job'
     model = Order
-    template_name = 'tenant_order/retrieve/for/retrieve_full_view.html'
+    template_name = 'tenant_order/retrieve/full_view.html'
 
     def get_object(self):
         order = super().get_object()  # Call the superclass
