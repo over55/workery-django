@@ -116,11 +116,6 @@ class AwayLogRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         }
     )
 
-    def validate_reason(self, value):
-        if value is None or value == "null" or value == "0" or value == 0:
-            raise serializers.ValidationError("Please pick a reason.")
-        return value
-
     class Meta:
         model = AwayLog
         fields = (
@@ -131,3 +126,27 @@ class AwayLogRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
             'until_further_notice',
             'until_date',
         )
+
+    def validate_reason(self, value):
+        if value is None or value == "null" or value == "0" or value == 0:
+            raise serializers.ValidationError("Please pick a reason.")
+        return value
+
+    def validate(self, data):
+        """
+        Override the validator to provide additional custom validation based
+        on our custom logic.
+        """
+        print(data)
+        
+        # CASE 1 - Other reason
+        if data['reason'] == 1 or data['reason'] == "1":
+            reason_other = data['reason_other']
+            if reason_other == "":
+                raise serializers.ValidationError(_("Please provide a reason as to why you chose the \"Other\" option."))
+
+        # CASE 2 - No `until_date` chosen when `until_further_notice` is "no" selected.
+        if data['until_further_notice'] is False:
+            if data['until_date'] is None:
+                raise serializers.ValidationError("Please provide a date for \"until date\".")
+        return data  # Return our data.

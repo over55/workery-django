@@ -17,7 +17,8 @@
     $(document).ready(function () {
         // Initialize our datepicker jQuery code with our HTML view.
         $( "#until_date" ).datepicker({
-            dateFormat: 'yy-mm-dd'  // https://stackoverflow.com/a/7500097
+            dateFormat: 'yy-mm-dd',  // https://stackoverflow.com/a/7500097
+            minDate: 'today'
         });
 
         $( '#until_date').val('{% if away_log.until_date %}{{ away_log.until_date|date:"Y-m-d" }}{% endif %}');
@@ -29,78 +30,24 @@
             $("#until_further_notice2").prop("checked", true);
         {% endif %}
 
-        /*
-         * DOCUMENTATION
-         * https://select2.org/
-         */
-        $('#associate').select2({
-            // SETUP OUR STARTUP GUI.
-            placeholder: 'Please select an associate',
-            allowClear: true,
-	    width: '100%',
-
-            // OVERRIDE OUR GUI TO GET OUR DATA FROM REMOTE API WEB-SERVICE.
-            ajax: {
-                // THE URL OF OUR API WEB-SERVICE.
-                url: "{% url 'o55_associate_list_create_api_endpoint' %}",
-
-                // THE AUTH-CREDENTIALS OF OUR API WEB-SERVICE WHICH WE WILL
-                // ATTACH WITH THIS CALL.
-                headers: {
-                    "Authorization" : rest_api_token,
-                    "Content-Type" : "application/json",
-                },
-                dataType: 'json',
-
-                // OVERRIDE OUR QUERY TO WORK WITH OUR API WEB-SERVICE.
-                data: function (params) {
-                    var query = {
-                        search: params.term,
-                    }
-                    // Query parameters will be ?search=[term]
-                    return query;
-                },
-
-                // OVERRIDE HOW WE TAKE THE API WEB-SERVICE RESULTS AND FORMAT
-                // FOR THIS LIBRARY.
-                processResults: function (data) {
-                    // Tranforms the top-level key of the response object from 'items' to 'results'
-                    return {
-                        results: data['results']
-                    };
-                },
-            }, // end AJAX
-
-            // THE IS WHERE WE FORMAT OUR OUTPUT TO GUI.
-            templateResult: function formatState (state) {
-                /**
-                 *  Function used to take our JSON API results and create our own custom
-                 *  GUI elements per each returned customer.
-                 */
-                if (!state.id) {
-                     return  "Please enter 1 or more characters";
-                }
-                var $state = $(
-                    '<span id="' + state.id + '">' + state.given_name + " " + state.last_name + '</span>'
-                );
-                return $state;
-            },
-
-            templateSelection: function (data) {
-                if (data.id === '') { // adjust for custom placeholder values
-                    return 'Please select an associate';
-                }
-                return data.given_name + " " + data.last_name;
-            }
-        }); // end SELECT2
-
-	$('#reason').on('change',function(){
-        	if( $(this).val()===1 || $(this).val()==="other" ){
-        		$("#reason_other").show();
+        $('#reason').on('change',function(){
+        	if( $(this).val()==="1" || $(this).val()===1){
+        		$("#reason_other_div").show();
         	}
         	else{
-        		$("#reason_other").hide();
+        		$("#reason_other_div").hide();
         	}
+        });
+
+        $('input[type=radio][name=until_further_notice]').change(function() {
+            //
+            if (this.value == 'yes') {
+                $("#until_date_div").hide();
+            }
+            else if (this.value == 'no') {
+
+                $("#until_date_div").show();
+            }
         });
 
     }); // end DOCUMENT
@@ -120,72 +67,7 @@
         return null;
     }
 
-    function valid_textfield_value(textfield_id, is_required, min_length) {
-        var textfield = document.getElementById(textfield_id);
-        var textfield_error = document.getElementById(textfield_id+'-error');
-        var value = textfield.value;
-
-        // CASE 1: BLANK FIELD.
-        if (is_required) {
-            if (value == '' || value == null || value == undefined || value.length == 0) {
-                $('#'+textfield_id).addClass('border-primary').removeClass('border-success');
-                textfield_error.innerHTML = "Field should not be blank.";
-                return true; // This means that an error occured in validation.
-            }
-        }
-
-        // CASE 2: MINIMUM LENGTH NOT MET.
-        if (value.length > 0) {              // If associate entered something...
-            if (value.length < min_length) { // Validate that the minium was entered...
-                $('#'+textfield_id).addClass('border-primary').removeClass('border-success');
-                textfield_error.innerHTML = "Field requires a minimum of "+min_length+" characters.";
-                return true;
-            }
-        }
-
-        // Update the GUI to indicate this field has been updated.
-        $('#'+textfield_id).addClass('border-success').removeClass('border-primary');
-
-        // Return "false" which means no errors occured.
-        return false;
-    }
-
-    function valid_radiofields_seleciton(radiofields_name, is_required) {
-        var value = get_selected_radio_value(radiofields_name);
-        var radiofield_error = document.getElementById(radiofields_name+'-error');
-
-        if (is_required) {
-            if (value == undefined || value === null || value.length == 0) {
-                radiofield_error.innerHTML = "Please select option.";
-                console.log(radiofields_name, "IS BLANK FIELD.");
-                return true;
-            }
-        }
-
-        // Return "false" which means no errors occured.
-        return false;
-    }
-
     function click_submit_button() {
-        // GET OUR FORM.
-        var form = document.getElementById('add-client-form');
-
-        // VALIDATE ALL OUR FORM FIELDS.
-        var has_error = false;
-        var reason = $('#reason').val();
-        if (reason <= 0) {
-            has_error |= true;
-        }
-        has_error |= valid_textfield_value('reason_other', false, 2);
-        has_error |= valid_radiofields_seleciton('until_further_notice', true);
-
-        // INTERRUPT THE FORM SUBMISSION IF ANY ERRORS EXISTED AND UPDATE THE
-        // GUI TO INDICATE THAT WE HAVE VALIDATED SOME FIELDS.
-        form.classList.add('was-validated');
-        if (has_error) {
-            return; // STOP THIS FUNCTION FROM GOING FORWARD UNTIL ERRORS FIXED.
-        }
-
         // EXTRACT OUR FIELD VALUES AND SAVE THEM IN LOCAL STORAGE.
         var associate = $('#associate').val();
         var reason = $('#reason').val();
@@ -208,18 +90,40 @@
         update_away_log_api(
             {{ away_log.id }},
             {
-                'associate': associate,
+                'associate': parseInt(associate),
                 'reason': reason,
                 'reason_other': reason_other,
                 'until_further_notice': until_further_notice,
                 'until_date': until_date
             },
-            function(json_error) {
-                console.log(json_error);
+            function(result_dict) { // Success
+                console.log(result_dict);
                 window.location = "{% url 'o55_tenant_settings_away_log_list' %}?was_modified=True";
             },
-            function(json_result) {
-                console.log(json_result);
+            function(xhr,status,error) { // Error
+                // STEP 1: Convert to JSON.
+                var err = JSON.parse(xhr.responseText);
+
+                // For debugging purposes only.
+                console.log(err);
+
+                // STEP 2: CLEAR EXISTING TEXT.
+                $('#all_error_result').html("");
+
+                // STEP 3: PRINT OUR ERROR.
+                for(var prop in err) {
+                    if(err.hasOwnProperty(prop)) {
+                        var val = err[prop];
+                        console.log(val);
+                        $('#all_error_result').append("<p><b>"+prop+"</b>"+val+"</p><br />");
+                    }
+                }
+
+                // STEP 4: FOCUS TO WHERE THE ERROR IS OCCURING.
+                $('html, body').animate({ scrollTop: $('#id_page_title').offset().top }, 'slow');
+            },
+            function() { // Finally
+                // Do nothing.
             }
         );
     }
@@ -240,7 +144,7 @@
     <!------------------------------------------------------------------------->
     <!-- end BREADCRUMB -->
 
-    <h1>Edit Away Announcement</h1>
+    <h1 id="id_page_title">Edit Away Announcement</h1>
 
     <!-- FORM -->
     <!------------------------------------------------------------------------->
@@ -248,21 +152,23 @@
         <!-- Residential form -->
         <div class="col-sm-12 fade show active" id="client-form" aria-labelledby="commercial">
             <h3 class="pt-4 pb-2 text-center">Edit Away Announcement</h3>
+
+            <!-- Error Output -->
+            <div id="all_error_result" name="all_error_result"></div>
+            <!-- end Error Output -->
+
             <p>Please change the text of the away announcements.</p>
             <p><span class="text-secondary font-italic"><sup>*</sup>&nbsp;-&nbsp;Indicates required field to fill out.</span></p>
             <form id="add-client-form" method="post" class="needs-validation" action="" novalidate>
                 <div class="form-row">
                     <div class="form-row">
 
-
-                        <!-- ############ ASSOCIATE (REMOTE DATA) ############ -->
-                        <div class="form-group col-md-12 mb-4 field-select2">
-                            <label for="associate">Associate <sup>*</sup></label>
-                            <select id="associate" name="associate" class="form-control form-control-lg border border-primary" required="" autofocus>
-                                {% if away_log.associate %}
-                                    <option selected="selected"><span id="{{ away_log.associate }}">{{ away_log.associate }}</span></option>
-                                {% endif %}
-                            </select>
+                        <!-- ############ ASSOCIATE ############ -->
+                        <div class="form-group col-md-12 mb-4">
+                            <label for="associate">Associate</label>
+                            <input type="hidden" id="associate" name="associate" value="{{ away_log.associate.id }}" readonly>
+                            <input type="text" class="form-control form-control-lg border border-primary" id="associate-readonly" name="associate-readonly" placeholder="Text" minlength="3" value="{{ away_log.associate }}" readonly>
+                            <div id="associate-error" class="invalid-feedback"></div>
                         </div>
                         <!-- ############ end ASSOCIATE (REMOTE DATA) ############ -->
 
@@ -280,7 +186,7 @@
                         <!-- end REASON -->
 
                         <!-- REASON (OTHER) -->
-                        <div class="form-group col-md-12 mb-4">
+                        <div class="form-group col-md-12 mb-4" id="reason_other_div"  {% if away_log.reason != 1 %}style="display: none;"{% endif %}>
                             <label for="reason_other">Reason (Other)</label>
                             <input type="text" class="form-control form-control-lg border border-primary" id="reason_other" name="reason_other" placeholder="Text" minlength="3" value="{{ away_log.reason_other }}">
                             <div id="reason_other-error" class="invalid-feedback"></div>
@@ -302,7 +208,7 @@
                         </div>
                         <!-- end Until further notice -->
 
-                        <div class="form-group p-0 col-md-7 mb-4">
+                        <div class="form-group p-0 col-md-7 mb-4" id="until_date_div" {% if away_log.until_further_notice == True %}style="display: none;"{% endif %}>
                             <label for="until_date">Until Date <sup>*</sup></label>
                             <div class="input-group input-group-lg">
                                 <input type="text" class="form-control form-control-lg border border-success" id="until_date" name="until_date" placeholder="yyyy-mm-dd" value="{% if away_log.until_date %}{{ away_log.until_date|date:"Y-m-d" }}{% endif %}" required="">

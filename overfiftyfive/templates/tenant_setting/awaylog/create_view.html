@@ -18,7 +18,7 @@
         // Initialize our datepicker jQuery code with our HTML view.
         $( "#until_date" ).datepicker({
             dateFormat: 'yy-mm-dd',
-	        minDate: 1
+	        minDate: 'today'
         });
 
         /*
@@ -121,36 +121,6 @@
             }
         }
         return null;
-    }
-
-    function valid_textfield_value(textfield_id, is_required, min_length) {
-        var textfield = document.getElementById(textfield_id);
-        var textfield_error = document.getElementById(textfield_id+'-error');
-        var value = textfield.value;
-
-        // CASE 1: BLANK FIELD.
-        if (is_required) {
-            if (value == '' || value == null || value == undefined || value.length == 0) {
-                $('#'+textfield_id).addClass('border-primary').removeClass('border-success');
-                textfield_error.innerHTML = "Field should not be blank.";
-                return true; // This means that an error occured in validation.
-            }
-        }
-
-        // CASE 2: MINIMUM LENGTH NOT MET.
-        if (value.length > 0) {              // If associate entered something...
-            if (value.length < min_length) { // Validate that the minium was entered...
-                $('#'+textfield_id).addClass('border-primary').removeClass('border-success');
-                textfield_error.innerHTML = "Field requires a minimum of "+min_length+" characters.";
-                return true;
-            }
-        }
-
-        // Update the GUI to indicate this field has been updated.
-        $('#'+textfield_id).addClass('border-success').removeClass('border-primary');
-
-        // Return "false" which means no errors occured.
-        return false;
     }
 
     function click_submit_button() {
