@@ -87,20 +87,25 @@
         <div class="step-navigation">
             <div class="st-grey">
                 <a href="{% url 'o55_tenant_member_lite_retrieve' template associate.id %}">
-                    <i class="far fa-id-badge"></i>&nbsp;<span class="">Summary</span>
+                    <i class="fa fa-id-badge"></i>&nbsp;<span class="">Summary</span>
                 </a>
             </div>
             <div class="st-grey">
                 <a href="{% url 'o55_tenant_member_full_retrieve' template associate.id %}">
-                    <i class="far fa-id-card"></i>&nbsp;<span class="">Details</span>
+                    <i class="fa fa-id-card"></i>&nbsp;<span class="">Details</span>
                 </a>
             </div>
             <div class="st-grey active">
-                <i class="far fa-address-book"></i>&nbsp;<span class="">Activity Sheet</span>
+                <i class="fa fa-address-book"></i>&nbsp;<span class="">Activity Sheet</span>
+            </div>
+            <div class="st-grey">
+                <a href="{% url 'o55_tenant_member_retrieve_for_jobs_list' template associate.id %}">
+                    <i class="fa fa-wrench"></i>&nbsp;<span class="">Jobs</span>
+                </a>
             </div>
             <div class="st-grey">
                 <a href="{% url 'o55_tenant_member_retrieve_for_comment_list' template associate.id %}">
-                    <i class="far fa-comments"></i>&nbsp;<span class="">Comments</span>
+                    <i class="fa fa-comments"></i>&nbsp;<span class="">Comments</span>
                 </a>
             </div>
         </div>
@@ -131,7 +136,7 @@
                         {% for activity_sheet_item in activity_sheet_items.all %}
                         <tr>
                             <td>{{ activity_sheet_item.id|intcomma }}</td>
-                            <td><a href="{% url 'o55_tenant_job_retrieve' template activity_sheet_item.job.id %}">{{ activity_sheet_item.job.id|intcomma }}</a></td>
+                            <td><a href="{% url 'o55_tenant_job_retrieve' template activity_sheet_item.job.id %}" target="_blank">{{ activity_sheet_item.job.id|intcomma }}&nbsp;<i class="fas fa-link"></i></a></td>
                             <td>{{ activity_sheet_item.has_accepted_job }}</td>
                             <td>{{ activity_sheet_item.created_at }}</td>
                             <td>{{ activity_sheet_item.comment }}</td>

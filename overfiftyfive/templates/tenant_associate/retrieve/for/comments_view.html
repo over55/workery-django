@@ -138,21 +138,26 @@ function click_add_button() {
         <div class="step-navigation">
             <div class="st-grey">
                 <a href="{% url 'o55_tenant_member_lite_retrieve' template associate.id %}">
-                    <i class="far fa-id-badge"></i>&nbsp;<span class="">Summary</span>
+                    <i class="fa fa-id-badge"></i>&nbsp;<span class="">Summary</span>
                 </a>
             </div>
             <div class="st-grey">
                 <a href="{% url 'o55_tenant_member_full_retrieve' template associate.id %}">
-                    <i class="far fa-id-card"></i>&nbsp;<span class="">Details</span>
+                    <i class="fa fa-id-card"></i>&nbsp;<span class="">Details</span>
                 </a>
             </div>
             <div class="st-grey">
                 <a href="{% url 'o55_tenant_member_retrieve_for_activity_sheet_list' template associate.id %}">
-                    <i class="far fa-address-book"></i>&nbsp;<span class="">Activity Sheet</span>
+                    <i class="fa fa-address-book"></i>&nbsp;<span class="">Activity Sheet</span>
+                </a>
+            </div>
+            <div class="st-grey">
+                <a href="{% url 'o55_tenant_member_retrieve_for_jobs_list' template associate.id %}">
+                    <i class="fa fa-wrench"></i>&nbsp;<span class="">Jobs</span>
                 </a>
             </div>
             <div class="st-grey active">
-                <i class="far fa-comments"></i>&nbsp;<span class="">Comments</span>
+                <i class="fa fa-comments"></i>&nbsp;<span class="">Comments</span>
             </div>
         </div>
     </div>
