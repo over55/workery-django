@@ -20,8 +20,9 @@ urlpatterns = (
     path('partners/search/results/', search_view.PartnerSearchResultView.as_view(), name='o55_tenant_partner_search_results'),
 
     # Retrieve
-    path('partners/<str:template>/detail/<int:pk>/', retrieve_view.PartnerRetrieveView.as_view(), name='o55_tenant_partner_retrieve'),
-    path('partners/<str:template>/detail/comments/<int:pk>/', retrieve_view.PartnerCommentsRetrieveView.as_view(), name='o55_tenant_partner_comments_retrieve'),
+    path('partners/<str:template>/detail/<int:pk>/lite/', retrieve_view.PartnerLiteRetrieveView.as_view(), name='o55_tenant_partner_lite_retrieve'),
+    path('partners/<str:template>/detail/<int:pk>/full/', retrieve_view.PartnerFullRetrieveView.as_view(), name='o55_tenant_partner_full_retrieve'),
+    path('partners/<str:template>/detail/<int:pk>/comments/', retrieve_view.PartnerCommentsRetrieveView.as_view(), name='o55_tenant_partner_retrieve_for_comment_list'),
 
     # Update
     path('partners/<str:template>/detail/<int:pk>/edit/', update_view.PartnerUpdateView.as_view(), name='o55_tenant_partner_update'),

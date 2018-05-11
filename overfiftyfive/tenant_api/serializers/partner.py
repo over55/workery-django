@@ -323,7 +323,7 @@ class PartnerListCreateSerializer(serializers.ModelSerializer):
                 last_modified_by=self.context['created_by'],
                 text=extra_comment
             )
-            CustomerComment.objects.create(
+            PartnerComment.objects.create(
                 about=partner,
                 comment=comment,
             )
