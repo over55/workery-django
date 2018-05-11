@@ -86,13 +86,24 @@
             }
         }); // end SELECT2
 
-	$('#reason').on('change',function(){
-        	if( $(this).val()==="other" || $(this).val()===1){
-        		$("#reason_other").show();
+        $('#reason').on('change',function(){
+        	if( $(this).val()==="1" || $(this).val()===1){
+        		$("#reason_other_div").show();
         	}
         	else{
-        		$("#reason_other").hide();
+        		$("#reason_other_div").hide();
         	}
+        });
+
+        $('input[type=radio][name=until_further_notice]').change(function() {
+            //
+            if (this.value == 'yes') {
+                $("#until_date_div").hide();
+            }
+            else if (this.value == 'no') {
+
+                $("#until_date_div").show();
+            }
         });
 
     }); // end DOCUMENT
@@ -142,58 +153,9 @@
         return false;
     }
 
-    function valid_radiofields_seleciton(radiofields_name, is_required) {
-        var value = get_selected_radio_value(radiofields_name);
-        var radiofield_error = document.getElementById(radiofields_name+'-error');
-
-        if (is_required) {
-            if (value == undefined || value === null || value.length == 0) {
-                //--------------------------------------------------------------
-                radiofield_error.innerHTML = "Please select option.";
-
-                // STEP 1: Convert to JSON.
-                var err = radiofields_name + "IS BLANK FIELD.";
-
-                // For debugging purposes only.
-                console.log(err);
-
-                // STEP 2: CLEAR EXISTING TEXT.
-                $('#all_error_result').html();
-
-                // STEP 3: PRINT OUR ERROR.
-                $('#all_error_result').append("<p>"+err+"</p>");
-
-                // STEP 4: FOCUS TO WHERE THE ERROR IS OCCURING.
-                $('html, body').animate({ scrollTop: $('#id_page_title').offset().top }, 'slow');
-                //--------------------------------------------------------------
-
-                return true;
-            }
-        }
-
-        // Return "false" which means no errors occured.
-        return false;
-    }
-
     function click_submit_button() {
         // GET OUR FORM.
         var form = document.getElementById('add-client-form');
-
-        // VALIDATE ALL OUR FORM FIELDS.
-        var has_error = false;
-        var reason = $('#reason').val();
-        if (reason <= 0) {
-            has_error |= true;
-        }
-        has_error |= valid_textfield_value('reason_other', false, 2);
-        has_error |= valid_radiofields_seleciton('until_further_notice', true);
-
-        // INTERRUPT THE FORM SUBMISSION IF ANY ERRORS EXISTED AND UPDATE THE
-        // GUI TO INDICATE THAT WE HAVE VALIDATED SOME FIELDS.
-        form.classList.add('was-validated');
-        if (has_error) {
-            return; // STOP THIS FUNCTION FROM GOING FORWARD UNTIL ERRORS FIXED.
-        }
 
         // EXTRACT OUR FIELD VALUES AND SAVE THEM IN LOCAL STORAGE.
         var associate = $('#associate').val();
@@ -217,12 +179,35 @@
                 'until_further_notice': until_further_notice,
                 'until_date': until_date
             },
-            function(json_error) {
-                console.log(json_error);
-                window.location = "{% url 'o55_tenant_settings_away_log_list' %}?was_modified=True";
+            function(result_dict) { // Success
+                console.log(result_dict);
+                window.location = "{% url 'o55_tenant_settings_away_log_list' %}?was_created=True";
             },
-            function(json_result) {
-                console.log(json_result);
+            function(xhr,status,error) { // Error
+                // STEP 1: Convert to JSON.
+                var err = JSON.parse(xhr.responseText);
+
+                // For debugging purposes only.
+                console.log(err);
+
+                // STEP 2: CLEAR EXISTING TEXT.
+                $('#all_error_result').html("");
+
+                // STEP 3: PRINT OUR ERROR.
+                for(var prop in err) {
+                    if(err.hasOwnProperty(prop)) {
+                        var val = err[prop];
+                        console.log(val);
+                        $('#all_error_result').append("<p><b>"+prop+"</b>"+val+"</p><br />");
+                    }
+                }
+
+                // STEP 4: FOCUS TO WHERE THE ERROR IS OCCURING.
+                $('html, body').animate({ scrollTop: $('#id_page_title').offset().top }, 'slow');
+            },
+            function() { // Finally
+                // UNLOCK THE "SUBMIT" BUTTON TO BE AVAILABLE FOR USAGE.
+                enable_btn();
             }
         );
     }
@@ -260,7 +245,6 @@
                 <div class="form-row">
                     <div class="form-row">
 
-
                         <!-- ############ ASSOCIATE (REMOTE DATA) ############ -->
                         <div class="form-group col-md-12 mb-4 field-select2">
                             <label for="associate">Associate <sup>*</sup></label>
@@ -276,13 +260,13 @@
                                 <option value="0" selected="selected">Please select reason</option>
                                 <option value="2">Going on vocation</option>
                                 <option value="3">Personal reasons</option>
-                                <option value="other">Other</option>
+                                <option value="1">Other</option>
                             </select>
                             <div id="reason-error" class="invalid-feedback"></div>
                         </div>
                         <!-- end REASON -->
 
-                        <div class="form-group col-md-12 mb-4">
+                        <div class="form-group col-md-12 mb-4" id="reason_other_div" style="display: none;">
                             <label for="reason_other">Reason (Other)</label>
                             <input type="text" class="form-control form-control-lg border border-primary" id="reason_other" name="reason_other" placeholder="Text" minlength="3" value="">
                             <div id="reason_other-error" class="invalid-feedback"></div>
@@ -303,7 +287,7 @@
                         </div>
                         <!-- end Until further notice -->
 
-                        <div class="form-group p-0 col-md-7 mb-4">
+                        <div class="form-group p-0 col-md-7 mb-4" id="until_date_div" style="display: none;">
                             <label for="dob">Until Date <sup>*</sup></label>
                             <div class="input-group input-group-lg">
                                 <input type="text" class="form-control form-control-lg border border-success" id="until_date" name="until_date" placeholder="yyyy-mm-dd" required="">
