@@ -129,12 +129,35 @@ function click_add_button() {
     <!------------------------------------------------------------------------->
     <!-- end BACK BUTTON -->
 
-    <h1>{% trans 'View Comments about Client' %}</h1>
+    <h1>{% trans 'View Client' %}</h1>
+
+    <!-- STEP NAVIGATION -->
+    <!------------------------------------------------------------------------->
+    <div class="row">
+        <div class="step-navigation">
+            <div class="st-grey">
+                <a href="{% url 'o55_tenant_customer_lite_retrieve' template customer.id %}">
+                    <i class="fa fa-id-badge"></i>&nbsp;<span class="">Summary</span>
+                </a>
+            </div>
+            <div class="st-grey">
+                <a href="{% url 'o55_tenant_customer_full_retrieve' template customer.id %}">
+                    <i class="fa fa-id-card"></i>&nbsp;<span class="">Details</span>
+                </a>
+            </div>
+            <div class="st-grey active">
+                <i class="fa fa-comments"></i>&nbsp;<span class="">Comments</span>
+            </div>
+        </div>
+    </div>
+    <!------------------------------------------------------------------------->
+    <!-- end STEP NAVIGATION -->
 
     <div class="container">
         <div class="row align-items-start">
             <!-- <h1>Comments/Notes Screen</h1> -->
             <div class="col-lg-12">
+                <h3 class="py-2 text-center mb-4" id="id_page_title">Customer Comments</h3>
 
                 <!-- FORM -->
                 <!------------------------------------------------------------------------->

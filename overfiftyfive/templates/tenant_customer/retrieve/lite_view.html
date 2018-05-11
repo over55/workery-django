@@ -89,6 +89,11 @@
                     <i class="fa fa-id-card"></i>&nbsp;<span class="">Details</span>
                 </a>
             </div>
+            <div class="st-grey">
+                <a href="{% url 'o55_tenant_customer_retrieve_for_comment_list_and_create' template customer.id %}">
+                    <i class="fa fa-comments"></i>&nbsp;<span class="">Comments</span>
+                </a>
+            </div>
         </div>
     </div>
     <!------------------------------------------------------------------------->
@@ -121,29 +126,6 @@
         </div>
         <!--------------------------------------------------------------------->
         <!-- end MASTER FORM -->
-
-        <div class="form-group col-md-10 mb-3 mx-auto text-center">
-	    <div class="row">
-		    <!-- COMMENTS BUTTON -->
-		    <div class="col-sm-4">
-			<a href="{% url 'o55_tenant_customer_comments_retrieve' template object.id %}">
-            		<button  id="id_submit_btn" class="btn btn-success btn-lg btn-fxw mt-4" type="button">
-            		<i class="far fa-comments"></i>&nbsp;{% trans 'View Comments' %}
-            		</button>
-            		</a>
-		    </div>
-		    <!-- end COMMENTS BUTTON -->
-        	    <!-- end EDIT BUTTON -->
-		    <div class="col-sm-4">
-			<a href="{% url 'o55_tenant_customer_update' template object.id %}">
-            		<button  id="id_submit_btn" class="btn btn-orange btn-lg btn-fxw mt-4" type="button">
-            		<i class="fas fa-pencil-alt"></i>&nbsp;{% trans 'Edit Client' %}
-            		</button>
-            		</a>
-		    </div>
-		    <!-- end EDIT BUTTON -->
-	    </div>
-        </div>
 
     </div>
 

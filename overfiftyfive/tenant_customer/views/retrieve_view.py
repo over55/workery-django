@@ -76,10 +76,10 @@ class CustomerFullRetrieveView(DetailView, ExtraRequestProcessingMixin):
 
 
 @method_decorator(login_required, name='dispatch')
-class CustomerCommentRetrieveView(DetailView, ExtraRequestProcessingMixin):
+class CustomerRetrieveForCommentListAndCreateView(DetailView, ExtraRequestProcessingMixin):
     context_object_name = 'customer'
     model = Customer
-    template_name = 'tenant_customer/retrieve/comments_view.html'
+    template_name = 'tenant_customer/retrieve/for/comments_view.html'
 
     def get_object(self):
         customer = super().get_object()  # Call the superclass

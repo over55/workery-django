@@ -25,7 +25,7 @@ urlpatterns = (
     # Retrieve
     path('clients/<str:template>/detail/<int:pk>/lite/', retrieve_view.CustomerLiteRetrieveView.as_view(), name='o55_tenant_customer_lite_retrieve'),
     path('clients/<str:template>/detail/<int:pk>/full/', retrieve_view.CustomerFullRetrieveView.as_view(), name='o55_tenant_customer_full_retrieve'),
-    path('clients/<str:template>/detail/<int:pk>/comments/', retrieve_view.CustomerCommentRetrieveView.as_view(), name='o55_tenant_customer_comments_retrieve'),
+    path('clients/<str:template>/detail/<int:pk>/comments/', retrieve_view.CustomerRetrieveForCommentListAndCreateView.as_view(), name='o55_tenant_customer_retrieve_for_comment_list_and_create'),
 
     # Update
     path('clients/<str:template>/detail/<int:pk>/edit/', update_view.CustomerUpdateView.as_view(), name='o55_tenant_customer_update'),
