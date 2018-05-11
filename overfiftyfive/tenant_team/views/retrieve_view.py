@@ -11,10 +11,10 @@ from tenant_foundation.models import Staff
 
 
 @method_decorator(login_required, name='dispatch')
-class TeamRetrieveView(DetailView, ExtraRequestProcessingMixin):
+class StaffLiteRetrieveView(DetailView, ExtraRequestProcessingMixin):
     context_object_name = 'staff'
     model = Staff
-    template_name = 'tenant_team/retrieve/view.html'
+    template_name = 'tenant_team/retrieve/lite_view.html'
 
     def get_object(self):
         staff = super().get_object()  # Call the superclass
@@ -44,10 +44,43 @@ class TeamRetrieveView(DetailView, ExtraRequestProcessingMixin):
 
 
 @method_decorator(login_required, name='dispatch')
-class TeamCommentRetrieveView(DetailView, ExtraRequestProcessingMixin):
+class StaffFullRetrieveView(DetailView, ExtraRequestProcessingMixin):
     context_object_name = 'staff'
     model = Staff
-    template_name = 'tenant_team/retrieve/comments_view.html'
+    template_name = 'tenant_team/retrieve/full_view.html'
+
+    def get_object(self):
+        staff = super().get_object()  # Call the superclass
+        return staff                  # Return the object
+
+    def get_context_data(self, **kwargs):
+        # Get the context of this class based view.
+        modified_context = super().get_context_data(**kwargs)
+
+        # Validate the template selected.
+        template = self.kwargs['template']
+        if template not in ['search', 'summary', 'list']:
+            from django.core.exceptions import PermissionDenied
+            raise PermissionDenied(_('You entered wrong format.'))
+        modified_context['template'] = template
+
+        # Required for navigation
+        modified_context['current_page'] = "team"
+
+        # DEVELOPERS NOTE:
+        # - We will extract the URL parameters and save them into our context
+        #   so we can use this to help the pagination.
+        modified_context['parameters'] = self.get_params_dict([])
+
+        # Return our modified context.
+        return modified_context
+
+
+@method_decorator(login_required, name='dispatch')
+class StaffRetrieveForCommentsListAndCreateView(DetailView, ExtraRequestProcessingMixin):
+    context_object_name = 'staff'
+    model = Staff
+    template_name = 'tenant_team/retrieve/for/comments_view.html'
 
     def get_object(self):
         staff = super().get_object()  # Call the superclass
