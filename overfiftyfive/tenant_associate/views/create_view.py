@@ -9,7 +9,8 @@ from tenant_api.filters.associate import AssociateFilter
 from tenant_foundation.models import (
     Associate,
     SkillSet,
-    Tag
+    Tag,
+    VehicleType
 )
 
 
@@ -22,6 +23,7 @@ class MemberCreateView(TemplateView):
         context['current_page'] = "associates" # Required for navigation
         context['tags'] = Tag.objects.all()
         context['skill_sets'] = SkillSet.objects.all()
+        context['vehicle_types'] = VehicleType.objects.all()
         return context
 
 

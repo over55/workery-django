@@ -102,9 +102,13 @@
             var tmp_skill_sets = localStorage.getObj("tmp_associate_member_skill_set_ids");
             $('#skill_sets').val(tmp_skill_sets);
 
+            var tmp_vehicle_types = localStorage.getObj("tmp_associate_member_vehicle_type_ids");
+            $('#vehicle_types').val(tmp_vehicle_types);
+
             // Initialize our 'select2' element.
             $('#person_tags').select2();
             $('#skill_sets').select2();
+            $('#vehicle_types').select2();
 
             //--------------------------//
             // TEXTFIELD INITIALIZATION //
@@ -338,6 +342,7 @@
             var password_repeat = $('#password_repeat').val();
             var person_tags = $('#person_tags').val();
             var skill_sets = $('#skill_sets').val();
+            var vehicle_types = $('#vehicle_types').val();
             var description = $('#describe').val();
             var comment = $('#comment').val();
             var is_active = get_selected_radio_value('is_active');
@@ -395,8 +400,9 @@
             // SAVE ARRAY OF IDS.
             localStorage.setObj("tmp_associate_member_person_tag_ids", person_tags);
             localStorage.setObj("tmp_associate_member_skill_set_ids", skill_sets);
+            localStorage.setObj("tmp_associate_member_vehicle_type_ids", vehicle_types);
 
-            // SAVE ARRAY OF VALUE ITEMS.
+            // SAVE ARRAY OF VALUE ITEMS. (1 of 3)
             var person_tags_arr = [];
             for (var i = 0; i < person_tags.length; i++) {
                 var option_id = person_tags[i];
@@ -405,7 +411,7 @@
             } // end FOR LOOP.
             localStorage.setObj("tmp_associate_member_person_tag_values", person_tags_arr);
 
-            // SAVE ARRAY OF VALUE ITEMS. (2 of 2)
+            // SAVE ARRAY OF VALUE ITEMS. (2 of 3)
             var skill_sets_arr = [];
             for (var i = 0; i < skill_sets.length; i++) {
                 var option_id = skill_sets[i];
@@ -413,6 +419,15 @@
                 skill_sets_arr.push(option_value);
             } // end FOR LOOP.
             localStorage.setObj("tmp_associate_member_skill_set_values", skill_sets_arr);
+
+            // SAVE ARRAY OF VALUE ITEMS. (3 of 3)
+            var vehicle_types_arr = [];
+            for (var i = 0; i < vehicle_types.length; i++) {
+                var option_id = vehicle_types[i];
+                var option_value = $('#vehicle_type_option_id_'+option_id).text();
+                vehicle_types_arr.push(option_value);
+            } // end FOR LOOP.
+            localStorage.setObj("tmp_associate_member_vehicle_type_values", vehicle_types_arr);
 
             //----------------------------------------------------------------//
             //      GENERATE RANDOM PASSWORD IF NO PASSWORD WAS ENETERED      //
@@ -464,6 +479,7 @@
                     // 'fax_number': fax_number
                     'tags': localStorage.getObj("tmp_associate_member_person_tag_ids"),
                     'skill_sets': localStorage.getObj("tmp_associate_member_skill_set_ids"),
+                    'vehicle_types': localStorage.getObj("tmp_associate_member_vehicle_type_ids"),
                     'description': localStorage.getItem("tmp_associate_member_description"),
                     'extra_comment': localStorage.getItem("tmp_associate_member_comment"),
 
@@ -765,40 +781,13 @@
                     </small>
                 </div>
                 <div class="form-group col-md-12 mb-4">
-                    <p class="mb-1">Has car? <sup>*</sup></p>
-                    <div class="form-radio custom-control custom-radio custom-control-inline">
-                        <input type="radio" id="has_car" name="has_car" value="true" class="custom-control-input form-check-input">
-                        <label class="custom-control-label form-check-label" for="has_car">Yes</label>
-                    </div>
-                    <div class="form-radio custom-control custom-radio custom-control-inline">
-                        <input type="radio" id="has_car2" name="has_car" value="false" class="custom-control-input form-check-input">
-                        <label class="custom-control-label form-check-label" for="has_car2">No</label>
-                        <div id="has_car-error" class="invalid-feedback ml-2"></div>
-                    </div>
-                </div>
-                <div class="form-group col-md-12 mb-4">
-                    <p class="mb-1">Has van? <sup>*</sup></p>
-                    <div class="form-radio custom-control custom-radio custom-control-inline">
-                        <input type="radio" id="has_van" name="has_van" value="true" class="custom-control-input form-check-input">
-                        <label class="custom-control-label form-check-label" for="has_van">Yes</label>
-                    </div>
-                    <div class="form-radio custom-control custom-radio custom-control-inline">
-                        <input type="radio" id="has_van2" name="has_van" value="false" class="custom-control-input form-check-input">
-                        <label class="custom-control-label form-check-label" for="has_van2">No</label>
-                        <div id="has_van-error" class="invalid-feedback ml-2"></div>
-                    </div>
-                </div>
-                <div class="form-group col-md-12 mb-4">
-                    <p class="mb-1">Has truck? <sup>*</sup></p>
-                    <div class="form-radio custom-control custom-radio custom-control-inline">
-                        <input type="radio" id="has_truck" name="has_truck" value="true" class="custom-control-input form-check-input">
-                        <label class="custom-control-label form-check-label" for="has_truck">Yes</label>
-                    </div>
-                    <div class="form-radio custom-control custom-radio custom-control-inline">
-                        <input type="radio" id="has_truck2" name="has_truck" value="false" class="custom-control-input form-check-input">
-                        <label class="custom-control-label form-check-label" for="has_truck2">No</label>
-                        <div id="has_truck-error" class="invalid-feedback ml-2"></div>
-                    </div>
+                    <label for="vehicle_types">Vehicles</label>
+                    <select id="vehicle_types" name="vehicle_types" class="form-control form-control-lg border border-success" name="states[]" multiple="multiple">
+                    {% for vehicle_type in vehicle_types %}
+                        <option value="{{ vehicle_type.id }}" id="vehicle_type_option_id_{{ vehicle_type.id }}">{{ vehicle_type.text }}</option>
+                    {% endfor %}
+                    </select>
+                    <div id="vehicle_types-error" class="invalid-feedback"></div>
                 </div>
                 <div class="form-group col-md-12 mb-4 p-0">
       		        <label for="how_hear" class="font-b6">Describe how associate hear about us:</label>

@@ -226,7 +226,7 @@ class AssociateListCreateSerializer(serializers.ModelSerializer):
             'tags',
             'skill_sets',
             'vehicle_types'
-            # 'comments'
+            'comments'
         )
         return queryset
 
@@ -349,6 +349,7 @@ class AssociateListCreateSerializer(serializers.ModelSerializer):
         skill_sets = validated_data.get('skill_sets', None)
         if skill_sets is not None:
             associate.skill_sets.set(skill_sets)
+            print("INFO: Set associate skill sets.")
 
         #-------------------------------
         # Set our `VehicleType` objects.
@@ -356,6 +357,7 @@ class AssociateListCreateSerializer(serializers.ModelSerializer):
         vehicle_types = validated_data.get('vehicle_types', None)
         if vehicle_types is not None:
             associate.vehicle_types.set(vehicle_types)
+            print("INFO: Set associate vehicle types.")
 
         #------------------------
         # Set our `Tag` objects.
@@ -363,6 +365,7 @@ class AssociateListCreateSerializer(serializers.ModelSerializer):
         tags = validated_data.get('tags', None)
         if tags is not None:
             associate.tags.set(tags)
+            print("INFO: Set associate tags.")
 
         #-----------------------------
         # Create our `Comment` object.
@@ -378,6 +381,7 @@ class AssociateListCreateSerializer(serializers.ModelSerializer):
                 about=associate,
                 comment=comment,
             )
+            print("INFO: Set associate comments.")
 
         # Update validation data.
         # validated_data['comments'] = AssociateComment.objects.filter(associate=associate)
@@ -505,7 +509,7 @@ class AssociateRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
             'skill_sets',
             'tags',
             'vehicle_types'
-            # 'comments'
+            'comments'
         )
         return queryset
 
@@ -617,12 +621,14 @@ class AssociateRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         #-----------------------------
         if skill_sets is not None:
             instance.skill_sets.set(skill_sets)
+            print("INFO: Set associate skill sets.")
 
         #-------------------------------
         # Set our `VehicleType` objects.
         #-------------------------------
         if vehicle_types is not None:
             instance.vehicle_types.set(vehicle_types)
+            print("INFO: Set associate vehicle types.")
 
         #------------------------
         # Set our `Tag` objects.
@@ -630,6 +636,7 @@ class AssociateRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         tags = validated_data.get('tags', None)
         if tags is not None:
             instance.tags.set(tags)
+            print("INFO: Set associate tags.")
 
         #---------------------------
         # Attach our comment.
@@ -645,6 +652,7 @@ class AssociateRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
                 about=instance,
                 comment=comment,
             )
+            print("INFO: Set associate comments.")
 
         #---------------------------
         # Update validation data.

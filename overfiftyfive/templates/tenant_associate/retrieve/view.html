@@ -315,32 +315,22 @@
                         <div id="is_active-error" class="invalid-feedback"></div>
                     </div>
                     <div class="form-group col-md-12 mb-4">
-                        <label for="is_active">Drivers license class</label>
+                        <label for="is_active">Drivers license class(es)</label>
                         <p>
                             {% if associate.drivers_license_class %}{{ associate.drivers_license_class }}{% else %}-{% endif %}
                         </p>
                         <div id="is_active-error" class="invalid-feedback"></div>
                     </div>
-                    <div class="form-group col-md-12 mb-4">
-                        <label for="is_active">has_car</label>
+                    <div class="form-group p-0 col-md-7 mb-4">
+                        <label for="vehicle_types">Vehicle(s)</label>
                         <p>
-                            {% if associate.has_car %}Yes{% else %}No{% endif %}
+                            {% for vehicle_type in associate.vehicle_types.all %}
+                                <span class="badge badge-info badge-lg">{{ vehicle_type.text }}</span>
+                            {% empty %}
+                                -
+                            {% endfor %}
                         </p>
-                        <div id="is_active-error" class="invalid-feedback"></div>
-                    </div>
-                    <div class="form-group col-md-12 mb-4">
-                        <label for="is_active">Has van</label>
-                        <p>
-                            {% if associate.has_van %}Yes{% else %}No{% endif %}
-                        </p>
-                        <div id="is_active-error" class="invalid-feedback"></div>
-                    </div>
-                    <div class="form-group col-md-12 mb-4">
-                        <label for="is_active">Has truck</label>
-                        <p>
-                            {% if associate.has_truck %}Yes{% else %}No{% endif %}
-                        </p>
-                        <div id="is_active-error" class="invalid-feedback"></div>
+                        <div id="vehicle_types-error" class="invalid-feedback"></div>
                     </div>
                     <div class="form-group col-md-12 mb-4">
                         <label for="is_active">How hear</label>
