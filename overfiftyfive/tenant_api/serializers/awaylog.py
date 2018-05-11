@@ -96,10 +96,12 @@ class AwayLogListCreateSerializer(serializers.ModelSerializer):
             created_by=self.context['created_by'],
             last_modified_by=self.context['created_by'],
         )
+        print("INFO: Created AwayLog")
 
         # Save our away information to the associate.
         associate.away_log = log
         associate.save()
+        print("INFO: Assigned AwayLog to associate.")
 
         # Return our validated data.
         validated_data['id'] = log.id
@@ -137,8 +139,6 @@ class AwayLogRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         Override the validator to provide additional custom validation based
         on our custom logic.
         """
-        print(data)
-        
         # CASE 1 - Other reason
         if data['reason'] == 1 or data['reason'] == "1":
             reason_other = data['reason_other']
