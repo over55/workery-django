@@ -135,7 +135,7 @@
                     <div class="form-row">
                         <div class="form-group col-md-12 mb-4">
                             <label for="customer">Customer</label>
-                            <p>{% if job.customer %}<a href="{% url 'o55_tenant_customer_retrieve' template job.customer.id %}" target="_blank">{{ job.customer }}&nbsp;<i class="fas fa-link"></i></a>{% else %}-{% endif %}</p>
+                            <p>{% if job.customer %}<a href="{% url 'o55_tenant_customer_lite_retrieve' template job.customer.id %}" target="_blank">{{ job.customer }}&nbsp;<i class="fas fa-link"></i></a>{% else %}-{% endif %}</p>
                             <div id="customer-error" class="invalid-feedback"></div>
                         </div>
                     </div>

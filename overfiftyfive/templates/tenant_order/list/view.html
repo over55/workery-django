@@ -84,7 +84,7 @@
                     <td>{{ job.id|intcomma }}</td>
                     <td>
                         {% if job.customer %}
-                            <a href="{% url 'o55_tenant_customer_retrieve' 'summary' job.customer.id %}" target="_blank">{{ job.customer }}&nbsp;<i class="fas fa-link"></i></a>
+                            <a href="{% url 'o55_tenant_customer_lite_retrieve' 'summary' job.customer.id %}" target="_blank">{{ job.customer }}&nbsp;<i class="fas fa-link"></i></a>
                         {% else %}-{% endif %}
                     </td>
                     <td>
