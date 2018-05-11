@@ -11,6 +11,7 @@ from tenant_foundation.models.skill_set import SkillSet
 from tenant_foundation.models.opening_hours_specification import OpeningHoursSpecification
 from tenant_foundation.models.organization import Organization
 from tenant_foundation.models.comment import Comment
+from tenant_foundation.models.vehicle_type import VehicleType
 
 # Customer Models
 from tenant_foundation.models.customer import Customer

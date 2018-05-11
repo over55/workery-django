@@ -26,7 +26,8 @@ from tenant_foundation.models import (
     ResourceItemSortOrder,
     SkillSet,
     Staff,
-    Tag
+    Tag,
+    VehicleType
 )
 from tenant_foundation.utils import *
 
@@ -63,6 +64,7 @@ class Command(BaseCommand):
         self.begin_populating_resource_categories()
         self.begin_populating_resource_items()
         self.begin_populating_resource_item_sort_orders()
+        self.begin_populating_vehicle_types()
 
         # For debugging purposes.
         self.stdout.write(
@@ -322,5 +324,23 @@ class Command(BaseCommand):
                     'category': category,
                     'item': item,
                     'ordering_number': obj['ordering_number'],
+                }
+            )
+
+    def begin_populating_vehicle_types(self):
+        VEHICLE_TYPE_ARRAY = [
+            ["Car", "-",],
+            ["Truck", "-",],
+            ["Van", "-",],
+            ["Vehicle w/ Lift", "-",],
+            ["No Vehicle", "-",]
+        ]
+        for vehicle_arr in VEHICLE_TYPE_ARRAY:
+            VehicleType.objects.update_or_create(
+                text=vehicle_arr[0],
+                description=vehicle_arr[1],
+                defaults={
+                    'text': vehicle_arr[0],
+                    'description': vehicle_arr[1],
                 }
             )

@@ -179,30 +179,18 @@ class Associate(AbstractPerson):
         blank=True,
         null=True,
     )
-    has_car = models.BooleanField(
-        _("Has Car"),
-        help_text=_('Indicates whether associate has a car or not.'),
-        default=False,
-        blank=True
-    )
-    has_van = models.BooleanField(
-        _("Has Van"),
-        help_text=_('Indicates whether associate has a van or not.'),
-        default=False,
-        blank=True
-    )
-    has_truck = models.BooleanField(
-        _("Has Truck"),
-        help_text=_('Indicates whether associate has a truck or not.'),
-        default=False,
-        blank=True
-    )
     how_hear = models.CharField(
         _("How hear"),
         max_length=2055,
         help_text=_('How associate heared about this business.'),
         blank=True,
         null=True,
+    )
+    vehicle_types = models.ManyToManyField(
+        "VehicleType",
+        help_text=_('The type of vehicles this associate has for servicing customers.'),
+        blank=True,
+        related_name="%(app_label)s_%(class)s_vehicle_types_related"
     )
     skill_sets = models.ManyToManyField(
         "SkillSet",

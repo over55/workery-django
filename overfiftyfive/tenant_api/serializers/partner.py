@@ -506,9 +506,6 @@ class PartnerRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         instance.commercial_insurance_expiry_date=validated_data.get('commercial_insurance_expiry_date', None)
         instance.police_check=validated_data.get('police_check', None)
         instance.drivers_license_class=validated_data.get('drivers_license_class', None)
-        instance.has_car=validated_data.get('has_car', False)
-        instance.has_van=validated_data.get('has_van', False)
-        instance.has_truck=validated_data.get('has_truck', False)
         instance.how_hear=validated_data.get('how_hear', None)
         # 'organizations', #TODO: IMPLEMENT.
 

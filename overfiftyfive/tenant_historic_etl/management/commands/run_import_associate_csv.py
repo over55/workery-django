@@ -34,7 +34,8 @@ from tenant_foundation.models import (
     Associate,
     Comment,
     Customer,
-    Organization
+    Organization,
+    VehicleType
 )
 from tenant_foundation.utils import *
 
@@ -255,9 +256,6 @@ class Command(BaseCommand):
                     'police_check':local_police_check,
                     'drivers_license_class':drivers_license_class,
                     # 'comments':comments,
-                    'has_car':bool_or_none(has_van),
-                    'has_van':bool_or_none(has_van),
-                    'has_truck':bool_or_none(has_truck),
                     'how_hear':how_hear,
                     'last_modified_by': None,
                     'created_by': None,
@@ -279,6 +277,17 @@ class Command(BaseCommand):
                     'comment': comment
                 }
             )
+
+            # Attach the `VehicleType` objects with this Associate.
+            if has_car:
+                vehicle_type = VehicleType.objects.get(text="Car")
+                associate.vehicle_types.add(vehicle_type)
+            if has_van:
+                vehicle_type = VehicleType.objects.get(text="Van")
+                associate.vehicle_types.add(vehicle_type)
+            if has_truck:
+                vehicle_type = VehicleType.objects.get(text="Truck")
+                associate.vehicle_types.add(vehicle_type)
 
             # For debugging purposes.
             # print(associate, create)

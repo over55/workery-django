@@ -31,7 +31,8 @@ from tenant_foundation.models import (
     Associate,
     Comment,
     SkillSet,
-    Organization
+    Organization,
+    VehicleType
 )
 
 
@@ -153,12 +154,10 @@ class AssociateListCreateSerializer(serializers.ModelSerializer):
             'wsib_insurance_date',
             'police_check',
             'drivers_license_class',
-            'has_car',
-            'has_van',
-            'has_truck',
+            'vehicle_types', # many-to-many
             'how_hear',
-            'skill_sets', # many-to-many
-            'tags',       # many-to-many
+            'skill_sets',    # many-to-many
+            'tags',          # many-to-many
 
             # Misc (Read Only)
             # 'comments',
@@ -207,21 +206,6 @@ class AssociateListCreateSerializer(serializers.ModelSerializer):
                 "error_messages": {
                     "invalid": "Please pick either 'Yes' or 'No' choice."
                 }
-            },
-            "has_car": {
-                "error_messages": {
-                    "invalid": "Please pick either 'Yes' or 'No' choice."
-                }
-            },
-            "has_van": {
-                "error_messages": {
-                    "invalid": "Please pick either 'Yes' or 'No' choice."
-                }
-            },
-            "has_truck": {
-                "error_messages": {
-                    "invalid": "Please pick either 'Yes' or 'No' choice."
-                }
             }
         }
 
@@ -236,7 +220,12 @@ class AssociateListCreateSerializer(serializers.ModelSerializer):
     def setup_eager_loading(cls, queryset):
         """ Perform necessary eager loading of data. """
         queryset = queryset.prefetch_related(
-            'owner', 'created_by', 'last_modified_by', 'tags', 'skill_sets'
+            'owner',
+            'created_by',
+            'last_modified_by',
+            'tags',
+            'skill_sets',
+            'vehicle_types'
             # 'comments'
         )
         return queryset
@@ -320,9 +309,6 @@ class AssociateListCreateSerializer(serializers.ModelSerializer):
             commercial_insurance_expiry_date=validated_data.get('commercial_insurance_expiry_date', None),
             police_check=validated_data.get('police_check', None),
             drivers_license_class=validated_data.get('drivers_license_class', None),
-            has_car=validated_data.get('has_car', False),
-            has_van=validated_data.get('has_van', False),
-            has_truck=validated_data.get('has_truck', False),
             how_hear=validated_data.get('how_hear', None),
             # 'organizations', #TODO: IMPLEMENT.
 
@@ -363,6 +349,13 @@ class AssociateListCreateSerializer(serializers.ModelSerializer):
         skill_sets = validated_data.get('skill_sets', None)
         if skill_sets is not None:
             associate.skill_sets.set(skill_sets)
+
+        #-------------------------------
+        # Set our `VehicleType` objects.
+        #-------------------------------
+        vehicle_types = validated_data.get('vehicle_types', None)
+        if vehicle_types is not None:
+            associate.vehicle_types.set(vehicle_types)
 
         #------------------------
         # Set our `Tag` objects.
@@ -460,12 +453,10 @@ class AssociateRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
             'wsib_insurance_date',
             'police_check',
             'drivers_license_class',
-            'has_car',
-            'has_van',
-            'has_truck',
+            'vehicle_types', # many-to-many
             'how_hear',
-            'skill_sets', # many-to-many
-            'tags',       # many-to-many
+            'skill_sets',    # many-to-many
+            'tags',          # many-to-many
 
             # Misc (Read Only)
             # 'comments',
@@ -508,7 +499,12 @@ class AssociateRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
     def setup_eager_loading(cls, queryset):
         """ Perform necessary eager loading of data. """
         queryset = queryset.prefetch_related(
-            'owner', 'created_by', 'last_modified_by', 'skill_sets', 'tags',
+            'owner',
+            'created_by',
+            'last_modified_by',
+            'skill_sets',
+            'tags',
+            'vehicle_types'
             # 'comments'
         )
         return queryset
@@ -523,6 +519,7 @@ class AssociateRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         # Get our inputs.
         email = validated_data.get('email', instance.email)
         skill_sets = validated_data.get('skill_sets', None)
+        vehicle_types = validated_data.get('vehicle_types', None)
 
         # Update telephone numbers.
         fax_number = validated_data.get('fax_number', instance.fax_number)
@@ -580,9 +577,6 @@ class AssociateRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         instance.commercial_insurance_expiry_date=validated_data.get('commercial_insurance_expiry_date', instance.commercial_insurance_expiry_date)
         instance.police_check=validated_data.get('police_check', instance.police_check)
         instance.drivers_license_class=validated_data.get('drivers_license_class', instance.drivers_license_class)
-        instance.has_car=validated_data.get('has_car', instance.has_car)
-        instance.has_van=validated_data.get('has_van', instance.has_van)
-        instance.has_truck=validated_data.get('has_truck', instance.has_truck)
         instance.how_hear=validated_data.get('how_hear', instance.how_hear)
         # 'organizations', #TODO: IMPLEMENT.
 
@@ -623,6 +617,12 @@ class AssociateRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         #-----------------------------
         if skill_sets is not None:
             instance.skill_sets.set(skill_sets)
+
+        #-------------------------------
+        # Set our `VehicleType` objects.
+        #-------------------------------
+        if vehicle_types is not None:
+            instance.vehicle_types.set(vehicle_types)
 
         #------------------------
         # Set our `Tag` objects.
