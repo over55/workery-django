@@ -5,14 +5,14 @@
 # script:
 
 # (1) This project must be located in the following directory:
-#     "/opt/django/overfiftyfive-django"
+#     "/opt/django/workery-django"
 # (2) The "env" variable has already been initialized with the projects
 #     requirements.txt file.
 # (3) The operating system is "CentOS 7".
 # (4) There is a "django" user account created on the "CentOS 7" system.
 #
 
-cd /opt/django/overfiftyfive-django
+cd /opt/django/workery-django
 source env/bin/activate
-cd /opt/django/overfiftyfive-django/overfiftyfive
+cd /opt/django/workery-django/workery
 exec python manage.py rqworker

@@ -173,17 +173,17 @@ env/pip-selfcheck.json
 # Important Note: Make sure this is the name of the virtualenv directory
 # that you set when you where setting up the project.
 # Do not share our secret configuration file.
-overfiftyfive/overfiftyfive/.env
+workery/workery/.env
 
 # Do not share our converage file.
 coverage.txt
 
 # Do not share your `sqlite3` database related files.
-overfiftyfive/db.sqlite3
-overfiftyfive/db.sqlite3-journal
+workery/db.sqlite3
+workery/db.sqlite3-journal
 
 # Do not share your 'django-haystack' related files.
-overfiftyfive/overfiftyfive/whoosh_index
+workery/workery/whoosh_index
 
 # Do not share real-life production data.
 prod_*.csv
@@ -192,5 +192,5 @@ prod_*.csv
 private_notes.txt
 
 # Do not share collected static files.
-overfiftyfive/overfiftyfive/static
-overfiftyfive/staticfiles
+workery/workery/static
+workery/staticfiles

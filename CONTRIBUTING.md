@@ -60,9 +60,9 @@ Please follow the coding style conventions detailed below:
 {guidelines}
 
 [1]: mailto:{bart@mikasoftware.com}
-[2]: https://github.com/over55/overfiftyfive-django/issues/new
-[3]: https://github.com/over55/overfiftyfive-django/compare
-[4]: https://github.com/over55/overfiftyfive-django/pulls
+[2]: https://github.com/over55/workery-django/issues/new
+[3]: https://github.com/over55/workery-django/compare
+[4]: https://github.com/over55/workery-django/pulls
 
 #### Versioning
 X.Y.Z Version
