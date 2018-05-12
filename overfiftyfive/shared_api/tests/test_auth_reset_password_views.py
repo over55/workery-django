@@ -32,6 +32,7 @@ class APIAuthResetPasswordViewslWithSchemaTestCase(APITestCase, TenantTestCase):
     Console:
     python manage.py test shared_api.tests.test_auth_reset_password_views
     """
+
     @transaction.atomic
     def setUp(self):
         translation.activate('en')  # Set English

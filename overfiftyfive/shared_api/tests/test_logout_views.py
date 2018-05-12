@@ -32,6 +32,7 @@ class APILogOutWithPublicSchemaTestCase(APITestCase, TenantTestCase):
     Console:
     python manage.py test shared_api.tests.test_logout_views
     """
+
     @transaction.atomic
     def setUp(self):
         translation.activate('en')  # Set English
@@ -68,6 +69,7 @@ class APILogOutWithPublicSchemaTestCase(APITestCase, TenantTestCase):
             'password': TEST_USER_PASSWORD,
         }
         response = self.c.post(logout_url, json.dumps(data), HTTP_AUTHORIZATION='Token ' + token.key, content_type='application/json')
+        print(response.content)
 
         # Confirm.
         self.assertEqual(response.status_code, status.HTTP_200_OK)

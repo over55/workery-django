@@ -33,6 +33,7 @@ class APISendResetPasswordEmailWithSchemaTestCase(APITestCase, TenantTestCase):
     Console:
     python manage.py test shared_api.tests.test_send_reset_password_email_views
     """
+
     @transaction.atomic
     def setUp(self):
         translation.activate('en')  # Set English

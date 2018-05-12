@@ -26,13 +26,12 @@ TEST_USER_TEL_EX_NUM = ""
 TEST_USER_CELL_NUM = "123 123-1234"
 
 
-"""
-Console:
-python manage.py test shared_api.tests.test_franchise_list_views
-"""
-
-
 class SharedFranchiseListAPIViewWithPublicSchemaTestCase(APITestCase, TenantTestCase):
+    """
+    Console:
+    python manage.py test shared_api.tests.test_franchise_list_views
+    """
+
     @transaction.atomic
     def setUp(self):
         translation.activate('en')  # Set English
