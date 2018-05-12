@@ -62,7 +62,7 @@ class TestTenantStaffModel(TenantTestCase):
         self.assertIsNotNone(staff)
 
         # CASE 2 OF 2:
-        staff = Staff.objects.get_by_email_or_none("trudy@workery.com")
+        staff = Staff.objects.get_by_email_or_none("trudy@workery.ca")
         self.assertIsNone(staff)
 
     def test_get_by_user_or_none(self):

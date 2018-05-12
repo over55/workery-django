@@ -35,7 +35,7 @@ class Command(BaseCommand):
     def add_arguments(self, parser):
         """
         Run manually in console:
-        python manage.py create_tenant_account "london" 2 "bart+manager@workery.com" "123password" "Bart" "Mika" "123 123-1234" "" "123 123-1234" "CA" "London" "Ontario" "" "N6H 1B4" "78 Riverside Drive" ""
+        python manage.py create_tenant_account "london" 2 "bart+manager@workery.ca" "123password" "Bart" "Mika" "123 123-1234" "" "123 123-1234" "CA" "London" "Ontario" "" "N6H 1B4" "78 Riverside Drive" ""
         """
         parser.add_argument('schema_name', nargs='+', type=str)
         parser.add_argument('group_id', nargs='+', type=int)

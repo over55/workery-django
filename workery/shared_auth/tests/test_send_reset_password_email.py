@@ -11,8 +11,8 @@ from shared_foundation import constants
 from shared_foundation.models import SharedUser
 
 
-TEST_USER_EMAIL = "bart@workery.com"
-TEST_USER_USERNAME = "bart@workery.com"
+TEST_USER_EMAIL = "bart@workery.ca"
+TEST_USER_USERNAME = "bart@workery.ca"
 TEST_USER_PASSWORD = "123P@$$w0rd"
 TEST_USER_TEL_NUM = "123 123-1234"
 TEST_USER_TEL_EX_NUM = ""
@@ -50,7 +50,7 @@ class TestSendResetPasswordEmailManagementCommand(TenantTestCase):
 
     def test_command_with_missing_email_error(self):
         try:
-            call_command('send_reset_password_email', "trudy@workery.com", verbosity=0)
+            call_command('send_reset_password_email', "trudy@workery.ca", verbosity=0)
         except Exception as e:
             self.assertIsNotNone(e)
             self.assertIn("Account does not exist with the email or username", str(e))

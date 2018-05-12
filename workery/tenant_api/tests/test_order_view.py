@@ -29,13 +29,13 @@ from tenant_foundation.models import (
 
 
 TEST_SCHEMA_NAME = "london"
-TEST_USER_EMAIL = "bart@workery.com"
-TEST_USER_USERNAME = "bart@workery.com"
+TEST_USER_EMAIL = "bart@workery.ca"
+TEST_USER_USERNAME = "bart@workery.ca"
 TEST_USER_PASSWORD = "123P@$$w0rd"
 TEST_USER_TEL_NUM = "123 123-1234"
 TEST_USER_TEL_EX_NUM = ""
 TEST_USER_CELL_NUM = "123 123-1234"
-TEST_ALERNATE_USER_EMAIL = "rodolfo@workery.com"
+TEST_ALERNATE_USER_EMAIL = "rodolfo@workery.ca"
 
 
 class OrderListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
@@ -73,15 +73,15 @@ class OrderListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
         call_command('populate_tenant_sample_db', TEST_SCHEMA_NAME, verbosity=0)
 
         # Get objects.
-        self.customer = Customer.objects.get(owner__email='sikari@workery.com')
-        self.associate = Associate.objects.get(owner__email='rayanami@workery.com')
+        self.customer = Customer.objects.get(owner__email='sikari@workery.ca')
+        self.associate = Associate.objects.get(owner__email='rayanami@workery.ca')
 
         # Get users.
-        exec_user = SharedUser.objects.get(email='bart+executive@workery.com')
-        manager_user = SharedUser.objects.get(email='bart+manager@workery.com')
-        frontline_user = SharedUser.objects.get(email='fherbert@workery.com')
-        associate_user = SharedUser.objects.get(email='rayanami@workery.com')
-        customer_user = SharedUser.objects.get(email='sikari@workery.com')
+        exec_user = SharedUser.objects.get(email='bart+executive@workery.ca')
+        manager_user = SharedUser.objects.get(email='bart+manager@workery.ca')
+        frontline_user = SharedUser.objects.get(email='fherbert@workery.ca')
+        associate_user = SharedUser.objects.get(email='rayanami@workery.ca')
+        customer_user = SharedUser.objects.get(email='sikari@workery.ca')
 
         # Get tokens.
         exec_token, exec_orig_iat = get_jwt_token_and_orig_iat(exec_user)
@@ -94,22 +94,22 @@ class OrderListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
         self.unauthorized_client = TenantClient(self.tenant)
         self.exec_client = TenantClient(self.tenant, HTTP_AUTHORIZATION='JWT {0}'.format(exec_token))
         self.exec_client.login(
-            username='bart+executive@workery.com',
+            username='bart+executive@workery.ca',
             password=TEST_USER_PASSWORD
         )
         self.manager_client = TenantClient(self.tenant, HTTP_AUTHORIZATION='JWT {0}'.format(manager_token))
         self.manager_client.login(
-            username='bart+manager@workery.com',
+            username='bart+manager@workery.ca',
             password=TEST_USER_PASSWORD
         )
         self.staff_client = TenantClient(self.tenant, HTTP_AUTHORIZATION='JWT {0}'.format(manager_token))
         self.staff_client.login(
-            username='fherbert@workery.com',
+            username='fherbert@workery.ca',
             password=TEST_USER_PASSWORD
         )
         self.customer_client = TenantClient(self.tenant, HTTP_AUTHORIZATION='JWT {0}'.format(manager_token))
         self.customer_client.login(
-            username='rayanami@workery.com',
+            username='rayanami@workery.ca',
             password=TEST_USER_PASSWORD
         )
 
@@ -123,10 +123,10 @@ class OrderListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
 
         # Create our order.
         self.order = Order.objects.create(
-            customer=Customer.objects.get(owner__email="sikari@workery.com"),
-            associate=Associate.objects.get(owner__email="rayanami@workery.com"),
+            customer=Customer.objects.get(owner__email="sikari@workery.ca"),
+            associate=Associate.objects.get(owner__email="rayanami@workery.ca"),
             assignment_date=timezone.now(),
-            created_by=SharedUser.objects.get(email="fherbert@workery.com"),
+            created_by=SharedUser.objects.get(email="fherbert@workery.ca"),
             last_modified_by=None
         )
         self.order.tags.set([self.tag])

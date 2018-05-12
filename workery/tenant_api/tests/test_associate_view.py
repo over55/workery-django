@@ -25,13 +25,13 @@ from tenant_foundation.models import (
 
 
 TEST_SCHEMA_NAME = "london"
-TEST_USER_EMAIL = "bart@workery.com"
-TEST_USER_USERNAME = "bart@workery.com"
+TEST_USER_EMAIL = "bart@workery.ca"
+TEST_USER_USERNAME = "bart@workery.ca"
 TEST_USER_PASSWORD = "123P@$$w0rd"
 TEST_USER_TEL_NUM = "123 123-1234"
 TEST_USER_TEL_EX_NUM = ""
 TEST_USER_CELL_NUM = "123 123-1234"
-TEST_ALERNATE_USER_EMAIL = "rodolfo@workery.com"
+TEST_ALERNATE_USER_EMAIL = "rodolfo@workery.ca"
 
 
 class AssociateListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
@@ -215,7 +215,7 @@ class AssociateListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
         url = reverse('o55_associate_list_create_api_endpoint')
         url += "?format=json"
         response = self.authorized_client.post(url, data=json.dumps({
-            'email': "bart+associate@workery.com",
+            'email': "bart+associate@workery.ca",
             'given_name': 'Bart',
             'middle_name': '',
             'last_name': 'Mika',
@@ -316,7 +316,7 @@ class AssociateListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
             'is_ok_to_text': True,
             'vehicle_types': [],
             'tags': [],
-            'email': 'bart@workery.com'
+            'email': 'bart@workery.ca'
         }), content_type='application/json')
         self.assertIsNotNone(response)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -379,7 +379,7 @@ class AssociateListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
             'is_ok_to_text': True,
             'vehicle_types': [],
             'tags': [],
-            'email': 'bart@workery.com'
+            'email': 'bart@workery.ca'
         }), content_type='application/json')
         self.assertIsNotNone(response)
         self.assertEqual(response.status_code, status.HTTP_200_OK)

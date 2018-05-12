@@ -25,13 +25,13 @@ from tenant_foundation.models import (
 
 
 TEST_SCHEMA_NAME = "london"
-TEST_USER_EMAIL = "bart@workery.com"
-TEST_USER_USERNAME = "bart@workery.com"
+TEST_USER_EMAIL = "bart@workery.ca"
+TEST_USER_USERNAME = "bart@workery.ca"
 TEST_USER_PASSWORD = "123P@$$w0rd"
 TEST_USER_TEL_NUM = "123 123-1234"
 TEST_USER_TEL_EX_NUM = ""
 TEST_USER_CELL_NUM = "123 123-1234"
-TEST_ALERNATE_USER_EMAIL = "rodolfo@workery.com"
+TEST_ALERNATE_USER_EMAIL = "rodolfo@workery.ca"
 
 
 class StaffListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
@@ -216,7 +216,7 @@ class StaffListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
             'groups': [
                 constants.MANAGEMENT_GROUP_ID
             ],
-            'email': "bart+staff@workery.com",
+            'email': "bart+staff@workery.ca",
             'given_name': 'Bart',
             'middle_name': '',
             'last_name': 'Mika',
@@ -333,7 +333,7 @@ class StaffListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
         Permission.objects.all().delete()
         url = reverse('o55_staff_retrieve_update_destroy_api_endpoint', args=[self.staff.id])+"?format=json"
         response = self.authorized_client.put(url, data=json.dumps({
-            # 'email': 'bart@workery.com',
+            # 'email': 'bart@workery.ca',
             'given_name': 'Bartlomiej',
             'middle_name': '',
             'last_name': 'Mika',
@@ -370,7 +370,7 @@ class StaffListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
         response = self.authorized_client.put(url, data=json.dumps({
             'password': '123Password!',
             'password_repeat': '123Password!',
-            # 'email': 'bart@workery.com',
+            # 'email': 'bart@workery.ca',
             'given_name': 'Bartlomiej',
             'middle_name': '',
             'last_name': 'Mika',

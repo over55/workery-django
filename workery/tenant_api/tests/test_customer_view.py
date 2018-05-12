@@ -28,13 +28,13 @@ from tenant_foundation.models import (
 
 
 TEST_SCHEMA_NAME = "london"
-TEST_USER_EMAIL = "bart@workery.com"
-TEST_USER_USERNAME = "bart@workery.com"
+TEST_USER_EMAIL = "bart@workery.ca"
+TEST_USER_USERNAME = "bart@workery.ca"
 TEST_USER_PASSWORD = "123P@$$w0rd"
 TEST_USER_TEL_NUM = "123 123-1234"
 TEST_USER_TEL_EX_NUM = ""
 TEST_USER_CELL_NUM = "123 123-1234"
-TEST_ALERNATE_USER_EMAIL = "rodolfo@workery.com"
+TEST_ALERNATE_USER_EMAIL = "rodolfo@workery.ca"
 
 
 class CustomerListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
@@ -214,7 +214,7 @@ class CustomerListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
             'given_name': 'Bart',
             'middle_name': '',
             'last_name': 'Mika',
-            'email': 'bart+customer@workery.com',
+            'email': 'bart+customer@workery.ca',
             'address_country': 'CA',
             'address_locality': 'London',
             'address_region': 'Ontario',
@@ -242,8 +242,8 @@ class CustomerListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
         self.assertIn("78 Riverside Drive", str(response.data))
 
         # Confirm we created a `Customer` object.
-        self.assertEqual(1, Customer.objects.filter(email="bart+customer@workery.com").count())
-        self.assertEqual(1, SharedUser.objects.filter(email="bart+customer@workery.com").count())
+        self.assertEqual(1, Customer.objects.filter(email="bart+customer@workery.ca").count())
+        self.assertEqual(1, SharedUser.objects.filter(email="bart+customer@workery.ca").count())
 
     @transaction.atomic
     def test_create_with_403_by_permissions(self):

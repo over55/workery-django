@@ -19,8 +19,8 @@ from shared_foundation import constants
 from shared_foundation.models import SharedUser
 
 
-TEST_USER_EMAIL = "bart@workery.com"
-TEST_USER_USERNAME = "bart@workery.com"
+TEST_USER_EMAIL = "bart@workery.ca"
+TEST_USER_USERNAME = "bart@workery.ca"
 TEST_USER_PASSWORD = "123P@$$w0rd"
 TEST_USER_TEL_NUM = "123 123-1234"
 TEST_USER_TEL_EX_NUM = ""
@@ -72,7 +72,7 @@ class APISendResetPasswordEmailWithSchemaTestCase(APITestCase, TenantTestCase):
     def test_api_send_reset_password_email_with_failure(self):
         url = reverse('o55_send_reset_password_email_api_endpoint')
         data = {
-            'email_or_username': "some-bad-email@workery.com",
+            'email_or_username': "some-bad-email@workery.ca",
         }
         response = self.c.post(url, json.dumps(data), content_type='application/json')
 

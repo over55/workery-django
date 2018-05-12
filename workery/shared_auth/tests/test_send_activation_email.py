@@ -27,7 +27,7 @@ class TestSendActivationEmail(TenantTestCase):
         call_command('init_app', verbosity=0)
         call_command(
            'create_shared_account',
-           'bart+test2@workery.com',
+           'bart+test2@workery.ca',
            '123password',
            "Bart",
            "Mika",
@@ -35,7 +35,7 @@ class TestSendActivationEmail(TenantTestCase):
         )
 
     def test_run(self):
-        call_command('send_activation_email', 'bart+test2@workery.com', verbosity=0)
+        call_command('send_activation_email', 'bart+test2@workery.ca', verbosity=0)
 
     def test_run_with_dne(self):
         try:
