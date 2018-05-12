@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import logging
 import os
 import sys
 from decimal import *
@@ -9,6 +10,9 @@ from django.utils.translation import ugettext_lazy as _
 from django.core.management import call_command
 from shared_foundation.models.franchise import SharedFranchise
 from shared_foundation.models.franchise import SharedFranchiseDomain
+
+
+logger = logging.getLogger(__name__)
 
 
 class Command(BaseCommand):
@@ -32,7 +36,7 @@ class Command(BaseCommand):
         try:
             public_tenant.save()
         except Exception as e:
-            print(e)
+            logger.exception(e)
 
         # Add one or more domains for the tenant
         domain = SharedFranchiseDomain()
@@ -42,7 +46,7 @@ class Command(BaseCommand):
         try:
             domain.save()
         except Exception as e:
-            print(e)
+            logger.exception(e)
 
         self.stdout.write(
             self.style.SUCCESS(_('Successfully setup public database.'))

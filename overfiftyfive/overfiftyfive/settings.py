@@ -14,6 +14,7 @@ import datetime
 import os
 import environ
 import re
+import logging.config
 
 '''
 django-environ
@@ -322,53 +323,47 @@ KEEP_COMMENTS_ON_MINIFYING = env("KEEP_COMMENTS_ON_MINIFYING")
 
 # Error Emailing
 # https://docs.djangoproject.com/en/dev/topics/logging/
-
-LOGGING = {
+LOGGING_CONFIG = None
+logging.config.dictConfig({
     'version': 1,
     'disable_existing_loggers': False,
-    'filters': {
-        'require_debug_false': {
-            '()': 'django.utils.log.RequireDebugFalse'
-        },
-        'tenant_context': {
-            '()': 'django_tenants.log.TenantContextFilter'
-        },
-    },
     'formatters': {
-        'tenant_context': {
-            'format': '[%(schema_name)s:%(domain_url)s] '
-            '%(levelname)-7s %(asctime)s %(message)s',
+        'console': {
+            # exact format is not important, this is the minimum information
+            'format': '%(asctime)s %(name)-12s %(levelname)-8s %(message)s',
         },
     },
     'handlers': {
-        'mail_admins': {
-            'level': 'ERROR',
-            'filters': ['require_debug_false', 'tenant_context'],
-            'class': 'django.utils.log.AdminEmailHandler',
+        'console': {
+            'class': 'logging.StreamHandler',
+            'formatter': 'console',
         },
-        'applogfile': {
-            'level':'INFO',
-            'filters': ['tenant_context'],
-            'class':'logging.handlers.RotatingFileHandler',
-            'filename': os.path.join(BASE_DIR, 'debug.log'),
-
-            # This will set up a rotating log that can get 15 MB in size and keep 10 historical versions.
-            'maxBytes': 1024*1024*15, # 15MB
-            'backupCount': 10,
-        },
+        # # Add Handler for Sentry for `warning` and above
+        # 'sentry': {
+        #     'level': 'WARNING',
+        #     'class': 'raven.contrib.django.raven_compat.handlers.SentryHandler',
+        # },
     },
     'loggers': {
-        'django.request': {
-            'handlers': ['mail_admins'],
-            'level': 'ERROR',
-            'propagate': True,
+        # root logger
+        '': {
+            'level': 'WARNING',
+            'handlers': [
+                'console',
+                # 'sentry'
+            ],
         },
-        'django': {
-            'handlers': ['applogfile',],
+        'overfiftyfive': {
             'level': 'INFO',
+            'handlers': [
+                'console',
+                # 'sentry'
+            ],
+            # required to avoid double logging with root logger
+            'propagate': False,
         },
-    }
-}
+    },
+})
 
 
 # Error Reporting

@@ -60,9 +60,5 @@ def get_jwt_token_and_orig_iat(authenticated_user):
 
     token = jwt_encode_handler(payload)
 
-    # For debugging purposes only.
-    # print(token)
-    # print(orig_iat)
-
     # Return both the token and original date.
     return token, orig_iat

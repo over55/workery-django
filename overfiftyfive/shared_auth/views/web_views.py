@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import logging
 from rest_framework.authtoken.models import Token
 from django.core.exceptions import PermissionDenied
 from django.conf import settings
@@ -12,6 +13,9 @@ from shared_foundation.models import SharedFranchise
 from shared_foundation.models import SharedUser
 from shared_foundation import utils
 from shared_foundation.decorators import public_only_or_redirect
+
+
+logger = logging.getLogger(__name__)
 
 
 @public_only_or_redirect
@@ -86,10 +90,10 @@ def user_activation_detail_page(request, pr_access_code=None):
             me.save()
         else:
             # Erro message indicating code expired.
-            print("INFO: Access code expired.")
+            logger.info("shared_auth: web_views: Access code expired.")
             raise PermissionDenied(_('Access code expired.'))
     except SharedUser.DoesNotExist:
-        print("INFO: Wrong access code.")
+        logger.info("shared_auth: web_views: Wrong access code.")
         raise PermissionDenied(_('Wrong access code.'))
 
     return render(request, 'shared_auth/activate_user/detail_view.html',{})

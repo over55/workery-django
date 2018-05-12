@@ -78,7 +78,6 @@ class APILoginWithPublicSchemaTestCase(APITestCase, TenantTestCase):
         }
         response = self.c.post(url, data, format='json')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        # print(response.content)
         self.assertEqual(len(response.data['token']) > 0, True)
         self.assertEqual(len(response.data['schema_name']) > 0, True)
 
