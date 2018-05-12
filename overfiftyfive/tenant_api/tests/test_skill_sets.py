@@ -16,8 +16,8 @@ from django_tenants.test.client import TenantClient
 from rest_framework import status
 from rest_framework.test import APIClient
 from rest_framework.test import APITestCase
-from rest_framework.authtoken.models import Token
 from shared_foundation import constants
+from shared_foundation.utils import get_jwt_token_and_orig_iat
 from shared_foundation.models import SharedUser
 from tenant_foundation.models import (
     Associate,
@@ -38,13 +38,11 @@ TEST_USER_CELL_NUM = "123 123-1234"
 TEST_ALERNATE_USER_EMAIL = "rodolfo@overfiftyfive.com"
 
 
-"""
-Console:
-python manage.py test tenant_api.tests.test_skill_sets
-"""
-
-
 class SkillSetListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
+    """
+    Console:
+    python manage.py test tenant_api.tests.test_skill_sets
+    """
 
     #------------------#
     # Setup Unit Tests #
@@ -78,12 +76,19 @@ class SkillSetListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
         self.customer = Customer.objects.get(owner__email='sikari@overfiftyfive.com')
         self.associate = Associate.objects.get(owner__email='rayanami@overfiftyfive.com')
 
+        # Get users.
+        exec_user = SharedUser.objects.get(email='bart+executive@overfiftyfive.com')
+        manager_user = SharedUser.objects.get(email='bart+manager@overfiftyfive.com')
+        frontline_user = SharedUser.objects.get(email='fherbert@overfiftyfive.com')
+        associate_user = SharedUser.objects.get(email='rayanami@overfiftyfive.com')
+        customer_user = SharedUser.objects.get(email='sikari@overfiftyfive.com')
+
         # Get tokens.
-        exec_token = Token.objects.get(user__email='bart+executive@overfiftyfive.com')
-        manager_token = Token.objects.get(user__email='bart+manager@overfiftyfive.com')
-        frontline_token = Token.objects.get(user__email='fherbert@overfiftyfive.com')
-        associate_token = Token.objects.get(user__email='rayanami@overfiftyfive.com')
-        customer_token = Token.objects.get(user__email='sikari@overfiftyfive.com')
+        exec_token, exec_orig_iat = get_jwt_token_and_orig_iat(exec_user)
+        manager_token, manager_orig_iat = get_jwt_token_and_orig_iat(manager_user)
+        frontline_token, frontline_orig_iat = get_jwt_token_and_orig_iat(frontline_user)
+        associate_token, associate_orig_iat = get_jwt_token_and_orig_iat(associate_user)
+        customer_token, customer_orig_iat = get_jwt_token_and_orig_iat(customer_user)
 
         # Setup.
         self.unauthorized_client = TenantClient(self.tenant)
