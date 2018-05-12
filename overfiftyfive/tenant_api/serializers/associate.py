@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import logging
 import phonenumbers
 from datetime import datetime, timedelta
 from dateutil import tz
@@ -34,6 +35,9 @@ from tenant_foundation.models import (
     Organization,
     VehicleType
 )
+
+
+logger = logging.getLogger(__name__)
 
 
 class AssociateListCreateSerializer(serializers.ModelSerializer):
@@ -280,7 +284,7 @@ class AssociateListCreateSerializer(serializers.ModelSerializer):
         password = validated_data.get('password', None)
         owner.set_password(password)
         owner.save()
-        print("INFO: Created shared user.")
+        logger.info("Created shared user.")
 
         #---------------------------------------------------
         # Create our `Associate` object in our tenant schema.
@@ -341,7 +345,7 @@ class AssociateListCreateSerializer(serializers.ModelSerializer):
             longitude=validated_data.get('longitude', None),
             # 'location' #TODO: IMPLEMENT.
         )
-        print("INFO: Created associate.")
+        logger.info("Created associate.")
 
         #-----------------------------
         # Set our `SkillSet` objects.
@@ -349,7 +353,7 @@ class AssociateListCreateSerializer(serializers.ModelSerializer):
         skill_sets = validated_data.get('skill_sets', None)
         if skill_sets is not None:
             associate.skill_sets.set(skill_sets)
-            print("INFO: Set associate skill sets.")
+            logger.info("Set associate skill sets.")
 
         #-------------------------------
         # Set our `VehicleType` objects.
@@ -357,7 +361,7 @@ class AssociateListCreateSerializer(serializers.ModelSerializer):
         vehicle_types = validated_data.get('vehicle_types', None)
         if vehicle_types is not None:
             associate.vehicle_types.set(vehicle_types)
-            print("INFO: Set associate vehicle types.")
+            logger.info("Set associate vehicle types.")
 
         #------------------------
         # Set our `Tag` objects.
@@ -365,7 +369,7 @@ class AssociateListCreateSerializer(serializers.ModelSerializer):
         tags = validated_data.get('tags', None)
         if tags is not None:
             associate.tags.set(tags)
-            print("INFO: Set associate tags.")
+            logger.info("Set associate tags.")
 
         #-----------------------------
         # Create our `Comment` object.
@@ -381,7 +385,7 @@ class AssociateListCreateSerializer(serializers.ModelSerializer):
                 about=associate,
                 comment=comment,
             )
-            print("INFO: Set associate comments.")
+            logger.info("Set associate comments.")
 
         # Update validation data.
         # validated_data['comments'] = AssociateComment.objects.filter(associate=associate)
@@ -518,7 +522,7 @@ class AssociateRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         Override this function to include extra functionality.
         """
         # For debugging purposes only.
-        # print(validated_data)
+        # logger.info(validated_data)
 
         # Get our inputs.
         email = validated_data.get('email', instance.email)
@@ -548,7 +552,7 @@ class AssociateRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
                 'is_active': validated_data.get('is_active', False)
             }
         )
-        print("INFO: Updated shared user.")
+        logger.info("Updated shared user.")
 
         # Update the password.
         password = validated_data.get('password', None)
@@ -557,7 +561,7 @@ class AssociateRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
 
             # Save the model.
             instance.owner.save()
-            print("INFO: Password was updated.")
+            logger.info("Password was updated.")
 
         #---------------------------
         # Update `Associate` object.
@@ -615,21 +619,21 @@ class AssociateRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
 
         # Save our instance.
         instance.save()
-        print("INFO: Updated the associate.")
+        logger.info("Updated the associate.")
 
         #-----------------------------
         # Set our `SkillSet` objects.
         #-----------------------------
         if skill_sets is not None:
             instance.skill_sets.set(skill_sets)
-            print("INFO: Set associate skill sets.")
+            logger.info("Set associate skill sets.")
 
         #-------------------------------
         # Set our `VehicleType` objects.
         #-------------------------------
         if vehicle_types is not None:
             instance.vehicle_types.set(vehicle_types)
-            print("INFO: Set associate vehicle types.")
+            logger.info("Set associate vehicle types.")
 
         #------------------------
         # Set our `Tag` objects.
@@ -637,7 +641,7 @@ class AssociateRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         tags = validated_data.get('tags', None)
         if tags is not None:
             instance.tags.set(tags)
-            print("INFO: Set associate tags.")
+            logger.info("Set associate tags.")
 
         #---------------------------
         # Attach our comment.
@@ -653,7 +657,7 @@ class AssociateRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
                 about=instance,
                 comment=comment,
             )
-            print("INFO: Set associate comments.")
+            logger.info("Set associate comments.")
 
         #---------------------------
         # Update validation data.

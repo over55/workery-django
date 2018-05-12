@@ -3,7 +3,6 @@ import django_filters
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters
 from starterkit.drf.permissions import IsAuthenticatedAndIsActivePermission
-from django.conf.urls import url, include
 from django.shortcuts import get_list_or_404, get_object_or_404
 from rest_framework import generics
 from rest_framework import authentication, viewsets, permissions, status

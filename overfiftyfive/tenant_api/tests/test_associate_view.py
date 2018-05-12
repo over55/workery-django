@@ -15,8 +15,8 @@ from django_tenants.test.client import TenantClient
 from rest_framework import status
 from rest_framework.test import APIClient
 from rest_framework.test import APITestCase
-from rest_framework.authtoken.models import Token
 from shared_foundation import constants
+from shared_foundation.utils import get_jwt_token_and_orig_iat
 from shared_foundation.models import SharedUser
 from tenant_foundation.models import (
     Associate,
@@ -34,13 +34,11 @@ TEST_USER_CELL_NUM = "123 123-1234"
 TEST_ALERNATE_USER_EMAIL = "rodolfo@overfiftyfive.com"
 
 
-"""
-Console:
-python manage.py test tenant_api.tests.test_associate_view
-"""
-
-
 class AssociateListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
+    """
+    Console:
+    python manage.py test tenant_api.tests.test_associate_view
+    """
 
     #------------------#
     # Setup Unit Tests #
@@ -115,11 +113,11 @@ class AssociateListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
 
         # Initialize our test data.
         self.user = SharedUser.objects.get(email=TEST_USER_EMAIL)
-        token = Token.objects.get(user=self.user)
+        token, orig_iat = get_jwt_token_and_orig_iat(self.user)
 
         # Setup.
         self.unauthorized_client = TenantClient(self.tenant)
-        self.authorized_client = TenantClient(self.tenant, HTTP_AUTHORIZATION='Token ' + token.key)
+        self.authorized_client = TenantClient(self.tenant, HTTP_AUTHORIZATION='JWT {0}'.format(token))
         self.authorized_client.login(
             username=TEST_USER_USERNAME,
             password=TEST_USER_PASSWORD
@@ -232,16 +230,24 @@ class AssociateListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
                 skill_set_2.id,
                 skill_set_3.id
             ],
-            'telephone': '1231231234'
+            'telephone': '1231231234',
+            'is_active': True,
+            'password': '123passwordOK!',
+            'password_repeat': '123passwordOK!',
+            'description': 'Some generic desc.',
+            'telephone_type_of': 1,
+            'other_telephone_type_of': 1,
+            'is_ok_to_email': True,
+            'is_ok_to_text': True,
+            'vehicle_types': [],
+            'tags': []
         }), content_type='application/json')
         self.assertIsNotNone(response)
-        # print(response.content)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertIn("Bart", str(response.data))
         self.assertIn("Mika", str(response.data))
-        self.assertIn("This is a friendly associate.", str(response.data))
-        self.assertIn("Ceramic Tile", str(response.data))
-        self.assertIn("Deck Construction", str(response.data))
+        # self.assertIn("This is a friendly associate.", str(response.data)) # If comments are included then use this.
+        self.assertIn("[1, 2, 3]", str(response.data)) # Verify skill sets.
 
     @transaction.atomic
     def test_create_with_403_by_permissions(self):
@@ -299,16 +305,25 @@ class AssociateListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
                 skill_set_2.id,
                 skill_set_3.id
             ],
-            'telephone': '1231231234'
+            'telephone': '1231231234',
+            'is_active': True,
+            'password': '123passwordOK!',
+            'password_repeat': '123passwordOK!',
+            'description': 'Some generic desc.',
+            'telephone_type_of': 1,
+            'other_telephone_type_of': 1,
+            'is_ok_to_email': True,
+            'is_ok_to_text': True,
+            'vehicle_types': [],
+            'tags': [],
+            'email': 'bart@overfiftyfive.com'
         }), content_type='application/json')
         self.assertIsNotNone(response)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        # print(response.data)
         self.assertIn("Bartlomiej", str(response.data))
         self.assertIn("Mika", str(response.data))
-        self.assertIn("This is a helpful associate.", str(response.data))
-        self.assertIn("Ceramic Tile", str(response.data))
-        self.assertIn("Carpenter", str(response.data))
+        # self.assertIn("This is a friendly associate.", str(response.data)) # If comments are included then use this.
+        self.assertIn("[1, 2, 3]", str(response.data)) # Verify skill sets.
 
     @transaction.atomic
     def test_update_with_403_by_permissions(self):
@@ -353,18 +368,27 @@ class AssociateListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
                 skill_set_2.id,
                 skill_set_3.id
             ],
-            'telephone': '1231231234'
+            'telephone': '1231231234',
+            'is_active': True,
+            'password': '123passwordOK!',
+            'password_repeat': '123passwordOK!',
+            'description': 'Some generic desc.',
+            'telephone_type_of': 1,
+            'other_telephone_type_of': 1,
+            'is_ok_to_email': True,
+            'is_ok_to_text': True,
+            'vehicle_types': [],
+            'tags': [],
+            'email': 'bart@overfiftyfive.com'
         }), content_type='application/json')
         self.assertIsNotNone(response)
-        # print(response.content)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertIn("Bartlomiej", str(response.data))
         self.assertIn("Mika", str(response.data))
-        self.assertIn("This is a helpful associate.", str(response.data))
-        self.assertIn("Ceramic Tile", str(response.data))
-        self.assertIn("Carpenter", str(response.data))
+        # self.assertIn("This is a friendly associate.", str(response.data)) # If comments are included then use this.
+        self.assertIn("[1, 2, 3]", str(response.data)) # Verify skill sets.
 
-    #-----------------------#
+    # # #-----------------------#
     # Retrieve API-endpoint #
     #-----------------------#
 
