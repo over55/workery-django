@@ -10,12 +10,13 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.0/ref/settings/
 """
 
+import logging.config
 import datetime
 import os
 import environ
 import re
-import logging.config
 import raven # Third party library
+from django.utils.log import DEFAULT_LOGGING
 
 '''
 django-environ
@@ -326,7 +327,12 @@ KEEP_COMMENTS_ON_MINIFYING = env("KEEP_COMMENTS_ON_MINIFYING")
 
 # Error Emailing
 # https://docs.djangoproject.com/en/dev/topics/logging/
+
+# Disable Django's logging setup
 LOGGING_CONFIG = None
+
+LOGLEVEL = os.environ.get('LOGLEVEL', 'info').upper()
+
 logging.config.dictConfig({
     'version': 1,
     'disable_existing_loggers': False,
@@ -335,6 +341,7 @@ logging.config.dictConfig({
             # exact format is not important, this is the minimum information
             'format': '%(asctime)s %(name)-12s %(levelname)-8s %(message)s',
         },
+        'django.server': DEFAULT_LOGGING['formatters']['django.server'],
     },
     'handlers': {
         'console': {
@@ -346,25 +353,35 @@ logging.config.dictConfig({
             'level': 'WARNING', # To capture more than ERROR, change to WARNING, INFO, etc.
             'class': 'raven.contrib.django.raven_compat.handlers.SentryHandler',
         },
+        'django.server': DEFAULT_LOGGING['handlers']['django.server'],
     },
     'loggers': {
-        # root logger
-        'root': {
+        # Default for all undefined Python modules
+        '': {
             'level': 'WARNING',
             'handlers': [
                 'console',
                 'sentry'
             ],
         },
+        # Our application code
         'workery': {
-            'level': 'INFO',
+            'level': LOGLEVEL,
             'handlers': [
                 'console',
-                # 'sentry'
+                'sentry'
             ],
             # required to avoid double logging with root logger
             'propagate': False,
         },
+        # Prevent noisy modules from logging to Sentry
+        'noisy_module': {
+            'level': 'ERROR',
+            'handlers': ['console'],
+            'propagate': False,
+        },
+        # Default runserver request logging
+        'django.server': DEFAULT_LOGGING['loggers']['django.server'],
     },
 })
 
