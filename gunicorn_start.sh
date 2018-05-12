@@ -4,14 +4,14 @@
 #TODO: Implement for https://simpleisbetterthancomplex.com/tutorial/2017/05/23/how-to-deploy-a-django-application-on-rhel.html #
 #------------------------------------------------------------------------------------------------------------------------------#
 
-NAME="overfiftyfive"
-DJANGODIR=/opt/overfiftyfive/overfiftyfive
+NAME="workery"
+DJANGODIR=/opt/workery/workery
 USER=django
 GROUP=django
 WORKERS=3
-BIND=unix:/opt/overfiftyfive/run/gunicorn.sock
-DJANGO_SETTINGS_MODULE=overfiftyfive.settings
-DJANGO_WSGI_MODULE=overfiftyfive.wsgi
+BIND=unix:/opt/workery/run/gunicorn.sock
+DJANGO_SETTINGS_MODULE=workery.settings
+DJANGO_WSGI_MODULE=workery.wsgi
 LOGLEVEL=error
 
 cd $DJANGODIR

@@ -6,7 +6,7 @@
 
 # Step 1: Clear the file.
 clear;
-cat > overfiftyfive/overfiftyfive/.env << EOL
+cat > workery/workery/.env << EOL
 #--------#
 # Django #
 #--------#
@@ -19,8 +19,8 @@ ADMIN_EMAIL=bart@mikasoftware.com
 #----------#
 # Database #
 #----------#
-DATABASE_URL=postgis://django:123password@localhost:5432/overfiftyfive_db
-DB_NAME=overfiftyfive_db
+DATABASE_URL=postgis://django:123password@localhost:5432/workery_db
+DB_NAME=workery_db
 DB_USER=django
 DB_PASSWORD=123password
 DB_HOST=localhost
@@ -45,7 +45,7 @@ KEEP_COMMENTS_ON_MINIFYING=False
 # Application Specific Variables #
 #--------------------------------#
 O55_APP_HTTP_PROTOCOL=http://
-O55_APP_HTTP_DOMAIN=overfiftyfive.com
+O55_APP_HTTP_DOMAIN=workery.ca
 O55_APP_DEFAULT_MONEY_CURRENCY=CAD
 EOL
 
