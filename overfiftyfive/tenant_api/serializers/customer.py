@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import logging
 import phonenumbers
 from datetime import datetime, timedelta
 from dateutil import tz
@@ -11,6 +12,7 @@ from starterkit.utils import (
     get_unique_username_from_email
 )
 from django.conf import settings
+from django.db import transaction
 from django.contrib.auth.models import Group
 from django.contrib.auth import authenticate
 from django.db.models import Q, Prefetch
@@ -32,6 +34,9 @@ from tenant_foundation.models import (
     Customer,
     Organization
 )
+
+
+logger = logging.getLogger(__name__)
 
 
 class CustomerListCreateSerializer(serializers.ModelSerializer):
@@ -330,7 +335,7 @@ class CustomerListCreateSerializer(serializers.ModelSerializer):
             password = validated_data.get('password', None)
             owner.set_password(password)
             owner.save()
-            print("INFO: Created shared user.")
+            logger.info("Created shared user.")
 
         #---------------------------------------------------
         # Create our `Customer` object in our tenant schema.
@@ -384,7 +389,7 @@ class CustomerListCreateSerializer(serializers.ModelSerializer):
             longitude=validated_data.get('longitude', None),
             # 'location' #TODO: IMPLEMENT.
         )
-        print("INFO: Created customer.")
+        logger.info("Created customer.")
 
         #-----------------------------------
         # Create or update our Organization.
@@ -416,13 +421,13 @@ class CustomerListCreateSerializer(serializers.ModelSerializer):
                 }
             )
             if created:
-                print("INFO: Created organization.")
+                logger.info("Created organization.")
                 organization.owner = owner
                 organization.save()
 
             customer.organization = organization
             customer.save()
-            print("INFO: Attached created organization to customer.")
+            logger.info("Attached created organization to customer.")
 
         #------------------------
         # Set our `Tag` objects.
@@ -582,13 +587,11 @@ class CustomerRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         )
         return queryset
 
+    @transaction.atomic
     def update(self, instance, validated_data):
         """
         Override this function to include extra functionality.
         """
-        # For debugging purposes only.
-        # print(validated_data)
-
         # Get our inputs.
         email = validated_data.get('email', instance.email)
 
@@ -597,10 +600,12 @@ class CustomerRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         #---------------------------
         if instance.owner:
             # Update details.
-            instance.owner.email = email
-            instance.owner.username = get_unique_username_from_email(email)
             instance.owner.first_name = validated_data.get('given_name', instance.owner.first_name)
             instance.owner.last_name = validated_data.get('last_name', instance.owner.last_name)
+
+            if email:
+                instance.owner.email = email
+                instance.owner.username = get_unique_username_from_email(email)
 
             # Update the password.
             password = validated_data.get('password', None)
@@ -608,7 +613,7 @@ class CustomerRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
 
             # Save the model to the database.
             instance.owner.save()
-            print("INFO: Updated shared user.")
+            logger.info("Updated shared user.")
 
         #---------------------------
         # Update `Customer` object.
@@ -669,7 +674,7 @@ class CustomerRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
 
         # Save
         instance.save()
-        print("INFO: Updated the customer.")
+        logger.info("Updated the customer.")
 
         #------------------------
         # Set our `Tag` objects.

@@ -15,8 +15,8 @@ from django_tenants.test.client import TenantClient
 from rest_framework import status
 from rest_framework.test import APIClient
 from rest_framework.test import APITestCase
-from rest_framework.authtoken.models import Token
 from shared_foundation import constants
+from shared_foundation.utils import get_jwt_token_and_orig_iat
 from shared_foundation.models import (
    SharedUser,
 )
@@ -37,13 +37,11 @@ TEST_USER_CELL_NUM = "123 123-1234"
 TEST_ALERNATE_USER_EMAIL = "rodolfo@overfiftyfive.com"
 
 
-"""
-Console:
-python manage.py test tenant_api.tests.test_customer_view
-"""
-
-
 class CustomerListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
+    """
+    Console:
+    python manage.py test tenant_api.tests.test_customer_view
+    """
 
     #------------------#
     # Setup Unit Tests #
@@ -118,11 +116,11 @@ class CustomerListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
 
         # Initialize our test data.
         self.user = SharedUser.objects.get(email=TEST_USER_EMAIL)
-        token = Token.objects.get(user=self.user)
+        token, orig_iat = get_jwt_token_and_orig_iat(self.user)
 
         # Setup.
         self.unauthorized_client = TenantClient(self.tenant)
-        self.authorized_client = TenantClient(self.tenant, HTTP_AUTHORIZATION='Token ' + token.key)
+        self.authorized_client = TenantClient(self.tenant, HTTP_AUTHORIZATION='JWT {0}'.format(token))
         self.authorized_client.login(
             username=TEST_USER_USERNAME,
             password=TEST_USER_PASSWORD
@@ -223,14 +221,24 @@ class CustomerListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
             'street_address': '78 Riverside Drive',
             'postal_code': 'N6H 1B4',
             'extra_comment': "This is a friendly customer.",
-            'telephone': '1231231234'
+            'telephone': '1231231234',
+            'is_active': True,
+            'password': '123passwordOK!',
+            'password_repeat': '123passwordOK!',
+            'description': 'Some generic desc.',
+            'telephone_type_of': 1,
+            'other_telephone_type_of': 1,
+            'is_ok_to_email': True,
+            'is_ok_to_text': True,
+            'tags': [],
+            'organization_name': 'Over55 (London) Inc.',
+            'organization_type_of': 1
         }), content_type='application/json')
         self.assertIsNotNone(response)
-        # print(response.content)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertIn("Bart", str(response.data))
         self.assertIn("Mika", str(response.data))
-        self.assertIn("This is a friendly customer.", str(response.data))
+        # self.assertIn("This is a friendly associate.", str(response.data)) # If comments are included then use this.
         self.assertIn("78 Riverside Drive", str(response.data))
 
         # Confirm we created a `Customer` object.
@@ -282,10 +290,20 @@ class CustomerListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
             'street_address': '78 Riverside Drive',
             'postal_code': 'N6H 1B4',
             'extra_comment': None,
-            'email': TEST_USER_EMAIL
+            'email': TEST_USER_EMAIL,
+            'is_active': True,
+            'password': '123passwordOK!',
+            'password_repeat': '123passwordOK!',
+            'description': 'Some generic desc.',
+            'telephone_type_of': 1,
+            'other_telephone_type_of': 1,
+            'is_ok_to_email': True,
+            'is_ok_to_text': True,
+            'tags': [],
+            'organization_name': 'Over55 (London) Inc.',
+            'organization_type_of': 1
         }), content_type='application/json')
         self.assertIsNotNone(response)
-        # print(response.content)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertIn("Bartlomiej", str(response.data))
         self.assertIn("Mika", str(response.data))
@@ -321,10 +339,20 @@ class CustomerListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
             'address_region': 'Ontario',
             'street_address': '78 Riverside Drive',
             'postal_code': 'N6H 1B4',
-            'extra_comment': None
+            'extra_comment': None,
+            'is_active': True,
+            'password': '123passwordOK!',
+            'password_repeat': '123passwordOK!',
+            'description': 'Some generic desc.',
+            'telephone_type_of': 1,
+            'other_telephone_type_of': 1,
+            'is_ok_to_email': True,
+            'is_ok_to_text': True,
+            'tags': [],
+            'organization_name': 'Over55 (London) Inc.',
+            'organization_type_of': 1
         }), content_type='application/json')
         self.assertIsNotNone(response)
-        # print(response.content)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertIn("Bartlomiej", str(response.data))
         self.assertIn("Mika", str(response.data))
