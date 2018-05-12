@@ -17,6 +17,7 @@ from rest_framework.test import APITestCase
 from rest_framework.authtoken.models import Token
 from shared_foundation import constants
 from shared_foundation.models import SharedUser
+from shared_foundation.utils import get_jwt_token_and_orig_iat
 
 
 TEST_USER_EMAIL = "bart@overfiftyfive.com"
@@ -60,7 +61,7 @@ class APILogOutWithPublicSchemaTestCase(APITestCase, TenantTestCase):
     def test_api_logout(self):
         # Log in the the account.
         user = SharedUser.objects.get()
-        token = Token.objects.get(user_id=user.id)
+        token, orig_iat = get_jwt_token_and_orig_iat(user)
 
         # Log out.
         logout_url = reverse('o55_logout_api_endpoint')
@@ -68,8 +69,7 @@ class APILogOutWithPublicSchemaTestCase(APITestCase, TenantTestCase):
             'email_or_username': TEST_USER_EMAIL,
             'password': TEST_USER_PASSWORD,
         }
-        response = self.c.post(logout_url, json.dumps(data), HTTP_AUTHORIZATION='Token ' + token.key, content_type='application/json')
-        print(response.content)
+        response = self.c.post(logout_url, json.dumps(data), HTTP_AUTHORIZATION='JWT {0}'.format(token), content_type='application/json')
 
         # Confirm.
         self.assertEqual(response.status_code, status.HTTP_200_OK)

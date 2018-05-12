@@ -13,6 +13,7 @@ from django.urls import reverse
 from django.utils import crypto
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
+from rest_framework_jwt.settings import api_settings
 from shared_foundation import constants
 
 
@@ -34,20 +35,34 @@ def has_permission(codename, user, group_ids):
     return has_group_perm | has_user_perm
 
 
-"""
-class StringArray(object):
-    arr = []
+def get_jwt_token_and_orig_iat(authenticated_user):
+    """
+    Utility function which will return both an JOSN Web Token and the
+    original date.
+    """
 
-def unique_string_arr_append(string_arr, new_string_value):
-    # Assume that the item does not exist.
-    does_not_exist = True
-    # Prove that this new string does not exist in the array.
-    for string_value in string_arr:
-        if new_string_value == string_value:
-            does_not_exist = False
+    # Create our JWT payload.
+    jwt_payload_handler = api_settings.JWT_PAYLOAD_HANDLER
+    jwt_encode_handler = api_settings.JWT_ENCODE_HANDLER
 
-    if does_not_exist:
-        string_arr.append(new_string_value)
+    # Generate our payload.
+    payload = jwt_payload_handler(authenticated_user)
 
-    return string_arr
-"""
+    # Include original issued at time for a brand new token,
+    # to allow token refresh
+    orig_iat = None
+    if api_settings.JWT_ALLOW_REFRESH:
+        import calendar
+        orig_iat = calendar.timegm(
+            datetime.utcnow().utctimetuple()
+        )
+        payload['orig_iat'] = orig_iat
+
+    token = jwt_encode_handler(payload)
+
+    # For debugging purposes only.
+    # print(token)
+    # print(orig_iat)
+
+    # Return both the token and original date.
+    return token, orig_iat
