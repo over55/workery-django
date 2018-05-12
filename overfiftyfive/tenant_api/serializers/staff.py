@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import logging
 import phonenumbers
 from datetime import datetime, timedelta
 from dateutil import tz
@@ -29,6 +30,9 @@ from tenant_foundation.models import (
     StaffComment,
     Staff
 )
+
+from django.db import transaction
+logger = logging.getLogger(__name__)
 
 
 class StaffListCreateSerializer(serializers.ModelSerializer):
@@ -198,6 +202,7 @@ class StaffListCreateSerializer(serializers.ModelSerializer):
         )
         return queryset
 
+    @transaction.atomic
     def create(self, validated_data):
         """
         Override the `create` function to add extra functinality:
@@ -281,7 +286,7 @@ class StaffListCreateSerializer(serializers.ModelSerializer):
             longitude=validated_data.get('longitude', None),
             # 'location' #TODO: IMPLEMENT.
         )
-        print("INFO: Created staff member.")
+        logger.info("Created staff member.")
 
         #-------------------
         # Create our user.
@@ -295,7 +300,7 @@ class StaffListCreateSerializer(serializers.ModelSerializer):
             franchise=self.context['franchise'],
             was_email_activated=True
         )
-        print("INFO: Created shared user.")
+        logger.info("Created shared user.")
 
         # Attach the user to the `group` group.
         group_membership = validated_data.get('group_membership', None)
@@ -472,6 +477,7 @@ class StaffRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         )
         return queryset
 
+    @transaction.atomic
     def update(self, instance, validated_data):
         """
         Override this function to include extra functionality.
@@ -497,7 +503,7 @@ class StaffRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         instance.owner.last_name = validated_data.get('last_name', instance.owner.last_name)
         instance.owner.is_active = validated_data.get('is_active', instance.owner.last_name)
         instance.owner.save()
-        print("INFO: Updated the shared user.")
+        logger.info("Updated the shared user.")
 
         #---------------------------
         # Update `Staff` object.
@@ -552,7 +558,7 @@ class StaffRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
 
         # Save our instance.
         instance.save()
-        print("INFO: Updated the staff member.")
+        logger.info("Updated the staff member.")
 
         #------------------------
         # Set our `Tag` objects.
