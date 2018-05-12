@@ -41,6 +41,11 @@ MAILGUN_SERVER_NAME=over55london.ca
 HTML_MINIFY=True
 KEEP_COMMENTS_ON_MINIFYING=False
 
+#--------#
+# Sentry #
+#--------#
+SENTRY_RAVEN_CONFIG_DSN=https://xxxx:yyyyy@sentry.io/zzzzzzzz
+
 #--------------------------------#
 # Application Specific Variables #
 #--------------------------------#

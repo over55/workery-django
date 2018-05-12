@@ -15,6 +15,7 @@ import os
 import environ
 import re
 import logging.config
+import raven # Third party library
 
 '''
 django-environ
@@ -83,6 +84,7 @@ SHARED_APPS = (
     'corsheaders',
     'anymail',
     'phonenumber_field',
+    'raven.contrib.django.raven_compat',
     # . . .
 
      # Shared Apps
@@ -119,6 +121,7 @@ INSTALLED_APPS = list(SHARED_APPS) + [app for app in TENANT_APPS if app not in S
 
 
 MIDDLEWARE = [
+    'raven.contrib.django.raven_compat.middleware.Sentry404CatchMiddleware', # Third Party
     'corsheaders.middleware.CorsMiddleware',                     # Third Party
     'django_tenants.middleware.main.TenantMainMiddleware',       # Third Party
     'trapdoor.middleware.TrapdoorMiddleware',                    # Third Party
@@ -338,19 +341,19 @@ logging.config.dictConfig({
             'class': 'logging.StreamHandler',
             'formatter': 'console',
         },
-        # # Add Handler for Sentry for `warning` and above
-        # 'sentry': {
-        #     'level': 'WARNING',
-        #     'class': 'raven.contrib.django.raven_compat.handlers.SentryHandler',
-        # },
+        # Add Handler for Sentry for `warning` and above
+        'sentry': {
+            'level': 'WARNING', # To capture more than ERROR, change to WARNING, INFO, etc.
+            'class': 'raven.contrib.django.raven_compat.handlers.SentryHandler',
+        },
     },
     'loggers': {
         # root logger
-        '': {
+        'root': {
             'level': 'WARNING',
             'handlers': [
                 'console',
-                # 'sentry'
+                'sentry'
             ],
         },
         'workery': {
@@ -364,6 +367,17 @@ logging.config.dictConfig({
         },
     },
 })
+
+
+# Sentry
+# https://github.com/getsentry/sentry/pulls
+
+RAVEN_CONFIG = {
+    'dsn': env("SENTRY_RAVEN_CONFIG_DSN"),
+    # If you are using git, you can also automatically configure the
+    # release based on the git info.
+    'release': raven.fetch_git_sha(os.path.abspath(os.pardir)),
+}
 
 
 # Error Reporting

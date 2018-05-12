@@ -30,7 +30,7 @@ pip install brotlipy                      # Brotli compression format to be used
 pip install django-filter                 # A generic system for filtering Django QuerySets based on user selections.
 pip install django-money                  # Money fields for django forms and models.
 pip install django-phonenumber-field      # Telephone field using Google's libphonenumber
-
+pip install raven --upgrade               # entry is cross-platform application monitoring, with a focus on error reporting.
 
 #TODO: IMPLEMENT...
 pip install dateutil                      # Useful extensions to the standard Python datetime features
