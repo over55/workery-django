@@ -20,8 +20,10 @@ def reset_password_email_page(request, pr_access_code=None):
             me.save()
         else:
             # Erro message indicating code expired.
+            print("INFO: Access code expired.")
             raise PermissionDenied(_('Access code expired.'))
     except SharedUser.DoesNotExist:
+        print("INFO: Wrong access code.")
         raise PermissionDenied(_('Wrong access code.'))
 
     # Generate the data.
@@ -58,8 +60,10 @@ def user_activation_email_page(request, pr_access_code=None):
             me.save()
         else:
             # Erro message indicating code expired.
+            print("INFO: Access code expired.")
             raise PermissionDenied(_('Access code expired.'))
     except SharedUser.DoesNotExist:
+        print("INFO: Wrong access code.")
         raise PermissionDenied(_('Wrong access code.'))
 
     # Generate the data.

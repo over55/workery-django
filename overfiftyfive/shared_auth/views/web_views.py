@@ -86,8 +86,10 @@ def user_activation_detail_page(request, pr_access_code=None):
             me.save()
         else:
             # Erro message indicating code expired.
+            print("INFO: Access code expired.")
             raise PermissionDenied(_('Access code expired.'))
     except SharedUser.DoesNotExist:
+        print("INFO: Wrong access code.")
         raise PermissionDenied(_('Wrong access code.'))
 
     return render(request, 'shared_auth/activate_user/detail_view.html',{})

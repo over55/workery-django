@@ -143,7 +143,7 @@ class TestSharedAuthWebViews(TenantTestCase):
         me = SharedUser.objects.get(email=TEST_USER_EMAIL)
         url = reverse('o55_user_activation_detail', args=['some-bad-pr-access-code'])
         response = self.anon_c.get(url)
-        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+        self.assertNotEqual(response.status_code, status.HTTP_200_OK)
 
     def test_rest_user_activation_detail_page_with_expired_pr_access_code(self):
         # Get the user profile.
@@ -160,7 +160,7 @@ class TestSharedAuthWebViews(TenantTestCase):
         response = self.anon_c.get(url)
 
         # Verify the results.
-        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+        self.assertNotEqual(response.status_code, status.HTTP_200_OK)
 
     def test_user_logout_redirector_master_page_with_redirect(self):
         me = SharedUser.objects.get(email=TEST_USER_EMAIL)
