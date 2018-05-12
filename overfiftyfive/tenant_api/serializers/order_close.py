@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import logging
 import phonenumbers
 from datetime import datetime, timedelta
 from dateutil import tz
@@ -34,6 +35,10 @@ from tenant_foundation.models import (
     Organization,
     TaskItem
 )
+
+
+logger = logging.getLogger(__name__)
+
 
 def get_todays_date_plus_days(days=0):
     """Returns the current date plus paramter number of days."""
@@ -97,7 +102,7 @@ class OrderCloseCreateSerializer(serializers.Serializer):
         Override the `create` function to add extra functinality.
         """
         # For debugging purposes only.
-        print("INFO: Input at", str(validated_data))
+        logger.info("Input at", str(validated_data))
 
         #--------------------------#
         # Get validated POST data. #
@@ -127,7 +132,7 @@ class OrderCloseCreateSerializer(serializers.Serializer):
             )
 
             # For debugging purposes only.
-            print("INFO: Job comment created.")
+            logger.info("Job comment created.")
 
         #----------------------------------------#
         # Lookup our Task(s) and close them all. #
@@ -137,13 +142,13 @@ class OrderCloseCreateSerializer(serializers.Serializer):
             is_closed=False
         )
         for task_item in task_items.all():
-            print("INFO: Found task #", str(task_item.id))
+            logger.info("Found task #", str(task_item.id))
             task_item.reason = reason
             task_item.reason_other = reason_other
             task_item.is_closed = True
             task_item.last_modified_by = self.context['user']
             task_item.save()
-            print("INFO: Closed task #", str(task_item.id))
+            logger.info("Closed task #", str(task_item.id))
 
         # ------------------------
         # --- JOB IS CANCELLED ---
@@ -159,7 +164,7 @@ class OrderCloseCreateSerializer(serializers.Serializer):
             job.save()
 
             # For debugging purposes only.
-            print("INFO: Job was cancelled.")
+            logger.info("Job was cancelled.")
 
         # ---------------------
         # --- JOB IS CLOSED ---
@@ -196,7 +201,7 @@ class OrderCloseCreateSerializer(serializers.Serializer):
             job.save()
 
             # For debugging purposes only.
-            print("INFO: Job was completed.")
+            logger.info("Job was completed.")
 
             # STEP 4 - Update the associate score by re-computing the average
             #          score and saving it with the profile.
@@ -215,7 +220,7 @@ class OrderCloseCreateSerializer(serializers.Serializer):
             total_score = score_sum / jobs_count
 
             # For debugging purposes only.
-            print("INFO: Assocate is calculated as:", total_score)
+            logger.info("Assocate is calculated as:", total_score)
 
         #---------------------------------#
         # Ongoing jobs require new ticket #
@@ -234,7 +239,7 @@ class OrderCloseCreateSerializer(serializers.Serializer):
             )
 
             # For debugging purposes only.
-            print("INFO: Created task #", str(next_task_item.id))
+            logger.info("Created task #", str(next_task_item.id))
 
             # Attach our next job.
             job.latest_pending_task = next_task_item

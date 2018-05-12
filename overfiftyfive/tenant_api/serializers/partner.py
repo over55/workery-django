@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import logging
 import phonenumbers
 from datetime import datetime, timedelta
 from dateutil import tz
@@ -32,6 +33,9 @@ from tenant_foundation.models import (
     SkillSet,
     Organization
 )
+
+
+logger = logging.getLogger(__name__)
 
 
 class PartnerListCreateSerializer(serializers.ModelSerializer):
@@ -340,17 +344,17 @@ class PartnerListCreateSerializer(serializers.ModelSerializer):
             was_email_activated=True,
             is_active = validated_data['is_active'],
         )
-        print("INFO: Created shared user.")
+        logger.info("Created shared user.")
 
         # Attach the user to the `Partner` group.
         owner.groups.add(ASSOCIATE_GROUP_ID)
-        print("INFO: Set shared user group.")
+        logger.info("Set shared user group.")
 
         # Update the password.
         password = validated_data.get('password', None)
         owner.set_password(password)
         owner.save()
-        print("INFO: Set shared user password.")
+        logger.info("Set shared user password.")
 
 
         #---------------------------------------------------
@@ -404,7 +408,7 @@ class PartnerListCreateSerializer(serializers.ModelSerializer):
             longitude=validated_data.get('longitude', None),
             # 'location' #TODO: IMPLEMENT.
         )
-        print("INFO: Created partner.")
+        logger.info("Created partner.")
 
         #-----------------------------------
         # Create or update our Organization.
@@ -438,11 +442,11 @@ class PartnerListCreateSerializer(serializers.ModelSerializer):
             if created:
                 organization.owner = owner
                 organization.save()
-                print("INFO: Created organization.")
+                logger.info("Created organization.")
 
             partner.organization = organization
             partner.save()
-            print("INFO: Attached created organization to partner.")
+            logger.info("Attached created organization to partner.")
 
         #-----------------------------
         # Create our `Comment` object.
@@ -454,13 +458,13 @@ class PartnerListCreateSerializer(serializers.ModelSerializer):
                 last_modified_by=self.context['created_by'],
                 text=extra_comment
             )
-            print("INFO: Created comment.")
-            
+            logger.info("Created comment.")
+
             PartnerComment.objects.create(
                 about=partner,
                 comment=comment,
             )
-            print("INFO: Attached comment to partner.")
+            logger.info("Attached comment to partner.")
 
         # Update validation data.
         # validated_data['comments'] = PartnerComment.objects.filter(partner=partner)
@@ -607,7 +611,7 @@ class PartnerRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
                 'is_active': validated_data.get('is_active', False)
             }
         )
-        print("INFO: Updated shared user.")
+        logger.info("Updated shared user.")
 
         # Update the password.
         password = validated_data.get('password', None)
@@ -673,7 +677,7 @@ class PartnerRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
 
         # Save our instance.
         instance.save()
-        print("INFO: Updated the partner.")
+        logger.info("Updated the partner.")
 
         # #---------------------------
         # # Attach our comment.

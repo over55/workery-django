@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import logging
 from datetime import datetime, timedelta
 from dateutil import tz
 from django.conf import settings
@@ -12,6 +13,9 @@ from rest_framework import exceptions, serializers
 from rest_framework.response import Response
 from rest_framework.authtoken.models import Token
 from tenant_foundation.models import AwayLog
+
+
+logger = logging.getLogger(__name__)
 
 
 class AwayLogListCreateSerializer(serializers.ModelSerializer):
@@ -82,7 +86,7 @@ class AwayLogListCreateSerializer(serializers.ModelSerializer):
         reason = validated_data.get('reason', None)
         until_further_notice = validated_data.get('until_further_notice', False)
         until_date = validated_data.get('until_date', None)
-        print("INFO: Input data:", str(validated_data))
+        logger.info("Input data:", str(validated_data))
 
         #-----------------------------
         # Create our `AwayLog` object.
@@ -96,12 +100,12 @@ class AwayLogListCreateSerializer(serializers.ModelSerializer):
             created_by=self.context['created_by'],
             last_modified_by=self.context['created_by'],
         )
-        print("INFO: Created AwayLog")
+        logger.info("Created AwayLog")
 
         # Save our away information to the associate.
         associate.away_log = log
         associate.save()
-        print("INFO: Assigned AwayLog to associate.")
+        logger.info("Assigned AwayLog to associate.")
 
         # Return our validated data.
         validated_data['id'] = log.id

@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import logging
 import phonenumbers
 from datetime import datetime, timedelta
 from dateutil import tz
@@ -34,6 +35,9 @@ from tenant_foundation.models import (
     Organization,
     TaskItem
 )
+
+
+logger = logging.getLogger(__name__)
 
 
 def get_todays_date_plus_days(days=0):
@@ -81,7 +85,7 @@ class OrderUnassignCreateSerializer(serializers.Serializer):
         Override the `create` function to add extra functinality.
         """
         # For debugging purposes only.
-        print("INFO: Input at", str(validated_data))
+        logger.info("Input at", str(validated_data))
 
         #-------------------------#
         # Get validated POST data #
@@ -106,7 +110,7 @@ class OrderUnassignCreateSerializer(serializers.Serializer):
             )
 
             # For debugging purposes only.
-            print("INFO: Job comment created.")
+            logger.info("Job comment created.")
 
         #----------------------------------------#
         # Lookup our Task(s) and close them all. #
@@ -116,20 +120,20 @@ class OrderUnassignCreateSerializer(serializers.Serializer):
             is_closed=False
         )
         for task_item in task_items.all():
-            print("INFO: Found task #", str(task_item.id))
+            logger.info("Found task #", str(task_item.id))
             task_item.reason = reason
             task_item.reason_other = reason_other
             task_item.is_closed = True
             task_item.last_modified_by = self.context['user']
             task_item.save()
-            print("INFO: Closed task #", str(task_item.id))
+            logger.info("Closed task #", str(task_item.id))
 
         # Update our job.
         job.associate = None
         job.save()
 
         # For debugging purposes only.
-        print("INFO: Removed associate from job.")
+        logger.info("Removed associate from job.")
 
         #---------------------------------------------#
         # Create a new task based on a new start date #
@@ -146,7 +150,7 @@ class OrderUnassignCreateSerializer(serializers.Serializer):
         )
 
         # For debugging purposes only.
-        print("INFO: Assignment Task #", str(next_task_item.id), "was created b/c of unassignment.")
+        logger.info("Assignment Task #", str(next_task_item.id), "was created b/c of unassignment.")
 
         # Attach our next job.
         job.latest_pending_task = next_task_item

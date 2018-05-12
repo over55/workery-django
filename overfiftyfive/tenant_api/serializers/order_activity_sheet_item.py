@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import logging
 import phonenumbers
 from datetime import datetime, timedelta
 from dateutil import tz
@@ -34,6 +35,10 @@ from tenant_foundation.models import (
     Organization,
     TaskItem
 )
+
+
+logger = logging.getLogger(__name__)
+
 
 def get_todays_date_plus_days(days=0):
     """Returns the current date plus paramter number of days."""
@@ -80,7 +85,7 @@ class ActivitySheetItemCreateSerializer(serializers.Serializer):
         Override the `create` function to add extra functinality.
         """
         # For debugging purposes only.
-        print("INFO: Input at", str(validated_data))
+        logger.info("Input at", str(validated_data))
 
         # STEP 1 - Get validated POST data.
         job = validated_data.get('job', None)
@@ -98,7 +103,7 @@ class ActivitySheetItemCreateSerializer(serializers.Serializer):
         )
 
         # For debugging purposes only.
-        print("INFO: ActivitySheetItem was created.")
+        logger.info("ActivitySheetItem was created.")
 
         if has_accepted_job:
 
@@ -108,7 +113,7 @@ class ActivitySheetItemCreateSerializer(serializers.Serializer):
             obj.job.save()
 
             # For debugging purposes only.
-            print("INFO: Associate assigned to Job.")
+            logger.info("Associate assigned to Job.")
 
             # STEP 4 - Lookup the most recent task which has not been closed
             #          for the particular job order.
@@ -119,7 +124,7 @@ class ActivitySheetItemCreateSerializer(serializers.Serializer):
             ).order_by('due_date').first()
 
             # For debugging purposes only.
-            print("INFO: Found task #", str(task_item.id))
+            logger.info("Found task #", str(task_item.id))
 
             # STEP 4 - Update our TaskItem if job was accepted.
             task_item.is_closed = True
@@ -127,7 +132,7 @@ class ActivitySheetItemCreateSerializer(serializers.Serializer):
             task_item.save()
 
             # For debugging purposes only.
-            print("INFO: Task #", str(task_item.id), "was closed.")
+            logger.info("Task #", str(task_item.id), "was closed.")
 
             # STEP 5 - Create our new task for following up.
             next_task_item = TaskItem.objects.create(
@@ -142,7 +147,7 @@ class ActivitySheetItemCreateSerializer(serializers.Serializer):
             )
 
             # For debugging purposes only.
-            print("INFO: Task #", str(next_task_item.id), "was created.")
+            logger.info("Task #", str(next_task_item.id), "was created.")
 
             # Attached our new TaskItem to the Job.
             job.latest_pending_task = next_task_item

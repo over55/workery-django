@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import logging
 import phonenumbers
 from datetime import datetime, timedelta
 from dateutil import tz
@@ -34,6 +35,10 @@ from tenant_foundation.models import (
     Organization,
     TaskItem
 )
+
+
+logger = logging.getLogger(__name__)
+
 
 def get_todays_date_plus_days(days=0):
     """Returns the current date plus paramter number of days."""
@@ -73,7 +78,7 @@ class OrderCompleteCreateSerializer(serializers.Serializer):
         Override the `create` function to add extra functinality.
         """
         # For debugging purposes only.
-        print("INFO: Input at", str(validated_data))
+        logger.info("Input at", str(validated_data))
 
         # STEP 1 - Get validated POST data.
         job = validated_data.get('job', None)
@@ -102,7 +107,7 @@ class OrderCompleteCreateSerializer(serializers.Serializer):
         ).order_by('due_date').first()
 
         # For debugging purposes only.
-        print("INFO: Found task #", str(task_item.id))
+        logger.info("Found task #", str(task_item.id))
 
         # STEP 4 - Update our TaskItem if job was accepted.
         task_item.is_closed = True
@@ -110,7 +115,7 @@ class OrderCompleteCreateSerializer(serializers.Serializer):
         task_item.save()
 
         # For debugging purposes only.
-        print("INFO: Task #", str(task_item.id), "was closed")
+        logger.info("Task #", str(task_item.id), "was closed")
 
         if has_agreed_to_meet:
 
@@ -127,7 +132,7 @@ class OrderCompleteCreateSerializer(serializers.Serializer):
             )
 
             # For debugging purposes only.
-            print("INFO: Task #", str(next_task_item.id), "was created")
+            logger.info("Task #", str(next_task_item.id), "was created")
 
             # Attach our next job.
             job.latest_pending_task = next_task_item
@@ -148,7 +153,7 @@ class OrderCompleteCreateSerializer(serializers.Serializer):
             )
 
             # For debugging purposes only.
-            print("INFO: Task #", str(next_task_item.id), "was created")
+            logger.info("Task #", str(next_task_item.id), "was created")
 
             # Attach our next job.
             job.latest_pending_task = next_task_item

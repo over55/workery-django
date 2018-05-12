@@ -31,7 +31,7 @@ from tenant_foundation.models import (
     Staff
 )
 
-from django.db import transaction
+
 logger = logging.getLogger(__name__)
 
 
@@ -202,7 +202,6 @@ class StaffListCreateSerializer(serializers.ModelSerializer):
         )
         return queryset
 
-    @transaction.atomic
     def create(self, validated_data):
         """
         Override the `create` function to add extra functinality:
@@ -477,7 +476,6 @@ class StaffRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         )
         return queryset
 
-    @transaction.atomic
     def update(self, instance, validated_data):
         """
         Override this function to include extra functionality.
