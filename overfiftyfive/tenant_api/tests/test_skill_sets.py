@@ -92,22 +92,22 @@ class SkillSetListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
 
         # Setup.
         self.unauthorized_client = TenantClient(self.tenant)
-        self.exec_client = TenantClient(self.tenant, HTTP_AUTHORIZATION='Token ' + exec_token.key)
+        self.exec_client = TenantClient(self.tenant, HTTP_AUTHORIZATION='JWT {0}'.format(exec_token))
         self.exec_client.login(
             username='bart+executive@overfiftyfive.com',
             password=TEST_USER_PASSWORD
         )
-        self.manager_client = TenantClient(self.tenant, HTTP_AUTHORIZATION='Token ' + manager_token.key)
+        self.manager_client = TenantClient(self.tenant, HTTP_AUTHORIZATION='JWT {0}'.format(manager_token))
         self.manager_client.login(
             username='bart+manager@overfiftyfive.com',
             password=TEST_USER_PASSWORD
         )
-        self.staff_client = TenantClient(self.tenant, HTTP_AUTHORIZATION='Token ' + manager_token.key)
+        self.staff_client = TenantClient(self.tenant, HTTP_AUTHORIZATION='JWT {0}'.format(manager_token))
         self.staff_client.login(
             username='fherbert@overfiftyfive.com',
             password=TEST_USER_PASSWORD
         )
-        self.customer_client = TenantClient(self.tenant, HTTP_AUTHORIZATION='Token ' + manager_token.key)
+        self.customer_client = TenantClient(self.tenant, HTTP_AUTHORIZATION='JWT {0}'.format(manager_token))
         self.customer_client.login(
             username='rayanami@overfiftyfive.com',
             password=TEST_USER_PASSWORD
