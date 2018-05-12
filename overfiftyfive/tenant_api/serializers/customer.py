@@ -12,7 +12,6 @@ from starterkit.utils import (
     get_unique_username_from_email
 )
 from django.conf import settings
-from django.db import transaction
 from django.contrib.auth.models import Group
 from django.contrib.auth import authenticate
 from django.db.models import Q, Prefetch
@@ -587,7 +586,6 @@ class CustomerRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         )
         return queryset
 
-    @transaction.atomic
     def update(self, instance, validated_data):
         """
         Override this function to include extra functionality.

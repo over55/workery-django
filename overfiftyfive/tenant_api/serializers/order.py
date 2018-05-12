@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import logging
 import phonenumbers
 from datetime import datetime, timedelta
 from dateutil import tz
@@ -26,6 +27,9 @@ from tenant_foundation.models import (
     Tag,
     TaskItem
 )
+
+
+logger = logging.getLogger(__name__)
 
 
 class OrderListCreateSerializer(serializers.ModelSerializer):
@@ -132,6 +136,7 @@ class OrderListCreateSerializer(serializers.ModelSerializer):
             start_date=start_date,
             follow_up_days_number=follow_up_days_number
         )
+        logger.info("Created order object.")
 
         #-----------------------------
         # Set our `Tags` objects.
@@ -139,6 +144,7 @@ class OrderListCreateSerializer(serializers.ModelSerializer):
         tags = validated_data.get('tags', None)
         if tags is not None:
             order.tags.set(tags)
+            logger.info("Attached tags to order.")
 
         #-----------------------------
         # Set our `SkillSet` objects.
@@ -146,6 +152,7 @@ class OrderListCreateSerializer(serializers.ModelSerializer):
         skill_sets = validated_data.get('skill_sets', None)
         if skill_sets is not None:
             order.skill_sets.set(skill_sets)
+            logger.info("Attached skill sets to order.")
 
         #-----------------------------
         # Create our `Comment` object.
@@ -161,6 +168,7 @@ class OrderListCreateSerializer(serializers.ModelSerializer):
                 about=order,
                 comment=comment,
             )
+            logger.info("Created and attached comment to order.")
 
         #-----------------------------
         # Create our first task.
@@ -175,6 +183,7 @@ class OrderListCreateSerializer(serializers.ModelSerializer):
             title = _('Assign an Associate'),
             description = _('Please assign an associate to this job.')
         )
+        logger.info("Created first task.")
 
         # Update validation data.
         # validated_data['comments'] = OrderComment.objects.filter(order=order)
@@ -287,6 +296,7 @@ class OrderRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
 
         # Save the model.
         instance.save()
+        logger.info("Updated order object.")
 
         #-----------------------------
         # Set our `Tags` objects.
@@ -294,6 +304,7 @@ class OrderRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         tags = validated_data.get('tags', None)
         if tags is not None:
             instance.tags.set(tags)
+            logger.info("Set tags with order.")
 
         #-----------------------------
         # Set our `SkillSet` objects.
@@ -301,6 +312,7 @@ class OrderRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         skill_sets = validated_data.get('skill_sets', None)
         if skill_sets is not None:
             instance.skill_sets.set(skill_sets)
+            logger.info("Set skill set with order.")
 
         #-----------------------------
         # Create our `Comment` object.
@@ -308,14 +320,15 @@ class OrderRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         extra_comment = validated_data.get('extra_comment', None)
         if extra_comment is not None:
             comment = Comment.objects.create(
-                created_by=self.context['created_by'],
-                last_modified_by=self.context['created_by'],
+                created_by=self.context['last_modified_by'],
+                last_modified_by=self.context['last_modified_by'],
                 text=extra_comment
             )
             OrderComment.objects.create(
                 about=instance,
                 comment=comment,
             )
+            logger.info("Created and set comment with order.")
 
         # Update validation data.
         # validated_data['comments'] = OrderComment.objects.filter(order=instance)

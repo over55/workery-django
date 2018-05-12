@@ -16,8 +16,8 @@ from django_tenants.test.client import TenantClient
 from rest_framework import status
 from rest_framework.test import APIClient
 from rest_framework.test import APITestCase
-from rest_framework.authtoken.models import Token
 from shared_foundation import constants
+from shared_foundation.utils import get_jwt_token_and_orig_iat
 from shared_foundation.models import SharedUser
 from tenant_foundation.models import (
     Associate,
@@ -38,13 +38,11 @@ TEST_USER_CELL_NUM = "123 123-1234"
 TEST_ALERNATE_USER_EMAIL = "rodolfo@overfiftyfive.com"
 
 
-"""
-Console:
-python manage.py test tenant_api.tests.test_order_view
-"""
-
-
 class OrderListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
+    """
+    Console:
+    python manage.py test tenant_api.tests.test_order_view
+    """
 
     #------------------#
     # Setup Unit Tests #
@@ -78,31 +76,38 @@ class OrderListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
         self.customer = Customer.objects.get(owner__email='sikari@overfiftyfive.com')
         self.associate = Associate.objects.get(owner__email='rayanami@overfiftyfive.com')
 
+        # Get users.
+        exec_user = SharedUser.objects.get(email='bart+executive@overfiftyfive.com')
+        manager_user = SharedUser.objects.get(email='bart+manager@overfiftyfive.com')
+        frontline_user = SharedUser.objects.get(email='fherbert@overfiftyfive.com')
+        associate_user = SharedUser.objects.get(email='rayanami@overfiftyfive.com')
+        customer_user = SharedUser.objects.get(email='sikari@overfiftyfive.com')
+
         # Get tokens.
-        exec_token = Token.objects.get(user__email='bart+executive@overfiftyfive.com')
-        manager_token = Token.objects.get(user__email='bart+manager@overfiftyfive.com')
-        frontline_token = Token.objects.get(user__email='fherbert@overfiftyfive.com')
-        associate_token = Token.objects.get(user__email='rayanami@overfiftyfive.com')
-        customer_token = Token.objects.get(user__email='sikari@overfiftyfive.com')
+        exec_token, exec_orig_iat = get_jwt_token_and_orig_iat(exec_user)
+        manager_token, manager_orig_iat = get_jwt_token_and_orig_iat(manager_user)
+        frontline_token, frontline_orig_iat = get_jwt_token_and_orig_iat(frontline_user)
+        associate_token, associate_orig_iat = get_jwt_token_and_orig_iat(associate_user)
+        customer_token, customer_orig_iat = get_jwt_token_and_orig_iat(customer_user)
 
         # Setup.
         self.unauthorized_client = TenantClient(self.tenant)
-        self.exec_client = TenantClient(self.tenant, HTTP_AUTHORIZATION='Token ' + exec_token.key)
+        self.exec_client = TenantClient(self.tenant, HTTP_AUTHORIZATION='JWT {0}'.format(exec_token))
         self.exec_client.login(
             username='bart+executive@overfiftyfive.com',
             password=TEST_USER_PASSWORD
         )
-        self.manager_client = TenantClient(self.tenant, HTTP_AUTHORIZATION='Token ' + manager_token.key)
+        self.manager_client = TenantClient(self.tenant, HTTP_AUTHORIZATION='JWT {0}'.format(manager_token))
         self.manager_client.login(
             username='bart+manager@overfiftyfive.com',
             password=TEST_USER_PASSWORD
         )
-        self.staff_client = TenantClient(self.tenant, HTTP_AUTHORIZATION='Token ' + manager_token.key)
+        self.staff_client = TenantClient(self.tenant, HTTP_AUTHORIZATION='JWT {0}'.format(manager_token))
         self.staff_client.login(
             username='fherbert@overfiftyfive.com',
             password=TEST_USER_PASSWORD
         )
-        self.customer_client = TenantClient(self.tenant, HTTP_AUTHORIZATION='Token ' + manager_token.key)
+        self.customer_client = TenantClient(self.tenant, HTTP_AUTHORIZATION='JWT {0}'.format(manager_token))
         self.customer_client.login(
             username='rayanami@overfiftyfive.com',
             password=TEST_USER_PASSWORD
@@ -248,9 +253,8 @@ class OrderListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
         self.assertIn("Rei", str(response.data))
         self.assertIn("Ayanami", str(response.data))
         self.assertIn("[1]", str(response.data)) # tags
-        self.assertIn("Ceramic Tile", str(response.data))
-        self.assertIn("Carpentry", str(response.data))
-        self.assertIn("This is an extra comment.", str(response.data))
+        # self.assertIn("This is a friendly associate.", str(response.data)) # If comments are included then use this.
+        self.assertIn("[1, 2, 3]", str(response.data)) # Verify skill sets.
 
         # Manager
         response = self.manager_client.post(url, data=json.dumps({
@@ -280,9 +284,8 @@ class OrderListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
         self.assertIn("Rei", str(response.data))
         self.assertIn("Ayanami", str(response.data))
         self.assertIn("[]", str(response.data)) # tags
-        self.assertIn("Ceramic Tile", str(response.data))
-        self.assertIn("Carpentry", str(response.data))
-        self.assertIn("This is an extra comment.", str(response.data))
+        # self.assertIn("This is a friendly associate.", str(response.data)) # If comments are included then use this.
+        self.assertIn("[1, 2, 3]", str(response.data)) # Verify skill sets.
 
         # Staff
         response = self.staff_client.post(url, data=json.dumps({
@@ -312,38 +315,37 @@ class OrderListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
         self.assertIn("Ikari", str(response.data))
         self.assertIn("Rei", str(response.data))
         self.assertIn("Ayanami", str(response.data))
-        self.assertIn("Ceramic Tile", str(response.data))
-        self.assertIn("Carpentry", str(response.data))
-        self.assertIn("This is an extra comment.", str(response.data))
+        # self.assertIn("This is a friendly associate.", str(response.data)) # If comments are included then use this.
+        self.assertIn("[1, 2, 3]", str(response.data)) # Verify skill sets.
         self.assertIn("7.99", str(response.data))
 
     # @transaction.atomic
-    # def test_create_with_403_by_permissions(self):
-    #     """
-    #     Unit test will test authenticated user, who does not have permission, to
-    #     make a POST request to the list API-endpoint.
-    #     """
-    #     Permission.objects.all().delete()
-    #     url = reverse('o55_order_list_create_api_endpoint')
-    #     url += "?format=json"
-    #     response = self.customer_client.post(url, data=json.dumps({}), content_type='application/json')
-    #     self.assertIsNotNone(response)
-    #     self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
-    #     self.assertIn("You do not have permission to access this API-endpoint.", str(response.data))
-    #
-    # #---------------------#
-    # # Update API-endpoint #
-    # #---------------------#
-    #
-    # @transaction.atomic
-    # def test_update_with_401_by_permissions(self):
-    #     """
-    #     Unit test will test anonymous make a PUT request to the update API-endpoint.
-    #     """
-    #     url = reverse('o55_order_retrieve_update_destroy_api_endpoint', args=[self.order.id])+"?format=json"
-    #     response = self.unauthorized_client.post(url, data={}, content_type='application/json')
-    #     self.assertIsNotNone(response)
-    #     self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+    def test_create_with_403_by_permissions(self):
+        """
+        Unit test will test authenticated user, who does not have permission, to
+        make a POST request to the list API-endpoint.
+        """
+        Permission.objects.all().delete()
+        url = reverse('o55_order_list_create_api_endpoint')
+        url += "?format=json"
+        response = self.customer_client.post(url, data=json.dumps({}), content_type='application/json')
+        self.assertIsNotNone(response)
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+        self.assertIn("You do not have permission to access this API-endpoint.", str(response.data))
+
+    #---------------------#
+    # Update API-endpoint #
+    #---------------------#
+
+    @transaction.atomic
+    def test_update_with_401_by_permissions(self):
+        """
+        Unit test will test anonymous make a PUT request to the update API-endpoint.
+        """
+        url = reverse('o55_order_retrieve_update_destroy_api_endpoint', args=[self.order.id])+"?format=json"
+        response = self.unauthorized_client.post(url, data={}, content_type='application/json')
+        self.assertIsNotNone(response)
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
     @transaction.atomic
     def test_update_with_200_by_permissions(self):
@@ -380,7 +382,7 @@ class OrderListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertIn("2019-01-25", str(response.data))
         self.assertIn("2018-01-30", str(response.data))
-        self.assertIn("This is an extra comment.", str(response.data))
+        # self.assertIn("This is an extra comment.", str(response.data))
         self.assertIn("4.99", str(response.data))
 
         # Manager
