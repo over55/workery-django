@@ -18,7 +18,6 @@ from django.utils.translation import ugettext_lazy as _
 from django.utils import timezone
 from django.utils.http import urlquote
 from rest_framework import exceptions, serializers
-from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
 from rest_framework.validators import UniqueValidator
 from shared_api.custom_fields import PhoneNumberField

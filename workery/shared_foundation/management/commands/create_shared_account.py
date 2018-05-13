@@ -7,7 +7,6 @@ from starterkit.utils import (
     get_random_string,
     get_unique_username_from_email
 )
-from rest_framework.authtoken.models import Token
 from shared_foundation import constants
 from shared_foundation.models import SharedUser
 
@@ -18,22 +17,12 @@ class Command(BaseCommand):
     def add_arguments(self, parser):
         """
         Run manually in console:
-        python manage.py create_shared_account "bart@workery.ca" "123password" "Bart" "Mika" "123 123-1234" "" "123 123-1234" "CA" "London" "Ontario" "" "N6H 1B4" "78 Riverside Drive" ""
+        python manage.py create_shared_account "bart@workery.ca" "123password" "Bart" "Mika";
         """
         parser.add_argument('email', nargs='+', type=str)
         parser.add_argument('password', nargs='+', type=str)
         parser.add_argument('first_name', nargs='+', type=str)
         parser.add_argument('last_name', nargs='+', type=str)
-        # parser.add_argument('telephone', nargs='+', type=str)
-        # parser.add_argument('telephone_extension', nargs='+', type=str)
-        # parser.add_argument('other_telephone', nargs='+', type=str)
-        # parser.add_argument('address_country', nargs='+', type=str)
-        # parser.add_argument('address_locality', nargs='+', type=str)
-        # parser.add_argument('address_region', nargs='+', type=str)
-        # parser.add_argument('post_office_box_number', nargs='+', type=str)
-        # parser.add_argument('postal_code', nargs='+', type=str)
-        # parser.add_argument('street_address', nargs='+', type=str)
-        # parser.add_argument('street_address_extra', nargs='+', type=str)
 
     def handle(self, *args, **options):
         # Get the user inputs.
@@ -58,9 +47,6 @@ class Command(BaseCommand):
         # Generate and assign the password.
         user.set_password(password)
         user.save()
-
-        # Generate the private access key.
-        token, created = Token.objects.get_or_create(user=user)
 
         # Attach our user to the "Executive"
         user.groups.add(constants.EXECUTIVE_GROUP_ID)

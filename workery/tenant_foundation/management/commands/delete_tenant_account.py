@@ -9,7 +9,6 @@ from starterkit.utils import (
     get_unique_username_from_email,
     int_or_none
 )
-from rest_framework.authtoken.models import Token
 from shared_foundation import constants
 from shared_foundation.models import (
     SharedUser,

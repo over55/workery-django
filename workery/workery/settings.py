@@ -88,7 +88,8 @@ SHARED_APPS = (
     'raven.contrib.django.raven_compat',
     # . . .
 
-     # Shared Apps
+    # Shared Apps
+    'shared_franchise', 
     'shared_home',
     'shared_foundation',
     'shared_api',

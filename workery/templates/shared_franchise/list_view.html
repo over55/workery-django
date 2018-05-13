@@ -1,0 +1,121 @@
+{% extends 'shared_franchise/base_view.html' %}
+{% load staticfiles i18n foundation_tags humanize %}
+
+{% block title %}
+{% trans 'Franchises | Workery' %}
+{% endblock title %}
+
+{% block header_content %}
+{% endblock header_content %}
+
+{% block content %}
+
+<script>
+    /**
+     *  Function will take the `root` users API key and attach it to the
+     *  URL of the tenant. We are doing this so this API key can be passed
+     */
+    function click_and_redirect(url) {
+        var private_api_key = localStorage.getItem("private_api_key");
+        var private_api_key_orig_iat = localStorage.getItem("private_api_key_orig_iat");
+        console.log(private_api_key);
+        console.log(private_api_key_orig_iat);
+        console.log(url);
+        window.location = url+"?api_key="+private_api_key+"&orig_iat="+private_api_key_orig_iat;
+    }
+</script>
+
+<main id="main" role="main">
+
+    <!-- BREADCRUMB -->
+    <!------------------------------------------------------------------------->
+    <nav aria-label="breadcrumb">
+	  	<ol class="breadcrumb">
+	    	<li class="breadcrumb-item active" aria-current="page">{% trans 'Franchises' %}</li>
+	  	</ol>
+	</nav>
+    <!------------------------------------------------------------------------->
+    <!-- end BREADCRUMB -->
+
+    <h1>{% trans 'Franchises' %}</h1>
+
+    <h2>Active Client List</h2>
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>{% trans 'Name' %}</th>
+                    <th>{% trans 'Alternate Name' %}</th>
+                    <th></th>
+                    {% comment %}
+                    <th>{% trans '#' %}</th>
+                    <th>{% trans 'First Name' %}</th>
+                    <th>{% trans 'Last Name' %}</th>
+                    <th>{% trans 'Phone' %}</th>
+                    <th>{% trans 'E-Mail' %}</th>
+                    <th></th>
+                    {% endcomment %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for franchise in franchise_list %}
+                <tr>
+                    <td>{{ franchise.name }}</td>
+                    <td>{{ franchise.alternate_name }}</td>
+                    <td>
+                        <a onclick="click_and_redirect('{% tenant_url franchise.schema_name 'o55_tenant_dashboard_master' %}');">{% trans 'View' %}</a>
+                    </td>
+                </tr>
+                {% endfor %}
+                {% comment %}
+                {% for customer in customer_list %}
+                <tr>
+                    <td>
+                        {% if customer.type_of == tenant_constants.RESIDENTIAL_CUSTOMER_TYPE_OF_ID %}
+                            <i class="fa fa-home fa-lg"></i>
+                        {% elif customer.type_of == tenant_constants.COMMERCIAL_CUSTOMER_TYPE_OF_ID %}
+                            <i class="fa fa-building fa-lg"></i>
+                        {% else %}
+                            <i class="fa fa-question fa-lg"></i>
+                        {% endif %}
+                    </td>
+                    <td>{{ customer.id|intcomma }}</td>
+                    <td>{% if customer.given_name %}{{ customer.given_name }}{% else %}-{% endif %}</td>
+                    <td>{% if customer.last_name %}{{ customer.last_name }}{% else %}-{% endif %}</td>
+                    <td>
+                        {% if customer.telephone %}<a href="tel:{{ customer.telephone }}">{{ customer.telephone|pretty_formatted_phonenumber }}</a>{% else %}-{% endif %}
+                    </td>
+                    <td>{% if customer.owner.email %}<a href="mailto:{{ customer.owner.email }}">{{ customer.owner.email }}</a>{% else %}-{% endif %}</td>
+                    <td>
+                        <a href="{% url 'o55_tenant_customer_lite_retrieve' 'list' customer.id %}?page={{ page_obj.number }}">{% trans 'View' %}</a>
+                    </td>
+                </tr>
+                {% empty %}
+                No customers yet.
+                {% endfor %}
+                {% endcomment %}
+            </tbody>
+        </table>
+    </div>
+
+    {% comment %}
+    <div class="pagination">
+        <span class="step-links">
+        {% if page_obj.has_previous %}
+        <a href="?page={{ page_obj.previous_page_number }}{{ filter_parameters }}">previous</a>
+        {% endif %}
+        <span class="current">
+        Page {{ page_obj.number }} of {{ paginator.num_pages }}.
+        </span>
+        {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}{{ filter_parameters }}">next</a>
+        {% endif %}
+        </span>
+    </div>
+    {% endcomment %}
+
+    <!-- RETURN-TO-TOP -->
+    <a id="return-to-top" href="#" class="btn-info btn-lg back-to-top" role="button" title="Back to top"><i class="fas fa-angle-up fa-2x"></i></a>
+    <!-- end RETURN-TO-TOP -->
+</main>
+{% endblock content %}

@@ -1,6 +1,11 @@
 # -*- coding: utf-8 -*-
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render
+from django.views.generic.edit import CreateView, FormView, UpdateView
+from django.views.generic import DetailView, ListView, TemplateView
+from django.utils.decorators import method_decorator
+from django.utils.translation import ugettext_lazy as _
+from shared_foundation.mixins import ExtraRequestProcessingMixin
+from tenant_api.filters.customer import CustomerFilter
 from tenant_foundation.models import (
     Associate,
     AwayLog,
@@ -10,24 +15,41 @@ from tenant_foundation.models import (
 )
 
 
-@login_required(login_url="login/")
-def master_page(request):
+@method_decorator(login_required, name='dispatch')
+class DashboardView(TemplateView, ExtraRequestProcessingMixin):
     """
     The default entry point into our dashboard.
     """
-    return render(request, 'tenant_dashboard/master_view.html',{
-        'current_page': 'dashboard', # Required
-        'associates_count': Associate.objects.filter(
+
+    template_name = 'tenant_dashboard/master_view.html'
+
+    def get_context_data(self, **kwargs):
+        modified_context = super().get_context_data(**kwargs)
+
+        modified_context['current_page'] = 'customers', # Required
+
+        modified_context['associates_count'] = Associate.objects.filter(
             owner__is_active=True
-        ).count(),
-        'customers_count': Customer.objects.all().count(),
-        'jobs_count': Order.objects.filter(
+        ).count()
+
+        modified_context['customers_count'] = Customer.objects.all().count()
+
+        modified_context['jobs_count'] = Order.objects.filter(
             is_cancelled=False,
             completion_date__isnull=True,
             payment_date__isnull=True
-        ).count(),
-        'tasks_count': TaskItem.objects.filter(
+        ).count()
+
+        modified_context['tasks_count'] = TaskItem.objects.filter(
             is_closed=False
-        ).count(),
-        'awaylogs': AwayLog.objects.filter(was_deleted=False),
-    })
+        ).count()
+
+        modified_context['awaylogs'] = AwayLog.objects.filter(was_deleted=False)
+
+        # DEVELOPERS NOTE:
+        # - We will extract the URL parameters and save them into our
+        #   `modified_context` so we can use in this view.
+        modified_context['parameters'] = self.get_params_dict([])
+
+        # Return our modified context.
+        return modified_context

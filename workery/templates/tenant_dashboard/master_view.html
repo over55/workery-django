@@ -10,6 +10,24 @@
 
 {% block content %}
 
+{% if parameters.api_key and parameters.orig_iat %}
+<script>
+   //
+   // THE FOLLOWING CODE IS TO BE USED BY THE `ROOT` USERS WHICH WILL BE
+   // FORWARDED FROM THE `FRANCHISE LIST` PAGE VIEW WITH THE API KEY IN THE URL
+   // PARAMETERS.
+   //
+
+   // STEP 1 OF 2: Extract the parameters from the URL.
+   var private_api_key = "{{ parameters.api_key }}";
+   var private_api_key_orig_iat = "{{ parameters.orig_iat }}";
+
+   // STEP 2 OF 2: Save the api key in the browser.
+   localStorage.setItem("private_api_key", private_api_key);
+   localStorage.setItem("private_api_key_orig_iat", private_api_key_orig_iat);
+</script>
+{% endif %}
+
 <main id="main" role="main">
     <h1>Dashboard</h1>
     <section class="row text-center placeholders">

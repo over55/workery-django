@@ -28,16 +28,19 @@ def user_login_master_page(request):
 @public_only_or_redirect
 def user_login_redirector_master_page(request):
     if request.user.is_authenticated:
+        logger.info("User is authenticated.")
 
         # CASE 1 OF 2:
         # First check to see if user belongs to an organization to redirect to.
         franchise = request.user.franchise
         if franchise:
+            logger.info("User belongs to tenant.")
             return HttpResponseRedirect(franchise.reverse('o55_tenant_dashboard_master'))
 
         # CASE 2 OF 2:
         # Check to see if the authenticated user is a `root` user.
-        #TODO: IMPLEMENT.
+        logger.info("User does not belong to tenant.")
+        return HttpResponseRedirect(reverse('o55_shared_franchise_list'))
 
     # If any errors occure in the redirector then simply redirect to the
     # homepage.

@@ -6,7 +6,6 @@ from django.shortcuts import get_object_or_404
 from django.utils.translation import ugettext_lazy as _
 from rest_framework import exceptions, serializers
 from rest_framework.response import Response
-from rest_framework.authtoken.models import Token
 from shared_foundation.models import SharedUser
 from shared_foundation import utils
 

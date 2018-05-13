@@ -11,7 +11,6 @@ from django.utils import timezone
 from django.utils.http import urlquote
 from rest_framework import exceptions, serializers
 from rest_framework.response import Response
-from rest_framework.authtoken.models import Token
 from tenant_foundation.models import AwayLog
 
 

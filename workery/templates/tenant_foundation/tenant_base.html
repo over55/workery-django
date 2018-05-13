@@ -104,6 +104,11 @@
                 </ul>
                 <hr class="nav-divider">
                 <ul class="nav flex-column">
+                    {% if request.user %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'o55_shared_franchise_list' %}"><i class="fa fa-arrow-circle-left"></i> Back to Franchises</a>
+                    </li>
+                    {% endif %}
                     <li class="nav-item">
                         <a class="nav-link {% if current_page == 'setting' %}active{% endif %}" href="{% url 'o55_tenant_settings_launchpad' %}"><i class="fas fa-cog"></i> Settings</a>
                     </li>
@@ -117,7 +122,6 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link {% if current_page == 'help' %}active{% endif %}" href="{% url 'o55_tenant_help_category_list' %}"><i class="fas fa-question-circle"></i> Help</a>
-
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'o55_logout_redirector' %}">
@@ -189,8 +193,8 @@
         var rest_api_token = 'JWT ' + private_api_key;
 
         // For debugging purposes only.
-        //console.log(private_api_key);
-        //console.log(schema_name);
+        // console.log("API Key", private_api_key);
+        // console.log("Schema Name", schema_name);
 
         // DEVELOPERS NOTE:
         // - WE WILL BE OVERRIDING THE "localStorage" OBJECT TO SUPPORT SAVING

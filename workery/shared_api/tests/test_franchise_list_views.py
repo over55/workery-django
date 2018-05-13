@@ -13,7 +13,6 @@ from django_tenants.test.client import TenantClient
 from rest_framework import status
 from rest_framework.test import APIClient
 from rest_framework.test import APITestCase
-from rest_framework.authtoken.models import Token
 from shared_foundation import constants
 from shared_foundation.models import SharedUser
 
