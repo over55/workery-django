@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import logging
+import django_rq
 from datetime import datetime, timedelta
 from dateutil import tz
 from django.conf import settings
@@ -93,15 +94,27 @@ class SharedFranchiseListCreateSerializer(serializers.ModelSerializer):
         #-----------------------------
         # Get our inputs.
         #-----------------------------
-        # associate = validated_data.get('associate', None)
-        # reason = validated_data.get('reason', None)
-        # until_further_notice = validated_data.get('until_further_notice', False)
-        # until_date = validated_data.get('until_date', None)
+        alternate_name = validated_data.get('alternate_name', None)
+        name = validated_data.get('name', None)
+        description = validated_data.get('description', False)
+        address_country = validated_data.get('address_country', None)
+        address_locality = validated_data.get('address_locality', None)
+        address_region = validated_data.get('address_region', None)
+        post_office_box_number = validated_data.get('post_office_box_number', None)
+        postal_code = validated_data.get('postal_code', None)
+        street_address = validated_data.get('street_address', None)
+        street_address_extra = validated_data.get('street_address_extra', None)
+        schema_name = validated_data.get('schema_name', None)
+        until_date = validated_data.get('until_date', None)
+        until_date = validated_data.get('until_date', None)
         logger.info("Input data:", str(validated_data))
 
         # #-----------------------------
         # # Create our `AwayLog` object.
         # #-----------------------------
+        from shared_franchise.tasks import create_franchise_func
+        django_rq.enqueue(create_franchise_func, validated_data)
+
         # # Create our log.
         # log = AwayLog.objects.create(
         #     associate=associate,

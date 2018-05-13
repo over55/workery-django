@@ -43,3 +43,13 @@ class FranchiseCreatePage2of3View(TemplateView):
         modified_context = super().get_context_data(**kwargs)
         modified_context['current_page'] = 'franchise' # Required
         return modified_context # Return our modified context.
+
+
+@method_decorator(login_required, name='dispatch')
+class FranchiseCreatePage3of3View(TemplateView):
+    template_name = 'shared_franchise/create_3_of_3_view.html'
+
+    def get_context_data(self, **kwargs):
+        modified_context = super().get_context_data(**kwargs)
+        modified_context['current_page'] = 'franchise' # Required
+        return modified_context # Return our modified context.

@@ -10,71 +10,157 @@
 
 {% block content %}
 
+<!-- CUSTOM JAVASCRIPT -->
+<!----------------------------------------------------------------------------->
 <script>
+    /**
+     *  DEVELOPERS NOTE:
+     *  THE FOLLOWING JAVASCRIPT FUNCTIONS MUST BE DECLARED IF YOU WANT TO CALL
+     *  THE "associate_create_confirm_form.html" FORM TEMPLATE.
+     */
+    function click_previous_button() {
+        window.location = "{% url 'o55_shared_franchise_create_1_of_3' %}";
+    }
+
+    function click_submit_button() {
+        ajax_post_form_submission("{% url 'o55_shared_franchise_create_3_of_3' %}");
+    }
+
+    function to_yes_or_no_string(value) {
+        if (value == 'true') {
+            return 'Yes';
+        } else {
+            return 'No';
+        }
+    }
+
     /**
      *  When page loads, the following code will be run first.
      */
     $(document).ready(function () {
-        // THIS IS WHERE YOU CAN ADD YOUR COUNTRY/PROVINCE DROPDOWN JS CODE....
-        $(function () {
-        	$('#address_country').change(function () {
-        		loadState($(this).find(':selected').val())
-        	});
-        	loadState('CA');
-        });
-
-        let c_dropdown = $('#address_country');
-        c_dropdown.empty();
-        c_dropdown.append('<option selected="true" disabled>Choose Country</option>');
-        c_dropdown.prop('selectedIndex', 1);
-
-        const state = "{% static 'js/provinces.json' %}";
-        const country = "{% static 'js/countries.json' %}";
-
-        // console.log(state);
-        // console.log(country);
-
-        // Populate dropdown with list of countries
-        $.getJSON(country, function (data) {
-        	$.each(data, function (key, entry) {
-        		c_dropdown.append($('<option></option>').attr('value', entry.code).text(entry.country));
-        	})
-        });
-
-        function loadState(countryId) {
-        	let p_dropdown = $('#address_region');
-        	p_dropdown.empty();
-        	p_dropdown.append('<option selected="true" disabled>Choose State/Province</option>');
-        	p_dropdown.prop('selectedIndex', 0);
-        	// Populate dropdown with list of provinces
-        	$.getJSON(state, function (data) {
-        		$.each(data, function (key, entry) {
-        			if (entry.country == countryId) {
-        				p_dropdown.append($('<option></option>').attr('value', entry.short).text(entry.name));
-        			}
-        		})
-        	});
-        	if (countryId == 'CA') {
-        		p_dropdown.prop('selectedIndex', 1);
-        	}
-        }
-        // end country/province dropdown function
-
+        var firstname = localStorage.getItem("tmp_shared_franchise_short_name");
+        $('#selected_short_name').append(firstname);
+        $('#selected_full_name').append(localStorage.getItem("tmp_shared_franchise_full_name"));
+        // $('#selected_phonenumber').append(localStorage.getItem("tmp_shared_franchise_telephone"));
+        // $('#selected_other_phonenumber').append(localStorage.getItem("tmp_shared_franchise_other_telephone"));
+        $('#selected_street_address').append(localStorage.getItem("tmp_shared_franchise_street_address"));
+        $('#selected_street_address_extra').append(localStorage.getItem("tmp_shared_franchise_street_address_extra"));
+        $('#selected_address_locality').append(localStorage.getItem("tmp_shared_franchise_address_locality"));
+        $('#selected_address_region').append(localStorage.getItem("tmp_shared_franchise_address_region"));
+        $('#selected_address_country').append(localStorage.getItem("tmp_shared_franchise_address_country"));
+        $('#selected_postal_code').append(localStorage.getItem("tmp_shared_franchise_postal_code"));
+        $('#selected_post_office_box_number').append(localStorage.getItem("tmp_shared_franchise_post_office_box_number"));
+        // $('#selected_email').append(localStorage.getItem("tmp_shared_franchise_email"));
+        // $('#selected_telephone').append(localStorage.getItem("tmp_shared_franchise_telephone"));
+        $('#selected_description').append(localStorage.getItem("tmp_shared_franchise_description"));
+        $('#selected_schema_name').append(localStorage.getItem("tmp_shared_franchise_schema_name"));
     }); // end Ready
 
     /**
-     *  Function will take the `root` users API key and attach it to the
-     *  URL of the tenant. We are doing this so this API key can be passed
+     *  Function will unlock the submit button.
      */
-    function click_and_redirect(url) {
-        var private_api_key = localStorage.getItem("private_api_key");
-        var private_api_key_orig_iat = localStorage.getItem("private_api_key_orig_iat");
-        console.log(private_api_key);
-        console.log(private_api_key_orig_iat);
-        console.log(url);
-        window.location = url+"?api_key="+private_api_key+"&orig_iat="+private_api_key_orig_iat;
+    function disable_btn() {
+        $('#id_submit_btn').val("{% trans 'Please Wait...' %}");
+        $('#id_submit_btn').prop("disabled", true);
+    }
+
+    /**
+     *  Function will lock the submit button.
+     */
+    function enable_btn() {
+        $('#id_submit_btn').prop("disabled", false);
+        $('#id_submit_btn').val("{% trans 'Update' %}");
+    }
+
+    /**
+     *  Function will attempt to submit the form to the API server. This
+     *  funciton will:
+     *  (1) Lock / Unlock the submit button.
+     *  (2)
+     */
+    function ajax_post_form_submission(redirect_url) {
+        // LOCK OUT THE "SUBMIT" BUTTON SO THE USER DOES NOT MAKE MULTI-CALLS.
+        disable_btn();
+
+        // MAKE OUR API CALL TO THE BACKEND TO "CREATE" THE CUSTOMER USER.
+        create_shared_franchise_api(
+            {
+                'name': localStorage.getItem("tmp_shared_franchise_short_name"),
+                'alternate_name': localStorage.getItem("tmp_shared_franchise_full_name"),
+                'description': localStorage.getItem("tmp_shared_franchise_description"),
+                'address_country': localStorage.getItem("tmp_shared_franchise_address_country"),
+                'address_locality': localStorage.getItem("tmp_shared_franchise_address_locality"),
+                'address_region': localStorage.getItem("tmp_shared_franchise_address_region"),
+                'street_address': localStorage.getItem("tmp_shared_franchise_street_address"),
+                'street_address_extra': localStorage.getItem("tmp_shared_franchise_street_address_extra"),
+                'postal_code': localStorage.getItem("tmp_shared_franchise_postal_code"),
+                'post_office_box_number': localStorage.getItem("tmp_shared_franchise_post_office_box_number"),
+                // 'email': localStorage.getItem("tmp_shared_franchise_email"),
+                // 'area_served': area_served,
+                // 'fax_number': null,
+                // 'telephone': localStorage.getItem("tmp_shared_franchise_telephone"),
+                // 'telephone_type_of': {{ shared_constants.TELEPHONE_CONTACT_POINT_TYPE_OF_ID }},
+                // 'telephone_extension': telephone_extension,
+                // 'other_telephone': localStorage.getItem("tmp_shared_franchise_other_telephone"),
+                // 'other_telephone_type_of': {{ shared_constants.MOBILE_CONTACT_POINT_TYPE_OF_ID }},
+                // 'fax_number': fax_number
+                'schema_name': localStorage.getItem("tmp_shared_franchise_schema_name"),
+            },
+            function(result_dict) { // Success
+                // FOR DEBUGGING PURPOSES ONLY.
+                console.log(result_dict);
+
+                // RESET OUR STORED VALUES.
+                localStorage.removeItem("tmp_shared_franchise_short_name");
+                localStorage.removeItem("tmp_shared_franchise_full_name");
+                localStorage.removeItem("tmp_shared_franchise_description")
+                localStorage.removeItem("tmp_shared_franchise_street_address");
+                localStorage.removeItem("tmp_shared_franchise_street_address_extra");
+                localStorage.removeItem("tmp_shared_franchise_address_region");
+                localStorage.removeItem("tmp_shared_franchise_address_locality");
+                localStorage.removeItem("tmp_shared_franchise_address_country");
+                localStorage.removeItem("tmp_shared_franchise_postal_code");
+                localStorage.removeItem("tmp_shared_franchise_post_office_box_number");
+                localStorage.removeItem("tmp_shared_franchise_schema_name")
+                // localStorage.removeItem("tmp_shared_franchise_email");
+                // localStorage.removeItem("tmp_shared_franchise_telephone");
+                // localStorage.removeItem("tmp_shared_franchise_other_telephone");
+
+                // REDIRECT TO SUCCESS PAGE.
+                window.location = redirect_url;
+            },
+            function(xhr,status,error) { // Error
+
+                // STEP 1: Convert to JSON.
+                var err = JSON.parse(xhr.responseText);
+
+                // For debugging purposes only.
+                console.log(err);
+
+                // STEP 2: CLEAR EXISTING TEXT.
+                $('#all_error_result').html();
+
+                // STEP 3: PRINT OUR ERROR.
+                for(var prop in err) {
+                    if(err.hasOwnProperty(prop)) {
+                        var val = err[prop];
+                        console.log(val);
+                        $('#all_error_result').append("<p><b>"+prop+"</b>"+val+"</p><br />");
+                    }
+                }
+
+                // STEP 4: FOCUS TO WHERE THE ERROR IS OCCURING.
+                $('html, body').animate({ scrollTop: $('#id_page_title').offset().top }, 'slow');
+            },
+            function() { // Finally
+                // UNLOCK THE "SUBMIT" BUTTON TO BE AVAILABLE FOR USAGE.
+                enable_btn();
+            }
+        );
     }
 </script>
+<!----------------------------------------------------------------------------->
+<!-- CUSTOM JAVASCRIPT -->
 
 <main id="main" role="main">
 
@@ -106,7 +192,7 @@
     <!------------------------------------------------------------------------->
     <!-- end BACK BUTTON -->
 
-    <h1>{% trans 'Add Franchise' %}</h1>
+    <h1 id="id_page_title">{% trans 'Add Franchise' %}</h1>
 
     <!-- STEP NAVIGATION -->
     <!------------------------------------------------------------------------->
@@ -128,11 +214,123 @@
     <!------------------------------------------------------------------------->
     <!-- end STEP NAVIGATION -->
 
-    <!-- FORM -->
-    <!------------------------------------------------------------------------->
-
-    <!------------------------------------------------------------------------->
-    <!-- /.FORM -->
+    <!-- FORM HTML -->
+<!------------------------------------------------------------------------->
+<div class="col-md-10 mx-auto mb-4 py-2">
+    <h3 class="py-2 text-center mb-4">Summary Details</h3>
+    <!-- Error Output -->
+    <div id="all_error_result" name="all_error_result"></div>
+    <!-- end Error Output -->
+    <table class="table table-bordered custom-cell-w">
+        <tbody>
+            <tr class="bg-dark">
+                <th scope="row" colspan="2" class="text-light">Franchise Information Details</th>
+            </tr>
+            <tr>
+                <th scope="row" class="bg-light">Short name</th>
+                <td id="selected_short_name" name="selected_short_name">
+                    <!-- POPULATE THROUGH JS. -->
+                </td>
+            </tr>
+            <tr>
+                <th scope="row" class="bg-light">Full legal name</th>
+                <td id="selected_full_name">
+                    <!-- POPULATE THROUGH JS. -->
+                </td>
+            </tr>
+            {% comment %}
+            <tr>
+                <th scope="row" class="bg-light">Email</th>
+                <td id="selected_email">
+                    <!-- POPULATE THROUGH JS. -->
+                </td>
+            </tr>
+            <tr>
+                <th scope="row" class="bg-light">Phone Number #1</th>
+                <td id="selected_phonenumber">
+                    <!-- POPULATE THROUGH JS. -->
+                </td>
+            </tr>
+            <tr>
+                <th scope="row" class="bg-light">Phone Number #2</th>
+                <td id="selected_other_phonenumber">
+                    <!-- POPULATE THROUGH JS. -->
+                </td>
+            </tr>
+            {% endcomment %}
+            <tr>
+                <th scope="row" class="bg-light">Description</th>
+                <td id="selected_description">
+                    <!-- POPULATE THROUGH JS. -->
+                </td>
+            </tr>
+            <tr>
+                <th scope="row" class="bg-light">Stree Address</th>
+                <td id="selected_street_address">
+                    <!-- POPULATE street_address JS. -->
+                </td>
+            </tr>
+            <tr>
+                <th scope="row" class="bg-light">Street Address (Extra)</th>
+                <td id="selected_street_address_extra">
+                    <!-- POPULATE THROUGH JS. -->
+                </td>
+            </tr>
+            <tr>
+                <th scope="row" class="bg-light">City</th>
+                <td id="selected_address_locality">
+                    <!-- POPULATE THROUGH JS. -->
+                </td>
+            </tr>
+            <tr>
+                <th scope="row" class="bg-light">Region</th>
+                <td id="selected_address_region">
+                    <!-- POPULATE THROUGH JS. -->
+                </td>
+            </tr>
+            <tr>
+                <th scope="row" class="bg-light">Country</th>
+                <td id="selected_address_country">
+                    <!-- POPULATE THROUGH JS. -->
+                </td>
+            </tr>
+            <tr>
+                <th scope="row" class="bg-light">Postal Code</th>
+                <td id="selected_postal_code">
+                    <!-- POPULATE THROUGH JS. -->
+                </td>
+            </tr>
+            <tr>
+                <th scope="row" class="bg-light">Post Office Box Number</th>
+                <td id="selected_post_office_box_number">
+                    <!-- POPULATE THROUGH JS. -->
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-bordered custom-cell-w">
+        <tbody>
+            <tr class="bg-dark">
+                <th scope="row" colspan="2" class="text-light">Franchise Technical Details</th>
+            </tr>
+            <tr>
+                <th scope="row" class="bg-light">Schema name</th>
+                <td id="selected_schema_name">
+                    <!-- THIS IS WHERE THE TAGS GET LOADED -->
+                </td>
+            </tr>
+        </body>
+    </table>
+    <div class="form-group col-md-12 mb-3 p-0 mx-auto text-center">
+        <button id="id_create_btn"
+            class="btn btn-success btn-lg mt-4 float-right pl-4 pr-4"
+            type="button"
+            onclick="click_submit_button();"><i class="fas fa-plus"></i> Add Franchise</button>
+        <button class="btn btn-orange btn-lg mt-4 float-left pl-4 pr-4" type="button" onclick="click_previous_button();"><i class="fas fa-arrow-left"></i> Back</button>
+    </div>
+</div>
+<!------------------------------------------------------------------------->
+<!-- end FORM HTML -->
 
     <!-- RETURN-TO-TOP -->
     <a id="return-to-top" href="#" class="btn-info btn-lg back-to-top" role="button" title="Back to top"><i class="fas fa-angle-up fa-2x"></i></a>

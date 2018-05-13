@@ -1,0 +1,101 @@
+{% extends 'shared_franchise/base_view.html' %}
+{% load staticfiles i18n foundation_tags humanize %}
+
+{% block title %}
+{% trans 'Franchises | Workery' %}
+{% endblock title %}
+
+{% block header_content %}
+{% endblock header_content %}
+
+{% block content %}
+
+<script>
+    /**
+     *  When page loads, the following code will be run first.
+     */
+    $(document).ready(function () {
+        // Do nothing.
+    }); // end Ready
+
+    /**
+     *
+     */
+    function click_next_button() {
+        window.location = "{% url 'o55_shared_franchise_list' %}";
+    } // end FUNC.
+</script>
+
+<main id="main" role="main">
+
+    <!-- BREADCRUMB -->
+    <!------------------------------------------------------------------------->
+    <nav aria-label="breadcrumb">
+	  	<ol class="breadcrumb">
+	    	<li class="breadcrumb-item" aria-current="page">
+                <a href="{% url 'o55_shared_franchise_list' %}">
+                    {% trans 'Franchises' %}
+                </a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">{% trans 'Add' %}</li>
+	  	</ol>
+	</nav>
+    <!------------------------------------------------------------------------->
+    <!-- end BREADCRUMB -->
+
+    <!-- BACK BUTTON -->
+    <!------------------------------------------------------------------------->
+    <div class="row">
+		<div class="col-sm-3 p-3 mb-2">
+			<a class="btn btn-primary btn-lg" href="{% url 'o55_shared_franchise_list' %}" role="button">
+                <svg class="svg-inline--fa fa-arrow-left fa-w-14" aria-hidden="true" data-fa-processed="" data-prefix="fas" data-icon="arrow-left" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                <path fill="currentColor" d="M257.5 445.1l-22.2 22.2c-9.4 9.4-24.6 9.4-33.9 0L7 273c-9.4-9.4-9.4-24.6 0-33.9L201.4 44.7c9.4-9.4 24.6-9.4 33.9 0l22.2 22.2c9.5 9.5 9.3 25-.4 34.3L136.6 216H424c13.3 0 24 10.7 24 24v32c0 13.3-10.7 24-24 24H136.6l120.5 114.8c9.8 9.3 10 24.8.4 34.3z"></path>
+            </svg><!-- <i class="fas fa-arrow-left"></i> -->&nbsp;{% trans 'Back to Franchises' %}</a>
+		</div>
+	</div>
+    <!------------------------------------------------------------------------->
+    <!-- end BACK BUTTON -->
+
+    <h1 id="id_page_title">{% trans 'Add Franchise' %}</h1>
+
+    <!-- STEP NAVIGATION -->
+    <!------------------------------------------------------------------------->
+    <div class="row">
+        <div class="step-navigation">
+            <div id="step-1" class="st-grey">
+                <span class="num">1.</span><span class="">Details</span>
+            </div>
+            <div id="step-2" class="st-grey">
+                <span class="num">2.</span><span class="">Review &amp; Submit</span>
+            </div>
+            <div id="step-3" class="st-grey active">
+                <span class="num">3.</span><span class="">Completion</span>
+            </div>
+        </div>
+    </div>
+    <!------------------------------------------------------------------------->
+    <!-- end STEP NAVIGATION -->
+
+    <!-- FORM -->
+    <!------------------------------------------------------------------------->
+    <div class="jumbotron">
+        <h1 class="display-4">Completed</h1>
+        <div class="table-responsive-sm my-3">
+            <p>Your submission has been compelted! Please wait <strong>5 minutes</strong> and we should have your franchise created.</p>
+            <p>
+                <button id="id_submit_btn"
+                     class="btn btn-success btn-lg"
+                      type="button"
+                   onclick="click_next_button();">
+                    Ok, I understand <i class="fas fa-arrow-right"></i></button>
+            </p>
+        </div>
+    </div>
+    <!------------------------------------------------------------------------->
+    <!-- /.FORM -->
+
+    <!-- RETURN-TO-TOP -->
+    <a id="return-to-top" href="#" class="btn-info btn-lg back-to-top" role="button" title="Back to top"><i class="fas fa-angle-up fa-2x"></i></a>
+    <!-- end RETURN-TO-TOP -->
+</main>
+{% endblock content %}
