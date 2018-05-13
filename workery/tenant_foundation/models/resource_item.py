@@ -42,7 +42,7 @@ def increment_resource_item_id_number():
 class ResourceItem(models.Model):
     class Meta:
         app_label = 'tenant_foundation'
-        db_table = 'o55_resource_items'
+        db_table = 'workery_resource_items'
         verbose_name = _('Resource Item')
         verbose_name_plural = _('Resource Items')
         default_permissions = ()

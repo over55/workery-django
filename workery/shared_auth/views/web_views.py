@@ -35,16 +35,16 @@ def user_login_redirector_master_page(request):
         franchise = request.user.franchise
         if franchise:
             logger.info("User belongs to tenant.")
-            return HttpResponseRedirect(franchise.reverse('o55_tenant_dashboard_master'))
+            return HttpResponseRedirect(franchise.reverse('workery_tenant_dashboard_master'))
 
         # CASE 2 OF 2:
         # Check to see if the authenticated user is a `root` user.
         logger.info("User does not belong to tenant.")
-        return HttpResponseRedirect(reverse('o55_shared_franchise_list'))
+        return HttpResponseRedirect(reverse('workery_shared_franchise_list'))
 
     # If any errors occure in the redirector then simply redirect to the
     # homepage.
-    return HttpResponseRedirect(reverse('o55_index_master', args=[]))
+    return HttpResponseRedirect(reverse('workery_index_master', args=[]))
 
 
 @public_only_or_redirect
@@ -65,13 +65,13 @@ def rest_password_master_page(request, pr_access_code):
     try:
         me = SharedUser.objects.get(pr_access_code=pr_access_code)
         if me.has_pr_code_expired():
-            return HttpResponseRedirect(reverse('o55_send_reset_password_email_master', args=[])+"?has_pr_code_expired=True")
+            return HttpResponseRedirect(reverse('workery_send_reset_password_email_master', args=[])+"?has_pr_code_expired=True")
     except SharedUser.DoesNotExist:
         #TODO: In the future, write code for tracking how many attempts are made
         #      and if too many then block the user. For now just keep this in mind.
 
         # Error message indicates wrong password was entered.
-        return HttpResponseRedirect(reverse('o55_send_reset_password_email_master', args=[])+"?has_wrong_pr_access_code=True")
+        return HttpResponseRedirect(reverse('workery_send_reset_password_email_master', args=[])+"?has_wrong_pr_access_code=True")
 
     return render(request, 'shared_auth/reset_password/master_view.html',{
         'pr_access_code': pr_access_code
@@ -117,5 +117,5 @@ def user_logout_redirector_master_page(request):
     logout(request)
 
     # Step 4: Redirect to the homepage.
-    sign_in_url = settings.O55_APP_HTTP_PROTOCOL + settings.O55_APP_HTTP_DOMAIN + reverse('o55_login_master', args=[]) + "?has_logged_out=True"
+    sign_in_url = settings.O55_APP_HTTP_PROTOCOL + settings.O55_APP_HTTP_DOMAIN + reverse('workery_login_master', args=[]) + "?has_logged_out=True"
     return HttpResponseRedirect(sign_in_url)

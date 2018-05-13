@@ -4,5 +4,5 @@ from tenant_dashboard.views import web_views
 
 
 urlpatterns = (
-    url(r'^dashboard$', web_views.DashboardView.as_view(), name='o55_tenant_dashboard_master'),
+    url(r'^dashboard$', web_views.DashboardView.as_view(), name='workery_tenant_dashboard_master'),
 )

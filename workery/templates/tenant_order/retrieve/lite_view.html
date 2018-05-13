@@ -16,14 +16,14 @@
 <script>
     function ajax_previous() {
         {% if template == 'search' %}
-        window.location = "{% url 'o55_tenant_job_search' %}";
+        window.location = "{% url 'workery_tenant_job_search' %}";
         {% elif template == 'task' %}
         alert("TODO");
-        //window.location = "{% url 'o55_tenant_pending_task_retrieve' parameters.task_id %}";
+        //window.location = "{% url 'workery_tenant_pending_task_retrieve' parameters.task_id %}";
         {% elif template == 'list' %}
-        window.location = "{% url 'o55_tenant_job_list' %}";
+        window.location = "{% url 'workery_tenant_job_list' %}";
         {% else %}
-        window.location = "{% url 'o55_tenant_job_summary' %}";
+        window.location = "{% url 'workery_tenant_job_summary' %}";
         {% endif %}
     }
 </script>
@@ -37,24 +37,24 @@
         <ol class="breadcrumb">
             {% if template == 'search' %}
             <li class="breadcrumb-item">
-                <a href="{% url 'o55_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a>
+                <a href="{% url 'workery_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a>
             </li>
             <li class="breadcrumb-item">
-                <a href="{% url 'o55_tenant_job_summary' %}">{% trans 'Jobs' %}</a>
+                <a href="{% url 'workery_tenant_job_summary' %}">{% trans 'Jobs' %}</a>
             </li>
             <li class="breadcrumb-item">
-                <a href="{% url 'o55_tenant_job_search' %}">{% trans 'Search' %}</a>
+                <a href="{% url 'workery_tenant_job_search' %}">{% trans 'Search' %}</a>
             </li>
             <li class="breadcrumb-item active" aria-current="page">{% trans 'Search Results' %}</li>
             <li class="breadcrumb-item active" aria-current="page">{% trans 'Job #' %}{{ object.id|intcomma }}</li>
             {% elif template == 'list' %}
-            <li class="breadcrumb-item"><a href="{% url 'o55_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
-            <li class="breadcrumb-item"><a href="{% url 'o55_tenant_job_summary' %}">{% trans 'Jobs' %}</a></li>
-            <li class="breadcrumb-item"><a href="{% url 'o55_tenant_job_list' %}">{% trans 'List' %}</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'workery_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'workery_tenant_job_summary' %}">{% trans 'Jobs' %}</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'workery_tenant_job_list' %}">{% trans 'List' %}</a></li>
             <li class="breadcrumb-item active" aria-current="page">{% trans 'Job #' %}{{ object.id|intcomma }}</li>
             {% else %}
-            <li class="breadcrumb-item"><a href="{% url 'o55_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
-            <li class="breadcrumb-item"><a href="{% url 'o55_tenant_job_summary' %}">{% trans 'Jobs' %}</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'workery_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'workery_tenant_job_summary' %}">{% trans 'Jobs' %}</a></li>
             <li class="breadcrumb-item active" aria-current="page">{% trans 'Job #' %}{{ object.id|intcomma }}</li>
             {% endif %}
         </ol>
@@ -79,7 +79,7 @@
     <!------------------------------------------------------------------------->
     <div class="row">
         <div class="col-sm-3 p-3 mb-2">
-            <a class="btn btn-primary btn-lg" href="{% if template == 'search' %}{% url 'o55_tenant_job_search' %}{% elif template == 'list' %}{% url 'o55_tenant_job_list' %}{% else %}{% url 'o55_tenant_job_summary' %}{% endif %}" role="button">
+            <a class="btn btn-primary btn-lg" href="{% if template == 'search' %}{% url 'workery_tenant_job_search' %}{% elif template == 'list' %}{% url 'workery_tenant_job_list' %}{% else %}{% url 'workery_tenant_job_summary' %}{% endif %}" role="button">
                 <svg class="svg-inline--fa fa-arrow-left fa-w-14" aria-hidden="true" data-fa-processed="" data-prefix="fas" data-icon="arrow-left" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
                     <path fill="currentColor" d="M257.5 445.1l-22.2 22.2c-9.4 9.4-24.6 9.4-33.9 0L7 273c-9.4-9.4-9.4-24.6 0-33.9L201.4 44.7c9.4-9.4 24.6-9.4 33.9 0l22.2 22.2c9.5 9.5 9.3 25-.4 34.3L136.6 216H424c13.3 0 24 10.7 24 24v32c0 13.3-10.7 24-24 24H136.6l120.5 114.8c9.8 9.3 10 24.8.4 34.3z"></path>
                 </svg>
@@ -100,22 +100,22 @@
                 <i class="far fa-id-badge"></i>&nbsp;<span class="">Summary</span>
             </div>
             <div class="st-grey">
-                <a href="{% url 'o55_tenant_job_full_retrieve' template job.id %}">
+                <a href="{% url 'workery_tenant_job_full_retrieve' template job.id %}">
                     <i class="far fa-id-card"></i>&nbsp;<span class="">Details</span>
                 </a>
             </div>
             <div class="st-grey">
-                <a href="{% url 'o55_tenant_job_retrieve_for_activity_sheet_list' template job.id %}">
+                <a href="{% url 'workery_tenant_job_retrieve_for_activity_sheet_list' template job.id %}">
                     <i class="far fa-address-book"></i>&nbsp;<span class="">Activity Sheet</span>
                 </a>
             </div>
             <div class="st-grey">
-                <a href="{% url 'o55_tenant_job_retrieve_for_tasks_list' template job.id %}">
+                <a href="{% url 'workery_tenant_job_retrieve_for_tasks_list' template job.id %}">
                     <i class="far fa-clock"></i>&nbsp;<span class="">Tasks</span>
                 </a>
             </div>
             <div class="st-grey">
-                <a href="{% url 'o55_tenant_job_comments_retrieve' template job.id %}">
+                <a href="{% url 'workery_tenant_job_comments_retrieve' template job.id %}">
                     <i class="far fa-comments"></i>&nbsp;<span class="">Comments</span>
                 </a>
             </div>
@@ -139,13 +139,13 @@
                 <tr>
                     <th scope="row" class="bg-light">Client Name</th>
                     <td id="selected_customer_name">
-                        {% if job.customer %}<a href="{% url 'o55_tenant_customer_lite_retrieve' template job.customer.id %}" target="_blank">{{ job.customer }}&nbsp;<i class="fas fa-link"></i></a>{% else %}-{% endif %}
+                        {% if job.customer %}<a href="{% url 'workery_tenant_customer_lite_retrieve' template job.customer.id %}" target="_blank">{{ job.customer }}&nbsp;<i class="fas fa-link"></i></a>{% else %}-{% endif %}
                     </td>
                 </tr>
                 <tr>
                     <th scope="row" class="bg-light">Associate Name</th>
                     <td id="selected_associate_name">
-                        {% if job.associate %}<a href="{% url 'o55_tenant_member_lite_retrieve' template job.associate.id %}" target="_blank">{{ job.associate }}&nbsp;<i class="fas fa-link"></i></a>{% else %}-{% endif %}
+                        {% if job.associate %}<a href="{% url 'workery_tenant_member_lite_retrieve' template job.associate.id %}" target="_blank">{{ job.associate }}&nbsp;<i class="fas fa-link"></i></a>{% else %}-{% endif %}
                     </td>
                 </tr>
                 <tr>
@@ -218,7 +218,7 @@
                 <tr>
                     <th scope="row" class="bg-light">Required Task</th>
                     <td id="selected_latest_pending_task">
-                        <a href="{% url 'o55_tenant_pending_task_retrieve' job.latest_pending_task.id %}" target="_blank">
+                        <a href="{% url 'workery_tenant_pending_task_retrieve' job.latest_pending_task.id %}" target="_blank">
                             {{ job.latest_pending_task.title }}&nbsp;<i class="fas fa-link"></i>
                         </a>
                     </td>
@@ -245,7 +245,7 @@
             <!-- UNASSIGN BUTTON -->
             <div class="col-sm-4">
                 {% if job.associate %}
-                <a href="{% url 'o55_tenant_job_retrieve_for_unassign_create' template job.id %}">
+                <a href="{% url 'workery_tenant_job_retrieve_for_unassign_create' template job.id %}">
                 <button  id="id_submit_btn"
                     class="btn btn-primary btn-lg btn-fxw mt-4"
                     type="button">
@@ -259,7 +259,7 @@
             <!-- end UNASSIGN BUTTON -->
             <!-- CLOSE JOB BUTTON -->
             <div class="col-sm-4">
-                <a href="{% url 'o55_tenant_job_retrieve_for_close_create' template job.id %}">
+                <a href="{% url 'workery_tenant_job_retrieve_for_close_create' template job.id %}">
                 <button  id="id_submit_btn"
                     class="btn btn-success btn-lg btn-fxw mt-4"
                     type="button">
@@ -270,7 +270,7 @@
             <!-- end CLOSE JOB BUTTON -->
             <!-- end POSTPONE BUTTON -->
             <div class="col-sm-4">
-                <a href="{% url 'o55_tenant_job_retrieve_for_postpone_create' template job.id %}">
+                <a href="{% url 'workery_tenant_job_retrieve_for_postpone_create' template job.id %}">
                 <button  id="id_submit_btn"
                     class="btn btn-orange btn-lg btn-fxw mt-4"
                     type="button">

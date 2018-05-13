@@ -14,11 +14,11 @@
 <!----------------------------------------------------------------------------->
 <script>
     function click_previous_button() {
-        window.location = "{% url 'o55_tenant_team_create' %}";
+        window.location = "{% url 'workery_tenant_team_create' %}";
     }
 
     function click_submit_button() {
-        ajax_post_form_submission("{% url 'o55_tenant_team_summary' %}?was_created=True");
+        ajax_post_form_submission("{% url 'workery_tenant_team_summary' %}?was_created=True");
     }
 
     /**
@@ -216,9 +216,9 @@
     <!------------------------------------------------------------------------->
     <nav aria-label="breadcrumb">
 	  	<ol class="breadcrumb">
-	    	<li class="breadcrumb-item"><a href="{% url 'o55_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
-            <li class="breadcrumb-item"><a href="{% url 'o55_tenant_team_summary' %}">{% trans 'Staff' %}</a></li>
-            <li class="breadcrumb-item"><a href="{% url 'o55_tenant_team_create' %}">{% trans 'Add' %}</a></li>
+	    	<li class="breadcrumb-item"><a href="{% url 'workery_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'workery_tenant_team_summary' %}">{% trans 'Staff' %}</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'workery_tenant_team_create' %}">{% trans 'Add' %}</a></li>
             <li class="breadcrumb-item active" aria-current="page">{% trans 'Staff Members' %}</li>
 	  	</ol>
 	</nav>
@@ -229,7 +229,7 @@
     <!------------------------------------------------------------------------->
     <div class="row">
 		<div class="col-sm-3 p-3 mb-2">
-			<a class="btn btn-primary btn-lg" href="{% url 'o55_tenant_team_summary' %}" role="button">
+			<a class="btn btn-primary btn-lg" href="{% url 'workery_tenant_team_summary' %}" role="button">
                 <svg class="svg-inline--fa fa-arrow-left fa-w-14" aria-hidden="true" data-fa-processed="" data-prefix="fas" data-icon="arrow-left" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
                 <path fill="currentColor" d="M257.5 445.1l-22.2 22.2c-9.4 9.4-24.6 9.4-33.9 0L7 273c-9.4-9.4-9.4-24.6 0-33.9L201.4 44.7c9.4-9.4 24.6-9.4 33.9 0l22.2 22.2c9.5 9.5 9.3 25-.4 34.3L136.6 216H424c13.3 0 24 10.7 24 24v32c0 13.3-10.7 24-24 24H136.6l120.5 114.8c9.8 9.3 10 24.8.4 34.3z"></path>
             </svg><!-- <i class="fas fa-arrow-left"></i> -->&nbsp;{% trans 'Back to Staff\'s Home' %}</a>

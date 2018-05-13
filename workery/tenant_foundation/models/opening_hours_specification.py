@@ -29,7 +29,7 @@ class OpeningHoursSpecification(AbstractThing):
     """
     class Meta:
         app_label = 'tenant_foundation'
-        db_table = 'o55_opening_hours_specifications'
+        db_table = 'workery_opening_hours_specifications'
         verbose_name = _('Opening Hours Specification')
         verbose_name_plural = _('Opening Hours Specifications')
         default_permissions = ()

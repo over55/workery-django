@@ -152,7 +152,7 @@ class OrderListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
         """
         Unit test will test anonymous make a GET request to the LIST API-endpoint.
         """
-        url = reverse('o55_order_list_create_api_endpoint')+"?format=json"
+        url = reverse('workery_order_list_create_api_endpoint')+"?format=json"
         response = self.unauthorized_client.get(url, data=None, content_type='application/json')
         self.assertIsNotNone(response)
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
@@ -163,7 +163,7 @@ class OrderListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
         Unit test will test authenticated user, who has permission, to make a
         GET request to the list API-endpoint.
         """
-        url = reverse('o55_order_list_create_api_endpoint')
+        url = reverse('workery_order_list_create_api_endpoint')
         url += "?format=json"
 
         # Executive
@@ -188,7 +188,7 @@ class OrderListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
         make a GET request to the list API-endpoint.
         """
         Permission.objects.all().delete()
-        url = reverse('o55_order_list_create_api_endpoint')
+        url = reverse('workery_order_list_create_api_endpoint')
         url += "?format=json"
         response = self.customer_client.get(url, data=None, content_type='application/json')
         self.assertIsNotNone(response)
@@ -204,7 +204,7 @@ class OrderListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
         """
         Unit test will test anonymous make a POST request to the create API-endpoint.
         """
-        url = reverse('o55_order_list_create_api_endpoint')+"?format=json"
+        url = reverse('workery_order_list_create_api_endpoint')+"?format=json"
         response = self.unauthorized_client.post(url, data={}, content_type='application/json')
         self.assertIsNotNone(response)
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
@@ -221,7 +221,7 @@ class OrderListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
         skill_set_3 = SkillSet.objects.filter(category="Ceramic Tile", sub_category="Backsplash only").first()
 
         # Generate the URL.
-        url = reverse('o55_order_list_create_api_endpoint')
+        url = reverse('workery_order_list_create_api_endpoint')
         url += "?format=json"
 
         # Executive
@@ -326,7 +326,7 @@ class OrderListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
         make a POST request to the list API-endpoint.
         """
         Permission.objects.all().delete()
-        url = reverse('o55_order_list_create_api_endpoint')
+        url = reverse('workery_order_list_create_api_endpoint')
         url += "?format=json"
         response = self.customer_client.post(url, data=json.dumps({}), content_type='application/json')
         self.assertIsNotNone(response)
@@ -342,7 +342,7 @@ class OrderListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
         """
         Unit test will test anonymous make a PUT request to the update API-endpoint.
         """
-        url = reverse('o55_order_retrieve_update_destroy_api_endpoint', args=[self.order.id])+"?format=json"
+        url = reverse('workery_order_retrieve_update_destroy_api_endpoint', args=[self.order.id])+"?format=json"
         response = self.unauthorized_client.post(url, data={}, content_type='application/json')
         self.assertIsNotNone(response)
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
@@ -359,7 +359,7 @@ class OrderListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
         skill_set_3 = SkillSet.objects.filter(category="Ceramic Tile", sub_category="Backsplash only").first()
 
         # Generate the URL and data.
-        url = reverse('o55_order_retrieve_update_destroy_api_endpoint', args=[self.order.id])+"?format=json"
+        url = reverse('workery_order_retrieve_update_destroy_api_endpoint', args=[self.order.id])+"?format=json"
         data = json.dumps({
             'customer': self.customer.id,
             'associate': self.associate.id,
@@ -406,7 +406,7 @@ class OrderListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
         make a PUT request to the update API-endpoint.
         """
         Permission.objects.all().delete()
-        url = reverse('o55_order_retrieve_update_destroy_api_endpoint', args=[self.order.id])+"?format=json"
+        url = reverse('workery_order_retrieve_update_destroy_api_endpoint', args=[self.order.id])+"?format=json"
         data = json.dumps({
             'customer': self.customer.id,
             'associate': self.associate.id,
@@ -429,7 +429,7 @@ class OrderListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
         """
         Unit test will test anonymous make a GET request to the retrieve API-endpoint.
         """
-        url = reverse('o55_order_retrieve_update_destroy_api_endpoint', args=[self.order.id])+"?format=json"
+        url = reverse('workery_order_retrieve_update_destroy_api_endpoint', args=[self.order.id])+"?format=json"
         response = self.unauthorized_client.get(url, data={}, content_type='application/json')
         self.assertIsNotNone(response)
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
@@ -440,7 +440,7 @@ class OrderListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
         Unit test will test authenticated user, who has permission, to make a
         GET request to the retrieve API-endpoint.
         """
-        url = reverse('o55_order_retrieve_update_destroy_api_endpoint', args=[self.order.id])+"?format=json"
+        url = reverse('workery_order_retrieve_update_destroy_api_endpoint', args=[self.order.id])+"?format=json"
 
         response = self.exec_client.get(url, data=None, content_type='application/json')
         self.assertIsNotNone(response)
@@ -467,7 +467,7 @@ class OrderListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
         make a GET request to the retrieve API-endpoint.
         """
         Permission.objects.all().delete()
-        url = reverse('o55_order_retrieve_update_destroy_api_endpoint', args=[self.order.id])+"?format=json"
+        url = reverse('workery_order_retrieve_update_destroy_api_endpoint', args=[self.order.id])+"?format=json"
         response = self.exec_client.get(url, data=None, content_type='application/json')
         self.assertIsNotNone(response)
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
@@ -482,7 +482,7 @@ class OrderListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
         """
         Unit test will test anonymous make a DELETE request to the delete API-endpoint.
         """
-        url = reverse('o55_order_retrieve_update_destroy_api_endpoint', args=[self.order.id])+"?format=json"
+        url = reverse('workery_order_retrieve_update_destroy_api_endpoint', args=[self.order.id])+"?format=json"
         response = self.unauthorized_client.delete(url, data={}, content_type='application/json')
         self.assertIsNotNone(response)
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
@@ -493,7 +493,7 @@ class OrderListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
         Unit test will test authenticated user, who has permission, to make a
         DELETE request to the delete API-endpoint.
         """
-        url = reverse('o55_order_retrieve_update_destroy_api_endpoint', args=[self.order.id])+"?format=json"
+        url = reverse('workery_order_retrieve_update_destroy_api_endpoint', args=[self.order.id])+"?format=json"
         response = self.exec_client.delete(url, data=None, content_type='application/json')
         self.assertIsNotNone(response)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -505,7 +505,7 @@ class OrderListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
         make a DELETE request to the delete API-endpoint.
         """
         Permission.objects.all().delete()
-        url = reverse('o55_order_retrieve_update_destroy_api_endpoint', args=[self.order.id])+"?format=json"
+        url = reverse('workery_order_retrieve_update_destroy_api_endpoint', args=[self.order.id])+"?format=json"
         response = self.exec_client.delete(url, data=None, content_type='application/json')
         self.assertIsNotNone(response)
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)

@@ -70,7 +70,7 @@ class APILoginWithPublicSchemaTestCase(APITestCase, TenantTestCase):
 
     @transaction.atomic
     def test_api_login_with_success(self):
-        url = reverse('o55_login_api_endpoint')
+        url = reverse('workery_login_api_endpoint')
         data = {
             'email_or_username': TEST_USER_USERNAME,
             'password': TEST_USER_PASSWORD,
@@ -82,7 +82,7 @@ class APILoginWithPublicSchemaTestCase(APITestCase, TenantTestCase):
 
     @transaction.atomic
     def test_api_login_with_nonexisting_account(self):
-        url = reverse('o55_login_api_endpoint')
+        url = reverse('workery_login_api_endpoint')
         data = {
             'email_or_username': 'hideauze',
             'password': 'Evolvers',
@@ -98,7 +98,7 @@ class APILoginWithPublicSchemaTestCase(APITestCase, TenantTestCase):
         client.save()
 
         # Run this test.
-        url = reverse('o55_login_api_endpoint')
+        url = reverse('workery_login_api_endpoint')
         data = {
             'email_or_username': TEST_USER_USERNAME,
             'password': TEST_USER_PASSWORD,
@@ -113,7 +113,7 @@ class APILoginWithPublicSchemaTestCase(APITestCase, TenantTestCase):
         client.save()
 
         # Run this test.
-        url = reverse('o55_login_api_endpoint')
+        url = reverse('workery_login_api_endpoint')
         data = {
             'email_or_username': TEST_USER_USERNAME,
             'password': "La la la!",

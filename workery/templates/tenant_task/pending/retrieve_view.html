@@ -11,8 +11,8 @@
     <!------------------------------------------------------------------------->
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{% url 'o55_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
-            <li class="breadcrumb-item"><a href="{% url 'o55_tenant_task_list' %}">{% trans 'Pending Tasks' %}</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'workery_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'workery_tenant_task_list' %}">{% trans 'Pending Tasks' %}</a></li>
             <li class="breadcrumb-item active" aria-current="page">{% trans 'Task #' %}{{ task_item.id|intcomma }}</li>
         </ol>
     </nav>
@@ -66,7 +66,7 @@
                 <tr>
                     <th scope="row" class="bg-light">Job #</th>
                     <td id="selected_skillsets_id">
-                        <a href="{% url 'o55_tenant_job_retrieve' 'summary' task_item.job.id %}" target="_blank">
+                        <a href="{% url 'workery_tenant_job_retrieve' 'summary' task_item.job.id %}" target="_blank">
                         {{ task_item.job.id|intcomma }}&nbsp;<i class="fas fa-link"></i>
                         </a>
                     </td>
@@ -104,7 +104,7 @@
                     <td id="selected_comment_id">
                         {% if task_item.type_of == 1 %}
                         <div class="col-sm-4">
-                            <a href="{% url 'o55_tenant_pending_task_retrieve_for_activity_sheet_retrieve' task_item.id %}">
+                            <a href="{% url 'workery_tenant_pending_task_retrieve_for_activity_sheet_retrieve' task_item.id %}">
                             <button  id="id_submit_btn"
                                 class="btn btn-primary btn-lg btn-fxw mt-4"
                                 type="button">
@@ -114,7 +114,7 @@
                         </div>
                         {% elif task_item.type_of == 2 %}
                         <div class="col-sm-4">
-                            <a href="{% url 'o55_tenant_pending_task_retrieve_and_complete_create' task_item.id %}">
+                            <a href="{% url 'workery_tenant_pending_task_retrieve_and_complete_create' task_item.id %}">
                             <button  id="id_submit_btn"
                                 class="btn btn-primary btn-lg btn-fxw mt-4"
                                 type="button">
@@ -124,7 +124,7 @@
                         </div>
                         {% elif task_item.type_of == 3 %}
                         <div class="col-sm-4">
-                            <a href="{% url 'o55_tenant_job_retrieve_for_close_create' 'task' task_item.job.id %}?task_id={{ task_item.id }}">
+                            <a href="{% url 'workery_tenant_job_retrieve_for_close_create' 'task' task_item.job.id %}?task_id={{ task_item.id }}">
                             <button  id="id_submit_btn"
                                 class="btn btn-primary btn-lg btn-fxw mt-4"
                                 type="button">
@@ -143,7 +143,7 @@
             <!-- UNASSIGN BUTTON -->
             {% if task_item.type_of != 1 %}
             <div class="col-sm-4">
-                <a href="{% url 'o55_tenant_job_retrieve_for_unassign_create' 'task' task_item.job.id %}?task_id={{ task_item.id }}">
+                <a href="{% url 'workery_tenant_job_retrieve_for_unassign_create' 'task' task_item.job.id %}?task_id={{ task_item.id }}">
                 <button  id="id_submit_btn"
                     class="btn btn-primary btn-lg btn-fxw mt-4"
                     type="button">
@@ -156,7 +156,7 @@
             <!-- CLOSE JOB BUTTON -->
             {% if task_item.type_of != 3 %}
             <div class="col-sm-4">
-                <a href="{% url 'o55_tenant_job_retrieve_for_close_create' 'task' task_item.job.id %}?task_id={{ task_item.id }}">
+                <a href="{% url 'workery_tenant_job_retrieve_for_close_create' 'task' task_item.job.id %}?task_id={{ task_item.id }}">
                 <button  id="id_submit_btn"
                     class="btn btn-success btn-lg btn-fxw mt-4"
                     type="button">
@@ -168,7 +168,7 @@
             <!-- end CLOSE JOB BUTTON -->
             <!-- end POSTPONE BUTTON -->
             <div class="col-sm-4">
-                <a href="{% url 'o55_tenant_job_retrieve_for_postpone_create' 'task' task_item.job.id %}?task_id={{ task_item.id }}">
+                <a href="{% url 'workery_tenant_job_retrieve_for_postpone_create' 'task' task_item.job.id %}?task_id={{ task_item.id }}">
                 <button  id="id_submit_btn"
                     class="btn btn-orange btn-lg btn-fxw mt-4"
                     type="button">

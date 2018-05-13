@@ -1,7 +1,7 @@
 <script>
     function create_job_api(data_dict, func_callback, func_error_callback, complete_callback) {
         jQuery.ajax({
-            url: "{% url 'o55_order_list_create_api_endpoint' %}?format=json",
+            url: "{% url 'workery_order_list_create_api_endpoint' %}?format=json",
             headers: {
                 Authorization: rest_api_token
             },
@@ -23,7 +23,7 @@
     }
 
     function update_job_api(pk, data_dict, func_callback, func_error_callback, complete_callback) {
-        var url = "{% url 'o55_order_retrieve_update_destroy_api_endpoint' 0 %}?format=json";
+        var url = "{% url 'workery_order_retrieve_update_destroy_api_endpoint' 0 %}?format=json";
         url = url.replace("0", pk);
         jQuery.ajax({
             url: url,
@@ -48,7 +48,7 @@
     }
 
     function create_job_comment_api(data_dict, func_callback, func_error_callback, complete_callback) {
-        var url = "{% url 'o55_job_comment_list_create_api_endpoint' %}?format=json";
+        var url = "{% url 'workery_job_comment_list_create_api_endpoint' %}?format=json";
         jQuery.ajax({
             url: url,
             headers: {
@@ -72,7 +72,7 @@
     }
 
     function create_activity_sheet_item_api(data_dict, func_callback, func_error_callback, complete_callback) {
-        var url = "{% url 'o55_order_activity_sheet_item_create_api_endpoint' %}?format=json";
+        var url = "{% url 'workery_order_activity_sheet_item_create_api_endpoint' %}?format=json";
         jQuery.ajax({
             url: url,
             headers: {
@@ -96,7 +96,7 @@
     }
 
     function create_order_complete_api(data_dict, func_callback, func_error_callback, complete_callback) {
-        var url = "{% url 'o55_order_order_complete_create_api_endpoint' %}?format=json";
+        var url = "{% url 'workery_order_order_complete_create_api_endpoint' %}?format=json";
         jQuery.ajax({
             url: url,
             headers: {
@@ -120,7 +120,7 @@
     }
 
     function create_order_close_api(data_dict, func_callback, func_error_callback, complete_callback) {
-        var url = "{% url 'o55_order_order_close_create_api_endpoint' %}?format=json";
+        var url = "{% url 'workery_order_order_close_create_api_endpoint' %}?format=json";
         jQuery.ajax({
             url: url,
             headers: {
@@ -144,7 +144,7 @@
     }
 
     function create_order_postpone_api(data_dict, func_callback, func_error_callback, complete_callback) {
-        var url = "{% url 'o55_order_order_postpone_create_api_endpoint' %}?format=json";
+        var url = "{% url 'workery_order_order_postpone_create_api_endpoint' %}?format=json";
         jQuery.ajax({
             url: url,
             headers: {
@@ -168,7 +168,7 @@
     }
 
     function create_order_unassign_api(data_dict, func_callback, func_error_callback, complete_callback) {
-        var url = "{% url 'o55_order_order_unassign_create_api_endpoint' %}?format=json";
+        var url = "{% url 'workery_order_order_unassign_create_api_endpoint' %}?format=json";
         jQuery.ajax({
             url: url,
             headers: {

@@ -38,7 +38,7 @@ def increment_activity_sheet_item_id_number():
 class ActivitySheetItem(models.Model):
     class Meta:
         app_label = 'tenant_foundation'
-        db_table = 'o55_activity_sheet_items'
+        db_table = 'workery_activity_sheet_items'
         verbose_name = _('Activity Sheet Item')
         verbose_name_plural = _('Activity Sheet Items')
         ordering = ['-created_at']

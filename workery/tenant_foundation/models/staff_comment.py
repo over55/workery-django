@@ -38,7 +38,7 @@ def increment_staff_comment_id_number():
 class StaffComment(models.Model):
     class Meta:
         app_label = 'tenant_foundation'
-        db_table = 'o55_staff_comments'
+        db_table = 'workery_staff_comments'
         verbose_name = _('Staff Comment')
         verbose_name_plural = _('Staff Comments')
         ordering = ['-created_at']

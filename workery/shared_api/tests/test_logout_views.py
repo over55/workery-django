@@ -63,7 +63,7 @@ class APILogOutWithPublicSchemaTestCase(APITestCase, TenantTestCase):
         token, orig_iat = get_jwt_token_and_orig_iat(user)
 
         # Log out.
-        logout_url = reverse('o55_logout_api_endpoint')
+        logout_url = reverse('workery_logout_api_endpoint')
         data = {
             'email_or_username': TEST_USER_EMAIL,
             'password': TEST_USER_PASSWORD,

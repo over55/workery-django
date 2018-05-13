@@ -42,7 +42,7 @@ def increment_tag_id_number():
 class Tag(models.Model):
     class Meta:
         app_label = 'tenant_foundation'
-        db_table = 'o55_tags'
+        db_table = 'workery_tags'
         verbose_name = _('Tag')
         verbose_name_plural = _('Tags')
         default_permissions = ()

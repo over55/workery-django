@@ -22,7 +22,7 @@
 		    data,
 			function(json_results) {
 			    console.log(json_results);
-				window.location = "{% url 'o55_login_redirector' %}";
+				window.location = "{% url 'workery_login_redirector' %}";
 			},
 			function(error_results) {
 			    console.log(error_results);
@@ -80,7 +80,7 @@
             <br />
             <input type="button" value="{% trans 'Reset Password and Sign-In' %}" class="btn btn-lg btn-primary btn-block" onclick="ajax_reset_password();">
             <h5 class="text-center mt-3 mb-3">
-            <a href="{% url 'o55_login_master' %}" class="text-primary plain-link">{% trans 'Cancel' %}</a></h2>
+            <a href="{% url 'workery_login_master' %}" class="text-primary plain-link">{% trans 'Cancel' %}</a></h2>
          </form>
       </div>
    </div>

@@ -77,7 +77,7 @@ def increment_staff_id_number():
 class Staff(AbstractPerson):
     class Meta:
         app_label = 'tenant_foundation'
-        db_table = 'o55_staff'
+        db_table = 'workery_staff'
         verbose_name = _('Staff')
         verbose_name_plural = _('Staves')
         default_permissions = ()

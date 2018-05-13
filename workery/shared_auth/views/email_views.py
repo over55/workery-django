@@ -32,11 +32,11 @@ def reset_password_email_page(request, pr_access_code=None):
 
     # Generate the data.
     url = reverse_with_full_domain(
-        reverse_url_id='o55_reset_password_master',
+        reverse_url_id='workery_reset_password_master',
         resolve_url_args=[pr_access_code]
     )
     web_view_url = reverse_with_full_domain(
-        reverse_url_id='o55_reset_password_email',
+        reverse_url_id='workery_reset_password_email',
         resolve_url_args=[pr_access_code]
     )
     param = {
@@ -72,11 +72,11 @@ def user_activation_email_page(request, pr_access_code=None):
 
     # Generate the data.
     url = reverse_with_full_domain(
-        reverse_url_id='o55_user_activation_detail',
+        reverse_url_id='workery_user_activation_detail',
         resolve_url_args=[pr_access_code]
     )
     web_view_url = reverse_with_full_domain(
-        reverse_url_id='o55_activate_email',
+        reverse_url_id='workery_activate_email',
         resolve_url_args=[pr_access_code]
     )
     param = {

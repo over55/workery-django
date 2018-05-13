@@ -12,7 +12,7 @@
 
 <script>
     function click_cancel_button() {
-        window.location = "{% url 'o55_tenant_settings_tags_list' %}";
+        window.location = "{% url 'workery_tenant_settings_tags_list' %}";
     }
 
     function click_submit_button() {
@@ -24,7 +24,7 @@
             },
             function(tag) {
                 console.log(tag);
-                window.location = "{% url 'o55_tenant_settings_tags_list' %}?was_modified=True";
+                window.location = "{% url 'workery_tenant_settings_tags_list' %}?was_modified=True";
             },
             function(json_result) {
 
@@ -43,9 +43,9 @@
     <!------------------------------------------------------------------------->
     <nav aria-label="breadcrumb">
 	  	<ol class="breadcrumb">
-	    	<li class="breadcrumb-item"><a href="{% url 'o55_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
-            <li class="breadcrumb-item"><a href="{% url 'o55_tenant_settings_launchpad' %}">{% trans 'Settings' %}</a></li>
-            <li class="breadcrumb-item"><a href="{% url 'o55_tenant_settings_tags_list' %}">{% trans 'Tags' %}</a></li>
+	    	<li class="breadcrumb-item"><a href="{% url 'workery_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'workery_tenant_settings_launchpad' %}">{% trans 'Settings' %}</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'workery_tenant_settings_tags_list' %}">{% trans 'Tags' %}</a></li>
             <li class="breadcrumb-item active" aria-current="page">{% trans 'Tag' %}</li>
 	  	</ol>
 	</nav>

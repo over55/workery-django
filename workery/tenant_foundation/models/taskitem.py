@@ -50,7 +50,7 @@ def increment_task_item_id_number():
 class TaskItem(models.Model):
     class Meta:
         app_label = 'tenant_foundation'
-        db_table = 'o55_task_items'
+        db_table = 'workery_task_items'
         ordering = ['due_date']
         verbose_name = _('TaskItem')
         verbose_name_plural = _('TaskItems')

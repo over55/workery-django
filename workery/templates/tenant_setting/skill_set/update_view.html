@@ -12,7 +12,7 @@
 
 <script>
     function click_cancel_button() {
-        window.location = "{% url 'o55_tenant_settings_skill_set_list' %}";
+        window.location = "{% url 'workery_tenant_settings_skill_set_list' %}";
     }
 
     function click_submit_button() {
@@ -26,7 +26,7 @@
             },
             function(skill_set) {
                 console.log(skill_set);
-                window.location = "{% url 'o55_tenant_settings_skill_set_list' %}?was_modified=True";
+                window.location = "{% url 'workery_tenant_settings_skill_set_list' %}?was_modified=True";
             },
             function(json_result) {
 
@@ -45,9 +45,9 @@
     <!------------------------------------------------------------------------->
     <nav aria-label="breadcrumb">
 	  	<ol class="breadcrumb">
-	    	<li class="breadcrumb-item"><a href="{% url 'o55_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
-            <li class="breadcrumb-item"><a href="{% url 'o55_tenant_settings_launchpad' %}">{% trans 'Settings' %}</a></li>
-            <li class="breadcrumb-item"><a href="{% url 'o55_tenant_settings_skill_set_list' %}">{% trans 'Skill Sets' %}</a></li>
+	    	<li class="breadcrumb-item"><a href="{% url 'workery_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'workery_tenant_settings_launchpad' %}">{% trans 'Settings' %}</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'workery_tenant_settings_skill_set_list' %}">{% trans 'Skill Sets' %}</a></li>
             <li class="breadcrumb-item active" aria-current="page">{% trans 'Skill Set' %}</li>
 	  	</ol>
 	</nav>

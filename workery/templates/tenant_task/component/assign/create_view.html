@@ -13,7 +13,7 @@
 <script>
 
 function click_back_button() {
-    window.location = "{% url 'o55_tenant_pending_task_retrieve_for_activity_sheet_retrieve' task_item.id %}";
+    window.location = "{% url 'workery_tenant_pending_task_retrieve_for_activity_sheet_retrieve' task_item.id %}";
 }
 
 /**
@@ -40,10 +40,10 @@ function click_add_button() {
             // REDIRECT.
             if (has_accepted_job == "true") {
                 // REDIRECT TO SUCCESS PAGE.
-                window.location = "{% url 'o55_tenant_task_list' %}?was_closed=True";
+                window.location = "{% url 'workery_tenant_task_list' %}?was_closed=True";
             } else {
                 // REDIRECT BACK TO ACTIVITY PAGE.
-                window.location = "{% url 'o55_tenant_pending_task_retrieve_for_activity_sheet_retrieve' task_item.id %}?was_modified=True";
+                window.location = "{% url 'workery_tenant_pending_task_retrieve_for_activity_sheet_retrieve' task_item.id %}?was_modified=True";
             }
         },
         function(xhr,status,error) { // Error
@@ -93,10 +93,10 @@ function get_selected_radio_value(radiofields_name) {
     <!------------------------------------------------------------------------->
     <nav aria-label="breadcrumb">
 	  	<ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{% url 'o55_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
-            <li class="breadcrumb-item"><a href="{% url 'o55_tenant_task_list' %}">{% trans 'Pending Tasks' %}</a></li>
-            <li class="breadcrumb-item"><a href="{% url 'o55_tenant_pending_task_retrieve' task_item.id %}">{% trans 'Task #' %}{{ task_item.id|intcomma }}</a></li>
-            <li class="breadcrumb-item"><a href="{% url 'o55_tenant_pending_task_retrieve_for_activity_sheet_retrieve' task_item.id %}">{% trans 'Activity Sheet' %}</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'workery_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'workery_tenant_task_list' %}">{% trans 'Pending Tasks' %}</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'workery_tenant_pending_task_retrieve' task_item.id %}">{% trans 'Task #' %}{{ task_item.id|intcomma }}</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'workery_tenant_pending_task_retrieve_for_activity_sheet_retrieve' task_item.id %}">{% trans 'Activity Sheet' %}</a></li>
 	    	<li class="breadcrumb-item active" aria-current="page">{% trans 'Activity Sheet' %}</li>
 	  	</ol>
 	  	</ol>
@@ -111,12 +111,12 @@ function get_selected_radio_value(radiofields_name) {
     <div class="row" id="id_step_navigation">
         <div class="step-navigation">
             <div id="step-1" class="st-grey">
-                <a href="{% url 'o55_tenant_pending_task_retrieve' task_item.id %}">
+                <a href="{% url 'workery_tenant_pending_task_retrieve' task_item.id %}">
                     <span class="num">1.</span><span class="">Overview</span>
                 </a>
             </div>
             <div id="step-2" class="st-grey">
-                <a href="{% url 'o55_tenant_pending_task_retrieve_for_activity_sheet_retrieve' task_item.id %}">
+                <a href="{% url 'workery_tenant_pending_task_retrieve_for_activity_sheet_retrieve' task_item.id %}">
                     <span class="num">2.</span><span class="">Activity Sheet</span>
                 </a>
             </div>

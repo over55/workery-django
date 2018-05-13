@@ -38,7 +38,7 @@
     </head>
     <body>
         <header class="navbar navbar-dark fixed-top bg-dark justify-content-between">
-            <a class="navbar-brand" href="{% url 'o55_tenant_dashboard_master' %}">
+            <a class="navbar-brand" href="{% url 'workery_tenant_dashboard_master' %}">
                 <img class="img-fluid" src="{{ shared_constants.O55_APP_HTTP_PROTOCOL }}{{ shared_constants.O55_APP_HTTP_DOMAIN }}{% static 'img/compressed-logo.png' %}" alt="{% trans 'The Workery' %}" width="200px" />
             </a>
             <button class="navbar-toggler" type="button" id="sidebarCollapse">
@@ -54,7 +54,7 @@
                     <hr class="nav-divider">
                     <ul class="nav flex-column">
                         <li class="nav-item">
-                            <a class="nav-link {% if current_page == 'franchise' %}active{% endif %}" href="{% url 'o55_tenant_dashboard_master' %}">
+                            <a class="nav-link {% if current_page == 'franchise' %}active{% endif %}" href="{% url 'workery_tenant_dashboard_master' %}">
                             <i class="fa fa-building"></i>&nbsp;{% trans 'Franchises' %}
                             </a>
                         </li>
@@ -63,21 +63,21 @@
                     <ul class="nav flex-column">
                         {% comment %}
                         <li class="nav-item">
-                            <a class="nav-link {% if current_page == 'setting' %}active{% endif %}" href="{% url 'o55_tenant_settings_launchpad' %}"><i class="fas fa-cog"></i> Settings</a>
+                            <a class="nav-link {% if current_page == 'setting' %}active{% endif %}" href="{% url 'workery_tenant_settings_launchpad' %}"><i class="fas fa-cog"></i> Settings</a>
                         </li>
                         <li class="nav-item">
                             <!-- NOTE: EXECUTIVE MEMBERS DO NOT GET ACCESS TO THE PROFILES PAGE. -->
-                            <a class="nav-link {% if current_page == 'profile' %}active{% endif %}" href="{% url 'o55_tenant_account_update' logged_in_user_id %}">
+                            <a class="nav-link {% if current_page == 'profile' %}active{% endif %}" href="{% url 'workery_tenant_account_update' logged_in_user_id %}">
                             <i class="fas fa-address-card"></i>&nbsp;Profile
                             </a>
 
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link {% if current_page == 'help' %}active{% endif %}" href="{% url 'o55_tenant_help_category_list' %}"><i class="fas fa-question-circle"></i> Help</a>
+                            <a class="nav-link {% if current_page == 'help' %}active{% endif %}" href="{% url 'workery_tenant_help_category_list' %}"><i class="fas fa-question-circle"></i> Help</a>
                         </li>
                         {% endcomment %}
                         <li class="nav-item">
-                            <a class="nav-link" href="{% url 'o55_logout_redirector' %}">
+                            <a class="nav-link" href="{% url 'workery_logout_redirector' %}">
                             <i class="fas fa-sign-out-alt"></i>&nbsp;{% trans 'Logout' %}
                             </a>
                         </li>
@@ -132,7 +132,7 @@
 
                 // SESSION EXPIRED.
                 if (private_api_key === undefined || private_api_key === "None") {
-                    window.location = "{% get_app_domain %}{% url 'o55_login_master' %}?session_expired=True";
+                    window.location = "{% get_app_domain %}{% url 'workery_login_master' %}?session_expired=True";
                 }
             }
 

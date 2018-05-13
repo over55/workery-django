@@ -43,7 +43,7 @@ def increment_comment_id_number():
 class Comment(models.Model):
     class Meta:
         app_label = 'tenant_foundation'
-        db_table = 'o55_comments'
+        db_table = 'workery_comments'
         verbose_name = _('Comment')
         verbose_name_plural = _('Comments')
         ordering = ['-created_at']

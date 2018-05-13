@@ -38,7 +38,7 @@ def increment_associate_comment_id_number():
 class AssociateComment(models.Model):
     class Meta:
         app_label = 'tenant_foundation'
-        db_table = 'o55_associate_comments'
+        db_table = 'workery_associate_comments'
         verbose_name = _('Associate Comment')
         verbose_name_plural = _('Associate Comments')
         ordering = ['-created_at']

@@ -8,7 +8,7 @@
 {% block content %}
 <script>
     function click_back_button() {
-        window.location = "{% url 'o55_tenant_pending_task_retrieve' task_item.id %}";
+        window.location = "{% url 'workery_tenant_pending_task_retrieve' task_item.id %}";
     }
 
 </script>
@@ -17,9 +17,9 @@
     <!------------------------------------------------------------------------->
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{% url 'o55_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
-            <li class="breadcrumb-item"><a href="{% url 'o55_tenant_task_list' %}">{% trans 'Pending Tasks' %}</a></li>
-            <li class="breadcrumb-item"><a href="{% url 'o55_tenant_pending_task_retrieve' task_item.id %}">{% trans 'Task #' %}{{ task_item.id|intcomma }}</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'workery_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'workery_tenant_task_list' %}">{% trans 'Pending Tasks' %}</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'workery_tenant_pending_task_retrieve' task_item.id %}">{% trans 'Task #' %}{{ task_item.id|intcomma }}</a></li>
             <li class="breadcrumb-item active" aria-current="page">{% trans 'Activity Sheet' %}</li>
         </ol>
         </ol>
@@ -43,7 +43,7 @@
     <div class="row">
         <div class="step-navigation">
             <div id="step-1" class="st-grey">
-                <a href="{% url 'o55_tenant_pending_task_retrieve' task_item.id %}">
+                <a href="{% url 'workery_tenant_pending_task_retrieve' task_item.id %}">
                 <span class="num">1.</span><span class="">Overview</span>
                 </a>
             </div>
@@ -73,11 +73,11 @@
                 {% for associate in available_associates_list %}
                 <tr>
                     <td>
-                        <a href="{% url 'o55_tenant_member_lite_retrieve' 'summary' associate.id %}" target="_blank">{{ associate }}&nbsp;<i class="fas fa-link"></i></a>
+                        <a href="{% url 'workery_tenant_member_lite_retrieve' 'summary' associate.id %}" target="_blank">{{ associate }}&nbsp;<i class="fas fa-link"></i></a>
                     </td>
                     <td>{{ associate.activity_sheet.count }}</td>
                     <td>
-                        <a href="{% url 'o55_tenant_pending_task_retrieve_for_activity_sheet_retrieve_and_create' task_item.id %}?associate_id={{ associate.id }}">Assign</a>
+                        <a href="{% url 'workery_tenant_pending_task_retrieve_for_activity_sheet_retrieve_and_create' task_item.id %}?associate_id={{ associate.id }}">Assign</a>
                     </td>
                 </tr>
                 {% empty %}
@@ -107,7 +107,7 @@
                 {% for item in existing_activity_sheet.all %}
                 <tr>
                     <td>
-                        <a href="{% url 'o55_tenant_member_lite_retrieve' 'summary' item.associate.id %}" target="_blank">{{ item.associate }}&nbsp;<i class="fas fa-link"></i></a>
+                        <a href="{% url 'workery_tenant_member_lite_retrieve' 'summary' item.associate.id %}" target="_blank">{{ item.associate }}&nbsp;<i class="fas fa-link"></i></a>
                     </td>
                     <td>{{ item.has_accepted_job }}</td>
                     <td>{{ item.comment }}</td>

@@ -66,7 +66,7 @@ def increment_customer_id_number():
 class Customer(AbstractPerson):
     class Meta:
         app_label = 'tenant_foundation'
-        db_table = 'o55_customers'
+        db_table = 'workery_customers'
         verbose_name = _('Customer')
         verbose_name_plural = _('Customers')
         default_permissions = ()
@@ -241,4 +241,4 @@ class Customer(AbstractPerson):
 #     if 'raw' in kwargs and not kwargs['raw']:
 #         kwargs['instance'].full_clean()
 #
-# pre_save.connect(validate_model, dispatch_uid='o55_customers.validate_models')
+# pre_save.connect(validate_model, dispatch_uid='workery_customers.validate_models')

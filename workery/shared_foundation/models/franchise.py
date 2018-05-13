@@ -30,7 +30,7 @@ class SharedFranchise(TenantMixin, AbstractSharedThing, AbstractSharedContactPoi
 
     class Meta:
         app_label = 'shared_foundation'
-        db_table = 'o55_franchises'
+        db_table = 'workery_franchises'
         verbose_name = _('Franchise')
         verbose_name_plural = _('Franchises')
         default_permissions = ()
@@ -68,7 +68,7 @@ class SharedFranchise(TenantMixin, AbstractSharedThing, AbstractSharedContactPoi
 class SharedFranchiseDomain(DomainMixin):
     class Meta:
         app_label = 'shared_foundation'
-        db_table = 'o55_franchise_domains'
+        db_table = 'workery_franchise_domains'
         verbose_name = _('Domain')
         verbose_name_plural = _('Domains')
 

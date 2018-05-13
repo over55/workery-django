@@ -12,17 +12,17 @@ from shared_franchise.views import (
 urlpatterns = (
     url(r'^franchises/$',
     FranchiseListView.as_view(),
-    name='o55_shared_franchise_list'),
+    name='workery_shared_franchise_list'),
 
     url(r'^franchises/create/step-1-of-3$',
     FranchiseCreatePage1of3View.as_view(),
-    name='o55_shared_franchise_create_1_of_3'),
+    name='workery_shared_franchise_create_1_of_3'),
 
     url(r'^franchises/create/step-2-of-3$',
     FranchiseCreatePage2of3View.as_view(),
-    name='o55_shared_franchise_create_2_of_3'),
+    name='workery_shared_franchise_create_2_of_3'),
 
     url(r'^franchises/create/step-3-of-3$',
     FranchiseCreatePage3of3View.as_view(),
-    name='o55_shared_franchise_create_3_of_3'),
+    name='workery_shared_franchise_create_3_of_3'),
 )

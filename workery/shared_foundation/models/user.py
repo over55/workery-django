@@ -110,7 +110,7 @@ class SharedUser(AbstractBaseUser, PermissionsMixin):
 
     class Meta:
         app_label = 'shared_foundation'
-        db_table = 'o55_users'
+        db_table = 'workery_users'
         verbose_name = _('User')
         verbose_name_plural = _('Users')
 

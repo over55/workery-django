@@ -35,7 +35,7 @@
 
         <div class="col-sm-3 placeholder">
             <div class="rounded-circle mx-auto mt-4 mb-4 circle-200 bg-pink">
-                <a href="{% url 'o55_tenant_customer_summary' %}" class="d-block link-ndecor" title="Clients">
+                <a href="{% url 'workery_tenant_customer_summary' %}" class="d-block link-ndecor" title="Clients">
                     <h1 class="circle-title">{{ customers_count|intcomma }}</h1>
                 </a>
             </div>
@@ -46,7 +46,7 @@
 
         <div class="col-sm-3 placeholder">
             <div class="rounded-circle mx-auto mt-4 mb-4 circle-200 bg-dgreen">
-                <a href="{% url 'o55_tenant_job_summary' %}" class="d-block link-ndecor" title="Jobs">
+                <a href="{% url 'workery_tenant_job_summary' %}" class="d-block link-ndecor" title="Jobs">
                     <h1 class="circle-title">{{ jobs_count|intcomma }}</h1>
                 </a>
             </div>
@@ -57,7 +57,7 @@
 
         <div class="col-sm-3 placeholder">
             <div class="rounded-circle mx-auto mt-4 mb-4 circle-200 bg-dblue">
-                <a href="{% url 'o55_tenant_member_summary' %}" class="d-block link-ndecor" title="Members">
+                <a href="{% url 'workery_tenant_member_summary' %}" class="d-block link-ndecor" title="Members">
                     <h1 class="circle-title">{{ associates_count|intcomma }}</h1>
                 </a>
             </div>
@@ -67,7 +67,7 @@
 
         <div class="col-sm-3 placeholder">
             <div class="rounded-circle mx-auto mt-4 mb-4 circle-200 bg-orange">
-                <a href="{% url 'o55_tenant_task_list' %}" class="d-block link-ndecor" title="Tasks">
+                <a href="{% url 'workery_tenant_task_list' %}" class="d-block link-ndecor" title="Tasks">
                     <h1 class="circle-title">{{ tasks_count|intcomma }}</h1>
                 </a>
             </div>
@@ -120,7 +120,7 @@
                 <tr>
                     <td colspan="3">
                         <p class="lead">
-                            <a class="btn btn-primary btn-lg px-4" href="{% url 'o55_tenant_settings_away_log_create' %}" role="button"><i class="fas fa-plus"></i> Add</a>
+                            <a class="btn btn-primary btn-lg px-4" href="{% url 'workery_tenant_settings_away_log_create' %}" role="button"><i class="fas fa-plus"></i> Add</a>
                         </p>
                     </td>
                 </tr>

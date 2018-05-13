@@ -60,7 +60,7 @@ def get_todays_date(days=0):
 class Order(models.Model):
     class Meta:
         app_label = 'tenant_foundation'
-        db_table = 'o55_orders'
+        db_table = 'workery_orders'
         verbose_name = _('Order')
         verbose_name_plural = _('Orders')
         default_permissions = ()

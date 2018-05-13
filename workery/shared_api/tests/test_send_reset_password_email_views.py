@@ -58,7 +58,7 @@ class APISendResetPasswordEmailWithSchemaTestCase(APITestCase, TenantTestCase):
 
     @transaction.atomic
     def test_api_send_reset_password_email_with_success(self):
-        url = reverse('o55_send_reset_password_email_api_endpoint')
+        url = reverse('workery_send_reset_password_email_api_endpoint')
         data = {
             'email_or_username': TEST_USER_EMAIL,
         }
@@ -69,7 +69,7 @@ class APISendResetPasswordEmailWithSchemaTestCase(APITestCase, TenantTestCase):
 
     @transaction.atomic
     def test_api_send_reset_password_email_with_failure(self):
-        url = reverse('o55_send_reset_password_email_api_endpoint')
+        url = reverse('workery_send_reset_password_email_api_endpoint')
         data = {
             'email_or_username': "some-bad-email@workery.ca",
         }

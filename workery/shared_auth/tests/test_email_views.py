@@ -47,7 +47,7 @@ class TestSharedAuthEmailViews(TenantTestCase):
 
     def test_reset_password_email_page_with_200(self):
         me = SharedUser.objects.get(email=TEST_USER_EMAIL)
-        url = reverse('o55_reset_password_email', args=[me.pr_access_code])
+        url = reverse('workery_reset_password_email', args=[me.pr_access_code])
         response = self.c.get(url)
         self.assertEqual(response.status_code, 200)
 
@@ -56,18 +56,18 @@ class TestSharedAuthEmailViews(TenantTestCase):
         me = SharedUser.objects.get(email=TEST_USER_EMAIL)
         me.pr_expiry_date = timezone.now() + timedelta(days=-500)
         me.save()
-        url = reverse('o55_reset_password_email', args=[me.pr_access_code])
+        url = reverse('workery_reset_password_email', args=[me.pr_access_code])
         response = self.c.get(url)
         self.assertNotEqual(response.status_code, 200)
 
         # Case 2 of 2: Missing token.
-        url = reverse('o55_reset_password_email', args=[None])
+        url = reverse('workery_reset_password_email', args=[None])
         response = self.c.get(url)
         self.assertNotEqual(response.status_code, 200)
 
     def test_activate_email_page_with_200(self):
         me = SharedUser.objects.get(email=TEST_USER_EMAIL)
-        url = reverse('o55_activate_email', args=[me.pr_access_code])
+        url = reverse('workery_activate_email', args=[me.pr_access_code])
         response = self.c.get(url)
         self.assertEqual(response.status_code, 200)
 
@@ -76,11 +76,11 @@ class TestSharedAuthEmailViews(TenantTestCase):
         me = SharedUser.objects.get(email=TEST_USER_EMAIL)
         me.pr_expiry_date = timezone.now() + timedelta(days=-500)
         me.save()
-        url = reverse('o55_activate_email', args=[me.pr_access_code])
+        url = reverse('workery_activate_email', args=[me.pr_access_code])
         response = self.c.get(url)
         self.assertNotEqual(response.status_code, 200)
 
         # Case 2 of 2: Missing token.
-        url = reverse('o55_activate_email', args=[None])
+        url = reverse('workery_activate_email', args=[None])
         response = self.c.get(url)
         self.assertNotEqual(response.status_code, 200)

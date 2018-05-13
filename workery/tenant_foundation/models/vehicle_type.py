@@ -42,7 +42,7 @@ def increment_vehicle_type_id_number():
 class VehicleType(models.Model):
     class Meta:
         app_label = 'tenant_foundation'
-        db_table = 'o55_vehicle_types'
+        db_table = 'workery_vehicle_types'
         verbose_name = _('VehicleType')
         verbose_name_plural = _('VehicleTypes')
         default_permissions = ()

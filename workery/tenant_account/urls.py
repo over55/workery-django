@@ -6,5 +6,5 @@ from tenant_account import views
 
 urlpatterns = (
     # Update
-    path('account/detail/<int:pk>/', views.AccountUpdateView.as_view(), name='o55_tenant_account_update'),
+    path('account/detail/<int:pk>/', views.AccountUpdateView.as_view(), name='workery_tenant_account_update'),
 )

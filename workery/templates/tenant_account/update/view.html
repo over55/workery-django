@@ -217,7 +217,7 @@
             },
             function(result_dict) { // Success
                 console.log(result_dict);
-                window.location = "{% url 'o55_tenant_account_update' staff.pk %}?was_modified=True";
+                window.location = "{% url 'workery_tenant_account_update' staff.pk %}?was_modified=True";
             },
             function(xhr,status,error) { // Error
                 // STEP 1: Convert to JSON.
@@ -301,7 +301,7 @@
     <nav aria-label="breadcrumb">
 	  	<ol class="breadcrumb">
             <li class="breadcrumb-item">
-                <a href="{% url 'o55_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a>
+                <a href="{% url 'workery_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a>
             </li>
 	  	</ol>
 	</nav>

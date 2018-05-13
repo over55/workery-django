@@ -38,10 +38,10 @@ urlpatterns = [
     # Here are a list of URLs we'd like to have to help users who enter
     # URLs from memory and or do not know the URLs. These redirects are for
     # user's convinience.
-    url(r'^login/', RedirectView.as_view(pattern_name='o55_login_master', permanent=True, query_string=True)),
-    url(r'^login', RedirectView.as_view(pattern_name='o55_login_master', permanent=True, query_string=True)),
-    url(r'^sign-in/', RedirectView.as_view(pattern_name='o55_login_master', permanent=True, query_string=True)),
-    url(r'^sign-in', RedirectView.as_view(pattern_name='o55_login_master', permanent=True, query_string=True)),
+    url(r'^login/', RedirectView.as_view(pattern_name='workery_login_master', permanent=True, query_string=True)),
+    url(r'^login', RedirectView.as_view(pattern_name='workery_login_master', permanent=True, query_string=True)),
+    url(r'^sign-in/', RedirectView.as_view(pattern_name='workery_login_master', permanent=True, query_string=True)),
+    url(r'^sign-in', RedirectView.as_view(pattern_name='workery_login_master', permanent=True, query_string=True)),
 
     # Here are where the applications URL start.
     # url(r'^admin/', admin.site.urls), # Our project does not support Django Admin.

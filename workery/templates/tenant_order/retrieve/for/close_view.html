@@ -34,13 +34,13 @@
 
     function click_cancel_button() {
         {% if template == 'search' %}
-        window.location = "{% url 'o55_tenant_job_retrieve' template job.id %}";
+        window.location = "{% url 'workery_tenant_job_retrieve' template job.id %}";
         {% elif template == 'task' %}
-        window.location = "{% url 'o55_tenant_pending_task_retrieve' parameters.task_id %}";
+        window.location = "{% url 'workery_tenant_pending_task_retrieve' parameters.task_id %}";
         {% elif template == 'list' %}
-        window.location = "{% url 'o55_tenant_job_retrieve' template job.id %}";
+        window.location = "{% url 'workery_tenant_job_retrieve' template job.id %}";
         {% else %}
-        window.location = "{% url 'o55_tenant_job_retrieve' template job.id %}";
+        window.location = "{% url 'workery_tenant_job_retrieve' template job.id %}";
         {% endif %}
     }
 
@@ -117,9 +117,9 @@
 
                 // REDIRECT TO SUCCESS PAGE.
                 {% if template == 'task' %}
-                window.location = "{% url 'o55_tenant_task_list' %}?was_closed=True";
+                window.location = "{% url 'workery_tenant_task_list' %}?was_closed=True";
                 {% else %}
-                window.location = "{% url 'o55_tenant_job_retrieve' template job.id %}?was_closed=True";
+                window.location = "{% url 'workery_tenant_job_retrieve' template job.id %}?was_closed=True";
                 {% endif %}
             },
             function(xhr,status,error) { // Error
@@ -161,38 +161,38 @@
             {% if template == 'search' %}
 
             <li class="breadcrumb-item">
-                <a href="{% url 'o55_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a>
+                <a href="{% url 'workery_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a>
             </li>
             <li class="breadcrumb-item">
-                <a href="{% url 'o55_tenant_job_summary' %}">{% trans 'Jobs' %}</a>
+                <a href="{% url 'workery_tenant_job_summary' %}">{% trans 'Jobs' %}</a>
             </li>
             <li class="breadcrumb-item">
-                <a href="{% url 'o55_tenant_job_search' %}">{% trans 'Search' %}</a>
+                <a href="{% url 'workery_tenant_job_search' %}">{% trans 'Search' %}</a>
             </li>
             <li class="breadcrumb-item">{% trans 'Search Results' %}</li>
-            <li class="breadcrumb-item"><a href="{% url 'o55_tenant_job_retrieve' template job.id %}">{% trans 'Job #' %}{{ object.id|intcomma }}</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'workery_tenant_job_retrieve' template job.id %}">{% trans 'Job #' %}{{ object.id|intcomma }}</a></li>
             <li class="breadcrumb-item active" aria-current="page">{% trans 'Close Job' %}</li>
 
             {% elif template == 'task' %}
 
-            <li class="breadcrumb-item"><a href="{% url 'o55_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
-            <li class="breadcrumb-item"><a href="{% url 'o55_tenant_task_list' %}">{% trans 'Pending Tasks' %}</a></li>
-            <li class="breadcrumb-item"><a href="{% url 'o55_tenant_pending_task_retrieve' parameters.task_id %}">{% trans 'Task #' %}{{ parameters.task_id|intcomma }}</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'workery_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'workery_tenant_task_list' %}">{% trans 'Pending Tasks' %}</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'workery_tenant_pending_task_retrieve' parameters.task_id %}">{% trans 'Task #' %}{{ parameters.task_id|intcomma }}</a></li>
             <li class="breadcrumb-item active" aria-current="page">{% trans 'Close Job' %}</li>
 
             {% elif template == 'list' %}
 
-            <li class="breadcrumb-item"><a href="{% url 'o55_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
-            <li class="breadcrumb-item"><a href="{% url 'o55_tenant_job_summary' %}">{% trans 'Jobs' %}</a></li>
-            <li class="breadcrumb-item"><a href="{% url 'o55_tenant_job_list' %}">{% trans 'List' %}</a></li>
-            <li class="breadcrumb-item"><a href="{% url 'o55_tenant_job_retrieve' template job.id %}">{% trans 'Job #' %}{{ object.id|intcomma }}</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'workery_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'workery_tenant_job_summary' %}">{% trans 'Jobs' %}</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'workery_tenant_job_list' %}">{% trans 'List' %}</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'workery_tenant_job_retrieve' template job.id %}">{% trans 'Job #' %}{{ object.id|intcomma }}</a></li>
             <li class="breadcrumb-item active" aria-current="page">{% trans 'Close Job' %}</li>
 
             {% else %}
 
-            <li class="breadcrumb-item"><a href="{% url 'o55_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
-            <li class="breadcrumb-item"><a href="{% url 'o55_tenant_job_summary' %}">{% trans 'Jobs' %}</a></li>
-            <li class="breadcrumb-item"><a href="{% url 'o55_tenant_job_retrieve' template job.id %}">{% trans 'Job #' %}{{ object.id|intcomma }}</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'workery_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'workery_tenant_job_summary' %}">{% trans 'Jobs' %}</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'workery_tenant_job_retrieve' template job.id %}">{% trans 'Job #' %}{{ object.id|intcomma }}</a></li>
             <li class="breadcrumb-item active" aria-current="page">{% trans 'Close Job' %}</li>
 
             {% endif %}

@@ -33,7 +33,7 @@
     <!------------------------------------------------------------------------->
     <nav aria-label="breadcrumb">
 	  	<ol class="breadcrumb">
-	    		<li class="breadcrumb-item"><a href="{% url 'o55_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
+	    		<li class="breadcrumb-item"><a href="{% url 'workery_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
                 <li class="breadcrumb-item active" aria-current="page">{% trans 'Members' %}</li>
 	  	</ol>
 	</nav>
@@ -57,7 +57,7 @@
     <section class="row text-center placeholders">
         <div class="col-sm-4 placeholder">
             <div class="rounded-circle mx-auto mt-4 mb-4 circle-200 bg-pink">
-                <a href="{% url 'o55_tenant_member_create' %}" class="d-block link-ndecor" title="Add Member">
+                <a href="{% url 'workery_tenant_member_create' %}" class="d-block link-ndecor" title="Add Member">
                     <h1 class="r-circle"><i class="fas fa-plus fa-3x"></i></h1>
                 </a>
             </div>
@@ -66,7 +66,7 @@
         </div>
         <div class="col-sm-4 placeholder">
             <div class="rounded-circle mx-auto mt-4 mb-4 circle-200 bg-dgreen">
-                <a href="{% url 'o55_tenant_member_search' %}" class="d-block link-ndecor" title="Search Members">
+                <a href="{% url 'workery_tenant_member_search' %}" class="d-block link-ndecor" title="Search Members">
                     <h1 class="r-circle"><i class="fas fa-search fa-3x"></i></h1>
                 </a>
             </div>
@@ -75,7 +75,7 @@
         </div>
         <div class="col-sm-4 placeholder">
             <div class="rounded-circle mx-auto mt-4 mb-4 circle-200 bg-primary">
-                <a href="{% url 'o55_tenant_member_list' %}" class="d-block link-ndecor" title="View Members">
+                <a href="{% url 'workery_tenant_member_list' %}" class="d-block link-ndecor" title="View Members">
                     <h1 class="r-circle"><i class="fas fa-list-alt fa-3x"></i></h1>
                 </a>
             </div>
@@ -106,7 +106,7 @@
                     </td>
                     <td>{% if member.owner.email %}<a href="mailto:{{ member.owner.email }}">{{ member.owner.email }}</a>{% else %}-{% endif %}</td>
                     <td>
-                        <a href="{% url 'o55_tenant_member_lite_retrieve' 'summary' member.id %}?page={{ page_obj.number }}">{% trans 'View' %}</a>
+                        <a href="{% url 'workery_tenant_member_lite_retrieve' 'summary' member.id %}?page={{ page_obj.number }}">{% trans 'View' %}</a>
                     </td>
                 </tr>
                 {% empty %}

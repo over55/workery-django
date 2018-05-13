@@ -18,7 +18,7 @@
             function(was_successful) {
                 if (was_successful) {
                     // Load up our dashboard.
-                    window.location = "{% get_app_domain %}{% url 'o55_send_reset_password_email_submitted' %}";
+                    window.location = "{% get_app_domain %}{% url 'workery_send_reset_password_email_submitted' %}";
                 } else {
                     alert("Failed logging in, did not receive token.");
                 }
@@ -44,7 +44,7 @@
 
          <br />
          <p>
-             <a href="{% get_app_domain %}{% url 'o55_login_master' %}">{% trans 'Back' %}</a>
+             <a href="{% get_app_domain %}{% url 'workery_login_master' %}">{% trans 'Back' %}</a>
          </p>
       </div>
    </div>

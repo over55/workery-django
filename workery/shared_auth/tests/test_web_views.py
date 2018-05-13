@@ -83,36 +83,36 @@ class TestSharedAuthWebViews(TenantTestCase):
         super(TestSharedAuthWebViews, self).tearDown()
 
     def test_get_index_page(self):
-        response = self.anon_c.get(reverse('o55_login_master'))
+        response = self.anon_c.get(reverse('workery_login_master'))
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_user_login_redirector_page_with_anonymous_user(self):
-        response = self.anon_c.get(reverse('o55_login_redirector'))
+        response = self.anon_c.get(reverse('workery_login_redirector'))
         self.assertEqual(response.status_code, status.HTTP_302_FOUND)
 
     def test_user_login_redirector_page_with_authenticated_user(self):
         response = self.auth_c.get(
-            reverse('o55_login_redirector'),
+            reverse('workery_login_redirector'),
         )
         self.assertEqual(response.status_code, status.HTTP_302_FOUND)
 
     def test_send_reset_password_email_master_page(self):
-        response = self.anon_c.get(reverse('o55_send_reset_password_email_master'))
+        response = self.anon_c.get(reverse('workery_send_reset_password_email_master'))
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_send_reset_password_email_submitted_page(self):
-        response = self.anon_c.get(reverse('o55_send_reset_password_email_submitted'))
+        response = self.anon_c.get(reverse('workery_send_reset_password_email_submitted'))
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_rest_password_master_page_with_success(self):
         me = SharedUser.objects.get(email=TEST_USER_EMAIL)
-        url = reverse('o55_reset_password_master', args=[me.pr_access_code])
+        url = reverse('workery_reset_password_master', args=[me.pr_access_code])
         response = self.anon_c.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_rest_password_master_page_with_bad_pr_access_code(self):
         me = SharedUser.objects.get(email=TEST_USER_EMAIL)
-        url = reverse('o55_reset_password_master', args=['some-bad-pr-access-code'])
+        url = reverse('workery_reset_password_master', args=['some-bad-pr-access-code'])
         response = self.anon_c.get(url)
         self.assertEqual(response.status_code, status.HTTP_302_FOUND)
 
@@ -127,7 +127,7 @@ class TestSharedAuthWebViews(TenantTestCase):
         me.save()
 
         # Run our test...
-        url = reverse('o55_reset_password_master', args=[me.pr_access_code])
+        url = reverse('workery_reset_password_master', args=[me.pr_access_code])
         response = self.anon_c.get(url)
 
         # Verify the results.
@@ -135,13 +135,13 @@ class TestSharedAuthWebViews(TenantTestCase):
 
     def test_user_activation_detail_page_with_success(self):
         me = SharedUser.objects.get(email=TEST_USER_EMAIL)
-        url = reverse('o55_user_activation_detail', args=[me.pr_access_code])
+        url = reverse('workery_user_activation_detail', args=[me.pr_access_code])
         response = self.anon_c.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_rest_user_activation_detail_page_with_bad_pr_access_code(self):
         me = SharedUser.objects.get(email=TEST_USER_EMAIL)
-        url = reverse('o55_user_activation_detail', args=['some-bad-pr-access-code'])
+        url = reverse('workery_user_activation_detail', args=['some-bad-pr-access-code'])
         response = self.anon_c.get(url)
         self.assertNotEqual(response.status_code, status.HTTP_200_OK)
 
@@ -156,7 +156,7 @@ class TestSharedAuthWebViews(TenantTestCase):
         me.save()
 
         # Run our test...
-        url = reverse('o55_user_activation_detail', args=[me.pr_access_code])
+        url = reverse('workery_user_activation_detail', args=[me.pr_access_code])
         response = self.anon_c.get(url)
 
         # Verify the results.
@@ -164,12 +164,12 @@ class TestSharedAuthWebViews(TenantTestCase):
 
     def test_user_logout_redirector_master_page_with_redirect(self):
         me = SharedUser.objects.get(email=TEST_USER_EMAIL)
-        url = reverse('o55_logout_redirector')
+        url = reverse('workery_logout_redirector')
         response = self.anon_c.get(url)
         self.assertEqual(response.status_code, 302)
 
     def test_user_logout_redirector_master_page_with_success(self):
         me = SharedUser.objects.get(email=TEST_USER_EMAIL)
-        url = reverse('o55_logout_redirector')
+        url = reverse('workery_logout_redirector')
         response = self.auth_c.get(url)
         self.assertEqual(response.status_code, 302)

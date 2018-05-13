@@ -15,7 +15,7 @@
         delete_skill_set_api(
             parseInt(skill_set_id),
             function(skill_set) {
-                window.location = "{% url 'o55_tenant_settings_skill_set_list' %}?was_deleted=True";
+                window.location = "{% url 'workery_tenant_settings_skill_set_list' %}?was_deleted=True";
             },
             function(json_results) {
                 console.log(json_results);
@@ -33,8 +33,8 @@
     <!------------------------------------------------------------------------->
     <nav aria-label="breadcrumb">
 	  	<ol class="breadcrumb">
-	    	<li class="breadcrumb-item"><a href="{% url 'o55_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
-            <li class="breadcrumb-item"><a href="{% url 'o55_tenant_settings_launchpad' %}">{% trans 'Settings' %}</a></li>
+	    	<li class="breadcrumb-item"><a href="{% url 'workery_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'workery_tenant_settings_launchpad' %}">{% trans 'Settings' %}</a></li>
             <li class="breadcrumb-item active" aria-current="page">{% trans 'Skill Sets' %}</li>
 	  	</ol>
 	</nav>
@@ -74,7 +74,7 @@
     <section class="row text-center placeholders">
         <div class="col-sm-3 placeholder">
             <div class="rounded-circle mx-auto mt-4 mb-4 circle-200 bg-pink">
-                <a href="{% url 'o55_tenant_settings_skill_set_create' %}" class="d-block link-ndecor" title="Add Client">
+                <a href="{% url 'workery_tenant_settings_skill_set_create' %}" class="d-block link-ndecor" title="Add Client">
                     <h1 class="r-circle"><i class="fas fa-plus fa-3x"></i></h1>
                 </a>
             </div>
@@ -123,7 +123,7 @@
                          {% trans 'Delete' %}
                         </button>
 
-                        <a href="{% url 'o55_tenant_settings_skill_set_update' skill_set.id %}">
+                        <a href="{% url 'workery_tenant_settings_skill_set_update' skill_set.id %}">
                         <button id="id_delete_btn"
                              class="btn btn-primary btn-lg m-2 float-right px-4"
                               type="button">

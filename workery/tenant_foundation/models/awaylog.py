@@ -42,7 +42,7 @@ def increment_away_log_id_number():
 class AwayLog(models.Model):
     class Meta:
         app_label = 'tenant_foundation'
-        db_table = 'o55_away_logs'
+        db_table = 'workery_away_logs'
         verbose_name = _('AwayLog')
         verbose_name_plural = _('AwayLogs')
         default_permissions = ()

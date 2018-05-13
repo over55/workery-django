@@ -38,7 +38,7 @@ def increment_customer_comment_id_number():
 class CustomerComment(models.Model):
     class Meta:
         app_label = 'tenant_foundation'
-        db_table = 'o55_customer_comments'
+        db_table = 'workery_customer_comments'
         verbose_name = _('Customer Comment')
         verbose_name_plural = _('Customer Comments')
         ordering = ['-created_at']

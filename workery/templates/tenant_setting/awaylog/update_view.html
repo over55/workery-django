@@ -53,7 +53,7 @@
     }); // end DOCUMENT
 
     function click_cancel_button() {
-        window.location = "{% url 'o55_tenant_settings_away_log_list' %}";
+        window.location = "{% url 'workery_tenant_settings_away_log_list' %}";
     }
 
     function get_selected_radio_value(radiofields_name) {
@@ -98,7 +98,7 @@
             },
             function(result_dict) { // Success
                 console.log(result_dict);
-                window.location = "{% url 'o55_tenant_settings_away_log_list' %}?was_modified=True";
+                window.location = "{% url 'workery_tenant_settings_away_log_list' %}?was_modified=True";
             },
             function(xhr,status,error) { // Error
                 // STEP 1: Convert to JSON.
@@ -135,9 +135,9 @@
     <!------------------------------------------------------------------------->
     <nav aria-label="breadcrumb">
 	  	<ol class="breadcrumb">
-	    	<li class="breadcrumb-item"><a href="{% url 'o55_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
-            <li class="breadcrumb-item"><a href="{% url 'o55_tenant_settings_launchpad' %}">{% trans 'Settings' %}</a></li>
-            <li class="breadcrumb-item"><a href="{% url 'o55_tenant_settings_away_log_list' %}">{% trans 'Away Announcements' %}</a></li>
+	    	<li class="breadcrumb-item"><a href="{% url 'workery_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'workery_tenant_settings_launchpad' %}">{% trans 'Settings' %}</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'workery_tenant_settings_away_log_list' %}">{% trans 'Away Announcements' %}</a></li>
             <li class="breadcrumb-item active" aria-current="page">{% trans 'Edit away announcement' %}</li>
 	  	</ol>
 	</nav>

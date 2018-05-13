@@ -17,7 +17,7 @@
     <!------------------------------------------------------------------------->
     <nav aria-label="breadcrumb">
 	  	<ol class="breadcrumb">
-	    		<li class="breadcrumb-item"><a href="{% url 'o55_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
+	    		<li class="breadcrumb-item"><a href="{% url 'workery_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
                 <li class="breadcrumb-item active" aria-current="page">{% trans 'Resources' %}</li>
 	  	</ol>
 	</nav>
@@ -39,7 +39,7 @@
                             <h5 class="card-title font-weight-bold">{{ resource_category.title }}</h5>
                             <p class="card-text">{{ resource_category.description }}</p>
                             <div class="text-center">
-                                <a href="{% url 'o55_tenant_help_category_retrieve' resource_category.id %}" class="btn btn-success btn-lg" type="button">View <i class="fas fa-arrow-circle-right"></i></a>
+                                <a href="{% url 'workery_tenant_help_category_retrieve' resource_category.id %}" class="btn btn-success btn-lg" type="button">View <i class="fas fa-arrow-circle-right"></i></a>
                             </div>
                         </div>
                     </div>

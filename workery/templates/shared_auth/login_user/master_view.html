@@ -12,7 +12,7 @@
             }
         });
 
-        var token = "{{ request.token }}{% url 'o55_login_redirector' %}";
+        var token = "{{ request.token }}{% url 'workery_login_redirector' %}";
         if (token != "" && token != undefined) {
             // window.location = "{% get_app_domain %}";
         }
@@ -47,7 +47,7 @@
                     localStorage.setItem("schema_name", schema_name);
 
                     // Return with a success condition.
-                    window.location = "{% get_app_domain %}{% url 'o55_login_redirector' %}";
+                    window.location = "{% get_app_domain %}{% url 'workery_login_redirector' %}";
 
                 // Return with an error status.
                 } else {
@@ -114,7 +114,7 @@
             </div>
             <input type="button" value="{% trans 'Sign In' %}" class="btn btn-lg btn-primary btn-block" onclick="ajax_login();">
             <h5 class="text-center mt-3 mb-3">
-            <a href="{% url 'o55_send_reset_password_email_master' %}" class="text-primary plain-link">{% trans 'Forgot Password?' %}</a></h2>
+            <a href="{% url 'workery_send_reset_password_email_master' %}" class="text-primary plain-link">{% trans 'Forgot Password?' %}</a></h2>
          </form>
       </div>
    </div>

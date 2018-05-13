@@ -15,7 +15,7 @@ class OrganizationAssociateAffiliationManager(models.Manager):
 class OrganizationAssociateAffiliation(models.Model):
     class Meta:
         app_label = 'tenant_foundation'
-        db_table = 'o55_organization_associate_affiliations'
+        db_table = 'workery_organization_associate_affiliations'
         verbose_name = _('Organization Associate Affiliation')
         verbose_name_plural = _('Organization Associate Affiliation')
 

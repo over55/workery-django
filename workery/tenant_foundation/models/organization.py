@@ -51,7 +51,7 @@ class Organization(AbstractThing, AbstractContactPoint, AbstractPostalAddress, A
     """
     class Meta:
         app_label = 'tenant_foundation'
-        db_table = 'o55_organizations'
+        db_table = 'workery_organizations'
         verbose_name = _('Organization')
         verbose_name_plural = _('Organizations')
         default_permissions = ()

@@ -6,7 +6,7 @@
 
     function create_shared_franchise_api(data_dict, func_callback, func_error_callback, complete_callback) {
         jQuery.ajax({
-            url: "{% url 'o55_franchise_list_create_api_endpoint' %}?format=json",
+            url: "{% url 'workery_franchise_list_create_api_endpoint' %}?format=json",
             headers: {
                 Authorization: rest_api_token
             },
@@ -29,7 +29,7 @@
 
     {% comment %}
     function update_shared_franchise_api(pk, data_dict, func_callback, func_error_callback, complete_callback) {
-        var url = "{% url 'o55_associate_retrieve_update_destroy_api_endpoint' 0 %}?format=json";
+        var url = "{% url 'workery_associate_retrieve_update_destroy_api_endpoint' 0 %}?format=json";
         url = url.replace("0", pk);
         jQuery.ajax({
             url: url,
@@ -56,7 +56,7 @@
     function retrieve_shared_franchise_api(pk, func_callback, func_error_callback, complete_callback) {
         // Reverse the URL identifier to get the full URL and replace it with
         // the PK.
-        var url = "{% url 'o55_associate_retrieve_update_destroy_api_endpoint' 0 %}?format=json";
+        var url = "{% url 'workery_associate_retrieve_update_destroy_api_endpoint' 0 %}?format=json";
         url = url.replace('0', pk);
 
         // Make a POST commit.
@@ -88,7 +88,7 @@
 
     function validate_create_shared_franchise_api(data_dict, func_callback, func_error_callback, complete_callback) {
         jQuery.ajax({
-            url: "{% url 'o55_franchise_pre_create_validation_api_endpoint' %}?format=json",
+            url: "{% url 'workery_franchise_pre_create_validation_api_endpoint' %}?format=json",
             headers: {
                 Authorization: rest_api_token
             },

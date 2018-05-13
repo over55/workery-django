@@ -37,7 +37,7 @@ def increment_resource_item_sort_order_id_number():
 class ResourceItemSortOrder(models.Model):
     class Meta:
         app_label = 'tenant_foundation'
-        db_table = 'o55_resource_item_sort_orders'
+        db_table = 'workery_resource_item_sort_orders'
         verbose_name = _('Resource Item Sort Order')
         verbose_name_plural = _('Resource Item Sort Orders')
         default_permissions = ()

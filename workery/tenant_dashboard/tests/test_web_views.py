@@ -76,6 +76,6 @@ class TestTenantDashboardViews(TenantTestCase):
         super(TestTenantDashboardViews, self).tearDown()
 
     def test_master_page(self):
-        response = self.auth_c.get(self.tenant.reverse('o55_tenant_dashboard_master'))
+        response = self.auth_c.get(self.tenant.reverse('workery_tenant_dashboard_master'))
         self.assertEqual(response.status_code, 200)
         self.assertIn('Dashboard', str(response.content))

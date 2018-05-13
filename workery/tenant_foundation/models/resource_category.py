@@ -37,7 +37,7 @@ def increment_resource_category_id_number():
 class ResourceCategory(models.Model):
     class Meta:
         app_label = 'tenant_foundation'
-        db_table = 'o55_resource_categories'
+        db_table = 'workery_resource_categories'
         verbose_name = _('Resource Category')
         verbose_name_plural = _('Resource Categories')
         default_permissions = ()

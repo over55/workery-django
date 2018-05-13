@@ -138,7 +138,7 @@ class SkillSetListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
         """
         Unit test will test anonymous make a GET request to the LIST API-endpoint.
         """
-        url = reverse('o55_skill_set_list_create_api_endpoint')+"?format=json"
+        url = reverse('workery_skill_set_list_create_api_endpoint')+"?format=json"
         response = self.unauthorized_client.get(url, data=None, content_type='application/json')
         self.assertIsNotNone(response)
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
@@ -149,7 +149,7 @@ class SkillSetListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
         Unit test will test authenticated user, who has permission, to make a
         GET request to the list API-endpoint.
         """
-        url = reverse('o55_skill_set_list_create_api_endpoint')
+        url = reverse('workery_skill_set_list_create_api_endpoint')
         url += "?format=json"
 
         # Executive
@@ -174,7 +174,7 @@ class SkillSetListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
         make a GET request to the list API-endpoint.
         """
         Permission.objects.all().delete()
-        url = reverse('o55_skill_set_list_create_api_endpoint')
+        url = reverse('workery_skill_set_list_create_api_endpoint')
         url += "?format=json"
         response = self.customer_client.get(url, data=None, content_type='application/json')
         self.assertIsNotNone(response)
@@ -190,7 +190,7 @@ class SkillSetListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
         """
         Unit test will test anonymous make a POST request to the create API-endpoint.
         """
-        url = reverse('o55_skill_set_list_create_api_endpoint')+"?format=json"
+        url = reverse('workery_skill_set_list_create_api_endpoint')+"?format=json"
         response = self.unauthorized_client.post(url, data={}, content_type='application/json')
         self.assertIsNotNone(response)
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
@@ -201,7 +201,7 @@ class SkillSetListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
         Unit test will test authenticated user, who has permission, to make a
         POST request to the create API-endpoint.
         """
-        url = reverse('o55_skill_set_list_create_api_endpoint')
+        url = reverse('workery_skill_set_list_create_api_endpoint')
         url += "?format=json"
 
         # Executive
@@ -248,7 +248,7 @@ class SkillSetListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
         make a POST request to the list API-endpoint.
         """
         Permission.objects.all().delete()
-        url = reverse('o55_skill_set_list_create_api_endpoint')
+        url = reverse('workery_skill_set_list_create_api_endpoint')
         url += "?format=json"
         response = self.customer_client.post(url, data=json.dumps({}), content_type='application/json')
         self.assertIsNotNone(response)
@@ -264,7 +264,7 @@ class SkillSetListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
         """
         Unit test will test anonymous make a PUT request to the update API-endpoint.
         """
-        url = reverse('o55_skill_set_retrieve_update_destroy_api_endpoint', args=[self.skill_set.id])+"?format=json"
+        url = reverse('workery_skill_set_retrieve_update_destroy_api_endpoint', args=[self.skill_set.id])+"?format=json"
         response = self.unauthorized_client.post(url, data={}, content_type='application/json')
         self.assertIsNotNone(response)
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
@@ -275,7 +275,7 @@ class SkillSetListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
         Unit test will test authenticated user, who has permission, to make a
         PUT request to the update API-endpoint.
         """
-        url = reverse('o55_skill_set_retrieve_update_destroy_api_endpoint', args=[self.skill_set.id])+"?format=json"
+        url = reverse('workery_skill_set_retrieve_update_destroy_api_endpoint', args=[self.skill_set.id])+"?format=json"
         data = json.dumps({
             'category': 'test_category',
             'sub_category': 'test_sub_category',
@@ -313,7 +313,7 @@ class SkillSetListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
         make a PUT request to the update API-endpoint.
         """
         Permission.objects.all().delete()
-        url = reverse('o55_skill_set_retrieve_update_destroy_api_endpoint', args=[self.skill_set.id])+"?format=json"
+        url = reverse('workery_skill_set_retrieve_update_destroy_api_endpoint', args=[self.skill_set.id])+"?format=json"
         data = json.dumps({
             'category': 'test_category',
             'sub_category': 'test_sub_category',
@@ -333,7 +333,7 @@ class SkillSetListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
         """
         Unit test will test anonymous make a GET request to the retrieve API-endpoint.
         """
-        url = reverse('o55_skill_set_retrieve_update_destroy_api_endpoint', args=[self.skill_set.id])+"?format=json"
+        url = reverse('workery_skill_set_retrieve_update_destroy_api_endpoint', args=[self.skill_set.id])+"?format=json"
         response = self.unauthorized_client.get(url, data={}, content_type='application/json')
         self.assertIsNotNone(response)
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
@@ -344,7 +344,7 @@ class SkillSetListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
         Unit test will test authenticated user, who has permission, to make a
         GET request to the retrieve API-endpoint.
         """
-        url = reverse('o55_skill_set_retrieve_update_destroy_api_endpoint', args=[self.skill_set.id])+"?format=json"
+        url = reverse('workery_skill_set_retrieve_update_destroy_api_endpoint', args=[self.skill_set.id])+"?format=json"
 
         response = self.exec_client.get(url, data=None, content_type='application/json')
         self.assertIsNotNone(response)
@@ -371,7 +371,7 @@ class SkillSetListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
         make a GET request to the retrieve API-endpoint.
         """
         Permission.objects.all().delete()
-        url = reverse('o55_skill_set_retrieve_update_destroy_api_endpoint', args=[self.skill_set.id])+"?format=json"
+        url = reverse('workery_skill_set_retrieve_update_destroy_api_endpoint', args=[self.skill_set.id])+"?format=json"
         response = self.exec_client.get(url, data=None, content_type='application/json')
         self.assertIsNotNone(response)
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
@@ -386,7 +386,7 @@ class SkillSetListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
         """
         Unit test will test anonymous make a DELETE request to the delete API-endpoint.
         """
-        url = reverse('o55_skill_set_retrieve_update_destroy_api_endpoint', args=[self.skill_set.id])+"?format=json"
+        url = reverse('workery_skill_set_retrieve_update_destroy_api_endpoint', args=[self.skill_set.id])+"?format=json"
         response = self.unauthorized_client.delete(url, data={}, content_type='application/json')
         self.assertIsNotNone(response)
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
@@ -397,7 +397,7 @@ class SkillSetListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
         Unit test will test authenticated user, who has permission, to make a
         DELETE request to the delete API-endpoint.
         """
-        url = reverse('o55_skill_set_retrieve_update_destroy_api_endpoint', args=[self.skill_set.id])+"?format=json"
+        url = reverse('workery_skill_set_retrieve_update_destroy_api_endpoint', args=[self.skill_set.id])+"?format=json"
         response = self.exec_client.delete(url, data=None, content_type='application/json')
         self.assertIsNotNone(response)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -409,7 +409,7 @@ class SkillSetListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
         make a DELETE request to the delete API-endpoint.
         """
         Permission.objects.all().delete()
-        url = reverse('o55_skill_set_retrieve_update_destroy_api_endpoint', args=[self.skill_set.id])+"?format=json"
+        url = reverse('workery_skill_set_retrieve_update_destroy_api_endpoint', args=[self.skill_set.id])+"?format=json"
         response = self.exec_client.delete(url, data=None, content_type='application/json')
         self.assertIsNotNone(response)
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)

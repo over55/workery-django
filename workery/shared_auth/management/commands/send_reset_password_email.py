@@ -32,11 +32,11 @@ class Command(BaseCommand):
 
         # Generate the links.
         url = reverse_with_full_domain(
-            reverse_url_id='o55_reset_password_master',
+            reverse_url_id='workery_reset_password_master',
             resolve_url_args=[pr_access_code]
         )
         web_view_url = reverse_with_full_domain(
-            reverse_url_id='o55_reset_password_email',
+            reverse_url_id='workery_reset_password_email',
             resolve_url_args=[pr_access_code]
         )
         subject = "Over55: Password Reset"

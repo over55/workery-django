@@ -66,7 +66,7 @@ def increment_associate_id_number():
 class Associate(AbstractPerson):
     class Meta:
         app_label = 'tenant_foundation'
-        db_table = 'o55_associates'
+        db_table = 'workery_associates'
         verbose_name = _('Associate')
         verbose_name_plural = _('Associates')
         default_permissions = ()
@@ -298,4 +298,4 @@ class Associate(AbstractPerson):
 #     if 'raw' in kwargs and not kwargs['raw']:
 #         kwargs['instance'].full_clean()
 #
-# pre_save.connect(validate_model, dispatch_uid='o55_associates.validate_models')
+# pre_save.connect(validate_model, dispatch_uid='workery_associates.validate_models')

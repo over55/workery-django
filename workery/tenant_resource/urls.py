@@ -7,8 +7,8 @@ from tenant_resource import views
 
 urlpatterns = (
     # Summary
-    path('resources/', views.ResourceCategoryListView.as_view(), name='o55_tenant_resource_category_list'),
+    path('resources/', views.ResourceCategoryListView.as_view(), name='workery_tenant_resource_category_list'),
 
     # Retrieve
-    path('resource/<int:pk>/', views.ResourceCategoryRetrieveView.as_view(), name='o55_tenant_resource_category_retrieve'),
+    path('resource/<int:pk>/', views.ResourceCategoryRetrieveView.as_view(), name='workery_tenant_resource_category_retrieve'),
 )

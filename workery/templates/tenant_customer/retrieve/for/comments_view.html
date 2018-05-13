@@ -70,28 +70,28 @@ function click_add_button() {
             {% if template == 'search' %}
 
             <li class="breadcrumb-item">
-                <a href="{% url 'o55_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a>
+                <a href="{% url 'workery_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a>
             </li>
             <li class="breadcrumb-item">
-                <a href="{% url 'o55_tenant_customer_summary' %}">{% trans 'Clients' %}</a>
+                <a href="{% url 'workery_tenant_customer_summary' %}">{% trans 'Clients' %}</a>
             </li>
             <li class="breadcrumb-item">
-                <a href="{% url 'o55_tenant_customer_search' %}">{% trans 'Search' %}</a>
+                <a href="{% url 'workery_tenant_customer_search' %}">{% trans 'Search' %}</a>
             </li>
             <li class="breadcrumb-item active" aria-current="page">{% trans 'Search Results' %}</li>
             <li class="breadcrumb-item active" aria-current="page">{% trans 'Client #' %}{{ object.id }}</li>
 
             {% elif template == 'list' %}
 
-            <li class="breadcrumb-item"><a href="{% url 'o55_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
-            <li class="breadcrumb-item"><a href="{% url 'o55_tenant_customer_summary' %}">{% trans 'Clients' %}</a></li>
-            <li class="breadcrumb-item"><a href="{% url 'o55_tenant_customer_list' %}">{% trans 'List' %}</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'workery_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'workery_tenant_customer_summary' %}">{% trans 'Clients' %}</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'workery_tenant_customer_list' %}">{% trans 'List' %}</a></li>
             <li class="breadcrumb-item active" aria-current="page">{% trans 'Client #' %}{{ object.id|intcomma }}</li>
 
             {% else %}
 
-	    	<li class="breadcrumb-item"><a href="{% url 'o55_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
-            <li class="breadcrumb-item"><a href="{% url 'o55_tenant_customer_summary' %}">{% trans 'Clients' %}</a></li>
+	    	<li class="breadcrumb-item"><a href="{% url 'workery_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'workery_tenant_customer_summary' %}">{% trans 'Clients' %}</a></li>
             <li class="breadcrumb-item active" aria-current="page">{% trans 'Client #' %}{{ object.id|intcomma }}</li>
 
             {% endif %}
@@ -117,7 +117,7 @@ function click_add_button() {
     <!------------------------------------------------------------------------->
     <div class="row">
 		<div class="col-sm-3 p-3 mb-2">
-			<a class="btn btn-primary btn-lg" href="{% if template == 'search' %}{% url 'o55_tenant_customer_search' %}{% elif template == 'list' %}{% url 'o55_tenant_customer_list' %}{% else %}{% url 'o55_tenant_customer_summary' %}{% endif %}" role="button">
+			<a class="btn btn-primary btn-lg" href="{% if template == 'search' %}{% url 'workery_tenant_customer_search' %}{% elif template == 'list' %}{% url 'workery_tenant_customer_list' %}{% else %}{% url 'workery_tenant_customer_summary' %}{% endif %}" role="button">
                 <svg class="svg-inline--fa fa-arrow-left fa-w-14" aria-hidden="true" data-fa-processed="" data-prefix="fas" data-icon="arrow-left" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
                 <path fill="currentColor" d="M257.5 445.1l-22.2 22.2c-9.4 9.4-24.6 9.4-33.9 0L7 273c-9.4-9.4-9.4-24.6 0-33.9L201.4 44.7c9.4-9.4 24.6-9.4 33.9 0l22.2 22.2c9.5 9.5 9.3 25-.4 34.3L136.6 216H424c13.3 0 24 10.7 24 24v32c0 13.3-10.7 24-24 24H136.6l120.5 114.8c9.8 9.3 10 24.8.4 34.3z"></path>
             </svg><!-- <i class="fas fa-arrow-left"></i> -->&nbsp;{% if template == 'search' %}{% trans 'Back to Search' %}{% elif template == 'list' %}{% trans 'Back to Client\'s List' %}{% else %}{% trans 'Back to Client\'s Home' %}{% endif %}</a>
@@ -133,17 +133,17 @@ function click_add_button() {
     <div class="row">
         <div class="step-navigation">
             <div class="st-grey">
-                <a href="{% url 'o55_tenant_customer_lite_retrieve' template customer.id %}">
+                <a href="{% url 'workery_tenant_customer_lite_retrieve' template customer.id %}">
                     <i class="fa fa-id-badge"></i>&nbsp;<span class="">Summary</span>
                 </a>
             </div>
             <div class="st-grey">
-                <a href="{% url 'o55_tenant_customer_full_retrieve' template customer.id %}">
+                <a href="{% url 'workery_tenant_customer_full_retrieve' template customer.id %}">
                     <i class="fa fa-id-card"></i>&nbsp;<span class="">Details</span>
                 </a>
             </div>
             <div class="st-grey">
-                <a href="{% url 'o55_tenant_customer_retrieve_for_jobs_list' template customer.id %}">
+                <a href="{% url 'workery_tenant_customer_retrieve_for_jobs_list' template customer.id %}">
                     <i class="fa fa-wrench"></i>&nbsp;<span class="">Jobs</span>
                 </a>
             </div>

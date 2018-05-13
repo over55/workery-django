@@ -66,7 +66,7 @@ def increment_partner_id_number():
 class Partner(AbstractPerson):
     class Meta:
         app_label = 'tenant_foundation'
-        db_table = 'o55_partners'
+        db_table = 'workery_partners'
         verbose_name = _('Partner')
         verbose_name_plural = _('Partners')
         default_permissions = ()
@@ -203,4 +203,4 @@ class Partner(AbstractPerson):
 #     if 'raw' in kwargs and not kwargs['raw']:
 #         kwargs['instance'].full_clean()
 #
-# pre_save.connect(validate_model, dispatch_uid='o55_partners.validate_models')
+# pre_save.connect(validate_model, dispatch_uid='workery_partners.validate_models')

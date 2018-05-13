@@ -45,7 +45,7 @@ class TestFranchise(TenantTestCase):
 
     def test_reverse(self):
         # Attempt to lookup a URL.
-        actual_url = self.tenant.reverse('o55_tenant_dashboard_master')
+        actual_url = self.tenant.reverse('workery_tenant_dashboard_master')
 
         # Generate the URL we expect.
         self.assertIsNotNone(settings.O55_APP_HTTP_DOMAIN) # Confirm var set.

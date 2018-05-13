@@ -19,14 +19,14 @@ urlpatterns = [
     #----------------------#
 
     # Authentication.
-    url(r'^api/login$', LoginAPIView.as_view(), name='o55_login_api_endpoint'),
-    url(r'^api/logout$', LogoutAPIView.as_view(), name='o55_logout_api_endpoint'),
-    url(r'^api/reset-password$', ResetPasswordAPIView.as_view(), name='o55_reset_password_api_endpoint'),
-    url(r'^api/send-reset-password-email$', SendResetPasswordEmailAPIView.as_view(), name='o55_send_reset_password_email_api_endpoint'),
+    url(r'^api/login$', LoginAPIView.as_view(), name='workery_login_api_endpoint'),
+    url(r'^api/logout$', LogoutAPIView.as_view(), name='workery_logout_api_endpoint'),
+    url(r'^api/reset-password$', ResetPasswordAPIView.as_view(), name='workery_reset_password_api_endpoint'),
+    url(r'^api/send-reset-password-email$', SendResetPasswordEmailAPIView.as_view(), name='workery_send_reset_password_email_api_endpoint'),
 
     # Application.
-    url(r'^api/franchises$', SharedFranchiseListCreateAPIView.as_view(), name='o55_franchise_list_create_api_endpoint'),
-    url(r'^api/franchises/validate$', SharedFranchiseCreateValidationAPIView.as_view(), name='o55_franchise_pre_create_validation_api_endpoint'),
+    url(r'^api/franchises$', SharedFranchiseListCreateAPIView.as_view(), name='workery_franchise_list_create_api_endpoint'),
+    url(r'^api/franchises/validate$', SharedFranchiseCreateValidationAPIView.as_view(), name='workery_franchise_pre_create_validation_api_endpoint'),
 
     # JWT
     url(r'^api-token-auth/', obtain_jwt_token),

@@ -38,7 +38,7 @@ def increment_partner_comment_id_number():
 class PartnerComment(models.Model):
     class Meta:
         app_label = 'tenant_foundation'
-        db_table = 'o55_partner_comments'
+        db_table = 'workery_partner_comments'
         verbose_name = _('Partner Comment')
         verbose_name_plural = _('Partner Comments')
         ordering = ['-created_at']

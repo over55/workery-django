@@ -62,7 +62,7 @@ class APIAuthResetPasswordViewslWithSchemaTestCase(APITestCase, TenantTestCase):
         pr_access_code = me.generate_pr_code()
 
         # Log out.
-        url = reverse('o55_reset_password_api_endpoint')
+        url = reverse('workery_reset_password_api_endpoint')
         data = {
             'password': TEST_USER_PASSWORD,
             'password_repeat': TEST_USER_PASSWORD,
@@ -80,7 +80,7 @@ class APIAuthResetPasswordViewslWithSchemaTestCase(APITestCase, TenantTestCase):
         pr_access_code = me.generate_pr_code()
 
         # Log out.
-        url = reverse('o55_reset_password_api_endpoint')
+        url = reverse('workery_reset_password_api_endpoint')
         data = {
             'password': TEST_USER_PASSWORD,
             'password_repeat': TEST_USER_PASSWORD,
@@ -94,7 +94,7 @@ class APIAuthResetPasswordViewslWithSchemaTestCase(APITestCase, TenantTestCase):
     @transaction.atomic
     def test_api_endpoint_with_bad_password(self):
         # Log out.
-        url = reverse('o55_reset_password_api_endpoint')
+        url = reverse('workery_reset_password_api_endpoint')
         data = {
             'password': "some-bad-password",
             'password_repeat': "some-bad-password-plus-mismatching-entry",

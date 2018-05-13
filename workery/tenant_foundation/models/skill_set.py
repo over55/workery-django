@@ -42,7 +42,7 @@ def increment_skillset_id_number():
 class SkillSet(models.Model):
     class Meta:
         app_label = 'tenant_foundation'
-        db_table = 'o55_skill_sets'
+        db_table = 'workery_skill_sets'
         verbose_name = _('Skill Set')
         verbose_name_plural = _('Skill Sets')
         default_permissions = ()
