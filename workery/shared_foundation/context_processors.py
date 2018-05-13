@@ -17,7 +17,7 @@ def me(request):
     was saved during the "login" API endpoint. If the user updates this profile
     then the session will be updated and newest data released here.
     """
-    if request.session is not None:
+    if hasattr(request, 'session'):
         # SECURITY: Fetch our one-time use information to be displayed to the user
         #           and then delete it after the user has seen it. We do this
         #           because we do not want the server to store any API keys.
