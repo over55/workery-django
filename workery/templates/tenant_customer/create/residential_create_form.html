@@ -54,15 +54,15 @@
 	  });
 	  loadState('CA');
     });
-	    
+
         let c_dropdown = $('#address_country');
 	c_dropdown.empty();
 	c_dropdown.append('<option selected="true" disabled>Choose Country</option>');
 	c_dropdown.prop('selectedIndex', 1);
-    
+
         const state = "{% static 'js/provinces.json' %}";
         const country = "{% static 'js/countries.json' %}";
-        
+
 	console.log(state);
         console.log(country); // KANWAR - PLEASE IMPLEMENT.
 	// Populate dropdown with list of countries
@@ -71,7 +71,7 @@
 	    	c_dropdown.append($('<option></option>').attr('value', entry.code).text(entry.country));
 	  })
 	});
-    
+
 	function loadState(countryId){
 		let p_dropdown = $('#address_region');
 		p_dropdown.empty();
@@ -90,7 +90,7 @@
 		}
     	}
     	// end country/province dropdown function
-	 
+
     }); // end Ready
 
     /**
@@ -321,6 +321,8 @@
                 'tags': localStorage.getObj("tmp_residential_customer_person_tag_ids"),
                 'description': localStorage.getItem("tmp_residential_customer_description"),
                 'extra_comment': localStorage.getItem("tmp_residential_customer_comment"),
+                'organization_name': '-', // LEAVE ALONE AS IS.
+                'organization_type_of': 1 // LEAVE ALONE AS IS.
             },
             function(result_dict) { // Success
                 // FOR DEBUGGING PURPOSES ONLY.
@@ -344,7 +346,7 @@
                 for(var prop in err) {
                     if(err.hasOwnProperty(prop)) {
                         var val = err[prop];
-                        $('#all_error_result').append("<div class='form-error'><b>"+prop+":</b> "+val+" </div>");
+                        $('#all_error_result').append("<p><b>"+prop+"</b>"+val+"</p><br />");
                     }
                 }
 
@@ -377,8 +379,8 @@
     <div class="col-sm-12 fade show active" id="client-form" aria-labelledby="residential">
         <p><span class="text-secondary font-italic"><sup>*</sup>&nbsp;-&nbsp;Indicates required field to fill out.</span></p>
         <!-- Error Output -->
-        <div id="all_error_result" name="all_error_result" class="alert alert-error fade show" role="alert">
-		<strong>There were errors during registration:</strong>    
+        <div id="all_error_result" name="all_error_result"></div>
+		<strong>There were errors during registration:</strong>
 	</div>
         <!-- end Error Output -->
         <p>&nbsp;</p>

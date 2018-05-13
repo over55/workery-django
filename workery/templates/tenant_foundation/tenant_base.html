@@ -104,10 +104,11 @@
                 </ul>
                 <hr class="nav-divider">
                 <ul class="nav flex-column">
-                    {% if request.user %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'o55_shared_franchise_list' %}"><i class="fa fa-arrow-circle-left"></i> Back to Franchises</a>
-                    </li>
+                    {% if request.user.is_executive %}
+                        <!-- ONLY EXECUTIVES HAVE ACCESS TO THIS GUI. -->
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'o55_shared_franchise_list' %}"><i class="fa fa-arrow-circle-left"></i> Back to Franchises</a>
+                        </li>
                     {% endif %}
                     <li class="nav-item">
                         <a class="nav-link {% if current_page == 'setting' %}active{% endif %}" href="{% url 'o55_tenant_settings_launchpad' %}"><i class="fas fa-cog"></i> Settings</a>

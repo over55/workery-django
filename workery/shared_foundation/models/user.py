@@ -149,3 +149,10 @@ class SharedUser(AbstractBaseUser, PermissionsMixin):
         """
         today = timezone.now()
         return today >= self.pr_expiry_date
+
+    def is_executive(self):
+        """
+        Function will return True or False depending on whether this user
+        belongs to the executive group or not.
+        """
+        return self.groups.filter(id=constants.EXECUTIVE_GROUP_ID).exists()

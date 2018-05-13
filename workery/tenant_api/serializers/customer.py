@@ -297,6 +297,8 @@ class CustomerListCreateSerializer(serializers.ModelSerializer):
         """
         Override the `create` function to add extra functinality.
         """
+        type_of_customer = validated_data.get('type_of', UNASSIGNED_CUSTOMER_TYPE_OF_ID)
+
         # Format our telephone(s)
         fax_number = validated_data.get('fax_number', None)
         if fax_number:
@@ -356,7 +358,7 @@ class CustomerListCreateSerializer(serializers.ModelSerializer):
             is_support=validated_data.get('is_support', False),
             job_info_read=validated_data.get('job_info_read', False),
             how_hear=validated_data.get('how_hear', None),
-            type_of=validated_data.get('type_of', UNASSIGNED_CUSTOMER_TYPE_OF_ID),
+            type_of=type_of_customer,
 
             # Contact Point
             email=email,
@@ -392,40 +394,43 @@ class CustomerListCreateSerializer(serializers.ModelSerializer):
         #-----------------------------------
         # Create or update our Organization.
         #-----------------------------------
-        organization_name = validated_data.get('organization_name', None)
-        organization_type_of = validated_data.get('organization_type_of', None)
-        organization_address_country = validated_data.get('organization_address_country', None)
-        organization_address_locality = validated_data.get('organization_address_locality', None)
-        organization_address_region = validated_data.get('organization_address_region', None)
-        organization_post_office_box_number = validated_data.get('organization_post_office_box_number', None)
-        organization_postal_code = validated_data.get('organization_postal_code', None)
-        organization_street_address = validated_data.get('organization_street_address', None)
-        organization_street_address_extra = validated_data.get('organization_street_address_extra', None)
+        if type_of_customer == COMMERCIAL_JOB_TYPE_OF_ID:
+            logger.info("Detected commercial customer...")
+            organization_name = validated_data.get('organization_name', None)
+            organization_type_of = validated_data.get('organization_type_of', None)
+            organization_address_country = validated_data.get('organization_address_country', None)
+            organization_address_locality = validated_data.get('organization_address_locality', None)
+            organization_address_region = validated_data.get('organization_address_region', None)
+            organization_post_office_box_number = validated_data.get('organization_post_office_box_number', None)
+            organization_postal_code = validated_data.get('organization_postal_code', None)
+            organization_street_address = validated_data.get('organization_street_address', None)
+            organization_street_address_extra = validated_data.get('organization_street_address_extra', None)
 
-        if organization_name and organization_type_of:
-            organization, created = Organization.objects.update_or_create(
-                name=organization_name,
-                type_of=organization_type_of,
-                defaults={
-                    'type_of': organization_type_of,
-                    'name': organization_name,
-                    'address_country': organization_address_country,
-                    'address_locality': organization_address_locality,
-                    'address_region': organization_address_region,
-                    'post_office_box_number': organization_post_office_box_number,
-                    'postal_code': organization_postal_code,
-                    'street_address': organization_street_address,
-                    'street_address_extra': organization_street_address_extra,
-                }
-            )
-            if created:
+            if organization_name and organization_type_of:
+                organization, created = Organization.objects.update_or_create(
+                    name=organization_name,
+                    type_of=organization_type_of,
+                    defaults={
+                        'type_of': organization_type_of,
+                        'name': organization_name,
+                        'address_country': organization_address_country,
+                        'address_locality': organization_address_locality,
+                        'address_region': organization_address_region,
+                        'post_office_box_number': organization_post_office_box_number,
+                        'postal_code': organization_postal_code,
+                        'street_address': organization_street_address,
+                        'street_address_extra': organization_street_address_extra,
+                    }
+                )
                 logger.info("Created organization.")
-                organization.owner = owner
-                organization.save()
+                if created:
+                    logger.info("Created organization.")
+                    organization.owner = owner
+                    organization.save()
 
-            customer.organization = organization
-            customer.save()
-            logger.info("Attached created organization to customer.")
+                customer.organization = organization
+                customer.save()
+                logger.info("Attached created organization to customer.")
 
         #------------------------
         # Set our `Tag` objects.

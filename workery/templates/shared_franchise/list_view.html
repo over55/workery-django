@@ -63,37 +63,14 @@
                     <td>{{ franchise.name }}</td>
                     <td>{{ franchise.alternate_name }}</td>
                     <td>
-                        <a onclick="click_and_redirect('{% tenant_url franchise.schema_name 'o55_tenant_dashboard_master' %}');">{% trans 'View' %}</a>
+                        <button id="id_submit_btn"
+                             class="btn btn-success btn-sm"
+                              type="button"
+                           onclick="click_and_redirect('{% tenant_url franchise.schema_name 'o55_tenant_dashboard_master' %}');">
+                            View <i class="fas fa-arrow-circle-right"></i></button>
                     </td>
                 </tr>
                 {% endfor %}
-                {% comment %}
-                {% for customer in customer_list %}
-                <tr>
-                    <td>
-                        {% if customer.type_of == tenant_constants.RESIDENTIAL_CUSTOMER_TYPE_OF_ID %}
-                            <i class="fa fa-home fa-lg"></i>
-                        {% elif customer.type_of == tenant_constants.COMMERCIAL_CUSTOMER_TYPE_OF_ID %}
-                            <i class="fa fa-building fa-lg"></i>
-                        {% else %}
-                            <i class="fa fa-question fa-lg"></i>
-                        {% endif %}
-                    </td>
-                    <td>{{ customer.id|intcomma }}</td>
-                    <td>{% if customer.given_name %}{{ customer.given_name }}{% else %}-{% endif %}</td>
-                    <td>{% if customer.last_name %}{{ customer.last_name }}{% else %}-{% endif %}</td>
-                    <td>
-                        {% if customer.telephone %}<a href="tel:{{ customer.telephone }}">{{ customer.telephone|pretty_formatted_phonenumber }}</a>{% else %}-{% endif %}
-                    </td>
-                    <td>{% if customer.owner.email %}<a href="mailto:{{ customer.owner.email }}">{{ customer.owner.email }}</a>{% else %}-{% endif %}</td>
-                    <td>
-                        <a href="{% url 'o55_tenant_customer_lite_retrieve' 'list' customer.id %}?page={{ page_obj.number }}">{% trans 'View' %}</a>
-                    </td>
-                </tr>
-                {% empty %}
-                No customers yet.
-                {% endfor %}
-                {% endcomment %}
             </tbody>
         </table>
     </div>
