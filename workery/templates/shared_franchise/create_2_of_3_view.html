@@ -1,0 +1,141 @@
+{% extends 'shared_franchise/base_view.html' %}
+{% load staticfiles i18n foundation_tags humanize %}
+
+{% block title %}
+{% trans 'Franchises | Workery' %}
+{% endblock title %}
+
+{% block header_content %}
+{% endblock header_content %}
+
+{% block content %}
+
+<script>
+    /**
+     *  When page loads, the following code will be run first.
+     */
+    $(document).ready(function () {
+        // THIS IS WHERE YOU CAN ADD YOUR COUNTRY/PROVINCE DROPDOWN JS CODE....
+        $(function () {
+        	$('#address_country').change(function () {
+        		loadState($(this).find(':selected').val())
+        	});
+        	loadState('CA');
+        });
+
+        let c_dropdown = $('#address_country');
+        c_dropdown.empty();
+        c_dropdown.append('<option selected="true" disabled>Choose Country</option>');
+        c_dropdown.prop('selectedIndex', 1);
+
+        const state = "{% static 'js/provinces.json' %}";
+        const country = "{% static 'js/countries.json' %}";
+
+        // console.log(state);
+        // console.log(country);
+
+        // Populate dropdown with list of countries
+        $.getJSON(country, function (data) {
+        	$.each(data, function (key, entry) {
+        		c_dropdown.append($('<option></option>').attr('value', entry.code).text(entry.country));
+        	})
+        });
+
+        function loadState(countryId) {
+        	let p_dropdown = $('#address_region');
+        	p_dropdown.empty();
+        	p_dropdown.append('<option selected="true" disabled>Choose State/Province</option>');
+        	p_dropdown.prop('selectedIndex', 0);
+        	// Populate dropdown with list of provinces
+        	$.getJSON(state, function (data) {
+        		$.each(data, function (key, entry) {
+        			if (entry.country == countryId) {
+        				p_dropdown.append($('<option></option>').attr('value', entry.short).text(entry.name));
+        			}
+        		})
+        	});
+        	if (countryId == 'CA') {
+        		p_dropdown.prop('selectedIndex', 1);
+        	}
+        }
+        // end country/province dropdown function
+
+    }); // end Ready
+
+    /**
+     *  Function will take the `root` users API key and attach it to the
+     *  URL of the tenant. We are doing this so this API key can be passed
+     */
+    function click_and_redirect(url) {
+        var private_api_key = localStorage.getItem("private_api_key");
+        var private_api_key_orig_iat = localStorage.getItem("private_api_key_orig_iat");
+        console.log(private_api_key);
+        console.log(private_api_key_orig_iat);
+        console.log(url);
+        window.location = url+"?api_key="+private_api_key+"&orig_iat="+private_api_key_orig_iat;
+    }
+</script>
+
+<main id="main" role="main">
+
+    <!-- BREADCRUMB -->
+    <!------------------------------------------------------------------------->
+    <nav aria-label="breadcrumb">
+	  	<ol class="breadcrumb">
+	    	<li class="breadcrumb-item" aria-current="page">
+                <a href="{% url 'o55_shared_franchise_list' %}">
+                    {% trans 'Franchises' %}
+                </a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">{% trans 'Add' %}</li>
+	  	</ol>
+	</nav>
+    <!------------------------------------------------------------------------->
+    <!-- end BREADCRUMB -->
+
+    <!-- BACK BUTTON -->
+    <!------------------------------------------------------------------------->
+    <div class="row">
+		<div class="col-sm-3 p-3 mb-2">
+			<a class="btn btn-primary btn-lg" href="{% url 'o55_shared_franchise_list' %}" role="button">
+                <svg class="svg-inline--fa fa-arrow-left fa-w-14" aria-hidden="true" data-fa-processed="" data-prefix="fas" data-icon="arrow-left" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                <path fill="currentColor" d="M257.5 445.1l-22.2 22.2c-9.4 9.4-24.6 9.4-33.9 0L7 273c-9.4-9.4-9.4-24.6 0-33.9L201.4 44.7c9.4-9.4 24.6-9.4 33.9 0l22.2 22.2c9.5 9.5 9.3 25-.4 34.3L136.6 216H424c13.3 0 24 10.7 24 24v32c0 13.3-10.7 24-24 24H136.6l120.5 114.8c9.8 9.3 10 24.8.4 34.3z"></path>
+            </svg><!-- <i class="fas fa-arrow-left"></i> -->&nbsp;{% trans 'Back to Franchises' %}</a>
+		</div>
+	</div>
+    <!------------------------------------------------------------------------->
+    <!-- end BACK BUTTON -->
+
+    <h1>{% trans 'Add Franchise' %}</h1>
+
+    <!-- STEP NAVIGATION -->
+    <!------------------------------------------------------------------------->
+    <div class="row">
+        <div class="step-navigation">
+            <div id="step-1" class="st-grey">
+                <a href="{% url 'o55_shared_franchise_create_1_of_3' %}">
+                    <span class="num">1.</span><span class="">Details</span>
+                </a>
+            </div>
+            <div id="step-2" class="st-grey active">
+                <span class="num">2.</span><span class="">Review &amp; Submit</span>
+            </div>
+            <div id="step-3" class="st-grey">
+                <span class="num">3.</span><span class="">Completion</span>
+            </div>
+        </div>
+    </div>
+    <!------------------------------------------------------------------------->
+    <!-- end STEP NAVIGATION -->
+
+    <!-- FORM -->
+    <!------------------------------------------------------------------------->
+
+    <!------------------------------------------------------------------------->
+    <!-- /.FORM -->
+
+    <!-- RETURN-TO-TOP -->
+    <a id="return-to-top" href="#" class="btn-info btn-lg back-to-top" role="button" title="Back to top"><i class="fas fa-angle-up fa-2x"></i></a>
+    <!-- end RETURN-TO-TOP -->
+</main>
+{% endblock content %}

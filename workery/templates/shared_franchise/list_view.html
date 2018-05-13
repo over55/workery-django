@@ -38,8 +38,19 @@
     <!-- end BREADCRUMB -->
 
     <h1>{% trans 'Franchises' %}</h1>
+    <section class="row text-center placeholders">
+        <div class="col-sm-4 placeholder">
+            <div class="rounded-circle mx-auto mt-4 mb-4 circle-200 bg-pink">
+                <a href="{% url 'o55_shared_franchise_create_1_of_3' %}" class="d-block link-ndecor" title="Add Partner">
+                    <h1 class="r-circle"><i class="fas fa-plus fa-3x"></i></h1>
+                </a>
+            </div>
+            <h4>Add</h4>
+            <div class="text-muted">Add Franchise</div>
+        </div>
+    </section>
 
-    <h2>Active Client List</h2>
+    <h2>List</h2>
     <div class="table-responsive">
         <table class="table table-striped">
             <thead>
@@ -47,14 +58,6 @@
                     <th>{% trans 'Name' %}</th>
                     <th>{% trans 'Alternate Name' %}</th>
                     <th></th>
-                    {% comment %}
-                    <th>{% trans '#' %}</th>
-                    <th>{% trans 'First Name' %}</th>
-                    <th>{% trans 'Last Name' %}</th>
-                    <th>{% trans 'Phone' %}</th>
-                    <th>{% trans 'E-Mail' %}</th>
-                    <th></th>
-                    {% endcomment %}
                 </tr>
             </thead>
             <tbody>

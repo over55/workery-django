@@ -1,0 +1,235 @@
+{% extends 'shared_franchise/base_view.html' %}
+{% load staticfiles i18n foundation_tags humanize %}
+
+{% block title %}
+{% trans 'Franchises | Workery' %}
+{% endblock title %}
+
+{% block header_content %}
+{% endblock header_content %}
+
+{% block content %}
+
+<script>
+    /**
+     *  When page loads, the following code will be run first.
+     */
+    $(document).ready(function () {
+        // THIS IS WHERE YOU CAN ADD YOUR COUNTRY/PROVINCE DROPDOWN JS CODE....
+        $(function () {
+        	$('#address_country').change(function () {
+        		loadState($(this).find(':selected').val())
+        	});
+        	loadState('CA');
+        });
+
+        let c_dropdown = $('#address_country');
+        c_dropdown.empty();
+        c_dropdown.append('<option selected="true" disabled>Choose Country</option>');
+        c_dropdown.prop('selectedIndex', 1);
+
+        const state = "{% static 'js/provinces.json' %}";
+        const country = "{% static 'js/countries.json' %}";
+
+        // console.log(state);
+        // console.log(country);
+
+        // Populate dropdown with list of countries
+        $.getJSON(country, function (data) {
+        	$.each(data, function (key, entry) {
+        		c_dropdown.append($('<option></option>').attr('value', entry.code).text(entry.country));
+        	})
+        });
+
+        function loadState(countryId) {
+        	let p_dropdown = $('#address_region');
+        	p_dropdown.empty();
+        	p_dropdown.append('<option selected="true" disabled>Choose State/Province</option>');
+        	p_dropdown.prop('selectedIndex', 0);
+        	// Populate dropdown with list of provinces
+        	$.getJSON(state, function (data) {
+        		$.each(data, function (key, entry) {
+        			if (entry.country == countryId) {
+        				p_dropdown.append($('<option></option>').attr('value', entry.short).text(entry.name));
+        			}
+        		})
+        	});
+        	if (countryId == 'CA') {
+        		p_dropdown.prop('selectedIndex', 1);
+        	}
+        }
+        // end country/province dropdown function
+
+    }); // end Ready
+
+    /**
+     *
+     */
+    function click_cancel_button() {
+        window.location = "{% url 'o55_shared_franchise_list' %}";
+    }
+
+    /**
+     *
+     */
+    function click_next_button() {
+        window.location = "{% url 'o55_shared_franchise_create_2_of_3' %}";
+    }
+</script>
+
+<main id="main" role="main">
+
+    <!-- BREADCRUMB -->
+    <!------------------------------------------------------------------------->
+    <nav aria-label="breadcrumb">
+	  	<ol class="breadcrumb">
+	    	<li class="breadcrumb-item" aria-current="page">
+                <a href="{% url 'o55_shared_franchise_list' %}">
+                    {% trans 'Franchises' %}
+                </a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">{% trans 'Add' %}</li>
+	  	</ol>
+	</nav>
+    <!------------------------------------------------------------------------->
+    <!-- end BREADCRUMB -->
+
+    <!-- BACK BUTTON -->
+    <!------------------------------------------------------------------------->
+    <div class="row">
+		<div class="col-sm-3 p-3 mb-2">
+			<a class="btn btn-primary btn-lg" href="{% url 'o55_shared_franchise_list' %}" role="button">
+                <svg class="svg-inline--fa fa-arrow-left fa-w-14" aria-hidden="true" data-fa-processed="" data-prefix="fas" data-icon="arrow-left" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                <path fill="currentColor" d="M257.5 445.1l-22.2 22.2c-9.4 9.4-24.6 9.4-33.9 0L7 273c-9.4-9.4-9.4-24.6 0-33.9L201.4 44.7c9.4-9.4 24.6-9.4 33.9 0l22.2 22.2c9.5 9.5 9.3 25-.4 34.3L136.6 216H424c13.3 0 24 10.7 24 24v32c0 13.3-10.7 24-24 24H136.6l120.5 114.8c9.8 9.3 10 24.8.4 34.3z"></path>
+            </svg><!-- <i class="fas fa-arrow-left"></i> -->&nbsp;{% trans 'Back to Franchises' %}</a>
+		</div>
+	</div>
+    <!------------------------------------------------------------------------->
+    <!-- end BACK BUTTON -->
+
+    <h1>{% trans 'Add Franchise' %}</h1>
+
+    <!-- STEP NAVIGATION -->
+    <!------------------------------------------------------------------------->
+    <div class="row">
+        <div class="step-navigation">
+            <div id="step-1" class="st-grey active">
+                <span class="num">1.</span><span class="">Details</span>
+            </div>
+            <div id="step-2" class="st-grey">
+                <span class="num">2.</span><span class="">Review &amp; Submit</span>
+            </div>
+            <div id="step-3" class="st-grey">
+                <span class="num">3.</span><span class="">Completion</span>
+            </div>
+        </div>
+    </div>
+    <!------------------------------------------------------------------------->
+    <!-- end STEP NAVIGATION -->
+
+    <!-- FORM -->
+    <!------------------------------------------------------------------------->
+    <div class="col-sm-6 mx-auto mt-2">
+        <div class="col-sm-12 fade show active" id="client-form">
+            <p><span class="text-secondary font-italic"><sup>*</sup>&nbsp;-&nbsp;Indicates required field to fill out.</span></p>
+            <!-- Error Output -->
+            <div id="all_error_result" name="all_error_result"></div>
+    	</div>
+            <!-- end Error Output -->
+            <p>&nbsp;</p>
+
+            <!----------------------------------------------------------------->
+            <p class="border-bottom mb-3 pb-1 text-secondary">Franchise Information</p>
+            <div class="form-row">
+                <div class="form-group col-md-12 mb-4">
+                    <label for="short_name" class="font-b6">Short name <sup>*</sup></label>
+                    <input type="text" class="form-control form-control-lg border border-primary" id="short_name" name="short_name" placeholder="Short name" minlength="2" maxlength="30" required autofocus>
+                    <div id="short_name-error" class="invalid-feedback"></div>
+                </div>
+                <div class="form-group col-md-12 mb-4">
+                    <label for="full_name" class="font-b6">Full legal name <sup>*</sup></label>
+                    <input type="text" class="form-control form-control-lg border border-primary" id="full_name" name="full_name" placeholder="Full legal name" minlength="2" maxlength="30" required autofocus>
+                    <div id="full_name-error" class="invalid-feedback"></div>
+                </div>
+                <div class="form-group col-md-12 mb-4 p-0">
+      		        <label for="describe">Describe the franchise</label>
+      		        <textarea class="form-control form-control-lg border border-success" id="describe" name="describe" placeholder="Describe here..." rows="4" minlength="10" required></textarea>
+      		        <div id="describe-error" class="invalid-feedback"></div>
+                    <small class="form-text text-muted">Maximum 1,000 characters.</small>
+                </div>
+                <div class="form-group col-md-12 mb-4">
+                    <label for="street_address" class="font-b6">Street Address <sup>*</sup></label>
+                    <input type="text" class="form-control form-control-lg border border-primary" id="street_address" name="street_address" placeholder="Street Address" minlength="3" maxlength="255" required>
+                    <div id="street_address-error" class="invalid-feedback"></div>
+                </div>
+                <div class="form-group col-md-12 mb-4">
+                    <label for="street_address_extra">Street Address (Extra)</label>
+                    <input type="text" class="form-control form-control-lg border border-success" id="street_address_extra" name="street_address_extra" placeholder="Street Address (Extra)" minlength="3" maxlength="255">
+                    <div id="street_address_extra-error" class="invalid-feedback"></div>
+                </div>
+                <div class="form-group col-md-12 mb-4">
+                    <label for="address_locality" class="font-b6">City <sup>*</sup></label>
+                    <input type="text" class="form-control form-control-lg border border-primary" id="address_locality" name="address_locality" placeholder="City" minlength="3" maxlength="127" required>
+                    <div id="address_locality-error" class="invalid-feedback"></div>
+                </div>
+                <div class="form-group col-md-7 mb-4">
+                    <label for="address_region" class="font-b6">Province <sup>*</sup></label>
+                    <select class="custom-select form-control-lg border-primary" id="address_region" name="address_region" required>
+    		        </select>
+                    <div id="address_region-error" class="invalid-feedback"></div>
+                </div>
+                <div class="form-group col-md-7 mb-4">
+                    <label for="address_country" class="font-b6">Country <sup>*</sup></label>
+                    <select class="custom-select form-control-lg border-primary" id="address_country" name="address_country" required>
+    		        </select>
+                    <div id="address_country-error" class="invalid-feedback"></div>
+                </div>
+                <div class="form-group col-md-7 mb-4">
+                    <label for="postal_code" class="font-b6">Postal Code <sup>*</sup></label>
+                    <input type="text" class="form-control form-control-lg border border-primary" id="postal_code" name="postal_code" placeholder="Postal Address" minlength="6" maxlength="6" required>
+                    <div id="postal_code-error" class="invalid-feedback"></div>
+                </div>
+                <div class="form-group col-md-7 mb-4">
+                    <label for="post_office_box_number">Post Office Box # </label>
+                    <input type="text" class="form-control form-control-lg border border-success" id="post_office_box_number" name="post_office_box_number" placeholder="Post Office Box #" minlength="3" maxlength="255" required>
+                    <div id="post_office_box_number-error" class="invalid-feedback"></div>
+                </div>
+            </div>
+            <!----------------------------------------------------------------->
+            <!----------------------------------------------------------------->
+            <p class="border-bottom mb-3 pb-1 text-secondary">Franchise Technical Details</p>
+            <div class="form-row">
+                <div class="form-group col-md-12 mb-4">
+                    <label for="schema_name" class="font-b6">Schema name <sup>*</sup></label>
+                    <input type="text" class="form-control form-control-lg border border-primary" id="schema_name" name="schema_name" placeholder="Schema name" minlength="2" maxlength="30" required autofocus>
+                    <div id="schema_name-error" class="invalid-feedback"></div>
+                </div>
+            </div>
+
+            <!-- BUTTONS -->
+            <div class="form-group col-md-12 mb-3 p-0 mx-auto text-center">
+                <button id="id_submit_btn"
+                     class="btn btn-success btn-lg mt-4 float-right pl-4 pr-4"
+                      type="button"
+                   onclick="click_next_button();">
+                    Next <i class="fas fa-arrow-right"></i></button>
+                <button id="id_cancel_btn"
+                     class="btn btn-orange btn-lg mt-4 float-left pl-4 pr-4"
+                      type="button"
+                   onclick="click_cancel_button();">
+                    <i class="fas fa-times"></i>&nbsp;Cancel
+                </button>
+            </div>
+            <!-- end BUTTONS -->
+
+        </div>
+
+    </div>
+    <!------------------------------------------------------------------------->
+    <!-- /.FORM -->
+
+    <!-- RETURN-TO-TOP -->
+    <a id="return-to-top" href="#" class="btn-info btn-lg back-to-top" role="button" title="Back to top"><i class="fas fa-angle-up fa-2x"></i></a>
+    <!-- end RETURN-TO-TOP -->
+</main>
+{% endblock content %}
