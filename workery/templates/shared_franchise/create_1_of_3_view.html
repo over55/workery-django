@@ -15,7 +15,11 @@
      *  When page loads, the following code will be run first.
      */
     $(document).ready(function () {
-        // THIS IS WHERE YOU CAN ADD YOUR COUNTRY/PROVINCE DROPDOWN JS CODE....
+
+        //-------------------------------------------------------------------//
+        // THIS IS WHERE YOU CAN ADD YOUR COUNTRY/PROVINCE DROPDOWN JS CODE. //
+        //-------------------------------------------------------------------//
+
         $(function () {
         	$('#address_country').change(function () {
         		loadState($(this).find(':selected').val())
@@ -60,6 +64,26 @@
         }
         // end country/province dropdown function
 
+        //--------------------------//
+        // TEXTFIELD INITIALIZATION //
+        //--------------------------//
+
+        // Populate previously set values.
+        $('#short_name').val(localStorage.getItem("tmp_shared_franchise_short_name"));
+        $('#full_name').val(localStorage.getItem("tmp_shared_franchise_full_name"));
+        $('#describe').val(localStorage.getItem("tmp_shared_franchise_description"));
+        $('#street_address').val(localStorage.getItem("tmp_shared_franchise_street_address"));
+        $('#street_address_extra').val(localStorage.getItem("tmp_shared_franchise_street_address_extra"));
+        $('#address_locality').val(localStorage.getItem("tmp_shared_franchise_address_locality"));
+        $('#address_region').val(localStorage.getItem("tmp_shared_franchise_address_region"));
+        $('#address_country').val(localStorage.getItem("tmp_shared_franchise_address_country"));
+        $('#postal_code').val(localStorage.getItem("tmp_shared_franchise_postal_code"));
+        $('#post_office_box_number').val(localStorage.getItem("tmp_shared_franchise_post_office_box_number"));
+        $('#schema_name').val(localStorage.getItem("tmp_shared_franchise_schema_name"));
+        // $('#email').val(localStorage.getItem("tmp_shared_franchise_email"));
+        // $('#telephone').val(localStorage.getItem("tmp_shared_franchise_telephone"));
+        // $('#comment').val(localStorage.getItem("tmp_shared_franchise_comment"));
+
     }); // end Ready
 
     /**
@@ -73,8 +97,133 @@
      *
      */
     function click_next_button() {
-        window.location = "{% url 'o55_shared_franchise_create_2_of_3' %}";
-    }
+        //
+        //----------------------------------------------------------------//
+        //             EXTRACT THE DATA FROM THE FORM FIELDS.             //
+        //----------------------------------------------------------------//
+
+        // EXTRACT OUR FIELD VALUES AND SAVE THEM IN LOCAL STORAGE.
+        var short_name = $('#short_name').val();
+        var full_name = $('#full_name').val();
+        var description = $('#describe').val();
+        var street_address = $('#street_address').val();
+        var street_address_extra = $('#street_address_extra').val();
+        var address_region = $('#address_region').val();
+        if (address_region === null) {
+            address_region = 'Ontario';
+        }
+        var address_locality = $('#address_locality').val();
+        var address_country = $('#address_country').val();
+        if (address_country === null) {
+            address_country = 'Canada';
+        }
+        var postal_code = $('#postal_code').val();
+        var post_office_box_number = $('#post_office_box_number').val();
+        var schema_name = $('#schema_name').val();
+        // var email = $('#email').val();
+        // // var area_served = $('#id_area_served').val();
+        // var telephone = $('#phonenumber').val();
+        // // var telephone_extension = $('#id_telephone_extension').val();
+        // var other_telephone = $('#other_phonenumber').val();
+        // // var fax_number = $('#id_fax_number').val();
+
+
+        //----------------------------------------------------------------//
+        //             SAVE THE EXTRACTED DATA INTO LOCAL STORAGE         //
+        //----------------------------------------------------------------//
+
+        localStorage.setItem("tmp_shared_franchise_short_name", short_name);
+        localStorage.setItem("tmp_shared_franchise_full_name", full_name);
+        localStorage.setItem("tmp_shared_franchise_description", description);
+        localStorage.setItem("tmp_shared_franchise_street_address", street_address);
+        localStorage.setItem("tmp_shared_franchise_street_address_extra", street_address_extra);
+        localStorage.setItem("tmp_shared_franchise_address_region", address_region);
+        localStorage.setItem("tmp_shared_franchise_address_locality", address_locality);
+        localStorage.setItem("tmp_shared_franchise_address_country", address_country);
+        localStorage.setItem("tmp_shared_franchise_postal_code", postal_code);
+        localStorage.setItem("tmp_shared_franchise_post_office_box_number", post_office_box_number);
+        localStorage.setItem("tmp_shared_franchise_schema_name", schema_name);
+        // localStorage.setItem("tmp_shared_franchise_email", email);
+        // localStorage.setItem("tmp_shared_franchise_telephone", telephone);
+        // localStorage.setItem("tmp_shared_franchise_other_telephone", other_telephone);
+
+        //----------------------------------------------------------------//
+        //              VALIDATE ALL THE FIELDS IN THIS FORM              //
+        //----------------------------------------------------------------//
+
+        // MAKE OUR API CALL TO THE BACKEND TO "CREATE" THE CUSTOMER USER.
+        validate_create_shared_franchise_api(
+            {
+                'name': localStorage.getItem("tmp_shared_franchise_short_name"),
+                'alternate_name': localStorage.getItem("tmp_shared_franchise_full_name"),
+                'description': localStorage.getItem("tmp_shared_franchise_description"),
+                'address_country': localStorage.getItem("tmp_shared_franchise_address_country"),
+                'address_locality': localStorage.getItem("tmp_shared_franchise_address_locality"),
+                'address_region': localStorage.getItem("tmp_shared_franchise_address_region"),
+                'street_address': localStorage.getItem("tmp_shared_franchise_street_address"),
+                'street_address_extra': localStorage.getItem("tmp_shared_franchise_street_address_extra"),
+                'postal_code': localStorage.getItem("tmp_shared_franchise_postal_code"),
+                'post_office_box_number': localStorage.getItem("tmp_shared_franchise_post_office_box_number"),
+                'schema_name': localStorage.getItem("tmp_shared_franchise_schema_name"),
+                // 'email': localStorage.getItem("tmp_shared_franchise_email"),
+                // 'area_served': area_served,
+                // 'fax_number': null,
+                // 'telephone': localStorage.getItem("tmp_shared_franchise_telephone"),
+                // 'telephone_type_of': {{ shared_constants.TELEPHONE_CONTACT_POINT_TYPE_OF_ID }},
+                // 'telephone_extension': telephone_extension,
+                // 'other_telephone': localStorage.getItem("tmp_shared_franchise_other_telephone"),
+                // 'other_telephone_type_of': {{ shared_constants.MOBILE_CONTACT_POINT_TYPE_OF_ID }},
+                // 'fax_number': fax_number
+                //
+                // 'extra_comment': localStorage.getItem("tmp_shared_franchise_comment"),
+            },
+            function(result_dict) { // Success
+                // FOR DEBUGGING PURPOSES ONLY.
+                console.log(result_dict);
+
+                // REDIRECT TO NEXT PAGE.
+                window.location = "{% url 'o55_shared_franchise_create_2_of_3' %}";
+            },
+            function(xhr,status,error) { // Error
+
+                // STEP 1: Convert to JSON.
+                var err = JSON.parse(xhr.responseText);
+
+                // For debugging purposes only.
+                console.log(err);
+
+                // STEP 2: CLEAR EXISTING TEXT.
+                $('#all_error_result').html("");
+
+                // STEP 3: PRINT OUR ERROR IN THE TOP ERROR PANEL.
+                for(var prop in err) {
+                    if(err.hasOwnProperty(prop)) {
+                        var val = err[prop];
+                        $('#all_error_result').append("<p><b>"+prop+"</b>"+val+"</p><br />");
+                    }
+                }
+
+                // STEP 4: FOCUS TO WHERE THE ERROR IS OCCURING.
+                $('html, body').animate({ scrollTop: $('#id_page_title').offset().top }, 'slow');
+
+                // STEP 5: ADD ERROR MESSAGES TO THE FIELDS.
+                for(var prop in err) {
+                    if(err.hasOwnProperty(prop)) {
+                        var val = err[prop];
+                        console.log("KEY", prop);
+                        console.log("VALUE", val);
+
+                        //TODO: IMPLEMENT - Attach the message to the field.
+                    }
+                }
+            },
+            function() { // Finally
+                // UNLOCK THE "SUBMIT" BUTTON TO BE AVAILABLE FOR USAGE.
+                enable_btn();
+            }
+        ); // end VALIDATE FUNC.
+
+    } // end FUNC.
 </script>
 
 <main id="main" role="main">
@@ -107,7 +256,7 @@
     <!------------------------------------------------------------------------->
     <!-- end BACK BUTTON -->
 
-    <h1>{% trans 'Add Franchise' %}</h1>
+    <h1 id="id_page_title">{% trans 'Add Franchise' %}</h1>
 
     <!-- STEP NAVIGATION -->
     <!------------------------------------------------------------------------->
