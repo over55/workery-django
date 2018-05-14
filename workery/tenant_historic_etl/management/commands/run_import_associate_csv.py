@@ -195,6 +195,15 @@ class Command(BaseCommand):
             if ldn_area:
                 ldn_area = ldn_area.title()
 
+            # Format the `how_hear` and `how_hear_other`.
+            how_hear_other = None
+            if how_hear is not None and how_hear != "" and len(how_hear) > 0:
+                how_hear_other = how_hear
+                how_hear = 1 # Other
+            else:
+                how_hear_other = None
+                how_hear = 8 # Prefer not to say.
+
             # Create or update our user.
             user = None
             created = False
@@ -256,7 +265,8 @@ class Command(BaseCommand):
                     'police_check':local_police_check,
                     'drivers_license_class':drivers_license_class,
                     # 'comments':comments,
-                    'how_hear':how_hear,
+                    'how_hear': how_hear,
+                    'how_hear_other': how_hear_other,
                     'last_modified_by': None,
                     'created_by': None,
                 }

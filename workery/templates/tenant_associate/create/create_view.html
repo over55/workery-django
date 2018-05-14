@@ -154,49 +154,79 @@
             $("input[name=ok_to_text][value=" + localStorage.getItem("tmp_associate_member_ok_to_text") + "]").prop('checked', true);
             $("input[name=is_active][value=" + localStorage.getItem("tmp_associate_member_is_active") + "]").prop('checked', true);
 
-	// THIS IS WHERE YOU CAN ADD YOUR COUNTRY/PROVINCE DROPDOWN JS CODE....
-	$(function(){
-	  $('#address_country').change(function(){
-	    loadState($(this).find(':selected').val())
-	  });
-	  loadState('CA');
-	});
+            //-----------------------------//
+            // MISC / OTHER INITIALIZATION //
+            //-----------------------------//
 
-        let c_dropdown = $('#address_country');
-	c_dropdown.empty();
-	c_dropdown.append('<option selected="true" disabled>Choose Country</option>');
-	c_dropdown.prop('selectedIndex', 1);
+            // --- How hear ---
+            var how_hear = localStorage.getItem("tmp_associate_member_how_hear");
+            if (how_hear == 1) {
+                $("#how_hear_other_div").show();
+            } else {
+                $("#how_hear_other_div").hide();
+            }
 
-        const state = "{% static 'js/provinces.json' %}";
-        const country = "{% static 'js/countries.json' %}";
+            //------------------------------//
+            // EVENT HANDLER INITIALIZATION //
+            //------------------------------//
 
-	console.log(state);
-        console.log(country); // KANWAR - PLEASE IMPLEMENT.
-	// Populate dropdown with list of countries
-	$.getJSON(country, function (data) {
-	  $.each(data, function (key, entry) {
-	    	c_dropdown.append($('<option></option>').attr('value', entry.code).text(entry.country));
-	  })
-	});
+            // --- How hear ---
+            $('#how_hear').on('change',function(){
+            	if( $(this).val()==="1" || $(this).val()===1){
+            		$("#how_hear_other_div").show();
+            	}
+            	else{
+            		$("#how_hear_other_div").hide();
+            	}
+            });
 
-	function loadState(countryId){
-		let p_dropdown = $('#address_region');
-		p_dropdown.empty();
-		p_dropdown.append('<option selected="true" disabled>Choose State/Province</option>');
-		p_dropdown.prop('selectedIndex', 0);
-		// Populate dropdown with list of provinces
-		$.getJSON(state, function (data) {
-		  $.each(data, function (key, entry) {
-		    if(entry.country == countryId){
-		    	p_dropdown.append($('<option></option>').attr('value', entry.short).text(entry.name));
-		    }
-		  })
-		});
-		if(countryId == 'CA'){
-			p_dropdown.prop('selectedIndex', 1);
-		}
-    	}
-    	// end country/province dropdown function
+            //---------------------------------//
+            // COUNTRY/PROVINCE INITIALIZATION //
+            //---------------------------------//
+
+            // THIS IS WHERE YOU CAN ADD YOUR COUNTRY/PROVINCE DROPDOWN JS CODE....
+            $(function () {
+                $('#address_country').change(function () {
+                    loadState($(this).find(':selected').val())
+                });
+                loadState('CA');
+            });
+
+            let c_dropdown = $('#address_country');
+            c_dropdown.empty();
+            c_dropdown.append('<option selected="true" disabled>Choose Country</option>');
+            c_dropdown.prop('selectedIndex', 1);
+
+            const state = "{% static 'js/provinces.json' %}";
+            const country = "{% static 'js/countries.json' %}";
+
+            console.log(state);
+            console.log(country); // KANWAR - PLEASE IMPLEMENT.
+            // Populate dropdown with list of countries
+            $.getJSON(country, function (data) {
+                $.each(data, function (key, entry) {
+                    c_dropdown.append($('<option></option>').attr('value', entry.code).text(entry.country));
+                })
+            });
+
+            function loadState(countryId) {
+                let p_dropdown = $('#address_region');
+                p_dropdown.empty();
+                p_dropdown.append('<option selected="true" disabled>Choose State/Province</option>');
+                p_dropdown.prop('selectedIndex', 0);
+                // Populate dropdown with list of provinces
+                $.getJSON(state, function (data) {
+                    $.each(data, function (key, entry) {
+                        if (entry.country == countryId) {
+                            p_dropdown.append($('<option></option>').attr('value', entry.short).text(entry.name));
+                        }
+                    })
+                });
+                if (countryId == 'CA') {
+                    p_dropdown.prop('selectedIndex', 1);
+                }
+            }
+            // end country/province dropdown function
 
         }); // end Ready
 
@@ -355,6 +385,7 @@
             var has_van = get_selected_radio_value('has_van');
             var has_truck = get_selected_radio_value('has_truck');
             var how_hear = $('#how_hear').val();
+            var how_hear_other = $('#how_hear_other').val();
 
             //----------------------------------------------------------------//
             //             SAVE THE EXTRACTED DATA INTO LOCAL STORAGE         //
@@ -393,6 +424,7 @@
             localStorage.setItem("tmp_associate_member_has_van", has_van);
             localStorage.setItem("tmp_associate_member_has_truck", has_truck);
             localStorage.setItem("tmp_associate_member_how_hear", how_hear);
+            localStorage.setItem("tmp_associate_member_how_hear_other", how_hear_other);
 
             // SAVE ARRAY OF IDS.
             localStorage.setObj("tmp_associate_member_person_tag_ids", person_tags);
@@ -498,6 +530,7 @@
                     'has_van': localStorage.getItem("tmp_associate_member_has_van"),
                     'has_truck': localStorage.getItem("tmp_associate_member_has_truck"),
                     'how_hear': localStorage.getItem("tmp_associate_member_how_hear"),
+                    'how_hear_other': localStorage.getItem("tmp_associate_member_how_hear_other"),
                 },
                 function(result_dict) { // Success
                     // FOR DEBUGGING PURPOSES ONLY.
@@ -786,10 +819,25 @@
                     </select>
                     <div id="vehicle_types-error" class="invalid-feedback"></div>
                 </div>
-                <div class="form-group col-md-12 mb-4 p-0">
-      		        <label for="how_hear" class="font-b6">Describe how associate hear about us:</label>
-      		        <textarea class="form-control form-control-lg border border-success" id="how_hear" name="how_hear" placeholder="How here..." rows="4" minlength="10" required></textarea>
-      		        <div id="how_hear-error" class="invalid-feedback"></div>
+                <div class="form-group col-md-7 mb-4 p-0">
+                    <label for="how_hear">How did they hear about us?</label>
+                    <select class="custom-select form-control-lg border-success" id="how_hear" name="how_hear" required>
+                        <option value="" selected>Please select...</option>
+                        <option value="2">An existing member</option>
+                        <option value="3">Print Ad</option>
+                        <option value="4">Online Ad</option>
+                        <option value="5">Google</option>
+                        <option value="6">Tradeshow/Event</option>
+                        <option value="7">Agency</option>
+                        <option value="8">Prefer not to say / I don't know</option>
+                        <option value="1">Other</option>
+                    </select>
+                    <div id="how_hear-error" class="invalid-feedback"></div>
+                </div>
+                <div class="form-group col-md-12 mb-4 p-0" id="how_hear_other_div">
+      		        <label for="how_hear_other" class="font-b6">Describe how associate hear about us:</label>
+      		        <textarea class="form-control form-control-lg border border-success" id="how_hear_other" name="how_hear_other" placeholder="How here..." rows="4" minlength="10" required></textarea>
+      		        <div id="how_hear_other-error" class="invalid-feedback"></div>
                     <small class="form-text text-muted">Maximum 1,000 characters.</small>
                 </div>
             </div>

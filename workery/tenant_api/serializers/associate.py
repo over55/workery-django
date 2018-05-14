@@ -159,6 +159,7 @@ class AssociateListCreateSerializer(serializers.ModelSerializer):
             'drivers_license_class',
             'vehicle_types', # many-to-many
             'how_hear',
+            'how_hear_other',
             'skill_sets',    # many-to-many
             'tags',          # many-to-many
 
@@ -313,6 +314,7 @@ class AssociateListCreateSerializer(serializers.ModelSerializer):
             police_check=validated_data.get('police_check', None),
             drivers_license_class=validated_data.get('drivers_license_class', None),
             how_hear=validated_data.get('how_hear', None),
+            how_hear_other=validated_data.get('how_hear_other', None),
             # 'organizations', #TODO: IMPLEMENT.
 
             # Contact Point
@@ -462,6 +464,7 @@ class AssociateRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
             'drivers_license_class',
             'vehicle_types', # many-to-many
             'how_hear',
+            'how_hear_other',
             'skill_sets',    # many-to-many
             'tags',          # many-to-many
 
@@ -586,6 +589,7 @@ class AssociateRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         instance.police_check=validated_data.get('police_check', instance.police_check)
         instance.drivers_license_class=validated_data.get('drivers_license_class', instance.drivers_license_class)
         instance.how_hear=validated_data.get('how_hear', instance.how_hear)
+        instance.how_hear_other=validated_data.get('how_hear_other', instance.how_hear_other)
         # 'organizations', #TODO: IMPLEMENT.
 
         # Contact Point

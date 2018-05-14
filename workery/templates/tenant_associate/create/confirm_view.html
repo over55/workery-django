@@ -123,6 +123,7 @@
         var has_truck = localStorage.getItem("tmp_associate_member_has_truck");
         $('#selected_has_truck').append( to_yes_or_no_string(has_truck) );
         $('#selected_how_hear').append(localStorage.getItem("tmp_associate_member_how_hear"));
+        $('#selected_how_hear_other').append(localStorage.getItem("tmp_associate_member_how_hear_other"));
 
         // The following code continously checks to see if the current user
         // is assigned to the email.
@@ -230,6 +231,7 @@
                 'has_van': localStorage.getItem("tmp_associate_member_has_van"),
                 'has_truck': localStorage.getItem("tmp_associate_member_has_truck"),
                 'how_hear': localStorage.getItem("tmp_associate_member_how_hear"),
+                'how_hear_other': localStorage.getItem("tmp_associate_member_how_hear_other"),
             },
             function(result_dict) { // Success
                 // FOR DEBUGGING PURPOSES ONLY.
@@ -277,6 +279,7 @@
                 localStorage.removeItem("tmp_associate_member_has_van")
                 localStorage.removeItem("tmp_associate_member_has_truck")
                 localStorage.removeItem("tmp_associate_member_how_hear")
+                localStorage.removeItem("tmp_associate_member_how_hear_other")
 
                 // REDIRECT TO SUCCESS PAGE.
                 window.location = redirect_url;
@@ -545,6 +548,12 @@
          <tr>
            <th scope="row" class="bg-light">how hear</th>
            <td id="selected_how_hear" name="how_hear">
+               <!-- POPULATE THROUGH JS. -->
+           </td>
+         </tr>
+         <tr>
+           <th scope="row" class="bg-light">how hear (other)</th>
+           <td id="selected_how_hear_other" name="how_hear_other">
                <!-- POPULATE THROUGH JS. -->
            </td>
          </tr>

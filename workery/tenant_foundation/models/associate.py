@@ -179,10 +179,16 @@ class Associate(AbstractPerson):
         blank=True,
         null=True,
     )
-    how_hear = models.CharField(
+    how_hear = models.PositiveSmallIntegerField(
         _("How hear"),
+        help_text=_('How associate heared about this us from a select range of choices.'),
+        blank=True,
+        default=8 # Prefer not to say.
+    )
+    how_hear_other = models.CharField(
+        _("How hear (other)"),
         max_length=2055,
-        help_text=_('How associate heared about this business.'),
+        help_text=_('How associate heared about this us in detail.'),
         blank=True,
         null=True,
     )
