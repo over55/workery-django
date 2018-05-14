@@ -262,21 +262,22 @@ class Command(BaseCommand):
                 }
             )
 
-            # Create our comments.
-            comment, created_comment = Comment.objects.update_or_create(
-                text=comments_text,
-                defaults={
-                    'text': comments_text
-                }
-            )
-            AssociateComment.objects.update_or_create(
-                about=associate,
-                comment=comment,
-                defaults={
-                    'about': associate,
-                    'comment': comment
-                }
-            )
+            # Create our comments if there is text.
+            if comments_text is not None and comments_text != "" and len(comments_text) > 0:
+                comment, created_comment = Comment.objects.update_or_create(
+                    text=comments_text,
+                    defaults={
+                        'text': comments_text
+                    }
+                )
+                AssociateComment.objects.update_or_create(
+                    about=associate,
+                    comment=comment,
+                    defaults={
+                        'about': associate,
+                        'comment': comment
+                    }
+                )
 
             # Attach the `VehicleType` objects with this Associate.
             if has_car:
