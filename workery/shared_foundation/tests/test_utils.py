@@ -21,6 +21,6 @@ class TestUtils(TenantTestCase):
         del self.c
 
     def test_reverse_with_full_domain(self):
-        value = reverse_with_full_domain("o55_index_master")
+        value = reverse_with_full_domain("workery_index_master")
         self.assertIsNotNone(value)
         self.assertIn(settings.O55_APP_HTTP_PROTOCOL+settings.O55_APP_HTTP_DOMAIN+"/en/", value)

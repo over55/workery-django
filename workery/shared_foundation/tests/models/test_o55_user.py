@@ -18,7 +18,7 @@ TEST_USER_CELL_NUM = "123 123-1234"
 class TestOver55User(TenantTestCase):
     """
     Console:
-    python manage.py test shared_foundation.tests.models.test_o55_user
+    python manage.py test shared_foundation.tests.models.test_workery_user
     """
 
     def setUp(self):

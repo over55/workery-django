@@ -38,7 +38,7 @@
     <h1>{% trans 'Jobs Search' %}</h1>
     <div id="m-search" class="col-sm-5 mx-auto mt-4 pt-4">
         <!-- Basic Search -->
-        <form id="searchForm" method="get" class="needs-validation" action="{% url "o55_tenant_job_search_results" %}" novalidate>
+        <form id="searchForm" method="get" class="needs-validation" action="{% url "workery_tenant_job_search_results" %}" novalidate>
             <div class="input-group mb-2">
                 <input type="text" class="form-control form-control-lg border border-primary" id="keyword" name="keyword" placeholder="Search..." minlength="3" required="" />
                 <div class="input-group-append">
@@ -56,7 +56,7 @@
     </div>
     <div id="adv-search" class="col-sm-5 mx-auto border-top mt-4">
         <p class="mb-4 mt-4"><strong>Please fill in atleast one field and hit search</strong></p>
-        <form id="advanced-searchForm" method="get" class="needs-validation" action="{% url "o55_tenant_job_search_results" %}" novalidate>
+        <form id="advanced-searchForm" method="get" class="needs-validation" action="{% url "workery_tenant_job_search_results" %}" novalidate>
             <div class="form-row">
                 <div class="form-group col-md-12 mb-4">
                     <label for="firstname">First name</label>
