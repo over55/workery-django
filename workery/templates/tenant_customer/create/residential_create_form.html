@@ -90,7 +90,329 @@
 		}
     	}
     	// end country/province dropdown function
-
+	    
+	// All fields individual inline validation check
+			    var form_residential = document.getElementById('add-client-form');
+			    
+			    var a_firstname = document.getElementById('firstname');
+			    var f_error = document.getElementById('firstname-error');
+			    
+			    var a_lastname = document.getElementById('lastname');
+			    var l_error = document.getElementById('lastname-error');
+			    
+			    var a_phonenumber = document.getElementById('phonenumber');
+			    var pn_error = document.getElementById('phonenumber-error');
+			    var pn_pattern = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
+			    
+			    var a_mobilenumber = document.getElementById('other_phonenumber');
+			    var mobile_error = document.getElementById('other_phonenumber-error');
+			    var mobile_pattern = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
+	    		    
+			    var a_email = document.getElementById('email');
+			    var email_error = document.getElementById('email-error');
+			    
+			    var a_dob = document.getElementById('dob');
+			    var dob_error = document.getElementById('dob-error');
+			    
+			    var a_gender = document.getElementById('gender');
+			    var gender_error = document.getElementById('gender-error');
+	    
+	    		    var a_describe = document.getElementById('describe');
+			    var describe_error = document.getElementById('describe-error');
+	    
+	    		    var ok_email = document.getElementById('ok_to_email');
+			    var ok_email_error = document.getElementById('ok_to_email-error');
+			    
+			    var ok_text = document.getElementById('ok_to_text');
+			    var ok_text_error = document.getElementById('ok_to_text-error');
+	    
+	    		    var a_person_tags = document.getElementById('person_tags');
+			    var person_tags_error = document.getElementById('person_tags-error');
+	    
+	    		    var a_street_address = document.getElementById('street_address');
+			    var street_address_error = document.getElementById('street_address-error');
+	    		    
+	     		    var a_street_address_extra = document.getElementById('street_address_extra');
+			    var street_address_extra_error = document.getElementById('street_address_extra-error');
+	    		
+			    var a_address_locality = document.getElementById('address_locality');
+			    var address_locality_error = document.getElementById('address_locality-error');
+	    		    
+	    		    var a_address_region = document.getElementById('address_region');
+			    var address_region_error = document.getElementById('address_region-error');
+	    		    
+	    		    var a_address_country = document.getElementById('address_country');
+			    var address_country_error = document.getElementById('address_country-error');
+	    		    
+			    var a_postal_code = document.getElementById('postal_code');
+			    var postal_code_error = document.getElementById('postal_code-error');
+	    		    
+	    		    var a_post_office = document.getElementById('post_office_box_number');
+			    var post_office_error = document.getElementById('post_office_box_number-error');
+	    		    
+	    		    var a_comment = document.getElementById('comment');
+			    var comment_error = document.getElementById('comment-error');
+	    
+	    		    var a_password = document.getElementById('password');
+			    var password_error = document.getElementById('password-error');
+	    
+	    		    var a_password_repeat = document.getElementById('password_repeat');
+			    var password_repeat_error = document.getElementById('password_repeat-error');
+	    		    
+	    		    // Loop over them and prevent submission
+			    $(function(){
+			     	// validation for residential form fields
+			        $('#add-client-form').on('submit',function(e){
+			        	if(a_firstname.validity.valueMissing) {
+			           		f_error.innerHTML = "This field may not be blank.";
+			           		form_residential.classList.add('was-validated');
+			           		e.preventDefault();
+			           	}
+			           	
+			           	if(a_firstname.validity.tooShort) {
+			           		f_error.innerHTML = "Fill in at least 2 characters.";
+			           		form_residential.classList.add('was-validated');
+			           		e.preventDefault();
+			           	}
+			           	
+			           	if(a_lastname.validity.valueMissing) {
+			           		l_error.innerHTML = "This field may not be blank.";
+			           		form_residential.classList.add('was-validated');
+			           		e.preventDefault();
+			           	}
+			           	
+			           	if(a_lastname.validity.tooShort) {
+			           		l_error.innerHTML = "Fill in at least 2 characters.";
+			           		form_residential.classList.add('was-validated');
+			           		e.preventDefault();
+			           	}
+			           	
+					if(a_describe.validity.valueMissing) {
+			           		describe_error.innerHTML = "This field may not be blank.";
+			           		form_residential.classList.add('was-validated');
+			           		e.preventDefault();
+			           	}
+			           	
+			           	if(a_describe.validity.tooShort) {
+			           		describe_error.innerHTML = "Fill in at least 10 characters.";
+			           		form_residential.classList.add('was-validated');
+			           		e.preventDefault();
+			           	}
+			           	
+					if(a_person_tags.validity.valueMissing) {
+			           		person_tags_error.innerHTML = "This field may not be blank.";
+			           		form_residential.classList.add('was-validated');
+			           		e.preventDefault();
+			           	}
+					
+					if(a_street_address.validity.valueMissing) {
+			           		street_address_error.innerHTML = "This field may not be blank.";
+			           		form_residential.classList.add('was-validated');
+			           		e.preventDefault();
+			           	}
+			           	
+			           	if(a_street_address.validity.tooShort) {
+			           		street_address_error.innerHTML = "Fill in at least 3 characters.";
+			           		form_residential.classList.add('was-validated');
+			           		e.preventDefault();
+			           	}
+					
+					if(a_street_address_extra.validity.tooShort) {
+			           		street_address_extra_error.innerHTML = "Fill in at least 3 characters.";
+			           		form_residential.classList.add('was-validated');
+			           		e.preventDefault();
+			           	}
+			           	
+					if(a_address_locality.validity.valueMissing) {
+			           		address_locality_error.innerHTML = "This field may not be blank.";
+			           		form_residential.classList.add('was-validated');
+			           		e.preventDefault();
+			           	}
+			           	
+			           	if(a_address_locality.validity.tooShort) {
+			           		address_locality_error.innerHTML = "Fill in at least 3 characters.";
+			           		form_residential.classList.add('was-validated');
+			           		e.preventDefault();
+			           	}
+			           	
+					if(a_address_region.validity.valueMissing) {
+			           		address_region_error.innerHTML = "This field may not be blank.";
+			           		form_residential.classList.add('was-validated');
+			           		e.preventDefault();
+			           	}
+					
+					if(a_address_country.validity.valueMissing) {
+			           		address_country_error.innerHTML = "This field may not be blank.";
+			           		form_residential.classList.add('was-validated');
+			           		e.preventDefault();
+			           	}
+					
+					if(a_postal_code.validity.valueMissing) {
+			           		postal_code_error.innerHTML = "This field may not be blank.";
+			           		form_residential.classList.add('was-validated');
+			           		e.preventDefault();
+			           	}
+			           	
+			           	if(a_postal_code.validity.tooShort) {
+			           		postal_code_error.innerHTML = "Fill in at least 6 characters.";
+			           		form_residential.classList.add('was-validated');
+			           		e.preventDefault();
+			           	}
+			           	
+			           	if(a_email.validity.valueMissing) {
+			           		email_error.innerHTML = "This field may not be blank.";
+			           		form_residential.classList.add('was-validated');
+			           		e.preventDefault();
+			           	}
+			           	
+			           	if(a_email.validity.typeMismatch || a_email.validity.tooShort) {
+			           		email_error.innerHTML = "Fill in valid E-mail Id.";
+			           		form_residential.classList.add('was-validated');
+			           		e.preventDefault();
+			           	}
+			           	
+			           	if(a_dob.validity.valueMissing) {
+			           		dob_error.innerHTML = "Please select date of birth.";
+			           		form_residential.classList.add('was-validated');
+			           		e.preventDefault();
+			           	}
+			           	
+			           	if(a_gender.validity.valueMissing) {
+			           		gender_error.innerHTML = "Please select client gender.";
+			           		form_residential.classList.add('was-validated');
+			           		e.preventDefault();
+			           	}
+			           	
+					if(a_post_office.validity.valueMissing) {
+			           		post_office_error.innerHTML = "This field may not be blank.";
+			           		form_residential.classList.add('was-validated');
+			           		e.preventDefault();
+			           	}
+			           	
+			           	if(a_post_office.validity.tooShort) {
+			           		post_office_error.innerHTML = "Fill in at least 3 characters.";
+			           		form_residential.classList.add('was-validated');
+			           		e.preventDefault();
+			           	}
+			           	
+					if(a_comment.validity.valueMissing) {
+			           		comment_error.innerHTML = "This field may not be blank.";
+			           		form_residential.classList.add('was-validated');
+			           		e.preventDefault();
+			           	}
+			           	
+			           	if(a_comment.validity.tooShort) {
+			           		comment_error.innerHTML = "Fill in at least 10 characters.";
+			           		form_residential.classList.add('was-validated');
+			           		e.preventDefault();
+			           	}
+					
+					if(a_password.validity.valueMissing) {
+			           		password_error.innerHTML = "This field may not be blank.";
+			           		form_residential.classList.add('was-validated');
+			           		e.preventDefault();
+			           	}
+			           	
+			           	if(a_password.validity.tooShort) {
+			           		password_error.innerHTML = "Fill in at least 2 characters.";
+			           		form_residential.classList.add('was-validated');
+			           		e.preventDefault();
+			           	}
+					
+					if(a_password_repeat.validity.valueMissing) {
+			           		password_repeat_error.innerHTML = "This field may not be blank.";
+			           		form_residential.classList.add('was-validated');
+			           		e.preventDefault();
+			           	}
+			           	
+			           	if(a_password_repeat.validity.tooShort) {
+			           		password_repeat_error.innerHTML = "Fill in at least 2 characters.";
+			           		form_residential.classList.add('was-validated');
+			           		e.preventDefault();
+			           	}
+			           	
+					if(!a_password_repeat.value.match(a_password)) {
+			           		password_repeat_error.innerHTML = "Repeat password mismatch";
+					        password_repeat_error.style.display = "block";
+					        form_residential.classList.add('was-validated');
+					        e.preventDefault();
+			           	}
+			           	
+			           	if(a_phonenumber.validity.valueMissing) {
+			           		pn_error.innerHTML = "This field may not be blank.";
+			           		form_residential.classList.add('was-validated');
+			           		e.preventDefault();
+			           	}
+			           	
+			           	if(a_phonenumber.validity.tooShort) {
+			           		pn_error.innerHTML = "Fill in valid 10 digits phone number.";
+			           		form_residential.classList.add('was-validated');
+			           		e.preventDefault();
+			           	}
+			           	
+			           	// Phone number format validation
+			           	if(!a_phonenumber.value.match(pn_pattern)) {
+			           		pn_error.innerHTML = "Fill in valid 10 digits phone number.";
+					        pn_error.style.display = "block";
+					        form_residential.classList.add('was-validated');
+					        e.preventDefault();
+			           	}
+			           	
+			           	if(a_mobilenumber.validity.valueMissing) {
+			           		mobile_error.innerHTML = "This field may not be blank.";
+			           		form_residential.classList.add('was-validated');
+			           		e.preventDefault();
+			           	}
+			           	
+			           	if(a_mobilenumber.validity.tooShort) {
+			           		mobile_error.innerHTML = "Fill in valid 10 digits mobile number.";
+			           		form_residential.classList.add('was-validated');
+			           		e.preventDefault();
+			           	}
+			           	
+			           	// Mobile number format validation Which Is Optional
+			           	if(!a_mobilenumber.value.match(mobile_pattern)) {
+			           		if(a_mobilenumber.value.length == 0){
+			           			mobile_error.style.display = "none";
+			           		}
+			           		else{
+			           			mobile_error.innerHTML = "Fill in valid 10 digits mobile number.";
+					        	mobile_error.style.display = "block";
+					        	form_residential.classList.add('was-validated');
+					        	e.preventDefault();
+					        }
+			           	}
+			           	
+			           	if(!ok_email.validity.valid) {
+			           		ok_email_error.innerHTML = "Please select option.";
+			           		form_residential.classList.add('was-validated');
+			           		e.preventDefault();
+			           	}
+			           	
+			           	if(!ok_text.validity.valid) {
+			           		ok_text_error.innerHTML = "Please select option.";
+			           		form_residential.classList.add('was-validated');
+			           		e.preventDefault();
+			           	}
+			        });
+			   
+				// To hide phone field format error text
+				$('#phonenumber').on('input',function(){
+				       	if(a_phonenumber.value.match(pn_pattern)) {
+				       		pn_error.style.display = "none";
+				       	}
+				});
+				$('#mobilenumber').on('input',function(){
+				       	if(a_mobilenumber.value.match(mobile_pattern)) {
+				       		mobile_error.style.display = "none";
+				       	}
+				});
+				$('#password_repeat').on('input',function(){
+				       	if(a_password_repeat.value.match(a_password)) {
+				       		password_repeat_error.style.display = "none";
+				       	}
+				});
+			    });
     }); // end Ready
 
     /**
@@ -341,12 +663,14 @@
 
                 // STEP 2: CLEAR EXISTING TEXT.
                 $('#all_error_result').html("");
-
+		$('#all_error_result').removeClass('error-block');
+		
                 // STEP 3: PRINT OUR ERROR IN THE TOP ERROR PANEL.
                 for(var prop in err) {
                     if(err.hasOwnProperty(prop)) {
                         var val = err[prop];
-                        $('#all_error_result').append("<p><b>"+prop+"</b>"+val+"</p><br />");
+                        $('#all_error_result').append("<div class='form-error'><b>"+prop+":</b> "+val+" </div>");
+			$('#all_error_result').addClass('error-block');
                     }
                 }
 
@@ -379,7 +703,8 @@
     <div class="col-sm-12 fade show active" id="client-form" aria-labelledby="residential">
         <p><span class="text-secondary font-italic"><sup>*</sup>&nbsp;-&nbsp;Indicates required field to fill out.</span></p>
         <!-- Error Output -->
-        <div id="all_error_result" name="all_error_result"></div>
+        <div id="all_error_result" name="all_error_result" class="alert alert-error fade show" role="alert">
+		<strong>There were errors during registration:</strong>
 	</div>
         <!-- end Error Output -->
         <p>&nbsp;</p>
@@ -446,11 +771,11 @@
             <div class="form-group col-md-12 mb-4">
                 <p class="mb-1">Ok to E-Mail? <sup>*</sup></p>
                 <div class="form-radio custom-control custom-radio custom-control-inline">
-                    <input type="radio" id="ok_to_email" name="ok_to_email" value="yes" class="custom-control-input form-check-input">
+                    <input type="radio" id="ok_to_email" name="ok_to_email" value="yes" class="custom-control-input form-check-input" required>
                     <label class="custom-control-label form-check-label" for="ok_to_email">Yes</label>
                 </div>
                 <div class="form-radio custom-control custom-radio custom-control-inline">
-                    <input type="radio" id="ok_to_email2" name="ok_to_email" value="no" class="custom-control-input form-check-input">
+                    <input type="radio" id="ok_to_email2" name="ok_to_email" value="no" class="custom-control-input form-check-input" required>
                     <label class="custom-control-label form-check-label" for="ok_to_email2">No</label>
                     <div id="ok_to_email-error" class="invalid-feedback ml-2"></div>
                 </div>
@@ -459,11 +784,11 @@
             <div class="form-group col-md-12 mb-4">
                 <p class="mb-1">Ok to Text? <sup>*</sup></p>
                 <div class="form-radio custom-control custom-radio custom-control-inline">
-                    <input type="radio" id="ok_to_text" name="ok_to_text" value="yes" class="custom-control-input form-check-input">
+                    <input type="radio" id="ok_to_text" name="ok_to_text" value="yes" class="custom-control-input form-check-input" required>
                     <label class="custom-control-label form-check-label" for="ok_to_text">Yes</label>
                 </div>
                 <div class="form-radio custom-control custom-radio custom-control-inline">
-                    <input type="radio" id="ok_to_text2" name="ok_to_text" value="no" class="custom-control-input form-check-input">
+                    <input type="radio" id="ok_to_text2" name="ok_to_text" value="no" class="custom-control-input form-check-input" required>
                     <label class="custom-control-label form-check-label" for="ok_to_text2">No</label>
                     <div id="ok_to_text-error" class="invalid-feedback ml-2"></div>
                 </div>
