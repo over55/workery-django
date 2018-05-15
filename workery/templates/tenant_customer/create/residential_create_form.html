@@ -413,6 +413,57 @@
 				       	}
 				});
 			    });
+	    
+	/**
+	 *  Password Strength Check Validation.
+	 */
+	var checkPassword = document.getElementById("password");
+	var s_letter = document.getElementById("s_lowercase");
+	var s_capital = document.getElementById("s_uppercase");
+	var s_character = document.getElementById("s_special");
+	var s_length = document.getElementById("min_char");
+	// When the user starts to type something inside the password field
+	checkPassword.onkeyup = function() {
+  		// Validate lowercase letters
+  		var lowerCaseLetters = /[a-z]/g;
+		  if(checkPassword.value.match(lowerCaseLetters)) {  
+		    s_letter.classList.remove("pass_check");
+		    s_letter.classList.add("pass_valid");
+		  } else {
+		    s_letter.classList.remove("pass_valid");
+		    s_letter.classList.add("pass_check");
+		  }
+  
+  		// Validate capital letters
+  		var upperCaseLetters = /[A-Z]/g;
+		  if(checkPassword.value.match(upperCaseLetters)) {  
+		    s_capital.classList.remove("pass_check");
+		    s_capital.classList.add("pass_valid");
+		  } else {
+		    s_capital.classList.remove("pass_valid");
+		    s_capital.classList.add("pass_check");
+		  }
+
+  		// Validate numbers
+  		var specialChar = /[!@#\$%\^&\*]/g;
+		  if(checkPassword.value.match(specialChar)) {  
+		    s_character.classList.remove("pass_check");
+		    s_character.classList.add("pass_valid");
+		  } else {
+		    s_character.classList.remove("pass_valid");
+		    s_character.classList.add("pass_check");
+		  }
+  
+  		// Validate length
+		  if(checkPassword.value.length >= 8) {
+		    s_length.classList.remove("pass_check");
+		    s_length.classList.add("pass_valid");
+		  } else {
+		    s_length.classList.remove("pass_valid");
+		    s_length.classList.add("pass_check");
+		  }
+	}
+	    
     }); // end Ready
 
     /**
@@ -500,7 +551,18 @@
     function ajax_post_form_submission(redirect_url) {
         save_submission(redirect_url);
     }
-
+    
+    /**
+     *  Function to make text readable removing underscore and capitalizing
+     */
+    function humanize(str) {
+    	var frags = str.split('_');
+    	for (i=0; i<frags.length; i++) {
+      		frags[i] = frags[i].charAt(0).toUpperCase() + frags[i].slice(1);
+    	}
+    	return frags.join(' ');
+    }
+	
     /**
      *  Function will validate the fields and then save them to the local
      *  storage, then direct user to the link in the 'redirect_url' variable.
@@ -669,7 +731,9 @@
                 for(var prop in err) {
                     if(err.hasOwnProperty(prop)) {
                         var val = err[prop];
-                        $('#all_error_result').append("<div class='form-error'><b>"+prop+":</b> "+val+" </div>");
+			var fdname = humanize(prop);
+			    
+                        $('#all_error_result').append("<div class='form-error'><b>"+fdname+":</b> "+val+" </div>");
 			$('#all_error_result').addClass('error-block');
                     }
                 }
@@ -862,22 +926,23 @@
                      name="password"
               placeholder="{% trans 'Password' %}"
                     class="form-control form-control-lg border border-success"
-                     type="password"
+                     type="password" 
+		     pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#\$%\^&\*]).{8,}" 
            autocapitalize="off"
                 minlength="2"
                 maxlength="30" required />
                 <div id="password-error" class="invalid-feedback"></div>
-                 <small id="passwordHelp" class="form-text text-muted ft-indent">
-                     <svg class="svg-inline--fa fa-angle-right fa-w-8" aria-hidden="true" data-fa-processed="" data-prefix="fas" data-icon="angle-right" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512"><path fill="currentColor" d="M224.3 273l-136 136c-9.4 9.4-24.6 9.4-33.9 0l-22.6-22.6c-9.4-9.4-9.4-24.6 0-33.9l96.4-96.4-96.4-96.4c-9.4-9.4-9.4-24.6 0-33.9L54.3 103c9.4-9.4 24.6-9.4 33.9 0l136 136c9.5 9.4 9.5 24.6.1 34z"></path></svg>
-                     <!-- <i class="fas fa-angle-right"></i> -->  Please enter a single upper case character.
+                 <small id="s_uppercase" class="pass_check form-text text-muted ft-indent">
+                     Please enter a single upper case character.
                  </small>
-                 <small id="passwordHelp" class="form-text text-muted ft-indent">
-                     <svg class="svg-inline--fa fa-angle-right fa-w-8" aria-hidden="true" data-fa-processed="" data-prefix="fas" data-icon="angle-right" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512"><path fill="currentColor" d="M224.3 273l-136 136c-9.4 9.4-24.6 9.4-33.9 0l-22.6-22.6c-9.4-9.4-9.4-24.6 0-33.9l96.4-96.4-96.4-96.4c-9.4-9.4-9.4-24.6 0-33.9L54.3 103c9.4-9.4 24.6-9.4 33.9 0l136 136c9.5 9.4 9.5 24.6.1 34z"></path></svg>
-                     <!-- <i class="fas fa-angle-right"></i> -->  Please enter a single special character like !, @, #, %, ^, etc.
+		 <small id="s_lowercase" class="pass_check form-text text-muted ft-indent">
+                     Please enter a single lower case character.
                  </small>
-                 <small id="passwordHelp" class="form-text text-muted ft-indent">
-                     <svg class="svg-inline--fa fa-angle-right fa-w-8" aria-hidden="true" data-fa-processed="" data-prefix="fas" data-icon="angle-right" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512"><path fill="currentColor" d="M224.3 273l-136 136c-9.4 9.4-24.6 9.4-33.9 0l-22.6-22.6c-9.4-9.4-9.4-24.6 0-33.9l96.4-96.4-96.4-96.4c-9.4-9.4-9.4-24.6 0-33.9L54.3 103c9.4-9.4 24.6-9.4 33.9 0l136 136c9.5 9.4 9.5 24.6.1 34z"></path></svg>
-                     <!-- <i class="fas fa-angle-right"></i> -->  Password must contain atleast 5 characters.
+                 <small id="s_special" class="pass_check form-text text-muted ft-indent">
+                     Please enter a single special character like !, @, #, %, ^, etc.
+                 </small>
+                 <small id="min_char" class="pass_check form-text text-muted ft-indent">
+                     Password must contain atleast 8 characters.
                  </small>
             </div>
             <div class="form-group col-md-12 mb-4">
