@@ -96,6 +96,39 @@
         {% if associate.has_van == True %}$("#has_van").prop("checked", true);{% else %}$("#has_van2").prop("checked", true);{% endif %}
         {% if associate.has_truck == True %}$("#has_truck").prop("checked", true);{% else %}$("#has_truck2").prop("checked", true);{% endif %}
 
+        //-----------------------------//
+        // MISC / OTHER INITIALIZATION //
+        //-----------------------------//
+
+        // --- How hear ---
+        var how_hear = {{ associate.how_hear }};
+        if (how_hear == 1) {
+            $("#how_hear_other_div").show();
+        } else {
+            $("#how_hear_other_div").hide();
+        }
+
+        // --- How hear (other) ---
+        var how_hear_other = "{{ associate.how_hear_other }}";
+        if (how_hear == 1) {
+            $("#how_hear_other").val(how_hear_other);
+        }
+
+        //------------------------------//
+        // EVENT HANDLER INITIALIZATION //
+        //------------------------------//
+
+        // --- How hear ---
+        $('#how_hear').on('change',function(){
+            if( $(this).val()==="1" || $(this).val()===1){
+                $("#how_hear_other_div").show();
+            }
+            else{
+                $("#how_hear_other_div").hide();
+            }
+        });
+
+        // --- Email ---
         // The following code continously checks to see if the current user
         // is assigned to the email.
         $('#email').keypress(debounce(function (event) {
@@ -104,49 +137,68 @@
             console.log(email);
         }, 250));
 
-	// THIS IS WHERE YOU CAN ADD YOUR COUNTRY/PROVINCE DROPDOWN JS CODE....
-	$(function(){
-	  $('#address_country').change(function(){
-	    loadState($(this).find(':selected').val())
-	  });
-	  {% if associate.address_country %}loadState('{{associate.address_country}}');{% else %}loadState('CA');{% endif %}
+        //---------------------------------//
+        // COUNTRY/PROVINCE INITIALIZATION //
+        //---------------------------------//
 
-        let c_dropdown = $('#address_country');
-	c_dropdown.empty();
-	c_dropdown.append('<option selected="true" disabled>Choose Country</option>');
-	{% if associate.address_country %}c_dropdown.val('{{associate.address_country}}');{% else %}c_dropdown.prop('selectedIndex', 1);{% endif %}
-       });
+        // THIS IS WHERE YOU CAN ADD YOUR COUNTRY/PROVINCE DROPDOWN JS CODE....
+        $(function () {
+            $('#address_country').change(function () {
+                loadState($(this).find(':selected').val())
+            });
+
+            {% if associate.address_country %}
+            loadState('{{associate.address_country}}');
+            {% else %}
+            loadState('CA');
+            {% endif %}
+
+            let c_dropdown = $('#address_country');
+            c_dropdown.empty();
+            c_dropdown.append('<option selected="true" disabled>Choose Country</option>');
+
+            {% if associate.address_country %}
+            c_dropdown.val('{{associate.address_country}}');
+            {% else %}
+            c_dropdown.prop('selectedIndex', 1);
+            {% endif %}
+
+        });
         const state = "{% static 'js/provinces.json' %}";
         const country = "{% static 'js/countries.json' %}";
         console.log(state);
         console.log(country); // KANWAR - PLEASE IMPLEMENT.
 
-	// Populate dropdown with list of countries
-	$.getJSON(country, function (data) {
-	  $.each(data, function (key, entry) {
-	    	c_dropdown.append($('<option></option>').attr('value', entry.code).text(entry.country));
-	  })
-	});
+        // Populate dropdown with list of countries
+        $.getJSON(country, function (data) {
+            $.each(data, function (key, entry) {
+                c_dropdown.append($('<option></option>').attr('value', entry.code).text(entry.country));
+            })
+        });
 
-	function loadState(countryId){
-		let p_dropdown = $('#address_region');
-		p_dropdown.empty();
-		p_dropdown.append('<option selected="true" disabled>Choose State/Province</option>');
-		p_dropdown.prop('selectedIndex', 0);
+        function loadState(countryId) {
+            let p_dropdown = $('#address_region');
+            p_dropdown.empty();
+            p_dropdown.append('<option selected="true" disabled>Choose State/Province</option>');
+            p_dropdown.prop('selectedIndex', 0);
 
-		// Populate dropdown with list of provinces
-		$.getJSON(state, function (data) {
-		  $.each(data, function (key, entry) {
-		    if(entry.country == countryId){
-		    	p_dropdown.append($('<option></option>').attr('value', entry.short).text(entry.name));
-		    }
-		  })
-		});
-		{% if associate.address_region %}p_dropdown.val('{{associate.address_region}}');{% endif %}
-		if(countryId == 'CA'){
-			p_dropdown.prop('selectedIndex', 1);
-		}
-	}
+            // Populate dropdown with list of provinces
+            $.getJSON(state, function (data) {
+                $.each(data, function (key, entry) {
+                    if (entry.country == countryId) {
+                        p_dropdown.append($('<option></option>').attr('value', entry.short).text(entry.name));
+                    }
+                })
+            });
+
+            {% if associate.address_region %}
+            p_dropdown.val('{{associate.address_region}}');
+            {% endif %}
+
+            if (countryId == 'CA') {
+                p_dropdown.prop('selectedIndex', 1);
+            }
+        }
 
     }); // end Ready
 
@@ -302,6 +354,7 @@
         var has_van = get_boolean_from_selected_radio_value('has_van');
         var has_truck = get_boolean_from_selected_radio_value('has_truck');
         var how_hear = $('#how_hear').val();
+        var how_hear_other = $('#how_hear_other').val();
 
         // LOCK OUT THE "SUBMIT" BUTTON SO THE USER DOES NOT MAKE MULTI-CALLS.
         disable_btn();
@@ -365,6 +418,7 @@
                 'has_van': has_van,
                 'has_truck': has_truck,
                 'how_hear': how_hear,
+                'how_hear_other': how_hear_other
             },
             function(result_dict) { // Success
                 console.log(result_dict);
@@ -713,10 +767,25 @@
                     </select>
                     <div id="vehicle_types-error" class="invalid-feedback"></div>
                 </div>
-                <div class="form-group col-md-12 mb-4 p-0">
-      		        <label for="how_hear" class="font-b6">Describe how associate hear about us:</label>
-      		        <textarea class="form-control form-control-lg border border-success" id="how_hear" name="how_hear" placeholder="How here..." rows="4" minlength="10" required>{% if associate.how_hear %}{{ associate.how_hear }}{% endif %}</textarea>
-      		        <div id="how_hear-error" class="invalid-feedback"></div>
+                <div class="form-group col-md-7 mb-4 p-0">
+                    <label for="how_hear">How did they hear about us?</label>
+                    <select class="custom-select form-control-lg border-success" id="how_hear" name="how_hear" required>
+                        <option value="">Please select...</option>
+                        <option value="2" {% if associate.how_hear == 2 %}selected{% endif %}>An existing member</option>
+                        <option value="3" {% if associate.how_hear == 3 %}selected{% endif %}>Print Ad</option>
+                        <option value="4" {% if associate.how_hear == 4 %}selected{% endif %}>Online Ad</option>
+                        <option value="5" {% if associate.how_hear == 5 %}selected{% endif %}>Google</option>
+                        <option value="6" {% if associate.how_hear == 6 %}selected{% endif %}>Tradeshow/Event</option>
+                        <option value="7" {% if associate.how_hear == 7 %}selected{% endif %}>Agency</option>
+                        <option value="8" {% if associate.how_hear == 8 %}selected{% endif %}>Prefer not to say / I don't know</option>
+                        <option value="1" {% if associate.how_hear == 1 %}selected{% endif %}>Other</option>
+                    </select>
+                    <div id="how_hear-error" class="invalid-feedback"></div>
+                </div>
+                <div class="form-group col-md-12 mb-4 p-0" id="how_hear_other_div">
+      		        <label for="how_hear_other" class="font-b6">Describe how associate hear about us:</label>
+      		        <textarea class="form-control form-control-lg border border-success" id="how_hear_other" name="how_hear_other" placeholder="How here..." rows="4" minlength="10" required></textarea>
+      		        <div id="how_hear_other-error" class="invalid-feedback"></div>
                     <small class="form-text text-muted">Maximum 1,000 characters.</small>
                 </div>
             </div>
