@@ -384,13 +384,13 @@
 			           	}
 			           	
 			           	if(!ok_email.validity.valid) {
-			           		ok_email_error.innerHTML = "Please select option.";
+			           		ok_email_error.innerHTML = "Please pick either Yes or No choice.";
 			           		form_residential.classList.add('was-validated');
 			           		e.preventDefault();
 			           	}
 			           	
 			           	if(!ok_text.validity.valid) {
-			           		ok_text_error.innerHTML = "Please select option.";
+			           		ok_text_error.innerHTML = "Please pick either Yes or No choice.";
 			           		form_residential.classList.add('was-validated');
 			           		e.preventDefault();
 			           	}
@@ -898,7 +898,7 @@
         <div class="form-group col-md-12 mb-3 p-0 mx-auto text-center">
             <button id="id_submit_btn"
                  class="btn btn-success btn-lg mt-4 float-right pl-4 pr-4"
-                  type="button"
+                  type="submit"
                onclick="click_next_button();">
                 Next <i class="fas fa-arrow-right"></i></button>
             <button id="id_cancel_btn"
