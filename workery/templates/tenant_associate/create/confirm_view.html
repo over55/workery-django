@@ -122,8 +122,32 @@
 
         var has_truck = localStorage.getItem("tmp_associate_member_has_truck");
         $('#selected_has_truck').append( to_yes_or_no_string(has_truck) );
-        $('#selected_how_hear').append(localStorage.getItem("tmp_associate_member_how_hear"));
         $('#selected_how_hear_other').append(localStorage.getItem("tmp_associate_member_how_hear_other"));
+        var how_hear = localStorage.getItem("tmp_associate_member_how_hear");
+        if (how_hear == 1) {
+            $('#selected_how_hear').append("Other");
+        }
+        else if (how_hear == 2) {
+            $('#selected_how_hear').append("An existing member");
+        }
+        else if (how_hear == 3) {
+            $('#selected_how_hear').append("Print Ad");
+        }
+        else if (how_hear == 4) {
+            $('#selected_how_hear').append("Online Ad");
+        }
+        else if (how_hear == 5) {
+            $('#selected_how_hear').append("Google");
+        }
+        else if (how_hear == 6) {
+            $('#selected_how_hear').append("Tradeshow/Event");
+        }
+        else if (how_hear == 7) {
+            $('#selected_how_hear').append("Agency");
+        }
+        else if (how_hear == 8) {
+            $('#selected_how_hear').append("Prefer not to say / I don't know");
+        }
 
         // The following code continously checks to see if the current user
         // is assigned to the email.

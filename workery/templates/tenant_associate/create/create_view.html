@@ -166,6 +166,12 @@
                 $("#how_hear_other_div").hide();
             }
 
+            // --- How hear (other) ---
+            var how_hear_other = localStorage.getItem("tmp_associate_member_how_hear_other");
+            if (how_hear == 1) {
+                $("#how_hear_other").val(how_hear_other);
+            }
+
             //------------------------------//
             // EVENT HANDLER INITIALIZATION //
             //------------------------------//
@@ -386,6 +392,11 @@
             var has_truck = get_selected_radio_value('has_truck');
             var how_hear = $('#how_hear').val();
             var how_hear_other = $('#how_hear_other').val();
+
+            if (how_hear == "") {
+                how_hear = 8;
+                how_hear_other = null;
+            }
 
             //----------------------------------------------------------------//
             //             SAVE THE EXTRACTED DATA INTO LOCAL STORAGE         //
