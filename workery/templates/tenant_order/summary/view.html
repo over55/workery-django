@@ -75,9 +75,8 @@
                     <th></th>
                     <th>{% trans 'Client' %}</th>
                     <th>{% trans 'Associate' %}</th>
-                    <th>{% trans 'Assigned Date' %}</th>
-                    <th>{% trans 'Ongoing' %}</th>
-                    <th>{% trans 'Completion Date' %}</th>
+                    <th>{% trans 'Started' %}</th>
+                    <th>{% trans 'Completed' %}</th>
                     <th></th>
                 </tr>
             </thead>
@@ -104,7 +103,6 @@
                         {% else %}-{% endif %}
                     </td>
                     <td>{% if job.assignment_date %}{{ job.assignment_date }}{% else %}-{% endif %}</td>
-                    <td>{{ job.is_ongoing }}</td>
                     <td>{% if job.completion_date %}{{ job.completion_date }}{% else %}-{% endif %}</td>
                     <td>
                         <a href="{% url 'workery_tenant_job_retrieve' 'summary' job.id %}?page={{ page_obj.number }}">{% trans 'View' %}</a>
