@@ -142,63 +142,525 @@
         //---------------------------------//
 
         // THIS IS WHERE YOU CAN ADD YOUR COUNTRY/PROVINCE DROPDOWN JS CODE....
-        $(function () {
-            $('#address_country').change(function () {
-                loadState($(this).find(':selected').val())
-            });
-
-            {% if associate.address_country %}
-            loadState('{{associate.address_country}}');
-            {% else %}
-            loadState('CA');
-            {% endif %}
-
-            let c_dropdown = $('#address_country');
-            c_dropdown.empty();
-            c_dropdown.append('<option selected="true" disabled>Choose Country</option>');
-
-            {% if associate.address_country %}
-            c_dropdown.val('{{associate.address_country}}');
-            {% else %}
-            c_dropdown.prop('selectedIndex', 1);
-            {% endif %}
-
-        });
-        const state = "{% static 'js/provinces.json' %}";
+	$(function(){
+	  $('#address_country').change(function(){
+	    loadState($(this).find(':selected').val())
+	  });
+	  {% if associate.address_country %}loadState('{{associate.address_country}}');{% else %}loadState('CA');{% endif %}
+    	});
+	let c_dropdown = $('#address_country');
+	c_dropdown.empty();
+	c_dropdown.append('<option selected="true" disabled>Choose Country</option>');
+	{% if associate.address_country %}c_dropdown.val('{{associate.address_country}}');{% else %}c_dropdown.prop('selectedIndex', 1);{% endif %}
+	const state = "{% static 'js/provinces.json' %}";
         const country = "{% static 'js/countries.json' %}";
-        console.log(state);
+	console.log(state);
         console.log(country); // KANWAR - PLEASE IMPLEMENT.
-
-        // Populate dropdown with list of countries
-        $.getJSON(country, function (data) {
-            $.each(data, function (key, entry) {
-                c_dropdown.append($('<option></option>').attr('value', entry.code).text(entry.country));
-            })
-        });
-
-        function loadState(countryId) {
-            let p_dropdown = $('#address_region');
-            p_dropdown.empty();
-            p_dropdown.append('<option selected="true" disabled>Choose State/Province</option>');
-            p_dropdown.prop('selectedIndex', 0);
-
-            // Populate dropdown with list of provinces
-            $.getJSON(state, function (data) {
-                $.each(data, function (key, entry) {
-                    if (entry.country == countryId) {
-                        p_dropdown.append($('<option></option>').attr('value', entry.short).text(entry.name));
-                    }
-                })
-            });
-
-            {% if associate.address_region %}
-            p_dropdown.val('{{associate.address_region}}');
-            {% endif %}
-
-            if (countryId == 'CA') {
-                p_dropdown.prop('selectedIndex', 1);
-            }
-        }
+	// Populate dropdown with list of countries
+	$.getJSON(country, function (data) {
+	  $.each(data, function (key, entry) {
+	    	c_dropdown.append($('<option></option>').attr('value', entry.code).text(entry.country));
+	  })
+	});
+	function loadState(countryId){
+		let p_dropdown = $('#address_region');
+		p_dropdown.empty();
+		p_dropdown.append('<option selected="true" disabled>Choose State/Province</option>');
+		p_dropdown.prop('selectedIndex', 0);
+		// Populate dropdown with list of provinces
+		$.getJSON(state, function (data) {
+		  $.each(data, function (key, entry) {
+		    if(entry.country == countryId){
+		    	p_dropdown.append($('<option></option>').attr('value', entry.short).text(entry.name));
+		    }
+		  })
+		});
+		{% if associate.address_region %}p_dropdown.val('{{associate.address_region}}');{% endif %}
+		if(countryId == 'CA'){
+			p_dropdown.prop('selectedIndex', 1);
+		}
+    	}
+		 
+	// All fields individual inline validation check
+			    var form_residential = document.getElementById('update-associate-form');
+			    
+			    var a_firstname = document.getElementById('firstname');
+			    var f_error = document.getElementById('firstname-error');
+			    
+			    var a_lastname = document.getElementById('lastname');
+			    var l_error = document.getElementById('lastname-error');
+			    
+			    var a_phonenumber = document.getElementById('phonenumber');
+			    var pn_error = document.getElementById('phonenumber-error');
+			    var pn_pattern = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
+			    
+			    var a_mobilenumber = document.getElementById('other_phonenumber');
+			    var mobile_error = document.getElementById('other_phonenumber-error');
+			    var mobile_pattern = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
+	    		    
+			    var a_email = document.getElementById('email');
+			    var email_error = document.getElementById('email-error');
+			    
+			    var a_dob = document.getElementById('dob');
+			    var dob_error = document.getElementById('dob-error');
+			    
+			    var a_gender = document.getElementById('gender');
+			    var gender_error = document.getElementById('gender-error');
+	    
+	    		    var a_describe = document.getElementById('describe');
+			    var describe_error = document.getElementById('describe-error');
+	    
+	    		    var ok_email = document.getElementById('ok_to_email');
+			    var ok_email_error = document.getElementById('ok_to_email-error');
+			    
+			    var ok_text = document.getElementById('ok_to_text');
+			    var ok_text_error = document.getElementById('ok_to_text-error');
+	    
+	    		    var a_person_tags = document.getElementById('person_tags');
+			    var person_tags_error = document.getElementById('person_tags-error');
+	    
+	    		    var a_street_address = document.getElementById('street_address');
+			    var street_address_error = document.getElementById('street_address-error');
+	    		    
+	     		    var a_street_address_extra = document.getElementById('street_address_extra');
+			    var street_address_extra_error = document.getElementById('street_address_extra-error');
+	    		
+			    var a_address_locality = document.getElementById('address_locality');
+			    var address_locality_error = document.getElementById('address_locality-error');
+	    		    
+	    		    var a_address_region = document.getElementById('address_region');
+			    var address_region_error = document.getElementById('address_region-error');
+	    		    
+	    		    var a_address_country = document.getElementById('address_country');
+			    var address_country_error = document.getElementById('address_country-error');
+	    		    
+			    var a_postal_code = document.getElementById('postal_code');
+			    var postal_code_error = document.getElementById('postal_code-error');
+	    		    
+	    		    var a_post_office = document.getElementById('post_office_box_number');
+			    var post_office_error = document.getElementById('post_office_box_number-error');
+	    		    
+	    		    var a_comment = document.getElementById('comment');
+			    var comment_error = document.getElementById('comment-error');
+		
+			    var a_is_active = document.getElementById('is_active');
+			    var is_active_error = document.getElementById('is_active-error');
+		
+			    var a_how_hear = document.getElementById('how_hear');
+			    var how_hear_error = document.getElementById('how_hear-error');
+			    
+			    var drivers_license = document.getElementById('drivers_license_class');
+			    var drivers_license_error = document.getElementById('drivers_license_class-error');
+		
+			    var a_police_check = document.getElementById('police_check');
+			    var police_check_error = document.getElementById('police_check-error');
+		
+		    	    var a_wsib = document.getElementById('wsib_insurance_date');
+			    var wsib_date_error = document.getElementById('wsib_insurance_date-error');
+		
+			    var auto_iexp_date = document.getElementById('auto_insurance_expiry_date');
+			    var auto_date_error = document.getElementById('auto_insurance_expiry_date-error');
+		
+			    var commercial_date = document.getElementById('commercial_insurance_expiry_date');
+			    var commercial_date_error = document.getElementById('commercial_insurance_expiry_date-error');
+		
+		    	    var a_dues = document.getElementById('dues_date');
+			    var dues_date_error = document.getElementById('dues_date-error');
+		
+			    var hourly_salary = document.getElementById('hourly_salary_desired');
+			    var hourly_salary_error = document.getElementById('hourly_salary_desired-error');
+		
+		    	    var a_limit_special = document.getElementById('limit_special');
+			    var limit_special_error = document.getElementById('limit_special-error');
+	    
+	    		    var a_password = document.getElementById('password');
+			    var password_error = document.getElementById('password-error');
+		 	    var pass_pattern = /^\(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#\$%\^&\*]).{8,}$/;
+	    
+	    		    var a_password_repeat = document.getElementById('password_repeat');
+			    var password_repeat_error = document.getElementById('password_repeat-error');
+	    		    
+	    		    // Loop over them and prevent submission
+			    $(function(){
+			     	// validation for residential form fields
+			        $('#update-associate-form').on('submit',function(e){
+			        	if(a_firstname.validity.valueMissing) {
+			           		f_error.innerHTML = "This field may not be blank.";
+			           		form_residential.classList.add('was-validated');
+			           		e.preventDefault();
+			           	}
+			           	
+			           	if(a_firstname.validity.tooShort) {
+			           		f_error.innerHTML = "Fill in at least 2 characters.";
+			           		form_residential.classList.add('was-validated');
+			           		e.preventDefault();
+			           	}
+			           	
+			           	if(a_lastname.validity.valueMissing) {
+			           		l_error.innerHTML = "This field may not be blank.";
+			           		form_residential.classList.add('was-validated');
+			           		e.preventDefault();
+			           	}
+			           	
+			           	if(a_lastname.validity.tooShort) {
+			           		l_error.innerHTML = "Fill in at least 2 characters.";
+			           		form_residential.classList.add('was-validated');
+			           		e.preventDefault();
+			           	}
+			           	
+					if(a_describe.validity.valueMissing) {
+			           		describe_error.innerHTML = "This field may not be blank.";
+			           		form_residential.classList.add('was-validated');
+			           		e.preventDefault();
+			           	}
+			           	
+			           	if(a_describe.validity.tooShort) {
+			           		describe_error.innerHTML = "Fill in at least 10 characters.";
+			           		form_residential.classList.add('was-validated');
+			           		e.preventDefault();
+			           	}
+			           	
+					if(a_person_tags.validity.valueMissing) {
+			           		person_tags_error.innerHTML = "This field may not be blank.";
+			           		form_residential.classList.add('was-validated');
+			           		e.preventDefault();
+			           	}
+					
+					if(a_street_address.validity.valueMissing) {
+			           		street_address_error.innerHTML = "This field may not be blank.";
+			           		form_residential.classList.add('was-validated');
+			           		e.preventDefault();
+			           	}
+			           	
+			           	if(a_street_address.validity.tooShort) {
+			           		street_address_error.innerHTML = "Fill in at least 3 characters.";
+			           		form_residential.classList.add('was-validated');
+			           		e.preventDefault();
+			           	}
+					
+					if(a_street_address_extra.validity.tooShort) {
+			           		street_address_extra_error.innerHTML = "Fill in at least 3 characters.";
+			           		form_residential.classList.add('was-validated');
+			           		e.preventDefault();
+			           	}
+			           	
+					if(a_address_locality.validity.valueMissing) {
+			           		address_locality_error.innerHTML = "This field may not be blank.";
+			           		form_residential.classList.add('was-validated');
+			           		e.preventDefault();
+			           	}
+			           	
+			           	if(a_address_locality.validity.tooShort) {
+			           		address_locality_error.innerHTML = "Fill in at least 3 characters.";
+			           		form_residential.classList.add('was-validated');
+			           		e.preventDefault();
+			           	}
+			           	
+					if(a_address_region.validity.valueMissing) {
+			           		address_region_error.innerHTML = "This field may not be blank.";
+			           		form_residential.classList.add('was-validated');
+			           		e.preventDefault();
+			           	}
+					
+					if(a_address_country.validity.valueMissing) {
+			           		address_country_error.innerHTML = "This field may not be blank.";
+			           		form_residential.classList.add('was-validated');
+			           		e.preventDefault();
+			           	}
+					
+					if(a_postal_code.validity.valueMissing) {
+			           		postal_code_error.innerHTML = "This field may not be blank.";
+			           		form_residential.classList.add('was-validated');
+			           		e.preventDefault();
+			           	}
+			           	
+			           	if(a_postal_code.validity.tooShort) {
+			           		postal_code_error.innerHTML = "Fill in at least 6 characters.";
+			           		form_residential.classList.add('was-validated');
+			           		e.preventDefault();
+			           	}
+			           	
+			           	if(a_email.validity.valueMissing) {
+			           		email_error.innerHTML = "This field may not be blank.";
+			           		form_residential.classList.add('was-validated');
+			           		e.preventDefault();
+			           	}
+			           	
+			           	if(a_email.validity.typeMismatch || a_email.validity.tooShort) {
+			           		email_error.innerHTML = "Fill in valid E-mail Id.";
+			           		form_residential.classList.add('was-validated');
+			           		e.preventDefault();
+			           	}
+			           	
+			           	if(a_dob.validity.valueMissing) {
+			           		dob_error.innerHTML = "Please select date of birth.";
+			           		form_residential.classList.add('was-validated');
+			           		e.preventDefault();
+			           	}
+					
+					if(a_police_check.validity.valueMissing) {
+			           		police_check_error.innerHTML = "This field may not be blank.";
+			           		form_residential.classList.add('was-validated');
+			           		e.preventDefault();
+			           	}
+					
+					if(a_wsib.validity.valueMissing) {
+			           		wsib_date_error.innerHTML = "This field may not be blank.";
+			           		form_residential.classList.add('was-validated');
+			           		e.preventDefault();
+			           	}
+					
+					if(auto_iexp_date.validity.valueMissing) {
+			           		auto_date_error.innerHTML = "This field may not be blank.";
+			           		form_residential.classList.add('was-validated');
+			           		e.preventDefault();
+			           	}
+					
+					if(commercial_date.validity.valueMissing) {
+			           		commercial_date_error.innerHTML = "This field may not be blank.";
+			           		form_residential.classList.add('was-validated');
+			           		e.preventDefault();
+			           	}
+					
+					if(a_dues.validity.valueMissing) {
+			           		dues_date_error.innerHTML = "This field may not be blank.";
+			           		form_residential.classList.add('was-validated');
+			           		e.preventDefault();
+			           	}
+			           	
+			           	if(a_gender.validity.valueMissing) {
+			           		gender_error.innerHTML = "Please select client gender.";
+			           		form_residential.classList.add('was-validated');
+			           		e.preventDefault();
+			           	}
+					
+					if(a_how_hear.validity.valueMissing) {
+			           		how_hear_error.innerHTML = "This field may not be blank.";
+			           		form_residential.classList.add('was-validated');
+			           		e.preventDefault();
+			           	}
+				
+					if(hourly_salary.validity.valueMissing) {
+			           		hourly_salary_error.innerHTML = "This field may not be blank.";
+			           		form_residential.classList.add('was-validated');
+			           		e.preventDefault();
+			           	}
+			           	
+			           	if(hourly_salary.validity.tooShort) {
+			           		hourly_salary_error.innerHTML = "Fill in at least 3 characters.";
+			           		form_residential.classList.add('was-validated');
+			           		e.preventDefault();
+			           	}
+					
+					if(a_limit_special.validity.valueMissing) {
+			           		limit_special_error.innerHTML = "This field may not be blank.";
+			           		form_residential.classList.add('was-validated');
+			           		e.preventDefault();
+			           	}
+			           	
+			           	if(a_limit_special.validity.tooShort) {
+			           		limit_special_error.innerHTML = "Fill in at least 3 characters.";
+			           		form_residential.classList.add('was-validated');
+			           		e.preventDefault();
+			           	}
+					
+					if(a_post_office.validity.valueMissing) {
+			           		post_office_error.innerHTML = "This field may not be blank.";
+			           		form_residential.classList.add('was-validated');
+			           		e.preventDefault();
+			           	}
+			           	
+			           	if(a_post_office.validity.tooShort) {
+			           		post_office_error.innerHTML = "Fill in at least 3 characters.";
+			           		form_residential.classList.add('was-validated');
+			           		e.preventDefault();
+			           	}
+			           	
+					if(a_comment.validity.valueMissing) {
+			           		comment_error.innerHTML = "This field may not be blank.";
+			           		form_residential.classList.add('was-validated');
+			           		e.preventDefault();
+			           	}
+			           	
+			           	if(a_comment.validity.tooShort) {
+			           		comment_error.innerHTML = "Fill in at least 10 characters.";
+			           		form_residential.classList.add('was-validated');
+			           		e.preventDefault();
+			           	}
+					
+					if(a_password.validity.valueMissing) {
+			           		password_error.innerHTML = "This field may not be blank.";
+			           		form_residential.classList.add('was-validated');
+			           		e.preventDefault();
+			           	}
+			           	
+			           	if(a_password.validity.tooShort) {
+			           		password_error.innerHTML = "Fill in at least 2 characters.";
+			           		form_residential.classList.add('was-validated');
+			           		e.preventDefault();
+			           	}
+					
+					if(a_password_repeat.validity.valueMissing) {
+			           		password_repeat_error.innerHTML = "This field may not be blank.";
+			           		form_residential.classList.add('was-validated');
+			           		e.preventDefault();
+			           	}
+			           	
+			           	if(a_password_repeat.validity.tooShort) {
+			           		password_repeat_error.innerHTML = "Fill in at least 2 characters.";
+			           		form_residential.classList.add('was-validated');
+			           		e.preventDefault();
+			           	}
+			           	
+					if(!a_password_repeat.value.match(a_password)) {
+			           		password_repeat_error.innerHTML = "Repeat password mismatch";
+					        password_repeat_error.style.display = "block";
+					        form_residential.classList.add('was-validated');
+					        e.preventDefault();
+			           	}
+					
+					if(!a_password.value.match(pass_pattern)) {
+			           		password_error.innerHTML = "Passwords must meet complexity";
+					        password_error.style.display = "block";
+					        form_residential.classList.add('was-validated');
+					        e.preventDefault();
+			           	}
+			           	
+			           	if(a_phonenumber.validity.valueMissing) {
+			           		pn_error.innerHTML = "This field may not be blank.";
+			           		form_residential.classList.add('was-validated');
+			           		e.preventDefault();
+			           	}
+			           	
+			           	if(a_phonenumber.validity.tooShort) {
+			           		pn_error.innerHTML = "Fill in valid 10 digits phone number.";
+			           		form_residential.classList.add('was-validated');
+			           		e.preventDefault();
+			           	}
+			           	
+			           	// Phone number format validation
+			           	if(!a_phonenumber.value.match(pn_pattern)) {
+			           		pn_error.innerHTML = "Fill in valid 10 digits phone number.";
+					        pn_error.style.display = "block";
+					        form_residential.classList.add('was-validated');
+					        e.preventDefault();
+			           	}
+			           	
+			           	if(a_mobilenumber.validity.valueMissing) {
+			           		mobile_error.innerHTML = "This field may not be blank.";
+			           		form_residential.classList.add('was-validated');
+			           		e.preventDefault();
+			           	}
+			           	
+			           	if(a_mobilenumber.validity.tooShort) {
+			           		mobile_error.innerHTML = "Fill in valid 10 digits mobile number.";
+			           		form_residential.classList.add('was-validated');
+			           		e.preventDefault();
+			           	}
+			           	
+			           	// Mobile number format validation Which Is Optional
+			           	if(!a_mobilenumber.value.match(mobile_pattern)) {
+			           		if(a_mobilenumber.value.length == 0){
+			           			mobile_error.style.display = "none";
+			           		}
+			           		else{
+			           			mobile_error.innerHTML = "Fill in valid 10 digits mobile number.";
+					        	mobile_error.style.display = "block";
+					        	form_residential.classList.add('was-validated');
+					        	e.preventDefault();
+					        }
+			           	}
+			           	
+			           	if(!ok_email.validity.valid) {
+			           		ok_email_error.innerHTML = "Please pick either Yes or No choice.";
+			           		form_residential.classList.add('was-validated');
+			           		e.preventDefault();
+			           	}
+			           	
+			           	if(!ok_text.validity.valid) {
+			           		ok_text_error.innerHTML = "Please pick either Yes or No choice.";
+			           		form_residential.classList.add('was-validated');
+			           		e.preventDefault();
+			           	}
+					
+					if(!a_is_active.validity.valid) {
+			           		is_active_error.innerHTML = "Please pick either Yes or No choice.";
+			           		form_residential.classList.add('was-validated');
+			           		e.preventDefault();
+			           	}
+			        });
+			   
+				// To hide phone field format error text
+				$('#phonenumber').on('input',function(){
+				       	if(a_phonenumber.value.match(pn_pattern)) {
+				       		pn_error.style.display = "none";
+				       	}
+				});
+				$('#mobilenumber').on('input',function(){
+				       	if(a_mobilenumber.value.match(mobile_pattern)) {
+				       		mobile_error.style.display = "none";
+				       	}
+				});
+				$('#password_repeat').on('input',function(){
+				       	if(a_password_repeat.value.match(a_password)) {
+				       		password_repeat_error.style.display = "none";
+				       	}
+				});
+				$('#password').on('input',function(){
+				       	if(a_password.value.match(pass_pattern)) {
+				       		password_error.style.display = "none";
+				       	}
+				});
+			    });
+	    
+	/**
+	 *  Password Strength Check Validation.
+	 */
+	var checkPassword = document.getElementById("password");
+	var s_letter = document.getElementById("s_lowercase");
+	var s_capital = document.getElementById("s_uppercase");
+	var s_character = document.getElementById("s_special");
+	var s_length = document.getElementById("min_char");
+	// When the user starts to type something inside the password field
+	checkPassword.onkeyup = function() {
+  		// Validate lowercase letters
+  		var lowerCaseLetters = /[a-z]/g;
+		  if(checkPassword.value.match(lowerCaseLetters)) {  
+		    s_letter.classList.remove("pass_check");
+		    s_letter.classList.add("pass_valid");
+		  } else {
+		    s_letter.classList.remove("pass_valid");
+		    s_letter.classList.add("pass_check");
+		  }
+  
+  		// Validate capital letters
+  		var upperCaseLetters = /[A-Z]/g;
+		  if(checkPassword.value.match(upperCaseLetters)) {  
+		    s_capital.classList.remove("pass_check");
+		    s_capital.classList.add("pass_valid");
+		  } else {
+		    s_capital.classList.remove("pass_valid");
+		    s_capital.classList.add("pass_check");
+		  }
+  		// Validate numbers
+  		var specialChar = /[!@#\$%\^&\*]/g;
+		  if(checkPassword.value.match(specialChar)) {  
+		    s_character.classList.remove("pass_check");
+		    s_character.classList.add("pass_valid");
+		  } else {
+		    s_character.classList.remove("pass_valid");
+		    s_character.classList.add("pass_check");
+		  }
+  
+  		// Validate length
+		  if(checkPassword.value.length >= 8) {
+		    s_length.classList.remove("pass_check");
+		    s_length.classList.add("pass_valid");
+		  } else {
+		    s_length.classList.remove("pass_valid");
+		    s_length.classList.add("pass_check");
+		  }
+	}
 
     }); // end Ready
 
@@ -286,6 +748,17 @@
         return false;
     }
 
+       /**
+	*  Function to make text readable removing underscore and capitalizing
+	*/
+	function humanize(str) {
+		var frags = str.split('_');
+		for (i=0; i<frags.length; i++) {
+			frags[i] = frags[i].charAt(0).toUpperCase() + frags[i].slice(1);
+		}
+		return frags.join(' ');
+	}
+		
     /**
      *  Function will attempt to submit the form to the API server. This
      *  funciton will:
@@ -434,12 +907,15 @@
 
                 // STEP 2: CLEAR EXISTING TEXT.
                 $('#all_error_result').html("");
-
+		$('#all_error_result').removeClass('error-block');
                 // STEP 3: PRINT OUR ERROR IN THE TOP ERROR PANEL.
                 for(var prop in err) {
                     if(err.hasOwnProperty(prop)) {
                         var val = err[prop];
-                        $('#all_error_result').append("<p><b>"+prop+"</b>"+val+"</p><br />");
+                        var fdname = humanize(prop);
+			    
+                        $('#all_error_result').append("<div class='form-error'><b>"+fdname+":</b> "+val+" </div>");
+		        $('#all_error_result').addClass('error-block');
                     }
                 }
 
@@ -535,8 +1011,9 @@
         <div class="col-sm-12 fade show active" id="client-form" aria-labelledby="residential">
             <p><span class="text-secondary font-italic"><sup>*</sup>&nbsp;-&nbsp;Indicates required field to fill out.</span></p>
             <!-- Error Output -->
-            <div id="all_error_result" name="all_error_result"></div>
-            <!-- end Error Output -->
+            <div id="all_error_result" name="all_error_result" class="alert alert-error fade show" role="alert">
+	    </div>
+	    <!-- end Error Output -->
             <p>&nbsp;</p>
             <form id="update-associate-form" method="post" class="needs-validation" action="" novalidate>
             <!-- ############ PERSON ############ -->
@@ -807,18 +1284,18 @@
                     minlength="2"
                     maxlength="30" />
                     <div id="password-error" class="invalid-feedback"></div>
-                    <small id="passwordHelp" class="form-text text-muted ft-indent">
-                        <svg class="svg-inline--fa fa-angle-right fa-w-8" aria-hidden="true" data-fa-processed="" data-prefix="fas" data-icon="angle-right" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512"><path fill="currentColor" d="M224.3 273l-136 136c-9.4 9.4-24.6 9.4-33.9 0l-22.6-22.6c-9.4-9.4-9.4-24.6 0-33.9l96.4-96.4-96.4-96.4c-9.4-9.4-9.4-24.6 0-33.9L54.3 103c9.4-9.4 24.6-9.4 33.9 0l136 136c9.5 9.4 9.5 24.6.1 34z"></path></svg>
-                        <!-- <i class="fas fa-angle-right"></i> -->  Please enter a single upper case character.
-                    </small>
-                    <small id="passwordHelp" class="form-text text-muted ft-indent">
-                        <svg class="svg-inline--fa fa-angle-right fa-w-8" aria-hidden="true" data-fa-processed="" data-prefix="fas" data-icon="angle-right" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512"><path fill="currentColor" d="M224.3 273l-136 136c-9.4 9.4-24.6 9.4-33.9 0l-22.6-22.6c-9.4-9.4-9.4-24.6 0-33.9l96.4-96.4-96.4-96.4c-9.4-9.4-9.4-24.6 0-33.9L54.3 103c9.4-9.4 24.6-9.4 33.9 0l136 136c9.5 9.4 9.5 24.6.1 34z"></path></svg>
-                        <!-- <i class="fas fa-angle-right"></i> -->  Please enter a single special character like !, @, #, %, ^, etc.
-                    </small>
-                    <small id="passwordHelp" class="form-text text-muted ft-indent">
-                        <svg class="svg-inline--fa fa-angle-right fa-w-8" aria-hidden="true" data-fa-processed="" data-prefix="fas" data-icon="angle-right" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512"><path fill="currentColor" d="M224.3 273l-136 136c-9.4 9.4-24.6 9.4-33.9 0l-22.6-22.6c-9.4-9.4-9.4-24.6 0-33.9l96.4-96.4-96.4-96.4c-9.4-9.4-9.4-24.6 0-33.9L54.3 103c9.4-9.4 24.6-9.4 33.9 0l136 136c9.5 9.4 9.5 24.6.1 34z"></path></svg>
-                        <!-- <i class="fas fa-angle-right"></i> -->  Password must contain atleast 5 characters.
-                    </small>
+                    <small id="s_uppercase" class="pass_check form-text text-muted ft-indent">
+			     Please enter a single upper case character.
+			 </small>
+			 <small id="s_lowercase" class="pass_check form-text text-muted ft-indent">
+			     Please enter a single lower case character.
+			 </small>
+			 <small id="s_special" class="pass_check form-text text-muted ft-indent">
+			     Please enter a single special character like !, @, #, %, ^, etc.
+			 </small>
+			 <small id="min_char" class="pass_check form-text text-muted ft-indent">
+			     Password must contain atleast 8 characters.
+			 </small>
                 </div>
                 <div class="form-group col-md-12 mb-4">
                     <label for="password_repeat">Repeat Password</label>
@@ -851,7 +1328,7 @@
                 <button  id="id_submit_btn"
                       class="btn btn-primary btn-lg btn-fxw mt-4"
                     onclick="ajax_post_form_submission();"
-                      type="button">
+                      type="submit">
                 <i class="fas fa-check"></i>&nbsp;{% trans 'Update Member' %}
                 </button>
             </div>
