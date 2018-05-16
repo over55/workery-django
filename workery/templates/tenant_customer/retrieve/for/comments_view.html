@@ -11,6 +11,40 @@
 {% block content %}
 
 <script>
+$(document).ready(function () {
+	var form_comment = document.getElementById('add-note-form');
+	var a_comment = document.getElementById('comment');
+	var comment_error = document.getElementById('comment-error');
+	// Loop over them and prevent submission
+	$(function(){
+	     	// validation for residential form fields
+	        $('#add-note-form').on('submit',function(e){
+		     	if(a_comment.validity.valueMissing) {
+				comment_error.innerHTML = "This field may not be blank.";
+				form_comment.classList.add('was-validated');
+				e.preventDefault();
+			}
+			if(a_comment.validity.tooShort) {
+				comment_error.innerHTML = "Fill in at least 3 characters.";
+				form_comment.classList.add('was-validated');
+				e.preventDefault();
+			}
+	 	});
+	});
+	
+}); // end Ready
+
+/**
+ *  Function to make text readable removing underscore and capitalizing
+ */
+function humanize(str) {
+    	var frags = str.split('_');
+    	for (i=0; i<frags.length; i++) {
+		frags[i] = frags[i].charAt(0).toUpperCase() + frags[i].slice(1);
+	}
+	return frags.join(' ');
+}
+
 /**
  *  Function will attempt to submit the form to the API server. This
  *  funciton will:
@@ -38,19 +72,21 @@ function click_add_button() {
             // For debugging purposes only.
             console.log(err);
 
-            // // STEP 2: CLEAR EXISTING TEXT.
-            // $('#all_error_result').html();
-            //
-            // // STEP 3: PRINT OUR ERROR.
-            // for(var prop in err) {
-            //     if(err.hasOwnProperty(prop)) {
-            //         var val = err[prop];
-            //         console.log(val);
-            //         $('#all_error_result').append("<p><b>"+prop+"</b>"+val+"</p><br />");
-            //     }
-            // }
-            //
-            // // STEP 4: FOCUS TO WHERE THE ERROR IS OCCURING.
+            // STEP 2: CLEAR EXISTING TEXT.
+            $('#all_error_result').html("");
+	    $('#all_error_result').removeClass('error-block');
+		
+            // STEP 3: PRINT OUR ERROR.
+            for(var prop in err) {
+                if(err.hasOwnProperty(prop)) {
+                    var val = err[prop];
+                    console.log(val);
+                    var fdname = humanize(prop);
+		    $('#all_error_result').append("<div class='form-error'><b>"+fdname+":</b> "+val+" </div>");
+		    $('#all_error_result').addClass('error-block');
+                }
+            }
+            // STEP 4: FOCUS TO WHERE THE ERROR IS OCCURING.
             // $('html, body').animate({ scrollTop: $('#id_page_title').offset().top }, 'slow');
         },
         function() { // Finally
@@ -179,16 +215,21 @@ function click_add_button() {
                 {% endfor %}
 
                 <hr class="my-4">
+		<!-- Error Output -->
+            	<div id="all_error_result" name="all_error_result" class="alert alert-error fade show" role="alert">
+	    	</div>
+	    	<!-- end Error Output -->
                 <!-- Add note form -->
-                <form>
+                <form id="add-note-form" method="post" class="needs-validation" action="" novalidate>
                     <div class="form-group">
                         <label for="comment">Add Comment/Note: </label>
                         <textarea class="form-control form-control-lg border border-primary" id="comment" name="comment" placeholder="Write a note here..." rows="4" required></textarea>
-                        <small id="comment-error" class="form-text text-muted">Maximum 1,000 characters.</small>
+			<div id="comment-error" class="invalid-feedback"></div>
+                        <small class="form-text text-muted">Maximum 1,000 characters.</small>
                     </div>
                     <button id="id_submit_btn"
                          class="btn btn-lg float-right pl-4 pr-4 btn-primary"
-                          type="button"
+                          type="submit"
                        onclick="click_add_button();">
                         Add Note <i class="fas fa-arrow-right"></i></button>
                 </form>
