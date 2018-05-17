@@ -110,46 +110,30 @@ class Command(BaseCommand):
 
             # Fetch our values.
             order_pk = int_or_none(row_dict[0])
-            associate_pk = int_or_none(row_dict[1])
-            associate_last_name = row_dict[2]
-            assign_date = row_dict[3]
-            customer_pk = int_or_none(row_dict[4])
-            customer_first_name = row_dict[5]
-            customer_last_name = row_dict[6]
-            telephone = row_dict[7]
-            telephone_extension = None
-            postal_code = row_dict[8]
-            learn_about = row_dict[9]
-            is_support = True if row_dict[10] == "TRUE" else False
-            is_senior = True if row_dict[11] == "TRUE" else False
-            birthdate = row_dict[12]
-            customer_email = row_dict[13]
-            job_type = str(row_dict[14])
-            is_ongoing = True if row_dict[15] == "TRUE" else False
-            is_cancelled = True if row_dict[16] == "TRUE" else False
-            date_done = row_dict[17]
-            hours = row_dict[18]
-            service_fee = row_dict[19]
-            date_paid = row_dict[20]
-            comment_text = row_dict[21]
-            follow_up_comment_text = row_dict[22]
-            workmanship = row_dict[23]
-            time_and_budget = row_dict[24]
-            punctual = row_dict[25]
-            professional = row_dict[26]
-            refer = row_dict[27]
-            score = row_dict[28]
-            url = None
+            customer_pk = int_or_none(row_dict[1])
+            associate_pk = int_or_none(row_dict[3])
+            is_home_support = int_or_none(row_dict[4])
+            category = row_dict[5]
+            assign_date = row_dict[6]
+            is_ongoing = row_dict[7]
+            is_cancelled = row_dict[8]
+            completion_date = row_dict[9]
+            hours = row_dict[10]
+            service_fee = row_dict[11]
+            payment_date = row_dict[12]
+            comment_text = row_dict[13]
+            follow_up_comment_text = row_dict[14]
+            time_and_budget = row_dict[15]
+            time_and_budget = row_dict[16]
+            punctual = row_dict[17]
+            professional = row_dict[18]
+            refer = row_dict[19]
 
-            # Format telephone number(s).
-            if telephone:
-                telephone = phonenumbers.parse(str(telephone), "CA")
-
-            # Convert the datetime.
-            local_birthdate = self.get_date_from_formatting1(birthdate)
+            # # Convert the datetime.
+            # local_birthdate = self.get_date_from_formatting1(birthdate)
             local_assign_date = self.get_date_from_formatting2(assign_date)
-            local_date_done = self.get_date_from_formatting2(date_done)
-            local_date_paid = self.get_date_from_formatting2(date_paid)
+            local_payment_date = self.get_date_from_formatting2(payment_date)
+            local_completion_date = self.get_date_from_formatting2(completion_date)
 
             # Convert to money.
             local_service_fee = Money(0.00, O55_APP_DEFAULT_MONEY_CURRENCY)
@@ -165,6 +149,10 @@ class Command(BaseCommand):
             if hours is '':
                 hours = 0
             hours = int(float(hours))
+
+            # Boolean
+            is_ongoing = True if is_ongoing == 1 else False
+            is_cancelled = True if is_cancelled == 1 else False
 
             # Lookup the customer and process it if the customer exists.
             customer = Customer.objects.filter(id=int_or_none(customer_pk),).first()
@@ -183,18 +171,18 @@ class Command(BaseCommand):
                         'assignment_date': local_assign_date,
                         'is_ongoing': is_ongoing,
                         'is_cancelled': is_cancelled,
-                        'completion_date': local_date_done,
-                        'hours':  int(hours),
+                        'completion_date': local_completion_date,
+                        'hours':  hours,
                         'service_fee': local_service_fee,
-                        'payment_date': local_date_paid,
+                        'payment_date': local_payment_date,
                         'last_modified_by': None,
                         'created_by': None,
                     }
                 )
 
                 # Added to tags.
-                if job_type:
-                    skill_set = SkillSet.objects.filter(sub_category=job_type).last()
+                if category:
+                    skill_set = SkillSet.objects.filter(sub_category=category).last()
                     if skill_set and order:
                         order.skill_sets.add(skill_set)
 
@@ -233,14 +221,13 @@ class Command(BaseCommand):
                     )
 
         except Exception as e:
-            if not "list index out of range" in str(e):
-                pass
-                self.stdout.write(
-                    self.style.NOTICE(_('Importing Order #%(id)s with exception "%(e)s".') % {
-                        'e': str(e),
-                        'id': str(index)
-                    })
-                )
+            self.stdout.write(
+                self.style.NOTICE(_('Importing Order #%(id)s with exception "%(e)s".') % {
+                    'e': str(e),
+                    'id': str(index)
+                })
+            )
+
 
     def get_date_from_formatting1(self, birthdate):
         """
