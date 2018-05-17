@@ -214,7 +214,7 @@ class Command(BaseCommand):
                         'first_name': given_name,
                         'last_name': last_name,
                         'email': email,
-                        'is_active': is_active,
+                        'is_active': False, # By default everyone is de-activate unless activated by O55 staff.
                     }
                 )
 
