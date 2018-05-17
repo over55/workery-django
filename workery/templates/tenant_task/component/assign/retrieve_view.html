@@ -73,7 +73,7 @@
                 {% for associate in available_associates_list %}
                 <tr>
                     <td>
-                        <a href="{% url 'workery_tenant_member_lite_retrieve' 'summary' associate.id %}" target="_blank">{{ associate }}&nbsp;<i class="fas fa-link"></i></a>
+                        <a href="{% url 'workery_tenant_member_lite_retrieve' 'summary' associate.id %}" target="_blank">{{ associate }}&nbsp;<i class="fas fa-external-link-alt"></i></a>
                     </td>
                     <td>{{ associate.activity_sheet.count }}</td>
                     <td>
@@ -107,7 +107,7 @@
                 {% for item in existing_activity_sheet.all %}
                 <tr>
                     <td>
-                        <a href="{% url 'workery_tenant_member_lite_retrieve' 'summary' item.associate.id %}" target="_blank">{{ item.associate }}&nbsp;<i class="fas fa-link"></i></a>
+                        <a href="{% url 'workery_tenant_member_lite_retrieve' 'summary' item.associate.id %}" target="_blank">{{ item.associate }}&nbsp;<i class="fas fa-external-link-alt"></i></a>
                     </td>
                     <td>{{ item.has_accepted_job }}</td>
                     <td>{{ item.comment }}</td>

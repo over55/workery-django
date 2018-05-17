@@ -62,14 +62,14 @@
                     <td>{{ task_item.title }}</td>
                     <td>
                         {% if task_item.job.customer %}
-                            <a href="{% url 'workery_tenant_customer_lite_retrieve' 'summary' task_item.job.customer.id %}" target="_blank">{{ task_item.job.customer }}&nbsp;<i class="fas fa-link"></i></a>
+                            <a href="{% url 'workery_tenant_customer_lite_retrieve' 'summary' task_item.job.customer.id %}" target="_blank">{{ task_item.job.customer }}&nbsp;<i class="fas fa-external-link-alt"></i></a>
                         {% else %}
                             {% trans 'Unassigned' %}
                         {% endif %}
                     </td>
                     <td>
                         {% if task_item.job.associate %}
-                            <a href="{% url 'workery_tenant_member_lite_retrieve' 'summary' task_item.job.associate.id %}" target="_blank">{{ task_item.job.associate }}&nbsp;<i class="fas fa-link"></i></a>
+                            <a href="{% url 'workery_tenant_member_lite_retrieve' 'summary' task_item.job.associate.id %}" target="_blank">{{ task_item.job.associate }}&nbsp;<i class="fas fa-external-link-alt"></i></a>
                         {% else %}
                             {% trans 'Unassigned' %}
                         {% endif %}

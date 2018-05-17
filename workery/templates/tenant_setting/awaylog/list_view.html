@@ -99,7 +99,7 @@
                 <tr>
                     <td>
                         {% if away_log.associate %}
-                            <a href="{% url 'workery_tenant_member_lite_retrieve' 'summary' away_log.associate.id %}" target="_blank">{{ away_log.associate }}&nbsp;<i class="fas fa-link"></i></a>
+                            <a href="{% url 'workery_tenant_member_lite_retrieve' 'summary' away_log.associate.id %}" target="_blank">{{ away_log.associate }}&nbsp;<i class="fas fa-external-link-alt"></i></a>
                         {% else %}-{% endif %}
                     </td>
                     <td>

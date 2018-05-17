@@ -135,7 +135,7 @@
                     <div class="form-row">
                         <div class="form-group col-md-12 mb-4">
                             <label for="customer">Customer</label>
-                            <p>{% if job.customer %}<a href="{% url 'workery_tenant_customer_lite_retrieve' template job.customer.id %}" target="_blank">{{ job.customer }}&nbsp;<i class="fas fa-link"></i></a>{% else %}-{% endif %}</p>
+                            <p>{% if job.customer %}<a href="{% url 'workery_tenant_customer_lite_retrieve' template job.customer.id %}" target="_blank">{{ job.customer }}&nbsp;<i class="fas fa-external-link-alt"></i></a>{% else %}-{% endif %}</p>
                             <div id="customer-error" class="invalid-feedback"></div>
                         </div>
                     </div>
@@ -162,7 +162,7 @@
                     <div class="form-row">
                         <div class="form-group col-md-12 mb-4">
                             <label for="associate">Assigned Associate</label>
-                            <p>{% if job.associate %}<a href="{% url 'workery_tenant_member_lite_retrieve' template job.associate.id %}" target="_blank">{{ job.associate }}&nbsp;<i class="fas fa-link"></i></a>{% else %}-{% endif %}</p>
+                            <p>{% if job.associate %}<a href="{% url 'workery_tenant_member_lite_retrieve' template job.associate.id %}" target="_blank">{{ job.associate }}&nbsp;<i class="fas fa-external-link-alt"></i></a>{% else %}-{% endif %}</p>
                             <div id="associate-error" class="invalid-feedback"></div>
                         </div>
                     </div>
@@ -228,7 +228,7 @@
                                 <label for="latest_pending_task">Required Task</label>
                                 <p>
                                     <a href="{% url 'workery_tenant_pending_task_retrieve' job.latest_pending_task.id %}" target="_blank">
-                                        {{ job.latest_pending_task.title }}&nbsp;<i class="fas fa-link"></i>
+                                        {{ job.latest_pending_task.title }}&nbsp;<i class="fas fa-external-link-alt"></i>
                                     </a>
                                 </p>
                                 <div id="latest_pending_task-error" class="invalid-feedback"></div>
