@@ -83,7 +83,221 @@
         // $('#email').val(localStorage.getItem("tmp_shared_franchise_email"));
         // $('#telephone').val(localStorage.getItem("tmp_shared_franchise_telephone"));
         // $('#comment').val(localStorage.getItem("tmp_shared_franchise_comment"));
-
+	    
+// All fields individual inline validation check
+			    var form_franchise = document.getElementById('add-franchise-form');
+			    
+			    var a_shortname = document.getElementById('short_name');
+			    var sn_error = document.getElementById('short_name-error');
+			    
+			    var a_fullname = document.getElementById('full_name');
+			    var fn_error = document.getElementById('full_name-error');
+			    
+	    		    var a_schemaname = document.getElementById('schema_name');
+			    var schema_error = document.getElementById('schema_name-error');
+			    
+	    		    var a_email = document.getElementById('email');
+			    var email_error = document.getElementById('email-error');
+			    
+			    var a_dob = document.getElementById('dob');
+			    var dob_error = document.getElementById('dob-error');
+			   
+	    		    var a_describe = document.getElementById('describe');
+			    var describe_error = document.getElementById('describe-error');
+	    
+	    		    var ok_email = document.getElementById('ok_to_email');
+			    var ok_email_error = document.getElementById('ok_to_email-error');
+			    
+	    		    var a_street_address = document.getElementById('street_address');
+			    var street_address_error = document.getElementById('street_address-error');
+	    		    
+	     		    var a_street_address_extra = document.getElementById('street_address_extra');
+			    var street_address_extra_error = document.getElementById('street_address_extra-error');
+	    		
+			    var a_address_locality = document.getElementById('address_locality');
+			    var address_locality_error = document.getElementById('address_locality-error');
+	    		    
+	    		    var a_address_region = document.getElementById('address_region');
+			    var address_region_error = document.getElementById('address_region-error');
+	    		    
+	    		    var a_address_country = document.getElementById('address_country');
+			    var address_country_error = document.getElementById('address_country-error');
+	    		    
+			    var a_postal_code = document.getElementById('postal_code');
+			    var postal_code_error = document.getElementById('postal_code-error');
+	    		    
+	    		    var a_post_office = document.getElementById('post_office_box_number');
+			    var post_office_error = document.getElementById('post_office_box_number-error');
+	    		    
+	    		    var a_comment = document.getElementById('comment');
+			    var comment_error = document.getElementById('comment-error');
+	    
+	    		    var a_is_active = document.getElementById('is_active');
+			    var is_active_error = document.getElementById('is_active-error');
+	    		    
+	    		    // Loop over them and prevent submission
+			    $(function(){
+			     	// validation for residential form fields
+			        $('#add-franchise-form').on('submit',function(e){
+			        	if(a_shortname.validity.valueMissing) {
+			           		sn_error.innerHTML = "This field may not be blank.";
+			           		form_franchise.classList.add('was-validated');
+			           		e.preventDefault();
+			           	}
+			           	
+			           	if(a_shortname.validity.tooShort) {
+			           		sn_error.innerHTML = "Fill in at least 2 characters.";
+			           		form_franchise.classList.add('was-validated');
+			           		e.preventDefault();
+			           	}
+			           	
+			           	if(a_fullname.validity.valueMissing) {
+			           		fn_error.innerHTML = "This field may not be blank.";
+			           		form_franchise.classList.add('was-validated');
+			           		e.preventDefault();
+			           	}
+			           	
+			           	if(a_fullname.validity.tooShort) {
+			           		fn_error.innerHTML = "Fill in at least 2 characters.";
+			           		form_franchise.classList.add('was-validated');
+			           		e.preventDefault();
+			           	}
+					
+					if(a_schemaname.validity.valueMissing) {
+			           		schema_error.innerHTML = "This field may not be blank.";
+			           		form_franchise.classList.add('was-validated');
+			           		e.preventDefault();
+			           	}
+			           	
+			           	if(a_schemaname.validity.tooShort) {
+			           		schema_error.innerHTML = "Fill in at least 2 characters.";
+			           		form_franchise.classList.add('was-validated');
+			           		e.preventDefault();
+			           	}
+			           	
+					if(a_describe.validity.valueMissing) {
+			           		describe_error.innerHTML = "This field may not be blank.";
+			           		form_franchise.classList.add('was-validated');
+			           		e.preventDefault();
+			           	}
+			           	
+			           	if(a_describe.validity.tooShort) {
+			           		describe_error.innerHTML = "Fill in at least 10 characters.";
+			           		form_franchise.classList.add('was-validated');
+			           		e.preventDefault();
+			           	}
+			           	
+					if(a_street_address.validity.valueMissing) {
+			           		street_address_error.innerHTML = "This field may not be blank.";
+			           		form_franchise.classList.add('was-validated');
+			           		e.preventDefault();
+			           	}
+			           	
+			           	if(a_street_address.validity.tooShort) {
+			           		street_address_error.innerHTML = "Fill in at least 3 characters.";
+			           		form_franchise.classList.add('was-validated');
+			           		e.preventDefault();
+			           	}
+					
+					if(a_street_address_extra.validity.tooShort) {
+			           		street_address_extra_error.innerHTML = "Fill in at least 3 characters.";
+			           		form_franchise.classList.add('was-validated');
+			           		e.preventDefault();
+			           	}
+			           	
+					if(a_address_locality.validity.valueMissing) {
+			           		address_locality_error.innerHTML = "This field may not be blank.";
+			           		form_franchise.classList.add('was-validated');
+			           		e.preventDefault();
+			           	}
+			           	
+			           	if(a_address_locality.validity.tooShort) {
+			           		address_locality_error.innerHTML = "Fill in at least 3 characters.";
+			           		form_franchise.classList.add('was-validated');
+			           		e.preventDefault();
+			           	}
+			           	
+					if(a_address_region.validity.valueMissing) {
+			           		address_region_error.innerHTML = "This field may not be blank.";
+			           		form_franchise.classList.add('was-validated');
+			           		e.preventDefault();
+			           	}
+					
+					if(a_address_country.validity.valueMissing) {
+			           		address_country_error.innerHTML = "This field may not be blank.";
+			           		form_franchise.classList.add('was-validated');
+			           		e.preventDefault();
+			           	}
+					
+					if(a_postal_code.validity.valueMissing) {
+			           		postal_code_error.innerHTML = "This field may not be blank.";
+			           		form_franchise.classList.add('was-validated');
+			           		e.preventDefault();
+			           	}
+			           	
+			           	if(a_postal_code.validity.tooShort) {
+			           		postal_code_error.innerHTML = "Fill in at least 6 characters.";
+			           		form_franchise.classList.add('was-validated');
+			           		e.preventDefault();
+			           	}
+			           	
+			           	if(a_email.validity.valueMissing) {
+			           		email_error.innerHTML = "This field may not be blank.";
+			           		form_franchise.classList.add('was-validated');
+			           		e.preventDefault();
+			           	}
+			           	
+			           	if(a_email.validity.typeMismatch || a_email.validity.tooShort) {
+			           		email_error.innerHTML = "Fill in valid E-mail Id.";
+			           		form_franchise.classList.add('was-validated');
+			           		e.preventDefault();
+			           	}
+			           	
+			           	if(a_dob.validity.valueMissing) {
+			           		dob_error.innerHTML = "Please select date of birth.";
+			           		form_franchise.classList.add('was-validated');
+			           		e.preventDefault();
+			           	}
+			           	
+					if(a_post_office.validity.valueMissing) {
+			           		post_office_error.innerHTML = "This field may not be blank.";
+			           		form_franchise.classList.add('was-validated');
+			           		e.preventDefault();
+			           	}
+			           	
+			           	if(a_post_office.validity.tooShort) {
+			           		post_office_error.innerHTML = "Fill in at least 3 characters.";
+			           		form_franchise.classList.add('was-validated');
+			           		e.preventDefault();
+			           	}
+			           	
+					if(a_comment.validity.valueMissing) {
+			           		comment_error.innerHTML = "This field may not be blank.";
+			           		form_franchise.classList.add('was-validated');
+			           		e.preventDefault();
+			           	}
+			           	
+			           	if(a_comment.validity.tooShort) {
+			           		comment_error.innerHTML = "Fill in at least 10 characters.";
+			           		form_franchise.classList.add('was-validated');
+			           		e.preventDefault();
+			           	}
+								           	
+			           	if(!ok_email.validity.valid) {
+			           		ok_email_error.innerHTML = "Please pick either Yes or No choice.";
+			           		form_franchise.classList.add('was-validated');
+			           		e.preventDefault();
+			           	}
+			           	
+					if(!a_is_active.validity.valid) {
+			           		is_active_error.innerHTML = "Please pick either Yes or No choice.";
+			           		form_franchise.classList.add('was-validated');
+			           		e.preventDefault();
+			           	}
+			        });
+			   
+			    });
+	    
     }); // end Ready
 
     /**
@@ -93,6 +307,17 @@
         window.location = "{% url 'workery_shared_franchise_list' %}";
     }
 
+    /**
+     *  Function to make text readable removing underscore and capitalizing
+     */
+    function humanize(str) {
+    	var frags = str.split('_');
+    	for (i=0; i<frags.length; i++) {
+      		frags[i] = frags[i].charAt(0).toUpperCase() + frags[i].slice(1);
+    	}
+    	return frags.join(' ');
+    }
+	
     /**
      *
      */
@@ -194,12 +419,16 @@
 
                 // STEP 2: CLEAR EXISTING TEXT.
                 $('#all_error_result').html("");
+		$('#all_error_result').removeClass('error-block');
 
                 // STEP 3: PRINT OUR ERROR IN THE TOP ERROR PANEL.
                 for(var prop in err) {
                     if(err.hasOwnProperty(prop)) {
                         var val = err[prop];
-                        $('#all_error_result').append("<p><b>"+prop+"</b>"+val+"</p><br />");
+                        var fdname = humanize(prop);
+			    
+                        $('#all_error_result').append("<div class='form-error'><b>"+fdname+":</b> "+val+" </div>");
+			$('#all_error_result').addClass('error-block');
                     }
                 }
 
@@ -282,11 +511,11 @@
         <div class="col-sm-12 fade show active" id="client-form">
             <p><span class="text-secondary font-italic"><sup>*</sup>&nbsp;-&nbsp;Indicates required field to fill out.</span></p>
             <!-- Error Output -->
-            <div id="all_error_result" name="all_error_result"></div>
-    	</div>
+            <div id="all_error_result" name="all_error_result" class="alert alert-error fade show" role="alert">
+	    </div>
             <!-- end Error Output -->
             <p>&nbsp;</p>
-
+	    <form id="add-franchise-form" method="post" class="needs-validation" action="" novalidate>
             <!----------------------------------------------------------------->
             <p class="border-bottom mb-3 pb-1 text-secondary">Franchise Information</p>
             <div class="form-row">
@@ -301,7 +530,7 @@
                     <div id="full_name-error" class="invalid-feedback"></div>
                 </div>
                 <div class="form-group col-md-12 mb-4 p-0">
-      		        <label for="describe">Describe the franchise</label>
+      		        <label for="describe">Describe the franchise <sup>*</sup></label>
       		        <textarea class="form-control form-control-lg border border-success" id="describe" name="describe" placeholder="Describe here..." rows="4" minlength="10" required></textarea>
       		        <div id="describe-error" class="invalid-feedback"></div>
                     <small class="form-text text-muted">Maximum 1,000 characters.</small>
@@ -359,7 +588,7 @@
             <div class="form-group col-md-12 mb-3 p-0 mx-auto text-center">
                 <button id="id_submit_btn"
                      class="btn btn-success btn-lg mt-4 float-right pl-4 pr-4"
-                      type="button"
+                      type="submit"
                    onclick="click_next_button();">
                     Next <i class="fas fa-arrow-right"></i></button>
                 <button id="id_cancel_btn"
