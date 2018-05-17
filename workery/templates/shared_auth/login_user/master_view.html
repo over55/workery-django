@@ -112,7 +112,7 @@
                <input type="checkbox" class="custom-control-input" id="customCheck1">
                <label class="custom-control-label" for="customCheck1">{% trans 'Remember me' %}</label>
             </div>
-            <input type="submit" value="{% trans 'Sign In' %}" class="btn btn-lg btn-info btn-block" onclick="ajax_login();">
+            <input id="id_login_btn" type="button" value="{% trans 'Sign In' %}" class="btn btn-lg btn-info btn-block" onclick="ajax_login();">
             <h5 class="text-center mt-3 mb-3">
             <a href="{% url 'workery_send_reset_password_email_master' %}" class="text-info plain-link">{% trans 'Forgot Password?' %}</a></h2>
          </form>
