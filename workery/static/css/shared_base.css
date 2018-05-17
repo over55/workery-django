@@ -58,6 +58,13 @@ body.active{
 .form-signin .input-group-addon-p{
   border-top-left-radius: 0 !important;
 }
+.form-signin .form-control:focus{
+  border-color: #17bed8 !important;
+  box-shadow: 0 0 0 0.2rem rgba(23,162,184,.25) !important;
+}
+.form-signin .custom-checkbox .custom-control-input:checked~.custom-control-label::before {
+  background-color: #17a2b8 !important;
+}
 .form-reset .input-group-addon-e{
   margin-bottom: -1px !important;
   border-bottom-right-radius: 0 !important;
