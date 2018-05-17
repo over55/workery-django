@@ -89,7 +89,7 @@ SHARED_APPS = (
     # . . .
 
     # Shared Apps
-    'shared_franchise', 
+    'shared_franchise',
     'shared_home',
     'shared_foundation',
     'shared_api',

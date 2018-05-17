@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import logging
 from rest_framework_jwt.settings import api_settings
 from datetime import datetime
 from django.conf.urls import url, include
@@ -15,6 +16,9 @@ from rest_framework.decorators import detail_route, list_route # See: http://www
 from rest_framework.response import Response
 from shared_foundation.models import SharedFranchise, SharedUser
 from shared_api.serializers.auth_login_serializers import AuthCustomTokenSerializer
+
+
+logger = logging.getLogger(__name__)
 
 
 class LoginAPIView(APIView):
@@ -108,7 +112,7 @@ class LoginAPIView(APIView):
         return Response(
             data = {
                 'token': str(token),
-                'orig_iat': orig_iat,
+                'orig_iat': str(orig_iat),
                 'schema_name': schema_name,
                 'email': str(authenticated_user),
             },
