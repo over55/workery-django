@@ -16,6 +16,7 @@ import os
 import environ
 import re
 import raven # Third party library
+import sys
 from django.utils.log import DEFAULT_LOGGING
 
 '''
@@ -331,7 +332,7 @@ KEEP_COMMENTS_ON_MINIFYING = env("KEEP_COMMENTS_ON_MINIFYING")
 # Disable Django's logging setup
 LOGGING_CONFIG = None
 
-LOGLEVEL = os.environ.get('LOGLEVEL', 'info').upper()
+LOGLEVEL = env("O55_LOGLEVEL")
 
 logging.config.dictConfig({
     'version': 1,
@@ -346,7 +347,8 @@ logging.config.dictConfig({
     'handlers': {
         'console': {
             'class': 'logging.StreamHandler',
-            'formatter': 'console',
+            'stream': sys.stdout,
+            'formatter': 'console'
         },
         # Add Handler for Sentry for `warning` and above
         'sentry': {
@@ -356,21 +358,14 @@ logging.config.dictConfig({
         'django.server': DEFAULT_LOGGING['handlers']['django.server'],
     },
     'loggers': {
-        # Default for all undefined Python modules
+        # Default for all Python modules
         '': {
-            'level': 'WARNING',
-            'handlers': [
-                'console',
-                'sentry'
-            ],
-        },
-        # Our application code
-        'workery': {
             'level': LOGLEVEL,
             'handlers': [
                 'console',
                 'sentry'
             ],
+
             # required to avoid double logging with root logger
             'propagate': False,
         },

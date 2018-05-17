@@ -49,6 +49,7 @@ SENTRY_RAVEN_CONFIG_DSN=https://xxxx:yyyyy@sentry.io/zzzzzzzz
 #--------------------------------#
 # Application Specific Variables #
 #--------------------------------#
+O55_LOGLEVEL=INFO
 O55_APP_HTTP_PROTOCOL=http://
 O55_APP_HTTP_DOMAIN=workery.ca
 O55_APP_DEFAULT_MONEY_CURRENCY=CAD
