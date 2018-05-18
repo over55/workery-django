@@ -5,7 +5,7 @@
 #------------------------------------------------------------------------------------------------------------------------------#
 
 NAME="workery"
-DJANGODIR=/opt/workery/workery
+DJANGODIR=/opt/django/workery-django/workery
 USER=django
 GROUP=django
 WORKERS=3
