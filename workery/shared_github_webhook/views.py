@@ -56,9 +56,7 @@ def github_webhook_handler(request):
 
         import subprocess
         res = subprocess.call("redeploy.sh", shell=True)
-        for line in res.splitlines():
-            # process the output line by line
-            print(line)
+        print(res)
 
         print("##############")
         print("")
