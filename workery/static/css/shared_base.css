@@ -531,8 +531,9 @@ table.custom-cell-w tr th{width:35% !important;}
 /* Password strength validation classes */
 .pass_check:before {
     	position: relative;
-	font-family: FontAwesome;
-    	left: -12px;
+	font-family: "Font Awesome 5 Free";
+	font-weight: 900;
+    	margin-right: 15px;
     	content: "\f00d";
 }
 .pass_valid {
@@ -542,12 +543,13 @@ table.custom-cell-w tr th{width:35% !important;}
 	color: #6c757d;
 }
 .pass_valid, .pass_check {
-	margin-left: 24px;
+	margin-left: 15px;
 }
 .pass_valid:before {
     	position: relative;
-	font-family: FontAwesome;
-    	left: -12px;
+	font-family: "Font Awesome 5 Free";
+	font-weight: 900;
+    	margin-right: 10px;
     	content: "\f00c";
 	color: #28a745 !important;
 }
