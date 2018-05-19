@@ -144,6 +144,7 @@ class AssociateListCreateSerializer(serializers.ModelSerializer):
             'join_date',
             'gender',
             'description',
+            'tax_id',
 
             # Misc (Read/Write)
             'is_active',
@@ -303,6 +304,7 @@ class AssociateListCreateSerializer(serializers.ModelSerializer):
             birthdate=validated_data.get('birthdate', None),
             join_date=validated_data.get('join_date', None),
             gender=validated_data.get('gender', None),
+            tax_id=validated_data.get('tax_id', None),
 
             # Misc
             is_ok_to_email=validated_data.get('is_ok_to_email', None),
@@ -449,6 +451,7 @@ class AssociateRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
             'join_date',
             'gender',
             'description',
+            'tax_id',
 
             # Misc (Read/Write)
             'is_active',
@@ -578,6 +581,7 @@ class AssociateRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         instance.join_date=validated_data.get('join_date', instance.join_date)
         instance.gender = validated_data.get('gender', instance.gender)
         instance.description = validated_data.get('description', instance.description)
+        instance.tax_id = validated_data.get('tax_id', instance.tax_id)
 
         # Misc
         instance.is_ok_to_email=validated_data.get('is_ok_to_email', instance.is_ok_to_email)

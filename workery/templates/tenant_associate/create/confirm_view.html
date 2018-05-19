@@ -60,6 +60,7 @@
         $('#selected_telephone').append(localStorage.getItem("tmp_associate_member_telephone"));
         $('#selected_description').append(localStorage.getItem("tmp_associate_member_description"));
         $('#selected_comment').append(localStorage.getItem("tmp_associate_member_comment"));
+        $('#selected_tax_id').append(localStorage.getItem("tmp_associate_member_tax_id"));
 
         // Set our `tags` field.
         var tmp_person_tag_values = localStorage.getObj("tmp_associate_member_person_tag_values");
@@ -212,6 +213,7 @@
                 'birthdate': localStorage.getItem("tmp_associate_member_date_of_birth"),
                 'gender': localStorage.getItem("tmp_associate_member_gender"),
                 'nationality': null,
+                'tax_id': localStorage.getItem("tmp_associate_member_tax_id"),
                 'is_ok_to_email': localStorage.getItem("tmp_associate_member_ok_to_email"),
                 'is_ok_to_text': localStorage.getItem("tmp_associate_member_ok_to_text"),
                 'address_country': localStorage.getItem("tmp_associate_member_address_country"),
@@ -266,6 +268,7 @@
                 localStorage.removeItem("tmp_associate_member_last_name");
                 localStorage.removeItem("tmp_associate_member_date_of_birth");
                 localStorage.removeItem("tmp_associate_member_gender");
+                localStorage.removeItem("tmp_associate_member_tax_id");
                 localStorage.removeItem("tmp_associate_member_ok_to_email");
                 localStorage.removeItem("tmp_associate_member_ok_to_text");
                 localStorage.removeItem("tmp_associate_member_street_address");
@@ -554,6 +557,12 @@
          <tr>
            <th scope="row" class="bg-light">police check</th>
            <td id="selected_police_check" name="police_check">
+               <!-- POPULATE THROUGH JS. -->
+           </td>
+         </tr>
+         <tr>
+           <th scope="row" class="bg-light">HST #</th>
+           <td id="selected_tax_id" name="tax_id">
                <!-- POPULATE THROUGH JS. -->
            </td>
          </tr>

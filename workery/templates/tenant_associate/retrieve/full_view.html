@@ -267,42 +267,49 @@
                 <p class="border-bottom mb-3 pb-1 text-secondary">Details</p>
                 <div class="form-row">
                     <div class="form-group col-md-12 mb-4">
-                        <label for="is_active">Hourly salary desired</label>
+                        <label>Hourly salary desired</label>
                         <p>
                             {% if associate.hourly_salary_desired %}{{ associate.hourly_salary_desired }}{% else %}-{% endif %}
                         </p>
                         <div id="is_active-error" class="invalid-feedback"></div>
                     </div>
                     <div class="form-group col-md-12 mb-4">
-                        <label for="is_active">Limit special</label>
+                        <label>Limit special</label>
                         <p>
                             {% if associate.limit_special %}{{ associate.limit_special }}{% else %}-{% endif %}
                         </p>
                         <div id="is_active-error" class="invalid-feedback"></div>
                     </div>
                     <div class="form-group col-md-12 mb-4">
-                        <label for="is_active">Dues date</label>
+                        <label>Dues date</label>
                         <p>
                             {% if associate.dues_date %}{{ associate.dues_date }}{% else %}-{% endif %}
                         </p>
                         <div id="is_active-error" class="invalid-feedback"></div>
                     </div>
                     <div class="form-group col-md-12 mb-4">
-                        <label for="is_active">Commercial insurance expiry date</label>
+                        <label>Commercial insurance expiry date</label>
                         <p>
                             {% if associate.commercial_insurance_expiry_date %}{{ associate.commercial_insurance_expiry_date }}{% else %}-{% endif %}
                         </p>
                         <div id="is_active-error" class="invalid-feedback"></div>
                     </div>
                     <div class="form-group col-md-12 mb-4">
-                        <label for="is_active">Police check date</label>
+                        <label>Police check date</label>
                         <p>
                             {% if associate.police_check %}{{ associate.police_check }}{% else %}-{% endif %}
                         </p>
                         <div id="is_active-error" class="invalid-feedback"></div>
                     </div>
                     <div class="form-group col-md-12 mb-4">
-                        <label for="is_active">Drivers license class(es)</label>
+                        <label for="tax_id">HST #</label>
+                        <p>
+                            {% if associate.tax_id %}{{ associate.tax_id }}{% else %}-{% endif %}
+                        </p>
+                        <div id="tax_id-error" class="invalid-feedback"></div>
+                    </div>
+                    <div class="form-group col-md-12 mb-4">
+                        <label>Drivers license class(es)</label>
                         <p>
                             {% if associate.drivers_license_class %}{{ associate.drivers_license_class }}{% else %}-{% endif %}
                         </p>
@@ -320,7 +327,7 @@
                         <div id="vehicle_types-error" class="invalid-feedback"></div>
                     </div>
                     <div class="form-group col-md-12 mb-4">
-                        <label for="is_active">How did this associate hear about us?</label>
+                        <label>How did this associate hear about us?</label>
                         <p>
                             {% if associate.how_hear == 1 %}
                                 {{ associate.how_hear_other }}
@@ -350,7 +357,7 @@
                 <p class="border-bottom mb-3 pb-1 text-secondary">Account</p>
                 <div class="form-row">
                     <div class="form-group col-md-12 mb-4">
-                        <label for="is_active">Is active</label>
+                        <label>Is active</label>
                         <p>
                             {% if associate.owner %}
                                 {% if associate.owner.is_active == True %}Yes{% else %}No{% endif %}
