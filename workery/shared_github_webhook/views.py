@@ -16,4 +16,5 @@ from django.views.decorators.csrf import csrf_exempt
 @require_POST
 @csrf_exempt
 def github_webhook_handler(request):
+    print("######## github_webhook_handler #######")
     return HttpResponse('pong')
