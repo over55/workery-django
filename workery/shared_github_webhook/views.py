@@ -55,7 +55,7 @@ def github_webhook_handler(request):
         print("##############")
 
         import subprocess
-        res = subprocess.check_output(["sudo", "apt", "update"])
+        res = subprocess.call("redeploy.sh", shell=True)
         for line in res.splitlines():
             # process the output line by line
             print(line)
