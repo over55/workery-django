@@ -12,10 +12,10 @@
 
 <div class="container">
     <div class="row">
-        <div class="col-sm-6 mx-auto p-4">
-            <h3 class="text-center text-secondary mb-3"><i class="far fa-frown fa-5x"></i></h3>
-            <h1 class="text-center display-2 text-secondary mb-3">{% trans '404' %}</h1>
-            <h2 class="text-center text-secondary mb-3">{% trans 'Page Not Found' %}</h2>
+        <div class="col-sm-6 mx-auto px-4">
+            <h3 class="text-center text-secondary mb-0"><i class="far fa-frown fa-5x"></i></h3>
+            <h1 class="text-center display-2 text-secondary mb-2">{% trans '404' %}</h1>
+            <h2 class="text-center text-secondary mb-2">{% trans 'Page Not Found' %}</h2>
             <p class="text-center text-secondary lead mb-4">
                 {% trans 'Unfortunately we are having trouble loading the page your are looking for.' %}
                 {% if request.user.is_authenticated %}
@@ -23,15 +23,14 @@
                        {% trans 'You can return to your' %}&nbsp;<a href="{{ shared_constants.O55_APP_HTTP_PROTOCOL }}{{ request.tenant.schema_name }}.{{ shared_constants.O55_APP_HTTP_DOMAIN }}{% url 'workery_tenant_dashboard_master' %}">{% trans 'dashboard.' %}</a>
                     {% endif %}
                 {% endif %}
-                {% trans 'For immediate help, contact' %}&nbsp;<a href="mailto:support@workery.ca">{% trans 'support.' %}</a></p>
-            <br/>
+            </p>
+         
             <h4>{% trans 'Phone:' %}&nbsp;<a href="{% trans 'tel:+15194381111' %}">{% trans '(519)438-1111' %}</a></h4>
             <h4>{% trans 'E-Mail:' %}&nbsp;<a href="{% trans 'mailto:support@workery.ca' %}">{% trans 'support@workery.ca' %}</a></h4>
-            <br/>
-            <br/>
+            
             {% if request.user.is_authenticated %}
                 {% if request.tenant.schema_name != 'public' %}
-                    <p class="text-center">
+                    <p class="text-center mt-4 pt-2 mb-0">
                         <a class="btn btn-primary btn-lg" href="{{ shared_constants.O55_APP_HTTP_PROTOCOL }}{{ request.tenant.schema_name }}.{{ shared_constants.O55_APP_HTTP_DOMAIN }}{% url 'workery_tenant_dashboard_master' %}" role="button">{% trans 'Back to Dashboard' %}</a>
                     </p>
                 {% endif %}
