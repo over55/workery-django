@@ -62,8 +62,15 @@ class AbstractPerson(AbstractThing, AbstractContactPoint, AbstractPostalAddress,
     )
     gender = models.CharField(
         _("Gender"),
-        max_length=63,
+        max_length=31,
         help_text=_('Gender of the person. While Male and Female may be used, text strings are also acceptable for people who do not identify as a binary gender.'),
+        blank=True,
+        null=True,
+    )
+    tax_id = models.CharField(
+        _("Tax ID"),
+        max_length=127,
+        help_text=_('The Tax / Fiscal ID of the organization or person, e.g. the TIN in the US or the CIF/NIF in Spain.'),
         blank=True,
         null=True,
     )
