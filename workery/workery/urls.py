@@ -49,6 +49,7 @@ urlpatterns = [
     url('^', include('django.contrib.auth.urls')),
     url(r'^', include('shared_api.urls')),
     url(r'^', include('shared_foundation.urls')),
+    url(r'^', include('shared_github_webhook.urls')),
 
     #  # Sitemap
     # url(r'^sitemap\.xml$', sitemap, {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap'),
