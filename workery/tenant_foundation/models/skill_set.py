@@ -91,6 +91,12 @@ class SkillSet(models.Model):
         null=True,
         default='',
     )
+    insurance_requirements = models.ManyToManyField(
+        "InsuranceRequirement",
+        help_text=_('The insurance requirements this associate meets.'),
+        blank=True,
+        related_name="%(app_label)s_%(class)s_insurance_requirements_related"
+    )
 
     #
     #  FUNCTIONS
