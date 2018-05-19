@@ -47,6 +47,10 @@ def github_webhook_handler(request):
     # Process the GitHub events
     event = request.META.get('HTTP_X_GITHUB_EVENT', 'ping')
 
+    print(header_signature)
+    print(event)
+    print(request)
+
     if event == 'ping':
         return HttpResponse('pong')
     elif event == 'push':
