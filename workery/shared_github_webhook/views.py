@@ -50,6 +50,9 @@ def github_webhook_handler(request):
     if event == 'ping':
         return HttpResponse('pong')
     elif event == 'push':
+        print("##############")
+        print("#### PUSH ####")
+        print("##############")
         # Deploy some code for example
         return HttpResponse('success')
 
