@@ -50,17 +50,15 @@ def github_webhook_handler(request):
     if event == 'ping':
         return HttpResponse('pong')
     elif event == 'push':
-        print("##############")
-        print("#### PUSH ####")
-        print("##############")
-
+        '''
+        The following code will run the redeployment script which will
+        fetch the latest code from `github.com` and then restart our
+        server so the latest code gets applied.
+        '''
         import subprocess
         subprocess.call("sudo /opt/django/workery-django/workery/shared_github_webhook/redeploy.sh", shell=True)
 
-        print("##############")
-        print("")
-
-        # Deploy some code for example
+        # Return a success notification to `github.com`.
         return HttpResponse('success')
 
     # In case we receive an event that's not ping or push
