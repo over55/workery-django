@@ -132,7 +132,7 @@ MIDDLEWARE = [
     'trapdoor.middleware.TrapdoorMiddleware',                    # Third Party
     'whitenoise.middleware.WhiteNoiseMiddleware',                # Third Party
     'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
+    # 'django.middleware.csrf.CsrfViewMiddleware',               #TODO: Add CSRF only to specific resources.
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
