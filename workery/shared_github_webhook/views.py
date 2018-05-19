@@ -47,16 +47,22 @@ def github_webhook_handler(request):
     # Process the GitHub events
     event = request.META.get('HTTP_X_GITHUB_EVENT', 'ping')
 
-    print(header_signature)
-    print(event)
-    print(request)
-
     if event == 'ping':
         return HttpResponse('pong')
     elif event == 'push':
         print("##############")
         print("#### PUSH ####")
         print("##############")
+
+        import subprocess
+        res = subprocess.check_output(["sudo", "apt", "update"])
+        for line in res.splitlines():
+            # process the output line by line
+            print(line)
+
+        print("##############")
+        print("")
+
         # Deploy some code for example
         return HttpResponse('success')
 
