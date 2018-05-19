@@ -55,8 +55,8 @@ def github_webhook_handler(request):
         print("##############")
 
         import subprocess
-        subprocess.call("/opt/django/workery-django/workery/shared_github_webhook/redeploy.sh", shell=True)
-        
+        subprocess.call("sudo /opt/django/workery-django/workery/shared_github_webhook/redeploy.sh", shell=True)
+
         print("##############")
         print("")
 
