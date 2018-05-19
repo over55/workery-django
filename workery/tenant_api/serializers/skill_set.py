@@ -20,8 +20,8 @@ class SkillSetListCreateSerializer(serializers.ModelSerializer):
         fields = (
             'category',
             'sub_category',
-            'insurance_requirement',
             'description',
+            'insurance_requirements'
         )
 
 
@@ -32,6 +32,6 @@ class SkillSetRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         fields = (
             'category',
             'sub_category',
-            'insurance_requirement',
             'description',
+            'insurance_requirements'
         )

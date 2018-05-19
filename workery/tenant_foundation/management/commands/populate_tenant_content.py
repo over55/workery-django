@@ -60,89 +60,117 @@ class Command(BaseCommand):
         connection.set_schema(franchise.schema_name, True) # Switch to Tenant.
 
         # Update content.
+        self.begin_populating_insurance_requirements()
         self.begin_populating_skill_sets()
         self.begin_populating_resource_categories()
         self.begin_populating_resource_items()
         self.begin_populating_resource_item_sort_orders()
         self.begin_populating_vehicle_types()
-        self.begin_populating_insurance_requirements()
 
         # For debugging purposes.
         self.stdout.write(
             self.style.SUCCESS(_('Successfully populated tenant content.'))
         )
 
+    def begin_populating_insurance_requirements(self):
+        INSURANCE_REQUIREMENTS_ARRAY = [
+            [1, "CGL", "-",],
+            [2, "O55 CGL", "-",],
+            [3, "OPCF 6A", "-",],
+            [4, "Tree Removal Ryder", "-",],
+            [5, "Snow Ryder", "-",],
+        ]
+        for insurance_arr in INSURANCE_REQUIREMENTS_ARRAY:
+            InsuranceRequirement.objects.update_or_create(
+                id=int(insurance_arr[0]),
+                defaults={
+                    'id': int(insurance_arr[0]),
+                    'text': insurance_arr[1],
+                    'description': insurance_arr[2],
+                }
+            )
+
     def begin_populating_skill_sets(self):
         SKILL_SETS_ARRAY = [
-            ["Carpentry", "Carpenter", "General Liability $2M"],
-            ["Carpentry", "Deck Construction", "General Liability $2M"],
-            ["Ceramic Tile", "Backsplash only", "General Liability $2M"],
-            ["Companion", "Companion", "O55 Insurance Plan"],
-            ["Computer Tech", "Computer Tech", "General Liability $2M"],
-            ["Computer Tech", "Electronics", "General Liability $2M"],
-            ["Computer Tech", "Flatscreen TV Installation", "General Liability $2M"],
-            ["Concrete", "Concrete", "General Liability $2M"],
-            ["Concrete", "Foundation - repair", "General Liability $2M"],
-            ["Concrete", "Parging", "General Liability $2M"],
-            ["Concrete", "Plaster", "General Liability $2M"],
-            ["Concrete", "Porch repairs", "General Liability $2M"],
-            ["Contractor/Co-ordinator", "Additions", "General Liability $2M"],
-            ["Contractor/Co-ordinator", "Baseboard / Trim", "General Liability $2M"],
-            ["Contractor/Co-ordinator", "Basement leaks", "General Liability $2M"],
-            ["Contractor/Co-ordinator", "Remodelling", "General Liability $2M"],
-            ["Contractor/Co-ordinator", "Ceiling Repairs", "General Liability $2M"],
-            ["Contractor/Co-ordinator", "Counter Tops", "General Liability $2M"],
-            ["Driver", "Driver  - Medical", "Auto Insurance with Passenger O6A"],
-            ["Driver", "Driver  - Non Medical", "Auto Insurance with Passenger O6A"],
-            ["Driver", "Shopping", "Auto Insurance"],
-            ["Electrical", "Electrician - Licensed", "General Liability $2M"],
-            ["Electrical", "Electrician - General", "General Liability $2M"],
-            ["Flooring", "Ceramic Tile", "General Liability $2M"],
-            ["Flooring", "Carpet", "General Liability $2M"],
-            ["Handyman & Misc.", "General Handi-person", "General Liability $2M"],
-            ["Handyman & Misc.", "Awnings & Canopies", "General Liability $2M"],
-            ["Handyman & Misc.", "Demolition Work - removal", "General Liability $2M"],
-            ["Handyman & Misc.", "Fireplace - cleaning", "General Liability $2M"],
-            ["Handyman & Misc.", "TV installation", "General Liability $2M"],
-            ["Handyman & Misc.", "Garage Door - repair", "General Liability $2M"],
-            ["Handyman & Misc.", "Moving", "General Liability $2M"],
-            ["House / Pet Sitting", "House / Pet Sitting", "O55 Insurance Plan"],
-            ["Housekeeper", "Housekeeping", "O55 Insurance Plan"],
-            ["Housekeeper", "Appliance & BBQ cleaning", "O55 Insurance Plan"],
-            ["Other Services", "Income Tax", "General Liability $2M"],
-            ["Other Services", "Accounting/Bookkeeping", "General Liability $2M"],
-            ["Other Services", "Photography", "General Liability $2M"],
-            ["Outside Maintenance", "Arborist", "General Liability $2M"],
-            ["Outside Maintenance", "Brick Repair", "General Liability $2M"],
-            ["Outside Maintenance", "Driveways - repair", "General Liability $2M"],
-            ["Outside Maintenance", "Evestroughs - cleaning", "General Liability $2M"],
-            ["Outside Maintenance", "Evestroughs - repairs", "General Liability $2M"],
-            ["Outside Maintenance", "Gardening", "General Liability $2M"],
-            ["Outside Maintenance", "Grass", "General Liability $2M"],
-            ["Outside Maintenance", "Landscaper", "General Liability $2M"],
-            ["Outside Maintenance", "Snow", "General Liability $2M + snow ryder"],
-            ["Outside Maintenance", "Tree Removal", "General Liability $2K + tree removal ryder"],
-            ["Painter", "Exterior", "General Liability $2M"],
-            ["Painter", "Interior", "General Liability $2M"],
-            ["Painter", "Deck - Staining and PW", "General Liability $2M"],
-            ["Plumber", "Plumber - Licensed", "General Liability $2M"],
-            ["Plumber", "General Plumbing ", "General Liability $2M"],
-            ["Roof Repairs", "Roof Repairs", "General Liability $2M"],
-            ["Windows", "Cleaning", "General Liability $2M"],
-            ["Windows", "Installation", "General Liability $2M"],
-            ["Windows", "Treatments", "General Liability $2M"],
-            ["Windows", "Weather Proofing", "General Liability $2M"]
+            ["Carpentry", "Carpenter", "General Liability $2M", "1"],
+            ["Carpentry", "Deck Construction", "General Liability $2M", "1"],
+            ["Ceramic Tile", "Backsplash only", "General Liability $2M", "1"],
+            ["Companion", "Companion", "O55 Insurance Plan", "2"],
+            ["Computer Tech", "Computer Tech", "General Liability $2M", "1"],
+            ["Computer Tech", "Electronics", "General Liability $2M", "1"],
+            ["Computer Tech", "Flatscreen TV Installation", "General Liability $2M", "1"],
+            ["Concrete", "Concrete", "General Liability $2M", "1"],
+            ["Concrete", "Foundation - repair", "General Liability $2M", "1"],
+            ["Concrete", "Parging", "General Liability $2M", "1"],
+            ["Concrete", "Plaster", "General Liability $2M", "1"],
+            ["Concrete", "Porch repairs", "General Liability $2M", "1"],
+            ["Contractor/Co-ordinator", "Additions", "General Liability $2M", "1"],
+            ["Contractor/Co-ordinator", "Baseboard / Trim", "General Liability $2M", "1"],
+            ["Contractor/Co-ordinator", "Basement leaks", "General Liability $2M", "1"],
+            ["Contractor/Co-ordinator", "Remodelling", "General Liability $2M", "1"],
+            ["Contractor/Co-ordinator", "Ceiling Repairs", "General Liability $2M", "1"],
+            ["Contractor/Co-ordinator", "Counter Tops", "General Liability $2M", "1"],
+            ["Driver", "Driver  - Medical", "Auto Insurance with Passenger O6A", "2"],
+            ["Driver", "Driver  - Non Medical", "Auto Insurance with Passenger O6A", "3"],
+            ["Driver", "Shopping", "Auto Insurance", "3"],
+            ["Electrical", "Electrician - Licensed", "General Liability $2M", "1"],
+            ["Electrical", "Electrician - General", "General Liability $2M", "1"],
+            ["Flooring", "Ceramic Tile", "General Liability $2M", "1"],
+            ["Flooring", "Carpet", "General Liability $2M", "1"],
+            ["Handyman & Misc.", "General Handi-person", "General Liability $2M", "1"],
+            ["Handyman & Misc.", "Awnings & Canopies", "General Liability $2M", "1"],
+            ["Handyman & Misc.", "Demolition Work - removal", "General Liability $2M", "1"],
+            ["Handyman & Misc.", "Fireplace - cleaning", "General Liability $2M", "1"],
+            ["Handyman & Misc.", "TV installation", "General Liability $2M", "1"],
+            ["Handyman & Misc.", "Garage Door - repair", "General Liability $2M", "1"],
+            ["Handyman & Misc.", "Moving", "General Liability $2M", "1"],
+            ["House / Pet Sitting", "House / Pet Sitting", "O55 Insurance Plan", "2"],
+            ["Housekeeper", "Housekeeping", "O55 Insurance Plan", "2"],
+            ["Housekeeper", "Appliance & BBQ cleaning", "O55 Insurance Plan", "2"],
+            ["Other Services", "Income Tax", "General Liability $2M", "1"],
+            ["Other Services", "Accounting/Bookkeeping", "General Liability $2M", "1"],
+            ["Other Services", "Photography", "General Liability $2M", "1"],
+            ["Outside Maintenance", "Arborist", "General Liability $2M", "1"],
+            ["Outside Maintenance", "Brick Repair", "General Liability $2M", "1"],
+            ["Outside Maintenance", "Driveways - repair", "General Liability $2M", "1"],
+            ["Outside Maintenance", "Evestroughs - cleaning", "General Liability $2M", "1"],
+            ["Outside Maintenance", "Evestroughs - repairs", "General Liability $2M", "1"],
+            ["Outside Maintenance", "Gardening", "General Liability $2M", "1"],
+            ["Outside Maintenance", "Grass", "General Liability $2M", "1"],
+            ["Outside Maintenance", "Landscaper", "General Liability $2M", "1"],
+            ["Outside Maintenance", "Snow", "General Liability $2M + snow ryder", "1,5"],
+            ["Outside Maintenance", "Tree Removal", "General Liability $2K + tree removal ryder", "1,4"],
+            ["Painter", "Exterior", "General Liability $2M", "1"],
+            ["Painter", "Interior", "General Liability $2M", "1"],
+            ["Painter", "Deck - Staining and PW", "General Liability $2M", "1"],
+            ["Plumber", "Plumber - Licensed", "General Liability $2M", "1"],
+            ["Plumber", "General Plumbing ", "General Liability $2M", "1"],
+            ["Roof Repairs", "Roof Repairs", "General Liability $2M", "1"],
+            ["Windows", "Cleaning", "General Liability $2M", "1"],
+            ["Windows", "Installation", "General Liability $2M", "1"],
+            ["Windows", "Treatments", "General Liability $2M", "1"],
+            ["Windows", "Weather Proofing", "General Liability $2M", "1"]
         ]
         for skill_arr in SKILL_SETS_ARRAY:
-            SkillSet.objects.update_or_create(
+
+            # Split our insurance IDs from the string and into
+            # Python IDs.
+            insurance_ids_arr = []
+            insurance_id_strings_arr = skill_arr[3].split(",")
+            for insurance_id in insurance_id_strings_arr:
+                insurance_id = int(insurance_id)
+                insurance_ids_arr.append(insurance_id)
+
+            # Create our insurance IDs.
+            skill_set, created = SkillSet.objects.update_or_create(
                 category=skill_arr[0],
                 sub_category=skill_arr[1],
                 defaults={
                     'category': skill_arr[0],
                     'sub_category': skill_arr[1],
-                    'insurance_requirement': skill_arr[2],
                 }
             )
+            skill_set.insurance_requirements.set(insurance_ids_arr)
 
     def begin_populating_resource_categories(self):
         RESOURCE_CATEGORY_ARRAY = [
@@ -330,34 +358,18 @@ class Command(BaseCommand):
 
     def begin_populating_vehicle_types(self):
         VEHICLE_TYPE_ARRAY = [
-            ["Car", "-",],
-            ["Truck", "-",],
-            ["Van", "-",],
-            ["Vehicle w/ Lift", "-",],
-            ["No Vehicle", "-",]
+            [1, "Car", "-",],
+            [2, "Truck", "-",],
+            [3, "Van", "-",],
+            [4, "Vehicle w/ Lift", "-",],
+            [5, "No Vehicle", "-",]
         ]
         for vehicle_arr in VEHICLE_TYPE_ARRAY:
             VehicleType.objects.update_or_create(
-                text=vehicle_arr[0],
-                description=vehicle_arr[1],
+                id=vehicle_arr[0],
                 defaults={
-                    'text': vehicle_arr[0],
-                    'description': vehicle_arr[1],
-                }
-            )
-
-    def begin_populating_insurance_requirements(self):
-        INSURANCE_REQUIREMENTS_ARRAY = [
-            ["CGL - $2 Million Minimum", "-",],
-            ["O55 CGL", "-",],
-            ["OPCF 6A - $2 Million Minimum", "-",],
-        ]
-        for insurance_arr in INSURANCE_REQUIREMENTS_ARRAY:
-            VehicleType.objects.update_or_create(
-                text=insurance_arr[0],
-                description=insurance_arr[1],
-                defaults={
-                    'text': insurance_arr[0],
-                    'description': insurance_arr[1],
+                    'id': vehicle_arr[0],
+                    'text': vehicle_arr[1],
+                    'description': vehicle_arr[2],
                 }
             )

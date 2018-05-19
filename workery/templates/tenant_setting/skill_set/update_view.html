@@ -11,6 +11,16 @@
 {% block content %}
 
 <script>
+    /**
+     *  When page loads, the following code will be run first.
+     */
+    $(document).ready(function () {
+        //------------------------//
+        // SELECT2 INITIALIZATION //
+        //------------------------//
+        $('#insurance_requirements').select2();
+    });
+
     function click_cancel_button() {
         window.location = "{% url 'workery_tenant_settings_skill_set_list' %}";
     }
@@ -21,8 +31,8 @@
             {
                 'category': $('#category').val(),
                 'sub_category': $('#sub_category').val(),
-                'insurance_requirement': $('#insurance_requirement').val(),
-                'description': $('#description').val()
+                'description': $('#description').val(),
+                'insurance_requirements': $('#insurance_requirements').val()
             },
             function(skill_set) {
                 console.log(skill_set);
@@ -77,9 +87,13 @@
                         <div id="sub_category-error" class="invalid-feedback"></div>
                     </div>
                     <div class="form-group col-md-12 mb-4">
-                        <label for="insurance_requirement">Insurance Requirement</label>
-                        <input type="text" class="form-control form-control-lg border border-primary" id="insurance_requirement" name="insurance_requirement" placeholder="Text" minlength="3" required="" autofocus value="{{ skill_set.insurance_requirement }}">
-                        <div id="insurance_requirement-error" class="invalid-feedback"></div>
+                        <label for="insurance_requirements">Insurance Requirement(s)</label>
+                        <select id="insurance_requirements" name="insurance_requirements" class="form-control form-control-lg border border-success" name="states[]" multiple="multiple">
+                        {% for insurance_requirement in insurance_requirements %}
+                            <option value="{{ insurance_requirement.id }}" id="insurance_requirement_option_id_{{ insurance_requirement.id }}" {% if insurance_requirement in skill_set.insurance_requirements.all %}selected{% endif %}>{{ insurance_requirement }}</option>
+                        {% endfor %}
+                        </select>
+                        <div id="insurance_requirements-error" class="invalid-feedback"></div>
                     </div>
                     <div class="form-group col-md-12 mb-4">
                         <label for="description">Description</label>

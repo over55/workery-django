@@ -631,10 +631,10 @@
                         if(err.hasOwnProperty(prop)) {
                             var val = err[prop];
                             var fdname = humanize(prop);
-			    // Errors box code 
+			    // Errors box code
 			    $('#all_error_result').append("<div class='form-error'><b>"+fdname+":</b> "+val+" </div>");
 			    $('#all_error_result').addClass('error-block');
-				
+
 			    // Inline fields errors code
 			    $('#'+prop+'-error').append(val);
 			    $('#add-member-form').addClass('was-validated');

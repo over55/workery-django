@@ -18,15 +18,10 @@ class SkillSetFilter(django_filters.FilterSet):
         name="sub_category",
         label="Sub Category",)
 
-    insurance_requirement = django_filters.AllValuesMultipleFilter(
-        name="insurance_requirement",
-        label="Insurance Requirement",)
-
     class Meta:
         model = SkillSet
         fields = [
             'id',
             'category',
             'sub_category',
-            'insurance_requirement'
         ]

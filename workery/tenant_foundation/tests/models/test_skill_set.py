@@ -26,7 +26,6 @@ class TestTenantSkillSetModel(TenantTestCase):
         self.skill_set = SkillSet.objects.create(
            category="Carpentry",
            sub_category="Carpentry",
-           insurance_requirement="General Liability $2M"
         )
 
     def tearDown(self):

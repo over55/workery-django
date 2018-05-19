@@ -69,13 +69,13 @@ class InsuranceRequirement(models.Model):
     text = models.CharField(
         _("Text"),
         max_length=31,
-        help_text=_('The text content of this insurance_requirement.'),
+        help_text=_('The text content of this insurance requirement.'),
         db_index=True,
         unique=True
     )
     description = models.TextField(
         _("Description"),
-        help_text=_('A short description of this insurance_requirement.'),
+        help_text=_('A short description of this insurance requirement.'),
         blank=True,
         null=True,
         default='',

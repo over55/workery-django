@@ -90,8 +90,7 @@
                     <th>{% trans 'ID #' %}</th>
                     <th>{% trans 'Category' %}</th>
                     <th>{% trans 'Sub-Category' %}</th>
-                    <th>{% trans 'Insurance Requirement' %}</th>
-                    <th>{% trans 'Description' %}</th>
+                    <th>{% trans 'Insurance Requirement(s)' %}</th>
                     <th></th>
                 </tr>
             </thead>
@@ -108,13 +107,12 @@
                         {{ skill_set.sub_category }}
                     </td>
                     <td>
-                        {{ skill_set.insurance_requirement }}
+                        {% for insurance in skill_set.insurance_requirements.all %}
+                            {{ insurance }}
+                            {% if not forloop.last %},{% endif %}
+                        {% endfor %}
                     </td>
                     <td>
-                        {{ skill_set.description }}
-                    </td>
-                    <td>
-
                         <button id="id_delete_btn"
                              class="btn btn-danger btn-lg m-2 float-right px-4"
                               type="button"

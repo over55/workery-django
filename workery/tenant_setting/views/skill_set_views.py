@@ -7,6 +7,7 @@ from django.utils.translation import ugettext_lazy as _
 from shared_foundation.mixins import ExtraRequestProcessingMixin
 from tenant_api.filters.staff import StaffFilter
 from tenant_foundation.models import (
+    InsuranceRequirement,
     SkillSet,
     Tag
 )
@@ -31,7 +32,7 @@ class SkillSetListView(ListView, ExtraRequestProcessingMixin):
         return modified_context
 
     def get_queryset(self):
-        queryset = SkillSet.objects.all().order_by('category', 'sub_category', 'insurance_requirement')
+        queryset = SkillSet.objects.all().order_by('category', 'sub_category')
 
         # # The following code will use the 'django-filter'
         # filter = CustomerFilter(self.request.GET, queryset=queryset)
@@ -56,6 +57,9 @@ class SkillSetUpdateView(DetailView):
         # Required for navigation
         modified_context['current_page'] = "settings"
 
+        # Add extra database lookups.
+        modified_context['insurance_requirements'] = InsuranceRequirement.objects.all()
+
         # Return our modified context.
         return modified_context
 
@@ -65,6 +69,14 @@ class SkillSetCreateView(TemplateView):
     template_name = 'tenant_setting/skill_set/create_view.html'
 
     def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['current_page'] = "setting" # Required for navigation
-        return context
+        # Get the context of this class based view.
+        modified_context = super().get_context_data(**kwargs)
+
+        # Required for navigation
+        modified_context['current_page'] = "setting"
+
+        # Add extra database lookups.
+        modified_context['insurance_requirements'] = InsuranceRequirement.objects.all()
+
+        # Return our modified context.
+        return modified_context
