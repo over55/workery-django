@@ -42,51 +42,82 @@ class Command(BaseCommand):
         group.save()
 
         permission_codenames = [
+            # --- Customers --- #
             'can_get_customers',
             'can_get_customer',
             'can_post_customer',
             'can_put_customer',
             'can_delete_customer',
+
+            # --- Associate --- #
             'can_get_associates',
             'can_get_associate',
             'can_post_associate',
             'can_put_associate',
             'can_delete_associate',
+
+            # --- Order --- #
             'can_get_orders',
             'can_get_order',
             'can_post_order',
             'can_put_order',
             'can_delete_order',
+
+            # --- Comment --- #
             'can_get_comments',
             'can_get_comment',
             'can_post_comment',
             'can_put_comment',
             'can_delete_comment',
+
+            # --- Tag --- #
             'can_get_tags',
             'can_get_tag',
             'can_post_tag',
             'can_put_tag',
             'can_delete_tag',
+
+            # --- Skill Set --- #
             'can_get_skill_sets',
             'can_get_skill_set',
             'can_post_skill_set',
             'can_put_skill_set',
             'can_delete_skill_set',
+
+            # --- Staff --- #
             'can_get_staves',
             'can_get_staff',
             'can_post_staff',
             'can_put_staff',
             'can_delete_staff',
+
+            # --- Partner --- #
             'can_get_partners',
             'can_get_partner',
             'can_post_partner',
             'can_put_partner',
             'can_delete_partner',
+
+            # --- Away Log --- #
             'can_get_away_logs',
             'can_get_away_log',
             'can_post_away_log',
             'can_put_away_log',
-            'can_delete_away_log'
+            'can_delete_away_log',
+
+            # --- Insurance Requirement --- #
+            'can_get_insurance_requirements',
+            'can_get_insurance_requirement',
+            'can_post_insurance_requirement',
+            'can_put_insurance_requirement',
+            'can_delete_insurance_requirement',
+
+            # --- Task Item --- #
+            'can_get_task_items',
+            'can_get_task_item',
+            'can_post_task_item',
+            'can_put_task_item',
+            'can_delete_task_item',
         ]
         permissions = Permission.objects.filter(codename__in=permission_codenames)
         for permission in permissions.all():
@@ -100,52 +131,83 @@ class Command(BaseCommand):
         group.save()
 
         permission_codenames = [
+            # --- Customers --- #
             'can_get_customers',
             'can_get_customer',
             'can_post_customer',
             'can_put_customer',
             'can_delete_customer',
             #'can_delete_customer',
+
+            # --- Associate --- #
             'can_get_associates',
             'can_get_associate',
             'can_post_associate',
             'can_put_associate',
             # 'can_delete_associate',
+
+            # --- Order --- #
             'can_get_orders',
             'can_get_order',
             'can_post_order',
             'can_put_order',
             # 'can_delete_order',
+
+            # --- Comment --- #
             'can_get_comments',
             'can_get_comment',
             'can_post_comment',
             'can_put_comment',
             # 'can_delete_comment',
+
+            # --- Tag --- #
             'can_get_tags',
             'can_get_tag',
             'can_post_tag',
             'can_put_tag',
             'can_delete_tag',
+
+            # --- Skill Set --- #
             'can_get_skill_sets',
             'can_get_skill_set',
             'can_post_skill_set',
             'can_put_skill_set',
             'can_delete_skill_set',
+
+            # --- Staff --- #
             'can_get_staves',
             'can_get_staff',
             'can_post_staff',
             'can_put_staff',
             'can_delete_staff',
+
+            # --- Partner --- #
             'can_get_partners',
             'can_get_partner',
             'can_post_partner',
             'can_put_partner',
             'can_delete_partner',
+
+            # --- Away Log --- #
             'can_get_away_logs',
             'can_get_away_log',
             'can_post_away_log',
             'can_put_away_log',
-            'can_delete_away_log'
+            'can_delete_away_log',
+
+            # --- Insurance Requirement --- #
+            'can_get_insurance_requirements',
+            'can_get_insurance_requirement',
+            'can_post_insurance_requirement',
+            'can_put_insurance_requirement',
+            'can_delete_insurance_requirement',
+
+            # --- Task Item --- #
+            'can_get_task_items',
+            'can_get_task_item',
+            'can_post_task_item',
+            'can_put_task_item',
+            'can_delete_task_item',
         ]
         permissions = Permission.objects.filter(codename__in=permission_codenames)
         for permission in permissions.all():
@@ -159,48 +221,79 @@ class Command(BaseCommand):
         group.save()
 
         permission_codenames = [
+            # --- Customers --- #
             'can_get_customers',
             'can_get_customer',
             'can_post_customer',
             'can_put_customer',
             # 'can_delete_customer',
+
+            # --- Associate --- #
             'can_get_associates',
             'can_get_associate',
             'can_post_associate',
             'can_put_associate',
             # 'can_delete_associate',
+
+            # --- Order --- #
             'can_get_orders',
             'can_get_order',
             'can_post_order',
             'can_put_order',
             # 'can_delete_order',
+
+            # --- Comment --- #
             'can_get_comments',
             'can_get_comment',
             'can_post_comment',
             'can_put_comment',
             # 'can_delete_comment',
+
+            # --- Tag --- #
             'can_get_tags',
             'can_get_tag',
             'can_post_tag',
             'can_put_tag',
             # 'can_delete_tag',
+
+            # --- Skill Set --- #
             'can_get_skill_sets',
             'can_get_skill_set',
+
+            # --- Staff --- #
             # 'can_get_staves',
             'can_get_staff',
             # 'can_post_staff',
             'can_put_staff',
             # 'can_delete_staff',
+
+            # --- Partner --- #
             'can_get_partners',
             'can_get_partner',
             'can_post_partner',
             'can_put_partner',
             'can_delete_partner',
+
+            # --- Away Log --- #
             'can_get_away_logs',
             'can_get_away_log',
             'can_post_away_log',
             'can_put_away_log',
-            'can_delete_away_log'
+            'can_delete_away_log',
+
+            # --- Insurance Requirement --- #
+            'can_get_insurance_requirements',
+            'can_get_insurance_requirement',
+            'can_post_insurance_requirement',
+            'can_put_insurance_requirement',
+            'can_delete_insurance_requirement',
+
+            # --- Task Item --- #
+            'can_get_task_items',
+            'can_get_task_item',
+            'can_post_task_item',
+            'can_put_task_item',
+            'can_delete_task_item',
         ]
         permissions = Permission.objects.filter(codename__in=permission_codenames)
         for permission in permissions.all():
@@ -212,12 +305,21 @@ class Command(BaseCommand):
         group.save()
 
         permission_codenames = [
+            # --- Associate --- #
             'can_get_associate',
             'can_put_associate',
+
+            # --- Tag --- #
             'can_get_tags',
             'can_get_tag',
+
+            # --- Skill Set --- #
             'can_get_skill_sets',
             'can_get_skill_set',
+
+            # --- Insurance Requirement --- #
+            'can_get_insurance_requirements',
+            'can_get_insurance_requirement',
         ]
         permissions = Permission.objects.filter(codename__in=permission_codenames)
         for permission in permissions.all():
@@ -231,12 +333,21 @@ class Command(BaseCommand):
         group.save()
 
         permission_codenames = [
+            # --- Customers --- #
             'can_get_customer',
             'can_put_customer',
+
+            # --- Tag --- #
             'can_get_tags',
             'can_get_tag',
+
+            # --- Skill Set --- #
             'can_get_skill_sets',
             'can_get_skill_set',
+
+            # --- Insurance Requirement --- #
+            'can_get_insurance_requirements',
+            'can_get_insurance_requirement',
         ]
         permissions = Permission.objects.filter(codename__in=permission_codenames)
         for permission in permissions.all():

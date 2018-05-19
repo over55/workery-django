@@ -6,6 +6,7 @@ from tenant_foundation.models.abstract_geo_coorindate import AbstractGeoCoordina
 from tenant_foundation.models.abstract_person import AbstractPerson
 
 # Base Models
+from tenant_foundation.models.insurance_requirement import InsuranceRequirement
 from tenant_foundation.models.tag import Tag
 from tenant_foundation.models.skill_set import SkillSet
 from tenant_foundation.models.opening_hours_specification import OpeningHoursSpecification

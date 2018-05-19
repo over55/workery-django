@@ -17,6 +17,7 @@ from tenant_foundation.models import (
     Associate,
     # Comment,
     Customer,
+    InsuranceRequirement,
     Organization,
     Order,
     # OrderComment,
@@ -64,6 +65,7 @@ class Command(BaseCommand):
         self.begin_populating_resource_items()
         self.begin_populating_resource_item_sort_orders()
         self.begin_populating_vehicle_types()
+        self.begin_populating_insurance_requirements()
 
         # For debugging purposes.
         self.stdout.write(
@@ -341,5 +343,21 @@ class Command(BaseCommand):
                 defaults={
                     'text': vehicle_arr[0],
                     'description': vehicle_arr[1],
+                }
+            )
+
+    def begin_populating_insurance_requirements(self):
+        INSURANCE_REQUIREMENTS_ARRAY = [
+            ["CGL - $2 Million Minimum", "-",],
+            ["O55 CGL", "-",],
+            ["OPCF 6A - $2 Million Minimum", "-",],
+        ]
+        for insurance_arr in INSURANCE_REQUIREMENTS_ARRAY:
+            VehicleType.objects.update_or_create(
+                text=insurance_arr[0],
+                description=insurance_arr[1],
+                defaults={
+                    'text': insurance_arr[0],
+                    'description': insurance_arr[1],
                 }
             )
