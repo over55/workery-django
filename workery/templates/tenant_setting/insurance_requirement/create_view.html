@@ -1,0 +1,102 @@
+{% extends 'tenant_foundation/tenant_base.html' %}
+{% load staticfiles i18n foundation_tags humanize %}
+
+{% block title %}
+{% trans 'Insurance Requirement | Workery' %}
+{% endblock title %}
+
+{% block header_content %}
+{% endblock header_content %}
+
+{% block content %}
+
+<script>
+    function click_cancel_button() {
+        window.location = "{% url 'workery_tenant_settings_insurance_requirements_list' %}";
+    }
+
+    function click_submit_button() {
+        var insurance_requirement_text = $('#insurance_requirement_text').val();
+        create_insurance_requirement_api(
+            {
+                'text': $('#insurance_requirement_text').val(),
+                'description': $('#insurance_requirement_desc').val()
+            },
+            function(insurance_requirement) {
+                window.location = "{% url 'workery_tenant_settings_insurance_requirements_list' %}?was_created=True";
+            },
+            function(json_results) {
+                console.log(json_results);
+            },
+            function(xhr, status) {
+                console.log(xhr, status);
+            }
+        );
+    }
+</script>
+
+<main id="main" role="main">
+
+    <!-- BREADCRUMB -->
+    <!------------------------------------------------------------------------->
+    <nav aria-label="breadcrumb">
+	  	<ol class="breadcrumb">
+	    	<li class="breadcrumb-item"><a href="{% url 'workery_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'workery_tenant_settings_launchpad' %}">{% trans 'Settings' %}</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'workery_tenant_settings_insurance_requirements_list' %}">{% trans 'Insurance Requirements' %}</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{% trans 'Add Insurance Requirement' %}</li>
+	  	</ol>
+	</nav>
+    <!------------------------------------------------------------------------->
+    <!-- end BREADCRUMB -->
+
+    <h1>Add Insurance Requirement</h1>
+
+    <!-- FORM -->
+    <!------------------------------------------------------------------------->
+    <div class="col-sm-5 mx-auto mt-2">
+        <!-- Residential form -->
+        <div class="col-sm-12 fade show active" id="client-form" aria-labelledby="commercial">
+            <h3 class="pt-4 pb-2 text-center">Add Insurance Requirement</h3>
+            <p>Please change the text of the insurance_requirement.</p>
+
+            <form id="add-client-form" method="post" class="needs-validation" action="" novalidate>
+                <div class="form-row">
+                    <div class="form-group col-md-12 mb-4">
+                        <label for="insurance_requirement_text">Text</label>
+                        <input type="text" class="form-control form-control-lg border border-primary" id="insurance_requirement_text" name="insurance_requirement_text" placeholder="Text" minlength="3" required="" autofocus value="{{ insurance_requirement.text }}">
+                        <div id="insurance_requirement_text-error" class="invalid-feedback"></div>
+                    </div>
+                    <div class="form-group col-md-12 mb-4">
+                        <label for="insurance_requirement_text">Description</label>
+                        <input type="text" class="form-control form-control-lg border border-primary" id="insurance_requirement_desc" name="insurance_requirement_desc" placeholder="Description" minlength="3" required="" autofocus value="{{ insurance_requirement.description }}">
+                        <div id="insurance_requirement_text-error" class="invalid-feedback"></div>
+                    </div>
+                </div>
+            </form>
+
+            <!-- end SUBMIT BUTTON -->
+            <div class="form-group col-md-12 mb-3 p-0 mx-auto text-center">
+                <button id="id_submit_btn"
+                     class="btn btn-primary btn-lg mt-4 float-right pl-4 pr-4"
+                      type="button"
+                   onclick="click_submit_button();">
+                    <i class="fas fa-plus"></i> Add Insurance Requirement</button>
+                <button id="id_cancel_btn"
+                     class="btn btn-orange btn-lg mt-4 float-left pl-4 pr-4"
+                      type="button"
+                   onclick="click_cancel_button();">
+                    <i class="fas fa-times"></i>&nbsp;Cancel
+                </button>
+            </div>
+            <!-- end SUBMIT BUTTON -->
+
+        </div>
+    </div>
+
+
+    <!-- RETURN-TO-TOP -->
+    <a id="return-to-top" href="#" class="btn-info btn-lg back-to-top" role="button" title="Back to top"><i class="fas fa-angle-up fa-2x"></i></a>
+    <!-- end RETURN-TO-TOP -->
+</main>
+{% endblock content %}

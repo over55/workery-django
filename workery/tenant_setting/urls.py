@@ -3,6 +3,7 @@ from django.urls import path
 from django.views.generic.base import RedirectView
 from tenant_setting.views import (
     awaylog_views,
+    insurance_requirement_views,
     launchpad_views,
     skill_set_views,
     tag_views
@@ -27,4 +28,9 @@ urlpatterns = (
     path('settings/skill_sets/', skill_set_views.SkillSetListView.as_view(), name='workery_tenant_settings_skill_set_list'),
     path('settings/skill_set/create/', skill_set_views.SkillSetCreateView.as_view(), name='workery_tenant_settings_skill_set_create'),
     path('settings/skill_set/<int:pk>/', skill_set_views.SkillSetUpdateView.as_view(), name='workery_tenant_settings_skill_set_update'),
+
+    # Tag
+    path('settings/insurance_requirements/', insurance_requirement_views.TagListView.as_view(), name='workery_tenant_settings_insurance_requirements_list'),
+    path('settings/insurance_requirement/create/', insurance_requirement_views.TagCreateView.as_view(), name='workery_tenant_settings_insurance_requirement_create'),
+    path('settings/insurance_requirement/<int:pk>/', insurance_requirement_views.TagUpdateView.as_view(), name='workery_tenant_settings_insurance_requirement_update'),
 )
