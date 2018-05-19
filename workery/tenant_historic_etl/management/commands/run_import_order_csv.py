@@ -129,11 +129,11 @@ class Command(BaseCommand):
             professional = row_dict[18]
             refer = row_dict[19]
 
-            # # Convert the datetime.
+            # Convert the datetime.
             # local_birthdate = self.get_date_from_formatting1(birthdate)
-            local_assign_date = self.get_date_from_formatting2(assign_date)
-            local_payment_date = self.get_date_from_formatting2(payment_date)
-            local_completion_date = self.get_date_from_formatting2(completion_date)
+            local_assign_date = self.get_date_from_formatting3(assign_date)
+            local_payment_date = self.get_date_from_formatting3(payment_date)
+            local_completion_date = self.get_date_from_formatting3(completion_date)
 
             # Convert to money.
             local_service_fee = Money(0.00, O55_APP_DEFAULT_MONEY_CURRENCY)
@@ -251,6 +251,20 @@ class Command(BaseCommand):
             arr = assign_date.split("-")
             year = "20"+arr[2]
             day = arr[0]
+            month = arr[1]
+            dt_string = year+"-"+month+"-"+day
+            dt = get_utc_dt_from_toronto_dt_string(dt_string)
+            return dt
+        return None
+
+    def get_date_from_formatting3(self, assign_date):
+        """
+        Format `'01-Dec-17` to '2017-Dec-01'.
+        """
+        if assign_date:
+            arr = assign_date.split("-")
+            year = arr[0]
+            day = arr[2]
             month = arr[1]
             dt_string = year+"-"+month+"-"+day
             dt = get_utc_dt_from_toronto_dt_string(dt_string)
