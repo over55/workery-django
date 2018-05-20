@@ -490,8 +490,8 @@
             <div class="form-group col-md-12 mb-4 p-0">
   		      <label for="describe" class="font-b6">Describe the client:</label>
   		      <textarea class="form-control form-control-lg border border-success" id="describe" name="describe" placeholder="Describe here..." rows="4" minlength="10" required></textarea>
-  		      <div id="describe-error" class="invalid-feedback"></div>
-              <small class="form-text text-muted">Maximum 1,000 characters.</small>
+   	              <small class="form-text text-muted">Maximum 1,000 characters.</small>
+		      <div id="describe-error" class="invalid-feedback"></div>
             </div>
         </div>
         <!-- ############ end PERSON ############ -->
@@ -522,9 +522,9 @@
                 <div class="form-radio custom-control custom-radio custom-control-inline">
                     <input type="radio" id="is_ok_to_email2" name="is_ok_to_email" value="no" class="custom-control-input form-check-input" required>
                     <label class="custom-control-label form-check-label" for="is_ok_to_email2">No</label>
-                    <div id="is_ok_to_email-error" class="invalid-feedback ml-2"></div>
                 </div>
                 <small class="form-text text-muted">Selecting "yes" will result in client getting emails from our system.</small>
+		<div id="is_ok_to_email-error" class="invalid-feedback ml-2"></div>
             </div>
             <div class="form-group col-md-12 mb-4">
                 <p class="mb-1">Ok to Text? <sup>*</sup></p>
@@ -535,9 +535,9 @@
                 <div class="form-radio custom-control custom-radio custom-control-inline">
                     <input type="radio" id="is_ok_to_text2" name="is_ok_to_text" value="no" class="custom-control-input form-check-input" required>
                     <label class="custom-control-label form-check-label" for="is_ok_to_text2">No</label>
-                    <div id="is_ok_to_text-error" class="invalid-feedback ml-2"></div>
                 </div>
-                <small class="form-text text-muted">Selecting "yes" will result in client getting texts from our system.</small>
+                    <small class="form-text text-muted">Selecting "yes" will result in client getting texts from our system.</small>
+		    <div id="is_ok_to_text-error" class="invalid-feedback ml-2"></div>
             </div>
             <div class="form-group col-md-12 mb-4">
                 <label for="tag">Tags</label>
