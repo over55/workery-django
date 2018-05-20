@@ -83,7 +83,8 @@ class OrderListCreateSerializer(serializers.ModelSerializer):
             'skill_sets',
             'description',
             'start_date',
-            'follow_up_days_number'
+            'follow_up_days_number',
+            'invoice_service_fee',
         )
 
     def setup_eager_loading(cls, queryset):
@@ -95,7 +96,8 @@ class OrderListCreateSerializer(serializers.ModelSerializer):
             'customer',
             'comments',
             'last_modified_by',
-            'skill_sets'
+            'skill_sets',
+            'invoice_service_fee'
         )
         return queryset
 
@@ -113,6 +115,7 @@ class OrderListCreateSerializer(serializers.ModelSerializer):
         description = validated_data.get('description', None)
         start_date = validated_data.get('start_date', timezone.now())
         follow_up_days_number = validated_data.get('follow_up_days_number', 0)
+        invoice_service_fee = validated_data.get('invoice_service_fee', None)
 
         # Update currency price.
         service_fee = validated_data.get('service_fee', Money(0, constants.O55_APP_DEFAULT_MONEY_CURRENCY))
@@ -133,7 +136,8 @@ class OrderListCreateSerializer(serializers.ModelSerializer):
             last_modified_by=None,
             description=description,
             start_date=start_date,
-            follow_up_days_number=follow_up_days_number
+            follow_up_days_number=follow_up_days_number,
+            invoice_service_fee=invoice_service_fee
         )
         logger.info("Created order object.")
 
@@ -251,7 +255,8 @@ class OrderRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
             'skill_sets',
             'description',
             'start_date',
-            'follow_up_days_number'
+            'follow_up_days_number',
+            'invoice_service_fee'
         )
 
     def setup_eager_loading(cls, queryset):
@@ -263,7 +268,8 @@ class OrderRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
             'customer',
             # 'comments',
             'last_modified_by',
-            'skill_sets'
+            'skill_sets',
+            'invoice_service_fee'
         )
         return queryset
 
@@ -287,6 +293,7 @@ class OrderRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         instance.skill_sets.set(skill_sets)
         instance.start_date = validated_data.get('start_date', instance.start_date)
         instance.follow_up_days_number = validated_data.get('follow_up_days_number', instance.follow_up_days_number)
+        instance.invoice_service_fee = validated_data.get('invoice_service_fee', instance.invoice_service_fee)
 
         # Update currency price.
         service_fee = validated_data.get('service_fee', instance.service_fee)

@@ -7,7 +7,7 @@ from django.utils.translation import ugettext_lazy as _
 from shared_foundation.mixins import ExtraRequestProcessingMixin
 from tenant_api.filters.order import OrderFilter
 from tenant_api.filters.customer import CustomerFilter
-from tenant_foundation.models import Customer, Order, SkillSet, Tag
+from tenant_foundation.models import Customer, Order, OrderServiceFee, SkillSet, Tag
 
 
 @method_decorator(login_required, name='dispatch')
@@ -111,7 +111,6 @@ class Step1B3AAddCommercialCustomerView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['current_page'] = "jobs"
-        context['current_page'] = "jobs"
         context['tags'] = Tag.objects.all()
         return context
 
@@ -154,6 +153,7 @@ class Step4View(TemplateView):
         modified_context = super().get_context_data(**kwargs)
         modified_context['current_page'] = "jobs"
         modified_context['skillsets'] = SkillSet.objects.all()
+        modified_context['servicefees'] = OrderServiceFee.objects.all()
         return modified_context
 
 

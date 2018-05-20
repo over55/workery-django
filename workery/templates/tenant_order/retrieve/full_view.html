@@ -208,6 +208,7 @@
                             <div id="hours-error" class="invalid-feedback"></div>
                         </div>
                     </div>
+                    {% comment %}
                     <div class="form-row">
                         <div class="form-group col-md-12 mb-4">
                             <label for="service_fee">Service fee</label>
@@ -215,6 +216,7 @@
                             <div id="service_fee-error" class="invalid-feedback"></div>
                         </div>
                     </div>
+                    {% endcomment %}
                     <div class="form-row">
                         <div class="form-group col-md-12 mb-4">
                             <label for="payment_date">Payment Date</label>
@@ -238,6 +240,30 @@
                     <!-- ################################################################## -->
                     <!-- ######################## end JOB DETAILS ######################### -->
                     <!-- ################################################################## -->
+
+
+                    <!-- ################################################################## -->
+                    <!-- ####################### FINANCIAL DETAILS ######################## -->
+                    <!-- ################################################################## -->
+                    <p class="border-bottom mb-3 pb-1 text-secondary">Financial Details</p>
+                    <div class="form-row">
+                        <div class="form-group col-md-12 mb-4">
+                            <label for="order_service_fee">Service Fee</label>
+                            <p>
+                                {% if job.invoice_service_fee %}
+                                    {{ job.invoice_service_fee.title }}
+                                {% else %}
+                                    -
+                                {% endif %}
+                            </p>
+                            <div id="order_service_fee-error" class="invalid-feedback"></div>
+                        </div>
+                        <!-- TODO: FILL THIS IN -->
+                    </div>
+                    <!-- ################################################################## -->
+                    <!-- ####################### FINANCIAL DETAILS ######################## -->
+                    <!-- ################################################################## -->
+
 
                     <!-- UPDATE BUTTON -->
                     <!--------------------------------------------------------------------->

@@ -345,7 +345,7 @@ class Order(models.Model):
         default=Money(0,O55_APP_DEFAULT_MONEY_CURRENCY),
         blank=True,
     )
-    invoice_service_fee_by_franchise = models.ForeignKey(
+    invoice_service_fee = models.ForeignKey(
         "OrderServiceFee",
         help_text=_('The service fee applied by the franchise on the total cost of this job order which will be paid by the associate member.'),
         related_name="%(app_label)s_%(class)s_service_fee_related",
