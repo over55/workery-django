@@ -414,7 +414,7 @@
 			$('#all_error_result').addClass('error-block');
 			
 			// Inline fields errors code
-			$('#'+prop+'-error').append(val);
+			$('#'+prop+'-error').html("<ul><li>"+val+"</li></ul>");
 			$('#add-client-form').addClass('was-validated');
                     }
                 }
