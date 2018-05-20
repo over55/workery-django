@@ -13,6 +13,7 @@ from tenant_foundation.models.opening_hours_specification import OpeningHoursSpe
 from tenant_foundation.models.organization import Organization
 from tenant_foundation.models.comment import Comment
 from tenant_foundation.models.vehicle_type import VehicleType
+from tenant_foundation.models.order_service_fee import OrderServiceFee
 
 # Customer Models
 from tenant_foundation.models.customer import Customer

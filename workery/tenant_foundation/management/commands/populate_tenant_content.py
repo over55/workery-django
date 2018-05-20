@@ -21,6 +21,7 @@ from tenant_foundation.models import (
     Organization,
     Order,
     # OrderComment,
+    OrderServiceFee,
     ResourceCategory,
     ResourceItem,
     ResourceItemSortOrder,
@@ -66,6 +67,7 @@ class Command(BaseCommand):
         self.begin_populating_resource_items()
         self.begin_populating_resource_item_sort_orders()
         self.begin_populating_vehicle_types()
+        self.begin_populating_order_service_fees()
 
         # For debugging purposes.
         self.stdout.write(
@@ -371,5 +373,22 @@ class Command(BaseCommand):
                     'id': vehicle_arr[0],
                     'text': vehicle_arr[1],
                     'description': vehicle_arr[2],
+                }
+            )
+
+    def begin_populating_order_service_fees(self):
+        SERVICE_FEE_ARRAY = [
+            [1, "Tier 1 - 5%", "-", 5.0],
+            [2, "Tier 2 - 10%", "-", 10.0],
+            [3, "Tier 3 - 15%", "-", 15.0],
+        ]
+        for fee_arr in SERVICE_FEE_ARRAY:
+            OrderServiceFee.objects.update_or_create(
+                id=int(fee_arr[0]),
+                defaults={
+                    'id': int(fee_arr[0]),
+                    'title': fee_arr[1],
+                    'description': fee_arr[2],
+                    'percentage': fee_arr[3],
                 }
             )

@@ -173,12 +173,6 @@ class Order(models.Model):
         blank=True,
         related_name="%(app_label)s_%(class)s_skill_sets_related",
     )
-    #Workmanship
-    #Time / Budget
-    #Punctual
-    #Professional
-    #Refer
-    #Score
     type_of = models.PositiveSmallIntegerField(
         _("Type Of"),
         help_text=_('The type of job this is.'),
@@ -231,28 +225,6 @@ class Order(models.Model):
         blank=True,
         null=True
     )
-
-    #
-    #  SYSTEM
-    #
-    created = models.DateTimeField(auto_now_add=True, db_index=True)
-    created_by = models.ForeignKey(
-        SharedUser,
-        help_text=_('The user whom created this order.'),
-        related_name="%(app_label)s_%(class)s_created_by_related",
-        on_delete=models.CASCADE,
-        blank=True,
-        null=True
-    )
-    last_modified = models.DateTimeField(auto_now=True)
-    last_modified_by = models.ForeignKey(
-        SharedUser,
-        help_text=_('The user whom last modified this order.'),
-        related_name="%(app_label)s_%(class)s_last_modified_by_related",
-        on_delete=models.SET_NULL,
-        blank=True,
-        null=True
-    )
     activity_sheet = models.ManyToManyField(
         "Associate",
         help_text=_('The activity sheet items related to the associates who accepted or rejected this order.'),
@@ -260,6 +232,11 @@ class Order(models.Model):
         through='ActivitySheetItem',
         related_name="%(app_label)s_%(class)s_activity_sheet_items_related"
     )
+
+    #
+    #  Satisfaction Survey & Score Fields
+    #
+
     was_job_satisfactory = models.BooleanField(
         _("Was job satisfactory?"),
         help_text=_('Customer Survey Q1: Was the quality of the work satisfactory?'),
@@ -295,6 +272,110 @@ class Order(models.Model):
         help_text=_('The score number earned at the completion of this date.'),
         default=0,
         blank=True,
+    )
+
+    #
+    #  Financial Fields
+    #
+
+    invoice_date = models.DateField(
+        _('Invoice Date'),
+        help_text=_('The date that this order was completed.'),
+        blank=True,
+        null=True
+    )
+    invoice_id = models.PositiveSmallIntegerField(
+        _("Type Of"),
+        help_text=_('The type of job this is.'),
+        default=UNASSIGNED_JOB_TYPE_OF_ID,
+        choices=JOB_TYPE_OF_CHOICES,
+        blank=True,
+    )
+    invoice_quote = MoneyField(
+        _("Invoice Original Quote"),
+        help_text=_('The original quote made by the associate for this job.'),
+        max_digits=10,
+        decimal_places=2,
+        default_currency=O55_APP_DEFAULT_MONEY_CURRENCY,
+        default=Money(0,O55_APP_DEFAULT_MONEY_CURRENCY),
+        blank=True,
+    )
+    invoice_labour = MoneyField(
+        _("Invoice Labour Costs"),
+        help_text=_('The amount charged for labour by the associate for this job.'),
+        max_digits=10,
+        decimal_places=2,
+        default_currency=O55_APP_DEFAULT_MONEY_CURRENCY,
+        default=Money(0,O55_APP_DEFAULT_MONEY_CURRENCY),
+        blank=True,
+    )
+    invoice_material = MoneyField(
+        _("Invoice Material Costs"),
+        help_text=_('The amount charged for material costs by the associate for this job.'),
+        max_digits=10,
+        decimal_places=2,
+        default_currency=O55_APP_DEFAULT_MONEY_CURRENCY,
+        default=Money(0,O55_APP_DEFAULT_MONEY_CURRENCY),
+        blank=True,
+    )
+    invoice_tax = MoneyField(
+        _("Invoice Tax"),
+        help_text=_('The amount charged for taxes by the associate for this job.'),
+        max_digits=10,
+        decimal_places=2,
+        default_currency=O55_APP_DEFAULT_MONEY_CURRENCY,
+        default=Money(0,O55_APP_DEFAULT_MONEY_CURRENCY),
+        blank=True,
+    )
+    invoice_sub_total = MoneyField(
+        _("Invoice Sub-Total"),
+        help_text=_('The total amount charged by the associate for this job.'),
+        max_digits=10,
+        decimal_places=2,
+        default_currency=O55_APP_DEFAULT_MONEY_CURRENCY,
+        default=Money(0,O55_APP_DEFAULT_MONEY_CURRENCY),
+        blank=True,
+    )
+    invoice_total = MoneyField(
+        _("Invoice Total"),
+        help_text=_('The total amount charged by the associate for this job.'),
+        max_digits=10,
+        decimal_places=2,
+        default_currency=O55_APP_DEFAULT_MONEY_CURRENCY,
+        default=Money(0,O55_APP_DEFAULT_MONEY_CURRENCY),
+        blank=True,
+    )
+    invoice_service_fee_by_franchise = models.ForeignKey(
+        "OrderServiceFee",
+        help_text=_('The service fee applied by the franchise on the total cost of this job order which will be paid by the associate member.'),
+        related_name="%(app_label)s_%(class)s_service_fee_related",
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True
+    )
+
+
+    #
+    #  SYSTEM
+    #
+
+    created = models.DateTimeField(auto_now_add=True, db_index=True)
+    created_by = models.ForeignKey(
+        SharedUser,
+        help_text=_('The user whom created this order.'),
+        related_name="%(app_label)s_%(class)s_created_by_related",
+        on_delete=models.CASCADE,
+        blank=True,
+        null=True
+    )
+    last_modified = models.DateTimeField(auto_now=True)
+    last_modified_by = models.ForeignKey(
+        SharedUser,
+        help_text=_('The user whom last modified this order.'),
+        related_name="%(app_label)s_%(class)s_last_modified_by_related",
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True
     )
 
     #
