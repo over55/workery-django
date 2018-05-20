@@ -30,6 +30,7 @@ from tenant_foundation.models import (
     AssociateComment,
     Associate,
     Comment,
+    InsuranceRequirement,
     SkillSet,
     Organization,
     VehicleType
@@ -158,11 +159,12 @@ class AssociateListCreateSerializer(serializers.ModelSerializer):
             'wsib_insurance_date',
             'police_check',
             'drivers_license_class',
-            'vehicle_types', # many-to-many
+            'vehicle_types',          # many-to-many
             'how_hear',
             'how_hear_other',
-            'skill_sets',    # many-to-many
-            'tags',          # many-to-many
+            'skill_sets',             # many-to-many
+            'tags',                   # many-to-many
+            'insurance_requirements', # many-to-many
 
             # Misc (Read Only)
             # 'comments',
@@ -231,7 +233,8 @@ class AssociateListCreateSerializer(serializers.ModelSerializer):
             'tags',
             'skill_sets',
             'vehicle_types'
-            'comments'
+            'comments',
+            'insurance_requirements',
         )
         return queryset
 
@@ -390,6 +393,14 @@ class AssociateListCreateSerializer(serializers.ModelSerializer):
             )
             logger.info("Set associate comments.")
 
+        #----------------------------------------
+        # Set our `InsuranceRequirement` objects.
+        #----------------------------------------
+        insurance_requirements = validated_data.get('insurance_requirements', None)
+        if insurance_requirements is not None:
+            associate.insurance_requirements.set(insurance_requirements)
+            logger.info("Set associate insurance requirements.")
+
         # Update validation data.
         # validated_data['comments'] = AssociateComment.objects.filter(associate=associate)
         validated_data['created_by'] = self.context['created_by']
@@ -421,6 +432,7 @@ class AssociateRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
     # The skill_sets that this associate belongs to. We will return primary
     # keys only. This field is read/write accessible.
     skill_sets = serializers.PrimaryKeyRelatedField(many=True, queryset=SkillSet.objects.all(), allow_null=True)
+    insurance_requirements = serializers.PrimaryKeyRelatedField(many=True, queryset=InsuranceRequirement.objects.all(), allow_null=True)
 
     # assigned_skill_sets = SkillSetListCreateSerializer(many=True, read_only=True)
 
@@ -465,11 +477,12 @@ class AssociateRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
             'wsib_insurance_date',
             'police_check',
             'drivers_license_class',
-            'vehicle_types', # many-to-many
+            'vehicle_types',         # many-to-many
             'how_hear',
             'how_hear_other',
-            'skill_sets',    # many-to-many
-            'tags',          # many-to-many
+            'skill_sets',            # many-to-many
+            'tags',                  # many-to-many
+            'insurance_requirements', # many-to-many
 
             # Misc (Read Only)
             # 'comments',
@@ -518,7 +531,8 @@ class AssociateRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
             'skill_sets',
             'tags',
             'vehicle_types'
-            'comments'
+            'comments',
+            'insurance_requirements'
         )
         return queryset
 
@@ -533,6 +547,7 @@ class AssociateRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         email = validated_data.get('email', instance.email)
         skill_sets = validated_data.get('skill_sets', None)
         vehicle_types = validated_data.get('vehicle_types', None)
+        insurance_requirements = validated_data.get('insurance_requirements', None)
 
         # Update telephone numbers.
         fax_number = validated_data.get('fax_number', instance.fax_number)
@@ -665,6 +680,13 @@ class AssociateRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
                 comment=comment,
             )
             logger.info("Set associate comments.")
+
+        #----------------------------------------
+        # Set our `InsuranceRequirement` objects.
+        #----------------------------------------
+        if insurance_requirements is not None:
+            instance.insurance_requirements.set(insurance_requirements)
+            logger.info("Set associate insurance requirements.")
 
         #---------------------------
         # Update validation data.

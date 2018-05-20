@@ -266,6 +266,17 @@
                 <!-- ############ DETAILS ############ -->
                 <p class="border-bottom mb-3 pb-1 text-secondary">Details</p>
                 <div class="form-row">
+                    <div class="form-group p-0 col-md-7 mb-4">
+                        <label for="insurance_requirements">Insurance Requirement(s)</label>
+                        <p>
+                            {% for insurance_requirement in associate.insurance_requirements.all %}
+                                <span class="badge badge-info badge-lg">{{ insurance_requirement }}</span>
+                            {% empty %}
+                                -
+                            {% endfor %}
+                        </p>
+                        <div id="insurance_requirements-error" class="invalid-feedback"></div>
+                    </div>
                     <div class="form-group col-md-12 mb-4">
                         <label>Hourly salary desired</label>
                         <p>

@@ -8,6 +8,7 @@ from shared_foundation.mixins import ExtraRequestProcessingMixin
 from tenant_api.filters.associate import AssociateFilter
 from tenant_foundation.models import (
     Associate,
+    InsuranceRequirement,
     SkillSet,
     Tag,
     VehicleType
@@ -19,12 +20,13 @@ class MemberCreateView(TemplateView):
     template_name = 'tenant_associate/create/create_view.html'
 
     def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['current_page'] = "associates" # Required for navigation
-        context['tags'] = Tag.objects.all()
-        context['skill_sets'] = SkillSet.objects.all()
-        context['vehicle_types'] = VehicleType.objects.all()
-        return context
+        modified_context = super().get_context_data(**kwargs)
+        modified_context['current_page'] = "associates" # Required for navigation
+        modified_context['insurance_requirements'] = InsuranceRequirement.objects.all()
+        modified_context['tags'] = Tag.objects.all()
+        modified_context['skill_sets'] = SkillSet.objects.all()
+        modified_context['vehicle_types'] = VehicleType.objects.all()
+        return modified_context
 
 
 @method_decorator(login_required, name='dispatch')
@@ -32,6 +34,6 @@ class MemberConfirmCreateView(TemplateView):
     template_name = 'tenant_associate/create/confirm_view.html'
 
     def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['current_page'] = "associates" # Required for navigation
-        return context
+        modified_context = super().get_context_data(**kwargs)
+        modified_context['current_page'] = "associates" # Required for navigation
+        return modified_context

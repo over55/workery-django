@@ -54,6 +54,12 @@
         // SELECT2 INITIALIZATION //
         //------------------------//
 
+        var insurance_requirement_ids = [];
+        {% for insurance_requirement in associate.insurance_requirements.all %}
+        insurance_requirement_ids.push({{ insurance_requirement.id }});
+        {% endfor %}
+        $('#insurance_requirements').val(insurance_requirement_ids);
+
         // // Populate our 'select2' chosen values.
         var tag_ids = [];
         {% for tag in associate.tags.all %}
@@ -74,6 +80,7 @@
         $('#vehicle_types').val(vehicle_type_ids);
 
         // Initialize our 'select2' element.
+        $('#insurance_requirements').select2();
         $('#person_tags').select2();
         $('#skill_sets').select2();
         $('#vehicle_types').select2();
@@ -844,6 +851,7 @@
         var how_hear = $('#how_hear').val();
         var how_hear_other = $('#how_hear_other').val();
         var tax_id = $('#tax_id').val();
+        var insurance_requirements = $('#insurance_requirements').val();
 
         // LOCK OUT THE "SUBMIT" BUTTON SO THE USER DOES NOT MAKE MULTI-CALLS.
         disable_btn();
@@ -889,6 +897,7 @@
                 'other_telephone_extension': {{ shared_constants.MOBILE_CONTACT_POINT_TYPE_OF_ID }},
                 'fax_number': null,
                 'tax_id': tax_id,
+                'insurance_requirements': insurance_requirements,
 
                 // --- Accoount ---
                 'password': password,
@@ -1183,6 +1192,15 @@
             <!-- ############ DETAILS ############ -->
             <p class="border-bottom mb-3 pb-1 text-secondary">Associate Details</p>
             <div class="form-row">
+                <div class="form-group col-md-12 mb-4">
+                    <label for="insurance_requirements">Insurance Requirement(s)</label>
+                    <select id="insurance_requirements" name="insurance_requirements" class="form-control form-control-lg border border-success" name="states[]" multiple="multiple">
+                    {% for insurance_requirement in insurance_requirements %}
+                        <option value="{{ insurance_requirement.id }}" id="insurance_requirement_option_id_{{ insurance_requirement.id }}">{{ insurance_requirement }}</option>
+                    {% endfor %}
+                    </select>
+                    <div id="insurance_requirements-error" class="invalid-feedback"></div>
+                </div>
                 <div class="form-group col-md-12 mb-4">
                     <label for="hourly_salary_desired">Hourly Salary Desired</label>
                     <input type="text" class="form-control form-control-lg border border-success" id="hourly_salary_desired" name="hourly_salary_desired" placeholder="Hourly Salary Desired" minlength="3" maxlength="255">

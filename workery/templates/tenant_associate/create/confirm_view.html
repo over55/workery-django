@@ -101,6 +101,19 @@
             $('#selected_vehicle_type_values').append(htmlElement)
         } // end FOR
 
+        // Set our `insurance_requirements` field.
+        var tmp_insurance_requirement_values = localStorage.getObj("tmp_associate_member_insurance_requirement_values");
+        for (var i = 0; i < tmp_insurance_requirement_values.length; i++) {
+            // Extract our value.
+            var tag_value = tmp_insurance_requirement_values[i];
+
+            // Generate our HTML element.
+            var htmlElement = '<span class="badge badge-info badge-lg">'+tag_value+'</span>';
+
+            // Append our HTML element to the GUI.
+            $('#selected_insurance_requirement_values').append(htmlElement)
+        } // end FOR
+
         // --- Account ---
         var is_active = localStorage.getItem("tmp_associate_member_is_active");
         $('#selected_is_active').append(to_yes_or_no_string(is_active));
@@ -238,6 +251,7 @@
                 'vehicle_types': localStorage.getObj("tmp_associate_member_vehicle_type_ids"),
                 'description': localStorage.getItem("tmp_associate_member_description"),
                 'extra_comment': localStorage.getItem("tmp_associate_member_comment"),
+                'insurance_requirements': localStorage.getObj("tmp_associate_member_insurance_requirement_ids"),
 
                 // --- Account ---
                 'password': password,
@@ -292,6 +306,8 @@
                 localStorage.removeItem("tmp_associate_member_description")
                 localStorage.removeItem("tmp_associate_member_comment")
                 localStorage.removeItem("tmp_associate_member_is_active")
+                localStorage.removeItem("tmp_associate_member_insurance_requirement_ids")
+                localStorage.removeItem("tmp_associate_member_insurance_requirement_values")
 
                 // --- Associate Details ---
                 localStorage.removeItem("tmp_associate_member_hourly_salary_desired")
@@ -517,6 +533,12 @@
        <tbody>
          <tr class="bg-dark">
            <th scope="row" colspan="2" class="text-light">Associate Details</th>
+         </tr>
+         <tr>
+           <th scope="row" class="bg-light">Skill set(s)</th>
+           <td id="selected_insurance_requirement_values">
+               <!-- THIS IS WHERE THE TAGS GET LOADED -->
+           </td>
          </tr>
          <tr>
            <th scope="row" class="bg-light">Hourly Salary Desired</th>

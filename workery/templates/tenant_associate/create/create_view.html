@@ -95,6 +95,9 @@
             // SELECT2 INITIALIZATION //
             //------------------------//
 
+            var tmp_insurance_requirements = localStorage.getObj("tmp_associate_member_insurance_requirement_ids");
+            $('#insurance_requirements').val(tmp_insurance_requirements);
+
             // Populate our 'select2' chosen values.
             var tmp_person_tags = localStorage.getObj("tmp_associate_member_person_tag_ids");
             $('#person_tags').val(tmp_person_tags);
@@ -106,6 +109,7 @@
             $('#vehicle_types').val(tmp_vehicle_types);
 
             // Initialize our 'select2' element.
+            $('#insurance_requirements').select2();
             $('#person_tags').select2();
             $('#skill_sets').select2();
             $('#vehicle_types').select2();
@@ -454,6 +458,7 @@
             var how_hear = $('#how_hear').val();
             var how_hear_other = $('#how_hear_other').val();
             var tax_id = $('#tax_id').val();
+            var insurance_requirements = $('#insurance_requirements').val();
 
             if (how_hear == "") {
                 how_hear = 8;
@@ -504,8 +509,9 @@
             localStorage.setObj("tmp_associate_member_person_tag_ids", person_tags);
             localStorage.setObj("tmp_associate_member_skill_set_ids", skill_sets);
             localStorage.setObj("tmp_associate_member_vehicle_type_ids", vehicle_types);
+            localStorage.setObj("tmp_associate_member_insurance_requirement_ids", insurance_requirements);
 
-            // SAVE ARRAY OF VALUE ITEMS. (1 of 3)
+            // SAVE ARRAY OF VALUE ITEMS. (1 of 4)
             var person_tags_arr = [];
             for (var i = 0; i < person_tags.length; i++) {
                 var option_id = person_tags[i];
@@ -514,7 +520,7 @@
             } // end FOR LOOP.
             localStorage.setObj("tmp_associate_member_person_tag_values", person_tags_arr);
 
-            // SAVE ARRAY OF VALUE ITEMS. (2 of 3)
+            // SAVE ARRAY OF VALUE ITEMS. (2 of 4)
             var skill_sets_arr = [];
             for (var i = 0; i < skill_sets.length; i++) {
                 var option_id = skill_sets[i];
@@ -523,7 +529,7 @@
             } // end FOR LOOP.
             localStorage.setObj("tmp_associate_member_skill_set_values", skill_sets_arr);
 
-            // SAVE ARRAY OF VALUE ITEMS. (3 of 3)
+            // SAVE ARRAY OF VALUE ITEMS. (3 of 4)
             var vehicle_types_arr = [];
             for (var i = 0; i < vehicle_types.length; i++) {
                 var option_id = vehicle_types[i];
@@ -531,6 +537,15 @@
                 vehicle_types_arr.push(option_value);
             } // end FOR LOOP.
             localStorage.setObj("tmp_associate_member_vehicle_type_values", vehicle_types_arr);
+
+            // SAVE ARRAY OF VALUE ITEMS. (4 of 4)
+            var insurance_requirements_arr = [];
+            for (var i = 0; i < insurance_requirements.length; i++) {
+                var option_id = insurance_requirements[i];
+                var option_value = $('#insurance_requirement_option_id_'+option_id).text();
+                insurance_requirements_arr.push(option_value);
+            } // end FOR LOOP.
+            localStorage.setObj("tmp_associate_member_insurance_requirement_values", insurance_requirements_arr);
 
             //----------------------------------------------------------------//
             //      GENERATE RANDOM PASSWORD IF NO PASSWORD WAS ENETERED      //
@@ -586,6 +601,7 @@
                     'description': localStorage.getItem("tmp_associate_member_description"),
                     'extra_comment': localStorage.getItem("tmp_associate_member_comment"),
                     'tax_id': localStorage.getItem("tmp_associate_member_tax_id"),
+                    'insurance_requirements': localStorage.getObj("tmp_associate_member_insurance_requirement_ids"),
 
                     // --- Account ---
                     'password': password,
@@ -822,6 +838,15 @@
             <!-- ############ DETAILS ############ -->
             <p class="border-bottom mb-3 pb-1 text-secondary">Associate Details</p>
             <div class="form-row">
+                <div class="form-group col-md-12 mb-4">
+                    <label for="insurance_requirements">Insurance Requirement(s)</label>
+                    <select id="insurance_requirements" name="insurance_requirements" class="form-control form-control-lg border border-success" name="states[]" multiple="multiple">
+                    {% for insurance_requirement in insurance_requirements %}
+                        <option value="{{ insurance_requirement.id }}" id="insurance_requirement_option_id_{{ insurance_requirement.id }}">{{ insurance_requirement }}</option>
+                    {% endfor %}
+                    </select>
+                    <div id="insurance_requirements-error" class="invalid-feedback"></div>
+                </div>
                 <div class="form-group col-md-12 mb-4">
                     <label for="hourly_salary_desired">Hourly Salary Desired <sup>*</sup></label>
                     <input type="text" class="form-control form-control-lg border border-success" id="hourly_salary_desired" name="hourly_salary_desired" placeholder="Hourly Salary Desired" minlength="3" maxlength="255" required>

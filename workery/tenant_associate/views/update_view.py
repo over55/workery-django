@@ -8,6 +8,7 @@ from shared_foundation.mixins import ExtraRequestProcessingMixin
 from tenant_api.filters.associate import AssociateFilter
 from tenant_foundation.models import (
     Associate,
+    InsuranceRequirement,
     SkillSet,
     Tag
 )
@@ -38,6 +39,7 @@ class MemberUpdateView(DetailView):
         modified_context['current_page'] = "associates"
 
         # Extra
+        modified_context['insurance_requirements'] = InsuranceRequirement.objects.all()
         modified_context['tags'] = Tag.objects.all()
         modified_context['skill_sets'] = SkillSet.objects.all()
 
