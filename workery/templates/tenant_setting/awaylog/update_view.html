@@ -175,7 +175,7 @@
                         <!-- REASON -->
                         <div class="form-group col-md-12 mb-4">
                             <label for="reason">Reason <sup>*</sup></label>
-                            <select class="form-control form-control-lg border border-primary" id="reason" name="reason" required="">
+                            <select class="form-control form-control-lg border border-primary" id="reason" name="reason" required="" autofocus>
                                 <option value="0">Please select reason</option>
                                 <option value="2" {% if away_log.reason == 3 %}selected="selected"{% endif %}>Going on vocation</option>
                                 <option value="3" {% if away_log.reason == 2 %}selected="selected"{% endif %}>Personal reasons</option>

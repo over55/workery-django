@@ -5,6 +5,7 @@ from tenant_setting.views import (
     awaylog_views,
     insurance_requirement_views,
     launchpad_views,
+    order_service_fee_views,
     skill_set_views,
     tag_views
 )
@@ -24,12 +25,17 @@ urlpatterns = (
     path('settings/tag/create/', tag_views.TagCreateView.as_view(), name='workery_tenant_settings_tag_create'),
     path('settings/tag/<int:pk>/', tag_views.TagUpdateView.as_view(), name='workery_tenant_settings_tags_update'),
 
+    # Order Service Fee
+    path('settings/order_service_fees/', order_service_fee_views.OrderServiceFeeListView.as_view(), name='workery_tenant_settings_order_service_fees_list'),
+    path('settings/order_service_fee/create/', order_service_fee_views.OrderServiceFeeCreateView.as_view(), name='workery_tenant_settings_order_service_fee_create'),
+    path('settings/order_service_fee/<int:pk>/', order_service_fee_views.OrderServiceFeeUpdateView.as_view(), name='workery_tenant_settings_order_service_fees_update'),
+
     # Skill set
     path('settings/skill_sets/', skill_set_views.SkillSetListView.as_view(), name='workery_tenant_settings_skill_set_list'),
     path('settings/skill_set/create/', skill_set_views.SkillSetCreateView.as_view(), name='workery_tenant_settings_skill_set_create'),
     path('settings/skill_set/<int:pk>/', skill_set_views.SkillSetUpdateView.as_view(), name='workery_tenant_settings_skill_set_update'),
 
-    # Tag
+    # Insurance Requirement
     path('settings/insurance_requirements/', insurance_requirement_views.TagListView.as_view(), name='workery_tenant_settings_insurance_requirements_list'),
     path('settings/insurance_requirement/create/', insurance_requirement_views.TagCreateView.as_view(), name='workery_tenant_settings_insurance_requirement_create'),
     path('settings/insurance_requirement/<int:pk>/', insurance_requirement_views.TagUpdateView.as_view(), name='workery_tenant_settings_insurance_requirement_update'),

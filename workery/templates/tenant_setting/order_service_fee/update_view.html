@@ -2,7 +2,7 @@
 {% load staticfiles i18n foundation_tags humanize %}
 
 {% block title %}
-{% trans 'Tag | Workery' %}
+{% trans 'Order Service Fee | Workery' %}
 {% endblock title %}
 
 {% block header_content %}
@@ -12,27 +12,29 @@
 
 <script>
     function click_cancel_button() {
-        window.location = "{% url 'workery_tenant_settings_tags_list' %}";
+        window.location = "{% url 'workery_tenant_settings_order_service_fees_list' %}";
     }
 
     function click_submit_button() {
-        var tag_text = $('#tag_text').val();
-        create_tag_api(
+        update_order_service_fee_api(
+            {{ order_service_fee.pk }},
             {
-                'text': $('#tag_text').val(),
-                'description': $('#tag_desc').val()
+                'title': $('#order_service_fee_title').val(),
+                'description': $('#order_service_fee_desc').val()
             },
-            function(tag) {
-                window.location = "{% url 'workery_tenant_settings_tags_list' %}?was_created=True";
+            function(order_service_fee) {
+                console.log(order_service_fee);
+                window.location = "{% url 'workery_tenant_settings_order_service_fees_list' %}?was_modified=True";
             },
-            function(json_results) {
-                console.log(json_results);
+            function(json_result) {
+
             },
-            function(xhr, status) {
-                console.log(xhr, status);
+            function(x, y) {
+
             }
         );
     }
+
 </script>
 
 <main id="main" role="main">
@@ -43,34 +45,39 @@
 	  	<ol class="breadcrumb">
 	    	<li class="breadcrumb-item"><a href="{% url 'workery_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
             <li class="breadcrumb-item"><a href="{% url 'workery_tenant_settings_launchpad' %}">{% trans 'Settings' %}</a></li>
-            <li class="breadcrumb-item"><a href="{% url 'workery_tenant_settings_tags_list' %}">{% trans 'Tags' %}</a></li>
-            <li class="breadcrumb-item active" aria-current="page">{% trans 'Add Tag' %}</li>
+            <li class="breadcrumb-item"><a href="{% url 'workery_tenant_settings_order_service_fees_list' %}">{% trans 'Order Service Fees' %}</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{% trans 'Order Service Fee' %}</li>
 	  	</ol>
 	</nav>
     <!------------------------------------------------------------------------->
     <!-- end BREADCRUMB -->
 
-    <h1>Add Tag</h1>
+    <h1>Order Service Fee</h1>
 
     <!-- FORM -->
     <!------------------------------------------------------------------------->
     <div class="col-sm-5 mx-auto mt-2">
         <!-- Residential form -->
         <div class="col-sm-12 fade show active" id="client-form" aria-labelledby="commercial">
-            <h3 class="pt-4 pb-2 text-center">Add Tag</h3>
-            <p>Please change the text of the tag.</p>
+            <h3 class="pt-4 pb-2 text-center">Edit Order Service Fee</h3>
+            <p>Please change the text of the order_service_fee.</p>
 
             <form id="add-client-form" method="post" class="needs-validation" action="" novalidate>
                 <div class="form-row">
                     <div class="form-group col-md-12 mb-4">
-                        <label for="tag_text">Text</label>
-                        <input type="text" class="form-control form-control-lg border border-primary" id="tag_text" name="tag_text" placeholder="Text" minlength="3" required="" autofocus value="{{ tag.text }}">
-                        <div id="tag_text-error" class="invalid-feedback"></div>
+                        <label for="order_service_fee_title">Text</label>
+                        <input type="text" class="form-control form-control-lg border border-primary" id="order_service_fee_title" name="order_service_fee_title" placeholder="Title" minlength="3" required="" autofocus value="{{ order_service_fee.title }}">
+                        <div id="order_service_fee_title-error" class="invalid-feedback"></div>
                     </div>
                     <div class="form-group col-md-12 mb-4">
-                        <label for="tag_text">Description</label>
-                        <input type="text" class="form-control form-control-lg border border-primary" id="tag_desc" name="tag_desc" placeholder="Description" minlength="3" required="" value="{{ tag.description }}">
-                        <div id="tag_text-error" class="invalid-feedback"></div>
+                        <label for="order_service_fee_percentage">Percentage (%)</label>
+                        <input type="number" class="form-control form-control-lg border border-primary" id="order_service_fee_percentage" name="order_service_fee_percentage" placeholder="Percentage (%)" required="" value="{{ order_service_fee.percentage }}">
+                        <div id="order_service_fee_percentage-error" class="invalid-feedback"></div>
+                    </div>
+                    <div class="form-group col-md-12 mb-4">
+                        <label for="order_service_fee_title">Description</label>
+                        <input type="text" class="form-control form-control-lg border border-primary" id="order_service_fee_desc" name="order_service_fee_desc" placeholder="Description" minlength="3" required="" value="{{ order_service_fee.description }}">
+                        <div id="order_service_fee_title-error" class="invalid-feedback"></div>
                     </div>
                 </div>
             </form>
@@ -81,7 +88,7 @@
                      class="btn btn-primary btn-lg mt-4 float-right pl-4 pr-4"
                       type="button"
                    onclick="click_submit_button();">
-                    <i class="fas fa-plus"></i> Add Tag</button>
+                    <i class="fas fa-check"></i> Update</button>
                 <button id="id_cancel_btn"
                      class="btn btn-orange btn-lg mt-4 float-left pl-4 pr-4"
                       type="button"
