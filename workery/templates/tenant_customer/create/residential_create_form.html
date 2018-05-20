@@ -5,7 +5,7 @@
      */
     $(document).ready(function () {
         // Initialize our datepicker jQuery code with our HTML view.
-        $( "#dob" ).datepicker({
+        $( "#birthdate" ).datepicker({
             dateFormat: 'yy-mm-dd',
 	        maxDate: 'today'
         });
@@ -17,14 +17,14 @@
         $('#person_tags').select2();
 
         // Populate previously set values.
-        $('#firstname').val(localStorage.getItem("tmp_residential_customer_given_name"));
-        $('#lastname').val(localStorage.getItem("tmp_residential_customer_last_name"));
-        $('#phonenumber').val(localStorage.getItem("tmp_residential_customer_telephone"));
-        $('#other_phonenumber').val(localStorage.getItem("tmp_residential_customer_other_telephone"));
-        $('#dob').val(localStorage.getItem("tmp_residential_customer_date_of_birth"));
+        $('#given_name').val(localStorage.getItem("tmp_residential_customer_given_name"));
+        $('#last_name').val(localStorage.getItem("tmp_residential_customer_last_name"));
+        $('#telephone').val(localStorage.getItem("tmp_residential_customer_telephone"));
+        $('#other_telephone').val(localStorage.getItem("tmp_residential_customer_other_telephone"));
+        $('#birthdate').val(localStorage.getItem("tmp_residential_customer_date_of_birth"));
         $('#gender').val(localStorage.getItem("tmp_residential_customer_gender"));
-        $("input[name=ok_to_email][value=" + localStorage.getItem("tmp_residential_customer_ok_to_email") + "]").prop('checked', true);
-        $("input[name=ok_to_text][value=" + localStorage.getItem("tmp_residential_customer_ok_to_text") + "]").prop('checked', true);
+        $("input[name=is_ok_to_email][value=" + localStorage.getItem("tmp_residential_customer_ok_to_email") + "]").prop('checked', true);
+        $("input[name=is_ok_to_text][value=" + localStorage.getItem("tmp_residential_customer_ok_to_text") + "]").prop('checked', true);
         $('#street_address').val(localStorage.getItem("tmp_residential_customer_street_address"));
         $('#street_address_extra').val(localStorage.getItem("tmp_residential_customer_street_address_extra"));
         $('#address_locality').val(localStorage.getItem("tmp_residential_customer_address_locality"));
@@ -251,9 +251,9 @@
         //----------------------------------------------------------------//
 
         // EXTRACT OUR FIELD VALUES AND SAVE THEM IN LOCAL STORAGE.
-        var given_name = $('#firstname').val();
-        var last_name = $('#lastname').val();
-        var date_of_birth = $('#dob').val();
+        var given_name = $('#given_name').val();
+        var last_name = $('#last_name').val();
+        var date_of_birth = $('#birthdate').val();
         if (date_of_birth !== undefined && date_of_birth != null && date_of_birth.length > 0) {
             var mydate = new Date(date_of_birth); // Convert "MM DD, YYYY" to JS DATE
             date_of_birth = mydate.toISOString().substring(0, 10); // Convert JS DATE to "YYYY-MM-DD"
@@ -264,8 +264,8 @@
         if (gender == undefined || gender == null || gender.length == 0) {
             gender = '';
         }
-        var ok_to_email = get_selected_radio_value('ok_to_email');
-        var ok_to_text = get_selected_radio_value('ok_to_text');
+        var ok_to_email = get_selected_radio_value('is_ok_to_email');
+        var ok_to_text = get_selected_radio_value('is_ok_to_text');
         var street_address = $('#street_address').val();
         var street_address_extra = $('#street_address_extra').val();
         var address_region = $('#address_region').val();
@@ -281,9 +281,9 @@
         var post_office_box_number = $('#post_office_box_number').val();
         var email = $('#email').val();
         // var area_served = $('#id_area_served').val();
-        var telephone = $('#phonenumber').val();
+        var telephone = $('#telephone').val();
         // var telephone_extension = $('#id_telephone_extension').val();
-        var other_telephone = $('#other_phonenumber').val();
+        var other_telephone = $('#other_telephone').val();
         // var fax_number = $('#id_fax_number').val();
         var password = $('#password').val();
         var password_repeat = $('#password_repeat').val();
@@ -458,23 +458,23 @@
         <p class="border-bottom mb-3 pb-1 text-secondary">Personal Information</p>
         <div class="form-row">
             <div class="form-group col-md-12 mb-4">
-                <label for="firstname">First name <sup>*</sup></label>
-                <input type="text" class="form-control form-control-lg border border-primary" id="firstname" name="firstname" placeholder="First name" minlength="2" maxlength="30" required autofocus>
-                <div id="firstname-error" class="invalid-feedback"></div>
+                <label for="given_name">First name <sup>*</sup></label>
+                <input type="text" class="form-control form-control-lg border border-primary" id="given_name" name="given_name" placeholder="First name" minlength="2" maxlength="30" required autofocus>
+                <div id="given_name-error" class="invalid-feedback"></div>
             </div>
             <div class="form-group col-md-12 mb-4">
-                <label for="lastname">Last name <sup>*</sup></label>
-                <input type="text" class="form-control form-control-lg border border-primary" id="lastname" name="lastname" placeholder="Last name" minlength="2" maxlength="150" required>
-                <div id="lastname-error" class="invalid-feedback"></div>
+                <label for="last_name">Last name <sup>*</sup></label>
+                <input type="text" class="form-control form-control-lg border border-primary" id="last_name" name="last_name" placeholder="Last name" minlength="2" maxlength="150" required>
+                <div id="last_name-error" class="invalid-feedback"></div>
             </div>
             <div class="form-group p-0 col-md-7 mb-4">
-                <label for="dob">Date of Birth</label>
+                <label for="birthdate">Date of Birth</label>
                 <div class="input-group input-group-lg">
-                    <input type="text" class="form-control form-control-lg border border-success" id="dob" name="dob" placeholder="yyyy-mm-dd" required>
+                    <input type="text" class="form-control form-control-lg border border-success" id="birthdate" name="birthdate" placeholder="yyyy-mm-dd" required>
                     <div class="input-group-append">
                         <span class="input-group-text dob-icon bg-success border-success"><i class="far fa-calendar-alt"></i></span>
                     </div>
-                    <div id="dob-error" class="invalid-feedback"></div>
+                    <div id="birthdate-error" class="invalid-feedback"></div>
                 </div>
             </div>
             <div class="form-group col-md-7 mb-4 p-0">
@@ -499,14 +499,14 @@
         <p class="border-bottom mb-3 pb-1 text-secondary">Contact Point</p>
         <div class="form-row">
             <div class="form-group col-md-7 mb-4">
-                <label for="phonenumber">Phone <sup>*</sup></label>
-                <input type="text" class="form-control form-control-lg border border-primary" id="phonenumber" name="phonenumber" placeholder="(xxx) xxx-xxxx" minlength="10" maxlength="31" required>
-                <div id="phonenumber-error" class="invalid-feedback"></div>
+                <label for="telephone">Phone <sup>*</sup></label>
+                <input type="text" class="form-control form-control-lg border border-primary" id="telephone" name="telephone" placeholder="(xxx) xxx-xxxx" minlength="10" maxlength="31" required>
+                <div id="telephone-error" class="invalid-feedback"></div>
             </div>
             <div class="form-group col-md-7 mb-4">
-                <label for="other_phonenumber">Mobile</label>
-                <input type="text" class="form-control form-control-lg border border-success" id="other_phonenumber" name="other_phonenumber" placeholder="(xxx) xxx-xxxx" minlength="10" maxlength="31">
-                <div id="other_phonenumber-error" class="invalid-feedback"></div>
+                <label for="other_telephone">Mobile</label>
+                <input type="text" class="form-control form-control-lg border border-success" id="other_telephone" name="other_telephone" placeholder="(xxx) xxx-xxxx" minlength="10" maxlength="31">
+                <div id="other_telephone-error" class="invalid-feedback"></div>
             </div>
             <div class="form-group col-md-12 mb-4">
                 <label for="email">E-Mail</label>
@@ -516,26 +516,26 @@
             <div class="form-group col-md-12 mb-4">
                 <p class="mb-1">Ok to E-Mail? <sup>*</sup></p>
                 <div class="form-radio custom-control custom-radio custom-control-inline">
-                    <input type="radio" id="ok_to_email" name="ok_to_email" value="yes" class="custom-control-input form-check-input" required>
-                    <label class="custom-control-label form-check-label" for="ok_to_email">Yes</label>
+                    <input type="radio" id="is_ok_to_email" name="is_ok_to_email" value="yes" class="custom-control-input form-check-input" required>
+                    <label class="custom-control-label form-check-label" for="is_ok_to_email">Yes</label>
                 </div>
                 <div class="form-radio custom-control custom-radio custom-control-inline">
-                    <input type="radio" id="ok_to_email2" name="ok_to_email" value="no" class="custom-control-input form-check-input" required>
-                    <label class="custom-control-label form-check-label" for="ok_to_email2">No</label>
-                    <div id="ok_to_email-error" class="invalid-feedback ml-2"></div>
+                    <input type="radio" id="is_ok_to_email2" name="is_ok_to_email" value="no" class="custom-control-input form-check-input" required>
+                    <label class="custom-control-label form-check-label" for="is_ok_to_email2">No</label>
+                    <div id="is_ok_to_email-error" class="invalid-feedback ml-2"></div>
                 </div>
                 <small class="form-text text-muted">Selecting "yes" will result in client getting emails from our system.</small>
             </div>
             <div class="form-group col-md-12 mb-4">
                 <p class="mb-1">Ok to Text? <sup>*</sup></p>
                 <div class="form-radio custom-control custom-radio custom-control-inline">
-                    <input type="radio" id="ok_to_text" name="ok_to_text" value="yes" class="custom-control-input form-check-input" required>
-                    <label class="custom-control-label form-check-label" for="ok_to_text">Yes</label>
+                    <input type="radio" id="is_ok_to_text" name="is_ok_to_text" value="yes" class="custom-control-input form-check-input" required>
+                    <label class="custom-control-label form-check-label" for="is_ok_to_text">Yes</label>
                 </div>
                 <div class="form-radio custom-control custom-radio custom-control-inline">
-                    <input type="radio" id="ok_to_text2" name="ok_to_text" value="no" class="custom-control-input form-check-input" required>
-                    <label class="custom-control-label form-check-label" for="ok_to_text2">No</label>
-                    <div id="ok_to_text-error" class="invalid-feedback ml-2"></div>
+                    <input type="radio" id="is_ok_to_text2" name="is_ok_to_text" value="no" class="custom-control-input form-check-input" required>
+                    <label class="custom-control-label form-check-label" for="is_ok_to_text2">No</label>
+                    <div id="is_ok_to_text-error" class="invalid-feedback ml-2"></div>
                 </div>
                 <small class="form-text text-muted">Selecting "yes" will result in client getting texts from our system.</small>
             </div>
