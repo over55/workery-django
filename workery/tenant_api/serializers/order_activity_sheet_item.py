@@ -83,9 +83,6 @@ class ActivitySheetItemCreateSerializer(serializers.Serializer):
         """
         Override the `create` function to add extra functinality.
         """
-        # For debugging purposes only.
-        logger.info("Input at", str(validated_data))
-
         # STEP 1 - Get validated POST data.
         job = validated_data.get('job', None)
         associate = validated_data.get('associate', None)
@@ -123,7 +120,9 @@ class ActivitySheetItemCreateSerializer(serializers.Serializer):
             ).order_by('due_date').first()
 
             # For debugging purposes only.
-            logger.info("Found task #", str(task_item.id))
+            logger.info("Found task #%(task_item)s" % {
+                'task_item': str(task_item.id)
+            })
 
             # STEP 4 - Update our TaskItem if job was accepted.
             task_item.is_closed = True
@@ -131,7 +130,9 @@ class ActivitySheetItemCreateSerializer(serializers.Serializer):
             task_item.save()
 
             # For debugging purposes only.
-            logger.info("Task #", str(task_item.id), "was closed.")
+            logger.info("Task #%(task_item)s was closed." % {
+                'task_item': str(task_item.id)
+            })
 
             # STEP 5 - Create our new task for following up.
             next_task_item = TaskItem.objects.create(
@@ -146,7 +147,9 @@ class ActivitySheetItemCreateSerializer(serializers.Serializer):
             )
 
             # For debugging purposes only.
-            logger.info("Task #", str(next_task_item.id), "was created.")
+            logger.info("Task #%(id)s was created." % {
+                'id': str(next_task_item.id)
+            })
 
             # Attached our new TaskItem to the Job.
             job.latest_pending_task = next_task_item

@@ -291,8 +291,8 @@ class Order(models.Model):
         choices=JOB_TYPE_OF_CHOICES,
         blank=True,
     )
-    invoice_quote = MoneyField(
-        _("Invoice Original Quote"),
+    invoice_quote_amount = MoneyField(
+        _("Invoice Original Quote Amount"),
         help_text=_('The original quote made by the associate for this job.'),
         max_digits=10,
         decimal_places=2,
@@ -300,8 +300,8 @@ class Order(models.Model):
         default=Money(0,O55_APP_DEFAULT_MONEY_CURRENCY),
         blank=True,
     )
-    invoice_labour = MoneyField(
-        _("Invoice Labour Costs"),
+    invoice_labour_amount = MoneyField(
+        _("Invoice Labour Costs Amount"),
         help_text=_('The amount charged for labour by the associate for this job.'),
         max_digits=10,
         decimal_places=2,
@@ -309,8 +309,8 @@ class Order(models.Model):
         default=Money(0,O55_APP_DEFAULT_MONEY_CURRENCY),
         blank=True,
     )
-    invoice_material = MoneyField(
-        _("Invoice Material Costs"),
+    invoice_material_amount = MoneyField(
+        _("Invoice Material Costs Amount"),
         help_text=_('The amount charged for material costs by the associate for this job.'),
         max_digits=10,
         decimal_places=2,
@@ -318,8 +318,8 @@ class Order(models.Model):
         default=Money(0,O55_APP_DEFAULT_MONEY_CURRENCY),
         blank=True,
     )
-    invoice_tax = MoneyField(
-        _("Invoice Tax"),
+    invoice_tax_amount = MoneyField(
+        _("Invoice Tax Amount"),
         help_text=_('The amount charged for taxes by the associate for this job.'),
         max_digits=10,
         decimal_places=2,
@@ -327,8 +327,8 @@ class Order(models.Model):
         default=Money(0,O55_APP_DEFAULT_MONEY_CURRENCY),
         blank=True,
     )
-    invoice_sub_total = MoneyField(
-        _("Invoice Sub-Total"),
+    invoice_sub_total_amount = MoneyField(
+        _("Invoice Sub-Total Amount"),
         help_text=_('The total amount charged by the associate for this job.'),
         max_digits=10,
         decimal_places=2,
@@ -336,8 +336,17 @@ class Order(models.Model):
         default=Money(0,O55_APP_DEFAULT_MONEY_CURRENCY),
         blank=True,
     )
-    invoice_total = MoneyField(
-        _("Invoice Total"),
+    invoice_total_amount = MoneyField(
+        _("Invoice Total Amount"),
+        help_text=_('The total amount charged by the associate for this job.'),
+        max_digits=10,
+        decimal_places=2,
+        default_currency=O55_APP_DEFAULT_MONEY_CURRENCY,
+        default=Money(0,O55_APP_DEFAULT_MONEY_CURRENCY),
+        blank=True,
+    )
+    invoice_service_fee_amount = MoneyField(
+        _("Invoice Service Fee Amount"),
         help_text=_('The total amount charged by the associate for this job.'),
         max_digits=10,
         decimal_places=2,

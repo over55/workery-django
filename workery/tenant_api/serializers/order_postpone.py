@@ -85,9 +85,6 @@ class OrderPostponeCreateSerializer(serializers.Serializer):
         """
         Override the `create` function to add extra functinality.
         """
-        # For debugging purposes only.
-        logger.info("Input at", str(validated_data))
-
         #-------------------------#
         # Get validated POST data #
         #-------------------------#
@@ -123,7 +120,9 @@ class OrderPostponeCreateSerializer(serializers.Serializer):
         ).order_by('due_date').first()
 
         # For debugging purposes only.
-        logger.info("Found task #", str(task_item.id))
+        logger.info("Found task #%(id)s." % {
+            'id': str(task_item.id)
+        })
 
         # Update our TaskItem.
         task_item.is_closed = True
@@ -134,7 +133,9 @@ class OrderPostponeCreateSerializer(serializers.Serializer):
         task_item.save()
 
         # For debugging purposes only.
-        logger.info("Task #", str(task_item.id), "was closed b/c of postponement.")
+        logger.info("Task #%(id)s was closed b/c of postponement." % {
+            'id': str(task_item.id)
+        })
 
         #---------------------------------------------#
         # Create a new task based on a new start date #
@@ -152,7 +153,9 @@ class OrderPostponeCreateSerializer(serializers.Serializer):
         )
 
         # For debugging purposes only.
-        logger.info("Task #", str(next_task_item.id), "was created b/c of postponement.")
+        logger.info("Task #%(id)s was created b/c of postponement." % {
+            'id': str(next_task_item.id)
+        })
 
         # Attach our next job.
         job.latest_pending_task = next_task_item

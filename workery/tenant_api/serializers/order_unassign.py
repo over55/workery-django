@@ -83,9 +83,6 @@ class OrderUnassignCreateSerializer(serializers.Serializer):
         """
         Override the `create` function to add extra functinality.
         """
-        # For debugging purposes only.
-        logger.info("Input at", str(validated_data))
-
         #-------------------------#
         # Get validated POST data #
         #-------------------------#
@@ -119,13 +116,17 @@ class OrderUnassignCreateSerializer(serializers.Serializer):
             is_closed=False
         )
         for task_item in task_items.all():
-            logger.info("Found task #", str(task_item.id))
+            logger.info("Found task #%(id)s." % {
+                'id': str(task_item.id)
+            })
             task_item.reason = reason
             task_item.reason_other = reason_other
             task_item.is_closed = True
             task_item.last_modified_by = self.context['user']
             task_item.save()
-            logger.info("Closed task #", str(task_item.id))
+            logger.info("Closed task #%(id)s." % {
+                'id': str(task_item.id)
+            })
 
         # Update our job.
         job.associate = None
@@ -149,7 +150,9 @@ class OrderUnassignCreateSerializer(serializers.Serializer):
         )
 
         # For debugging purposes only.
-        logger.info("Assignment Task #", str(next_task_item.id), "was created b/c of unassignment.")
+        logger.info("Assignment Task #%(id)s was created b/c of unassignment." % {
+            'id': str(next_task_item.id)
+        })
 
         # Attach our next job.
         job.latest_pending_task = next_task_item

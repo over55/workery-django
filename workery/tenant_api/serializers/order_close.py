@@ -3,6 +3,7 @@ import logging
 import phonenumbers
 from datetime import datetime, timedelta
 from dateutil import tz
+from djmoney.money import Money
 from starterkit.drf.validation import (
     MatchingDuelFieldsValidator,
     EnhancedPasswordStrengthFieldValidator
@@ -22,7 +23,7 @@ from rest_framework import exceptions, serializers
 from rest_framework.response import Response
 from rest_framework.validators import UniqueValidator
 from shared_api.custom_fields import PhoneNumberField
-from shared_foundation.constants import CUSTOMER_GROUP_ID
+from shared_foundation.constants import CUSTOMER_GROUP_ID, O55_APP_DEFAULT_MONEY_CURRENCY
 from shared_foundation.models import SharedUser
 from tenant_foundation.constants import *
 from tenant_foundation.models import (
@@ -60,6 +61,15 @@ class OrderCloseCreateSerializer(serializers.Serializer):
     was_associate_punctual = serializers.BooleanField(required=True)
     was_associate_professional = serializers.BooleanField(required=True)
     would_customer_refer_our_organization = serializers.BooleanField(required=True)
+    invoice_date = serializers.DateField(required=True)
+    invoice_id = serializers.IntegerField(required=False)
+    invoice_quote_amount = serializers.FloatField(required=False)
+    invoice_labour_amount = serializers.FloatField(required=True)
+    invoice_material_amount = serializers.FloatField(required=True)
+    invoice_tax_amount = serializers.FloatField(required=False)
+    invoice_sub_total_amount = serializers.FloatField(required=False)
+    invoice_total_amount = serializers.FloatField(required=False)
+    invoice_service_fee_amount = serializers.FloatField(required=False)
 
     # Meta Information.
     class Meta:
@@ -72,7 +82,16 @@ class OrderCloseCreateSerializer(serializers.Serializer):
             'was_job_finished_on_time_and_on_budget',
             'was_associate_punctual',
             'was_associate_professional',
-            'would_customer_refer_our_organization'
+            'would_customer_refer_our_organization',
+            'invoice_date',
+            'invoice_id',
+            'invoice_quote_amount',
+            'invoice_labour_amount',
+            'invoice_material_amount',
+            'invoice_tax_amount',
+            'invoice_sub_total_amount',
+            'invoice_total_amount',
+            'invoice_service_fee_amount'
         )
 
     def validate(self, data):
@@ -100,9 +119,6 @@ class OrderCloseCreateSerializer(serializers.Serializer):
         """
         Override the `create` function to add extra functinality.
         """
-        # For debugging purposes only.
-        logger.info("Input at", str(validated_data))
-
         #--------------------------#
         # Get validated POST data. #
         #--------------------------#
@@ -115,6 +131,32 @@ class OrderCloseCreateSerializer(serializers.Serializer):
         was_associate_punctual = validated_data.get('was_associate_punctual', False)
         was_associate_professional = validated_data.get('was_associate_professional', False)
         would_customer_refer_our_organization = validated_data.get('would_customer_refer_our_organization', False)
+        invoice_date = validated_data.get('invoice_date', None)
+        invoice_id = validated_data.get('invoice_id',  0)
+        invoice_quote_amount = validated_data.get('invoice_quote_amount',  0)
+        invoice_labour_amount = validated_data.get('invoice_labour_amount',  0)
+        invoice_material_amount = validated_data.get('invoice_material_amount',  0)
+        invoice_tax_amount = validated_data.get('invoice_tax_amount',  0)
+        invoice_sub_total_amount = validated_data.get('invoice_sub_total_amount',  0)
+        invoice_total_amount = validated_data.get('invoice_total_amount',  0)
+        invoice_service_fee_amount = validated_data.get('invoice_service_fee_amount',  0)
+
+        # -------------------------
+        # --- FINANCIAL DETAILS ---
+        # -------------------------
+        job.invoice_date = invoice_date
+        job.invoice_id = invoice_id
+        job.invoice_quote_amount = Money(invoice_quote_amount, O55_APP_DEFAULT_MONEY_CURRENCY)
+        job.invoice_labour_amount = Money(invoice_labour_amount, O55_APP_DEFAULT_MONEY_CURRENCY)
+        job.invoice_material_amount = Money(invoice_material_amount, O55_APP_DEFAULT_MONEY_CURRENCY)
+        job.invoice_tax_amount = Money(invoice_tax_amount, O55_APP_DEFAULT_MONEY_CURRENCY)
+        job.invoice_sub_total_amount = Money(invoice_sub_total_amount, O55_APP_DEFAULT_MONEY_CURRENCY)
+        job.invoice_total_amount = Money(invoice_total_amount, O55_APP_DEFAULT_MONEY_CURRENCY)
+        job.invoice_service_fee_amount = Money(invoice_service_fee_amount, O55_APP_DEFAULT_MONEY_CURRENCY)
+        job.save()
+
+        # For debugging purposes only.
+        logger.info("Job financials where updated.")
 
         #------------------------------------------#
         # Create any additional optional comments. #
@@ -141,13 +183,17 @@ class OrderCloseCreateSerializer(serializers.Serializer):
             is_closed=False
         )
         for task_item in task_items.all():
-            logger.info("Found task #", str(task_item.id))
+            logger.info("Found task # #%(id)s ." % {
+                'id': str(task_item.id)
+            })
             task_item.reason = reason
             task_item.reason_other = reason_other
             task_item.is_closed = True
             task_item.last_modified_by = self.context['user']
             task_item.save()
-            logger.info("Closed task #", str(task_item.id))
+            logger.info("Task #%(id)s was closed." % {
+                'id': str(task_item.id)
+            })
 
         # ------------------------
         # --- JOB IS CANCELLED ---
@@ -219,7 +265,9 @@ class OrderCloseCreateSerializer(serializers.Serializer):
             total_score = score_sum / jobs_count
 
             # For debugging purposes only.
-            logger.info("Assocate is calculated as:", total_score)
+            logger.info("Assocate is calculated as: %(total_score)s" % {
+                'total_score': str(total_score)
+            })
 
         #---------------------------------#
         # Ongoing jobs require new ticket #
@@ -238,7 +286,9 @@ class OrderCloseCreateSerializer(serializers.Serializer):
             )
 
             # For debugging purposes only.
-            logger.info("Created task #", str(next_task_item.id))
+            logger.info("Task #%(id)s was created." % {
+                'id': str(next_task_item.id)
+            })
 
             # Attach our next job.
             job.latest_pending_task = next_task_item
