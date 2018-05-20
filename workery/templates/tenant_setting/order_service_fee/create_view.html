@@ -1,4 +1,4 @@
-.title{% extends 'tenant_foundation/tenant_base.html' %}
+{% extends 'tenant_foundation/tenant_base.html' %}
 {% load staticfiles i18n foundation_tags humanize %}
 
 {% block title %}
@@ -20,6 +20,7 @@
         create_order_service_fee_api(
             {
                 'title': $('#order_service_fee_title').val(),
+                'percentage': $('#order_service_fee_percentage').val(),
                 'description': $('#order_service_fee_desc').val()
             },
             function(order_service_fee) {

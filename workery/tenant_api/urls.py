@@ -23,6 +23,7 @@ from tenant_api.views.order_complete import OrderCompleteCreateAPIView
 from tenant_api.views.order_close import OrderCloseCreateAPIView
 from tenant_api.views.order_postpone import OrderPostponeCreateAPIView
 from tenant_api.views.order_unassign import OrderUnassignCreateAPIView
+from tenant_api.views.order_service_fee import OrderServiceFeeListCreateAPIView, OrderServiceFeeRetrieveUpdateDestroyAPIView
 
 
 urlpatterns = [
@@ -42,7 +43,7 @@ urlpatterns = [
     url(r'^api/customer/(?P<pk>[^/.]+)/$', CustomerRetrieveUpdateDestroyAPIView.as_view(), name='workery_customer_retrieve_update_destroy_api_endpoint'),
     url(r'^api/customer-comments$', CustomerCommentListCreateAPIView.as_view(), name='workery_customer_comment_list_create_api_endpoint'),
 
-    # Tags
+    # Insurance Requirements
     url(r'^api/insurance_requirements$', InsuranceRequirementListCreateAPIView.as_view(), name='workery_insurance_requirement_list_create_api_endpoint'),
     url(r'^api/insurance_requirement/(?P<pk>[^/.]+)/$', InsuranceRequirementRetrieveUpdateDestroyAPIView.as_view(), name='workery_insurance_requirement_retrieve_update_destroy_api_endpoint'),
 
@@ -57,6 +58,10 @@ urlpatterns = [
     url(r'^api/orders/close$', OrderCloseCreateAPIView.as_view(), name='workery_order_order_close_create_api_endpoint'),
     url(r'^api/orders/postpone$', OrderPostponeCreateAPIView.as_view(), name='workery_order_order_postpone_create_api_endpoint'),
     url(r'^api/orders/activity-sheet-item/unassign$', OrderUnassignCreateAPIView.as_view(), name='workery_order_order_unassign_create_api_endpoint'),
+
+    # Order Service Fees
+    url(r'^api/order_service_fees$', OrderServiceFeeListCreateAPIView.as_view(), name='workery_order_service_fee_list_create_api_endpoint'),
+    url(r'^api/order_service_fee/(?P<pk>[^/.]+)/$', OrderServiceFeeRetrieveUpdateDestroyAPIView.as_view(), name='workery_order_service_fee_retrieve_update_destroy_api_endpoint'),
 
     # Partners
     url(r'^api/partners$', PartnerListCreateAPIView.as_view(), name='workery_partner_list_create_api_endpoint'),

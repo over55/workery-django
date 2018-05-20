@@ -118,6 +118,13 @@ class Command(BaseCommand):
             'can_post_task_item',
             'can_put_task_item',
             'can_delete_task_item',
+
+            # --- Order Service Fee --- #
+            'can_get_order_service_fees',
+            'can_get_order_service_fee',
+            'can_post_order_service_fee',
+            'can_put_order_service_fee',
+            'can_delete_order_service_fee',
         ]
         permissions = Permission.objects.filter(codename__in=permission_codenames)
         for permission in permissions.all():
@@ -208,6 +215,13 @@ class Command(BaseCommand):
             'can_post_task_item',
             'can_put_task_item',
             'can_delete_task_item',
+
+            # --- Order Service Fee --- #
+            'can_get_order_service_fees',
+            'can_get_order_service_fee',
+            'can_post_order_service_fee',
+            'can_put_order_service_fee',
+            'can_delete_order_service_fee',
         ]
         permissions = Permission.objects.filter(codename__in=permission_codenames)
         for permission in permissions.all():
@@ -294,6 +308,13 @@ class Command(BaseCommand):
             'can_post_task_item',
             'can_put_task_item',
             'can_delete_task_item',
+
+            # --- Order Service Fee --- #
+            'can_get_order_service_fees',
+            'can_get_order_service_fee',
+            'can_post_order_service_fee',
+            'can_put_order_service_fee',
+            'can_delete_order_service_fee',
         ]
         permissions = Permission.objects.filter(codename__in=permission_codenames)
         for permission in permissions.all():
@@ -320,6 +341,10 @@ class Command(BaseCommand):
             # --- Insurance Requirement --- #
             'can_get_insurance_requirements',
             'can_get_insurance_requirement',
+
+            # --- Order Service Fee --- #
+            'can_get_order_service_fees',
+            'can_get_order_service_fee',
         ]
         permissions = Permission.objects.filter(codename__in=permission_codenames)
         for permission in permissions.all():
@@ -348,6 +373,10 @@ class Command(BaseCommand):
             # --- Insurance Requirement --- #
             'can_get_insurance_requirements',
             'can_get_insurance_requirement',
+
+            # --- Order Service Fee --- #
+            'can_get_order_service_fees',
+            'can_get_order_service_fee',
         ]
         permissions = Permission.objects.filter(codename__in=permission_codenames)
         for permission in permissions.all():

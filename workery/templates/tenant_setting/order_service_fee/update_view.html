@@ -20,6 +20,7 @@
             {{ order_service_fee.pk }},
             {
                 'title': $('#order_service_fee_title').val(),
+                'percentage': $('#order_service_fee_percentage').val(),
                 'description': $('#order_service_fee_desc').val()
             },
             function(order_service_fee) {
