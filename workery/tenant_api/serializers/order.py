@@ -77,7 +77,6 @@ class OrderListCreateSerializer(serializers.ModelSerializer):
             'is_ongoing',
             'is_home_support_service',
             'payment_date',
-            'service_fee',
             # 'created_by',
             # 'last_modified_by',
             'skill_sets',
@@ -117,9 +116,6 @@ class OrderListCreateSerializer(serializers.ModelSerializer):
         follow_up_days_number = validated_data.get('follow_up_days_number', 0)
         invoice_service_fee = validated_data.get('invoice_service_fee', None)
 
-        # Update currency price.
-        service_fee = validated_data.get('service_fee', Money(0, constants.O55_APP_DEFAULT_MONEY_CURRENCY))
-
         # Create our object.
         order = Order.objects.create(
             customer=customer,
@@ -130,7 +126,6 @@ class OrderListCreateSerializer(serializers.ModelSerializer):
             is_cancelled=is_cancelled,
             completion_date=completion_date,
             hours=hours,
-            service_fee=service_fee,
             payment_date=payment_date,
             created_by=created_by,
             last_modified_by=None,
@@ -196,7 +191,6 @@ class OrderListCreateSerializer(serializers.ModelSerializer):
         validated_data['last_modified'] = self.context['created_by']
         # validated_data['extra_comment'] = None
         validated_data['assigned_skill_sets'] = order.skill_sets.all()
-        validated_data['service_fee'] = service_fee
 
         # Return our validated data.
         return validated_data
@@ -249,7 +243,6 @@ class OrderRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
             'is_ongoing',
             'is_home_support_service',
             'payment_date',
-            'service_fee',
             # 'created_by',
             # 'last_modified_by',
             'skill_sets',
@@ -286,7 +279,6 @@ class OrderRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         instance.is_ongoing = validated_data.get('is_ongoing', instance.is_ongoing)
         instance.is_home_support_service = validated_data.get('is_home_support_service', instance.is_home_support_service)
         instance.payment_date = validated_data.get('payment_date', instance.payment_date)
-        instance.service_fee = validated_data.get('service_fee', instance.service_fee)
         instance.last_modified_by = self.context['last_modified_by']
         instance.description = validated_data.get('description', instance.description)
         skill_sets = validated_data.get('skill_sets', instance.skill_sets)
@@ -294,11 +286,6 @@ class OrderRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         instance.start_date = validated_data.get('start_date', instance.start_date)
         instance.follow_up_days_number = validated_data.get('follow_up_days_number', instance.follow_up_days_number)
         instance.invoice_service_fee = validated_data.get('invoice_service_fee', instance.invoice_service_fee)
-
-        # Update currency price.
-        service_fee = validated_data.get('service_fee', instance.service_fee)
-        if service_fee:
-            instance.service_fee = Money(service_fee, constants.O55_APP_DEFAULT_MONEY_CURRENCY)
 
         # Save the model.
         instance.save()
@@ -343,7 +330,6 @@ class OrderRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         validated_data['last_modified_by'] = self.context['last_modified_by']
         # validated_data['extra_comment'] = None
         validated_data['assigned_skill_sets'] = instance.skill_sets.all()
-        validated_data['service_fee'] = service_fee
 
         # Return our validated data.
         return validated_data

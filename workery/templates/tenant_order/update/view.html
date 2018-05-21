@@ -62,9 +62,6 @@
         var hours = $('#hours').val();
         console.log("hours:", hours);
 
-        var service_fee = $('#service_fee').val();
-        console.log("service_fee:", service_fee);
-
         var payment_date = $('#payment_date').val();
         console.log("payment_date:", completion_date);
 
@@ -77,7 +74,6 @@
             'is_cancelled': is_cancelled,
             'completion_date': completion_date,
             'hours': hours,
-            'service_fee': service_fee,
             'payment_date': payment_date,
             'extra_comment': null
         };
@@ -266,15 +262,6 @@
             <div class="input-group input-group-lg">
                 <input type="text" class="form-control form-control-lg border border-success" id="hours" name="hours" placeholder="Hours" minlength="3" maxlength="127" required value="{{ job.hours }}">
                 <div id="hours-error" class="invalid-feedback"></div>
-            </div>
-        </div>
-
-
-        <div class="form-group p-0 col-md-7 mb-4">
-            <label for="service_fee">Service Fee:</label>
-            <div class="input-group input-group-lg">
-                <input type="text" class="form-control form-control-lg border border-success" id="service_fee" name="service_fee" placeholder="service_fee" minlength="3" maxlength="127" required value="{% if job.service_fee %}{{ job.service_fee.amount }}{% endif %}">
-                <div id="service_fee-error" class="invalid-feedback"></div>
             </div>
         </div>
 

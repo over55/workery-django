@@ -152,16 +152,7 @@ class Order(models.Model):
         help_text=_('The total amount of hours worked on for this order by the associate.'),
         default=0
     )
-    service_fee = MoneyField(
-        _("Service Fee"),
-        help_text=_('The service fee that the customer was charged by the associate..'),
-        max_digits=10,
-        decimal_places=2,
-        default_currency=O55_APP_DEFAULT_MONEY_CURRENCY,
-        default=Money(0,O55_APP_DEFAULT_MONEY_CURRENCY),
-        blank=True,
-    )
-    payment_date = models.DateField(
+    payment_date = models.DateField(  #TODO- FIX
         _('Payment Date'),
         help_text=_('The date that this order was paid for.'),
         blank=True,

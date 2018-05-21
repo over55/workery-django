@@ -197,7 +197,7 @@
                     <div class="form-row">
                         <div class="form-group col-md-12 mb-4">
                             <label for="completion_date">Completion date</label>
-                            <p>{% if job.completion_date %}{{ job.completion_date }}{% endif %}</p>
+                            <p>{% if job.completion_date %}{{ job.completion_date }}{% else %}-{% endif %}</p>
                             <div id="completion_date-error" class="invalid-feedback"></div>
                         </div>
                     </div>
@@ -206,13 +206,6 @@
                             <label for="hours">Hours</label>
                             <p>{{ job.hours }}</p>
                             <div id="hours-error" class="invalid-feedback"></div>
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group col-md-12 mb-4">
-                            <label for="payment_date">Payment Date</label>
-                            <p>{% if job.payment_date %}{{ job.payment_date }}{% else %}-{% endif %}</p>
-                            <div id="payment_date-error" class="invalid-feedback"></div>
                         </div>
                     </div>
                     {% if job.latest_pending_task %}
@@ -233,22 +226,18 @@
                     <!-- ################################################################## -->
 
 
-                    {% comment %}
-                    <div class="form-row">
-                        <div class="form-group col-md-12 mb-4">
-                            <label for="service_fee">Service fee</label>
-                            <p>{{ job.service_fee }}</p>
-                            <div id="service_fee-error" class="invalid-feedback"></div>
-                        </div>
-                    </div>
-                    {% endcomment %}
-
-
                     <!-- ################################################################## -->
                     <!-- ####################### FINANCIAL DETAILS ######################## -->
                     <!-- ################################################################## -->
                     <p class="border-bottom mb-3 pb-1 text-secondary">Financial Details</p>
                     <div class="form-row">
+                        <div class="form-row">
+                            <div class="form-group col-md-12 mb-4">
+                                <label for="payment_date">Payment Date</label>
+                                <p>{% if job.payment_date %}{{ job.payment_date }}{% else %}-{% endif %}</p>
+                                <div id="payment_date-error" class="invalid-feedback"></div>
+                            </div>
+                        </div>
                         <div class="form-group col-md-12 mb-4">
                             <label for="invoice_date">Invoice Date</label>
                             <p>
