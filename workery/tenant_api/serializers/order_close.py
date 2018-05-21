@@ -67,7 +67,6 @@ class OrderCloseCreateSerializer(serializers.Serializer):
     invoice_labour_amount = serializers.FloatField(required=True)
     invoice_material_amount = serializers.FloatField(required=True)
     invoice_tax_amount = serializers.FloatField(required=False)
-    invoice_sub_total_amount = serializers.FloatField(required=False)
     invoice_total_amount = serializers.FloatField(required=False)
     invoice_service_fee_amount = serializers.FloatField(required=False)
 
@@ -89,7 +88,6 @@ class OrderCloseCreateSerializer(serializers.Serializer):
             'invoice_labour_amount',
             'invoice_material_amount',
             'invoice_tax_amount',
-            'invoice_sub_total_amount',
             'invoice_total_amount',
             'invoice_service_fee_amount'
         )
@@ -137,7 +135,6 @@ class OrderCloseCreateSerializer(serializers.Serializer):
         invoice_labour_amount = validated_data.get('invoice_labour_amount',  0)
         invoice_material_amount = validated_data.get('invoice_material_amount',  0)
         invoice_tax_amount = validated_data.get('invoice_tax_amount',  0)
-        invoice_sub_total_amount = validated_data.get('invoice_sub_total_amount',  0)
         invoice_total_amount = validated_data.get('invoice_total_amount',  0)
         invoice_service_fee_amount = validated_data.get('invoice_service_fee_amount',  0)
 
@@ -150,10 +147,11 @@ class OrderCloseCreateSerializer(serializers.Serializer):
         job.invoice_labour_amount = Money(invoice_labour_amount, O55_APP_DEFAULT_MONEY_CURRENCY)
         job.invoice_material_amount = Money(invoice_material_amount, O55_APP_DEFAULT_MONEY_CURRENCY)
         job.invoice_tax_amount = Money(invoice_tax_amount, O55_APP_DEFAULT_MONEY_CURRENCY)
-        job.invoice_sub_total_amount = Money(invoice_sub_total_amount, O55_APP_DEFAULT_MONEY_CURRENCY)
         job.invoice_total_amount = Money(invoice_total_amount, O55_APP_DEFAULT_MONEY_CURRENCY)
         job.invoice_service_fee_amount = Money(invoice_service_fee_amount, O55_APP_DEFAULT_MONEY_CURRENCY)
         job.save()
+
+        return
 
         # For debugging purposes only.
         logger.info("Job financials where updated.")

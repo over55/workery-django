@@ -44,7 +44,61 @@
                 $("#reason_other_div").hide();
             }
         });
-    });
+
+        $('#invoice_labour_amount').on('change',function(){
+            calculate_total_and_service_fee();
+        });
+
+        $('#invoice_material_amount').on('change',function(){
+            calculate_total_and_service_fee();
+        });
+
+        $('#invoice_tax_amount').on('change',function(){
+            calculate_total_and_service_fee();
+        });
+
+    }); // end DOCUMENT START
+
+    function calculate_total_and_service_fee() {
+        // Get our input fields.
+        var invoice_labour_amount = $('#invoice_labour_amount').val();
+        var invoice_material_amount = $('#invoice_material_amount').val();
+        var invoice_tax_amount = $('#invoice_tax_amount').val();
+
+        // Convert to float
+        invoice_labour_amount = parseFloat(invoice_labour_amount);
+        invoice_material_amount = parseFloat(invoice_material_amount);
+        invoice_tax_amount = parseFloat(invoice_tax_amount);
+
+        // Replace NaN with zero.
+        invoice_labour_amount = ( isNaN(invoice_labour_amount) ? 0 : invoice_labour_amount );
+        invoice_material_amount = ( isNaN(invoice_material_amount) ? 0 : invoice_material_amount );
+        invoice_tax_amount = ( isNaN(invoice_tax_amount) ? 0 : invoice_tax_amount );
+
+        // For debugging purposes only.
+        console.log("invoice_labour_amount", invoice_labour_amount);
+        console.log("invoice_material_amount", invoice_material_amount);
+        console.log("invoice_tax_amount", invoice_tax_amount);
+
+        // Constants
+        var service_fee = parseFloat("{{ job.invoice_service_fee.percentage }}");
+
+        // Calculate
+        var total_amount = 0;
+        total_amount += invoice_labour_amount;
+        total_amount += invoice_material_amount;
+        total_amount += invoice_tax_amount;
+        service_fee = service_fee / 100.0;
+        service_fee = service_fee * total_amount;
+
+        // For debugging purposes only.
+        console.log("total_amount", total_amount);
+        console.log("service_fee", service_fee);
+
+        // Update the GUI.
+        $('#invoice_total_amount').val(String(total_amount));
+        $('#invoice_service_fee_amount').val(service_fee);
+    }
 
     function click_cancel_button() {
         {% if template == 'search' %}
@@ -98,7 +152,6 @@
         var invoice_tax_amount = $('#invoice_tax_amount').val();
         var invoice_total_amount = $('#invoice_total_amount').val();
         var invoice_service_fee_amount = $('#invoice_service_fee_amount').val();
-        var invoice_sub_total_amount = $('#invoice_sub_total_amount').val();
 
         // If the user did not select the job was completed reason then we will
         // set these values as false so our API web-service does not return any
@@ -117,7 +170,6 @@
             invoice_tax_amount = 0;
             invoice_total_amount = 0;
             invoice_service_fee_amount = 0;
-            invoice_sub_total_amount = 0;
         }
 
         var date_of_birth = $('#invoice_date').val();

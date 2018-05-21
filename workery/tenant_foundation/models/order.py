@@ -327,15 +327,6 @@ class Order(models.Model):
         default=Money(0,O55_APP_DEFAULT_MONEY_CURRENCY),
         blank=True,
     )
-    invoice_sub_total_amount = MoneyField(
-        _("Invoice Sub-Total Amount"),
-        help_text=_('The total amount charged by the associate for this job.'),
-        max_digits=10,
-        decimal_places=2,
-        default_currency=O55_APP_DEFAULT_MONEY_CURRENCY,
-        default=Money(0,O55_APP_DEFAULT_MONEY_CURRENCY),
-        blank=True,
-    )
     invoice_total_amount = MoneyField(
         _("Invoice Total Amount"),
         help_text=_('The total amount charged by the associate for this job.'),

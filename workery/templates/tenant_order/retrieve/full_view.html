@@ -208,15 +208,6 @@
                             <div id="hours-error" class="invalid-feedback"></div>
                         </div>
                     </div>
-                    {% comment %}
-                    <div class="form-row">
-                        <div class="form-group col-md-12 mb-4">
-                            <label for="service_fee">Service fee</label>
-                            <p>{{ job.service_fee }}</p>
-                            <div id="service_fee-error" class="invalid-feedback"></div>
-                        </div>
-                    </div>
-                    {% endcomment %}
                     <div class="form-row">
                         <div class="form-group col-md-12 mb-4">
                             <label for="payment_date">Payment Date</label>
@@ -242,16 +233,104 @@
                     <!-- ################################################################## -->
 
 
+                    {% comment %}
+                    <div class="form-row">
+                        <div class="form-group col-md-12 mb-4">
+                            <label for="service_fee">Service fee</label>
+                            <p>{{ job.service_fee }}</p>
+                            <div id="service_fee-error" class="invalid-feedback"></div>
+                        </div>
+                    </div>
+                    {% endcomment %}
+
+
                     <!-- ################################################################## -->
                     <!-- ####################### FINANCIAL DETAILS ######################## -->
                     <!-- ################################################################## -->
                     <p class="border-bottom mb-3 pb-1 text-secondary">Financial Details</p>
                     <div class="form-row">
                         <div class="form-group col-md-12 mb-4">
-                            <label for="order_service_fee">Service Fee</label>
+                            <label for="invoice_date">Invoice Date</label>
                             <p>
-                                {% if job.invoice_service_fee %}
-                                    {{ job.invoice_service_fee.title }}
+                                {% if job.invoice_date %}
+                                    {{ job.invoice_date }}
+                                {% else %}
+                                    -
+                                {% endif %}
+                            </p>
+                            <div id="invoice_date-error" class="invalid-feedback"></div>
+                        </div>
+                        <div class="form-group col-md-12 mb-4">
+                            <label for="invoice_id">Invoice ID #</label>
+                            <p>
+                                {% if job.invoice_id %}
+                                    {{ job.invoice_id }}
+                                {% else %}
+                                    -
+                                {% endif %}
+                            </p>
+                            <div id="invoice_id-error" class="invalid-feedback"></div>
+                        </div>
+                        <div class="form-group col-md-12 mb-4">
+                            <label for="invoice_quote_amount">Invoice Quote</label>
+                            <p>
+                                {% if job.invoice_quote_amount %}
+                                    {{ job.invoice_quote_amount }}
+                                {% else %}
+                                    -
+                                {% endif %}
+                            </p>
+                            <div id="invoice_quote_amount-error" class="invalid-feedback"></div>
+                        </div>
+                        <div class="form-group col-md-12 mb-4">
+                            <label for="invoice_labour_amount">Invoice Labour</label>
+                            <p>
+                                {% if job.invoice_labour_amount %}
+                                    {{ job.invoice_labour_amount }}
+                                {% else %}
+                                    -
+                                {% endif %}
+                            </p>
+                            <div id="invoice_labour_amount-error" class="invalid-feedback"></div>
+                        </div>
+                        <div class="form-group col-md-12 mb-4">
+                            <label for="invoice_material_amount">Invoice Material</label>
+                            <p>
+                                {% if job.invoice_material_amount %}
+                                    {{ job.invoice_material_amount }}
+                                {% else %}
+                                    -
+                                {% endif %}
+                            </p>
+                            <div id="invoice_material_amount-error" class="invalid-feedback"></div>
+                        </div>
+                        <div class="form-group col-md-12 mb-4">
+                            <label for="invoice_tax_amount">Invoice Tax</label>
+                            <p>
+                                {% if job.invoice_tax_amount %}
+                                    {{ job.invoice_tax_amount }}
+                                {% else %}
+                                    -
+                                {% endif %}
+                            </p>
+                            <div id="invoice_tax_amount-error" class="invalid-feedback"></div>
+                        </div>
+                        <div class="form-group col-md-12 mb-4">
+                            <label for="invoice_total_amount">Invoice Total</label>
+                            <p>
+                                {% if job.invoice_total_amount %}
+                                    {{ job.invoice_total_amount }}
+                                {% else %}
+                                    -
+                                {% endif %}
+                            </p>
+                            <div id="invoice_total_amount-error" class="invalid-feedback"></div>
+                        </div>
+                        <div class="form-group col-md-12 mb-4">
+                            <label for="order_service_fee">Invoice Service Fee</label>
+                            <p>
+                                {% if job.invoice_service_fee_amount %}
+                                    {{ job.invoice_service_fee_amount }}
                                 {% else %}
                                     -
                                 {% endif %}
