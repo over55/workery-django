@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import datetime
 from django.contrib.auth.decorators import login_required
 from django.db.models.functions import Extract
 from django.db.models import Q
@@ -32,18 +33,13 @@ class Echo:
         return value
 
 
-
 def report_07_streaming_csv_view(request):
-    # DEVELOPERS NOTE:
-    # - We will sort by the month and day of the associate's birthdate.
-    associates = Associate.objects.annotate(
-        month=Extract('commercial_insurance_expiry_date', 'month'),
-        day=Extract('commercial_insurance_expiry_date', 'day')
-    ).filter(
+    today = datetime.datetime.today()
+    associates = Associate.objects.filter(
         Q(owner__is_active=True) &
-        ~Q(commercial_insurance_expiry_date=None)
-
-    ).order_by('month', 'day')
+        ~Q(commercial_insurance_expiry_date=None) &
+        Q(commercial_insurance_expiry_date__gte=today)
+    ).order_by('-commercial_insurance_expiry_date')
 
     # Generate the CSV header row.
     rows = (["ID #", "Name", "Commerical Insurance Due Dates"],)
@@ -63,6 +59,35 @@ def report_07_streaming_csv_view(request):
         content_type="text/csv"
     )
     response['Content-Disposition'] = 'attachment; filename="associate_commercial_insurance_due_dates.csv"'
+    return response
+
+
+def report_08_streaming_csv_view(request):
+    today = datetime.datetime.today()
+    associates = Associate.objects.filter(
+        Q(owner__is_active=True) &
+        ~Q(police_check=None) &
+        Q(police_check__gte=today)
+    ).order_by('-police_check')
+
+    # Generate the CSV header row.
+    rows = (["ID #", "Name", "Commerical Insurance Due Dates"],)
+
+    # Generate hte CSV data.
+    for associate in associates.all():
+        rows += ([
+            associate.id,
+            str(associate),
+            "-" if associate.police_check is None else associate.police_check
+        ],)
+
+    pseudo_buffer = Echo()
+    writer = csv.writer(pseudo_buffer)
+    response = StreamingHttpResponse(
+        (writer.writerow(row) for row in rows),
+        content_type="text/csv"
+    )
+    response['Content-Disposition'] = 'attachment; filename="associate_policy_check_due_dates.csv"'
     return response
 
 
