@@ -92,7 +92,7 @@
                         {% endif %}
                     </td>
                     <td>
-                        <a href="{% url 'workery_tenant_financlial_job_retrieve' job_item.id %}?page={{ page_obj.number }}">{% trans 'View' %}</a>
+                        <a href="{% url 'workery_tenant_financlial_job_retrieve' 'unpaid-jobs' job_item.id %}?page={{ page_obj.number }}">{% trans 'View' %}</a>
                     </td>
                 </tr>
                 {% empty %}

@@ -12,7 +12,7 @@ urlpatterns = (
     path('financials/all-jobs/', views.AllJobOrderListView.as_view(), name='workery_tenant_all_jobs_list'),
 
     # Retrieve
-    path('financials/job/<int:pk>/', views.JobRetrieveView.as_view(), name='workery_tenant_financlial_job_retrieve'),
+    path('financials/<str:template>/detail/<int:pk>/', views.JobRetrieveView.as_view(), name='workery_tenant_financlial_job_retrieve'),
 
     # # Assign
     # path('pending-tasks/<int:pk>/activity-sheet/', views.PendingTaskRetrieveForActivitySheetView.as_view(), name='workery_tenant_pending_task_retrieve_for_activity_sheet_retrieve'),

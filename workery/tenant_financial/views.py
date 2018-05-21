@@ -107,5 +107,12 @@ class JobRetrieveView(DetailView, ExtraRequestProcessingMixin):
         # Required for navigation
         modified_context['current_page'] = "task"
 
+        # Validate the template selected.
+        template = self.kwargs['template']
+        if template not in ['unpaid-jobs', 'paid-jobs', 'all-jobs']:
+            from django.core.exceptions import PermissionDenied
+            raise PermissionDenied(_('You entered wrong format.'))
+        modified_context['template'] = template
+
         # Return our modified context.
         return modified_context
