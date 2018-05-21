@@ -344,6 +344,12 @@ class Order(models.Model):
         blank=True,
         null=True
     )
+    invoice_service_fee_payment_date = models.DateField(
+        _('Invoice Service Fee Payment Date'),
+        help_text=_('The date when the service fee was paid by the associate.'),
+        blank=True,
+        null=True
+    )
 
 
     #

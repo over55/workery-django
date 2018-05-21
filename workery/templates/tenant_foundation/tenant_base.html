@@ -95,6 +95,11 @@
                             <i class="fa fa-handshake"></i>&nbsp;Partners
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if current_page == 'financials' %}active{% endif %}" href="{% url 'workery_tenant_unpaid_jobs_list' %}">
+                            <i class="fa fa-credit-card"></i>&nbsp;Financials
+                        </a>
+                    </li>
                     {% comment %}
                     <li class="nav-item">
                         <a class="nav-link {% if current_page == 'resource' %}active{% endif %}" href="{% url 'workery_tenant_resource_category_list' %}">

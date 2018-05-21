@@ -183,6 +183,7 @@ class Command(BaseCommand):
                         'hours':  hours,
                         'last_modified_by': None,
                         'created_by': None,
+                        'invoice_service_fee_payment_date': local_payment_date
                     }
                 )
 

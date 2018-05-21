@@ -119,7 +119,8 @@ TENANT_APPS = (
     'tenant_help',
     'tenant_partner',
     'tenant_task',
-    'tenant_report'
+    'tenant_report',
+    'tenant_financial'
 )
 
 INSTALLED_APPS = list(SHARED_APPS) + [app for app in TENANT_APPS if app not in SHARED_APPS]
