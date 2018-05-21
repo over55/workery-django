@@ -26,6 +26,16 @@ class ReportListView(TemplateView, ExtraRequestProcessingMixin):
 
 
 @method_decorator(login_required, name='dispatch')
+class Report07DetailView(TemplateView, ExtraRequestProcessingMixin):
+    template_name = 'tenant_report/report_07_view.html'
+
+    def get_context_data(self, **kwargs):
+        modified_context = super().get_context_data(**kwargs)
+        modified_context['current_page'] = 'reports' # Required
+        return modified_context
+
+
+@method_decorator(login_required, name='dispatch')
 class Report09DetailView(TemplateView, ExtraRequestProcessingMixin):
     template_name = 'tenant_report/report_09_view.html'
 
