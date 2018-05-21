@@ -71,6 +71,7 @@
                 <tr>
                     <th>{% trans 'Client Name' %}</th>
                     <th>{% trans 'Associate Name' %}</th>
+                    <th>{% trans 'Payment Date' %}</th>
                     <th></th>
                 </tr>
             </thead>
@@ -90,6 +91,9 @@
                         {% else %}
                             {% trans 'Unassigned' %}
                         {% endif %}
+                    </td>
+                    <td>
+                        {{ job_item.invoice_service_fee_payment_date }}
                     </td>
                     <td>
                         <a href="{% url 'workery_tenant_financlial_job_retrieve' 'paid-jobs' job_item.id %}?page={{ page_obj.number }}">{% trans 'View' %}</a>

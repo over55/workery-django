@@ -12,7 +12,7 @@ from tenant_foundation.models import Order
 @method_decorator(login_required, name='dispatch')
 class UnpaidJobOrderListView(ListView, ExtraRequestProcessingMixin):
     context_object_name = 'job_list'
-    queryset = Order.objects.filter(invoice_service_fee_payment_date=None)
+    queryset = Order.objects.filter(invoice_service_fee_payment_date=None).order_by('-id')
     template_name = 'tenant_financial/list/unpaid_view.html'
     paginate_by = 100
 
@@ -39,7 +39,7 @@ class UnpaidJobOrderListView(ListView, ExtraRequestProcessingMixin):
 @method_decorator(login_required, name='dispatch')
 class PaidJobOrderListView(ListView, ExtraRequestProcessingMixin):
     context_object_name = 'job_list'
-    queryset = Order.objects.filter(~Q(invoice_service_fee_payment_date=None))
+    queryset = Order.objects.filter(~Q(invoice_service_fee_payment_date=None)).order_by('-invoice_service_fee_payment_date')
     template_name = 'tenant_financial/list/paid_view.html'
     paginate_by = 100
 
@@ -66,7 +66,7 @@ class PaidJobOrderListView(ListView, ExtraRequestProcessingMixin):
 @method_decorator(login_required, name='dispatch')
 class AllJobOrderListView(ListView, ExtraRequestProcessingMixin):
     context_object_name = 'job_list'
-    queryset = Order.objects.all()
+    queryset = Order.objects.all().order_by('-id')
     template_name = 'tenant_financial/list/all_view.html'
     paginate_by = 100
 
