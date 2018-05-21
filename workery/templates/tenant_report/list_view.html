@@ -1,0 +1,74 @@
+{% extends 'tenant_foundation/tenant_base.html' %}
+{% load staticfiles i18n foundation_tags humanize %}
+
+{% block title %}
+{% trans 'Settings List | Workery' %}
+{% endblock title %}
+
+{% block header_content %}
+{% endblock header_content %}
+
+{% block content %}
+
+<script>
+    function ajax_get_staffs() {
+        var criteria = [];
+
+        tenant_get_staffs(
+            criteria,
+            function(json_results) {
+                console.log(json_results)
+            },
+            function(error) {
+                console.debug(error);
+                // alert(error);
+            }
+        );
+    }
+</script>
+
+<main id="main" role="main">
+
+    <!-- BREADCRUMB -->
+    <!------------------------------------------------------------------------->
+    <nav aria-label="breadcrumb">
+	  	<ol class="breadcrumb">
+	    		<li class="breadcrumb-item"><a href="{% url 'workery_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
+                <li class="breadcrumb-item active" aria-current="page">{% trans 'Reports' %}</li>
+	  	</ol>
+	</nav>
+    <!------------------------------------------------------------------------->
+    <!-- end BREADCRUMB -->
+
+    <h1>Reports</h1>
+    <div class="album py-5">
+        <div class="container">
+            <div class="row">
+
+
+                <div class="col-md-4">
+                    <div class="card mb-4 box-shadow">
+                        <div class="card-custom-top">
+                            <i class="fas fa-graduation-cap fa-4x"></i>
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title font-weight-bold">Reports</h5>
+                            <p class="card-text">Modify the skill sets.</p>
+                            <div class="text-center">
+                                <a href="" class="btn btn-success btn-lg" type="button">View <i class="fas fa-arrow-circle-right"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+
+
+    <!-- RETURN-TO-TOP -->
+    <a id="return-to-top" href="#" class="btn-info btn-lg back-to-top" role="button" title="Back to top"><i class="fas fa-angle-up fa-2x"></i></a>
+    <!-- end RETURN-TO-TOP -->
+</main>
+{% endblock content %}

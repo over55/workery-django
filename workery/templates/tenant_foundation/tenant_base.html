@@ -71,7 +71,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">
+                        <a class="nav-link {% if current_page == 'reports' %}active{% endif %}" href="{% url 'workery_tenant_reports_list_master' %}">
                         <i class="fa fa-chart-bar"></i>&nbsp;Reports
                         </a>
                     </li>
