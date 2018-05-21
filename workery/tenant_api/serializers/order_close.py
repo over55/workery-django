@@ -62,13 +62,13 @@ class OrderCloseCreateSerializer(serializers.Serializer):
     was_associate_professional = serializers.BooleanField(required=True)
     would_customer_refer_our_organization = serializers.BooleanField(required=True)
     invoice_date = serializers.DateField(required=True)
-    invoice_id = serializers.IntegerField(required=False)
-    invoice_quote_amount = serializers.FloatField(required=False)
-    invoice_labour_amount = serializers.FloatField(required=True)
-    invoice_material_amount = serializers.FloatField(required=True)
-    invoice_tax_amount = serializers.FloatField(required=False)
-    invoice_total_amount = serializers.FloatField(required=False)
-    invoice_service_fee_amount = serializers.FloatField(required=False)
+    invoice_id = serializers.IntegerField(required=False, validators=[cannot_be_zero_or_negative,])
+    invoice_quote_amount = serializers.FloatField(required=False, validators=[cannot_be_zero_or_negative,])
+    invoice_labour_amount = serializers.FloatField(required=True, validators=[cannot_be_zero_or_negative,])
+    invoice_material_amount = serializers.FloatField(required=True, validators=[cannot_be_zero_or_negative,])
+    invoice_tax_amount = serializers.FloatField(required=False, validators=[cannot_be_zero_or_negative,])
+    invoice_total_amount = serializers.FloatField(required=False, validators=[cannot_be_zero_or_negative,])
+    invoice_service_fee_amount = serializers.FloatField(required=False, validators=[cannot_be_zero_or_negative,])
 
     # Meta Information.
     class Meta:
