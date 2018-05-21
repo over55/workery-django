@@ -11,20 +11,7 @@
 {% block content %}
 
 <script>
-    function ajax_get_staffs() {
-        var criteria = [];
-
-        tenant_get_staffs(
-            criteria,
-            function(json_results) {
-                console.log(json_results)
-            },
-            function(error) {
-                console.debug(error);
-                // alert(error);
-            }
-        );
-    }
+    
 </script>
 
 <main id="main" role="main">
@@ -45,7 +32,7 @@
         <div class="container">
             <div class="row">
 
-
+                {% comment %}
                 <div class="col-md-4">
                     <div class="card mb-4 box-shadow">
                         <div class="card-custom-top">
@@ -56,6 +43,23 @@
                             <p class="card-text">Report tracking the Associates Service Fees as due.</p>
                             <div class="text-center">
                                 <a href="" class="btn btn-success btn-lg" type="button">View <i class="fas fa-arrow-circle-right"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endcomment %}
+
+
+                <div class="col-md-4">
+                    <div class="card mb-4 box-shadow">
+                        <div class="card-custom-top">
+                            <i class="fas fa-birthday-cake fa-4x"></i>
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title font-weight-bold">Associate Birthdates</h5>
+                            <p class="card-text">Report listing associate birthdates from today.</p>
+                            <div class="text-center">
+                                <a href="{% url 'workery_tenant_report_09_detail_master' %}" class="btn btn-success btn-lg" type="button">View <i class="fas fa-arrow-circle-right"></i></a>
                             </div>
                         </div>
                     </div>
