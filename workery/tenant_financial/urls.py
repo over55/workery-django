@@ -14,11 +14,7 @@ urlpatterns = (
     # Retrieve
     path('financials/<str:template>/detail/<int:pk>/', views.JobRetrieveView.as_view(), name='workery_tenant_financlial_job_retrieve'),
 
-    # # Assign
-    # path('pending-tasks/<int:pk>/activity-sheet/', views.PendingTaskRetrieveForActivitySheetView.as_view(), name='workery_tenant_pending_task_retrieve_for_activity_sheet_retrieve'),
-    # path('pending-tasks/<int:pk>/activity-sheet/create', views.PendingTaskRetrieveForActivitySheetAndAssignAssociateCreateView.as_view(), name='workery_tenant_pending_task_retrieve_for_activity_sheet_retrieve_and_create'),
-    #
-    # # Complete
-    # path('pending-tasks/<int:pk>/complete/', views.PendingTaskRetrieveAndCompleteCreateView.as_view(), name='workery_tenant_pending_task_retrieve_and_complete_create'),
+    # Update
+    path('financials/<str:template>/detail/<int:pk>/edit', views.JobUpdateView.as_view(), name='workery_tenant_financlial_job_update'),
 
 )
