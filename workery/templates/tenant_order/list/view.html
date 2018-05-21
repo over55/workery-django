@@ -84,12 +84,12 @@
                     <td>{{ job.id|intcomma }}</td>
                     <td>
                         {% if job.customer %}
-                            <a href="{% url 'workery_tenant_customer_lite_retrieve' 'summary' job.customer.id %}" target="_blank">{{ job.customer }}&nbsp;<i class="fas fa-external-link-alt"></i></a>
+                            <a href="{% url 'workery_tenant_customer_lite_retrieve' 'summary' job.customer.id %}" target="_blank">{{ job.customer }}</a>
                         {% else %}-{% endif %}
                     </td>
                     <td>
                         {% if job.associate %}
-                            <a href="{% url 'workery_tenant_member_lite_retrieve' 'summary' job.associate.id %}" target="_blank">{{ job.associate }}&nbsp;<i class="fas fa-external-link-alt"></i></a>
+                            <a href="{% url 'workery_tenant_member_lite_retrieve' 'summary' job.associate.id %}" target="_blank">{{ job.associate }}</a>
                         {% else %}-{% endif %}
                     </td>
                     <td>{% if job.assignment_date %}{{ job.assignment_date }}{% else %}-{% endif %}</td>
