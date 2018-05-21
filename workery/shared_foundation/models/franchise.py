@@ -50,6 +50,13 @@ class SharedFranchise(TenantMixin, AbstractSharedThing, AbstractSharedContactPoi
         default="CAN",
         blank=True,
     )
+    is_archived = models.BooleanField(
+        _("Is Archived"),
+        help_text=_('Indicates whether this franchise was archived.'),
+        default=False,
+        blank=True,
+        db_index=True
+    )
 
     #
     #  Custom Fields
