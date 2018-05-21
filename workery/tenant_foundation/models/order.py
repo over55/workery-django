@@ -348,7 +348,8 @@ class Order(models.Model):
         _('Invoice Service Fee Payment Date'),
         help_text=_('The date when the service fee was paid by the associate.'),
         blank=True,
-        null=True
+        null=True,
+        db_index=True
     )
 
 

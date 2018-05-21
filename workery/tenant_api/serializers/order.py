@@ -217,6 +217,9 @@ class OrderRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
 
     assigned_skill_sets = SkillSetListCreateSerializer(many=True, read_only=True)
 
+    invoice_service_fee_payment_date = serializers.DateField(required=True, allow_null=True)
+    invoice_id = serializers.IntegerField(required=False, allow_null=True)
+
     class Meta:
         model = Order
         fields = (
@@ -249,7 +252,16 @@ class OrderRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
             'description',
             'start_date',
             'follow_up_days_number',
-            'invoice_service_fee'
+            'invoice_service_fee',
+            'invoice_service_fee_payment_date',
+            'invoice_date',
+            'invoice_id',
+            'invoice_quote_amount',
+            'invoice_labour_amount',
+            'invoice_material_amount',
+            'invoice_tax_amount',
+            'invoice_total_amount',
+            'invoice_service_fee_amount'
         )
 
     def setup_eager_loading(cls, queryset):
@@ -259,7 +271,7 @@ class OrderRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
             'tags',
             'created_by',
             'customer',
-            # 'comments',
+            'comments',
             'last_modified_by',
             'skill_sets',
             'invoice_service_fee'
@@ -285,7 +297,18 @@ class OrderRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         instance.skill_sets.set(skill_sets)
         instance.start_date = validated_data.get('start_date', instance.start_date)
         instance.follow_up_days_number = validated_data.get('follow_up_days_number', instance.follow_up_days_number)
+
+        # Financial information.
         instance.invoice_service_fee = validated_data.get('invoice_service_fee', instance.invoice_service_fee)
+        instance.invoice_service_fee_payment_date = validated_data.get('invoice_service_fee_payment_date', instance.invoice_service_fee_payment_date)
+        instance.invoice_id = validated_data.get('invoice_id', instance.invoice_id)
+        instance.invoice_date = validated_data.get('invoice_date', instance.invoice_date)
+        instance.invoice_quote_amount = validated_data.get('invoice_quote_amount', instance.invoice_quote_amount)
+        instance.invoice_labour_amount = validated_data.get('invoice_labour_amount', instance.invoice_labour_amount)
+        instance.invoice_material_amount = validated_data.get('invoice_material_amount', instance.invoice_material_amount)
+        instance.invoice_tax_amount = validated_data.get('invoice_tax_amount', instance.invoice_tax_amount)
+        instance.invoice_total_amount = validated_data.get('invoice_total_amount', instance.invoice_total_amount)
+        instance.invoice_service_fee_amount = validated_data.get('invoice_service_fee_amount', instance.invoice_service_fee_amount)
 
         # Save the model.
         instance.save()
@@ -328,7 +351,7 @@ class OrderRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         validated_data['created'] = instance.created
         validated_data['created_by'] = instance.created_by
         validated_data['last_modified_by'] = self.context['last_modified_by']
-        # validated_data['extra_comment'] = None
+        validated_data['extra_comment'] = None
         validated_data['assigned_skill_sets'] = instance.skill_sets.all()
 
         # Return our validated data.

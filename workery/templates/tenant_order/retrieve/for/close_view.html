@@ -153,6 +153,14 @@
         var invoice_total_amount = $('#invoice_total_amount').val();
         var invoice_service_fee_amount = $('#invoice_service_fee_amount').val();
 
+        var invoice_date = $('#invoice_date').val();
+        if (invoice_date !== undefined && invoice_date != null && invoice_date.length > 0) {
+            var mydate = new Date(invoice_date); // Convert "MM DD, YYYY" to JS DATE
+            invoice_date = mydate.toISOString().substring(0, 10); // Convert JS DATE to "YYYY-MM-DD"
+        } else {
+            invoice_date = '';
+        }
+
         // If the user did not select the job was completed reason then we will
         // set these values as false so our API web-service does not return any
         // 400 validation errors.
@@ -170,14 +178,6 @@
             invoice_tax_amount = 0;
             invoice_total_amount = 0;
             invoice_service_fee_amount = 0;
-        }
-
-        var date_of_birth = $('#invoice_date').val();
-        if (date_of_birth !== undefined && date_of_birth != null && date_of_birth.length > 0) {
-            var mydate = new Date(date_of_birth); // Convert "MM DD, YYYY" to JS DATE
-            date_of_birth = mydate.toISOString().substring(0, 10); // Convert JS DATE to "YYYY-MM-DD"
-        } else {
-            date_of_birth = '';
         }
 
         // For debugging purposes only.
