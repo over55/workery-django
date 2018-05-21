@@ -269,6 +269,13 @@ a.plain-link{
 .form-radio.custom-control {
     padding-left: 1.8rem;
 }
+.form-radio .invalid-feedback, .form-radio small {
+    margin-left: -1.8rem !important;
+}
+.form-radio .invalid-feedback ul {
+    margin: 0 !important;
+    padding-left: 20px !important;
+}
 .input-group .input-group-append .btn {
     border-top-right-radius: 0.3rem !important;
     border-bottom-right-radius: 0.3rem !important;
