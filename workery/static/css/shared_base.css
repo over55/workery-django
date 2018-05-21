@@ -276,6 +276,10 @@ a.plain-link{
     margin: 0 !important;
     padding-left: 20px !important;
 }
+.invalid-feedback ul {
+    margin: 0 !important;
+    padding-left: 20px !important;
+}
 .input-group .input-group-append .btn {
     border-top-right-radius: 0.3rem !important;
     border-bottom-right-radius: 0.3rem !important;
