@@ -217,6 +217,13 @@ class Order(models.Model):
         through='ActivitySheetItem',
         related_name="%(app_label)s_%(class)s_activity_sheet_items_related"
     )
+    is_archived = models.BooleanField(
+        _("Is Archived"),
+        help_text=_('Indicates whether order was archived.'),
+        default=False,
+        blank=True,
+        db_index=True
+    )
 
     #
     #  Satisfaction Survey & Score Fields

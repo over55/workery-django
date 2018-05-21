@@ -146,6 +146,13 @@ class Staff(AbstractPerson):
         through='StaffComment',
         related_name="%(app_label)s_%(class)s_staff_comments_related"
     )
+    is_archived = models.BooleanField(
+        _("Is Archived"),
+        help_text=_('Indicates whether staff was archived.'),
+        default=False,
+        blank=True,
+        db_index=True
+    )
 
     #
     #  FUNCTIONS

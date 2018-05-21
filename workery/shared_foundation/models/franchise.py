@@ -43,6 +43,13 @@ class SharedFranchise(TenantMixin, AbstractSharedThing, AbstractSharedContactPoi
         )
 
     objects = SharedFranchiseManager()
+    currency = models.CharField(
+        _("Currency"),
+        max_length=3,
+        help_text=_('The currency used by this franchise formatted in <a href="https://en.wikipedia.org/wiki/ISO_4217">ISO 4217</a> formatting.'),
+        default="CAN",
+        blank=True,
+    )
 
     #
     #  Custom Fields

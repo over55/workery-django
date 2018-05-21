@@ -180,6 +180,13 @@ class Customer(AbstractPerson):
         through='CustomerComment',
         related_name="%(app_label)s_%(class)s_customer_comments_related"
     )
+    is_archived = models.BooleanField(
+        _("Is Archived"),
+        help_text=_('Indicates whether customer was archived.'),
+        default=True,
+        blank=True,
+        db_index=True
+    )
 
     #
     #  PERSON FIELDS (EXTRA) - http://schema.org/Person
@@ -188,7 +195,7 @@ class Customer(AbstractPerson):
     organization = models.ForeignKey(
         "Organization",
         help_text=_('The organization that this customer is affiliated with.'),
-        blank=True,
+        blank=False,
         null=True,
         on_delete=models.SET_NULL,
     )
