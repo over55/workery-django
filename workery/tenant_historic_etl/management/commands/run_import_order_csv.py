@@ -120,7 +120,7 @@ class Command(BaseCommand):
             completion_date = row_dict[9]
             hours = row_dict[10]
             service_fee = row_dict[11]
-            payment_date = row_dict[12]
+            payment_date = row_dict[12] # do not import this field!
             comment_text = row_dict[13]
             follow_up_comment_text = row_dict[14]
             time_and_budget = row_dict[15]

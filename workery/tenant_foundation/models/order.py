@@ -152,12 +152,6 @@ class Order(models.Model):
         help_text=_('The total amount of hours worked on for this order by the associate.'),
         default=0
     )
-    payment_date = models.DateField(  #TODO- FIX
-        _('Payment Date'),
-        help_text=_('The date that this order was paid for.'),
-        blank=True,
-        null=True
-    )
     skill_sets = models.ManyToManyField(
         "SkillSet",
         help_text=_('The skill sets that belong to this order.'),

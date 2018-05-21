@@ -76,7 +76,6 @@ class OrderListCreateSerializer(serializers.ModelSerializer):
             'is_cancelled',
             'is_ongoing',
             'is_home_support_service',
-            'payment_date',
             # 'created_by',
             # 'last_modified_by',
             'skill_sets',
@@ -109,7 +108,6 @@ class OrderListCreateSerializer(serializers.ModelSerializer):
         is_cancelled = validated_data.get('is_cancelled', False)
         is_ongoing = validated_data.get('is_ongoing', False)
         is_home_support_service = validated_data.get('is_home_support_service', False)
-        payment_date = validated_data.get('payment_date', None)
         created_by = self.context['created_by']
         description = validated_data.get('description', None)
         start_date = validated_data.get('start_date', timezone.now())
@@ -126,7 +124,6 @@ class OrderListCreateSerializer(serializers.ModelSerializer):
             is_cancelled=is_cancelled,
             completion_date=completion_date,
             hours=hours,
-            payment_date=payment_date,
             created_by=created_by,
             last_modified_by=None,
             description=description,
@@ -245,7 +242,6 @@ class OrderRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
             'is_cancelled',
             'is_ongoing',
             'is_home_support_service',
-            'payment_date',
             # 'created_by',
             # 'last_modified_by',
             'skill_sets',
@@ -290,7 +286,6 @@ class OrderRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         instance.is_cancelled = validated_data.get('is_cancelled', instance.is_cancelled)
         instance.is_ongoing = validated_data.get('is_ongoing', instance.is_ongoing)
         instance.is_home_support_service = validated_data.get('is_home_support_service', instance.is_home_support_service)
-        instance.payment_date = validated_data.get('payment_date', instance.payment_date)
         instance.last_modified_by = self.context['last_modified_by']
         instance.description = validated_data.get('description', instance.description)
         skill_sets = validated_data.get('skill_sets', instance.skill_sets)

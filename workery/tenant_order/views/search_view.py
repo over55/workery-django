@@ -56,4 +56,4 @@ class JobSearchResultView(ListView, ExtraRequestProcessingMixin):
             queryset = filter.qs
 
         # Return our filtered results ordered by the specific order.
-        return queryset.order_by('-assignment_date', '-completion_date', '-payment_date')
+        return queryset.order_by('-assignment_date', '-completion_date', '-invoice_service_fee_payment_date')

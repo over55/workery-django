@@ -15,7 +15,7 @@ class JobSummaryView(ListView, ExtraRequestProcessingMixin):
     queryset = Order.objects.filter(
         is_cancelled=False,
         completion_date__isnull=True,
-        payment_date__isnull=True
+        invoice_service_fee_payment_date__isnull=True
     ).order_by('-id')
     template_name = 'tenant_order/summary/view.html'
     paginate_by = 100

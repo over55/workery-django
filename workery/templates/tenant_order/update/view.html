@@ -2,7 +2,7 @@
 {% load staticfiles i18n foundation_tags humanize djmoney %}
 
 {% block title %}
-{% trans 'Add New Client | Workery' %}
+{% trans 'Update Job | Workery' %}
 {% endblock title %}
 
 {% block header_content %}
@@ -25,7 +25,7 @@
         $( "#completion_date" ).datepicker({
             dateFormat: 'yy-mm-dd'  // https://stackoverflow.com/a/7500097
         });
-        $( "#payment_date" ).datepicker({
+        $( "#invoice_service_fee_payment_date" ).datepicker({
             dateFormat: 'yy-mm-dd'  // https://stackoverflow.com/a/7500097
         });
 
@@ -62,8 +62,8 @@
         var hours = $('#hours').val();
         console.log("hours:", hours);
 
-        var payment_date = $('#payment_date').val();
-        console.log("payment_date:", completion_date);
+        var invoice_service_fee_payment_date = $('#invoice_service_fee_payment_date').val();
+        console.log("invoice_service_fee_payment_date:", completion_date);
 
         var data_dict = {
             'description': description,
@@ -74,7 +74,7 @@
             'is_cancelled': is_cancelled,
             'completion_date': completion_date,
             'hours': hours,
-            'payment_date': payment_date,
+            'invoice_service_fee_payment_date': invoice_service_fee_payment_date,
             'extra_comment': null
         };
 
@@ -267,13 +267,13 @@
 
 
         <div class="form-group p-0 col-md-7 mb-4">
-            <label for="payment_date">Payment Date</label>
+            <label for="invoice_service_fee_payment_date">Invoice Service Fee Payment Date</label>
             <div class="input-group input-group-lg">
-                <input type="text" class="form-control form-control-lg border border-success" id="payment_date" name="payment_date" placeholder="yyyy-mm-dd" value="{% if job.payment_date %}{{ job.payment_date|date:"Y-m-d" }}{% endif %}" required>
+                <input type="text" class="form-control form-control-lg border border-success" id="invoice_service_fee_payment_date" name="invoice_service_fee_payment_date" placeholder="yyyy-mm-dd" value="{% if job.invoice_service_fee_payment_date %}{{ job.invoice_service_fee_payment_date|date:"Y-m-d" }}{% endif %}" required>
                 <div class="input-group-append">
-                    <span class="input-group-text payment_date-icon bg-success border-success"><i class="far fa-calendar-alt"></i></span>
+                    <span class="input-group-text invoice_service_fee_payment_date-icon bg-success border-success"><i class="far fa-calendar-alt"></i></span>
                 </div>
-                <div id="payment_date-error" class="invalid-feedback"></div>
+                <div id="invoice_service_fee_payment_date-error" class="invalid-feedback"></div>
             </div>
         </div>
 
