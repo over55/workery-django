@@ -269,6 +269,8 @@ class Command(BaseCommand):
                     'how_hear_other': how_hear_other,
                     'last_modified_by': None,
                     'created_by': None,
+                    'is_ok_to_email': False,
+                    'is_ok_to_text': False
                 }
             )
 

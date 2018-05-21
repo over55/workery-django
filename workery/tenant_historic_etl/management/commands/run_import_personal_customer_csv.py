@@ -220,7 +220,9 @@ class Command(BaseCommand):
                     'is_business': False,
                     'last_modified_by': None,
                     'created_by': None,
-                    'type_of': RESIDENTIAL_CUSTOMER_TYPE_OF_ID
+                    'type_of': RESIDENTIAL_CUSTOMER_TYPE_OF_ID,
+                    'is_ok_to_email': False,
+                    'is_ok_to_text': False
 
                 }
             )
