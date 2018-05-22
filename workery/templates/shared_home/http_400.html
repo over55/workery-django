@@ -17,7 +17,7 @@
             <h1 class="text-center display-2 text-secondary mb-3">{% trans '400' %}</h1>
             <h2 class="text-center text-secondary mb-3">{% trans 'Bad Request!' %}</h2>
             <p class="text-center text-secondary lead mb-4">
-                {% trans 'Unfortunately you incorrectly entered some values when loading the page your are looking for.' %}
+                {% trans 'Some values were incorrectly entered, causing an error.' %}
                 {% if request.user.is_authenticated %}
                     {% if request.tenant.schema_name != 'public' %}
                        {% trans 'You can return to your' %}&nbsp;<a href="{{ shared_constants.O55_APP_HTTP_PROTOCOL }}{{ request.tenant.schema_name }}.{{ shared_constants.O55_APP_HTTP_DOMAIN }}{% url 'workery_tenant_dashboard_master' %}">{% trans 'dashboard.' %}</a>
