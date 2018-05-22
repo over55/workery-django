@@ -87,7 +87,7 @@
 
         // Redirect to the next page in the form.
         if (tmp_job_type !== undefined && tmp_home_support !== undefined) {
-	   if (tmp_job_type == 'Ongoing' && tmp_follow_up_days_number == 0) {
+	   if (tmp_job_type == 'Ongoing' && tmp_follow_up_days_number == undefined) {
             	$('#all_error_result').append("<div class='form-error'><b>Follow Up: </b> This field may not be blank.</div>");
 		$('#all_error_result').addClass('error-block');
 		$('#follow_up_days_number-error').html("<ul><li>This field may not be blank.</li></ul>");
@@ -97,15 +97,22 @@
            	 window.location = "{% url 'workery_tenant_job_step_3_create' %}";
            }
         } else {
-		// Errors box code    
-                $('#all_error_result').append("<div class='form-error'><b>Job Type:</b> Please pick either 'Yes' or 'No' choice. </div>");
-		$('#all_error_result').append("<div class='form-error'><b>Is Home Support:</b> Please pick either 'One time' or 'Ongoing' choice. </div>");
-		$('#all_error_result').addClass('error-block');
-			
-		// Inline fields errors code
-		$('#home-support-error').html("<ul><li>Please pick either 'One time' or 'Ongoing' choice.</li></ul>");
-		$('#job-type-error').html("<ul><li>Please pick either 'Yes' or 'No' choice.</li></ul>");
-		$('#residential-job').addClass('was-validated');
+		if (tmp_job_type == undefined) {
+			// Errors box code    
+			$('#all_error_result').append("<div class='form-error'><b>Job Type:</b> Please pick one choice. </div>");
+			$('#all_error_result').addClass('error-block');
+			// Inline fields errors code
+			$('#job-type-error').html("<ul><li>Please pick one choice.</li></ul>");
+			$('#residential-job').addClass('was-validated');
+		}
+		if (tmp_home_support == undefined) {
+			// Errors box code    
+			$('#all_error_result').append("<div class='form-error'><b>Is Home Support:</b> Please pick either 'Yes' or 'No' choice. </div>");
+			$('#all_error_result').addClass('error-block');
+			// Inline fields errors code
+			$('#home-support-error').html("<ul><li>Please pick either 'Yes' or 'No' choice.</li></ul>");
+			$('#residential-job').addClass('was-validated');
+		}
             // alert("Please select all the options!");
         }
     } // end FUNC.
@@ -220,7 +227,7 @@
             <div class="form-group col-md-8 mb-4 p-0" id="id_follow_up_div">
                 <label for="follow_up_days_number">Follow Up</label>
                 <select class="custom-select form-control-lg border-success" id="follow_up_days_number" name="follow_up_days_number" required>
-                    <option value="0" selected>Follow up in...</option>
+                    <option value="" selected>Follow up in...</option>
                     <option value="7">1 Week</option>
                     <option value="14">2 Weeks</option>
                     <option value="prefer not to say">3 Weeks</option>
