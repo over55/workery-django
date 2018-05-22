@@ -93,6 +93,7 @@
 		$('#follow_up_days_number-error').html("<ul><li>This field may not be blank.</li></ul>");
 		$('#residential-job').addClass('was-validated');
            } else {
+		   alert(tmp_follow_up_days_number);
            	 window.location = "{% url 'workery_tenant_job_step_3_create' %}";
            }
         } else {
@@ -190,7 +191,7 @@
                 <div class="input-group input-group-lg">
                     <input type="text" class="form-control form-control-lg border border-success" id="start_date" name="start_date" placeholder="yyyy-mm-dd" required>
                     <div class="input-group-append">
-                        <span class="input-group-text start_date-icon bg-success border-success"><i class="far fa-calendar-alt"></i></span>
+                        <span class="input-group-text c-icon-white bg-success border-success"><i class="far fa-calendar-alt"></i></span>
                     </div>
                     <div id="start_date-error" class="invalid-feedback"></div>
                 </div>
