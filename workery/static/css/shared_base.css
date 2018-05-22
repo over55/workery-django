@@ -338,6 +338,11 @@ a.plain-link{
    border-top-right-radius: 0.3rem !important;
    color: #ffffff;
 }
+.form-group .c-icon-white {
+   border-bottom-right-radius: 0.3rem !important;
+   border-top-right-radius: 0.3rem !important;
+   color: #ffffff;
+}
 .star-rating .fa-star, .star-rating .fa-star-half{color: #F26523;}
 table.custom-cell-w tr th{width:35% !important;}
 
