@@ -83,7 +83,10 @@
         $('#insurance_requirements').select2();
         $('#tags').select2();
         $('#skill_sets').select2();
-        $('#vehicle_types').select2();
+        $("#vehicle_types").select2({
+    		tags: true,
+    		tokenSeparators: [',', ' ']
+	});
 
         //----------------------------------------//
         // TEXTFIELD / SELECTFIELD INITIALIZATION //
@@ -238,7 +241,10 @@
 	}
 
     }); // end Ready
-
+     $("#vehicle_types").select2({
+    		tags: true,
+    		tokenSeparators: [',', ' ']
+	});
     /**
      *  Function will unlock the submit button.
      */
