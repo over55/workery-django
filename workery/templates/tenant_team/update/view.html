@@ -17,14 +17,33 @@
      *  When page loads, the following code will be run first.
      */
     $(document).ready(function () {
+
+        //----------------------------------------//
+        // TEXTFIELD / SELECTFIELD INITIALIZATION //
+        //----------------------------------------//
+
+        // Set the gender.
+        $('#gender').val('{% if staff.gender %}{{ staff.gender }}{% endif %}');
+
+        //----------------------//
+        // RADIO INITIALIZATION //
+        //----------------------//
+
+        // {% if staff.owner.is_active == True %}$("#is_active").prop("checked", true);{% else %}$("#is_active2").prop("checked", true);{% endif %}
+
+        //---------------------------//
+        // DATEPICKER INITIALIZATION //
+        //---------------------------//
+
         // Initialize our datepicker jQuery code with our HTML view.
         $( "#dob" ).datepicker({
             dateFormat: 'yy-mm-dd',
 	        maxDate: 'today'
         });
 
-        // Set the gender.
-        $('#gender').val('{% if staff.gender %}{{ staff.gender }}{% endif %}');
+        //------------------------//
+        // SELECT2 INITIALIZATION //
+        //------------------------//
 
         // // Populate our 'select2' chosen values.
         var tag_ids = [];
@@ -35,6 +54,10 @@
 
         // Initialize our 'select2' element.
         $('#person_tags').select2();
+
+        //------------------------------//
+        // EVENT HANDLER INITIALIZATION //
+        //------------------------------//
 
         // The following code continously checks to see if the current user
         // is assigned to the email.
@@ -518,49 +541,15 @@
         return null;
     }
 
-    function valid_textfield_value(textfield_id, is_required, min_length) {
-        var textfield = document.getElementById(textfield_id);
-        var textfield_error = document.getElementById(textfield_id+'-error');
-        var value = textfield.value;
-
-        // CASE 1: BLANK FIELD.
-        if (is_required) {
-            if (value == '' || value == null || value == undefined || value.length == 0) {
-                $('#'+textfield_id).addClass('border-primary').removeClass('border-success');
-                textfield_error.innerHTML = "Field should not be blank.";
-                return true; // This means that an error occured in validation.
-            }
-        }
-
-        // CASE 2: MINIMUM LENGTH NOT MET.
-        if (value.length > 0) {              // If user entered something...
-            if (value.length < min_length) { // Validate that the minium was entered...
-                $('#'+textfield_id).addClass('border-primary').removeClass('border-success');
-                textfield_error.innerHTML = "Field requires a minimum of "+min_length+" characters.";
-                return true;
-            }
-        }
-
-        // Update the GUI to indicate this field has been updated.
-        $('#'+textfield_id).addClass('border-success').removeClass('border-primary');
-
-        // Return "false" which means no errors occured.
-        return false;
-    }
-
-    function valid_radiofields_seleciton(radiofields_name, is_required) {
+    function get_boolean_from_selected_radio_value(radiofields_name) {
         var value = get_selected_radio_value(radiofields_name);
-
-        if (is_required) {
-            if (value == undefined || value === null || value.length == 0) {
-                alert("Please select radio at "+ radiofields_name);
-                return true;
-            }
+        if (value == 'yes') {
+            return true;
+        } else {
+            return false;
         }
-
-        // Return "false" which means no errors occured.
-        return false;
     }
+
 
     /**
      *  Function to make text readable removing underscore and capitalizing
@@ -599,6 +588,7 @@
         if (gender == undefined || gender == null || gender.length == 0) {
             gender = '';
         }
+        var is_active = get_boolean_from_selected_radio_value('is_active');
 
         var street_address = $('#street_address').val();
         var street_address_extra = $('#street_address_extra').val();
@@ -663,6 +653,7 @@
                 'other_telephone': other_telephone,
                 'other_telephone_type_of': {{ shared_constants.MOBILE_CONTACT_POINT_TYPE_OF_ID }},
                 // 'fax_number': fax_number
+                'is_active': is_active,
                 'password': password,
                 'password_repeat': password_repeat,
             },
@@ -932,11 +923,11 @@
                 <div class="form-group col-md-12 mb-4">
                     <p class="mb-1">Is active? <sup>*</sup></p>
                     <div class="form-radio custom-control custom-radio custom-control-inline">
-                        <input type="radio" id="is_active" name="is_active" value="yes" class="custom-control-input form-check-input">
+                        <input type="radio" id="is_active" name="is_active" value="yes" class="custom-control-input form-check-input" {% if staff.owner.is_active == True %}selected="True"{% endif %}>
                         <label class="custom-control-label form-check-label" for="is_active">Yes</label>
                     </div>
                     <div class="form-radio custom-control custom-radio custom-control-inline">
-                        <input type="radio" id="is_active2" name="is_active" value="no" class="custom-control-input form-check-input">
+                        <input type="radio" id="is_active2" name="is_active" value="no" class="custom-control-input form-check-input" {% if staff.owner.is_active == False %}selected="True"{% endif %}>
                         <label class="custom-control-label form-check-label" for="is_active2">No</label>
                         <div id="is_active-error" class="invalid-feedback ml-2"></div>
                     </div>
