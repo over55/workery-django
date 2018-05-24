@@ -19,13 +19,15 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.conf.urls.i18n import i18n_patterns
 from django.contrib.sitemaps.views import sitemap
-# from workery.sitemaps import StaticViewSitemap
+from workery.sitemaps import StaticViewSitemap
 from django.views.generic.base import RedirectView
 
 
-# sitemaps = {
-#     'static': StaticViewSitemap,
-# }
+# Sitemaps load here.
+sitemaps = {
+    'static': StaticViewSitemap,
+}
+
 
 # Custom errors.
 handler403 = "shared_home.views.bad_request"
@@ -51,9 +53,9 @@ urlpatterns = [
     url(r'^', include('shared_foundation.urls')),
     url(r'^', include('shared_github_webhook.urls')),
 
-    #  # Sitemap
-    # url(r'^sitemap\.xml$', sitemap, {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap'),
-    #
+     # Sitemap
+    url(r'^sitemap\.xml$', sitemap, {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap'),
+    
     # Django-RQ
     url(r'^django-rq/', include('django_rq.urls')),
 ]
