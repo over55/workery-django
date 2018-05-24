@@ -56,6 +56,9 @@ ADMIN_ENABLED = False
 # important to have "django-tenants" work
 SESSION_COOKIE_DOMAIN = '.' + env("O55_APP_HTTP_DOMAIN")
 
+# This configuration ensures all authentication enforcement redirects to this
+# specific URL in our application.
+LOGIN_URL="/login/"
 
 SHARED_APPS = (
     # Django Apps
@@ -121,6 +124,7 @@ TENANT_APPS = (
     'tenant_task',
     'tenant_report',
     'tenant_financial'
+    # . . .
 )
 
 INSTALLED_APPS = list(SHARED_APPS) + [app for app in TENANT_APPS if app not in SHARED_APPS]

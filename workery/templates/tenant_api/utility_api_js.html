@@ -26,4 +26,29 @@
             }
         });
     }
+
+    function post_logout(func_callback, func_error_callback)
+    {
+        // Our URL to the API endpoint.
+        var url = get_shared_domain_url("{% url 'workery_logout_api_endpoint' %}")+"?format=json";
+
+        jQuery.ajax({
+            url: url,
+            headers: {
+                Authorization: rest_api_token
+            },
+            data: {},
+            type: 'POST',
+            traditional: true, // Note: This allows many-to-many arrays for Django REST Framework
+            success: function(json_results){
+                func_callback(json_results);
+            },
+            error: function(xhr, status, error) {
+                func_error_callback(xhr, status, error);
+            },
+            complete: function(xhr,status) {
+                // Do nothing.
+            }
+        });
+    }
 </script>
