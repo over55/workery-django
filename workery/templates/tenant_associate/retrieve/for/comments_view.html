@@ -2,7 +2,7 @@
 {% load staticfiles i18n humanize foundation_tags %}
 
 {% block title %}
-{% trans 'Client List | Workery' %}
+{% trans 'Member Comments | Workery' %}
 {% endblock title %}
 
 {% block header_content %}
@@ -31,7 +31,7 @@ $(document).ready(function () {
 			}
 	 	});
 	});
-	
+
 }); // end Ready
 /**
  *  Function to make text readable removing underscore and capitalizing
@@ -74,7 +74,7 @@ function click_add_button() {
             // STEP 2: CLEAR EXISTING TEXT.
             $('#all_error_result').html("");
 	    $('#all_error_result').removeClass('error-block');
-		
+
             // STEP 3: PRINT OUR ERROR.
             for(var prop in err) {
                 if(err.hasOwnProperty(prop)) {
