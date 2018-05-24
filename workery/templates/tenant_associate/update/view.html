@@ -50,44 +50,6 @@
             dateFormat: 'yy-mm-dd'  // https://stackoverflow.com/a/7500097
         });
 
-        //------------------------//
-        // SELECT2 INITIALIZATION //
-        //------------------------//
-
-        var insurance_requirement_ids = [];
-        {% for insurance_requirement in associate.insurance_requirements.all %}
-        insurance_requirement_ids.push({{ insurance_requirement.id }});
-        {% endfor %}
-        $('#insurance_requirements').val(insurance_requirement_ids);
-
-        // // Populate our 'select2' chosen values.
-        var tag_ids = [];
-        {% for tag in associate.tags.all %}
-        tag_ids.push({{ tag.id }});
-        {% endfor %}
-        $('#tags').val(tag_ids);
-
-        var skill_set_ids = [];
-        {% for skill_set in associate.skill_sets.all %}
-        skill_set_ids.push({{ skill_set.id }});
-        {% endfor %}
-        $('#skill_sets').val(skill_set_ids);
-
-        var vehicle_type_ids = [];
-        {% for vehicle_type in associate.vehicle_types.all %}
-        vehicle_type_ids.push({{ vehicle_type.id }});
-        {% endfor %}
-        $('#vehicle_types').val(vehicle_type_ids);
-
-        // Initialize our 'select2' element.
-        $('#insurance_requirements').select2();
-        $('#tags').select2();
-        $('#skill_sets').select2();
-        $("#vehicle_types").select2({
-    		tags: true,
-    		tokenSeparators: [',', ' ']
-	    });
-
         //----------------------------------------//
         // TEXTFIELD / SELECTFIELD INITIALIZATION //
         //----------------------------------------//
@@ -99,8 +61,8 @@
         // RADIO INITIALIZATION //
         //----------------------//
 
-        {% if associate.is_ok_to_email == True %}$("#ok_to_email").prop("checked", true);{% else %}$("#ok_to_email2").prop("checked", true);{% endif %}
-        {% if associate.is_ok_to_text == True %}$("#ok_to_text").prop("checked", true);{% else %}$("#ok_to_text2").prop("checked", true);{% endif %}
+        {% if associate.is_ok_to_email == True %}$("#is_ok_to_email").prop("checked", true);{% else %}$("#is_ok_to_email2").prop("checked", true);{% endif %}
+        {% if associate.is_ok_to_text == True %}$("#is_ok_to_text").prop("checked", true);{% else %}$("#is_ok_to_text2").prop("checked", true);{% endif %}
         {% if associate.owner.is_active == True %}$("#is_active").prop("checked", true);{% else %}$("#is_active2").prop("checked", true);{% endif %}
         {% if associate.has_car == True %}$("#has_car").prop("checked", true);{% else %}$("#has_car2").prop("checked", true);{% endif %}
         {% if associate.has_van == True %}$("#has_van").prop("checked", true);{% else %}$("#has_van2").prop("checked", true);{% endif %}
@@ -241,10 +203,7 @@
 	}
 
     }); // end Ready
-     $("#vehicle_types").select2({
-    		tags: true,
-    		tokenSeparators: [',', ' ']
-	});
+     
     /**
      *  Function will unlock the submit button.
      */
@@ -504,7 +463,7 @@
 
 			// Inline fields errors code
 			$('#'+prop+'-error').html("<ul><li>"+val+"</li></ul>");
-			$('#add-client-form').addClass('was-validated');
+			$('#update-associate-form').addClass('was-validated');
                     }
                 }
 
@@ -582,10 +541,7 @@
     <!------------------------------------------------------------------------->
     <div class="row">
 		<div class="col-sm-3 p-3 mb-2">
-			<a class="btn btn-primary btn-lg" href="{% url 'workery_tenant_member_lite_retrieve' template associate.id %}" role="button">
-                <svg class="svg-inline--fa fa-arrow-left fa-w-14" aria-hidden="true" data-fa-processed="" data-prefix="fas" data-icon="arrow-left" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
-                <path fill="currentColor" d="M257.5 445.1l-22.2 22.2c-9.4 9.4-24.6 9.4-33.9 0L7 273c-9.4-9.4-9.4-24.6 0-33.9L201.4 44.7c9.4-9.4 24.6-9.4 33.9 0l22.2 22.2c9.5 9.5 9.3 25-.4 34.3L136.6 216H424c13.3 0 24 10.7 24 24v32c0 13.3-10.7 24-24 24H136.6l120.5 114.8c9.8 9.3 10 24.8.4 34.3z"></path>
-            </svg><!-- <i class="fas fa-arrow-left"></i> -->&nbsp;{% trans 'Back to Member\'s Detail' %}</a>
+			<a class="btn btn-primary btn-lg" href="{% url 'workery_tenant_member_lite_retrieve' template associate.id %}" role="button"> <i class="fas fa-arrow-left"></i> &nbsp;{% trans 'Back to Member\'s Detail' %}</a>
 		</div>
 	</div>
     <!------------------------------------------------------------------------->
@@ -603,7 +559,7 @@
             <div id="all_error_result" name="all_error_result" class="alert alert-error fade show" role="alert">
 	    </div>
 	    <!-- end Error Output -->
-            <p>&nbsp;</p>
+            
             <form id="update-associate-form" method="post" class="needs-validation" action="" novalidate>
             <!-- ############ PERSON ############ -->
             <p class="border-bottom mb-3 pb-1 text-secondary">Personal Information</p>
@@ -917,7 +873,7 @@
                         <input type="radio" id="is_active" name="is_active" value="yes" class="custom-control-input form-check-input" required>
                         <label class="custom-control-label form-check-label" for="is_active">Yes</label>
                     </div>
-                    <div class="form-radio custom-control custom-radio custom-control-inline">
+                    <div class="form-radio custom-control custom-radio">
                         <input type="radio" id="is_active2" name="is_active" value="no" class="custom-control-input form-check-input" required>
                         <label class="custom-control-label form-check-label" for="is_active2">No</label>
                         <div id="is_active-error" class="invalid-feedback"></div>
@@ -944,5 +900,44 @@
     <a id="return-to-top" href="#" class="btn-info btn-lg back-to-top" role="button" title="Back to top"><i class="fas fa-angle-up fa-2x"></i></a>
     <!-- end RETURN-TO-TOP -->
 </main>
+	
+<script type="text/javascript">
+	//------------------------//
+        // SELECT2 INITIALIZATION //
+        //------------------------//
 
+        var insurance_requirement_ids = [];
+        {% for insurance_requirement in associate.insurance_requirements.all %}
+        insurance_requirement_ids.push({{ insurance_requirement.id }});
+        {% endfor %}
+        $('#insurance_requirements').val(insurance_requirement_ids);
+
+        // // Populate our 'select2' chosen values.
+        var tag_ids = [];
+        {% for tag in associate.tags.all %}
+        tag_ids.push({{ tag.id }});
+        {% endfor %}
+        $('#tags').val(tag_ids);
+
+        var skill_set_ids = [];
+        {% for skill_set in associate.skill_sets.all %}
+        skill_set_ids.push({{ skill_set.id }});
+        {% endfor %}
+        $('#skill_sets').val(skill_set_ids);
+
+        var vehicle_type_ids = [];
+        {% for vehicle_type in associate.vehicle_types.all %}
+        vehicle_type_ids.push({{ vehicle_type.id }});
+        {% endfor %}
+        $('#vehicle_types').val(vehicle_type_ids);
+
+        // Initialize our 'select2' element.
+        $('#insurance_requirements').select2();
+        $('#tags').select2();
+        $('#skill_sets').select2();
+        $("#vehicle_types").select2({
+    		tags: true,
+	});
+</script>
+	
 {% endblock content %}
