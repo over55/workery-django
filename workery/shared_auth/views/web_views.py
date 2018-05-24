@@ -103,18 +103,18 @@ def user_activation_detail_page(request, pr_access_code=None):
 
 
 @public_only_or_redirect
-@login_required(login_url="login/")
 def user_logout_redirector_master_page(request):
-    # Step 1: Delete the "auth_token" so our RESTFul API won't have a key.
-    Token.objects.filter(user=request.user).delete()
+    if request.user.is_authenticated:
+        # Step 1: Delete the "auth_token" so our RESTFul API won't have a key.
+        Token.objects.filter(user=request.user).delete()
 
-    # Step 2: RESET ALL THE USER PROFILE INFORMATION TO A SESSION.
-    request.session['me_token'] = None
-    request.session['me_token_orig_iat'] = None
-    request.session['me_schema_name'] = None
+        # Step 2: RESET ALL THE USER PROFILE INFORMATION TO A SESSION.
+        request.session['me_token'] = None
+        request.session['me_token_orig_iat'] = None
+        request.session['me_schema_name'] = None
 
-    # Step 3: Close the Django session.
-    logout(request)
+        # Step 3: Close the Django session.
+        logout(request)
 
     # Step 4: Redirect to the homepage.
     sign_in_url = settings.O55_APP_HTTP_PROTOCOL + settings.O55_APP_HTTP_DOMAIN + reverse('workery_login_master', args=[]) + "?has_logged_out=True"
