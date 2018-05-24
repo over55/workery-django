@@ -50,6 +50,43 @@
             dateFormat: 'yy-mm-dd'  // https://stackoverflow.com/a/7500097
         });
 
+	//------------------------//
+        // SELECT2 INITIALIZATION //
+        //------------------------//
+
+        var insurance_requirement_ids = [];
+        {% for insurance_requirement in associate.insurance_requirements.all %}
+        insurance_requirement_ids.push({{ insurance_requirement.id }});
+        {% endfor %}
+        $('#insurance_requirements').val(insurance_requirement_ids);
+
+        // // Populate our 'select2' chosen values.
+        var tag_ids = [];
+        {% for tag in associate.tags.all %}
+        tag_ids.push({{ tag.id }});
+        {% endfor %}
+        $('#tags').val(tag_ids);
+
+        var skill_set_ids = [];
+        {% for skill_set in associate.skill_sets.all %}
+        skill_set_ids.push({{ skill_set.id }});
+        {% endfor %}
+        $('#skill_sets').val(skill_set_ids);
+
+        var vehicle_type_ids = [];
+        {% for vehicle_type in associate.vehicle_types.all %}
+        vehicle_type_ids.push({{ vehicle_type.id }});
+        {% endfor %}
+        $('#vehicle_types').val(vehicle_type_ids);
+
+        // Initialize our 'select2' element.
+        $('#insurance_requirements').select2();
+        $('#tags').select2();
+        $('#skill_sets').select2();
+        $("#vehicle_types").select2({
+    		tags: true,
+	});
+	 
         //----------------------------------------//
         // TEXTFIELD / SELECTFIELD INITIALIZATION //
         //----------------------------------------//
@@ -574,7 +611,7 @@
                     <input type="text" class="form-control form-control-lg border border-primary" id="last_name" name="last_name" placeholder="Last name" minlength="2" maxlength="150" required value="{% if associate.last_name %}{{ associate.last_name }}{% endif %}">
                     <div id="last_name-error" class="invalid-feedback"></div>
                 </div>
-                <div class="form-group p-0 col-md-7 mb-4">
+                <div class="form-group col-md-7 mb-4">
                     <label for="birthdate">Date of Birth</label>
                     <div class="input-group input-group-lg">
                         <input type="text" class="form-control form-control-lg border border-success" id="birthdate" name="birthdate" placeholder="yyyy-mm-dd" required value="{% if associate.birthdate %}{{ associate.birthdate|date:"Y-m-d" }}{% endif %}">
@@ -902,35 +939,6 @@
 </main>
 	
 <script type="text/javascript">
-	//------------------------//
-        // SELECT2 INITIALIZATION //
-        //------------------------//
-
-        var insurance_requirement_ids = [];
-        {% for insurance_requirement in associate.insurance_requirements.all %}
-        insurance_requirement_ids.push({{ insurance_requirement.id }});
-        {% endfor %}
-        $('#insurance_requirements').val(insurance_requirement_ids);
-
-        // // Populate our 'select2' chosen values.
-        var tag_ids = [];
-        {% for tag in associate.tags.all %}
-        tag_ids.push({{ tag.id }});
-        {% endfor %}
-        $('#tags').val(tag_ids);
-
-        var skill_set_ids = [];
-        {% for skill_set in associate.skill_sets.all %}
-        skill_set_ids.push({{ skill_set.id }});
-        {% endfor %}
-        $('#skill_sets').val(skill_set_ids);
-
-        var vehicle_type_ids = [];
-        {% for vehicle_type in associate.vehicle_types.all %}
-        vehicle_type_ids.push({{ vehicle_type.id }});
-        {% endfor %}
-        $('#vehicle_types').val(vehicle_type_ids);
-
         // Initialize our 'select2' element.
         $('#insurance_requirements').select2();
         $('#tags').select2();
