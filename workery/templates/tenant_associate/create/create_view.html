@@ -91,29 +91,6 @@
                 dateFormat: 'yy-mm-dd'  // https://stackoverflow.com/a/7500097
             });
 
-            //------------------------//
-            // SELECT2 INITIALIZATION //
-            //------------------------//
-
-            var tmp_insurance_requirements = localStorage.getObj("tmp_associate_member_insurance_requirement_ids");
-            $('#insurance_requirements').val(tmp_insurance_requirements);
-
-            // Populate our 'select2' chosen values.
-            var tmp_person_tags = localStorage.getObj("tmp_associate_member_person_tag_ids");
-            $('#person_tags').val(tmp_person_tags);
-
-            var tmp_skill_sets = localStorage.getObj("tmp_associate_member_skill_set_ids");
-            $('#skill_sets').val(tmp_skill_sets);
-
-            var tmp_vehicle_types = localStorage.getObj("tmp_associate_member_vehicle_type_ids");
-            $('#vehicle_types').val(tmp_vehicle_types);
-
-            // Initialize our 'select2' element.
-            $('#insurance_requirements').select2();
-            $('#person_tags').select2();
-            $('#skill_sets').select2();
-            $('#vehicle_types').select2();
-
             //--------------------------//
             // TEXTFIELD INITIALIZATION //
             //--------------------------//
@@ -136,7 +113,7 @@
             $('#telephone').val(localStorage.getItem("tmp_associate_member_telephone"));
             $('#password').val(localStorage.getItem("tmp_associate_member_password"));
             $('#password_repeat').val(localStorage.getItem("tmp_associate_member_password_repeat"));
-            $('#describe').val(localStorage.getItem("tmp_associate_member_description"));
+            $('#description').val(localStorage.getItem("tmp_associate_member_description"));
             $('#comment').val(localStorage.getItem("tmp_associate_member_comment"));
             $('#tax_id').val(localStorage.getItem("tmp_associate_member_tax_id"));
 
@@ -438,10 +415,10 @@
             // var fax_number = $('#id_fax_number').val();
             var password = $('#password').val();
             var password_repeat = $('#password_repeat').val();
-            var person_tags = $('#person_tags').val();
+            var person_tags = $('#tags').val();
             var skill_sets = $('#skill_sets').val();
             var vehicle_types = $('#vehicle_types').val();
-            var description = $('#describe').val();
+            var description = $('#description').val();
             var comment = $('#comment').val();
             var is_active = get_selected_radio_value('is_active');
             var hourly_salary_desired = $('#hourly_salary_desired').val();
@@ -652,7 +629,7 @@
 			    $('#all_error_result').addClass('error-block');
 
 			    // Inline fields errors code
-			    $('#'+prop+'-error').append(val);
+			    $('#'+prop+'-error').html("<ul><li>"+val+"</li></ul>");
 			    $('#add-member-form').addClass('was-validated');
                         }
                     }
@@ -688,7 +665,6 @@
             <div id="all_error_result" name="all_error_result" class="alert alert-error fade show" role="alert">
 	    </div>
 	    <!-- end Error Output -->
-            <p>&nbsp;</p>
             <form id="add-member-form" method="post" class="needs-validation" action="" novalidate>
             <!-- ############ PERSON ############ -->
             <p class="border-bottom mb-3 pb-1 text-secondary">Personal Information</p>
@@ -713,7 +689,7 @@
                         <div id="birthdate-error" class="invalid-feedback"></div>
                     </div>
                 </div>
-                <div class="form-group col-md-7 mb-4 p-0">
+                <div class="form-group col-md-7 mb-4">
                     <label for="gender">Gender</label>
                     <select class="custom-select form-control-lg border-success" id="gender" name="gender" required>
                         <option value="" selected>Gender...</option>
@@ -723,20 +699,20 @@
                     </select>
                     <div id="gender-error" class="invalid-feedback"></div>
                 </div>
-                <div class="form-group col-md-12 mb-4 p-0">
-      		      <label for="describe" class="font-b6">Describe the client:</label>
-      		      <textarea class="form-control form-control-lg border border-success" id="describe" name="describe" placeholder="Describe here..." rows="4" minlength="10" required></textarea>
-      		      <div id="describe-error" class="invalid-feedback"></div>
+                <div class="form-group col-md-12 mb-4">
+      		      <label for="description" class="font-b6">Describe the client:</label>
+      		      <textarea class="form-control form-control-lg border border-success" id="description" name="description" placeholder="Describe here..." rows="4" minlength="10" required></textarea>
+      		      <div id="description-error" class="invalid-feedback"></div>
                   <small class="form-text text-muted">Maximum 1,000 characters.</small>
                 </div>
                 <div class="form-group col-md-12 mb-4">
-                    <label for="tag">Tags</label>
-                    <select id="person_tags" name="person_tags" class="form-control form-control-lg border border-success" name="states[]" multiple="multiple">
+                    <label for="tags">Tags</label>
+                    <select id="tags" name="tags" class="form-control form-control-lg border border-success" name="states[]" multiple="multiple">
                     {% for tag in tags %}
                         <option value="{{ tag.id }}" id="person_tag_option_id_{{ tag.id }}">{{ tag }}</option>
                     {% endfor %}
                     </select>
-                    <div id="person_tags-error" class="invalid-feedback"></div>
+                    <div id="tags-error" class="invalid-feedback"></div>
                 </div>
                 <div class="form-group col-md-12 mb-4">
                     <label for="skill_sets">Skill sets</label>
@@ -769,26 +745,26 @@
                 </div>
                 <div class="form-group col-md-12 mb-4">
                     <p class="mb-1">Ok to E-Mail? <sup>*</sup></p>
-                    <div class="form-radio custom-control custom-radio custom-control-inline">
-                        <input type="radio" id="is_ok_to_email" name="is_ok_to_email" value="true" class="custom-control-input form-check-input">
+                    <div class="form-radio custom-control custom-radio mb-2">
+                        <input type="radio" id="is_ok_to_email" name="is_ok_to_email" value="true" class="custom-control-input form-check-input" required>
                         <label class="custom-control-label form-check-label" for="is_ok_to_email">Yes</label>
                     </div>
-                    <div class="form-radio custom-control custom-radio custom-control-inline">
-                        <input type="radio" id="is_ok_to_email2" name="is_ok_to_email" value="false" class="custom-control-input form-check-input">
+                    <div class="form-radio custom-control custom-radio">
+                        <input type="radio" id="is_ok_to_email2" name="is_ok_to_email" value="false" class="custom-control-input form-check-input" required>
                         <label class="custom-control-label form-check-label" for="ok_to_email2">No</label>
-			<div id="is_ok_to_email-error" class="invalid-feedback ml-2"></div>
+			<div id="is_ok_to_email-error" class="invalid-feedback"></div>
                     </div>
                 </div>
                 <div class="form-group col-md-12 mb-4">
                     <p class="mb-1">Ok to Text? <sup>*</sup></p>
-                    <div class="form-radio custom-control custom-radio custom-control-inline">
-                        <input type="radio" id="is_ok_to_text" name="is_ok_to_text" value="true" class="custom-control-input form-check-input">
+                    <div class="form-radio custom-control custom-radio mb-2">
+                        <input type="radio" id="is_ok_to_text" name="is_ok_to_text" value="true" class="custom-control-input form-check-input" required>
                         <label class="custom-control-label form-check-label" for="is_ok_to_text">Yes</label>
                     </div>
-                    <div class="form-radio custom-control custom-radio custom-control-inline">
-                        <input type="radio" id="is_ok_to_text2" name="is_ok_to_text" value="false" class="custom-control-input form-check-input">
+                    <div class="form-radio custom-control custom-radio">
+                        <input type="radio" id="is_ok_to_text2" name="is_ok_to_text" value="false" class="custom-control-input form-check-input" required>
                         <label class="custom-control-label form-check-label" for="is_ok_to_text2">No</label>
-			<div id="is_ok_to_text-error" class="invalid-feedback ml-2"></div>
+			<div id="is_ok_to_text-error" class="invalid-feedback"></div>
                     </div>
                 </div>
             </div>
@@ -848,21 +824,21 @@
                     <div id="insurance_requirements-error" class="invalid-feedback"></div>
                 </div>
                 <div class="form-group col-md-12 mb-4">
-                    <label for="hourly_salary_desired">Hourly Salary Desired <sup>*</sup></label>
-                    <input type="text" class="form-control form-control-lg border border-success" id="hourly_salary_desired" name="hourly_salary_desired" placeholder="Hourly Salary Desired" minlength="3" maxlength="255" required>
+                    <label for="hourly_salary_desired">Hourly Rate <sup>*</sup></label>
+                    <input type="text" class="form-control form-control-lg border border-success" id="hourly_salary_desired" name="hourly_salary_desired" placeholder="Hourly Rate" minlength="3" maxlength="255" required>
                     <div id="hourly_salary_desired-error" class="invalid-feedback"></div>
                 </div>
                 <div class="form-group col-md-12 mb-4">
                     <label for="limit_special">Limitation or special consideration <sup>*</sup></label>
-                    <input type="text" class="form-control form-control-lg border border-success" id="limit_special" name="limit_special" placeholder="Limitation or special consideration" minlength="3" maxlength="255" required>
+                    <input type="text" class="form-control form-control-lg border border-success" id="limit_special" name="limit_special" placeholder="Explain" minlength="3" maxlength="255" required>
                     <div id="limit_special-error" class="invalid-feedback"></div>
                 </div>
-                <div class="form-group p-0 col-md-7 mb-4">
+                <div class="form-group col-md-7 mb-4">
                     <label for="dues_date">Dues Date <sup>*</sup></label>
                     <div class="input-group input-group-lg">
                         <input type="text" class="form-control form-control-lg border border-success" id="dues_date" name="dues_date" placeholder="yyyy-mm-dd" required>
                         <div class="input-group-append">
-                            <span class="input-group-text dues_date-icon bg-success border-success"><i class="far fa-calendar-alt"></i></span>
+                            <span class="input-group-text c-icon-white bg-success border-success"><i class="far fa-calendar-alt"></i></span>
                         </div>
                         <div id="dues_date-error" class="invalid-feedback"></div>
                     </div>
@@ -872,7 +848,7 @@
                     <div class="input-group input-group-lg">
                         <input type="text" class="form-control form-control-lg border border-success" id="commercial_insurance_expiry_date" name="commercial_insurance_expiry_date" placeholder="yyyy-mm-dd" required>
                         <div class="input-group-append">
-                            <span class="input-group-text commercial_insurance_expiry_date-icon bg-success border-success"><i class="far fa-calendar-alt"></i></span>
+                            <span class="input-group-text c-icon-white bg-success border-success"><i class="far fa-calendar-alt"></i></span>
                         </div>
                         <div id="commercial_insurance_expiry_date-error" class="invalid-feedback"></div>
                     </div>
@@ -882,7 +858,7 @@
                     <div class="input-group input-group-lg">
                         <input type="text" class="form-control form-control-lg border border-success" id="auto_insurance_expiry_date" name="auto_insurance_expiry_date" placeholder="yyyy-mm-dd" required>
                         <div class="input-group-append">
-                            <span class="input-group-text auto_insurance_expiry_date-icon bg-success border-success"><i class="far fa-calendar-alt"></i></span>
+                            <span class="input-group-text c-icon-white bg-success border-success"><i class="far fa-calendar-alt"></i></span>
                         </div>
                         <div id="auto_insurance_expiry_date-error" class="invalid-feedback"></div>
                     </div>
@@ -892,7 +868,7 @@
                     <div class="input-group input-group-lg">
                         <input type="text" class="form-control form-control-lg border border-success" id="wsib_insurance_date" name="wsib_insurance_date" placeholder="yyyy-mm-dd" required>
                         <div class="input-group-append">
-                            <span class="input-group-text wsib_insurance_date-icon bg-success border-success"><i class="far fa-calendar-alt"></i></span>
+                            <span class="input-group-text c-icon-white bg-success border-success"><i class="far fa-calendar-alt"></i></span>
                         </div>
                         <div id="wsib_insurance_date-error" class="invalid-feedback"></div>
                     </div>
@@ -902,7 +878,7 @@
                     <div class="input-group input-group-lg">
                         <input type="text" class="form-control form-control-lg border border-success" id="police_check" name="police_check" placeholder="yyyy-mm-dd" required>
                         <div class="input-group-append">
-                            <span class="input-group-text police_check-icon bg-success border-success"><i class="far fa-calendar-alt"></i></span>
+                            <span class="input-group-text c-icon-white bg-success border-success"><i class="far fa-calendar-alt"></i></span>
                         </div>
                         <div id="police_check-error" class="invalid-feedback"></div>
                     </div>
@@ -917,8 +893,7 @@
                     <input type="text" class="form-control form-control-lg border border-success" id="drivers_license_class" name="drivers_license_class" placeholder="Drivers license class(es)" minlength="3" maxlength="255" required>
                     <div id="drivers_license_class-error" class="invalid-feedback"></div>
                     <small id="drivers_license_class_help" class="form-text text-muted ft-indent">
-                        <svg class="svg-inline--fa fa-angle-right fa-w-8" aria-hidden="true" data-fa-processed="" data-prefix="fas" data-icon="angle-right" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 512"><path fill="currentColor" d="M224.3 273l-136 136c-9.4 9.4-24.6 9.4-33.9 0l-22.6-22.6c-9.4-9.4-9.4-24.6 0-33.9l96.4-96.4-96.4-96.4c-9.4-9.4-9.4-24.6 0-33.9L54.3 103c9.4-9.4 24.6-9.4 33.9 0l136 136c9.5 9.4 9.5 24.6.1 34z"></path></svg>
-                        <!-- <i class="fas fa-angle-right"></i> -->  Write all the driver licenses earned by this associate.
+                        <i class="fas fa-angle-right"></i> Write all the driver licenses earned by this associate.
                     </small>
                 </div>
                 <div class="form-group col-md-12 mb-4">
@@ -930,7 +905,7 @@
                     </select>
                     <div id="vehicle_types-error" class="invalid-feedback"></div>
                 </div>
-                <div class="form-group col-md-7 mb-4 p-0">
+                <div class="form-group col-md-7 mb-4">
                     <label for="how_hear">How did they hear about us?</label>
                     <select class="custom-select form-control-lg border-success" id="how_hear" name="how_hear" required>
                         <option value="" selected>Please select...</option>
@@ -945,7 +920,7 @@
                     </select>
                     <div id="how_hear-error" class="invalid-feedback"></div>
                 </div>
-                <div class="form-group col-md-12 mb-4 p-0" id="how_hear_other_div">
+                <div class="form-group col-md-12 mb-4" id="how_hear_other_div">
       		        <label for="how_hear_other" class="font-b6">Describe how associate hear about us:</label>
       		        <textarea class="form-control form-control-lg border border-success" id="how_hear_other" name="how_hear_other" placeholder="How here..." rows="4" minlength="10"></textarea>
       		        <div id="how_hear_other-error" class="invalid-feedback"></div>
@@ -956,7 +931,7 @@
             <!-- ############ SECURITY ############ -->
             <p class="border-bottom mb-3 pb-1 text-secondary">Account</p>
             <div class="form-row">
-                <div class="form-group col-md-12 mb-4 p-0">
+                <div class="form-group col-md-12 mb-4">
       		      <label for="comment" class="font-b6">Additional comment(s):</label>
       		      <textarea class="form-control form-control-lg border border-success" id="comment" name="comment" placeholder="Write any additional notes or comments here..." rows="4" minlength="10" required></textarea>
       		      <div id="comment-error" class="invalid-feedback"></div>
@@ -1000,14 +975,14 @@
                 </div>
                 <div class="form-group col-md-12 mb-4">
                     <p class="mb-1">Is active? <sup>*</sup></p>
-                    <div class="form-radio custom-control custom-radio custom-control-inline">
-                        <input type="radio" id="is_active" name="is_active" value="true" class="custom-control-input form-check-input">
+                    <div class="form-radio custom-control custom-radio mb-2">
+                        <input type="radio" id="is_active" name="is_active" value="true" class="custom-control-input form-check-input" required>
                         <label class="custom-control-label form-check-label" for="is_active">Yes</label>
                     </div>
-                    <div class="form-radio custom-control custom-radio custom-control-inline">
-                        <input type="radio" id="is_active2" name="is_active" value="false" class="custom-control-input form-check-input">
+                    <div class="form-radio custom-control custom-radio">
+                        <input type="radio" id="is_active2" name="is_active" value="false" class="custom-control-input form-check-input" required>
                         <label class="custom-control-label form-check-label" for="is_active2">No</label>
-                        <div id="is_active-error" class="invalid-feedback ml-2"></div>
+                        <div id="is_active-error" class="invalid-feedback"></div>
                     </div>
                 </div>
             </div>
@@ -1036,5 +1011,30 @@
     <a id="return-to-top" href="#" class="btn-info btn-lg back-to-top" role="button" title="Back to top"><i class="fas fa-angle-up fa-2x"></i></a>
     <!-- end RETURN-TO-TOP -->
 </main>
+
+<script type="text/javascript">
+	    //------------------------//
+            // SELECT2 INITIALIZATION //
+            //------------------------//
+
+            var tmp_insurance_requirements = localStorage.getObj("tmp_associate_member_insurance_requirement_ids");
+            $('#insurance_requirements').val(tmp_insurance_requirements);
+
+            // Populate our 'select2' chosen values.
+            var tmp_person_tags = localStorage.getObj("tmp_associate_member_person_tag_ids");
+            $('#tags').val(tmp_person_tags);
+
+            var tmp_skill_sets = localStorage.getObj("tmp_associate_member_skill_set_ids");
+            $('#skill_sets').val(tmp_skill_sets);
+
+            var tmp_vehicle_types = localStorage.getObj("tmp_associate_member_vehicle_type_ids");
+            $('#vehicle_types').val(tmp_vehicle_types);
+
+            // Initialize our 'select2' element.
+            $('#insurance_requirements').select2();
+            $('#tags').select2();
+            $('#skill_sets').select2();
+            $('#vehicle_types').select2();
+</script>
 
 {% endblock content %}
