@@ -2,7 +2,7 @@
 {% load staticfiles i18n foundation_tags %}
 
 {% block title %}
-{% trans 'Staff List | Workery' %}
+{% trans 'Staff Details | Workery' %}
 {% endblock title %}
 
 {% block header_content %}
@@ -237,21 +237,18 @@
 
         <!------------------------------------------------------------------------->
         <!-- end DETAIL FORM -->
-	<div class="form-group col-md-10 mb-3 mx-auto text-center">
-	    <div class="row">
-		<!-- EDIT BUTTON -->
-		<div class="col-sm-4">
-		    <a href="{% url 'workery_tenant_team_update' template object.id %}">
-		    <button  id="id_submit_btn"
-			class="btn btn-orange btn-lg btn-fxw mt-4"
-			type="button">
-		    <i class="fas fa-pencil-alt"></i>&nbsp;{% trans 'Edit Client' %}
-		    </button>
-		    </a>
-		</div>
-		<!-- end EDIT BUTTON -->
-	    </div>
+
+        <!-- UPDATE BUTTON -->
+        <!--------------------------------------------------------------------->
+        <div class="form-group col-md-12 mb-3 mx-auto text-center">
+            <a href="{% url 'workery_tenant_team_update' template object.id %}">
+                <button  id="id_submit_btn"	class="btn btn-orange btn-lg btn-fxw mt-4" type="button">
+                    <i class="fas fa-pencil-alt"></i>&nbsp;{% trans 'Edit Staff' %}
+                </button>
+            </a>
         </div>
+        <!--------------------------------------------------------------------->
+        <!-- end UPDATE BUTTON -->
 
     </div>
 
