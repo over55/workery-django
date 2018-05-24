@@ -91,6 +91,29 @@
                 dateFormat: 'yy-mm-dd'  // https://stackoverflow.com/a/7500097
             });
 
+	    //------------------------//
+            // SELECT2 INITIALIZATION //
+            //------------------------//
+
+            var tmp_insurance_requirements = localStorage.getObj("tmp_associate_member_insurance_requirement_ids");
+            $('#insurance_requirements').val(tmp_insurance_requirements);
+
+            // Populate our 'select2' chosen values.
+            var tmp_person_tags = localStorage.getObj("tmp_associate_member_person_tag_ids");
+            $('#tags').val(tmp_person_tags);
+
+            var tmp_skill_sets = localStorage.getObj("tmp_associate_member_skill_set_ids");
+            $('#skill_sets').val(tmp_skill_sets);
+
+            var tmp_vehicle_types = localStorage.getObj("tmp_associate_member_vehicle_type_ids");
+            $('#vehicle_types').val(tmp_vehicle_types);
+
+            // Initialize our 'select2' element.
+            $('#insurance_requirements').select2();
+            $('#tags').select2();
+            $('#skill_sets').select2();
+            $('#vehicle_types').select2();
+		
             //--------------------------//
             // TEXTFIELD INITIALIZATION //
             //--------------------------//
@@ -1013,24 +1036,7 @@
 </main>
 
 <script type="text/javascript">
-	    //------------------------//
-            // SELECT2 INITIALIZATION //
-            //------------------------//
-
-            var tmp_insurance_requirements = localStorage.getObj("tmp_associate_member_insurance_requirement_ids");
-            $('#insurance_requirements').val(tmp_insurance_requirements);
-
-            // Populate our 'select2' chosen values.
-            var tmp_person_tags = localStorage.getObj("tmp_associate_member_person_tag_ids");
-            $('#tags').val(tmp_person_tags);
-
-            var tmp_skill_sets = localStorage.getObj("tmp_associate_member_skill_set_ids");
-            $('#skill_sets').val(tmp_skill_sets);
-
-            var tmp_vehicle_types = localStorage.getObj("tmp_associate_member_vehicle_type_ids");
-            $('#vehicle_types').val(tmp_vehicle_types);
-
-            // Initialize our 'select2' element.
+	    // Initialize our 'select2' element.
             $('#insurance_requirements').select2();
             $('#tags').select2();
             $('#skill_sets').select2();
