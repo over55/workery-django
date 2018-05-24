@@ -939,6 +939,35 @@
 </main>
 	
 <script type="text/javascript">
+	//------------------------//
+        // SELECT2 INITIALIZATION //
+        //------------------------//
+
+        var insurance_requirement_ids = [];
+        {% for insurance_requirement in associate.insurance_requirements.all %}
+        insurance_requirement_ids.push({{ insurance_requirement.id }});
+        {% endfor %}
+        $('#insurance_requirements').val(insurance_requirement_ids);
+
+        // // Populate our 'select2' chosen values.
+        var tag_ids = [];
+        {% for tag in associate.tags.all %}
+        tag_ids.push({{ tag.id }});
+        {% endfor %}
+        $('#tags').val(tag_ids);
+
+        var skill_set_ids = [];
+        {% for skill_set in associate.skill_sets.all %}
+        skill_set_ids.push({{ skill_set.id }});
+        {% endfor %}
+        $('#skill_sets').val(skill_set_ids);
+
+        var vehicle_type_ids = [];
+        {% for vehicle_type in associate.vehicle_types.all %}
+        vehicle_type_ids.push({{ vehicle_type.id }});
+        {% endfor %}
+        $('#vehicle_types').val(vehicle_type_ids);
+	 
         // Initialize our 'select2' element.
         $('#insurance_requirements').select2();
         $('#tags').select2();
