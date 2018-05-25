@@ -141,12 +141,12 @@ class Command(BaseCommand):
                     local_completion_date = local_payment_date
 
             # Convert to money.
-            local_service_fee = Money(0.00, O55_APP_DEFAULT_MONEY_CURRENCY)
+            local_service_fee = Money(0.00, WORKERY_APP_DEFAULT_MONEY_CURRENCY)
             if service_fee:
                 service_fee = service_fee.replace('$', '')
                 service_fee = service_fee.replace('\'', '')
                 service_fee = float(service_fee)
-                local_service_fee = Money(service_fee, O55_APP_DEFAULT_MONEY_CURRENCY)
+                local_service_fee = Money(service_fee, WORKERY_APP_DEFAULT_MONEY_CURRENCY)
                 # DEVELOPER NOTES:
                 # - The "service_fee" is deprecated and will not be included.
                 # - The "payment_date" is deprecated and will not be included.

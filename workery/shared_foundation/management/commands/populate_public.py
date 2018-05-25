@@ -40,7 +40,7 @@ class Command(BaseCommand):
 
         # Add one or more domains for the tenant
         domain = SharedFranchiseDomain()
-        domain.domain = settings.O55_APP_HTTP_DOMAIN # don't add your port or www here! on a local server you'll want to use localhost here
+        domain.domain = settings.WORKERY_APP_HTTP_DOMAIN # don't add your port or www here! on a local server you'll want to use localhost here
         domain.tenant = public_tenant
         domain.is_primary = True
         try:
@@ -55,7 +55,7 @@ class Command(BaseCommand):
         # First call; current site fetched from database.
         from django.contrib.sites.models import Site # https://docs.djangoproject.com/en/dev/ref/contrib/sites/#caching-the-current-site-object
         current_site = Site.objects.get_current()
-        current_site.domain = settings.O55_APP_HTTP_DOMAIN
+        current_site.domain = settings.WORKERY_APP_HTTP_DOMAIN
         current_site.save()
 
         # For debugging purposes.

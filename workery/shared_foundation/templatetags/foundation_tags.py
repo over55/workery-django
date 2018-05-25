@@ -18,8 +18,8 @@ def get_app_domain():
     Returns the full URL to the domain. The output from this function gets
     generally appended with a path string.
     """
-    url = settings.O55_APP_HTTP_PROTOCOL
-    url += settings.O55_APP_HTTP_DOMAIN
+    url = settings.WORKERY_APP_HTTP_PROTOCOL
+    url += settings.WORKERY_APP_HTTP_DOMAIN
     return url
 
 
@@ -35,6 +35,6 @@ def pretty_formatted_phonenumber(phone):
 @register.simple_tag
 def tenant_url(schema_name, view_name):
     if schema_name:
-        return settings.O55_APP_HTTP_PROTOCOL + schema_name + '.%s' % settings.O55_APP_HTTP_DOMAIN + reverse(view_name)
+        return settings.WORKERY_APP_HTTP_PROTOCOL + schema_name + '.%s' % settings.WORKERY_APP_HTTP_DOMAIN + reverse(view_name)
     else:
-        return settings.O55_APP_HTTP_PROTOCOL + '%s' % settings.O55_APP_HTTP_DOMAIN + reverse(view_name)
+        return settings.WORKERY_APP_HTTP_PROTOCOL + '%s' % settings.WORKERY_APP_HTTP_DOMAIN + reverse(view_name)

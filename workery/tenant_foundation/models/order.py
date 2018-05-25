@@ -19,7 +19,7 @@ from starterkit.utils import (
     int_or_none,
     float_or_none
 )
-from shared_foundation.constants import O55_APP_DEFAULT_MONEY_CURRENCY
+from shared_foundation.constants import WORKERY_APP_DEFAULT_MONEY_CURRENCY
 from shared_foundation.models import SharedUser
 from tenant_foundation.constants import UNASSIGNED_JOB_TYPE_OF_ID, JOB_TYPE_OF_CHOICES
 from tenant_foundation.utils import *
@@ -288,8 +288,8 @@ class Order(models.Model):
         help_text=_('The original quote made by the associate for this job.'),
         max_digits=10,
         decimal_places=2,
-        default_currency=O55_APP_DEFAULT_MONEY_CURRENCY,
-        default=Money(0,O55_APP_DEFAULT_MONEY_CURRENCY),
+        default_currency=WORKERY_APP_DEFAULT_MONEY_CURRENCY,
+        default=Money(0,WORKERY_APP_DEFAULT_MONEY_CURRENCY),
         blank=True,
     )
     invoice_labour_amount = MoneyField(
@@ -297,8 +297,8 @@ class Order(models.Model):
         help_text=_('The amount charged for labour by the associate for this job.'),
         max_digits=10,
         decimal_places=2,
-        default_currency=O55_APP_DEFAULT_MONEY_CURRENCY,
-        default=Money(0,O55_APP_DEFAULT_MONEY_CURRENCY),
+        default_currency=WORKERY_APP_DEFAULT_MONEY_CURRENCY,
+        default=Money(0,WORKERY_APP_DEFAULT_MONEY_CURRENCY),
         blank=True,
     )
     invoice_material_amount = MoneyField(
@@ -306,8 +306,8 @@ class Order(models.Model):
         help_text=_('The amount charged for material costs by the associate for this job.'),
         max_digits=10,
         decimal_places=2,
-        default_currency=O55_APP_DEFAULT_MONEY_CURRENCY,
-        default=Money(0,O55_APP_DEFAULT_MONEY_CURRENCY),
+        default_currency=WORKERY_APP_DEFAULT_MONEY_CURRENCY,
+        default=Money(0,WORKERY_APP_DEFAULT_MONEY_CURRENCY),
         blank=True,
     )
     invoice_tax_amount = MoneyField(
@@ -315,8 +315,8 @@ class Order(models.Model):
         help_text=_('The amount charged for taxes by the associate for this job.'),
         max_digits=10,
         decimal_places=2,
-        default_currency=O55_APP_DEFAULT_MONEY_CURRENCY,
-        default=Money(0,O55_APP_DEFAULT_MONEY_CURRENCY),
+        default_currency=WORKERY_APP_DEFAULT_MONEY_CURRENCY,
+        default=Money(0,WORKERY_APP_DEFAULT_MONEY_CURRENCY),
         blank=True,
     )
     invoice_total_amount = MoneyField(
@@ -324,8 +324,8 @@ class Order(models.Model):
         help_text=_('The total amount charged by the associate for this job.'),
         max_digits=10,
         decimal_places=2,
-        default_currency=O55_APP_DEFAULT_MONEY_CURRENCY,
-        default=Money(0,O55_APP_DEFAULT_MONEY_CURRENCY),
+        default_currency=WORKERY_APP_DEFAULT_MONEY_CURRENCY,
+        default=Money(0,WORKERY_APP_DEFAULT_MONEY_CURRENCY),
         blank=True,
     )
     invoice_service_fee_amount = MoneyField(
@@ -333,8 +333,8 @@ class Order(models.Model):
         help_text=_('The total amount charged by the associate for this job.'),
         max_digits=10,
         decimal_places=2,
-        default_currency=O55_APP_DEFAULT_MONEY_CURRENCY,
-        default=Money(0,O55_APP_DEFAULT_MONEY_CURRENCY),
+        default_currency=WORKERY_APP_DEFAULT_MONEY_CURRENCY,
+        default=Money(0,WORKERY_APP_DEFAULT_MONEY_CURRENCY),
         blank=True,
     )
     invoice_service_fee = models.ForeignKey(

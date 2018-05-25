@@ -119,5 +119,5 @@ def user_logout_redirector_master_page(request):
         logger.info("Authenticated user has logged off.")
 
     # Step 4: Redirect to the homepage.
-    sign_in_url = settings.O55_APP_HTTP_PROTOCOL + settings.O55_APP_HTTP_DOMAIN + reverse('workery_login_master', args=[]) + "?has_logged_out=True"
+    sign_in_url = settings.WORKERY_APP_HTTP_PROTOCOL + settings.WORKERY_APP_HTTP_DOMAIN + reverse('workery_login_master', args=[]) + "?has_logged_out=True"
     return HttpResponseRedirect(sign_in_url)

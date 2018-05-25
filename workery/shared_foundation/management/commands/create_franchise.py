@@ -101,8 +101,8 @@ class Command(BaseCommand):
 
         # Add one or more domains for the tenant
         domain = SharedFranchiseDomain()
-        domain.domain = settings.O55_APP_HTTP_DOMAIN
-        domain.domain = tenant.schema_name + '.' + settings.O55_APP_HTTP_DOMAIN
+        domain.domain = settings.WORKERY_APP_HTTP_DOMAIN
+        domain.domain = tenant.schema_name + '.' + settings.WORKERY_APP_HTTP_DOMAIN
         domain.tenant = tenant
         domain.is_primary = False
         domain.save()

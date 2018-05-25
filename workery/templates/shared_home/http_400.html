@@ -20,7 +20,7 @@
                 {% trans 'Some values were incorrectly entered, causing an error.' %}
                 {% if request.user.is_authenticated %}
                     {% if request.tenant.schema_name != 'public' %}
-                       {% trans 'You can return to your' %}&nbsp;<a href="{{ shared_constants.O55_APP_HTTP_PROTOCOL }}{{ request.tenant.schema_name }}.{{ shared_constants.O55_APP_HTTP_DOMAIN }}{% url 'workery_tenant_dashboard_master' %}">{% trans 'dashboard.' %}</a>
+                       {% trans 'You can return to your' %}&nbsp;<a href="{{ shared_constants.WORKERY_APP_HTTP_PROTOCOL }}{{ request.tenant.schema_name }}.{{ shared_constants.WORKERY_APP_HTTP_DOMAIN }}{% url 'workery_tenant_dashboard_master' %}">{% trans 'dashboard.' %}</a>
                     {% endif %}
                 {% endif %}
                 {% trans 'For immediate help, contact' %}&nbsp;<a href="mailto:support@workery.ca">{% trans 'support.' %}</a></p>
@@ -32,7 +32,7 @@
             {% if request.user.is_authenticated %}
                 {% if request.tenant.schema_name != 'public' %}
                     <p class="text-center">
-                       <a class="btn btn-primary btn-lg" href="{{ shared_constants.O55_APP_HTTP_PROTOCOL }}{{ request.tenant.schema_name }}.{{ shared_constants.O55_APP_HTTP_DOMAIN }}{% url 'workery_tenant_dashboard_master' %}" role="button">{% trans 'Back to Dashboard' %}</a>
+                       <a class="btn btn-primary btn-lg" href="{{ shared_constants.WORKERY_APP_HTTP_PROTOCOL }}{{ request.tenant.schema_name }}.{{ shared_constants.WORKERY_APP_HTTP_DOMAIN }}{% url 'workery_tenant_dashboard_master' %}" role="button">{% trans 'Back to Dashboard' %}</a>
                     </p>
                 {% endif %}
             {% endif %}

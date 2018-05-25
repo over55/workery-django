@@ -29,7 +29,7 @@ class Command(BaseCommand):
         Site
         """
         current_site = Site.objects.get_current()
-        current_site.domain = settings.O55_APP_HTTP_DOMAIN
+        current_site.domain = settings.WORKERY_APP_HTTP_DOMAIN
         current_site.name = "Over55"
         current_site.save()
 

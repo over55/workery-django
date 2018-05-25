@@ -23,7 +23,7 @@ from rest_framework import exceptions, serializers
 from rest_framework.response import Response
 from rest_framework.validators import UniqueValidator
 from shared_api.custom_fields import PhoneNumberField
-from shared_foundation.constants import CUSTOMER_GROUP_ID, O55_APP_DEFAULT_MONEY_CURRENCY
+from shared_foundation.constants import CUSTOMER_GROUP_ID, WORKERY_APP_DEFAULT_MONEY_CURRENCY
 from shared_foundation.models import SharedUser
 from tenant_foundation.constants import *
 from tenant_foundation.models import (
@@ -143,12 +143,12 @@ class OrderCloseCreateSerializer(serializers.Serializer):
         # -------------------------
         job.invoice_date = invoice_date
         job.invoice_id = invoice_id
-        job.invoice_quote_amount = Money(invoice_quote_amount, O55_APP_DEFAULT_MONEY_CURRENCY)
-        job.invoice_labour_amount = Money(invoice_labour_amount, O55_APP_DEFAULT_MONEY_CURRENCY)
-        job.invoice_material_amount = Money(invoice_material_amount, O55_APP_DEFAULT_MONEY_CURRENCY)
-        job.invoice_tax_amount = Money(invoice_tax_amount, O55_APP_DEFAULT_MONEY_CURRENCY)
-        job.invoice_total_amount = Money(invoice_total_amount, O55_APP_DEFAULT_MONEY_CURRENCY)
-        job.invoice_service_fee_amount = Money(invoice_service_fee_amount, O55_APP_DEFAULT_MONEY_CURRENCY)
+        job.invoice_quote_amount = Money(invoice_quote_amount, WORKERY_APP_DEFAULT_MONEY_CURRENCY)
+        job.invoice_labour_amount = Money(invoice_labour_amount, WORKERY_APP_DEFAULT_MONEY_CURRENCY)
+        job.invoice_material_amount = Money(invoice_material_amount, WORKERY_APP_DEFAULT_MONEY_CURRENCY)
+        job.invoice_tax_amount = Money(invoice_tax_amount, WORKERY_APP_DEFAULT_MONEY_CURRENCY)
+        job.invoice_total_amount = Money(invoice_total_amount, WORKERY_APP_DEFAULT_MONEY_CURRENCY)
+        job.invoice_service_fee_amount = Money(invoice_service_fee_amount, WORKERY_APP_DEFAULT_MONEY_CURRENCY)
         job.save()
 
         return

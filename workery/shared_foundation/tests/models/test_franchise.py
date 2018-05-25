@@ -48,8 +48,8 @@ class TestFranchise(TenantTestCase):
         actual_url = self.tenant.reverse('workery_tenant_dashboard_master')
 
         # Generate the URL we expect.
-        self.assertIsNotNone(settings.O55_APP_HTTP_DOMAIN) # Confirm var set.
-        expected_url = "http://test." + settings.O55_APP_HTTP_DOMAIN + "/en/dashboard"
+        self.assertIsNotNone(settings.WORKERY_APP_HTTP_DOMAIN) # Confirm var set.
+        expected_url = "http://test." + settings.WORKERY_APP_HTTP_DOMAIN + "/en/dashboard"
 
         # Verify the URL.
         self.assertIsNotNone(actual_url)

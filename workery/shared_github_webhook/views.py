@@ -39,7 +39,7 @@ def github_webhook_handler(request):
     if sha_name != 'sha1':
         return HttpResponseServerError('Operation not supported.', status=501)
 
-    mac = hmac.new(force_bytes(settings.O55_GITHUB_WEBHOOK_SECRET), msg=force_bytes(request.body), digestmod=sha1)
+    mac = hmac.new(force_bytes(settings.WORKERY_GITHUB_WEBHOOK_SECRET), msg=force_bytes(request.body), digestmod=sha1)
     if not hmac.compare_digest(force_bytes(mac.hexdigest()), force_bytes(signature)):
         return HttpResponseForbidden('Permission denied.')
 

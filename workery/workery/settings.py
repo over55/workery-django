@@ -54,7 +54,7 @@ ADMIN_ENABLED = False
 # This configuration ensures that all authenticated users from the public
 # schema to exist authenticated in the tenant schemas as well. This is
 # important to have "django-tenants" work
-SESSION_COOKIE_DOMAIN = '.' + env("O55_APP_HTTP_DOMAIN")
+SESSION_COOKIE_DOMAIN = '.' + env("WORKERY_APP_HTTP_DOMAIN")
 
 # This configuration ensures all authentication enforcement redirects to this
 # specific URL in our application.
@@ -339,7 +339,7 @@ KEEP_COMMENTS_ON_MINIFYING = env("KEEP_COMMENTS_ON_MINIFYING")
 # Disable Django's logging setup
 LOGGING_CONFIG = None
 
-LOGLEVEL = env("O55_LOGLEVEL")
+LOGLEVEL = env("WORKERY_LOGLEVEL")
 
 logging.config.dictConfig({
     'version': 1,
@@ -491,7 +491,7 @@ PHONENUMBER_DB_FORMAT = 'E164'     # Format: +1xxxyyyzzzz
 #
 
 # Variables define what URL structure to use in our system.
-O55_APP_HTTP_PROTOCOL = env("O55_APP_HTTP_PROTOCOL")
-O55_APP_HTTP_DOMAIN = env("O55_APP_HTTP_DOMAIN")
-O55_APP_DEFAULT_MONEY_CURRENCY = env("O55_APP_DEFAULT_MONEY_CURRENCY")
-O55_GITHUB_WEBHOOK_SECRET = env("O55_GITHUB_WEBHOOK_SECRET")
+WORKERY_APP_HTTP_PROTOCOL = env("WORKERY_APP_HTTP_PROTOCOL")
+WORKERY_APP_HTTP_DOMAIN = env("WORKERY_APP_HTTP_DOMAIN")
+WORKERY_APP_DEFAULT_MONEY_CURRENCY = env("WORKERY_APP_DEFAULT_MONEY_CURRENCY")
+WORKERY_GITHUB_WEBHOOK_SECRET = env("WORKERY_GITHUB_WEBHOOK_SECRET")

@@ -31,8 +31,8 @@ def public_only_or_redirect(view_func):
 
         # CASE 2 OF 2:
         # If we are a tenant then we need to redirect to the public base page.
-        url = settings.O55_APP_HTTP_PROTOCOL
-        url += settings.O55_APP_HTTP_DOMAIN
+        url = settings.WORKERY_APP_HTTP_PROTOCOL
+        url += settings.WORKERY_APP_HTTP_DOMAIN
         url = url + request.path
         return HttpResponseRedirect(url)
     return wrapper

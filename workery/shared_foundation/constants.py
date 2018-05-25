@@ -6,8 +6,8 @@ from django.conf import settings
 # The domain of our application.
 #
 
-O55_APP_HTTP_PROTOCOL = settings.O55_APP_HTTP_PROTOCOL
-O55_APP_HTTP_DOMAIN = settings.O55_APP_HTTP_DOMAIN
+WORKERY_APP_HTTP_PROTOCOL = settings.WORKERY_APP_HTTP_PROTOCOL
+WORKERY_APP_HTTP_DOMAIN = settings.WORKERY_APP_HTTP_DOMAIN
 
 
 # The groups of our application.
@@ -23,7 +23,7 @@ CUSTOMER_GROUP_ID = 5
 # The default currency of our application.
 #
 
-O55_APP_DEFAULT_MONEY_CURRENCY = settings.O55_APP_DEFAULT_MONEY_CURRENCY
+WORKERY_APP_DEFAULT_MONEY_CURRENCY = settings.WORKERY_APP_DEFAULT_MONEY_CURRENCY
 
 
 # The following constants are used by the "contant_point" models.
