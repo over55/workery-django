@@ -127,6 +127,17 @@ class AssociateListCreateSerializer(serializers.ModelSerializer):
             "invalid": "Please pick either 'Yes' or 'No' choice."
         }
     )
+    
+     hourly_salary_desired = serializers.RegexField(
+        regex=^(\d*\.?\d+|\d{1,3}(,\d{3})*(\.\d+)?)$, 
+        max_length=None,
+        min_length=None, 
+        allow_blank=False
+        required=True,
+        error_messages={
+            "invalid": "Invalid Hourly Rate"
+        }
+    )
 
     # Meta Information.
     class Meta:
@@ -446,6 +457,17 @@ class AssociateRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         required=True,
     )
 
+    hourly_salary_desired = serializers.RegexField(
+        regex=^(\d*\.?\d+|\d{1,3}(,\d{3})*(\.\d+)?)$, 
+        max_length=None,
+        min_length=None, 
+        allow_blank=False
+        required=True,
+        error_messages={
+            "invalid": "Invalid Hourly Rate"
+        }
+    )
+    
     class Meta:
         model = Associate
         fields = (
