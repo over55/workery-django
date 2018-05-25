@@ -129,16 +129,16 @@ class AssociateListCreateSerializer(serializers.ModelSerializer):
     )
 
     hourly_salary_desired = serializers.RegexField(
-        regex=r'^(\d*\.?\d+|\d{1,3}(,\d{3})*(\.\d+)?)$', 
+        regex=r'^(\d*\.?\d+|\d{1,3}(,\d{3})*(\.\d+)?)$',
         max_length=None,
-        min_length=None, 
-        allow_blank=False
+        min_length=None,
+        allow_blank=False,
         required=True,
         error_messages={
             "invalid": "Invalid Hourly Rate"
         }
     )
-    
+
     # Meta Information.
     class Meta:
         model = Associate
@@ -456,18 +456,18 @@ class AssociateRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         write_only=True,
         required=True,
     )
-    
+
     hourly_salary_desired = serializers.RegexField(
-        regex=r'^(\d*\.?\d+|\d{1,3}(,\d{3})*(\.\d+)?)$', 
+        regex=r'^(\d*\.?\d+|\d{1,3}(,\d{3})*(\.\d+)?)$',
         max_length=None,
-        min_length=None, 
-        allow_blank=False
+        min_length=None,
+        allow_blank=False,
         required=True,
         error_messages={
             "invalid": "Invalid Hourly Rate"
         }
     )
-    
+
     class Meta:
         model = Associate
         fields = (

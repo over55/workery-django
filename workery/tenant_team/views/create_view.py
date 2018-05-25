@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.edit import CreateView, FormView, UpdateView
 from django.views.generic import DetailView, ListView, TemplateView
 from django.utils.decorators import method_decorator
@@ -13,8 +13,7 @@ from tenant_foundation.models import (
 )
 
 
-@method_decorator(login_required, name='dispatch')
-class TeamCreateView(TemplateView):
+class TeamCreateView(LoginRequiredMixin, TemplateView):
     template_name = 'tenant_team/create/create_view.html'
 
     def get_context_data(self, **kwargs):
@@ -25,8 +24,7 @@ class TeamCreateView(TemplateView):
         return context
 
 
-@method_decorator(login_required, name='dispatch')
-class TeamCreateConfirmView(TemplateView):
+class TeamCreateConfirmView(LoginRequiredMixin, TemplateView):
     template_name = 'tenant_team/create/confirm_view.html'
 
     def get_context_data(self, **kwargs):

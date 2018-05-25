@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.edit import CreateView, FormView, UpdateView
 from django.views.generic import DetailView, ListView, TemplateView
 from django.utils.decorators import method_decorator
@@ -14,8 +14,7 @@ from tenant_foundation.models import Staff
 #--------#
 
 
-@method_decorator(login_required, name='dispatch')
-class TeamSearchView(TemplateView):
+class TeamSearchView(LoginRequiredMixin, TemplateView):
     template_name = 'tenant_team/search/search_view.html'
 
     def get_context_data(self, **kwargs):
@@ -24,8 +23,7 @@ class TeamSearchView(TemplateView):
         return context
 
 
-@method_decorator(login_required, name='dispatch')
-class TeamSearchResultView(ListView, ExtraRequestProcessingMixin):
+class TeamSearchResultView(LoginRequiredMixin, ListView, ExtraRequestProcessingMixin):
     context_object_name = 'staff_list'
     queryset = Staff.objects.order_by('-created')
     template_name = 'tenant_team/search/result_view.html'

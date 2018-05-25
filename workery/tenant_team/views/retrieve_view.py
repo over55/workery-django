@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseBadRequest, HttpResponseRedirect
 from django.views.generic.edit import CreateView, FormView, UpdateView
 from django.views.generic import DetailView, ListView, TemplateView
@@ -10,8 +10,7 @@ from tenant_api.filters.staff import StaffFilter
 from tenant_foundation.models import Staff
 
 
-@method_decorator(login_required, name='dispatch')
-class StaffLiteRetrieveView(DetailView, ExtraRequestProcessingMixin):
+class StaffLiteRetrieveView(LoginRequiredMixin, DetailView, ExtraRequestProcessingMixin):
     context_object_name = 'staff'
     model = Staff
     template_name = 'tenant_team/retrieve/lite_view.html'
@@ -43,8 +42,7 @@ class StaffLiteRetrieveView(DetailView, ExtraRequestProcessingMixin):
         return modified_context
 
 
-@method_decorator(login_required, name='dispatch')
-class StaffFullRetrieveView(DetailView, ExtraRequestProcessingMixin):
+class StaffFullRetrieveView(LoginRequiredMixin, DetailView, ExtraRequestProcessingMixin):
     context_object_name = 'staff'
     model = Staff
     template_name = 'tenant_team/retrieve/full_view.html'
@@ -76,8 +74,7 @@ class StaffFullRetrieveView(DetailView, ExtraRequestProcessingMixin):
         return modified_context
 
 
-@method_decorator(login_required, name='dispatch')
-class StaffRetrieveForCommentsListAndCreateView(DetailView, ExtraRequestProcessingMixin):
+class StaffRetrieveForCommentsListAndCreateView(LoginRequiredMixin, DetailView, ExtraRequestProcessingMixin):
     context_object_name = 'staff'
     model = Staff
     template_name = 'tenant_team/retrieve/for/comments_view.html'
