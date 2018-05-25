@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.edit import CreateView, FormView, UpdateView
 from django.views.generic import DetailView, ListView, TemplateView
 from django.utils.decorators import method_decorator
@@ -14,8 +14,7 @@ from tenant_foundation.models import Staff
 #----------#
 
 
-@method_decorator(login_required, name='dispatch')
-class AccountUpdateView(DetailView, ExtraRequestProcessingMixin):
+class AccountUpdateView(LoginRequiredMixin, DetailView, ExtraRequestProcessingMixin):
     context_object_name = 'staff'
     model = Staff
     template_name = 'tenant_account/update/view.html'
