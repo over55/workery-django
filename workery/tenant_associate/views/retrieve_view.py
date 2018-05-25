@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.edit import CreateView, FormView, UpdateView
 from django.views.generic import DetailView, ListView, TemplateView
 from django.utils.decorators import method_decorator
@@ -9,8 +9,7 @@ from tenant_api.filters.associate import AssociateFilter
 from tenant_foundation.models import ActivitySheetItem, Associate
 
 
-@method_decorator(login_required, name='dispatch')
-class MemberLiteRetrieveView(DetailView, ExtraRequestProcessingMixin):
+class MemberLiteRetrieveView(LoginRequiredMixin, DetailView, ExtraRequestProcessingMixin):
     context_object_name = 'associate'
     model = Associate
     template_name = 'tenant_associate/retrieve/lite_view.html'
@@ -45,8 +44,7 @@ class MemberLiteRetrieveView(DetailView, ExtraRequestProcessingMixin):
         return modified_context
 
 
-@method_decorator(login_required, name='dispatch')
-class MemberFullRetrieveView(DetailView, ExtraRequestProcessingMixin):
+class MemberFullRetrieveView(LoginRequiredMixin, DetailView, ExtraRequestProcessingMixin):
     context_object_name = 'associate'
     model = Associate
     template_name = 'tenant_associate/retrieve/full_view.html'
@@ -81,8 +79,7 @@ class MemberFullRetrieveView(DetailView, ExtraRequestProcessingMixin):
         return modified_context
 
 
-@method_decorator(login_required, name='dispatch')
-class MemberRetrieveForCommentsListAndCreateView(DetailView, ExtraRequestProcessingMixin):
+class MemberRetrieveForCommentsListAndCreateView(LoginRequiredMixin, DetailView, ExtraRequestProcessingMixin):
     context_object_name = 'associate'
     model = Associate
     template_name = 'tenant_associate/retrieve/for/comments_view.html'
@@ -114,8 +111,7 @@ class MemberRetrieveForCommentsListAndCreateView(DetailView, ExtraRequestProcess
         return modified_context
 
 
-@method_decorator(login_required, name='dispatch')
-class MemberRetrieveForActivitySheetListView(DetailView, ExtraRequestProcessingMixin):
+class MemberRetrieveForActivitySheetListView(LoginRequiredMixin, DetailView, ExtraRequestProcessingMixin):
     context_object_name = 'associate'
     model = Associate
     template_name = 'tenant_associate/retrieve/for/activity_sheet_view.html'
@@ -152,8 +148,7 @@ class MemberRetrieveForActivitySheetListView(DetailView, ExtraRequestProcessingM
         return modified_context
 
 
-@method_decorator(login_required, name='dispatch')
-class MemberRetrieveForJobsListView(DetailView, ExtraRequestProcessingMixin):
+class MemberRetrieveForJobsListView(LoginRequiredMixin, DetailView, ExtraRequestProcessingMixin):
     context_object_name = 'associate'
     model = Associate
     template_name = 'tenant_associate/retrieve/for/jobs_view.html'

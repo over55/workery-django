@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.edit import CreateView, FormView, UpdateView
 from django.views.generic import DetailView, ListView, TemplateView
 from django.utils.decorators import method_decorator
@@ -9,8 +9,7 @@ from tenant_api.filters.customer import CustomerFilter
 from tenant_foundation.models import Customer, Order
 
 
-@method_decorator(login_required, name='dispatch')
-class CustomerLiteRetrieveView(DetailView, ExtraRequestProcessingMixin):
+class CustomerLiteRetrieveView(LoginRequiredMixin, DetailView, ExtraRequestProcessingMixin):
     context_object_name = 'customer'
     model = Customer
     template_name = 'tenant_customer/retrieve/lite_view.html'
@@ -42,8 +41,7 @@ class CustomerLiteRetrieveView(DetailView, ExtraRequestProcessingMixin):
         return modified_context
 
 
-@method_decorator(login_required, name='dispatch')
-class CustomerFullRetrieveView(DetailView, ExtraRequestProcessingMixin):
+class CustomerFullRetrieveView(LoginRequiredMixin, DetailView, ExtraRequestProcessingMixin):
     context_object_name = 'customer'
     model = Customer
     template_name = 'tenant_customer/retrieve/full_view.html'
@@ -75,8 +73,7 @@ class CustomerFullRetrieveView(DetailView, ExtraRequestProcessingMixin):
         return modified_context
 
 
-@method_decorator(login_required, name='dispatch')
-class CustomerRetrieveForCommentListAndCreateView(DetailView, ExtraRequestProcessingMixin):
+class CustomerRetrieveForCommentListAndCreateView(LoginRequiredMixin, DetailView, ExtraRequestProcessingMixin):
     context_object_name = 'customer'
     model = Customer
     template_name = 'tenant_customer/retrieve/for/comments_view.html'
@@ -108,8 +105,7 @@ class CustomerRetrieveForCommentListAndCreateView(DetailView, ExtraRequestProces
         return modified_context
 
 
-@method_decorator(login_required, name='dispatch')
-class CustomerRetrieveForJobsListView(DetailView, ExtraRequestProcessingMixin):
+class CustomerRetrieveForJobsListView(LoginRequiredMixin, DetailView, ExtraRequestProcessingMixin):
     context_object_name = 'customer'
     model = Customer
     template_name = 'tenant_customer/retrieve/for/jobs_view.html'

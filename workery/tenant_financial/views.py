@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
 from django.views.generic.edit import CreateView, FormView, UpdateView
 from django.views.generic import DetailView, ListView, TemplateView
@@ -9,8 +9,7 @@ from shared_foundation.mixins import ExtraRequestProcessingMixin
 from tenant_foundation.models import Order
 
 
-@method_decorator(login_required, name='dispatch')
-class UnpaidJobOrderListView(ListView, ExtraRequestProcessingMixin):
+class UnpaidJobOrderListView(LoginRequiredMixin, ListView, ExtraRequestProcessingMixin):
     context_object_name = 'job_list'
     queryset = Order.objects.filter(invoice_service_fee_payment_date=None).order_by('-id')
     template_name = 'tenant_financial/list/unpaid_view.html'
@@ -36,8 +35,7 @@ class UnpaidJobOrderListView(ListView, ExtraRequestProcessingMixin):
         return modified_context
 
 
-@method_decorator(login_required, name='dispatch')
-class PaidJobOrderListView(ListView, ExtraRequestProcessingMixin):
+class PaidJobOrderListView(LoginRequiredMixin, ListView, ExtraRequestProcessingMixin):
     context_object_name = 'job_list'
     queryset = Order.objects.filter(~Q(invoice_service_fee_payment_date=None)).order_by('-invoice_service_fee_payment_date')
     template_name = 'tenant_financial/list/paid_view.html'
@@ -63,8 +61,7 @@ class PaidJobOrderListView(ListView, ExtraRequestProcessingMixin):
         return modified_context
 
 
-@method_decorator(login_required, name='dispatch')
-class AllJobOrderListView(ListView, ExtraRequestProcessingMixin):
+class AllJobOrderListView(LoginRequiredMixin, ListView, ExtraRequestProcessingMixin):
     context_object_name = 'job_list'
     queryset = Order.objects.all().order_by('-id')
     template_name = 'tenant_financial/list/all_view.html'
@@ -90,8 +87,7 @@ class AllJobOrderListView(ListView, ExtraRequestProcessingMixin):
         return modified_context
 
 
-@method_decorator(login_required, name='dispatch')
-class JobRetrieveView(DetailView, ExtraRequestProcessingMixin):
+class JobRetrieveView(LoginRequiredMixin, DetailView, ExtraRequestProcessingMixin):
     context_object_name = 'job_item'
     model = Order
     template_name = 'tenant_financial/retrieve/view.html'
@@ -123,8 +119,7 @@ class JobRetrieveView(DetailView, ExtraRequestProcessingMixin):
         return modified_context
 
 
-@method_decorator(login_required, name='dispatch')
-class JobUpdateView(DetailView, ExtraRequestProcessingMixin):
+class JobUpdateView(LoginRequiredMixin, DetailView, ExtraRequestProcessingMixin):
     context_object_name = 'job_item'
     model = Order
     template_name = 'tenant_financial/update/view.html'

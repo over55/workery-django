@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.edit import CreateView, FormView, UpdateView
 from django.views.generic import DetailView, ListView, TemplateView
 from django.utils.decorators import method_decorator
@@ -14,8 +14,7 @@ from tenant_foundation.models import Partner
 #---------#
 
 
-@method_decorator(login_required, name='dispatch')
-class PartnerSummaryView(ListView, ExtraRequestProcessingMixin):
+class PartnerSummaryView(LoginRequiredMixin, ListView, ExtraRequestProcessingMixin):
     context_object_name = 'partner_list'
     template_name = 'tenant_partner/summary/view.html'
     paginate_by = 100
@@ -44,8 +43,7 @@ class PartnerSummaryView(ListView, ExtraRequestProcessingMixin):
 #------#
 
 
-@method_decorator(login_required, name='dispatch')
-class PartnerListView(ListView, ExtraRequestProcessingMixin):
+class PartnerListView(LoginRequiredMixin, ListView, ExtraRequestProcessingMixin):
     context_object_name = 'partner_list'
     template_name = 'tenant_partner/list/view.html'
     paginate_by = 100

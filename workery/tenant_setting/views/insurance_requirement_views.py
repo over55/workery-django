@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.edit import CreateView, FormView, UpdateView
 from django.views.generic import DetailView, ListView, TemplateView
 from django.utils.decorators import method_decorator
@@ -9,8 +9,7 @@ from tenant_api.filters.staff import StaffFilter
 from tenant_foundation.models import InsuranceRequirement
 
 
-@method_decorator(login_required, name='dispatch')
-class TagListView(ListView, ExtraRequestProcessingMixin):
+class TagListView(LoginRequiredMixin, ListView, ExtraRequestProcessingMixin):
     context_object_name = 'insurance_requirement_list'
     template_name = 'tenant_setting/insurance_requirement/list_view.html'
     paginate_by = 100
@@ -36,8 +35,7 @@ class TagListView(ListView, ExtraRequestProcessingMixin):
         return queryset
 
 
-@method_decorator(login_required, name='dispatch')
-class TagUpdateView(DetailView):
+class TagUpdateView(LoginRequiredMixin, DetailView):
     context_object_name = 'insurance_requirement'
     model = InsuranceRequirement
     template_name = 'tenant_setting/insurance_requirement/update_view.html'
@@ -57,8 +55,7 @@ class TagUpdateView(DetailView):
         return modified_context
 
 
-@method_decorator(login_required, name='dispatch')
-class TagCreateView(TemplateView):
+class TagCreateView(LoginRequiredMixin, TemplateView):
     template_name = 'tenant_setting/insurance_requirement/create_view.html'
 
     def get_context_data(self, **kwargs):

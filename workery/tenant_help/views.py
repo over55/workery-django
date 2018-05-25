@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 from django.views.generic.edit import CreateView, FormView, UpdateView
 from django.views.generic import DetailView, ListView, TemplateView
@@ -15,8 +16,7 @@ from tenant_foundation.models import (
 )
 
 
-@method_decorator(login_required, name='dispatch')
-class HelpCategoryListView(ListView, ExtraRequestProcessingMixin):
+class HelpCategoryListView(LoginRequiredMixin, ListView, ExtraRequestProcessingMixin):
     context_object_name = 'resource_category_list'
     queryset = ResourceCategory.objects.all().order_by('id')
     template_name = 'tenant_help/view.html'
@@ -37,8 +37,7 @@ class HelpCategoryListView(ListView, ExtraRequestProcessingMixin):
         return modified_context
 
 
-@method_decorator(login_required, name='dispatch')
-class HelpCategoryRetrieveView(DetailView, ExtraRequestProcessingMixin):
+class HelpCategoryRetrieveView(LoginRequiredMixin, DetailView, ExtraRequestProcessingMixin):
     context_object_name = 'resource_category'
     model = ResourceCategory
     template_name = 'tenant_help/category_retrieve.html'
@@ -63,8 +62,7 @@ class HelpCategoryRetrieveView(DetailView, ExtraRequestProcessingMixin):
         return modified_context
 
 
-@method_decorator(login_required, name='dispatch')
-class HelpItemRetrieveView(DetailView, ExtraRequestProcessingMixin):
+class HelpItemRetrieveView(LoginRequiredMixin, DetailView, ExtraRequestProcessingMixin):
     context_object_name = 'resource_item'
     model = ResourceItem
     template_name = 'tenant_help/item_retrieve.html'

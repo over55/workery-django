@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.edit import CreateView, FormView, UpdateView
 from django.views.generic import DetailView, ListView, TemplateView
 from django.utils.decorators import method_decorator
@@ -13,8 +13,7 @@ from tenant_foundation.models import (
 )
 
 
-@method_decorator(login_required, name='dispatch')
-class PickCustomerTypeInCreateView(TemplateView):
+class PickCustomerTypeInCreateView(LoginRequiredMixin, TemplateView):
     template_name = 'tenant_customer/create/pick_view.html'
 
     def get_context_data(self, **kwargs):
@@ -23,8 +22,7 @@ class PickCustomerTypeInCreateView(TemplateView):
         return context
 
 
-@method_decorator(login_required, name='dispatch')
-class ResidentialCustomerCreateView(TemplateView):
+class ResidentialCustomerCreateView(LoginRequiredMixin, TemplateView):
     template_name = 'tenant_customer/create/residential_create_view.html'
 
     def get_context_data(self, **kwargs):
@@ -35,8 +33,7 @@ class ResidentialCustomerCreateView(TemplateView):
         return context
 
 
-@method_decorator(login_required, name='dispatch')
-class ResidentialCustomerConfirmCreateView(TemplateView):
+class ResidentialCustomerConfirmCreateView(LoginRequiredMixin, TemplateView):
     template_name = 'tenant_customer/create/residential_confirm_view.html'
 
     def get_context_data(self, **kwargs):
@@ -45,8 +42,7 @@ class ResidentialCustomerConfirmCreateView(TemplateView):
         return context
 
 
-@method_decorator(login_required, name='dispatch')
-class CommercialCustomerCreateView(TemplateView):
+class CommercialCustomerCreateView(LoginRequiredMixin, TemplateView):
     template_name = 'tenant_customer/create/commercial_create_view.html'
 
     def get_context_data(self, **kwargs):
@@ -57,8 +53,7 @@ class CommercialCustomerCreateView(TemplateView):
         return context
 
 
-@method_decorator(login_required, name='dispatch')
-class CommercialCustomerConfirmCreateView(TemplateView):
+class CommercialCustomerConfirmCreateView(LoginRequiredMixin, TemplateView):
     template_name = 'tenant_customer/create/commercial_confirm_view.html'
 
     def get_context_data(self, **kwargs):

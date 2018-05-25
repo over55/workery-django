@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.edit import CreateView, FormView, UpdateView
 from django.views.generic import DetailView, ListView, TemplateView
 from django.utils.decorators import method_decorator
@@ -15,8 +15,7 @@ from tenant_foundation.models import (
 )
 
 
-@method_decorator(login_required, name='dispatch')
-class ReportListView(TemplateView, ExtraRequestProcessingMixin):
+class ReportListView(LoginRequiredMixin, TemplateView, ExtraRequestProcessingMixin):
     template_name = 'tenant_report/list_view.html'
 
     def get_context_data(self, **kwargs):
@@ -25,8 +24,7 @@ class ReportListView(TemplateView, ExtraRequestProcessingMixin):
         return modified_context
 
 
-@method_decorator(login_required, name='dispatch')
-class Report07DetailView(TemplateView, ExtraRequestProcessingMixin):
+class Report07DetailView(LoginRequiredMixin, TemplateView, ExtraRequestProcessingMixin):
     template_name = 'tenant_report/report_07_view.html'
 
     def get_context_data(self, **kwargs):
@@ -35,8 +33,7 @@ class Report07DetailView(TemplateView, ExtraRequestProcessingMixin):
         return modified_context
 
 
-@method_decorator(login_required, name='dispatch')
-class Report08DetailView(TemplateView, ExtraRequestProcessingMixin):
+class Report08DetailView(LoginRequiredMixin, TemplateView, ExtraRequestProcessingMixin):
     template_name = 'tenant_report/report_08_view.html'
 
     def get_context_data(self, **kwargs):
@@ -45,8 +42,7 @@ class Report08DetailView(TemplateView, ExtraRequestProcessingMixin):
         return modified_context
 
 
-@method_decorator(login_required, name='dispatch')
-class Report09DetailView(TemplateView, ExtraRequestProcessingMixin):
+class Report09DetailView(LoginRequiredMixin, TemplateView, ExtraRequestProcessingMixin):
     template_name = 'tenant_report/report_09_view.html'
 
     def get_context_data(self, **kwargs):

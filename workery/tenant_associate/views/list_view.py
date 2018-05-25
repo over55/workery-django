@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.edit import CreateView, FormView, UpdateView
 from django.views.generic import DetailView, ListView, TemplateView
 from django.utils.decorators import method_decorator
@@ -14,8 +14,7 @@ from tenant_foundation.models import Associate
 #---------#
 
 
-@method_decorator(login_required, name='dispatch')
-class MemberSummaryView(ListView, ExtraRequestProcessingMixin):
+class MemberSummaryView(LoginRequiredMixin, ListView, ExtraRequestProcessingMixin):
     context_object_name = 'associate_list'
     template_name = 'tenant_associate/summary/view.html'
     paginate_by = 100
@@ -44,8 +43,7 @@ class MemberSummaryView(ListView, ExtraRequestProcessingMixin):
 #------#
 
 
-@method_decorator(login_required, name='dispatch')
-class MemberListView(ListView, ExtraRequestProcessingMixin):
+class MemberListView(LoginRequiredMixin, ListView, ExtraRequestProcessingMixin):
     context_object_name = 'associate_list'
     template_name = 'tenant_associate/list/view.html'
     paginate_by = 100

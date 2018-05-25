@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.edit import CreateView, FormView, UpdateView
 from django.views.generic import DetailView, ListView, TemplateView
 from django.utils.decorators import method_decorator
@@ -9,8 +9,7 @@ from tenant_api.filters.order import OrderFilter
 from tenant_foundation.models.order import Order
 
 
-@method_decorator(login_required, name='dispatch')
-class JobSummaryView(ListView, ExtraRequestProcessingMixin):
+class JobSummaryView(LoginRequiredMixin, ListView, ExtraRequestProcessingMixin):
     context_object_name = 'job_list'
     queryset = Order.objects.filter(
         is_cancelled=False,
@@ -35,8 +34,7 @@ class JobSummaryView(ListView, ExtraRequestProcessingMixin):
         return modified_context
 
 
-@method_decorator(login_required, name='dispatch')
-class JobListView(ListView, ExtraRequestProcessingMixin):
+class JobListView(LoginRequiredMixin, ListView, ExtraRequestProcessingMixin):
     context_object_name = 'job_list'
     queryset = Order.objects.order_by('-id')
     template_name = 'tenant_order/list/view.html'

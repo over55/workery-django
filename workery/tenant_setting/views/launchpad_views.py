@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.edit import CreateView, FormView, UpdateView
 from django.views.generic import DetailView, ListView, TemplateView
 from django.utils.decorators import method_decorator
@@ -13,8 +13,7 @@ from tenant_foundation.models import (
 )
 
 
-@method_decorator(login_required, name='dispatch')
-class LaunchpadView(TemplateView):
+class LaunchpadView(LoginRequiredMixin, TemplateView):
     template_name = 'tenant_setting/launchpad/view.html'
 
     def get_context_data(self, **kwargs):

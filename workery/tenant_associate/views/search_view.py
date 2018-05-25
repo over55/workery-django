@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.edit import CreateView, FormView, UpdateView
 from django.views.generic import DetailView, ListView, TemplateView
 from django.utils.decorators import method_decorator
@@ -9,8 +9,7 @@ from tenant_api.filters.associate import AssociateFilter
 from tenant_foundation.models import Associate
 
 
-@method_decorator(login_required, name='dispatch')
-class MemberSearchView(TemplateView):
+class MemberSearchView(LoginRequiredMixin, TemplateView):
     template_name = 'tenant_associate/search/search_view.html'
 
     def get_context_data(self, **kwargs):
@@ -19,8 +18,7 @@ class MemberSearchView(TemplateView):
         return context
 
 
-@method_decorator(login_required, name='dispatch')
-class MemberSearchResultView(ListView, ExtraRequestProcessingMixin):
+class MemberSearchResultView(LoginRequiredMixin, ListView, ExtraRequestProcessingMixin):
     context_object_name = 'associate_list'
     queryset = Associate.objects.order_by('-created')
     template_name = 'tenant_associate/search/result_view.html'

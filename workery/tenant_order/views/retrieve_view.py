@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
 from django.views.generic.edit import CreateView, FormView, UpdateView
 from django.views.generic import DetailView, ListView, TemplateView
@@ -10,8 +10,7 @@ from tenant_api.filters.order import OrderFilter
 from tenant_foundation.models import ActivitySheetItem, Associate, Customer, Order, SkillSet, TaskItem
 
 
-@method_decorator(login_required, name='dispatch')
-class JobLiteRetrieveView(DetailView, ExtraRequestProcessingMixin):
+class JobLiteRetrieveView(LoginRequiredMixin, DetailView, ExtraRequestProcessingMixin):
     context_object_name = 'job'
     model = Order
     template_name = 'tenant_order/retrieve/lite_view.html'
@@ -43,8 +42,7 @@ class JobLiteRetrieveView(DetailView, ExtraRequestProcessingMixin):
         return modified_context
 
 
-@method_decorator(login_required, name='dispatch')
-class JobFullRetrieveView(DetailView, ExtraRequestProcessingMixin):
+class JobFullRetrieveView(LoginRequiredMixin, DetailView, ExtraRequestProcessingMixin):
     context_object_name = 'job'
     model = Order
     template_name = 'tenant_order/retrieve/full_view.html'
@@ -76,8 +74,7 @@ class JobFullRetrieveView(DetailView, ExtraRequestProcessingMixin):
         return modified_context
 
 
-@method_decorator(login_required, name='dispatch')
-class JobRetrieveForActivitySheetListView(DetailView, ExtraRequestProcessingMixin):
+class JobRetrieveForActivitySheetListView(LoginRequiredMixin, DetailView, ExtraRequestProcessingMixin):
     context_object_name = 'job'
     model = Order
     template_name = 'tenant_order/retrieve/for/activity_sheet_list_view.html'
@@ -114,9 +111,7 @@ class JobRetrieveForActivitySheetListView(DetailView, ExtraRequestProcessingMixi
         return modified_context
 
 
-
-@method_decorator(login_required, name='dispatch')
-class JobRetrieveForTasksListView(DetailView, ExtraRequestProcessingMixin):
+class JobRetrieveForTasksListView(LoginRequiredMixin, DetailView, ExtraRequestProcessingMixin):
     context_object_name = 'job'
     model = Order
     template_name = 'tenant_order/retrieve/for/task_list_view.html'
@@ -153,8 +148,7 @@ class JobRetrieveForTasksListView(DetailView, ExtraRequestProcessingMixin):
         return modified_context
 
 
-@method_decorator(login_required, name='dispatch')
-class JobRetrieveForCommentsListAndCreateView(DetailView, ExtraRequestProcessingMixin):
+class JobRetrieveForCommentsListAndCreateView(LoginRequiredMixin, DetailView, ExtraRequestProcessingMixin):
     context_object_name = 'job'
     model = Order
     template_name = 'tenant_order/retrieve/for/comments_view.html'
@@ -186,8 +180,7 @@ class JobRetrieveForCommentsListAndCreateView(DetailView, ExtraRequestProcessing
         return modified_context
 
 
-@method_decorator(login_required, name='dispatch')
-class JobRetrieveForCloseCreateView(DetailView, ExtraRequestProcessingMixin):
+class JobRetrieveForCloseCreateView(LoginRequiredMixin, DetailView, ExtraRequestProcessingMixin):
     context_object_name = 'job'
     model = Order
     template_name = 'tenant_order/retrieve/for/close_view.html'
@@ -219,8 +212,7 @@ class JobRetrieveForCloseCreateView(DetailView, ExtraRequestProcessingMixin):
         return modified_context
 
 
-@method_decorator(login_required, name='dispatch')
-class JobRetrieveForPostponeCreateView(DetailView, ExtraRequestProcessingMixin):
+class JobRetrieveForPostponeCreateView(LoginRequiredMixin, DetailView, ExtraRequestProcessingMixin):
     context_object_name = 'job'
     model = Order
     template_name = 'tenant_order/retrieve/for/postpone_view.html'
@@ -252,8 +244,7 @@ class JobRetrieveForPostponeCreateView(DetailView, ExtraRequestProcessingMixin):
         return modified_context
 
 
-@method_decorator(login_required, name='dispatch')
-class JobRetrieveForUnassignCreateView(DetailView, ExtraRequestProcessingMixin):
+class JobRetrieveForUnassignCreateView(LoginRequiredMixin, DetailView, ExtraRequestProcessingMixin):
     context_object_name = 'job'
     model = Order
     template_name = 'tenant_order/retrieve/for/unassign_view.html'

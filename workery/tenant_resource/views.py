@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.edit import CreateView, FormView, UpdateView
 from django.views.generic import DetailView, ListView, TemplateView
 from django.utils.decorators import method_decorator
@@ -8,8 +8,7 @@ from shared_foundation.mixins import ExtraRequestProcessingMixin
 from tenant_foundation.models import ResourceCategory
 
 
-@method_decorator(login_required, name='dispatch')
-class ResourceCategoryListView(ListView, ExtraRequestProcessingMixin):
+class ResourceCategoryListView(LoginRequiredMixin, ListView, ExtraRequestProcessingMixin):
     context_object_name = 'resource_category_list'
     queryset = ResourceCategory.objects.all().order_by('id')
     template_name = 'tenant_resource/category_list_view.html'
@@ -30,8 +29,7 @@ class ResourceCategoryListView(ListView, ExtraRequestProcessingMixin):
         return modified_context
 
 
-@method_decorator(login_required, name='dispatch')
-class ResourceCategoryRetrieveView(DetailView, ExtraRequestProcessingMixin):
+class ResourceCategoryRetrieveView(LoginRequiredMixin, DetailView, ExtraRequestProcessingMixin):
     context_object_name = 'resource_category'
     model = ResourceCategory
     template_name = 'tenant_resource/category_retrieve.html'

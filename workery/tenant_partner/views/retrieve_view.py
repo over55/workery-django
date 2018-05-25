@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.edit import CreateView, FormView, UpdateView
 from django.views.generic import DetailView, ListView, TemplateView
 from django.utils.decorators import method_decorator
@@ -9,8 +9,7 @@ from tenant_api.filters.partner import PartnerFilter
 from tenant_foundation.models import Partner
 
 
-@method_decorator(login_required, name='dispatch')
-class PartnerLiteRetrieveView(DetailView, ExtraRequestProcessingMixin):
+class PartnerLiteRetrieveView(LoginRequiredMixin, DetailView, ExtraRequestProcessingMixin):
     context_object_name = 'partner'
     model = Partner
     template_name = 'tenant_partner/retrieve/lite_view.html'
@@ -42,8 +41,7 @@ class PartnerLiteRetrieveView(DetailView, ExtraRequestProcessingMixin):
         return modified_context
 
 
-@method_decorator(login_required, name='dispatch')
-class PartnerFullRetrieveView(DetailView, ExtraRequestProcessingMixin):
+class PartnerFullRetrieveView(LoginRequiredMixin, DetailView, ExtraRequestProcessingMixin):
     context_object_name = 'partner'
     model = Partner
     template_name = 'tenant_partner/retrieve/full_view.html'
@@ -75,8 +73,7 @@ class PartnerFullRetrieveView(DetailView, ExtraRequestProcessingMixin):
         return modified_context
 
 
-@method_decorator(login_required, name='dispatch')
-class PartnerCommentsRetrieveView(DetailView, ExtraRequestProcessingMixin):
+class PartnerCommentsRetrieveView(LoginRequiredMixin, DetailView, ExtraRequestProcessingMixin):
     context_object_name = 'partner'
     model = Partner
     template_name = 'tenant_partner/retrieve/for/comments_view.html'

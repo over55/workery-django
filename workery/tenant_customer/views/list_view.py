@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.edit import CreateView, FormView, UpdateView
 from django.views.generic import DetailView, ListView, TemplateView
 from django.utils.decorators import method_decorator
@@ -9,8 +9,7 @@ from tenant_api.filters.customer import CustomerFilter
 from tenant_foundation.models import Customer
 
 
-@method_decorator(login_required, name='dispatch')
-class CustomerSummaryView(ListView, ExtraRequestProcessingMixin):
+class CustomerSummaryView(LoginRequiredMixin, ListView, ExtraRequestProcessingMixin):
     context_object_name = 'customer_list'
     template_name = 'tenant_customer/summary/view.html'
     paginate_by = 100
@@ -34,8 +33,7 @@ class CustomerSummaryView(ListView, ExtraRequestProcessingMixin):
         return queryset
 
 
-@method_decorator(login_required, name='dispatch')
-class CustomerListView(ListView, ExtraRequestProcessingMixin):
+class CustomerListView(LoginRequiredMixin, ListView, ExtraRequestProcessingMixin):
     context_object_name = 'customer_list'
     template_name = 'tenant_customer/list/view.html'
     paginate_by = 100

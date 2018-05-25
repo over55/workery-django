@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.edit import CreateView, FormView, UpdateView
 from django.views.generic import DetailView, ListView, TemplateView
 from django.utils.decorators import method_decorator
@@ -9,8 +9,7 @@ from tenant_api.filters.order import OrderFilter
 from tenant_foundation.models import Customer, Order, SkillSet
 
 
-@method_decorator(login_required, name='dispatch')
-class JobUpdateView(DetailView):
+class JobUpdateView(LoginRequiredMixin, DetailView):
     context_object_name = 'job'
     model = Order
     template_name = 'tenant_order/update/view.html'

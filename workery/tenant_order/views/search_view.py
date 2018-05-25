@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.edit import CreateView, FormView, UpdateView
 from django.views.generic import DetailView, ListView, TemplateView
 from django.utils.decorators import method_decorator
@@ -9,8 +9,7 @@ from tenant_api.filters.order import OrderFilter
 from tenant_foundation.models.order import Order
 
 
-@method_decorator(login_required, name='dispatch')
-class JobSearchView(TemplateView):
+class JobSearchView(LoginRequiredMixin, TemplateView):
     template_name = 'tenant_order/search/search_view.html'
 
     def get_context_data(self, **kwargs):
@@ -19,8 +18,7 @@ class JobSearchView(TemplateView):
         return context
 
 
-@method_decorator(login_required, name='dispatch')
-class JobSearchResultView(ListView, ExtraRequestProcessingMixin):
+class JobSearchResultView(LoginRequiredMixin, ListView, ExtraRequestProcessingMixin):
     context_object_name = 'job_list'
     template_name = 'tenant_order/search/result_view.html'
     paginate_by = 100

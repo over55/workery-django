@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.edit import CreateView, FormView, UpdateView
 from django.views.generic import DetailView, ListView, TemplateView
 from django.utils.decorators import method_decorator
@@ -15,8 +15,7 @@ from tenant_foundation.models import (
 )
 
 
-@method_decorator(login_required, name='dispatch')
-class MemberCreateView(TemplateView):
+class MemberCreateView(LoginRequiredMixin, TemplateView):
     template_name = 'tenant_associate/create/create_view.html'
 
     def get_context_data(self, **kwargs):
@@ -29,8 +28,7 @@ class MemberCreateView(TemplateView):
         return modified_context
 
 
-@method_decorator(login_required, name='dispatch')
-class MemberConfirmCreateView(TemplateView):
+class MemberConfirmCreateView(LoginRequiredMixin, TemplateView):
     template_name = 'tenant_associate/create/confirm_view.html'
 
     def get_context_data(self, **kwargs):
