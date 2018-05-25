@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
 from django.views.generic.edit import CreateView, FormView, UpdateView
 from django.views.generic import DetailView, ListView, TemplateView
@@ -9,8 +9,8 @@ from shared_foundation.mixins import ExtraRequestProcessingMixin
 from tenant_foundation.models import ActivitySheetItem, Associate, AwayLog, Customer, TaskItem
 
 
-@method_decorator(login_required, name='dispatch')
-class PendingTaskListView(ListView, ExtraRequestProcessingMixin):
+
+class PendingTaskListView(LoginRequiredMixin, ListView, ExtraRequestProcessingMixin):
     context_object_name = 'task_list'
     queryset = TaskItem.objects.filter(is_closed=False)
     template_name = 'tenant_task/pending/list_view.html'
@@ -35,8 +35,8 @@ class PendingTaskListView(ListView, ExtraRequestProcessingMixin):
         return modified_context
 
 
-@method_decorator(login_required, name='dispatch')
-class ClosedTaskListView(ListView, ExtraRequestProcessingMixin):
+
+class ClosedTaskListView(LoginRequiredMixin, ListView, ExtraRequestProcessingMixin):
     context_object_name = 'task_list'
     queryset = TaskItem.objects.filter(is_closed=True)
     template_name = 'tenant_task/closed/list_view.html'
@@ -61,8 +61,8 @@ class ClosedTaskListView(ListView, ExtraRequestProcessingMixin):
         return modified_context
 
 
-@method_decorator(login_required, name='dispatch')
-class PendingTaskRetrieveView(DetailView, ExtraRequestProcessingMixin):
+
+class PendingTaskRetrieveView(LoginRequiredMixin, DetailView, ExtraRequestProcessingMixin):
     context_object_name = 'task_item'
     model = TaskItem
     template_name = 'tenant_task/pending/retrieve_view.html'
@@ -82,8 +82,8 @@ class PendingTaskRetrieveView(DetailView, ExtraRequestProcessingMixin):
         return modified_context
 
 
-@method_decorator(login_required, name='dispatch')
-class PendingTaskRetrieveForActivitySheetView(DetailView, ExtraRequestProcessingMixin):
+
+class PendingTaskRetrieveForActivitySheetView(LoginRequiredMixin, DetailView, ExtraRequestProcessingMixin):
     context_object_name = 'task_item'
     model = TaskItem
     template_name = 'tenant_task/component/assign/retrieve_view.html'
@@ -137,8 +137,8 @@ class PendingTaskRetrieveForActivitySheetView(DetailView, ExtraRequestProcessing
         return modified_context
 
 
-@method_decorator(login_required, name='dispatch')
-class PendingTaskRetrieveForActivitySheetAndAssignAssociateCreateView(DetailView, ExtraRequestProcessingMixin):
+
+class PendingTaskRetrieveForActivitySheetAndAssignAssociateCreateView(LoginRequiredMixin, DetailView, ExtraRequestProcessingMixin):
     context_object_name = 'task_item'
     model = TaskItem
     template_name = 'tenant_task/component/assign/create_view.html'
@@ -163,8 +163,8 @@ class PendingTaskRetrieveForActivitySheetAndAssignAssociateCreateView(DetailView
         return modified_context
 
 
-@method_decorator(login_required, name='dispatch')
-class PendingTaskRetrieveAndCompleteCreateView(DetailView, ExtraRequestProcessingMixin):
+
+class PendingTaskRetrieveAndCompleteCreateView(LoginRequiredMixin, DetailView, ExtraRequestProcessingMixin):
     context_object_name = 'task_item'
     model = TaskItem
     template_name = 'tenant_task/component/complete/create_view.html'
