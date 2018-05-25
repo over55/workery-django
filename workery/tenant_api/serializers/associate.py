@@ -129,7 +129,7 @@ class AssociateListCreateSerializer(serializers.ModelSerializer):
     )
 
     hourly_salary_desired = serializers.RegexField(
-        regex=^(\d*\.?\d+|\d{1,3}(,\d{3})*(\.\d+)?)$, 
+        regex=r'^(\d*\.?\d+|\d{1,3}(,\d{3})*(\.\d+)?)$', 
         max_length=None,
         min_length=None, 
         allow_blank=False
@@ -458,7 +458,7 @@ class AssociateRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
     )
     
     hourly_salary_desired = serializers.RegexField(
-        regex=^(\d*\.?\d+|\d{1,3}(,\d{3})*(\.\d+)?)$, 
+        regex=r'^(\d*\.?\d+|\d{1,3}(,\d{3})*(\.\d+)?)$', 
         max_length=None,
         min_length=None, 
         allow_blank=False
