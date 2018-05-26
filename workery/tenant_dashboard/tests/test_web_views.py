@@ -5,10 +5,10 @@ from django_tenants.test.cases import TenantTestCase
 from django_tenants.test.client import TenantClient
 from django.urls import reverse
 from django.utils import timezone
-from rest_framework.authtoken.models import Token
 from rest_framework import status
 from shared_foundation.models import SharedFranchise
 from shared_foundation.models import SharedUser
+from shared_foundation.utils import get_jwt_token_and_orig_iat
 
 
 TEST_USER_EMAIL = "bart@workery.ca"
@@ -51,11 +51,11 @@ class TestTenantDashboardViews(TenantTestCase):
 
         # Get user and credentials.
         user = SharedUser.objects.get()
-        token = Token.objects.get(user_id=user.id)
+        token, orig_iat = get_jwt_token_and_orig_iat(user)
 
         # Setup our clients.
         self.anon_c = TenantClient(self.tenant)
-        self.auth_c = TenantClient(self.tenant, HTTP_AUTHORIZATION='Token ' + token.key)
+        self.auth_c = TenantClient(self.tenant, HTTP_AUTHORIZATION='JWT {0}'.format(token))
         self.auth_c.login(
             username=TEST_USER_USERNAME,
             password=TEST_USER_PASSWORD
