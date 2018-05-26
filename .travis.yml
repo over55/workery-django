@@ -41,7 +41,7 @@ branches:
 
 script:
   - cd workery/
-  - coverage run --source=shared_home,shared_foundation,shared_api,shared_auth,tenant_dashboard,tenant_foundation,tenant_api manage.py test
+  - coverage run --source='.' --omit='env/*,workery/*,static/*,staticfiles/*,manage.py,coverage.sh' manage.py test
 
 after_success:
   coveralls
