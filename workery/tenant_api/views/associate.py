@@ -17,7 +17,7 @@ from tenant_api.serializers.associate import (
     AssociateRetrieveUpdateDestroySerializer
 )
 from tenant_foundation.models import Associate
-
+from django.db import transaction
 
 class AssociateListCreateAPIView(generics.ListCreateAPIView):
     serializer_class = AssociateListCreateSerializer
@@ -30,6 +30,7 @@ class AssociateListCreateAPIView(generics.ListCreateAPIView):
     filter_backends = (filters.SearchFilter, DjangoFilterBackend)
     search_fields = ('given_name', 'middle_name', 'last_name', 'email', 'telephone',)
 
+    @transaction.atomic
     def get_queryset(self):
         """
         List
@@ -37,6 +38,7 @@ class AssociateListCreateAPIView(generics.ListCreateAPIView):
         queryset = Associate.objects.all().order_by('-created')
         return queryset
 
+    @transaction.atomic
     def post(self, request, format=None):
         """
         Create
@@ -59,6 +61,7 @@ class AssociateRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIVie
         CanRetrieveUpdateDestroyAssociatePermission
     )
 
+    @transaction.atomic
     def get(self, request, pk=None):
         """
         Retrieve
@@ -71,6 +74,7 @@ class AssociateRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIVie
             status=status.HTTP_200_OK
         )
 
+    @transaction.atomic
     def put(self, request, pk=None):
         """
         Update
@@ -85,6 +89,7 @@ class AssociateRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIVie
         serializer.save()
         return Response(serializer.data, status=status.HTTP_200_OK)
 
+    @transaction.atomic
     def delete(self, request, pk=None):
         """
         Delete

@@ -240,7 +240,10 @@ class AssociateListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
             'is_ok_to_email': True,
             'is_ok_to_text': True,
             'vehicle_types': [],
-            'tags': []
+            'tags': [],
+            'hourly_salary_desired': 666,
+            'how_hear': 1,
+            'insurance_requirements': []
         }), content_type='application/json')
         self.assertIsNotNone(response)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
@@ -316,7 +319,10 @@ class AssociateListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
             'is_ok_to_text': True,
             'vehicle_types': [],
             'tags': [],
-            'email': 'bart@workery.ca'
+            'email': 'bart@workery.ca',
+            'hourly_salary_desired': 666,
+            'how_hear': 1,
+            'insurance_requirements': []
         }), content_type='application/json')
         self.assertIsNotNone(response)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -379,7 +385,9 @@ class AssociateListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
             'is_ok_to_text': True,
             'vehicle_types': [],
             'tags': [],
-            'email': 'bart@workery.ca'
+            'email': 'bart@workery.ca',
+            'hourly_salary_desired': 666,
+            'insurance_requirements': []
         }), content_type='application/json')
         self.assertIsNotNone(response)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
