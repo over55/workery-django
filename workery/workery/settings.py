@@ -89,6 +89,7 @@ SHARED_APPS = (
     'corsheaders',
     'anymail',
     'phonenumber_field',
+    'debug_toolbar',
     # 'raven.contrib.django.raven_compat',
     # 'storages',
     # . . .
@@ -145,6 +146,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.locale.LocaleMiddleware',              # Extra Django App
+    'debug_toolbar.middleware.DebugToolbarMiddleware',        # Third Party App
     'htmlmin.middleware.HtmlMinifyMiddleware',                # Third Party
     'htmlmin.middleware.MarkRequestMiddleware',               # Third Party
 ]
@@ -370,6 +372,16 @@ TEMPLATE_DIRS = (
 CORS_ORIGIN_ALLOW_ALL=True
 CORS_ALLOW_HEADERS = ('content-disposition', 'accept-encoding',
                       'content-type', 'accept', 'origin', 'authorization')
+
+
+# django-debug-toolbar
+# https://django-debug-toolbar.readthedocs.io/en/stable/index.html
+
+INTERNAL_IPS = [
+    '127.0.0.1',
+    '0.0.0.0'
+]
+
 
 # django-htmlmin
 # https://github.com/cobrateam/django-htmlmin

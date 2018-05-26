@@ -55,7 +55,7 @@ urlpatterns = [
 
      # Sitemap
     url(r'^sitemap\.xml$', sitemap, {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap'),
-    
+
     # Django-RQ
     url(r'^django-rq/', include('django_rq.urls')),
 ]
@@ -88,3 +88,11 @@ urlpatterns += i18n_patterns(
     url(r'^', include('tenant_report.urls')),
     url(r'^', include('tenant_financial.urls')),
 )
+
+
+# Serving debug toolbar.
+if settings.DEBUG:
+    import debug_toolbar
+    urlpatterns = [
+        url(r'^__debug__/', include(debug_toolbar.urls)),
+    ] + urlpatterns
