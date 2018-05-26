@@ -243,10 +243,12 @@ class OrderListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
                 skill_set_1.id,
                 skill_set_2.id,
                 skill_set_3.id
-            ]
+            ],
+            'invoice_service_fee_amount': 7.99,
+            'invoice_service_fee': 1
         }), content_type='application/json')
         self.assertIsNotNone(response)
-        # print(response.content)
+
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertIn("Shinji", str(response.data))
         self.assertIn("Ikari", str(response.data))
@@ -275,7 +277,9 @@ class OrderListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
                 skill_set_1.id,
                 skill_set_2.id,
                 skill_set_3.id
-            ]
+            ],
+            'invoice_service_fee_amount': 7.99,
+            'invoice_service_fee': 1
         }), content_type='application/json')
         self.assertIsNotNone(response)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
@@ -307,7 +311,7 @@ class OrderListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
                 skill_set_2.id,
                 skill_set_3.id
             ],
-            'service_fee': '7.99'
+            'invoice_service_fee': 1
         }), content_type='application/json')
         self.assertIsNotNone(response)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
@@ -317,7 +321,6 @@ class OrderListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
         self.assertIn("Ayanami", str(response.data))
         # self.assertIn("This is a friendly associate.", str(response.data)) # If comments are included then use this.
         self.assertIn("[1, 2, 3]", str(response.data)) # Verify skill sets.
-        self.assertIn("7.99", str(response.data))
 
     # @transaction.atomic
     def test_create_with_403_by_permissions(self):
@@ -372,18 +375,18 @@ class OrderListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
                 skill_set_2.id,
                 skill_set_3.id
             ],
-            'service_fee': '4.99'
+            'invoice_service_fee': 1,
+            'invoice_service_fee_payment_date': "2018-01-30",
         })
 
         # Executive
         response = self.exec_client.put(url, data=data, content_type='application/json')
         self.assertIsNotNone(response)
-        # print(response.content)
+        print(response.content)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertIn("2019-01-25", str(response.data))
         self.assertIn("2018-01-30", str(response.data))
         # self.assertIn("This is an extra comment.", str(response.data))
-        self.assertIn("4.99", str(response.data))
 
         # Manager
         response = self.manager_client.put(url, data=data, content_type='application/json')
