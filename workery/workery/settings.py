@@ -295,29 +295,47 @@ ANYMAIL = {
 }
 
 
-# django-storages
-# https://github.com/jschneier/django-storages
-
-AWS_ACCESS_KEY_ID = env('AWS_ACCESS_KEY_ID')
-AWS_SECRET_ACCESS_KEY = env('AWS_SECRET_ACCESS_KEY')
-AWS_S3_HOST=env("AWS_S3_HOST")
-AWS_S3_CALLING_FORMAT = 'boto3.s3.connection.OrdinaryCallingFormat'
-AWS_STORAGE_BUCKET_NAME = env('AWS_STORAGE_BUCKET_NAME')
-AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
-
-AWS_S3_OBJECT_PARAMETERS = {
-    'CacheControl': 'max-age=86400',
-}
-
-AWS_STATIC_LOCATION = 'static'
-# STATICFILES_STORAGE = 'workery.s3utils.StaticStorage' # WE WILL USE "WHITENOISE" WITH AWS CLOUDFRONT CDN.
-# STATIC_URL = "https://%s/%s/" % (AWS_S3_CUSTOM_DOMAIN, AWS_STATIC_LOCATION)
-
-AWS_PUBLIC_MEDIA_LOCATION = 'media/public'
-DEFAULT_FILE_STORAGE = 'workery.s3utils.PublicMediaStorage'
-
-AWS_PRIVATE_MEDIA_LOCATION = 'media/private'
-PRIVATE_FILE_STORAGE = 'workery.s3utils.PrivateMediaStorage'
+# # django-storages
+# # https://github.com/jschneier/django-storages
+#
+# AWS_ACCESS_KEY_ID = env('AWS_ACCESS_KEY_ID')
+# AWS_SECRET_ACCESS_KEY = env('AWS_SECRET_ACCESS_KEY')
+# AWS_S3_HOST=env("AWS_S3_HOST")
+# AWS_S3_CALLING_FORMAT = 'boto3.s3.connection.OrdinaryCallingFormat'
+# AWS_STORAGE_BUCKET_NAME = env('AWS_STORAGE_BUCKET_NAME')
+# AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
+#
+# AWS_S3_OBJECT_PARAMETERS = {
+#     'CacheControl': 'max-age=86400',
+# }
+#
+# AWS_STATIC_LOCATION = 'static'
+# # STATICFILES_STORAGE = 'workery.s3utils.StaticStorage' # WE WILL USE "WHITENOISE" WITH AWS CLOUDFRONT CDN.
+# # STATIC_URL = "https://%s/%s/" % (AWS_S3_CUSTOM_DOMAIN, AWS_STATIC_LOCATION)
+#
+# AWS_PUBLIC_MEDIA_LOCATION = 'media/public'
+# DEFAULT_FILE_STORAGE = 'workery.s3utils.PublicMediaStorage'
+#
+# AWS_PRIVATE_MEDIA_LOCATION = 'media/private'
+# PRIVATE_FILE_STORAGE = 'workery.s3utils.PrivateMediaStorage'
+#
+#
+# # Static files (CSS, JavaScript, Images)
+# # https://docs.djangoproject.com/en/1.11/howto/static-files/
+# # http://whitenoise.evans.io/en/stable/django.html
+#
+# STATICFILES_DIRS = [
+#     os.path.join(BASE_DIR, "static"), # Attach directory.
+# ]
+# STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+# STATIC_HOST = env("WORKERY_DJANGO_STATIC_HOST", default="")
+# STATIC_URL = STATIC_HOST + '/staticfiles/' # Output directory
+#
+# # http://whitenoise.evans.io/en/stable/django.html#add-compression-and-caching-support
+# STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+#
+# # MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+# # MEDIA_URL = '/media/'
 
 
 # Static files (CSS, JavaScript, Images)
@@ -328,14 +346,21 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"), # Attach directory.
 ]
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-STATIC_HOST = env("WORKERY_DJANGO_STATIC_HOST", default="")
+STATIC_HOST = env("DJANGO_STATIC_HOST", default="")
 STATIC_URL = STATIC_HOST + '/staticfiles/' # Output directory
 
 # http://whitenoise.evans.io/en/stable/django.html#add-compression-and-caching-support
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-# MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-# MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
+
+
+# Template Directory
+#
+TEMPLATE_DIRS = (
+    BASE_DIR + '/templates/',
+)
 
 
 # django-cors-headers
