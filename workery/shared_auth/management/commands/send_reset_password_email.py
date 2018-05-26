@@ -69,5 +69,5 @@ class Command(BaseCommand):
         msg.send()
 
         self.stdout.write(
-            self.style.SUCCESS(_('O55: Sent welcome email to %s.') % str(me.email))
+            self.style.SUCCESS(_('WORKERY: Sent welcome email to %s.') % str(me.email))
         )

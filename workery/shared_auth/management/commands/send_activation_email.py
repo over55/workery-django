@@ -37,7 +37,7 @@ class Command(BaseCommand):
 
         # Return success message.
         self.stdout.write(
-            self.style.SUCCESS(_('O55 activation email was sent successfully.'))
+            self.style.SUCCESS(_('WORKERY: activation email was sent successfully.'))
         )
 
     def begin_processing(self, me):
