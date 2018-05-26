@@ -324,9 +324,9 @@ PRIVATE_FILE_STORAGE = 'workery.s3utils.PrivateMediaStorage'
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 # http://whitenoise.evans.io/en/stable/django.html
 
-# STATICFILES_DIRS = [
-#     os.path.join(BASE_DIR, "static"), # Attach directory.
-# ]
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "static"), # Attach directory.
+]
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_HOST = env("WORKERY_DJANGO_STATIC_HOST", default="")
 STATIC_URL = STATIC_HOST + '/staticfiles/' # Output directory
