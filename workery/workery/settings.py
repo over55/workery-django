@@ -89,8 +89,8 @@ SHARED_APPS = (
     'corsheaders',
     'anymail',
     'phonenumber_field',
-    'raven.contrib.django.raven_compat',
-    'storages',
+    # 'raven.contrib.django.raven_compat',
+    # 'storages',
     # . . .
 
     # Shared Apps
@@ -132,7 +132,7 @@ INSTALLED_APPS = list(SHARED_APPS) + [app for app in TENANT_APPS if app not in S
 
 
 MIDDLEWARE = [
-    'raven.contrib.django.raven_compat.middleware.Sentry404CatchMiddleware', # Third Party
+    # 'raven.contrib.django.raven_compat.middleware.Sentry404CatchMiddleware', # Third Party
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'corsheaders.middleware.CorsMiddleware',                     # Third Party
