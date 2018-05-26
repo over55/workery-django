@@ -8,6 +8,7 @@ from django.contrib.auth.models import User
 from django.contrib.postgres.search import SearchVector, SearchVectorField
 from django.contrib.postgres.aggregates import StringAgg
 from django.core.exceptions import ValidationError
+from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.db import transaction
 from django.db.models.signals import pre_save, post_save
@@ -134,6 +135,7 @@ class Associate(AbstractPerson):
         help_text=_('The hourly salary rate the associate'),
         null=True,
         blank=True,
+        validators=[MinValueValidator(0), MaxValueValidator(1000)]
     )
     limit_special = models.CharField(
         _("Limit Special"),

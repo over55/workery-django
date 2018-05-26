@@ -128,16 +128,6 @@ class AssociateListCreateSerializer(serializers.ModelSerializer):
         }
     )
 
-    hourly_salary_desired = serializers.RegexField(
-        regex=r'^(\d*\.?\d+|\d{1,3}(,\d{3})*(\.\d+)?)$',
-        max_length=None,
-        min_length=None,
-        allow_blank=False,
-        required=True,
-        error_messages={
-            "invalid": "Invalid Hourly Rate"
-        }
-    )
 
     # Meta Information.
     class Meta:
@@ -217,12 +207,17 @@ class AssociateListCreateSerializer(serializers.ModelSerializer):
         extra_kwargs = {
             "is_ok_to_email": {
                 "error_messages": {
-                    "invalid": "Please pick either 'Yes' or 'No' choice."
+                    "invalid": _("Please pick either 'Yes' or 'No' choice.")
                 }
             },
             "is_ok_to_text": {
                 "error_messages": {
-                    "invalid": "Please pick either 'Yes' or 'No' choice."
+                    "invalid": _("Please pick either 'Yes' or 'No' choice.")
+                }
+            },
+            "hourly_salary_desired": {
+                "error_messages": {
+                    "min_value": _("Ensure this value is greater than or equal to 0.")
                 }
             }
         }
@@ -457,17 +452,6 @@ class AssociateRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         required=True,
     )
 
-    hourly_salary_desired = serializers.RegexField(
-        regex=r'^(\d*\.?\d+|\d{1,3}(,\d{3})*(\.\d+)?)$',
-        max_length=None,
-        min_length=None,
-        allow_blank=False,
-        required=True,
-        error_messages={
-            "invalid": "Invalid Hourly Rate"
-        }
-    )
-
     class Meta:
         model = Associate
         fields = (
@@ -543,6 +527,24 @@ class AssociateRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
             'longitude',
             # 'location' #TODO: FIX
         )
+        extra_kwargs = {
+            "is_ok_to_email": {
+                "error_messages": {
+                    "invalid": _("Please pick either 'Yes' or 'No' choice.")
+                }
+            },
+            "is_ok_to_text": {
+                "error_messages": {
+                    "invalid": _("Please pick either 'Yes' or 'No' choice.")
+                }
+            },
+            "hourly_salary_desired": {
+                "error_messages": {
+                    "min_value": _("Ensure this value is greater than or equal to 0.")
+                }
+            }
+        }
+
 
     def setup_eager_loading(cls, queryset):
         """ Perform necessary eager loading of data. """

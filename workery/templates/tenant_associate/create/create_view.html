@@ -113,7 +113,7 @@
             $('#tags').select2();
             $('#skill_sets').select2();
             $('#vehicle_types').select2();
-		
+
             //--------------------------//
             // TEXTFIELD INITIALIZATION //
             //--------------------------//
@@ -445,6 +445,7 @@
             var comment = $('#comment').val();
             var is_active = get_selected_radio_value('is_active');
             var hourly_salary_desired = $('#hourly_salary_desired').val();
+            hourly_salary_desired = parseFloat(hourly_salary_desired);
             var limit_special = $('#limit_special').val();
             var dues_date = $('#dues_date').val();
             var commercial_insurance_expiry_date = $('#commercial_insurance_expiry_date').val();
@@ -848,7 +849,7 @@
                 </div>
                 <div class="form-group col-md-12 mb-4">
                     <label for="hourly_salary_desired">Hourly Rate <sup>*</sup></label>
-                    <input type="text" class="form-control form-control-lg border border-success" id="hourly_salary_desired" name="hourly_salary_desired" placeholder="Hourly Rate" minlength="3" maxlength="255" required>
+                    <input type="number" class="form-control form-control-lg border border-success" id="hourly_salary_desired" name="hourly_salary_desired" placeholder="Hourly Rate" minlength="3" maxlength="255" required>
                     <div id="hourly_salary_desired-error" class="invalid-feedback"></div>
                 </div>
                 <div class="form-group col-md-12 mb-4">

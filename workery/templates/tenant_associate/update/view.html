@@ -86,7 +86,7 @@
         $("#vehicle_types").select2({
     		tags: true,
 	});
-	 
+
         //----------------------------------------//
         // TEXTFIELD / SELECTFIELD INITIALIZATION //
         //----------------------------------------//
@@ -240,7 +240,7 @@
 	}
 
     }); // end Ready
-     
+
     /**
      *  Function will unlock the submit button.
      */
@@ -393,6 +393,7 @@
 
         var is_active = get_boolean_from_selected_radio_value('is_active');
         var hourly_salary_desired = $('#hourly_salary_desired').val();
+        hourly_salary_desired = parseFloat(hourly_salary_desired);
         var limit_special = $('#limit_special').val();
         var dues_date = $('#dues_date').val();
         var commercial_insurance_expiry_date = $('#commercial_insurance_expiry_date').val();
@@ -596,7 +597,7 @@
             <div id="all_error_result" name="all_error_result" class="alert alert-error fade show" role="alert">
 	    </div>
 	    <!-- end Error Output -->
-            
+
             <form id="update-associate-form" method="post" class="needs-validation" action="" novalidate>
             <!-- ############ PERSON ############ -->
             <p class="border-bottom mb-3 pb-1 text-secondary">Personal Information</p>
@@ -937,7 +938,7 @@
     <a id="return-to-top" href="#" class="btn-info btn-lg back-to-top" role="button" title="Back to top"><i class="fas fa-angle-up fa-2x"></i></a>
     <!-- end RETURN-TO-TOP -->
 </main>
-	
+
 <script type="text/javascript">
 	//------------------------//
         // SELECT2 INITIALIZATION //
@@ -967,7 +968,7 @@
         vehicle_type_ids.push({{ vehicle_type.id }});
         {% endfor %}
         $('#vehicle_types').val(vehicle_type_ids);
-	 
+
         // Initialize our 'select2' element.
         $('#insurance_requirements').select2();
         $('#tags').select2();
@@ -976,5 +977,5 @@
     		tags: true,
 	});
 </script>
-	
+
 {% endblock content %}
