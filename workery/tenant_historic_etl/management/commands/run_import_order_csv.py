@@ -115,8 +115,8 @@ class Command(BaseCommand):
             is_home_support = int_or_none(row_dict[4])
             category = row_dict[5]
             assign_date = row_dict[6]
-            is_ongoing = row_dict[7]
-            is_cancelled = row_dict[8]
+            is_ongoing = int_or_none(row_dict[7])
+            is_cancelled = int_or_none(row_dict[8])
             completion_date = row_dict[9]
             hours = row_dict[10]
             service_fee = row_dict[11]
@@ -162,6 +162,18 @@ class Command(BaseCommand):
             is_ongoing = True if is_ongoing == 1 else False
             is_cancelled = True if is_cancelled == 1 else False
 
+            # Generate our closing reason.
+            closing_reason = 0
+            closing_reason_other = None
+            if is_cancelled:
+                closing_reason = 1
+                if follow_up_comment_text:
+                    closing_reason_other = follow_up_comment_text
+                if comment_text:
+                    closing_reason_other = comment_text
+                if closing_reason_other is None:
+                    closing_reason_other = "-"
+
             # Lookup the customer and process it if the customer exists.
             customer = Customer.objects.filter(id=int_or_none(customer_pk),).first()
 
@@ -179,6 +191,8 @@ class Command(BaseCommand):
                         'assignment_date': local_assign_date,
                         'is_ongoing': is_ongoing,
                         'is_cancelled': is_cancelled,
+                        'closing_reason': closing_reason,
+                        'closing_reason_other': closing_reason_other,
                         'completion_date': local_completion_date,
                         'hours':  hours,
                         'last_modified_by': None,

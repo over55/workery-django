@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import datetime
+from dateutil import parser
 from django.contrib.auth.decorators import login_required
 from django.db.models.functions import Extract
 from django.db.models import Q
@@ -31,6 +32,56 @@ class Echo:
     def write(self, value):
         """Write the value by returning it, instead of storing in a buffer."""
         return value
+
+
+def report_06_streaming_csv_view(request):
+    from_dt = request.GET.get('from_dt', None)
+    to_dt = request.GET.get('to_dt', None)
+
+    from_dt = parser.parse(from_dt)
+    to_dt = parser.parse(to_dt)
+
+    cancelled_jobs = Order.objects.filter(
+        completion_date__range=(from_dt,to_dt),
+        is_cancelled=True
+    ).order_by('-completion_date')
+
+    # Generate the CSV header row.
+    rows = (["Job ID #", "Date", "Reason", "Associate ID #", "Associate Name"],)
+
+    # Generate hte CSV data.
+    for cancelled_job in cancelled_jobs.all():
+
+        # Generate the closing reason.
+        closing_reason = cancelled_job.closing_reason_other
+        if cancelled_job.closing_reason == 0:
+            closing_reason = "-"
+        elif cancelled_job.closing_reason == 2:
+            closing_reason = _("Client needs more time")
+        elif cancelled_job.closing_reason == 3:
+            closing_reason = _("Associate needs more time")
+        elif cancelled_job.closing_reason == 4:
+            closing_reason = _("Weather")
+
+        # Generate the reason.
+        rows += ([
+            str(cancelled_job.id),
+            str(cancelled_job.completion_date),
+            str(closing_reason),
+            str(cancelled_job.associate.id),
+            str(cancelled_job.associate),
+        ],)
+
+    # Create the virtual CSV file and stream all the data in real time to the
+    # client.
+    pseudo_buffer = Echo()
+    writer = csv.writer(pseudo_buffer)
+    response = StreamingHttpResponse(
+        (writer.writerow(row) for row in rows),
+        content_type="text/csv"
+    )
+    response['Content-Disposition'] = 'attachment; filename="job_cancellation_reasons.csv"'
+    return response
 
 
 def report_07_streaming_csv_view(request):
