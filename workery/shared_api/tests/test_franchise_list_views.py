@@ -58,7 +58,7 @@ class SharedFranchiseListAPIViewWithPublicSchemaTestCase(APITestCase, TenantTest
 
     @transaction.atomic
     def test_anonymous_get_with_200(self):
-        url = reverse('workery_franchise_list_api_endpoint')
+        url = reverse('workery_franchise_list_create_api_endpoint')
         response = self.anon_client.get(url, data=None, content_type='application/json')
         self.assertIsNotNone(response)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -67,7 +67,7 @@ class SharedFranchiseListAPIViewWithPublicSchemaTestCase(APITestCase, TenantTest
 
     @transaction.atomic
     def test_anonymous_search_get_with_200_(self):
-        url = reverse('workery_franchise_list_api_endpoint')+"?format=json&search=London"
+        url = reverse('workery_franchise_list_create_api_endpoint')+"?format=json&search=London"
         response = self.anon_client.get(url, data=None, content_type='application/json')
         self.assertIsNotNone(response)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
