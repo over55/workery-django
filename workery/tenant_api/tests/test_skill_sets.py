@@ -209,11 +209,9 @@ class SkillSetListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
             'sub_category': 'test_sub_category',
         }), content_type='application/json')
         self.assertIsNotNone(response)
-        # print(response.content)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertIn("test_category", str(response.data))
         self.assertIn("test_sub_category", str(response.data))
-        self.assertIn("Nothing", str(response.data))
 
         # Manager
         response = self.manager_client.post(url, data=json.dumps({
@@ -224,7 +222,6 @@ class SkillSetListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertIn("test_category_two", str(response.data))
         self.assertIn("test_sub_category_two", str(response.data))
-        self.assertIn("Nothing Two", str(response.data))
 
         # Staff
         response = self.staff_client.post(url, data=json.dumps({
@@ -235,7 +232,6 @@ class SkillSetListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertIn("test_category_three", str(response.data))
         self.assertIn("test_sub_category_three", str(response.data))
-        self.assertIn("Nothing Three", str(response.data))
 
     @transaction.atomic
     def test_create_with_403_by_permissions(self):
@@ -283,7 +279,6 @@ class SkillSetListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertIn("test_category", str(response.data))
         self.assertIn("test_sub_category", str(response.data))
-        self.assertIn("Nothing", str(response.data))
 
         # Manager
         response = self.manager_client.put(url, data=data, content_type='application/json')
@@ -291,7 +286,6 @@ class SkillSetListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertIn("test_category", str(response.data))
         self.assertIn("test_sub_category", str(response.data))
-        self.assertIn("Nothing", str(response.data))
 
         # Staff
         response = self.staff_client.put(url, data=data, content_type='application/json')
@@ -299,7 +293,6 @@ class SkillSetListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertIn("test_category", str(response.data))
         self.assertIn("test_sub_category", str(response.data))
-        self.assertIn("Nothing", str(response.data))
 
     @transaction.atomic
     def test_update_with_403_by_permissions(self):
