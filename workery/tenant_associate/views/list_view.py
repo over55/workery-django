@@ -34,7 +34,11 @@ class MemberSummaryView(LoginRequiredMixin, ListView, ExtraRequestProcessingMixi
         return modified_context
 
     def get_queryset(self):
-        queryset = Associate.objects.filter(owner__is_active=True).order_by('-id')
+        queryset = Associate.objects.filter(
+            owner__is_active=True
+        ).prefetch_related(
+            'owner'
+        ).order_by('-id')
         return queryset
 
 
@@ -54,5 +58,8 @@ class MemberListView(LoginRequiredMixin, ListView, ExtraRequestProcessingMixin):
         return context
 
     def get_queryset(self):
-        queryset = Associate.objects.order_by('given_name', 'last_name')
+        queryset = Associate.objects.order_by(
+            'given_name',
+            'last_name'
+        ).prefetch_related('owner')
         return queryset

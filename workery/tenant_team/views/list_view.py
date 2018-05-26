@@ -34,7 +34,9 @@ class TeamSummaryView(LoginRequiredMixin, ListView, ExtraRequestProcessingMixin)
         return modified_context
 
     def get_queryset(self):
-        queryset = Staff.objects.all().order_by('-id')
+        queryset = Staff.objects.filter(owner__is_active=True).order_by('-id').prefetch_related(
+            'owner',
+        )
         return queryset
 
 
@@ -59,4 +61,7 @@ class TeamListView(LoginRequiredMixin, ListView, ExtraRequestProcessingMixin):
         # The following code will use the 'django-filter'
         filter = StaffFilter(self.request.GET, queryset=queryset)
         queryset = filter.qs
+        queryset = queryset.prefetch_related(
+            'owner',
+        )
         return queryset

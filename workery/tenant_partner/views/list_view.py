@@ -34,7 +34,9 @@ class PartnerSummaryView(LoginRequiredMixin, ListView, ExtraRequestProcessingMix
         return modified_context
 
     def get_queryset(self):
-        queryset = Partner.objects.filter(owner__is_active=True).order_by('-id')
+        queryset = Partner.objects.filter(owner__is_active=True).order_by('-id').prefetch_related(
+            'owner',
+        )
         return queryset
 
 
@@ -54,5 +56,7 @@ class PartnerListView(LoginRequiredMixin, ListView, ExtraRequestProcessingMixin)
         return context
 
     def get_queryset(self):
-        queryset = Partner.objects.order_by('given_name', 'last_name')
+        queryset = Partner.objects.order_by('given_name', 'last_name').prefetch_related(
+            'owner',
+        )
         return queryset

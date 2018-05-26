@@ -29,7 +29,9 @@ class CustomerSummaryView(LoginRequiredMixin, ListView, ExtraRequestProcessingMi
         return modified_context
 
     def get_queryset(self):
-        queryset = Customer.objects.all().order_by('-id')
+        queryset = Customer.objects.all().prefetch_related(
+            'owner'
+        ).order_by('-id')
         return queryset
 
 
@@ -44,7 +46,12 @@ class CustomerListView(LoginRequiredMixin, ListView, ExtraRequestProcessingMixin
         return context
 
     def get_queryset(self):
-        queryset = Customer.objects.all().order_by('given_name', 'last_name')
+        queryset = Customer.objects.all().prefetch_related(
+            'owner'
+        ).order_by(
+            'given_name',
+            'last_name'
+        )
 
         # The following code will use the 'django-filter'
         filter = CustomerFilter(self.request.GET, queryset=queryset)

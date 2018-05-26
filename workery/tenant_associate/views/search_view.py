@@ -56,4 +56,5 @@ class MemberSearchResultView(LoginRequiredMixin, ListView, ExtraRequestProcessin
         # The following code will use the 'django-filter'
         filter = AssociateFilter(self.request.GET, queryset=queryset)
         queryset = filter.qs
+        queryset = queryset.prefetch_related('owner')
         return queryset

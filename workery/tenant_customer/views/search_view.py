@@ -55,4 +55,7 @@ class CustomerSearchResultView(LoginRequiredMixin, ListView, ExtraRequestProcess
             filter = CustomerFilter(self.request.GET, queryset=queryset)
             queryset = filter.qs
 
+        # Attach owners.
+        queryset = queryset.prefetch_related('owner')
+
         return queryset

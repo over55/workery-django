@@ -43,7 +43,11 @@ class DashboardView(LoginRequiredMixin, TemplateView, ExtraRequestProcessingMixi
             is_closed=False
         ).count()
 
-        modified_context['awaylogs'] = AwayLog.objects.filter(was_deleted=False)
+        modified_context['awaylogs'] = AwayLog.objects.filter(
+            was_deleted=False
+        ).prefetch_related(
+            'associate'
+        )
 
         # DEVELOPERS NOTE:
         # - We will extract the URL parameters and save them into our

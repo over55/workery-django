@@ -53,5 +53,11 @@ class JobSearchResultView(LoginRequiredMixin, ListView, ExtraRequestProcessingMi
             filter = OrderFilter(self.request.GET, queryset=queryset)
             queryset = filter.qs
 
+        # Added join
+        queryset = queryset.prefetch_related(
+            'customer',
+            'associate',
+        )
+
         # Return our filtered results ordered by the specific order.
         return queryset.order_by('-assignment_date', '-completion_date', '-invoice_service_fee_payment_date')

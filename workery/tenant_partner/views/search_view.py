@@ -56,4 +56,7 @@ class PartnerSearchResultView(LoginRequiredMixin, ListView, ExtraRequestProcessi
         # The following code will use the 'django-filter'
         filter = PartnerFilter(self.request.GET, queryset=queryset)
         queryset = filter.qs
+        queryset = queryset.prefetch_related(
+            'owner',
+        )
         return queryset

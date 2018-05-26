@@ -61,4 +61,7 @@ class TeamSearchResultView(LoginRequiredMixin, ListView, ExtraRequestProcessingM
         # The following code will use the 'django-filter'
         filter = StaffFilter(self.request.GET, queryset=queryset)
         queryset = filter.qs
+        queryset = queryset.prefetch_related(
+            'owner',
+        )
         return queryset

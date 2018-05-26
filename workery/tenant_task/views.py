@@ -12,7 +12,12 @@ from tenant_foundation.models import ActivitySheetItem, Associate, AwayLog, Cust
 
 class PendingTaskListView(LoginRequiredMixin, ListView, ExtraRequestProcessingMixin):
     context_object_name = 'task_list'
-    queryset = TaskItem.objects.filter(is_closed=False)
+    queryset = TaskItem.objects.filter(
+        is_closed=False
+    ).prefetch_related(
+        'customer',
+        'associate'
+    )
     template_name = 'tenant_task/pending/list_view.html'
     paginate_by = 100
 
@@ -38,7 +43,12 @@ class PendingTaskListView(LoginRequiredMixin, ListView, ExtraRequestProcessingMi
 
 class ClosedTaskListView(LoginRequiredMixin, ListView, ExtraRequestProcessingMixin):
     context_object_name = 'task_list'
-    queryset = TaskItem.objects.filter(is_closed=True)
+    queryset = TaskItem.objects.filter(
+        is_closed=True
+    ).prefetch_related(
+        'customer',
+        'associate'
+    )
     template_name = 'tenant_task/closed/list_view.html'
     paginate_by = 100
 

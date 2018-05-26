@@ -15,7 +15,10 @@ class JobSummaryView(LoginRequiredMixin, ListView, ExtraRequestProcessingMixin):
         is_cancelled=False,
         completion_date__isnull=True,
         invoice_service_fee_payment_date__isnull=True
-    ).order_by('-id')
+    ).order_by('-id').prefetch_related(
+        'customer',
+        'associate'
+    )
     template_name = 'tenant_order/summary/view.html'
     paginate_by = 100
 
@@ -51,4 +54,5 @@ class JobListView(LoginRequiredMixin, ListView, ExtraRequestProcessingMixin):
         # The following code will use the 'django-filter'
         filter = OrderFilter(self.request.GET, queryset=queryset)
         queryset = filter.qs
+        queryset = queryset.prefetch_related('customer', 'associate')
         return queryset
