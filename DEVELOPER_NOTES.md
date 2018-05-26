@@ -31,6 +31,9 @@ pip install django-filter                 # A generic system for filtering Djang
 pip install django-money                  # Money fields for django forms and models.
 pip install django-phonenumber-field      # Telephone field using Google's libphonenumber
 pip install raven --upgrade               # entry is cross-platform application monitoring, with a focus on error reporting.
+pip install boto3                         # AWS SDK for Python
+pip install django-storages               # Collection of custom storage backends for Django.
+
 
 #TODO: IMPLEMENT...
 pip install dateutil                      # Useful extensions to the standard Python datetime features

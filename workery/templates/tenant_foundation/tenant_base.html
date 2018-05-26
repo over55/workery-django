@@ -42,7 +42,7 @@
   </head>
 <body>
     <header class="navbar navbar-dark fixed-top bg-dark justify-content-between">
-          <a class="navbar-brand" href="{% url 'workery_tenant_dashboard_master' %}"><img class="img-fluid" src="{{ shared_constants.WORKERY_APP_HTTP_PROTOCOL }}{{ shared_constants.WORKERY_APP_HTTP_DOMAIN }}{% static 'img/compressed-logo.png' %}" alt="{% trans 'The Workery' %}" width="200px" /></a>
+          <a class="navbar-brand" href="{% url 'workery_tenant_dashboard_master' %}"><img class="img-fluid" src="{% static 'img/compressed-logo.png' %}" alt="{% trans 'The Workery' %}" width="200px" /></a>
           <button class="navbar-toggler" type="button" id="sidebarCollapse">
       		<i class="fa fa-bars"></i>
     	  </button>

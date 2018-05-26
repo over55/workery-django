@@ -46,6 +46,16 @@ KEEP_COMMENTS_ON_MINIFYING=False
 #--------#
 SENTRY_RAVEN_CONFIG_DSN=https://xxxx:yyyyy@sentry.io/zzzzzzzz
 
+#--------#
+# AWS S3 #
+#--------#
+AWS_S3_HOST=''
+AWS_ACCESS_KEY_ID=''
+AWS_SECRET_ACCESS_KEY=''
+AWS_STORAGE_BUCKET_NAME=''
+AWS_S3_CUSTOM_DOMAIN=''
+AWS_BACKUP_BUCKET_NAME=''
+
 #--------------------------------#
 # Application Specific Variables #
 #--------------------------------#
