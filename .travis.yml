@@ -41,7 +41,7 @@ branches:
 
 script:
   - cd workery/
-  - coverage run --source='.' --omit='env/*,workery/*,static/*,staticfiles/*,manage.py,coverage.sh' manage.py test
+  - coverage run --source='.' --omit='env/*,workery/*,static/*,staticfiles/*,manage.py,coverage.sh,tenant_historic_etl/*,shared_github_webhook/*' manage.py test
 
 after_success:
   coveralls

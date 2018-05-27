@@ -14,8 +14,6 @@ from django.db import connection # Used for django tenants.
 from django.utils.translation import ugettext_lazy as _
 from shared_foundation.models import SharedFranchise
 from tenant_foundation.models import Staff
-from tenant_etl.utils.csv.associates_importer import run_associates_importer_from_csv_file
-from tenant_etl.utils.csv.customer_importer import run_customer_importer_from_csv_file, run_customer_and_org_importer_from_csv_file
 
 
 """
