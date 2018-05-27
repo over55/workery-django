@@ -8,7 +8,8 @@ from tenant_report.views.web_views import (
     Report07DetailView,
     Report08DetailView,
     Report09DetailView,
-    Report10DetailView
+    Report10DetailView,
+    Report12DetailView
 )
 from tenant_report.views.csv_views import (
     report_01_streaming_csv_view,
@@ -17,7 +18,8 @@ from tenant_report.views.csv_views import (
     report_07_streaming_csv_view,
     report_08_streaming_csv_view,
     report_09_streaming_csv_view,
-    report_10_streaming_csv_view
+    report_10_streaming_csv_view,
+    report_12_streaming_csv_view
 )
 
 urlpatterns = (
@@ -29,6 +31,7 @@ urlpatterns = (
     url(r'^report/8/$', Report08DetailView.as_view(), name='workery_tenant_report_08_detail_master'),
     url(r'^report/9/$', Report09DetailView.as_view(), name='workery_tenant_report_09_detail_master'),
     url(r'^report/10/$', Report10DetailView.as_view(), name='workery_tenant_report_10_detail_master'),
+    url(r'^report/12/$', Report12DetailView.as_view(), name='workery_tenant_report_12_detail_master'),
 
     url(r'^report/1/csv-download$', report_01_streaming_csv_view, name='workery_tenant_report_01_download_csv_file_api_endpoint'),
     url(r'^report/5/csv-download$', report_05_streaming_csv_view, name='workery_tenant_report_05_download_csv_file_api_endpoint'),
@@ -37,4 +40,5 @@ urlpatterns = (
     url(r'^report/8/csv-download$', report_08_streaming_csv_view, name='workery_tenant_report_08_download_csv_file_api_endpoint'),
     url(r'^report/9/csv-download$', report_09_streaming_csv_view, name='workery_tenant_report_09_download_csv_file_api_endpoint'),
     url(r'^report/10/csv-download$', report_10_streaming_csv_view, name='workery_tenant_report_10_download_csv_file_api_endpoint'),
+    url(r'^report/12/csv-download$', report_12_streaming_csv_view, name='workery_tenant_report_12_download_csv_file_api_endpoint'),
 )
