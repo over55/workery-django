@@ -38,6 +38,49 @@ class Echo:
         return value
 
 
+def report_01_streaming_csv_view(request):
+    from_dt = request.GET.get('from_dt', None)
+    to_dt = request.GET.get('to_dt', None)
+
+    from_dt = parser.parse(from_dt)
+    to_dt = parser.parse(to_dt)
+
+    jobs = Order.objects.filter(
+        completion_date__isnull=False,
+        invoice_service_fee_amount=0,
+        is_cancelled=False,
+        invoice_service_fee_payment_date__range=(from_dt,to_dt),
+    )
+
+    # Generate the CSV header row.
+    rows = (["Associate ID #", "Associate Name", "Job Completion Date", "Job ID #", "Client ID #", "Client Name", "Job Type"],)
+
+    # Generate hte CSV data.
+    for job in jobs.all():
+        # Get the type of job from a "tuple" object.
+        test = dict(JOB_TYPE_OF_CHOICES)
+        job_type = test[job.type_of]
+
+        rows += ([
+            job.associate.id,
+            str(job.associate),
+            job.completion_date,
+            job.id,
+            job.customer.id,
+            str(job.customer),
+            job_type
+        ],)
+
+    pseudo_buffer = Echo()
+    writer = csv.writer(pseudo_buffer)
+    response = StreamingHttpResponse(
+        (writer.writerow(row) for row in rows),
+        content_type="text/csv"
+    )
+    response['Content-Disposition'] = 'attachment; filename="due_service_fees.csv"'
+    return response
+
+
 def report_05_streaming_csv_view(request):
     from_dt = request.GET.get('from_dt', None)
     to_dt = request.GET.get('to_dt', None)
