@@ -37,6 +37,7 @@ from tenant_foundation.models import (
     Organization,
     Order,
     OrderComment,
+    OrderServiceFee,
     SkillSet,
     Tag
 )
@@ -104,6 +105,8 @@ class Command(BaseCommand):
         )
 
     def run_import_from_dict(self, row_dict, index):
+        service_fee_obj = OrderServiceFee.objects.get(id=1)
+
         try:
             # For debugging purposes.
             # print(row_dict)
@@ -197,7 +200,9 @@ class Command(BaseCommand):
                         'hours':  hours,
                         'last_modified_by': None,
                         'created_by': None,
-                        'invoice_service_fee_payment_date': local_payment_date
+                        'invoice_service_fee_payment_date': local_payment_date,
+                        'invoice_service_fee': service_fee_obj,
+                        'invoice_service_fee_amount': local_service_fee
                     }
                 )
 
