@@ -79,9 +79,7 @@
     <div class="row">
 		<div class="col-sm-3 p-3 mb-2">
 			<a class="btn btn-primary btn-lg" href="{% if template == 'search' %}{% url 'workery_tenant_team_search' %}{% elif template == 'list' %}{% url 'workery_tenant_team_list' %}{% else %}{% url 'workery_tenant_team_summary' %}{% endif %}" role="button">
-                <svg class="svg-inline--fa fa-arrow-left fa-w-14" aria-hidden="true" data-fa-processed="" data-prefix="fas" data-icon="arrow-left" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
-                <path fill="currentColor" d="M257.5 445.1l-22.2 22.2c-9.4 9.4-24.6 9.4-33.9 0L7 273c-9.4-9.4-9.4-24.6 0-33.9L201.4 44.7c9.4-9.4 24.6-9.4 33.9 0l22.2 22.2c9.5 9.5 9.3 25-.4 34.3L136.6 216H424c13.3 0 24 10.7 24 24v32c0 13.3-10.7 24-24 24H136.6l120.5 114.8c9.8 9.3 10 24.8.4 34.3z"></path>
-            </svg><!-- <i class="fas fa-arrow-left"></i> -->&nbsp;{% if template == 'search' %}{% trans 'Back to Search' %}{% elif template == 'list' %}{% trans 'Back to Staff Member\'s List' %}{% else %}{% trans 'Back to Staff Member\'s Home' %}{% endif %}</a>
+                	<i class="fas fa-arrow-left"></i> &nbsp;{% if template == 'search' %}{% trans 'Back to Search' %}{% elif template == 'list' %}{% trans 'Back to Staff Member\'s List' %}{% else %}{% trans 'Back to Staff Member\'s Home' %}{% endif %}</a>
 		</div>
 	</div>
     <!------------------------------------------------------------------------->
@@ -111,128 +109,141 @@
     <!------------------------------------------------------------------------->
     <!-- end STEP NAVIGATION -->
 
-    <div class="row mt-4 pt-3 mb-4 pb-2">
+    <div class="row py-2">
 
         <!-- DETAIL FORM -->
         <!------------------------------------------------------------------------->
-        <div class="col-sm-5 mx-auto mt-2" id="id_detail_form">
+        <div class="col-md-10 mx-auto" id="id_detail_form">
             <!-- Residential form -->
-            <div class="col-sm-12 fade show active" aria-labelledby="residential">
-                <h3 class="pt-4 pb-2 text-center">Staff Member's Detail</h3>
-                <form id="add-staff-form" method="post" class="needs-validation" action="" novalidate>
-                <!-- ############ PERSON ############ -->
-                <p class="border-bottom mb-3 pb-1 text-secondary">Personal Information</p>
-                <div class="form-row">
-                    <div class="form-group col-md-12 mb-4">
-                        <label for="firstname">First name</label>
-                        <p>{% if staff.given_name %}{{ staff.given_name }}{% else %}-{% endif %}</p>
-                        <div id="firstname-error" class="invalid-feedback"></div>
-                    </div>
-                    <div class="form-group col-md-12 mb-4">
-                        <label for="lastname">Last name</label>
-                        <p>{% if staff.last_name %}{{ staff.last_name }}{% else %}-{% endif %}</p>
-                        <div id="lastname-error" class="invalid-feedback"></div>
-                    </div>
-                    <div class="form-group p-0 col-md-7 mb-4">
-                        <label for="dob">Date of Birth</label>
-                        <div class="input-group input-group-lg">
-                            <p>{% if staff.birthdate %}{{ staff.birthdate }}{% else %}-{% endif %}</p>
-                            <div id="dob-error" class="invalid-feedback"></div>
-                        </div>
-                    </div>
-                    <div class="form-group col-md-7 mb-4 p-0">
-                        <label for="gender">Gender</label>
-                        <p>{% if staff.gender %}{{ staff.gender }}{% else %}-{% endif %}</p>
-                        <div id="gender-error" class="invalid-feedback"></div>
-                    </div>
-                    <div class="form-group col-md-7 mb-4 p-0">
-                        <label for="description">Description</label>
-                        <p>{% if staff.description %}{{ staff.description }}{% else %}-{% endif %}</p>
-                        <div id="description-error" class="invalid-feedback"></div>
-                    </div>
-                    <div class="form-group p-0 col-md-7 mb-4">
-                        <label for="tags">Tags</label>
-                        <p>
-                            {% for tag in staff.tags.all %}<span class="badge badge-info badge-lg" id="tag_id_{{ tag.id }}">{{ tag }}</span>{% empty %}-{% endfor %}
-                        </p>
-                        <div id="tags-error" class="invalid-feedback"></div>
-                    </div>
-                </div>
-                <!-- ############ end PERSON ############ -->
+            <h3 class="pt-4 pb-2 text-center">Staff Member's Detail</h3>
+            <!-- ############ PERSON ############ -->
+	    <table class="table table-bordered custom-cell-w">
+            <tbody>
+                <tr class="table-info">
+                    <th scope="row" colspan="2">Personal Information</th>
+                </tr>
+                <tr>
+                    <th scope="row" class="bg-light">First Name</th>
+                    <td id="given_name">
+                        {% if staff.given_name %}{{ staff.given_name }}{% else %}-{% endif %}
+                    </td>
+                </tr>
+		<tr>
+                    <th scope="row" class="bg-light">Last Name</th>
+                    <td id="last_name">
+                        {% if staff.last_name %}{{ staff.last_name }}{% else %}-{% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row" class="bg-light">Date of Birth</th>
+                    <td id="dob">
+                        {% if staff.birthdate %}{{ staff.birthdate }}{% else %}-{% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row" class="bg-light">Gender</th>
+                    <td id="gender">
+                        {% if staff.gender %}{{ staff.gender }}{% else %}-{% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row" class="bg-light">Description</th>
+                    <td id="description">
+                        {% if staff.description %}{{ staff.description }}{% else %}-{% endif %}
+                    </td>
+                </tr>
+		<tr>
+                    <th scope="row" class="bg-light">Tags</th>
+                    <td id="tags">
+                        {% for tag in staff.tags.all %}<span class="badge badge-info badge-lg" id="tag_id_{{ tag.id }}">{{ tag }}</span>{% empty %}-{% endfor %}
+                    </td>
+                </tr>
+		<!-- ############ end PERSON ############ -->
                 <!-- ############ CONTACT POINT ############ -->
-                <p class="border-bottom mb-3 pb-1 text-secondary">Contact Point</p>
-                <div class="form-row">
-                    <div class="form-group col-md-7 mb-4">
-                        <label for="phonenumber">Phone</label>
-                        <p>{% if staff.telephone %}<a href="tel:{{ staff.telephone }}">{{ staff.telephone|pretty_formatted_phonenumber }}</a>{% else %}-{% endif %}</p>
-                        <div id="phonenumber-error" class="invalid-feedback"></div>
-                    </div>
-                    <div class="form-group col-md-7 mb-4">
-                        <label for="other_phonenumber">Phone (Other)</label>
-                        <p>{% if staff.other_telephone %}<a href="tel:{{ staff.other_telephone }}">{{ staff.other_telephone|pretty_formatted_phonenumber }}</a>{% else %}-{% endif %}</p>
-                        <div id="other_phonenumber-error" class="invalid-feedback"></div>
-                    </div>
-                    <div class="form-group col-md-12 mb-4">
-                        <label for="email">E-Mail</label>
-                        <p>{% if staff.owner.email %}<a href="mailto:{{ staff.owner.email }}">{{ staff.owner.email }}</a>{% else %}-{% endif %}</p>
-                        <div id="email-error" class="invalid-feedback"></div>
-                    </div>
-                    <div class="form-group col-md-12 mb-4">
-                        <p class="mb-1">Ok to E-Mail?</p>
-                        <p>
-                            {% if staff.is_ok_to_email == True %}Yes{% else %}No{% endif %}
-                        </p>
-                    </div>
-                    <div class="form-group col-md-12 mb-4">
-                        <p class="mb-1">Ok to Text?</p>
-                        <p>
-                            {% if staff.is_ok_to_text == True %}Yes{% else %}No{% endif %}
-                        </p>
-                    </div>
-                </div>
+                <tr class="table-info">
+                    <th scope="row" colspan="2">Contact Point</th>
+                </tr>
+                <tr>
+                    <th scope="row" class="bg-light">Phone</th>
+                    <td id="phonenumber">
+                        {% if staff.telephone %}<a href="tel:{{ staff.telephone }}">{{ staff.telephone|pretty_formatted_phonenumber }}</a>{% else %}-{% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row" class="bg-light">Mobile</th>
+                    <td id="mobile">
+                        {% if staff.other_telephone %}<a href="tel:{{ staff.other_telephone }}">{{ staff.other_telephone|pretty_formatted_phonenumber }}</a>{% else %}-{% endif %}
+		    </td>
+                </tr>
+                <tr>
+                    <th scope="row" class="bg-light">E-Mail</th>
+                    <td id="email">
+                        {% if staff.owner.email %}<a href="mailto:{{ staff.owner.email }}">{{ staff.owner.email }}</a>{% else %}-{% endif %}
+                    </td>
+                </tr>
+		<tr>
+                    <th scope="row" class="bg-light">Ok to E-Mail?</th>
+                    <td id="ok_to_email">
+                        {% if staff.is_ok_to_email == True %}Yes{% else %}No{% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row" class="bg-light">Ok to Text?</th>
+                    <td id="ok_to_text">
+                        {% if staff.is_ok_to_text == True %}Yes{% else %}No{% endif %}
+                    </td>
+                </tr>
                 <!-- ############ end CONTACT POINT ############ -->
                 <!-- ############ LOCATION ############ -->
-                <p class="border-bottom mb-3 pb-1 text-secondary">Postal Address</p>
-                <div class="form-row">
-                    <div class="form-group col-md-12 mb-4">
-                        <label for="street_address">Street Address</label>
-                        <p>{% if staff.street_address %}{{ staff.street_address }}{% else %}-{% endif %}</p>
-                        <div id="street_address-error" class="invalid-feedback"></div>
-                    </div>
-                    <div class="form-group col-md-12 mb-4">
-                        <label for="street_address_extra">Street Address (Extra)</label>
-                        <p>{% if staff.street_address_extra %}{{ staff.street_address_extra }}{% else %}-{% endif %}</p>
-                        <div id="street_address_extra-error" class="invalid-feedback"></div>
-                    </div>
-                    <div class="form-group col-md-12 mb-4">
-                        <label for="address_locality">City</label>
-                        <p>{% if staff.address_locality %}{{ staff.address_locality }}{% else %}-{% endif %}</p>
-                        <div id="address_locality-error" class="invalid-feedback"></div>
-                    </div>
-                    <div class="form-group col-md-12 mb-4">
-                        <label for="address_region">Province</label>
-                        <p>{% if staff.address_region %}{{ staff.address_region }}{% else %}-{% endif %}</p>
-                        <div id="address_region-error" class="invalid-feedback"></div>
-                    </div>
-                    <div class="form-group col-md-12 mb-4">
-                        <label for="address_country">Country</label>
-                        <p>{% if staff.address_country %}{{ staff.address_country }}{% else %}-{% endif %}</p>
-                        <div id="address_country-error" class="invalid-feedback"></div>
-                    </div>
-                    <div class="form-group col-md-12 mb-4">
-                        <label for="postal_code">Postal Code</label>
-                        <p>{% if staff.postal_code %}{{ staff.postal_code }}{% else %}-{% endif %}</p>
-                        <div id="postal_code-error" class="invalid-feedback"></div>
-                    </div>
-                    <div class="form-group col-md-12 mb-4">
-                        <label for="post_office_box_number">Post Office Box # </label>
-                        <p>{% if staff.post_office_box_number %}{{ staff.post_office_box_number }}{% else %}-{% endif %}</p>
-                        <div id="post_office_box_number-error" class="invalid-feedback"></div>
-                    </div>
-                </div>
-                <!-- ############ end LOCATION ############ -->
-
-            </div>
+                <tr class="table-info">
+                    <th scope="row" colspan="2">Postal Address</th>
+                </tr>
+                <tr>
+                    <th scope="row" class="bg-light">Street Address</th>
+                    <td id="street_address">
+                        {% if staff.street_address %}{{ staff.street_address }}{% else %}-{% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row" class="bg-light">Street Address (Extra)</th>
+                    <td id="street_address_extra">
+                        {% if staff.street_address_extra %}{{ staff.street_address_extra }}{% else %}-{% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row" class="bg-light">City</th>
+                    <td id="city">
+                        {% if staff.address_locality %}{{ staff.address_locality }}{% else %}-{% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row" class="bg-light">Province</th>
+                    <td id="region">
+                        {% if staff.address_region %}{{ staff.address_region }}{% else %}-{% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row" class="bg-light">Country</th>
+                    <td id="country">
+                        {% if staff.address_country %}{{ staff.address_country }}{% else %}-{% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row" class="bg-light">Postal Code</th>
+                    <td id="postal_code">
+                        {% if staff.postal_code %}{{ staff.postal_code }}{% else %}-{% endif %}
+                    </td>
+                </tr>
+		<tr>
+                    <th scope="row" class="bg-light">Post Office Box #</th>
+                    <td id="post_office_box_number">
+                        {% if staff.post_office_box_number %}{{ staff.post_office_box_number }}{% else %}-{% endif %}
+                    </td>
+                </tr>
+		<!-- ############ end LOCATION ############ -->
+	    </tbody>
+        </table>
+        
         </div>
 
         <!------------------------------------------------------------------------->
