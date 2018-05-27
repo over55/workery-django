@@ -1,3 +1,4 @@
+![alt tag](https://github.com/over55/workery-django/blob/master/workery/static/img/workery-logo.jpeg)
 # workery-django
 **This library is currently being developed and is not production quality ready!**
 
