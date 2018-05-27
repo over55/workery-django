@@ -360,3 +360,49 @@ def report_12_streaming_csv_view(request):
     )
     response['Content-Disposition'] = 'attachment; filename="customers.csv"'
     return response
+
+
+def report_13_streaming_csv_view(request):
+    from_dt = request.GET.get('from_dt', None)
+    to_dt = request.GET.get('to_dt', None)
+
+    from_dt = parser.parse(from_dt)
+    to_dt = parser.parse(to_dt)
+
+    jobs = Order.objects.filter(
+        assignment_date__range=(from_dt,to_dt),
+        # associate__isnull=False
+    ).order_by('-id')
+
+    # Generate the CSV header row.
+    rows = (["Job ID #", "Associate", "Client", 'Skill Sets'],)
+
+    # Generate hte CSV data.
+    for job in jobs.all():
+
+        # Get our list of skill sets.
+        all_skill_sets = job.skill_sets.all()
+        skill_set_text = ""
+        for i, skill_set in enumerate(all_skill_sets):
+            skill_set_text += skill_set.sub_category
+            if i > all_skill_sets.count():
+                skill_set_text += " / "
+
+        # Generate the reason.
+        rows += ([
+            str(job.id),
+            str(job.customer),
+            str(job.associate),
+            skill_set_text,
+        ],)
+
+    # Create the virtual CSV file and stream all the data in real time to the
+    # client.
+    pseudo_buffer = Echo()
+    writer = csv.writer(pseudo_buffer)
+    response = StreamingHttpResponse(
+        (writer.writerow(row) for row in rows),
+        content_type="text/csv"
+    )
+    response['Content-Disposition'] = 'attachment; filename="jobs.csv"'
+    return response

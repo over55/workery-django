@@ -2,7 +2,7 @@
 {% load staticfiles i18n foundation_tags humanize %}
 
 {% block title %}
-{% trans 'Report #6 | Workery' %}
+{% trans 'Report #13 | Workery' %}
 {% endblock title %}
 
 {% block header_content %}
@@ -46,7 +46,7 @@
             alert("Please select a finish date");
             return
         }
-        window.location = "{% url 'workery_tenant_report_06_download_csv_file_api_endpoint' %}?from_dt="+from_dt+"&to_dt="+to_dt;
+        window.location = "{% url 'workery_tenant_report_13_download_csv_file_api_endpoint' %}?from_dt="+from_dt+"&to_dt="+to_dt;
     }
 </script>
 
@@ -58,13 +58,13 @@
 	  	<ol class="breadcrumb">
 	    	<li class="breadcrumb-item"><a href="{% url 'workery_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
         	<li class="breadcrumb-item"><a href="{% url 'workery_tenant_reports_list_master' %}">{% trans 'Reports' %}</a></li>
-            <li class="breadcrumb-item active" aria-current="page">{% trans 'Job Cancellation Reasons Report' %}</li>
+            <li class="breadcrumb-item active" aria-current="page">{% trans 'Jobs Report' %}</li>
 	  	</ol>
 	</nav>
     <!------------------------------------------------------------------------->
     <!-- end BREADCRUMB -->
 
-    <h1>Job Cancellation Reasons Report</h1>
+    <h1>Jobs Report</h1>
 
     <div class="col-sm-6 mx-auto mt-2">
         <!-- Residential form -->
@@ -75,6 +75,7 @@
             <!-- ############ PERSON ############ -->
             <p class="border-bottom mb-3 pb-1 text-secondary">Report Details</p>
             <p>{% lorem 3 p %} </p>
+
 
             <div class="form-group p-0 col-md-7 mb-4">
                 <label for="from_dt">From Date</label>
@@ -97,6 +98,7 @@
                     <div id="to_dt-error" class="invalid-feedback"></div>
                 </div>
             </div>
+
 
 
                 <!-- ############ end SECURITY ############ -->

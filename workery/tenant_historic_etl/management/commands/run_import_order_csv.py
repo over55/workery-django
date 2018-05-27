@@ -207,6 +207,15 @@ class Command(BaseCommand):
                     }
                 )
 
+                # Add our start date.
+                if local_assign_date:
+                    order.start_date = local_assign_date
+                    if local_completion_date:
+                        order.completion_date = local_completion_date
+                        if local_payment_date:
+                            order.start_date = local_payment_date
+                    order.save()
+
                 # Added to tags.
                 if category:
                     skill_set = SkillSet.objects.filter(sub_category=category).last()

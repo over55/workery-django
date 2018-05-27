@@ -94,3 +94,12 @@ class Report12DetailView(LoginRequiredMixin, TemplateView, ExtraRequestProcessin
         modified_context = super().get_context_data(**kwargs)
         modified_context['current_page'] = 'reports' # Required
         return modified_context
+
+
+class Report13DetailView(LoginRequiredMixin, TemplateView, ExtraRequestProcessingMixin):
+    template_name = 'tenant_report/report_13_view.html'
+
+    def get_context_data(self, **kwargs):
+        modified_context = super().get_context_data(**kwargs)
+        modified_context['current_page'] = 'reports' # Required
+        return modified_context
