@@ -20,8 +20,8 @@
     <!------------------------------------------------------------------------->
     <nav aria-label="breadcrumb">
 	  	<ol class="breadcrumb">
-	    		<li class="breadcrumb-item"><a href="{% url 'workery_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
-                <li class="breadcrumb-item active" aria-current="page">{% trans 'Reports' %}</li>
+	    	<li class="breadcrumb-item"><a href="{% url 'workery_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{% trans 'Reports' %}</li>
 	  	</ol>
 	</nav>
     <!------------------------------------------------------------------------->
@@ -132,6 +132,23 @@
                     </div>
                 </div>
                 <!-- end Report #9 -->
+
+                <!-- Report #10 -->
+                <div class="col-md-4">
+                    <div class="card mb-4 box-shadow">
+                        <div class="card-custom-top">
+                            <i class="fas fa-user-tie fa-4x"></i>
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title font-weight-bold">Associate skill sets</h5>
+                            <p class="card-text">Report listing associate skill sets.</p>
+                            <div class="text-center">
+                                <a href="{% url 'workery_tenant_report_10_detail_master' %}" class="btn btn-success btn-lg" type="button">View <i class="fas fa-arrow-circle-right"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- end Report #10 -->
 
             </div>
         </div>
