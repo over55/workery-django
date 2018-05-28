@@ -21,6 +21,17 @@
         $('#insurance_requirements').select2();
     });
 
+    /**
+     *  Function to make text readable removing underscore and capitalizing
+     */
+    function humanize(str) {
+    	var frags = str.split('_');
+    	for (i=0; i<frags.length; i++) {
+      		frags[i] = frags[i].charAt(0).toUpperCase() + frags[i].slice(1);
+    	}
+    	return frags.join(' ');
+    }
+	
     function click_cancel_button() {
         window.location = "{% url 'workery_tenant_settings_skill_set_list' %}";
     }
@@ -37,6 +48,41 @@
             function(skill_set) {
                 console.log(skill_set);
                 window.location = "{% url 'workery_tenant_settings_skill_set_list' %}?was_modified=True";
+            },
+	    function(xhr,status,error) { // Error
+                // STEP 1: Convert to JSON.
+                var err = JSON.parse(xhr.responseText);
+                // For debugging purposes only.
+                console.log(err);
+                // STEP 2: CLEAR EXISTING TEXT.
+                $('#all_error_result').html("");
+		$('#all_error_result').removeClass('error-block');
+		
+                // STEP 3: PRINT OUR ERROR IN THE TOP ERROR PANEL.
+                for(var prop in err) {
+                    if(err.hasOwnProperty(prop)) {
+                        var val = err[prop];
+			var fdname = humanize(prop);
+			// Errors box code    
+                        $('#all_error_result').append("<div class='form-error'><b>"+fdname+":</b> "+val+" </div>");
+			$('#all_error_result').addClass('error-block');
+			
+			// Inline fields errors code
+			$('#'+prop+'-error').html("<ul><li>"+val+"</li></ul>");
+			$('#add-client-form').addClass('was-validated');
+                    }
+                }
+                // STEP 4: FOCUS TO WHERE THE ERROR IS OCCURING.
+                $('html, body').animate({ scrollTop: $('#id_page_title').offset().top }, 'slow');
+                // STEP 5: ADD ERROR MESSAGES TO THE FIELDS.
+                for(var prop in err) {
+                    if(err.hasOwnProperty(prop)) {
+                        var val = err[prop];
+                        console.log("KEY", prop);
+                        console.log("VALUE", val);
+                        //TODO: IMPLEMENT - Attach the message to the field.
+                    }
+                }
             },
             function(json_result) {
 
@@ -64,16 +110,17 @@
     <!------------------------------------------------------------------------->
     <!-- end BREADCRUMB -->
 
-    <h1>Skill Set</h1>
+    <h1 id="id_page_title">Skill Set</h1>
 
     <!-- FORM -->
     <!------------------------------------------------------------------------->
     <div class="col-sm-5 mx-auto mt-2">
         <!-- Residential form -->
         <div class="col-sm-12 fade show active" id="client-form" aria-labelledby="commercial">
-            <h3 class="pt-4 pb-2 text-center">Edit Skill Set</h3>
-            <p>Please change the text of the skill_set.</p>
-
+            <p><span class="text-secondary font-italic"><sup>*</sup>&nbsp;-&nbsp;Indicates required field to fill out.</span></p>
+            <!-- Error Output -->
+            <div id="all_error_result" name="all_error_result" class="alert alert-error fade show" role="alert">
+	    </div>
             <form id="add-client-form" method="post" class="needs-validation" action="" novalidate>
                 <div class="form-row">
                     <div class="form-group col-md-12 mb-4">
