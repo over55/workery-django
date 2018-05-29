@@ -15,8 +15,9 @@ class PendingTaskListView(LoginRequiredMixin, ListView, ExtraRequestProcessingMi
     queryset = TaskItem.objects.filter(
         is_closed=False
     ).prefetch_related(
-        'customer',
-        'associate'
+        'job',
+        'created_by',
+        'last_modified_by'
     )
     template_name = 'tenant_task/pending/list_view.html'
     paginate_by = 100
@@ -46,8 +47,9 @@ class ClosedTaskListView(LoginRequiredMixin, ListView, ExtraRequestProcessingMix
     queryset = TaskItem.objects.filter(
         is_closed=True
     ).prefetch_related(
-        'customer',
-        'associate'
+        'job',
+        'created_by',
+        'last_modified_by'
     )
     template_name = 'tenant_task/closed/list_view.html'
     paginate_by = 100
