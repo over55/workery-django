@@ -144,28 +144,27 @@ class Command(BaseCommand):
             'can_post_customer',
             'can_put_customer',
             'can_delete_customer',
-            #'can_delete_customer',
 
             # --- Associate --- #
             'can_get_associates',
             'can_get_associate',
             'can_post_associate',
             'can_put_associate',
-            # 'can_delete_associate',
+            'can_delete_associate',
 
             # --- Order --- #
             'can_get_orders',
             'can_get_order',
             'can_post_order',
             'can_put_order',
-            # 'can_delete_order',
+            'can_delete_order',
 
             # --- Comment --- #
             'can_get_comments',
             'can_get_comment',
             'can_post_comment',
             'can_put_comment',
-            # 'can_delete_comment',
+            'can_delete_comment',
 
             # --- Tag --- #
             'can_get_tags',

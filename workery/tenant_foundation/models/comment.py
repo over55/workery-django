@@ -94,6 +94,13 @@ class Comment(models.Model):
         _("Text"),
         help_text=_('The text content of this comment.'),
     )
+    is_archived = models.BooleanField(
+        _("Is Archived"),
+        help_text=_('Indicates whether comment was archived.'),
+        default=False,
+        blank=True,
+        db_index=True
+    )
 
     #
     #  FUNCTIONS
