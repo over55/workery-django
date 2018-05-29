@@ -93,12 +93,11 @@
 		$('#follow_up_days_number-error').html("<ul><li>This field may not be blank.</li></ul>");
 		$('#residential-job').addClass('was-validated');
            } else {
-		   alert(tmp_follow_up_days_number);
            	 window.location = "{% url 'workery_tenant_job_step_3_create' %}";
            }
         } else {
 		if (tmp_job_type == undefined) {
-			// Errors box code    
+			// Errors box code
 			$('#all_error_result').append("<div class='form-error'><b>Job Type:</b> Please pick one choice. </div>");
 			$('#all_error_result').addClass('error-block');
 			// Inline fields errors code
@@ -106,7 +105,7 @@
 			$('#residential-job').addClass('was-validated');
 		}
 		if (tmp_home_support == undefined) {
-			// Errors box code    
+			// Errors box code
 			$('#all_error_result').append("<div class='form-error'><b>Is Home Support:</b> Please pick either 'Yes' or 'No' choice. </div>");
 			$('#all_error_result').addClass('error-block');
 			// Inline fields errors code
