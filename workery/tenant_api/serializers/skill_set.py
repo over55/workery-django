@@ -10,11 +10,29 @@ from django.utils import timezone
 from django.utils.http import urlquote
 from rest_framework import exceptions, serializers
 from rest_framework.response import Response
-from tenant_foundation.models import SkillSet
+from tenant_foundation.models import InsuranceRequirement, SkillSet
 
 
 class SkillSetListCreateSerializer(serializers.ModelSerializer):
 
+    category = serializers.CharField(
+        required=True,
+        allow_blank=False,
+    )
+    sub_category = serializers.CharField(
+        required=True,
+        allow_blank=False,
+    )
+    description = serializers.CharField(
+        required=True,
+        allow_blank=False,
+    )
+    insurance_requirements = serializers.PrimaryKeyRelatedField(
+        many=True,
+        queryset=InsuranceRequirement.objects.all(),
+        allow_null=True,
+    )
+
     class Meta:
         model = SkillSet
         fields = (
@@ -23,10 +41,38 @@ class SkillSetListCreateSerializer(serializers.ModelSerializer):
             'description',
             'insurance_requirements'
         )
+
+    def validate_insurance_requirements(self, value):
+        """
+        Include validation on no-blanks
+        """
+        if hasattr(value, "__len__"):
+            if len(value) == 0:
+                raise serializers.ValidationError("Please select an option!")
+        return value
+
 
 
 class SkillSetRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
 
+    category = serializers.CharField(
+        required=True,
+        allow_blank=False,
+    )
+    sub_category = serializers.CharField(
+        required=True,
+        allow_blank=False,
+    )
+    description = serializers.CharField(
+        required=True,
+        allow_blank=False,
+    )
+    insurance_requirements = serializers.PrimaryKeyRelatedField(
+        many=True,
+        queryset=InsuranceRequirement.objects.all(),
+        allow_null=True,
+    )
+
     class Meta:
         model = SkillSet
         fields = (
@@ -35,3 +81,12 @@ class SkillSetRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
             'description',
             'insurance_requirements'
         )
+
+    def validate_insurance_requirements(self, value):
+        """
+        Include validation on no-blanks
+        """
+        if hasattr(value, "__len__"):
+            if len(value) == 0:
+                raise serializers.ValidationError("Please select an option!")
+        return value
