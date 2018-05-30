@@ -10,38 +10,22 @@
 
 {% block content %}
 
-
-<!-- CUSTOM JAVASCRIPT -->
-<!----------------------------------------------------------------------------->
 <script>
-    /**
-     *  OVERRIDE THE TEXT DESCRIPTION.
-     */
-    $(document).ready(function () {
-        $('#id_create_btn').html("Next&nbsp;<i class=\"fas fa-arrow-right\"></i>");
-    });
-
-    /**
-     *  DEVELOPERS NOTE:
-     *  THE FOLLOWING JAVASCRIPT FUNCTIONS MUST BE DECLARED IF YOU WANT TO CALL
-     *  THE "commercial_confirm_view.html" FORM TEMPLATE.
-     */
-    function click_previous_button() {
-        window.location = "{% url 'workery_tenant_job_add_commercial_customer_create' %}";
-    }
-
-    function click_submit_button() {
-        // // STEP 1 OF 2:
+    function ajax_select(customer_id, customer_name, customer_type_of) {
         var previous_url = window.location.href;
         localStorage.setItem("tmp_branch_previous_url", previous_url);
 
+        // STEP 1 OF 2:
+        // Save the customer ID # into the users local storage.
+        localStorage.setItem("tmp_customer_id", customer_id);
+        localStorage.setItem("tmp_customer_name", customer_name);
+        localStorage.setItem("tmp_job_customer_type_of", customer_type_of);
+
         // STEP 2 OF 2:
+        // Redirect to the next page in the form.
         window.location = "{% url 'workery_tenant_job_step_2_create' %}";
     }
 </script>
-<!----------------------------------------------------------------------------->
-<!-- end CUSTOM JAVASCRIPT -->
-
 
 <main id="main" role="main">
 
@@ -70,7 +54,7 @@
     <!------------------------------------------------------------------------->
     <!-- end BACK BUTTON -->
 
-    <h1>Add Client</h1>
+    <h1>Add Job</h1>
 
 
     <!-- STEP NAVIGATION -->
@@ -101,11 +85,64 @@
     <!-- end STEP NAVIGATION -->
 
 
-    <!-- FORM -->
-    <!------------------------------------------------------------------------->
-    {% include 'tenant_customer/create/commercial_confirm_form.html' %}
-    <!------------------------------------------------------------------------->
-    <!-- end FORM -->
+	<div class="col-sm-12 mx-auto mt-3 pt-3 mb-3 text-center">
+		<h5>{% if customer_list %}We found a match for this client:{% else %}We did not find any matches.{% endif %}</h5>
+	</div>
+	<div class="col-sm-12 mx-auto mt-4">
+	<div class="card-columns">
+    {% for customer in customer_list %}
+       	    <div class="card bg-light">
+   		    <div class="card-body">
+   		       <h5 class="card-title"><a href="{% url 'workery_tenant_customer_lite_retrieve' 'list' customer.id %}">
+                   {% if customer.type_of == tenant_constants.RESIDENTIAL_CUSTOMER_TYPE_OF_ID %}
+                       <i class="fa fa-home fa-lg"></i>
+                   {% elif customer.type_of == tenant_constants.COMMERCIAL_CUSTOMER_TYPE_OF_ID %}
+                       <i class="fa fa-building fa-lg"></i>
+                   {% else %}
+                       <i class="fa fa-question fa-lg"></i>
+                   {% endif %}
+                   <strong>{{ customer }}</strong></a>
+               		</h5>
+   		    	<p class="card-text">
+                    {{ customer.street_address }}<br>
+                    {% if customer.street_address_extra %}{{ customer.street_address_extra }}<br>{% endif %}
+   			        {{ customer.address_locality }}, {{ customer.address_region }}<br>
+                    {% if customer.telephone %}<a href="tel:{{ customer.telephone }}">{{ customer.telephone|pretty_formatted_phonenumber }}</a>{% else %}-{% endif %}
+                    {% if customer.email %}<a href="tel:{{ customer.email }}">{{ customer.email }}</a>{% endif %}
+   			    </p>
+			    <button  id="select-btn-{{ customer.id }}" type="button" class="btn btn-primary btn-lg btn-block" onclick="ajax_select({{ customer.id }}, '{{ customer }}', {{ customer.type_of }});">Select</button>
+   		    </div>
+   	  </div>
+    {% endfor %}
+	</div>
+	</div>
+	<div class="col-sm-12 mx-auto mt-3 mb-3 text-center">
+		<h5>Do you wish to continue adding a NEW client?</h5>
+        <a href="{% url 'workery_tenant_job_search_or_add_create' %}">
+		    <button type="button" class="btn btn-lg btn-dark m-3">
+                <i class="fas fa-arrow-left"></i>
+		        No - use search again
+		    </button>
+        </a>
+		<a href="{% url 'workery_tenant_pick_customer_create' %}" target="_blank">
+		    <button type="button" class="btn btn-lg btn-success m-3">
+		       <i class="fas fa-external-link-alt"></i> Yes - add a new client
+		    </button>
+        </a>
+
+		<!-- Modal -->
+		<div class="modal fade" id="yesModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		  <div class="modal-dialog" role="document">
+		    <div class="modal-content">
+		      <div class="modal-body">
+		        <p class="m-3 p-2">It appears that you are going to create a duplicate record for an existing client. Are you sure that you want to continue?</p>
+		        <button type="button" class="btn btn-lg btn-secondary float-left m-2" data-dismiss="modal">No</button>
+		        <button type="button" class="btn btn-lg btn-primary float-right m-2" id="yes_submit">Yes</button>
+		      </div>
+		    </div>
+		  </div>
+		</div>
+	</div>
 
     <!-- RETURN-TO-TOP -->
     <a id="return-to-top" href="#" class="btn-info btn-lg back-to-top" role="button" title="Back to top"><i class="fas fa-angle-up fa-2x"></i></a>

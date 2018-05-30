@@ -10,13 +10,8 @@ urlpatterns = (
     path('jobs/summary/', list_view.JobSummaryView.as_view(), name='workery_tenant_job_summary'),
 
     # Create
-    path('jobs/create/step-1/search-or-add', create_views.Step1A1CreateOrAddCustomerView.as_view(), name='workery_tenant_job_search_or_add_create'),
-    path('jobs/create/step-1/search-results', create_views.Step1A2CustomerSearchResultsView.as_view(), name='workery_tenant_job_customer_search_results_create'),
-    path('jobs/create/step-1/pick-customer-type', create_views.Step1B1PickCustomerView.as_view(), name='workery_tenant_job_pick_add_customer_type'),
-    path('jobs/create/step-1/add-residential-customer', create_views.Step1B2AAddResidentialCustomerView.as_view(), name='workery_tenant_job_add_residential_customer_create'),
-    path('jobs/create/step-1/add-residential-customer-confirmation', create_views.Step1B2BAddCustomerConfirmationView.as_view(), name='workery_tenant_job_add_residential_customer_confirmation'),
-    path('jobs/create/step-1/add-commercial-customer', create_views.Step1B3AAddCommercialCustomerView.as_view(), name='workery_tenant_job_add_commercial_customer_create'),
-    path('jobs/create/step-1/add-commercial-customer-confirmation', create_views.Step1B3BAddCommercialConfirmationView.as_view(), name='workery_tenant_job_add_commercial_customer_confirmation'),
+    path('jobs/create/step-1/search-or-add', create_views.Step1ACreateOrAddCustomerView.as_view(), name='workery_tenant_job_search_or_add_create'),
+    path('jobs/create/step-1/search-results', create_views.Step1BCustomerSearchResultsView.as_view(), name='workery_tenant_job_customer_search_results_create'),
     path('jobs/create/step-2/', create_views.Step2View.as_view(), name='workery_tenant_job_step_2_create'),
     path('jobs/create/step-3/', create_views.Step3View.as_view(), name='workery_tenant_job_step_3_create'),
     path('jobs/create/step-4/', create_views.Step4View.as_view(), name='workery_tenant_job_step_4_create'),

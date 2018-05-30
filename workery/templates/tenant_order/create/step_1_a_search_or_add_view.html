@@ -30,7 +30,7 @@
                 var lastname = document.getElementById('lastname');
                 var l_error = document.getElementById('lastname-error');
 
-		var email_id = document.getElementById('email-id');
+		        var email_id = document.getElementById('email-id');
                 var email_error = document.getElementById('email-error');
 
                 var phonenumber = document.getElementById('phonenumber');
@@ -244,7 +244,9 @@
 	  <div class="form-row">
 	    <div class="col-md-8 text-center mx-auto mb-3">
 	    	<h3 class="p-2">- or -</h3>
-	    	<a class="btn btn-primary btn-lg btn-block" href="{% url 'workery_tenant_job_pick_add_customer_type' %}" role="button"><i class="fas fa-plus"></i> Add New</a>
+            <a href="{% url 'workery_tenant_pick_customer_create' %}" role="button" target="_blank">
+                <i class="fas fa-external-link-alt"></i>
+                Add New</a>
 	    </div>
 	  </div>
 	</form>

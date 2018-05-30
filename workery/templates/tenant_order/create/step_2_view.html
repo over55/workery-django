@@ -81,14 +81,14 @@
         localStorage.setItem("tmp_start_date", tmp_start_date);
         localStorage.setItem("tmp_follow_up_days_number", tmp_follow_up_days_number);
 
-	// STEP 2: CLEAR EXISTING ERROR TEXT.
+	    // STEP 2: CLEAR EXISTING ERROR TEXT.
         $('#all_error_result').html("");
-	$('#all_error_result').removeClass('error-block');
+	    $('#all_error_result').removeClass('error-block');
 
         // Redirect to the next page in the form.
         if (tmp_job_type !== undefined && tmp_home_support !== undefined) {
-	   if (tmp_job_type == 'Ongoing' && tmp_follow_up_days_number == undefined) {
-            	$('#all_error_result').append("<div class='form-error'><b>Follow Up: </b> This field may not be blank.</div>");
+	    if (tmp_job_type == 'Ongoing' && tmp_follow_up_days_number == undefined) {
+        $('#all_error_result').append("<div class='form-error'><b>Follow Up: </b> This field may not be blank.</div>");
 		$('#all_error_result').addClass('error-block');
 		$('#follow_up_days_number-error').html("<ul><li>This field may not be blank.</li></ul>");
 		$('#residential-job').addClass('was-validated');
