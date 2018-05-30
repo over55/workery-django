@@ -83,58 +83,58 @@
         // $('#email').val(localStorage.getItem("tmp_shared_franchise_email"));
         // $('#telephone').val(localStorage.getItem("tmp_shared_franchise_telephone"));
         // $('#comment').val(localStorage.getItem("tmp_shared_franchise_comment"));
-	    
+
 // All fields individual inline validation check
 			    var form_franchise = document.getElementById('add-franchise-form');
-			    
+
 			    var a_shortname = document.getElementById('short_name');
 			    var sn_error = document.getElementById('short_name-error');
-			    
+
 			    var a_fullname = document.getElementById('full_name');
 			    var fn_error = document.getElementById('full_name-error');
-			    
+
 	    		    var a_schemaname = document.getElementById('schema_name');
 			    var schema_error = document.getElementById('schema_name-error');
-			    
+
 	    		    var a_email = document.getElementById('email');
 			    var email_error = document.getElementById('email-error');
-			    
+
 			    var a_dob = document.getElementById('dob');
 			    var dob_error = document.getElementById('dob-error');
-			   
+
 	    		    var a_describe = document.getElementById('describe');
 			    var describe_error = document.getElementById('describe-error');
-	    
+
 	    		    var ok_email = document.getElementById('ok_to_email');
 			    var ok_email_error = document.getElementById('ok_to_email-error');
-			    
+
 	    		    var a_street_address = document.getElementById('street_address');
 			    var street_address_error = document.getElementById('street_address-error');
-	    		    
+
 	     		    var a_street_address_extra = document.getElementById('street_address_extra');
 			    var street_address_extra_error = document.getElementById('street_address_extra-error');
-	    		
+
 			    var a_address_locality = document.getElementById('address_locality');
 			    var address_locality_error = document.getElementById('address_locality-error');
-	    		    
+
 	    		    var a_address_region = document.getElementById('address_region');
 			    var address_region_error = document.getElementById('address_region-error');
-	    		    
+
 	    		    var a_address_country = document.getElementById('address_country');
 			    var address_country_error = document.getElementById('address_country-error');
-	    		    
+
 			    var a_postal_code = document.getElementById('postal_code');
 			    var postal_code_error = document.getElementById('postal_code-error');
-	    		    
+
 	    		    var a_post_office = document.getElementById('post_office_box_number');
 			    var post_office_error = document.getElementById('post_office_box_number-error');
-	    		    
+
 	    		    var a_comment = document.getElementById('comment');
 			    var comment_error = document.getElementById('comment-error');
-	    
+
 	    		    var a_is_active = document.getElementById('is_active');
 			    var is_active_error = document.getElementById('is_active-error');
-	    		    
+
 	    		    // Loop over them and prevent submission
 			    $(function(){
 			     	// validation for residential form fields
@@ -144,160 +144,160 @@
 			           		form_franchise.classList.add('was-validated');
 			           		e.preventDefault();
 			           	}
-			           	
+
 			           	if(a_shortname.validity.tooShort) {
 			           		sn_error.innerHTML = "Fill in at least 2 characters.";
 			           		form_franchise.classList.add('was-validated');
 			           		e.preventDefault();
 			           	}
-			           	
+
 			           	if(a_fullname.validity.valueMissing) {
 			           		fn_error.innerHTML = "This field may not be blank.";
 			           		form_franchise.classList.add('was-validated');
 			           		e.preventDefault();
 			           	}
-			           	
+
 			           	if(a_fullname.validity.tooShort) {
 			           		fn_error.innerHTML = "Fill in at least 2 characters.";
 			           		form_franchise.classList.add('was-validated');
 			           		e.preventDefault();
 			           	}
-					
+
 					if(a_schemaname.validity.valueMissing) {
 			           		schema_error.innerHTML = "This field may not be blank.";
 			           		form_franchise.classList.add('was-validated');
 			           		e.preventDefault();
 			           	}
-			           	
+
 			           	if(a_schemaname.validity.tooShort) {
 			           		schema_error.innerHTML = "Fill in at least 2 characters.";
 			           		form_franchise.classList.add('was-validated');
 			           		e.preventDefault();
 			           	}
-			           	
+
 					if(a_describe.validity.valueMissing) {
 			           		describe_error.innerHTML = "This field may not be blank.";
 			           		form_franchise.classList.add('was-validated');
 			           		e.preventDefault();
 			           	}
-			           	
+
 			           	if(a_describe.validity.tooShort) {
 			           		describe_error.innerHTML = "Fill in at least 10 characters.";
 			           		form_franchise.classList.add('was-validated');
 			           		e.preventDefault();
 			           	}
-			           	
+
 					if(a_street_address.validity.valueMissing) {
 			           		street_address_error.innerHTML = "This field may not be blank.";
 			           		form_franchise.classList.add('was-validated');
 			           		e.preventDefault();
 			           	}
-			           	
+
 			           	if(a_street_address.validity.tooShort) {
 			           		street_address_error.innerHTML = "Fill in at least 3 characters.";
 			           		form_franchise.classList.add('was-validated');
 			           		e.preventDefault();
 			           	}
-					
+
 					if(a_street_address_extra.validity.tooShort) {
 			           		street_address_extra_error.innerHTML = "Fill in at least 3 characters.";
 			           		form_franchise.classList.add('was-validated');
 			           		e.preventDefault();
 			           	}
-			           	
+
 					if(a_address_locality.validity.valueMissing) {
 			           		address_locality_error.innerHTML = "This field may not be blank.";
 			           		form_franchise.classList.add('was-validated');
 			           		e.preventDefault();
 			           	}
-			           	
+
 			           	if(a_address_locality.validity.tooShort) {
 			           		address_locality_error.innerHTML = "Fill in at least 3 characters.";
 			           		form_franchise.classList.add('was-validated');
 			           		e.preventDefault();
 			           	}
-			           	
+
 					if(a_address_region.validity.valueMissing) {
 			           		address_region_error.innerHTML = "This field may not be blank.";
 			           		form_franchise.classList.add('was-validated');
 			           		e.preventDefault();
 			           	}
-					
+
 					if(a_address_country.validity.valueMissing) {
 			           		address_country_error.innerHTML = "This field may not be blank.";
 			           		form_franchise.classList.add('was-validated');
 			           		e.preventDefault();
 			           	}
-					
+
 					if(a_postal_code.validity.valueMissing) {
 			           		postal_code_error.innerHTML = "This field may not be blank.";
 			           		form_franchise.classList.add('was-validated');
 			           		e.preventDefault();
 			           	}
-			           	
+
 			           	if(a_postal_code.validity.tooShort) {
 			           		postal_code_error.innerHTML = "Fill in at least 6 characters.";
 			           		form_franchise.classList.add('was-validated');
 			           		e.preventDefault();
 			           	}
-			           	
+
 			           	if(a_email.validity.valueMissing) {
 			           		email_error.innerHTML = "This field may not be blank.";
 			           		form_franchise.classList.add('was-validated');
 			           		e.preventDefault();
 			           	}
-			           	
+
 			           	if(a_email.validity.typeMismatch || a_email.validity.tooShort) {
 			           		email_error.innerHTML = "Fill in valid E-mail Id.";
 			           		form_franchise.classList.add('was-validated');
 			           		e.preventDefault();
 			           	}
-			           	
+
 			           	if(a_dob.validity.valueMissing) {
 			           		dob_error.innerHTML = "Please select date of birth.";
 			           		form_franchise.classList.add('was-validated');
 			           		e.preventDefault();
 			           	}
-			           	
+
 					if(a_post_office.validity.valueMissing) {
 			           		post_office_error.innerHTML = "This field may not be blank.";
 			           		form_franchise.classList.add('was-validated');
 			           		e.preventDefault();
 			           	}
-			           	
+
 			           	if(a_post_office.validity.tooShort) {
 			           		post_office_error.innerHTML = "Fill in at least 3 characters.";
 			           		form_franchise.classList.add('was-validated');
 			           		e.preventDefault();
 			           	}
-			           	
+
 					if(a_comment.validity.valueMissing) {
 			           		comment_error.innerHTML = "This field may not be blank.";
 			           		form_franchise.classList.add('was-validated');
 			           		e.preventDefault();
 			           	}
-			           	
+
 			           	if(a_comment.validity.tooShort) {
 			           		comment_error.innerHTML = "Fill in at least 10 characters.";
 			           		form_franchise.classList.add('was-validated');
 			           		e.preventDefault();
 			           	}
-								           	
+
 			           	if(!ok_email.validity.valid) {
 			           		ok_email_error.innerHTML = "Please pick either Yes or No choice.";
 			           		form_franchise.classList.add('was-validated');
 			           		e.preventDefault();
 			           	}
-			           	
+
 					if(!a_is_active.validity.valid) {
 			           		is_active_error.innerHTML = "Please pick either Yes or No choice.";
 			           		form_franchise.classList.add('was-validated');
 			           		e.preventDefault();
 			           	}
 			        });
-			   
+
 			    });
-	    
+
     }); // end Ready
 
     /**
@@ -317,7 +317,7 @@
     	}
     	return frags.join(' ');
     }
-	
+
     /**
      *
      */
@@ -426,7 +426,7 @@
                     if(err.hasOwnProperty(prop)) {
                         var val = err[prop];
                         var fdname = humanize(prop);
-			    
+
                         $('#all_error_result').append("<div class='form-error'><b>"+fdname+":</b> "+val+" </div>");
 			$('#all_error_result').addClass('error-block');
                     }
@@ -477,11 +477,10 @@
     <div class="row">
 		<div class="col-sm-3 p-3 mb-2">
 			<a class="btn btn-primary btn-lg" href="{% url 'workery_shared_franchise_list' %}" role="button">
-                <svg class="svg-inline--fa fa-arrow-left fa-w-14" aria-hidden="true" data-fa-processed="" data-prefix="fas" data-icon="arrow-left" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
-                <path fill="currentColor" d="M257.5 445.1l-22.2 22.2c-9.4 9.4-24.6 9.4-33.9 0L7 273c-9.4-9.4-9.4-24.6 0-33.9L201.4 44.7c9.4-9.4 24.6-9.4 33.9 0l22.2 22.2c9.5 9.5 9.3 25-.4 34.3L136.6 216H424c13.3 0 24 10.7 24 24v32c0 13.3-10.7 24-24 24H136.6l120.5 114.8c9.8 9.3 10 24.8.4 34.3z"></path>
-            </svg><!-- <i class="fas fa-arrow-left"></i> -->&nbsp;{% trans 'Back to Franchises' %}</a>
+               <i class="fas fa-arrow-left"></i> &nbsp;{% trans 'Back to Franchises' %}
+            </a>
 		</div>
-	</div>
+    </div>
     <!------------------------------------------------------------------------->
     <!-- end BACK BUTTON -->
 

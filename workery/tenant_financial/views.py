@@ -11,7 +11,10 @@ from tenant_foundation.models import Order
 
 class UnpaidJobOrderListView(LoginRequiredMixin, ListView, ExtraRequestProcessingMixin):
     context_object_name = 'job_list'
-    queryset = Order.objects.filter(invoice_service_fee_payment_date=None).order_by('-id')
+    queryset = Order.objects.filter(
+        invoice_service_fee_payment_date=None,
+        is_archived=False
+    ).order_by('-id')
     template_name = 'tenant_financial/list/unpaid_view.html'
     paginate_by = 100
 
@@ -22,9 +25,15 @@ class UnpaidJobOrderListView(LoginRequiredMixin, ListView, ExtraRequestProcessin
         modified_context['current_page'] = "financials"
 
         # Get count of total tasks.
-        modified_context['unpaid_count'] = Order.objects.filter(invoice_service_fee_payment_date=None).count()
-        modified_context['paid_count'] = Order.objects.filter(~Q(invoice_service_fee_payment_date=None)).count()
-        modified_context['all_count'] = Order.objects.all().count()
+        modified_context['unpaid_count'] = Order.objects.filter(
+            invoice_service_fee_payment_date=None,
+            is_archived=False
+        ).count()
+        modified_context['paid_count'] = Order.objects.filter(
+            ~Q(invoice_service_fee_payment_date=None) &
+            Q(is_archived=False)
+        ).count()
+        modified_context['all_count'] = Order.objects.filter(is_archived=False).count()
 
         # DEVELOPERS NOTE:
         # - We will extract the URL parameters and save them into our context
@@ -37,7 +46,10 @@ class UnpaidJobOrderListView(LoginRequiredMixin, ListView, ExtraRequestProcessin
 
 class PaidJobOrderListView(LoginRequiredMixin, ListView, ExtraRequestProcessingMixin):
     context_object_name = 'job_list'
-    queryset = Order.objects.filter(~Q(invoice_service_fee_payment_date=None)).order_by('-invoice_service_fee_payment_date')
+    queryset = Order.objects.filter(
+        ~Q(invoice_service_fee_payment_date=None) &
+        Q(is_archived=False)
+    ).order_by('-invoice_service_fee_payment_date')
     template_name = 'tenant_financial/list/paid_view.html'
     paginate_by = 100
 
@@ -48,9 +60,15 @@ class PaidJobOrderListView(LoginRequiredMixin, ListView, ExtraRequestProcessingM
         modified_context['current_page'] = "financials"
 
         # Get count of total tasks.
-        modified_context['unpaid_count'] = Order.objects.filter(invoice_service_fee_payment_date=None).count()
-        modified_context['paid_count'] = Order.objects.filter(~Q(invoice_service_fee_payment_date=None)).count()
-        modified_context['all_count'] = Order.objects.all().count()
+        modified_context['unpaid_count'] = Order.objects.filter(
+            invoice_service_fee_payment_date=None,
+            is_archived=False
+        ).count()
+        modified_context['paid_count'] = Order.objects.filter(
+            ~Q(invoice_service_fee_payment_date=None) &
+            Q(is_archived=False)
+        ).count()
+        modified_context['all_count'] = Order.objects.filter(is_archived=False).count()
 
         # DEVELOPERS NOTE:
         # - We will extract the URL parameters and save them into our context
@@ -63,7 +81,7 @@ class PaidJobOrderListView(LoginRequiredMixin, ListView, ExtraRequestProcessingM
 
 class AllJobOrderListView(LoginRequiredMixin, ListView, ExtraRequestProcessingMixin):
     context_object_name = 'job_list'
-    queryset = Order.objects.all().order_by('-id')
+    queryset = Order.objects.filter(is_archived=False).order_by('-id')
     template_name = 'tenant_financial/list/all_view.html'
     paginate_by = 100
 
@@ -74,9 +92,15 @@ class AllJobOrderListView(LoginRequiredMixin, ListView, ExtraRequestProcessingMi
         modified_context['current_page'] = "financials"
 
         # Get count of total tasks.
-        modified_context['unpaid_count'] = Order.objects.filter(invoice_service_fee_payment_date=None).count()
-        modified_context['paid_count'] = Order.objects.filter(~Q(invoice_service_fee_payment_date=None)).count()
-        modified_context['all_count'] = Order.objects.all().count()
+        modified_context['unpaid_count'] = Order.objects.filter(
+            invoice_service_fee_payment_date=None,
+            is_archived=False
+        ).count()
+        modified_context['paid_count'] = Order.objects.filter(
+            ~Q(invoice_service_fee_payment_date=None) &
+            Q(is_archived=False)
+        ).count()
+        modified_context['all_count'] = Order.objects.filter(is_archived=False).count()
 
         # DEVELOPERS NOTE:
         # - We will extract the URL parameters and save them into our context

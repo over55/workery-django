@@ -94,75 +94,75 @@
 			p_dropdown.prop('selectedIndex', 1);
 		}
     	}
-		 
+
 	// All fields individual inline validation check
 			    var form_residential = document.getElementById('update-client-form');
-			    
+
 			    var a_firstname = document.getElementById('firstname');
 			    var f_error = document.getElementById('firstname-error');
-			    
+
 			    var a_lastname = document.getElementById('lastname');
 			    var l_error = document.getElementById('lastname-error');
-			    
+
 			    var a_phonenumber = document.getElementById('phonenumber');
 			    var pn_error = document.getElementById('phonenumber-error');
 			    var pn_pattern = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
-			    
+
 			    var a_mobilenumber = document.getElementById('other_phonenumber');
 			    var mobile_error = document.getElementById('other_phonenumber-error');
 			    var mobile_pattern = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
-	    		    
+
 			    var a_email = document.getElementById('email');
 			    var email_error = document.getElementById('email-error');
-			    
+
 			    var a_dob = document.getElementById('dob');
 			    var dob_error = document.getElementById('dob-error');
-			    
+
 			    var a_gender = document.getElementById('gender');
 			    var gender_error = document.getElementById('gender-error');
-	    
+
 	    		    var a_describe = document.getElementById('describe');
 			    var describe_error = document.getElementById('describe-error');
-	    
+
 	    		    var ok_email = document.getElementById('ok_to_email');
 			    var ok_email_error = document.getElementById('ok_to_email-error');
-			    
+
 			    var ok_text = document.getElementById('ok_to_text');
 			    var ok_text_error = document.getElementById('ok_to_text-error');
-	    
+
 	    		    var a_person_tags = document.getElementById('person_tags');
 			    var person_tags_error = document.getElementById('person_tags-error');
-	    
+
 	    		    var a_street_address = document.getElementById('street_address');
 			    var street_address_error = document.getElementById('street_address-error');
-	    		    
+
 	     		    var a_street_address_extra = document.getElementById('street_address_extra');
 			    var street_address_extra_error = document.getElementById('street_address_extra-error');
-	    		
+
 			    var a_address_locality = document.getElementById('address_locality');
 			    var address_locality_error = document.getElementById('address_locality-error');
-	    		    
+
 	    		    var a_address_region = document.getElementById('address_region');
 			    var address_region_error = document.getElementById('address_region-error');
-	    		    
+
 	    		    var a_address_country = document.getElementById('address_country');
 			    var address_country_error = document.getElementById('address_country-error');
-	    		    
+
 			    var a_postal_code = document.getElementById('postal_code');
 			    var postal_code_error = document.getElementById('postal_code-error');
-	    		    
+
 	    		    var a_post_office = document.getElementById('post_office_box_number');
 			    var post_office_error = document.getElementById('post_office_box_number-error');
-	    		    
+
 	    		    var a_comment = document.getElementById('comment');
 			    var comment_error = document.getElementById('comment-error');
-	    
+
 	    		    var a_password = document.getElementById('password');
 			    var password_error = document.getElementById('password-error');
-	    
+
 	    		    var a_password_repeat = document.getElementById('password_repeat');
 			    var password_repeat_error = document.getElementById('password_repeat-error');
-	    		    
+
 	    		    // Loop over them and prevent submission
 			    $(function(){
 			     	// validation for residential form fields
@@ -172,188 +172,188 @@
 			           		form_residential.classList.add('was-validated');
 			           		e.preventDefault();
 			           	}
-			           	
+
 			           	if(a_firstname.validity.tooShort) {
 			           		f_error.innerHTML = "Fill in at least 2 characters.";
 			           		form_residential.classList.add('was-validated');
 			           		e.preventDefault();
 			           	}
-			           	
+
 			           	if(a_lastname.validity.valueMissing) {
 			           		l_error.innerHTML = "This field may not be blank.";
 			           		form_residential.classList.add('was-validated');
 			           		e.preventDefault();
 			           	}
-			           	
+
 			           	if(a_lastname.validity.tooShort) {
 			           		l_error.innerHTML = "Fill in at least 2 characters.";
 			           		form_residential.classList.add('was-validated');
 			           		e.preventDefault();
 			           	}
-			           	
+
 					if(a_describe.validity.valueMissing) {
 			           		describe_error.innerHTML = "This field may not be blank.";
 			           		form_residential.classList.add('was-validated');
 			           		e.preventDefault();
 			           	}
-			           	
+
 			           	if(a_describe.validity.tooShort) {
 			           		describe_error.innerHTML = "Fill in at least 10 characters.";
 			           		form_residential.classList.add('was-validated');
 			           		e.preventDefault();
 			           	}
-			           	
+
 					if(a_person_tags.validity.valueMissing) {
 			           		person_tags_error.innerHTML = "This field may not be blank.";
 			           		form_residential.classList.add('was-validated');
 			           		e.preventDefault();
 			           	}
-					
+
 					if(a_street_address.validity.valueMissing) {
 			           		street_address_error.innerHTML = "This field may not be blank.";
 			           		form_residential.classList.add('was-validated');
 			           		e.preventDefault();
 			           	}
-			           	
+
 			           	if(a_street_address.validity.tooShort) {
 			           		street_address_error.innerHTML = "Fill in at least 3 characters.";
 			           		form_residential.classList.add('was-validated');
 			           		e.preventDefault();
 			           	}
-					
+
 					if(a_street_address_extra.validity.tooShort) {
 			           		street_address_extra_error.innerHTML = "Fill in at least 3 characters.";
 			           		form_residential.classList.add('was-validated');
 			           		e.preventDefault();
 			           	}
-			           	
+
 					if(a_address_locality.validity.valueMissing) {
 			           		address_locality_error.innerHTML = "This field may not be blank.";
 			           		form_residential.classList.add('was-validated');
 			           		e.preventDefault();
 			           	}
-			           	
+
 			           	if(a_address_locality.validity.tooShort) {
 			           		address_locality_error.innerHTML = "Fill in at least 3 characters.";
 			           		form_residential.classList.add('was-validated');
 			           		e.preventDefault();
 			           	}
-			           	
+
 					if(a_address_region.validity.valueMissing) {
 			           		address_region_error.innerHTML = "This field may not be blank.";
 			           		form_residential.classList.add('was-validated');
 			           		e.preventDefault();
 			           	}
-					
+
 					if(a_address_country.validity.valueMissing) {
 			           		address_country_error.innerHTML = "This field may not be blank.";
 			           		form_residential.classList.add('was-validated');
 			           		e.preventDefault();
 			           	}
-					
+
 					if(a_postal_code.validity.valueMissing) {
 			           		postal_code_error.innerHTML = "This field may not be blank.";
 			           		form_residential.classList.add('was-validated');
 			           		e.preventDefault();
 			           	}
-			           	
+
 			           	if(a_postal_code.validity.tooShort) {
 			           		postal_code_error.innerHTML = "Fill in at least 6 characters.";
 			           		form_residential.classList.add('was-validated');
 			           		e.preventDefault();
 			           	}
-			           	
+
 			           	if(a_email.validity.valueMissing) {
 			           		email_error.innerHTML = "This field may not be blank.";
 			           		form_residential.classList.add('was-validated');
 			           		e.preventDefault();
 			           	}
-			           	
+
 			           	if(a_email.validity.typeMismatch || a_email.validity.tooShort) {
 			           		email_error.innerHTML = "Fill in valid E-mail Id.";
 			           		form_residential.classList.add('was-validated');
 			           		e.preventDefault();
 			           	}
-			           	
+
 			           	if(a_dob.validity.valueMissing) {
 			           		dob_error.innerHTML = "Please select date of birth.";
 			           		form_residential.classList.add('was-validated');
 			           		e.preventDefault();
 			           	}
-			           	
+
 			           	if(a_gender.validity.valueMissing) {
 			           		gender_error.innerHTML = "Please select client gender.";
 			           		form_residential.classList.add('was-validated');
 			           		e.preventDefault();
 			           	}
-			           	
+
 					if(a_post_office.validity.valueMissing) {
 			           		post_office_error.innerHTML = "This field may not be blank.";
 			           		form_residential.classList.add('was-validated');
 			           		e.preventDefault();
 			           	}
-			           	
+
 			           	if(a_post_office.validity.tooShort) {
 			           		post_office_error.innerHTML = "Fill in at least 3 characters.";
 			           		form_residential.classList.add('was-validated');
 			           		e.preventDefault();
 			           	}
-			           	
+
 					if(a_comment.validity.valueMissing) {
 			           		comment_error.innerHTML = "This field may not be blank.";
 			           		form_residential.classList.add('was-validated');
 			           		e.preventDefault();
 			           	}
-			           	
+
 			           	if(a_comment.validity.tooShort) {
 			           		comment_error.innerHTML = "Fill in at least 10 characters.";
 			           		form_residential.classList.add('was-validated');
 			           		e.preventDefault();
 			           	}
-					
+
 					if(a_password.validity.valueMissing) {
 			           		password_error.innerHTML = "This field may not be blank.";
 			           		form_residential.classList.add('was-validated');
 			           		e.preventDefault();
 			           	}
-			           	
+
 			           	if(a_password.validity.tooShort) {
 			           		password_error.innerHTML = "Fill in at least 2 characters.";
 			           		form_residential.classList.add('was-validated');
 			           		e.preventDefault();
 			           	}
-					
+
 					if(a_password_repeat.validity.valueMissing) {
 			           		password_repeat_error.innerHTML = "This field may not be blank.";
 			           		form_residential.classList.add('was-validated');
 			           		e.preventDefault();
 			           	}
-			           	
+
 			           	if(a_password_repeat.validity.tooShort) {
 			           		password_repeat_error.innerHTML = "Fill in at least 2 characters.";
 			           		form_residential.classList.add('was-validated');
 			           		e.preventDefault();
 			           	}
-			           	
+
 					if(!a_password_repeat.value.match(a_password)) {
 			           		password_repeat_error.innerHTML = "Repeat password mismatch";
 					        password_repeat_error.style.display = "block";
 					        form_residential.classList.add('was-validated');
 					        e.preventDefault();
 			           	}
-			           	
+
 			           	if(a_phonenumber.validity.valueMissing) {
 			           		pn_error.innerHTML = "This field may not be blank.";
 			           		form_residential.classList.add('was-validated');
 			           		e.preventDefault();
 			           	}
-			           	
+
 			           	if(a_phonenumber.validity.tooShort) {
 			           		pn_error.innerHTML = "Fill in valid 10 digits phone number.";
 			           		form_residential.classList.add('was-validated');
 			           		e.preventDefault();
 			           	}
-			           	
+
 			           	// Phone number format validation
 			           	if(!a_phonenumber.value.match(pn_pattern)) {
 			           		pn_error.innerHTML = "Fill in valid 10 digits phone number.";
@@ -361,19 +361,19 @@
 					        form_residential.classList.add('was-validated');
 					        e.preventDefault();
 			           	}
-			           	
+
 			           	if(a_mobilenumber.validity.valueMissing) {
 			           		mobile_error.innerHTML = "This field may not be blank.";
 			           		form_residential.classList.add('was-validated');
 			           		e.preventDefault();
 			           	}
-			           	
+
 			           	if(a_mobilenumber.validity.tooShort) {
 			           		mobile_error.innerHTML = "Fill in valid 10 digits mobile number.";
 			           		form_residential.classList.add('was-validated');
 			           		e.preventDefault();
 			           	}
-			           	
+
 			           	// Mobile number format validation Which Is Optional
 			           	if(!a_mobilenumber.value.match(mobile_pattern)) {
 			           		if(a_mobilenumber.value.length == 0){
@@ -386,20 +386,20 @@
 					        	e.preventDefault();
 					        }
 			           	}
-			           	
+
 			           	if(!ok_email.validity.valid) {
 			           		ok_email_error.innerHTML = "Please pick either Yes or No choice.";
 			           		form_residential.classList.add('was-validated');
 			           		e.preventDefault();
 			           	}
-			           	
+
 			           	if(!ok_text.validity.valid) {
 			           		ok_text_error.innerHTML = "Please pick either Yes or No choice.";
 			           		form_residential.classList.add('was-validated');
 			           		e.preventDefault();
 			           	}
 			        });
-			   
+
 				// To hide phone field format error text
 				$('#phonenumber').on('input',function(){
 				       	if(a_phonenumber.value.match(pn_pattern)) {
@@ -417,7 +417,7 @@
 				       	}
 				});
 			    });
-	    
+
 	/**
 	 *  Password Strength Check Validation.
 	 */
@@ -430,17 +430,17 @@
 	checkPassword.onkeyup = function() {
   		// Validate lowercase letters
   		var lowerCaseLetters = /[a-z]/g;
-		  if(checkPassword.value.match(lowerCaseLetters)) {  
+		  if(checkPassword.value.match(lowerCaseLetters)) {
 		    s_letter.classList.remove("pass_check");
 		    s_letter.classList.add("pass_valid");
 		  } else {
 		    s_letter.classList.remove("pass_valid");
 		    s_letter.classList.add("pass_check");
 		  }
-  
+
   		// Validate capital letters
   		var upperCaseLetters = /[A-Z]/g;
-		  if(checkPassword.value.match(upperCaseLetters)) {  
+		  if(checkPassword.value.match(upperCaseLetters)) {
 		    s_capital.classList.remove("pass_check");
 		    s_capital.classList.add("pass_valid");
 		  } else {
@@ -449,14 +449,14 @@
 		  }
   		// Validate numbers
   		var specialChar = /[!@#\$%\^&\*]/g;
-		  if(checkPassword.value.match(specialChar)) {  
+		  if(checkPassword.value.match(specialChar)) {
 		    s_character.classList.remove("pass_check");
 		    s_character.classList.add("pass_valid");
 		  } else {
 		    s_character.classList.remove("pass_valid");
 		    s_character.classList.add("pass_check");
 		  }
-  
+
   		// Validate length
 		  if(checkPassword.value.length >= 8) {
 		    s_length.classList.remove("pass_check");
@@ -553,7 +553,7 @@
             textfield_error.innerHTML = "";
         }
     }
-    
+
     /**
      *  Function to make text readable removing underscore and capitalizing
      */
@@ -564,7 +564,7 @@
     	}
     	return frags.join(' ');
     }
-		
+
     /**
      *  Function will attempt to submit the form to the API server. This
      *  funciton will:
@@ -714,7 +714,7 @@
                         var val = err[prop];
                         console.log(val);
                         var fdname = humanize(prop);
-			    
+
                         $('#all_error_result').append("<div class='form-error'><b>"+fdname+":</b> "+val+" </div>");
 			$('#all_error_result').addClass('error-block');
                     }
@@ -781,12 +781,11 @@
     <!------------------------------------------------------------------------->
     <div class="row">
 		<div class="col-sm-3 p-3 mb-2">
-			<a class="btn btn-primary btn-lg" href="{% url 'workery_tenant_customer_full_retrieve' template customer.id %}" role="button">
-                <svg class="svg-inline--fa fa-arrow-left fa-w-14" aria-hidden="true" data-fa-processed="" data-prefix="fas" data-icon="arrow-left" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
-                <path fill="currentColor" d="M257.5 445.1l-22.2 22.2c-9.4 9.4-24.6 9.4-33.9 0L7 273c-9.4-9.4-9.4-24.6 0-33.9L201.4 44.7c9.4-9.4 24.6-9.4 33.9 0l22.2 22.2c9.5 9.5 9.3 25-.4 34.3L136.6 216H424c13.3 0 24 10.7 24 24v32c0 13.3-10.7 24-24 24H136.6l120.5 114.8c9.8 9.3 10 24.8.4 34.3z"></path>
-            </svg><!-- <i class="fas fa-arrow-left"></i> -->&nbsp;{% trans 'Back to Client Detail' %}</a>
+			<a class="btn btn-primary btn-lg" href="{% url 'workery_tenant_customer_full_retrieve' %}" role="button">
+               <i class="fas fa-arrow-left"></i>&nbsp;{% trans 'Back to Client Detail' %}
+            </a>
 		</div>
-	</div>
+    </div>
     <!------------------------------------------------------------------------->
     <!-- end BACK BUTTON -->
 
@@ -956,7 +955,7 @@
                   placeholder="{% trans 'Password' %}"
                         class="form-control form-control-lg border border-success"
                          type="password"
-			 pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#\$%\^&\*]).{8,}" 
+			 pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#\$%\^&\*]).{8,}"
                autocapitalize="off"
                     minlength="2"
                     maxlength="30" required />
