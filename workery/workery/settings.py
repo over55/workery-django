@@ -133,9 +133,9 @@ INSTALLED_APPS = list(SHARED_APPS) + [app for app in TENANT_APPS if app not in S
 
 MIDDLEWARE = [
     # 'raven.contrib.django.raven_compat.middleware.Sentry404CatchMiddleware', # Third Party
+    'corsheaders.middleware.CorsMiddleware',                     # Third Party
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'corsheaders.middleware.CorsMiddleware',                     # Third Party
     'django_tenants.middleware.main.TenantMainMiddleware',       # Third Party
     'trapdoor.middleware.TrapdoorMiddleware',                    # Third Party
     'whitenoise.middleware.WhiteNoiseMiddleware',                # Third Party
