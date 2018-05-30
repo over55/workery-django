@@ -203,7 +203,8 @@ class Command(BaseCommand):
                         'invoice_service_fee_payment_date': local_payment_date,
                         'invoice_service_fee': service_fee_obj,
                         'invoice_service_fee_amount': local_service_fee,
-                        'type_of': RESIDENTIAL_JOB_TYPE_OF_ID # WE PUT THIS BECAUSE WE ARE NOT IMPORTING COMMERCIAL!
+                        'type_of': RESIDENTIAL_JOB_TYPE_OF_ID, # WE PUT THIS BECAUSE WE ARE NOT IMPORTING COMMERCIAL!
+                        'is_archived': True
                     }
                 )
 

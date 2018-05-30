@@ -274,3 +274,28 @@ class JobRetrieveForUnassignCreateView(LoginRequiredMixin, DetailView, ExtraRequ
 
         # Return our modified context.
         return modified_context
+
+
+class ArchivedJobFullRetrieveView(LoginRequiredMixin, DetailView, ExtraRequestProcessingMixin):
+    context_object_name = 'job'
+    model = Order
+    template_name = 'tenant_order/retrieve/for/archive_view.html'
+
+    def get_object(self):
+        order = super().get_object()  # Call the superclass
+        return order                  # Return the object
+
+    def get_context_data(self, **kwargs):
+        # Get the context of this class based view.
+        modified_context = super().get_context_data(**kwargs)
+
+        # Required for navigation
+        modified_context['current_page'] = "jobs"
+
+        # DEVELOPERS NOTE:
+        # - We will extract the URL parameters and save them into our context
+        #   so we can use this to help the pagination.
+        modified_context['parameters'] = self.get_params_dict([])
+
+        # Return our modified context.
+        return modified_context

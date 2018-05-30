@@ -53,6 +53,8 @@ class JobSearchResultView(LoginRequiredMixin, ListView, ExtraRequestProcessingMi
             filter = OrderFilter(self.request.GET, queryset=queryset)
             queryset = filter.qs
 
+        queryset = queryset.filter(is_archived=False)
+
         # Added join
         queryset = queryset.prefetch_related(
             'customer',

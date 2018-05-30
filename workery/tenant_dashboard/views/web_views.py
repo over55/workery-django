@@ -36,7 +36,8 @@ class DashboardView(LoginRequiredMixin, TemplateView, ExtraRequestProcessingMixi
         modified_context['jobs_count'] = Order.objects.filter(
             is_cancelled=False,
             completion_date__isnull=True,
-            invoice_service_fee_payment_date__isnull=True
+            invoice_service_fee_payment_date__isnull=True,
+            is_archived=False
         ).count()
 
         modified_context['tasks_count'] = TaskItem.objects.filter(

@@ -20,6 +20,7 @@ urlpatterns = (
 
     # List
     path('jobs/list/', list_view.JobListView.as_view(), name='workery_tenant_job_list'),
+    path('archived-jobs/list/', list_view.ArchivedJobListView.as_view(), name='workery_tenant_job_archive_list'),
 
     # Search
     path('jobs/search/', search_view.JobSearchView.as_view(), name='workery_tenant_job_search'),
@@ -34,6 +35,7 @@ urlpatterns = (
     path('jobs/<str:template>/detail/<int:pk>/close/', retrieve_view.JobRetrieveForCloseCreateView.as_view(), name='workery_tenant_job_retrieve_for_close_create'),
     path('jobs/<str:template>/detail/<int:pk>/postpone/', retrieve_view.JobRetrieveForPostponeCreateView.as_view(), name='workery_tenant_job_retrieve_for_postpone_create'),
     path('jobs/<str:template>/detail/<int:pk>/unassign/', retrieve_view.JobRetrieveForUnassignCreateView.as_view(), name='workery_tenant_job_retrieve_for_unassign_create'),
+    path('archived-jobs/detail/<int:pk>/full/', retrieve_view.ArchivedJobFullRetrieveView.as_view(), name='workery_tenant_job_archive_full_retrieve'),
 
     # Update
     path('jobs/<str:template>/detail/<int:pk>/edit/', update_views.JobUpdateView.as_view(), name='workery_tenant_job_update'),
