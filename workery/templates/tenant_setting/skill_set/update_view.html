@@ -135,7 +135,7 @@
                     </div>
                     <div class="form-group col-md-12 mb-4">
                         <label for="insurance_requirements">Insurance Requirement(s)</label>
-                        <select id="insurance_requirements" name="insurance_requirements" class="form-control form-control-lg border border-success" name="states[]" multiple="multiple">
+                        <select id="insurance_requirements" name="insurance_requirements" class="form-control form-control-lg border border-success" name="states[]" required="" multiple="multiple">
                         {% for insurance_requirement in insurance_requirements %}
                             <option value="{{ insurance_requirement.id }}" id="insurance_requirement_option_id_{{ insurance_requirement.id }}" {% if insurance_requirement in skill_set.insurance_requirements.all %}selected{% endif %}>{{ insurance_requirement }}</option>
                         {% endfor %}

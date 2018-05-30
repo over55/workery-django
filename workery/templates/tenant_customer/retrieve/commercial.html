@@ -4,7 +4,7 @@
         <!-- ############ PERSON ############ -->
         <table class="table table-bordered custom-cell-w">
             <tbody>
-                <tr class="table-info">
+                <tr class="bg-primary text-white">
                     <th scope="row" colspan="2">Personal Information</th>
                 </tr>
                 <tr>
@@ -49,7 +49,7 @@
                 </tr>
                 <!-- ############ end PERSON ############ -->
                 <!-- ############ CONTACT POINT ############ -->
-                <tr class="table-info">
+                <tr class="bg-primary text-white">
                     <th scope="row" colspan="2">Contact Point</th>
                 </tr>
                 <tr>
@@ -84,7 +84,7 @@
                 </tr>
                 <!-- ############ end CONTACT POINT ############ -->
                 <!-- ############ LOCATION ############ -->
-                <tr class="table-info">
+                <tr class="bg-primary text-white">
                     <th scope="row" colspan="2">Postal Address</th>
                 </tr>
                 <tr>
@@ -137,7 +137,7 @@
                 </tr>
                 <!-- ############ end LOCATION ############ -->
                 <!-- ############ BUSINESS ############ -->
-                <tr class="table-info">
+                <tr class="bg-primary text-white">
                     <th scope="row" colspan="2">Company Information</th>
                 </tr>
                 <tr>
@@ -149,15 +149,4 @@
                 <!-- ############ end BUSINESS ############ -->
              </tbody>
         </table>
-        <!-- end SUBMIT BUTTON -->
-        <div class="form-group col-md-12 mb-3 mx-auto text-center">
-            <a href="{% url 'workery_tenant_customer_update' template object.id %}">
-            <button  id="id_submit_btn"
-                class="btn btn-warning btn-lg btn-fxw mt-4"
-                type="button">
-            <i class="fas fa-edit"></i>&nbsp;{% trans 'Edit Client' %}
-            </button>
-            </a>
-        </div>
-        <!-- end SUBMIT BUTTON -->
 </div>
