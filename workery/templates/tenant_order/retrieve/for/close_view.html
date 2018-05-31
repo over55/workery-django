@@ -137,6 +137,7 @@
         if ( reason == 'other' ) {
             reason = 1;
         }
+        reason = parseInt(reason);
 
         // Get our "Customer Survey".
         var was_job_satisfactory = get_selected_radio_value('was_job_satisfactory');
@@ -164,7 +165,8 @@
         // If the user did not select the job was completed reason then we will
         // set these values as false so our API web-service does not return any
         // 400 validation errors.
-        if (reason !== "4") {
+        if (reason !== 4) {
+            console.log("Setting default values.");
             was_job_satisfactory = false;
             was_job_finished_on_time_and_on_budget = false;
             was_associate_punctual = false;

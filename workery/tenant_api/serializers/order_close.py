@@ -51,6 +51,13 @@ def cannot_be_zero_or_negative(value):
     return value
 
 
+def cannot_be_negative(value):
+    if value < 0:
+        raise serializers.ValidationError('Please enter an amount which is not negative!')
+    return value
+
+
+
 class OrderCloseCreateSerializer(serializers.Serializer):
     job = serializers.PrimaryKeyRelatedField(many=False, queryset=Order.objects.all(), required=True)
     reason = serializers.IntegerField(required=True, validators=[cannot_be_zero_or_negative,])
@@ -62,13 +69,13 @@ class OrderCloseCreateSerializer(serializers.Serializer):
     was_associate_professional = serializers.BooleanField(required=True)
     would_customer_refer_our_organization = serializers.BooleanField(required=True)
     invoice_date = serializers.DateField(required=True)
-    invoice_id = serializers.IntegerField(required=False, validators=[cannot_be_zero_or_negative,])
-    invoice_quote_amount = serializers.FloatField(required=False, validators=[cannot_be_zero_or_negative,])
-    invoice_labour_amount = serializers.FloatField(required=True, validators=[cannot_be_zero_or_negative,])
-    invoice_material_amount = serializers.FloatField(required=True, validators=[cannot_be_zero_or_negative,])
-    invoice_tax_amount = serializers.FloatField(required=False, validators=[cannot_be_zero_or_negative,])
-    invoice_total_amount = serializers.FloatField(required=False, validators=[cannot_be_zero_or_negative,])
-    invoice_service_fee_amount = serializers.FloatField(required=False, validators=[cannot_be_zero_or_negative,])
+    invoice_id = serializers.IntegerField(required=False, validators=[cannot_be_negative,])
+    invoice_quote_amount = serializers.FloatField(required=False, validators=[cannot_be_negative,])
+    invoice_labour_amount = serializers.FloatField(required=True, validators=[cannot_be_negative,])
+    invoice_material_amount = serializers.FloatField(required=True, validators=[cannot_be_negative,])
+    invoice_tax_amount = serializers.FloatField(required=False, validators=[cannot_be_negative,])
+    invoice_total_amount = serializers.FloatField(required=False, validators=[cannot_be_negative,])
+    invoice_service_fee_amount = serializers.FloatField(required=False, validators=[cannot_be_negative,])
 
     # Meta Information.
     class Meta:
@@ -150,8 +157,6 @@ class OrderCloseCreateSerializer(serializers.Serializer):
         job.invoice_total_amount = Money(invoice_total_amount, WORKERY_APP_DEFAULT_MONEY_CURRENCY)
         job.invoice_service_fee_amount = Money(invoice_service_fee_amount, WORKERY_APP_DEFAULT_MONEY_CURRENCY)
         job.save()
-
-        return
 
         # For debugging purposes only.
         logger.info("Job financials where updated.")
