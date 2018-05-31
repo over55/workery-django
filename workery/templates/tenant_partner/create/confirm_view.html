@@ -163,6 +163,7 @@
                 'password': password,
                 'password_repeat': password_repeat,
                 'type_of': {{ tenant_constants.COMMERCIAL_CUSTOMER_TYPE_OF_ID }},
+                'is_active': localStorage.getItem("tmp_partner_is_active"),
                 'tags': localStorage.getObj("tmp_partner_person_tag_ids"),
                 'description': localStorage.getItem("tmp_partner_description"),
                 'extra_comment': localStorage.getItem("tmp_partner_comment"),
