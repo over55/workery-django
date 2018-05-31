@@ -206,8 +206,8 @@
             c_dropdown.append('<option selected="true" disabled>Choose Country</option>');
             c_dropdown.prop('selectedIndex', 1);
 
-            const state = "{% static 'js/provinces.json' %}";
-            const country = "{% static 'js/countries.json' %}";
+            const state = "{% url 'workery_get_provinces_api_endpoint' %}?format=json";
+            const country = "{% url 'workery_get_countries_api_endpoint' %}?format=json";
 
             console.log(state);
             console.log(country); // KANWAR - PLEASE IMPLEMENT.

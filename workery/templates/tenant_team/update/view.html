@@ -80,8 +80,8 @@
 	c_dropdown.empty();
 	c_dropdown.append('<option selected="true" disabled>Choose Country</option>');
 	{% if staff.address_country %}c_dropdown.val('{{staff.address_country}}');{% else %}c_dropdown.prop('selectedIndex', 1);{% endif %}
-	const state = "{% static 'js/provinces.json' %}";
-        const country = "{% static 'js/countries.json' %}";
+	const state = "{% url 'workery_get_provinces_api_endpoint' %}?format=json";
+        const country = "{% url 'workery_get_countries_api_endpoint' %}?format=json";
 	console.log(state);
         console.log(country); // KANWAR - PLEASE IMPLEMENT.
 	// Populate dropdown with list of countries

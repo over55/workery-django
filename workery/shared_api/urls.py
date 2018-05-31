@@ -11,7 +11,8 @@ from shared_api.views.franchise_views import (
     SharedFranchiseListCreateAPIView,
     SharedFranchiseCreateValidationAPIView
 )
-
+from shared_api.views.country_and_province_views import get_countries
+from shared_api.views.country_and_province_views import get_provinces
 
 urlpatterns = [
     #----------------------#
@@ -32,6 +33,10 @@ urlpatterns = [
     url(r'^api-token-auth/', obtain_jwt_token),
     url(r'^api-token-refresh/', refresh_jwt_token),
     url(r'^api-token-verify/', verify_jwt_token),
+
+    # Country / Provinces
+    url(r'^api/get_countries$', get_countries, name='workery_get_countries_api_endpoint'),
+    url(r'^api/get_provinces$', get_provinces, name='workery_get_provinces_api_endpoint'),
 ]
 
 
