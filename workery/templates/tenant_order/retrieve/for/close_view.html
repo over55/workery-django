@@ -89,7 +89,7 @@
         total_amount += invoice_material_amount;
         total_amount += invoice_tax_amount;
         service_fee = service_fee / 100.0;
-        service_fee = service_fee * total_amount;
+        service_fee = service_fee * invoice_labour_amount;
 
         // For debugging purposes only.
         console.log("total_amount", total_amount);
