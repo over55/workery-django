@@ -40,7 +40,7 @@ class JobSummaryView(LoginRequiredMixin, ListView, ExtraRequestProcessingMixin):
 
 class JobListView(LoginRequiredMixin, ListView, ExtraRequestProcessingMixin):
     context_object_name = 'job_list'
-    queryset = Order.objects.filter(is_archived=True).order_by('-id')
+    queryset = Order.objects.filter(is_archived=False).order_by('-id')
     template_name = 'tenant_order/list/view.html'
     paginate_by = 100
 

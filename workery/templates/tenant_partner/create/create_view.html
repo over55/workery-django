@@ -154,7 +154,7 @@
         }
     }
     // end country/province dropdown function
-	    
+
 	/**
 	 *  Password Strength Check Validation.
 	 */
@@ -167,17 +167,17 @@
 	checkPassword.onkeyup = function() {
   		// Validate lowercase letters
   		var lowerCaseLetters = /[a-z]/g;
-		  if(checkPassword.value.match(lowerCaseLetters)) {  
+		  if(checkPassword.value.match(lowerCaseLetters)) {
 		    s_letter.classList.remove("pass_check");
 		    s_letter.classList.add("pass_valid");
 		  } else {
 		    s_letter.classList.remove("pass_valid");
 		    s_letter.classList.add("pass_check");
 		  }
-  
+
   		// Validate capital letters
   		var upperCaseLetters = /[A-Z]/g;
-		  if(checkPassword.value.match(upperCaseLetters)) {  
+		  if(checkPassword.value.match(upperCaseLetters)) {
 		    s_capital.classList.remove("pass_check");
 		    s_capital.classList.add("pass_valid");
 		  } else {
@@ -186,14 +186,14 @@
 		  }
   		// Validate numbers
   		var specialChar = /[!@#\$%\^&\*]/g;
-		  if(checkPassword.value.match(specialChar)) {  
+		  if(checkPassword.value.match(specialChar)) {
 		    s_character.classList.remove("pass_check");
 		    s_character.classList.add("pass_valid");
 		  } else {
 		    s_character.classList.remove("pass_valid");
 		    s_character.classList.add("pass_check");
 		  }
-  
+
   		// Validate length
 		  if(checkPassword.value.length >= 8) {
 		    s_length.classList.remove("pass_check");
@@ -203,7 +203,7 @@
 		    s_length.classList.add("pass_check");
 		  }
 	}
-	    
+
     }); // end Ready
 
     function lookup_customer_by_company_name_and_email(company_name, email) {
@@ -336,7 +336,7 @@
     function ajax_post_form_submission(redirect_url) {
         save_submission(redirect_url);
     }
-	
+
     /**
      *  Function to make text readable removing underscore and capitalizing
      */
@@ -347,7 +347,7 @@
     	}
     	return frags.join(' ');
     }
-	
+
     /**
      *  Function will validate the fields and then save them to the local
      *  storage, then direct user to the link in the 'redirect_url' variable.
@@ -555,7 +555,7 @@
                     if(err.hasOwnProperty(prop)) {
                         var val = err[prop];
                         var fdname = humanize(prop);
-			    
+
                         $('#all_error_result').append("<div class='form-error'><b>"+fdname+":</b> "+val+" </div>");
 			$('#all_error_result').addClass('error-block');
 			// Inline fields errors code
