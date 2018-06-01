@@ -35,6 +35,9 @@
     function ajax_submit() {
         var tmp_skillsets = $('#skillsets').val();
         localStorage.setObj("tmp_skillsets", tmp_skillsets);
+	if (tmp_skillsets == undefined || tmp_skillsets == null || tmp_skillsets.length == 0) {
+            tmp_skillsets = '';
+        }
 
         var ids_string = tmp_skillsets.toString();
         localStorage.setObj("tmp_skillset_ids", tmp_skillsets);
@@ -62,11 +65,11 @@
         $('#all_error_result').html("");
 	$('#all_error_result').removeClass('error-block');
 	    
-	if (tmp_skillsets !== undefined && order_service_fee !== '') {
+	if (tmp_skillsets !== '' && order_service_fee !== '') {
 		// Redirect to the next page in the form.
         	window.location = "{% url 'workery_tenant_job_step_5_create' %}";
 	} else {
-		if (tmp_skillsets == undefined) {
+		if (tmp_skillsets == '') {
 			// Errors box code
 			$('#all_error_result').append("<div class='form-error'><b>Skill(s):</b> This field may not be blank. </div>");
 			$('#all_error_result').addClass('error-block');
