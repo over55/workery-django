@@ -66,9 +66,9 @@
         var invoice_tax_amount = $('#invoice_tax_amount').val();
 
         // Convert to float
-        invoice_labour_amount = parseFloat(invoice_labour_amount);
-        invoice_material_amount = parseFloat(invoice_material_amount);
-        invoice_tax_amount = parseFloat(invoice_tax_amount);
+        invoice_labour_amount = parseFloat(invoice_labour_amount).toFixed(2);
+        invoice_material_amount = parseFloat(invoice_material_amount).toFixed(2);
+        invoice_tax_amount = parseFloat(invoice_tax_amount).toFixed(2);
 
         // Replace NaN with zero.
         invoice_labour_amount = ( isNaN(invoice_labour_amount) ? 0 : invoice_labour_amount );
@@ -81,7 +81,7 @@
         console.log("invoice_tax_amount", invoice_tax_amount);
 
         // Constants
-        var service_fee = parseFloat("{{ job.invoice_service_fee.percentage }}");
+        var service_fee = parseFloat("{{ job.invoice_service_fee.percentage }}").toFixed(2);
 
         // Calculate
         var total_amount = 0;
