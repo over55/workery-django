@@ -19,6 +19,8 @@ django-htmlmin==0.10.0
 django-ipware==2.0.1
 django-money==0.12.3
 django-phonenumber-field==2.0.0
+django-redis-cache==1.7.1
+django-redis-sessions==0.6.1
 django-rq==1.0.1
 django-starterkit==1.0.3
 django-storages==1.6.6

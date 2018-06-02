@@ -523,11 +523,34 @@ REST_FRAMEWORK = {
 
 RQ_QUEUES = {
     'default': {
-        'HOST': 'localhost',
-        'PORT': 6379,
-        'DB': 0,
-        'DEFAULT_TIMEOUT': 360,
+        'USE_REDIS_CACHE': 'default',
     }
+}
+
+
+# django-redis-cache
+# https://github.com/sebleier/django-redis-cache
+
+CACHES = {
+    'default': {
+        'BACKEND': 'redis_cache.RedisCache',
+        'LOCATION': 'localhost:6379',
+    },
+}
+
+
+SESSION_ENGINE = 'redis_sessions.session'
+
+
+# django-redis-sessions
+# https://github.com/martinrusev/django-redis-sessions
+
+SESSION_REDIS = {
+    'host': 'localhost',
+    'port': 6379,
+    'db': 0,
+    'prefix': 'session',
+    'socket_timeout': 1
 }
 
 

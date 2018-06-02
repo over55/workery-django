@@ -24,6 +24,8 @@ pip install djangorestframework-msgpack   # MessagePack support for Django REST 
 pip install djangorestframework-jwt       # JSON Web Token Authentication support for Django REST Framework
 pip install django-rq                     # Redis Queue Library
 pip install rq-scheduler                  # Redis Queue Scheduler Library
+pip install django-redis-cache            # Redis cache backend for django
+pip install django-redis-sessions         # Session backend for Django that stores sessions in a Redis database
 pip install django-anymail[mailgun]       # Third-Party Email
 pip install whitenoise                    # Simplified static file serving for Python web apps
 pip install brotlipy                      # Brotli compression format to be used by "whitenoise" library.

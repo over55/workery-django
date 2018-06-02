@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
 from django.shortcuts import render
+from django.views.decorators.cache import cache_page
 
 
+@cache_page(60 * 15) # 60 seconds per 1 minute x 15 minutes
 def index_page(request):
     """
     The default entry point into our application.
