@@ -16,6 +16,9 @@ whoami;
 # If you are running as a `root` user then this command will set ownership to django.
 chown -R django:django /opt/django/workery-django;
 
+# Update Python library (if necessary).
+pip install -r requirements.txt
+
 # Update our database.
 echo "Updating database...";
 cd workery
