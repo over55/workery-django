@@ -236,7 +236,7 @@ class Associate(AbstractPerson):
         related_name="%(app_label)s_%(class)s_associate_comments_related"
     )
     activity_sheet = models.ManyToManyField(
-        "Order",
+        "WorkOrder",
         help_text=_('The activity sheet items of the orders the associate accepted or rejected.'),
         blank=True,
         through='ActivitySheetItem',

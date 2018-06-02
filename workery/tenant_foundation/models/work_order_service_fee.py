@@ -25,9 +25,9 @@ from tenant_foundation.utils import *
 #     return timezone.now() + timedelta(days=days)
 
 
-class OrderServiceFeeManager(models.Manager):
+class WorkOrderServiceFeeManager(models.Manager):
     def delete_all(self):
-        items = OrderServiceFee.objects.all()
+        items = WorkOrderServiceFee.objects.all()
         for item in items.all():
             item.delete()
 
@@ -41,13 +41,13 @@ def get_todays_date(days=0):
 @transaction.atomic
 def increment_order_service_fee_id_number():
     """Function will generate a unique big-int."""
-    last_order_service_fee = OrderServiceFee.objects.all().order_by('id').last();
+    last_order_service_fee = WorkOrderServiceFee.objects.all().order_by('id').last();
     if last_order_service_fee:
         return last_order_service_fee.id + 1
     return 1
 
 
-class OrderServiceFee(models.Model):
+class WorkOrderServiceFee(models.Model):
     """
     The percentage that must be applied on the job's total cost for the
     `Franchise` to collect as a service fee to run the organization.
@@ -55,20 +55,20 @@ class OrderServiceFee(models.Model):
 
     class Meta:
         app_label = 'tenant_foundation'
-        db_table = 'workery_order_service_fees'
+        db_table = 'workery_work_order_service_fees'
         ordering = ['percentage']
-        verbose_name = _('OrderServiceFee')
-        verbose_name_plural = _('OrderServiceFees')
+        verbose_name = _('Work Order Service Fee')
+        verbose_name_plural = _('Work Order Service Fees')
         default_permissions = ()
         permissions = (
-            ("can_get_order_service_fees", "Can get order_service_fees"),
-            ("can_get_order_service_fee", "Can get order_service_fee"),
-            ("can_post_order_service_fee", "Can create order_service_fee"),
-            ("can_put_order_service_fee", "Can update order_service_fee"),
-            ("can_delete_order_service_fee", "Can delete order_service_fee"),
+            ("can_get_order_service_fees", "Can get work order service fees"),
+            ("can_get_order_service_fee", "Can get work order service fee"),
+            ("can_post_order_service_fee", "Can create work order service fee"),
+            ("can_put_order_service_fee", "Can update work order service fee"),
+            ("can_delete_order_service_fee", "Can delete work order service fee"),
         )
 
-    objects = OrderServiceFeeManager()
+    objects = WorkOrderServiceFeeManager()
     id = models.BigAutoField(
        primary_key=True,
        default=increment_order_service_fee_id_number,

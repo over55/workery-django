@@ -25,9 +25,9 @@ from tenant_foundation.constants import UNASSIGNED_JOB_TYPE_OF_ID, JOB_TYPE_OF_C
 from tenant_foundation.utils import *
 
 
-class OrderManager(models.Manager):
+class WorkOrderManager(models.Manager):
     def delete_all(self):
-        items = Order.objects.all()
+        items = WorkOrder.objects.all()
         for item in items.all():
             item.delete()
 
@@ -37,7 +37,7 @@ class OrderManager(models.Manager):
         # which comes with Django to utilize the 'full text search' feature.
         # For more details please read:
         # https://docs.djangoproject.com/en/2.0/ref/contrib/postgres/search/
-        return Order.objects.annotate(search=SearchVector(
+        return WorkOrder.objects.annotate(search=SearchVector(
             'indexed_text',
         ),).filter(search=keyword)
 
@@ -45,7 +45,7 @@ class OrderManager(models.Manager):
 @transaction.atomic
 def increment_order_id_number():
     """Function will generate a unique big-int."""
-    last_job_order = Order.objects.all().order_by('id').last();
+    last_job_order = WorkOrder.objects.all().order_by('id').last();
     if last_job_order:
         return last_job_order.id + 1
     return 1
@@ -57,22 +57,22 @@ def get_todays_date(days=0):
     return timezone.now() + timedelta(days=days)
 
 
-class Order(models.Model):
+class WorkOrder(models.Model):
     class Meta:
         app_label = 'tenant_foundation'
-        db_table = 'workery_orders'
-        verbose_name = _('Order')
-        verbose_name_plural = _('Orders')
+        db_table = 'workery_work_orders'
+        verbose_name = _('Work Order')
+        verbose_name_plural = _('Work Orders')
         default_permissions = ()
         permissions = (
-            ("can_get_orders", "Can get orders"),
-            ("can_get_order", "Can get order"),
-            ("can_post_order", "Can create order"),
-            ("can_put_order", "Can update order"),
-            ("can_delete_order", "Can delete order"),
+            ("can_get_orders", "Can get work orders"),
+            ("can_get_order", "Can get work order"),
+            ("can_post_order", "Can create work order"),
+            ("can_put_order", "Can update work order"),
+            ("can_delete_order", "Can delete work order"),
         )
 
-    objects = OrderManager()
+    objects = WorkOrderManager()
     id = models.BigAutoField(
        primary_key=True,
        default = increment_order_id_number,
@@ -178,7 +178,7 @@ class Order(models.Model):
         "Comment",
         help_text=_('The comments belonging to this order made by other people.'),
         blank=True,
-        through='OrderComment',
+        through='WorkOrderComment',
         related_name="%(app_label)s_%(class)s_order_comments_related"
     )
     follow_up_days_number = models.PositiveSmallIntegerField(
@@ -338,7 +338,7 @@ class Order(models.Model):
         blank=True,
     )
     invoice_service_fee = models.ForeignKey(
-        "OrderServiceFee",
+        "WorkOrderServiceFee",
         help_text=_('The service fee applied by the franchise on the total cost of this job order which will be paid by the associate member.'),
         related_name="%(app_label)s_%(class)s_service_fee_related",
         on_delete=models.SET_NULL,
@@ -443,4 +443,4 @@ class Order(models.Model):
         '''
         Run our `save` function.
         '''
-        super(Order, self).save(*args, **kwargs)
+        super(WorkOrder, self).save(*args, **kwargs)

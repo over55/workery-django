@@ -10,7 +10,7 @@ from tenant_foundation.models import (
     Associate,
     AwayLog,
     Customer,
-    Order,
+    WorkOrder,
     TaskItem
 )
 
@@ -33,7 +33,7 @@ class DashboardView(LoginRequiredMixin, TemplateView, ExtraRequestProcessingMixi
 
         modified_context['customers_count'] = Customer.objects.all().count()
 
-        modified_context['jobs_count'] = Order.objects.filter(
+        modified_context['jobs_count'] = WorkOrder.objects.filter(
             is_cancelled=False,
             completion_date__isnull=True,
             invoice_service_fee_payment_date__isnull=True,

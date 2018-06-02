@@ -9,30 +9,30 @@ from rest_framework import authentication, viewsets, permissions, status
 from rest_framework.response import Response
 from tenant_api.pagination import StandardResultsSetPagination
 from tenant_api.permissions.order import (
-   CanListCreateOrderPermission,
-   CanRetrieveUpdateDestroyOrderPermission
+   CanListCreateWorkOrderPermission,
+   CanRetrieveUpdateDestroyWorkOrderPermission
 )
 from tenant_api.serializers.order import (
-    OrderListCreateSerializer,
-    OrderRetrieveUpdateDestroySerializer
+    WorkOrderListCreateSerializer,
+    WorkOrderRetrieveUpdateDestroySerializer
 )
-from tenant_foundation.models import Order
+from tenant_foundation.models import WorkOrder
 
 
-class OrderListCreateAPIView(generics.ListCreateAPIView):
-    serializer_class = OrderListCreateSerializer
+class WorkOrderListCreateAPIView(generics.ListCreateAPIView):
+    serializer_class = WorkOrderListCreateSerializer
     pagination_class = StandardResultsSetPagination
     permission_classes = (
         permissions.IsAuthenticated,
         IsAuthenticatedAndIsActivePermission,
-        CanListCreateOrderPermission
+        CanListCreateWorkOrderPermission
     )
 
     def get_queryset(self):
         """
         List
         """
-        queryset = Order.objects.all().order_by('-created')
+        queryset = WorkOrder.objects.all().order_by('-created')
         s = self.get_serializer_class()
         queryset = s.setup_eager_loading(self, queryset)
         return queryset
@@ -41,7 +41,7 @@ class OrderListCreateAPIView(generics.ListCreateAPIView):
         """
         Create
         """
-        serializer = OrderListCreateSerializer(data=request.data, context={
+        serializer = WorkOrderListCreateSerializer(data=request.data, context={
             'created_by': request.user,
             'franchise': request.tenant
         })
@@ -50,13 +50,13 @@ class OrderListCreateAPIView(generics.ListCreateAPIView):
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
-class OrderRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
-    serializer_class = OrderRetrieveUpdateDestroySerializer
+class WorkOrderRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = WorkOrderRetrieveUpdateDestroySerializer
     pagination_class = StandardResultsSetPagination
     permission_classes = (
         permissions.IsAuthenticated,
         IsAuthenticatedAndIsActivePermission,
-        CanRetrieveUpdateDestroyOrderPermission
+        CanRetrieveUpdateDestroyWorkOrderPermission
     )
 
     def get(self, request, pk=None):
@@ -65,7 +65,7 @@ class OrderRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
         """
         order = get_object_or_404(Order, pk=pk)
         self.check_object_permissions(request, order)  # Validate permissions.
-        serializer = OrderRetrieveUpdateDestroySerializer(order, many=False)
+        serializer = WorkOrderRetrieveUpdateDestroySerializer(order, many=False)
         # queryset = serializer.setup_eager_loading(self, queryset)
         return Response(
             data=serializer.data,
@@ -78,7 +78,7 @@ class OrderRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
         """
         order = get_object_or_404(Order, pk=pk)
         self.check_object_permissions(request, order)  # Validate permissions.
-        serializer = OrderRetrieveUpdateDestroySerializer(order, data=request.data, context={
+        serializer = WorkOrderRetrieveUpdateDestroySerializer(order, data=request.data, context={
             'last_modified_by': request.user,
             'franchise': request.tenant
         })

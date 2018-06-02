@@ -15,13 +15,13 @@ from rest_framework import exceptions, serializers
 from rest_framework.response import Response
 from shared_api.custom_fields import PhoneNumberField
 from shared_foundation import constants
-# from tenant_api.serializers.order_comment import OrderCommentSerializer
+# from tenant_api.serializers.order_comment import WorkOrderCommentSerializer
 from tenant_api.serializers.skill_set import SkillSetListCreateSerializer
 from tenant_foundation.constants import *
 from tenant_foundation.models import (
     Comment,
-    OrderComment,
-    Order,
+    WorkOrderComment,
+    WorkOrder,
     SkillSet,
     Tag,
     TaskItem
@@ -31,7 +31,7 @@ from tenant_foundation.models import (
 logger = logging.getLogger(__name__)
 
 
-class OrderListCreateSerializer(serializers.ModelSerializer):
+class WorkOrderListCreateSerializer(serializers.ModelSerializer):
     associate_first_name = serializers.ReadOnlyField(source='associate.owner.first_name')
     associate_last_name = serializers.ReadOnlyField(source='associate.owner.last_name')
     customer_first_name = serializers.ReadOnlyField(source='customer.owner.first_name')
@@ -53,7 +53,7 @@ class OrderListCreateSerializer(serializers.ModelSerializer):
     assigned_skill_sets = SkillSetListCreateSerializer(many=True, read_only=True)
 
     class Meta:
-        model = Order
+        model = WorkOrder
         fields = (
             # Read only fields.
             'id',
@@ -115,7 +115,7 @@ class OrderListCreateSerializer(serializers.ModelSerializer):
         invoice_service_fee = validated_data.get('invoice_service_fee', None)
 
         # Create our object.
-        order = Order.objects.create(
+        order = WorkOrder.objects.create(
             customer=customer,
             associate=associate,
             assignment_date=assignment_date,
@@ -159,7 +159,7 @@ class OrderListCreateSerializer(serializers.ModelSerializer):
                 last_modified_by=self.context['created_by'],
                 text=extra_comment
             )
-            OrderComment.objects.create(
+            WorkOrderComment.objects.create(
                 about=order,
                 comment=comment,
             )
@@ -181,7 +181,7 @@ class OrderListCreateSerializer(serializers.ModelSerializer):
         logger.info("Created first task.")
 
         # Update validation data.
-        # validated_data['comments'] = OrderComment.objects.filter(order=order)
+        # validated_data['comments'] = WorkOrderComment.objects.filter(order=order)
         validated_data['created'] = order.created
         validated_data['created_by'] = created_by
         validated_data['last_modified_by'] = created_by
@@ -193,7 +193,7 @@ class OrderListCreateSerializer(serializers.ModelSerializer):
         return validated_data
 
 
-class OrderRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
+class WorkOrderRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
     associate_first_name = serializers.ReadOnlyField(source='associate.owner.first_name')
     associate_last_name = serializers.ReadOnlyField(source='associate.owner.last_name')
     customer_first_name = serializers.ReadOnlyField(source='customer.owner.first_name')
@@ -218,7 +218,7 @@ class OrderRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
     invoice_id = serializers.IntegerField(required=False, allow_null=True)
 
     class Meta:
-        model = Order
+        model = WorkOrder
         fields = (
             # Read only field.
             'id',
@@ -335,14 +335,14 @@ class OrderRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
                 last_modified_by=self.context['last_modified_by'],
                 text=extra_comment
             )
-            OrderComment.objects.create(
+            WorkOrderComment.objects.create(
                 about=instance,
                 comment=comment,
             )
             logger.info("Created and set comment with order.")
 
         # Update validation data.
-        # validated_data['comments'] = OrderComment.objects.filter(order=instance)
+        # validated_data['comments'] = WorkOrderComment.objects.filter(order=instance)
         validated_data['created'] = instance.created
         validated_data['created_by'] = instance.created_by
         validated_data['last_modified_by'] = self.context['last_modified_by']

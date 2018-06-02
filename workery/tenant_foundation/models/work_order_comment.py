@@ -19,9 +19,9 @@ from shared_foundation.constants import *
 from tenant_foundation.utils import *
 
 
-class OrderCommentManager(models.Manager):
+class WorkOrderCommentManager(models.Manager):
     def delete_all(self):
-        items = OrderComment.objects.all()
+        items = WorkOrderComment.objects.all()
         for item in items.all():
             item.delete()
 
@@ -29,18 +29,18 @@ class OrderCommentManager(models.Manager):
 @transaction.atomic
 def increment_order_comment_id_number():
     """Function will generate a unique big-int."""
-    last_resource_item = OrderComment.objects.all().order_by('id').last();
+    last_resource_item = WorkOrderComment.objects.all().order_by('id').last();
     if last_resource_item:
         return last_resource_item.id + 1
     return 1
 
 
-class OrderComment(models.Model):
+class WorkOrderComment(models.Model):
     class Meta:
         app_label = 'tenant_foundation'
-        db_table = 'workery_order_comments'
-        verbose_name = _('Order Comment')
-        verbose_name_plural = _('Order Comments')
+        db_table = 'workery_work_order_comments'
+        verbose_name = _('Work Order Comment')
+        verbose_name_plural = _('Work Order Comments')
         ordering = ['-created_at']
         default_permissions = ()
         permissions = (
@@ -51,7 +51,7 @@ class OrderComment(models.Model):
             ("can_delete_order_comment", "Can delete order comment"),
         )
 
-    objects = OrderCommentManager()
+    objects = WorkOrderCommentManager()
     id = models.BigAutoField(
        primary_key=True,
        default=increment_order_comment_id_number,
@@ -70,7 +70,7 @@ class OrderComment(models.Model):
         on_delete=models.CASCADE,
     )
     about = models.ForeignKey(
-        "Order",
+        "WorkOrder",
         help_text=_('The order whom this comment is about.'),
         related_name="%(app_label)s_%(class)s_about_related",
         on_delete=models.CASCADE,

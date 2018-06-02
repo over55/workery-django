@@ -16,7 +16,7 @@ from tenant_foundation.models import (
     Associate,
     AwayLog,
     Customer,
-    Order,
+    WorkOrder,
     TaskItem,
     SkillSet
 )
@@ -45,7 +45,7 @@ def report_01_streaming_csv_view(request):
     from_dt = parser.parse(from_dt)
     to_dt = parser.parse(to_dt)
 
-    jobs = Order.objects.filter(
+    jobs = WorkOrder.objects.filter(
         completion_date__isnull=False,
         invoice_service_fee_amount=0,
         is_cancelled=False,
@@ -95,7 +95,7 @@ def report_05_streaming_csv_view(request):
     skill_sets = SkillSet.objects.all()
     for skill_set in skill_sets.all():
 
-        paid_jobs = Order.objects.filter(
+        paid_jobs = WorkOrder.objects.filter(
             invoice_service_fee_payment_date__range=(from_dt,to_dt),
             invoice_service_fee_amount__isnull=False,
             skill_sets__id=skill_set.id
@@ -135,7 +135,7 @@ def report_06_streaming_csv_view(request):
     from_dt = parser.parse(from_dt)
     to_dt = parser.parse(to_dt)
 
-    cancelled_jobs = Order.objects.filter(
+    cancelled_jobs = WorkOrder.objects.filter(
         completion_date__range=(from_dt,to_dt),
         is_cancelled=True
     ).order_by('-completion_date')
@@ -369,7 +369,7 @@ def report_13_streaming_csv_view(request):
     from_dt = parser.parse(from_dt)
     to_dt = parser.parse(to_dt)
 
-    jobs = Order.objects.filter(
+    jobs = WorkOrder.objects.filter(
         assignment_date__range=(from_dt,to_dt),
         # associate__isnull=False
     ).order_by('-id')

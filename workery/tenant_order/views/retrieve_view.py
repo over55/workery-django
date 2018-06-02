@@ -6,13 +6,13 @@ from django.views.generic import DetailView, ListView, TemplateView
 from django.utils.decorators import method_decorator
 from django.utils.translation import ugettext_lazy as _
 from shared_foundation.mixins import ExtraRequestProcessingMixin
-from tenant_api.filters.order import OrderFilter
-from tenant_foundation.models import ActivitySheetItem, Associate, Customer, Order, SkillSet, TaskItem
+from tenant_api.filters.order import WorkOrderFilter
+from tenant_foundation.models import ActivitySheetItem, Associate, Customer, WorkOrder, SkillSet, TaskItem
 
 
 class JobLiteRetrieveView(LoginRequiredMixin, DetailView, ExtraRequestProcessingMixin):
     context_object_name = 'job'
-    model = Order
+    model = WorkOrder
     template_name = 'tenant_order/retrieve/lite_view.html'
 
     def get_object(self):
@@ -44,7 +44,7 @@ class JobLiteRetrieveView(LoginRequiredMixin, DetailView, ExtraRequestProcessing
 
 class JobFullRetrieveView(LoginRequiredMixin, DetailView, ExtraRequestProcessingMixin):
     context_object_name = 'job'
-    model = Order
+    model = WorkOrder
     template_name = 'tenant_order/retrieve/full_view.html'
 
     def get_object(self):
@@ -76,7 +76,7 @@ class JobFullRetrieveView(LoginRequiredMixin, DetailView, ExtraRequestProcessing
 
 class JobRetrieveForActivitySheetListView(LoginRequiredMixin, DetailView, ExtraRequestProcessingMixin):
     context_object_name = 'job'
-    model = Order
+    model = WorkOrder
     template_name = 'tenant_order/retrieve/for/activity_sheet_list_view.html'
 
     def get_object(self):
@@ -113,7 +113,7 @@ class JobRetrieveForActivitySheetListView(LoginRequiredMixin, DetailView, ExtraR
 
 class JobRetrieveForTasksListView(LoginRequiredMixin, DetailView, ExtraRequestProcessingMixin):
     context_object_name = 'job'
-    model = Order
+    model = WorkOrder
     template_name = 'tenant_order/retrieve/for/task_list_view.html'
 
     def get_object(self):
@@ -150,7 +150,7 @@ class JobRetrieveForTasksListView(LoginRequiredMixin, DetailView, ExtraRequestPr
 
 class JobRetrieveForCommentsListAndCreateView(LoginRequiredMixin, DetailView, ExtraRequestProcessingMixin):
     context_object_name = 'job'
-    model = Order
+    model = WorkOrder
     template_name = 'tenant_order/retrieve/for/comments_view.html'
 
     def get_object(self):
@@ -182,7 +182,7 @@ class JobRetrieveForCommentsListAndCreateView(LoginRequiredMixin, DetailView, Ex
 
 class JobRetrieveForCloseCreateView(LoginRequiredMixin, DetailView, ExtraRequestProcessingMixin):
     context_object_name = 'job'
-    model = Order
+    model = WorkOrder
     template_name = 'tenant_order/retrieve/for/close_view.html'
 
     def get_object(self):
@@ -214,7 +214,7 @@ class JobRetrieveForCloseCreateView(LoginRequiredMixin, DetailView, ExtraRequest
 
 class JobRetrieveForPostponeCreateView(LoginRequiredMixin, DetailView, ExtraRequestProcessingMixin):
     context_object_name = 'job'
-    model = Order
+    model = WorkOrder
     template_name = 'tenant_order/retrieve/for/postpone_view.html'
 
     def get_object(self):
@@ -246,7 +246,7 @@ class JobRetrieveForPostponeCreateView(LoginRequiredMixin, DetailView, ExtraRequ
 
 class JobRetrieveForUnassignCreateView(LoginRequiredMixin, DetailView, ExtraRequestProcessingMixin):
     context_object_name = 'job'
-    model = Order
+    model = WorkOrder
     template_name = 'tenant_order/retrieve/for/unassign_view.html'
 
     def get_object(self):
@@ -278,7 +278,7 @@ class JobRetrieveForUnassignCreateView(LoginRequiredMixin, DetailView, ExtraRequ
 
 class ArchivedJobFullRetrieveView(LoginRequiredMixin, DetailView, ExtraRequestProcessingMixin):
     context_object_name = 'job'
-    model = Order
+    model = WorkOrder
     template_name = 'tenant_order/retrieve/for/archive_view.html'
 
     def get_object(self):

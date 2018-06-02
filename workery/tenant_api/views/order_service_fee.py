@@ -9,49 +9,49 @@ from rest_framework import authentication, viewsets, permissions, status
 from rest_framework.response import Response
 from tenant_api.pagination import StandardResultsSetPagination
 from tenant_api.permissions.order_service_fee import (
-   CanListCreateOrderServiceFeePermission,
-   CanRetrieveUpdateDestroyOrderServiceFeePermission
+   CanListCreateWorkOrderServiceFeePermission,
+   CanRetrieveUpdateDestroyWorkOrderServiceFeePermission
 )
 from tenant_api.serializers.order_service_fee import (
-    OrderServiceFeeListCreateSerializer,
-    OrderServiceFeeRetrieveUpdateDestroySerializer
+    WorkOrderServiceFeeListCreateSerializer,
+    WorkOrderServiceFeeRetrieveUpdateDestroySerializer
 )
-from tenant_foundation.models import OrderServiceFee
+from tenant_foundation.models import WorkOrderServiceFee
 
 
-class OrderServiceFeeListCreateAPIView(generics.ListCreateAPIView):
-    serializer_class = OrderServiceFeeListCreateSerializer
+class WorkOrderServiceFeeListCreateAPIView(generics.ListCreateAPIView):
+    serializer_class = WorkOrderServiceFeeListCreateSerializer
     pagination_class = StandardResultsSetPagination
     permission_classes = (
         permissions.IsAuthenticated,
         IsAuthenticatedAndIsActivePermission,
-        CanListCreateOrderServiceFeePermission
+        CanListCreateWorkOrderServiceFeePermission
     )
 
     def get_queryset(self):
         """
         List
         """
-        queryset = OrderServiceFee.objects.all().order_by('text')
+        queryset = WorkOrderServiceFee.objects.all().order_by('text')
         return queryset
 
     def post(self, request, format=None):
         """
         Create
         """
-        serializer = OrderServiceFeeListCreateSerializer(data=request.data)
+        serializer = WorkOrderServiceFeeListCreateSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
-class OrderServiceFeeRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
-    serializer_class = OrderServiceFeeRetrieveUpdateDestroySerializer
+class WorkOrderServiceFeeRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = WorkOrderServiceFeeRetrieveUpdateDestroySerializer
     pagination_class = StandardResultsSetPagination
     permission_classes = (
         permissions.IsAuthenticated,
         IsAuthenticatedAndIsActivePermission,
-        CanRetrieveUpdateDestroyOrderServiceFeePermission
+        CanRetrieveUpdateDestroyWorkOrderServiceFeePermission
     )
 
     def get(self, request, pk=None):
@@ -60,7 +60,7 @@ class OrderServiceFeeRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroy
         """
         order_service_fee = get_object_or_404(OrderServiceFee, pk=pk)
         self.check_object_permissions(request, order_service_fee)  # Validate permissions.
-        serializer = OrderServiceFeeRetrieveUpdateDestroySerializer(order_service_fee, many=False)
+        serializer = WorkOrderServiceFeeRetrieveUpdateDestroySerializer(order_service_fee, many=False)
         return Response(
             data=serializer.data,
             status=status.HTTP_200_OK
@@ -72,7 +72,7 @@ class OrderServiceFeeRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroy
         """
         order_service_fee = get_object_or_404(OrderServiceFee, pk=pk)
         self.check_object_permissions(request, order_service_fee)  # Validate permissions.
-        serializer = OrderServiceFeeRetrieveUpdateDestroySerializer(order_service_fee, data=request.data)
+        serializer = WorkOrderServiceFeeRetrieveUpdateDestroySerializer(order_service_fee, data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data, status=status.HTTP_200_OK)

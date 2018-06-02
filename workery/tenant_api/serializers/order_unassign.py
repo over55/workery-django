@@ -29,8 +29,8 @@ from tenant_foundation.models import (
     Comment,
     ActivitySheetItem,
     Associate,
-    Order,
-    OrderComment,
+    WorkOrder,
+    WorkOrderComment,
     Organization,
     TaskItem
 )
@@ -50,8 +50,8 @@ def cannot_be_zero_or_negative(value):
     return value
 
 
-class OrderUnassignCreateSerializer(serializers.Serializer):
-    job = serializers.PrimaryKeyRelatedField(many=False, queryset=Order.objects.all(), required=True)
+class WorkOrderUnassignCreateSerializer(serializers.Serializer):
+    job = serializers.PrimaryKeyRelatedField(many=False, queryset=WorkOrder.objects.all(), required=True)
     reason = serializers.IntegerField(required=True, validators=[cannot_be_zero_or_negative,])
     reason_other = serializers.CharField(required=True, allow_blank=True)
     additional_comment = serializers.CharField(required=True, allow_blank=True)
@@ -100,7 +100,7 @@ class OrderUnassignCreateSerializer(serializers.Serializer):
                 last_modified_by=self.context['user'],
                 text=additional_comment_text
             )
-            OrderComment.objects.create(
+            WorkOrderComment.objects.create(
                 about=job,
                 comment=comment_obj,
             )

@@ -35,8 +35,8 @@ from tenant_foundation.models import (
     Customer,
     CustomerComment,
     Organization,
-    Order,
-    OrderComment,
+    WorkOrder,
+    WorkOrderComment,
     Tag
 )
 from tenant_foundation.utils import *

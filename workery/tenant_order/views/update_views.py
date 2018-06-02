@@ -5,13 +5,13 @@ from django.views.generic import DetailView, ListView, TemplateView
 from django.utils.decorators import method_decorator
 from django.utils.translation import ugettext_lazy as _
 from shared_foundation.mixins import ExtraRequestProcessingMixin
-from tenant_api.filters.order import OrderFilter
-from tenant_foundation.models import Customer, Order, SkillSet
+from tenant_api.filters.order import WorkOrderFilter
+from tenant_foundation.models import Customer, WorkOrder, SkillSet
 
 
 class JobUpdateView(LoginRequiredMixin, DetailView):
     context_object_name = 'job'
-    model = Order
+    model = WorkOrder
     template_name = 'tenant_order/update/view.html'
 
     def get_object(self):

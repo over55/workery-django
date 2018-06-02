@@ -5,9 +5,9 @@ from django.views.generic import DetailView, ListView, TemplateView
 from django.utils.decorators import method_decorator
 from django.utils.translation import ugettext_lazy as _
 from shared_foundation.mixins import ExtraRequestProcessingMixin
-from tenant_api.filters.order import OrderFilter
+from tenant_api.filters.order import WorkOrderFilter
 from tenant_api.filters.customer import CustomerFilter
-from tenant_foundation.models import Customer, Order, OrderServiceFee, SkillSet, Tag
+from tenant_foundation.models import Customer, WorkOrder, WorkOrderServiceFee, SkillSet, Tag
 
 
 class Step1ACreateOrAddCustomerView(LoginRequiredMixin, TemplateView):
@@ -84,7 +84,7 @@ class Step4View(LoginRequiredMixin, TemplateView):
         modified_context = super().get_context_data(**kwargs)
         modified_context['current_page'] = "jobs"
         modified_context['skillsets'] = SkillSet.objects.all()
-        modified_context['servicefees'] = OrderServiceFee.objects.all()
+        modified_context['servicefees'] = WorkOrderServiceFee.objects.all()
         return modified_context
 
 

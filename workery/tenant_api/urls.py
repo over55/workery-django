@@ -9,8 +9,8 @@ from tenant_api.views.awaylog import AwayLogListCreateAPIView, AwayLogRetrieveUp
 from tenant_api.views.customer import CustomerListCreateAPIView, CustomerRetrieveUpdateDestroyAPIView, CustomerCreateValidationAPIView
 from tenant_api.views.customer_comment import CustomerCommentListCreateAPIView
 from tenant_api.views.insurance_requirement import InsuranceRequirementListCreateAPIView, InsuranceRequirementRetrieveUpdateDestroyAPIView
-from tenant_api.views.order import OrderListCreateAPIView, OrderRetrieveUpdateDestroyAPIView
-from tenant_api.views.order_comment import OrderCommentListCreateAPIView
+from tenant_api.views.order import WorkOrderListCreateAPIView, WorkOrderRetrieveUpdateDestroyAPIView
+from tenant_api.views.order_comment import WorkOrderCommentListCreateAPIView
 from tenant_api.views.partner import PartnerListCreateAPIView, PartnerRetrieveUpdateDestroyAPIView, PartnerCreateValidationAPIView
 from tenant_api.views.partner_comment import PartnerCommentListCreateAPIView
 from tenant_api.views.skill_set import SkillSetListCreateAPIView, SkillSetRetrieveUpdateDestroyAPIView
@@ -19,11 +19,11 @@ from tenant_api.views.staff_comment import StaffCommentListCreateAPIView
 from tenant_api.views.tag import TagListCreateAPIView, TagRetrieveUpdateDestroyAPIView
 from tenant_api.views.utility import FindCustomerMatchingAPIView
 from tenant_api.views.order_activite_sheet_item import ActivitySheetItemCreateAPIView
-from tenant_api.views.order_complete import OrderCompleteCreateAPIView
-from tenant_api.views.order_close import OrderCloseCreateAPIView
-from tenant_api.views.order_postpone import OrderPostponeCreateAPIView
-from tenant_api.views.order_unassign import OrderUnassignCreateAPIView
-from tenant_api.views.order_service_fee import OrderServiceFeeListCreateAPIView, OrderServiceFeeRetrieveUpdateDestroyAPIView
+from tenant_api.views.order_complete import WorkOrderCompleteCreateAPIView
+from tenant_api.views.order_close import WorkOrderCloseCreateAPIView
+from tenant_api.views.order_postpone import WorkOrderPostponeCreateAPIView
+from tenant_api.views.order_unassign import WorkOrderUnassignCreateAPIView
+from tenant_api.views.order_service_fee import WorkOrderServiceFeeListCreateAPIView, WorkOrderServiceFeeRetrieveUpdateDestroyAPIView
 
 
 urlpatterns = [
@@ -47,21 +47,21 @@ urlpatterns = [
     url(r'^api/insurance_requirements$', InsuranceRequirementListCreateAPIView.as_view(), name='workery_insurance_requirement_list_create_api_endpoint'),
     url(r'^api/insurance_requirement/(?P<pk>[^/.]+)/$', InsuranceRequirementRetrieveUpdateDestroyAPIView.as_view(), name='workery_insurance_requirement_retrieve_update_destroy_api_endpoint'),
 
-    # Orders
-    url(r'^api/orders$', OrderListCreateAPIView.as_view(), name='workery_order_list_create_api_endpoint'),
-    url(r'^api/order/(?P<pk>[^/.]+)/$', OrderRetrieveUpdateDestroyAPIView.as_view(), name='workery_order_retrieve_update_destroy_api_endpoint'),
-    url(r'^api/order-comments$', OrderCommentListCreateAPIView.as_view(), name='workery_job_comment_list_create_api_endpoint'),
+    # WorkOrders
+    url(r'^api/orders$', WorkOrderListCreateAPIView.as_view(), name='workery_order_list_create_api_endpoint'),
+    url(r'^api/order/(?P<pk>[^/.]+)/$', WorkOrderRetrieveUpdateDestroyAPIView.as_view(), name='workery_order_retrieve_update_destroy_api_endpoint'),
+    url(r'^api/order-comments$', WorkOrderCommentListCreateAPIView.as_view(), name='workery_job_comment_list_create_api_endpoint'),
 
-    # Orders - Update
+    # WorkOrders - Update
     url(r'^api/orders/activity-sheet-item/assign$', ActivitySheetItemCreateAPIView.as_view(), name='workery_order_activity_sheet_item_create_api_endpoint'),
-    url(r'^api/orders/complete$', OrderCompleteCreateAPIView.as_view(), name='workery_order_order_complete_create_api_endpoint'),
-    url(r'^api/orders/close$', OrderCloseCreateAPIView.as_view(), name='workery_order_order_close_create_api_endpoint'),
-    url(r'^api/orders/postpone$', OrderPostponeCreateAPIView.as_view(), name='workery_order_order_postpone_create_api_endpoint'),
-    url(r'^api/orders/activity-sheet-item/unassign$', OrderUnassignCreateAPIView.as_view(), name='workery_order_order_unassign_create_api_endpoint'),
+    url(r'^api/orders/complete$', WorkOrderCompleteCreateAPIView.as_view(), name='workery_order_order_complete_create_api_endpoint'),
+    url(r'^api/orders/close$', WorkOrderCloseCreateAPIView.as_view(), name='workery_order_order_close_create_api_endpoint'),
+    url(r'^api/orders/postpone$', WorkOrderPostponeCreateAPIView.as_view(), name='workery_order_order_postpone_create_api_endpoint'),
+    url(r'^api/orders/activity-sheet-item/unassign$', WorkOrderUnassignCreateAPIView.as_view(), name='workery_order_order_unassign_create_api_endpoint'),
 
-    # Order Service Fees
-    url(r'^api/order_service_fees$', OrderServiceFeeListCreateAPIView.as_view(), name='workery_order_service_fee_list_create_api_endpoint'),
-    url(r'^api/order_service_fee/(?P<pk>[^/.]+)/$', OrderServiceFeeRetrieveUpdateDestroyAPIView.as_view(), name='workery_order_service_fee_retrieve_update_destroy_api_endpoint'),
+    # WorkOrder Service Fees
+    url(r'^api/order_service_fees$', WorkOrderServiceFeeListCreateAPIView.as_view(), name='workery_order_service_fee_list_create_api_endpoint'),
+    url(r'^api/order_service_fee/(?P<pk>[^/.]+)/$', WorkOrderServiceFeeRetrieveUpdateDestroyAPIView.as_view(), name='workery_order_service_fee_retrieve_update_destroy_api_endpoint'),
 
     # Partners
     url(r'^api/partners$', PartnerListCreateAPIView.as_view(), name='workery_partner_list_create_api_endpoint'),

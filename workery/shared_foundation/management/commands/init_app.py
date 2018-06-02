@@ -56,7 +56,7 @@ class Command(BaseCommand):
             'can_put_associate',
             'can_delete_associate',
 
-            # --- Order --- #
+            # --- Work Order --- #
             'can_get_orders',
             'can_get_order',
             'can_post_order',
@@ -119,7 +119,7 @@ class Command(BaseCommand):
             'can_put_task_item',
             'can_delete_task_item',
 
-            # --- Order Service Fee --- #
+            # --- Work Order Service Fee --- #
             'can_get_order_service_fees',
             'can_get_order_service_fee',
             'can_post_order_service_fee',
@@ -152,7 +152,7 @@ class Command(BaseCommand):
             'can_put_associate',
             'can_delete_associate',
 
-            # --- Order --- #
+            # --- Work Order --- #
             'can_get_orders',
             'can_get_order',
             'can_post_order',
@@ -215,7 +215,7 @@ class Command(BaseCommand):
             'can_put_task_item',
             'can_delete_task_item',
 
-            # --- Order Service Fee --- #
+            # --- Work Order Service Fee --- #
             'can_get_order_service_fees',
             'can_get_order_service_fee',
             'can_post_order_service_fee',
@@ -248,7 +248,7 @@ class Command(BaseCommand):
             'can_put_associate',
             # 'can_delete_associate',
 
-            # --- Order --- #
+            # --- Work Order --- #
             'can_get_orders',
             'can_get_order',
             'can_post_order',
@@ -308,7 +308,7 @@ class Command(BaseCommand):
             'can_put_task_item',
             'can_delete_task_item',
 
-            # --- Order Service Fee --- #
+            # --- Work Order Service Fee --- #
             'can_get_order_service_fees',
             'can_get_order_service_fee',
             'can_post_order_service_fee',
@@ -341,7 +341,7 @@ class Command(BaseCommand):
             'can_get_insurance_requirements',
             'can_get_insurance_requirement',
 
-            # --- Order Service Fee --- #
+            # --- Work Order Service Fee --- #
             'can_get_order_service_fees',
             'can_get_order_service_fee',
         ]
@@ -373,7 +373,7 @@ class Command(BaseCommand):
             'can_get_insurance_requirements',
             'can_get_insurance_requirement',
 
-            # --- Order Service Fee --- #
+            # --- Work Order Service Fee --- #
             'can_get_order_service_fees',
             'can_get_order_service_fee',
         ]

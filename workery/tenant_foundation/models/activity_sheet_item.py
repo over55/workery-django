@@ -64,9 +64,9 @@ class ActivitySheetItem(models.Model):
     #
 
     job = models.ForeignKey(
-        "Order",
+        "WorkOrder",
         help_text=_('The job associated with thie activity sheet item.'),
-        related_name="%(app_label)s_%(class)s_jobs_related",
+        related_name="%(app_label)s_%(class)s_work_order_related",
         on_delete=models.CASCADE,
     )
     associate = models.ForeignKey(

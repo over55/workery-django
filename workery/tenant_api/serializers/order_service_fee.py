@@ -10,13 +10,13 @@ from django.utils import timezone
 from django.utils.http import urlquote
 from rest_framework import exceptions, serializers
 from rest_framework.response import Response
-from tenant_foundation.models import OrderServiceFee
+from tenant_foundation.models import WorkOrderServiceFee
 
 
-class OrderServiceFeeListCreateSerializer(serializers.ModelSerializer):
+class WorkOrderServiceFeeListCreateSerializer(serializers.ModelSerializer):
 
     class Meta:
-        model = OrderServiceFee
+        model = WorkOrderServiceFee
         fields = (
             'id',
             'title',
@@ -26,10 +26,10 @@ class OrderServiceFeeListCreateSerializer(serializers.ModelSerializer):
 
 
 
-class OrderServiceFeeRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
+class WorkOrderServiceFeeRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
 
     class Meta:
-        model = OrderServiceFee
+        model = WorkOrderServiceFee
         fields = (
             'id',
             'title',

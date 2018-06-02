@@ -5,13 +5,13 @@ from django.views.generic import DetailView, ListView, TemplateView
 from django.utils.decorators import method_decorator
 from django.utils.translation import ugettext_lazy as _
 from shared_foundation.mixins import ExtraRequestProcessingMixin
-from tenant_api.filters.order import OrderFilter
-from tenant_foundation.models.order import Order
+from tenant_api.filters.order import WorkOrderFilter
+from tenant_foundation.models import WorkOrder
 
 
 class JobSummaryView(LoginRequiredMixin, ListView, ExtraRequestProcessingMixin):
     context_object_name = 'job_list'
-    queryset = Order.objects.filter(
+    queryset = WorkOrder.objects.filter(
         is_cancelled=False,
         completion_date__isnull=True,
         invoice_service_fee_payment_date__isnull=True,
@@ -40,7 +40,7 @@ class JobSummaryView(LoginRequiredMixin, ListView, ExtraRequestProcessingMixin):
 
 class JobListView(LoginRequiredMixin, ListView, ExtraRequestProcessingMixin):
     context_object_name = 'job_list'
-    queryset = Order.objects.filter(is_archived=False).order_by('-id')
+    queryset = WorkOrder.objects.filter(is_archived=False).order_by('-id')
     template_name = 'tenant_order/list/view.html'
     paginate_by = 100
 
@@ -53,7 +53,7 @@ class JobListView(LoginRequiredMixin, ListView, ExtraRequestProcessingMixin):
         queryset = super(JobListView, self).get_queryset() # Get the base.
 
         # The following code will use the 'django-filter'
-        filter = OrderFilter(self.request.GET, queryset=queryset)
+        filter = WorkOrderFilter(self.request.GET, queryset=queryset)
         queryset = filter.qs
         queryset = queryset.filter(is_archived=False)
         queryset = queryset.prefetch_related('customer', 'associate')
@@ -62,7 +62,7 @@ class JobListView(LoginRequiredMixin, ListView, ExtraRequestProcessingMixin):
 
 class ArchivedJobListView(LoginRequiredMixin, ListView, ExtraRequestProcessingMixin):
     context_object_name = 'job_list'
-    queryset = Order.objects.filter(
+    queryset = WorkOrder.objects.filter(
         is_archived=True
     ).order_by('-id').prefetch_related(
         'customer',

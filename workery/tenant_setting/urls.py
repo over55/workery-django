@@ -25,10 +25,10 @@ urlpatterns = (
     path('settings/tag/create/', tag_views.TagCreateView.as_view(), name='workery_tenant_settings_tag_create'),
     path('settings/tag/<int:pk>/', tag_views.TagUpdateView.as_view(), name='workery_tenant_settings_tags_update'),
 
-    # Order Service Fee
-    path('settings/order_service_fees/', order_service_fee_views.OrderServiceFeeListView.as_view(), name='workery_tenant_settings_order_service_fees_list'),
-    path('settings/order_service_fee/create/', order_service_fee_views.OrderServiceFeeCreateView.as_view(), name='workery_tenant_settings_order_service_fee_create'),
-    path('settings/order_service_fee/<int:pk>/', order_service_fee_views.OrderServiceFeeUpdateView.as_view(), name='workery_tenant_settings_order_service_fees_update'),
+    # WorkOrder Service Fee
+    path('settings/order_service_fees/', order_service_fee_views.WorkOrderServiceFeeListView.as_view(), name='workery_tenant_settings_order_service_fees_list'),
+    path('settings/order_service_fee/create/', order_service_fee_views.WorkOrderServiceFeeCreateView.as_view(), name='workery_tenant_settings_order_service_fee_create'),
+    path('settings/order_service_fee/<int:pk>/', order_service_fee_views.WorkOrderServiceFeeUpdateView.as_view(), name='workery_tenant_settings_order_service_fees_update'),
 
     # Skill set
     path('settings/skill_sets/', skill_set_views.SkillSetListView.as_view(), name='workery_tenant_settings_skill_set_list'),

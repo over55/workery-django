@@ -33,8 +33,8 @@ from tenant_foundation.models import (
     Comment,
     Customer,
     Organization,
-    Order,
-    # OrderComment,
+    WorkOrder,
+    # WorkOrderComment,
     Tag
 )
 from tenant_foundation.utils import *
@@ -82,7 +82,7 @@ class Command(BaseCommand):
 
         # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         Customer.objects.delete_all()
-        Order.objects.delete_all()
+        WorkOrder.objects.delete_all()
         Associate.objects.delete_all()
         Tag.objects.delete_all()
         Organization.objects.delete_all()

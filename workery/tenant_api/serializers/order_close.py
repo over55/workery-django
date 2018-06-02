@@ -30,8 +30,8 @@ from tenant_foundation.models import (
     Comment,
     ActivitySheetItem,
     Associate,
-    Order,
-    OrderComment,
+    WorkOrder,
+    WorkOrderComment,
     Organization,
     TaskItem
 )
@@ -58,8 +58,8 @@ def cannot_be_negative(value):
 
 
 
-class OrderCloseCreateSerializer(serializers.Serializer):
-    job = serializers.PrimaryKeyRelatedField(many=False, queryset=Order.objects.all(), required=True)
+class WorkOrderCloseCreateSerializer(serializers.Serializer):
+    job = serializers.PrimaryKeyRelatedField(many=False, queryset=WorkOrder.objects.all(), required=True)
     reason = serializers.IntegerField(required=True, validators=[cannot_be_zero_or_negative,])
     reason_other = serializers.CharField(required=True, allow_blank=True)
     additional_comment = serializers.CharField(required=True, allow_blank=True)
@@ -170,7 +170,7 @@ class OrderCloseCreateSerializer(serializers.Serializer):
                 last_modified_by=self.context['user'],
                 text=additional_comment_text
             )
-            OrderComment.objects.create(
+            WorkOrderComment.objects.create(
                 about=job,
                 comment=comment_obj,
             )
@@ -253,12 +253,12 @@ class OrderCloseCreateSerializer(serializers.Serializer):
 
             # STEP 4 - Update the associate score by re-computing the average
             #          score and saving it with the profile.
-            jobs_count = Order.objects.filter(
+            jobs_count = WorkOrder.objects.filter(
                 is_cancelled = False,
                 associate = job.associate,
                 closing_reason = 4,
             ).count()
-            summation_results = Order.objects.filter(
+            summation_results = WorkOrder.objects.filter(
                 is_cancelled = False,
                 associate = job.associate,
                 closing_reason = 4,

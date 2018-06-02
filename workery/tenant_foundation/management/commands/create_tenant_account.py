@@ -21,8 +21,8 @@ from tenant_foundation.models import (
     # Comment,
     Customer,
     Organization,
-    Order,
-    # OrderComment,
+    WorkOrder,
+    # WorkOrderComment,
     Staff,
     Tag
 )

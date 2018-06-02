@@ -22,7 +22,7 @@ from shared_foundation.models import SharedUser
 from tenant_foundation.models import (
     Associate,
     Customer,
-    Order,
+    WorkOrder,
     Tag,
     SkillSet
 )
@@ -38,7 +38,7 @@ TEST_USER_CELL_NUM = "123 123-1234"
 TEST_ALERNATE_USER_EMAIL = "rodolfo@workery.ca"
 
 
-class OrderListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
+class WorkOrderListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
     """
     Console:
     python manage.py test tenant_api.tests.test_order_view
@@ -65,7 +65,7 @@ class OrderListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
     @transaction.atomic
     def setUp(self):
         translation.activate('en')  # Set English
-        super(OrderListCreateAPIViewWithTenantTestCase, self).setUp()
+        super(WorkOrderListCreateAPIViewWithTenantTestCase, self).setUp()
 
         # Load up the dependat.
         call_command('init_app', verbosity=0)
@@ -122,7 +122,7 @@ class OrderListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
         )
 
         # Create our order.
-        self.order = Order.objects.create(
+        self.order = WorkOrder.objects.create(
             customer=Customer.objects.get(owner__email="sikari@workery.ca"),
             associate=Associate.objects.get(owner__email="rayanami@workery.ca"),
             assignment_date=timezone.now(),
@@ -135,13 +135,13 @@ class OrderListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
     def tearDown(self):
         connection.set_schema(TEST_SCHEMA_NAME, True) # Switch to Tenant.
         Tag.objects.delete_all()
-        Order.objects.delete_all()
+        WorkOrder.objects.delete_all()
         del self.unauthorized_client
         del self.exec_client
         del self.manager_client
         del self.staff_client
         del self.customer_client
-        super(OrderListCreateAPIViewWithTenantTestCase, self).tearDown()
+        super(WorkOrderListCreateAPIViewWithTenantTestCase, self).tearDown()
 
     #-------------------#
     # List API-endpoint #

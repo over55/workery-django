@@ -125,7 +125,7 @@ class TaskItem(models.Model):
         default='',
     )
     job = models.ForeignKey(
-        "Order",
+        "WorkOrder",
         help_text=_('The job order that this task is referencing.'),
         related_name="%(app_label)s_%(class)s_job_related",
         on_delete=models.CASCADE

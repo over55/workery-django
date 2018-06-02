@@ -5,8 +5,8 @@ from django.views.generic import DetailView, ListView, TemplateView
 from django.utils.decorators import method_decorator
 from django.utils.translation import ugettext_lazy as _
 from shared_foundation.mixins import ExtraRequestProcessingMixin
-from tenant_api.filters.order import OrderFilter
-from tenant_foundation.models.order import Order
+from tenant_api.filters.order import WorkOrderFilter
+from tenant_foundation.models import WorkOrder
 
 
 class JobSearchView(LoginRequiredMixin, TemplateView):
@@ -47,10 +47,10 @@ class JobSearchResultView(LoginRequiredMixin, ListView, ExtraRequestProcessingMi
         queryset = None  # The queryset we will be returning.
         keyword = self.request.GET.get('keyword', None)
         if keyword:
-            queryset = Order.objects.full_text_search(keyword)
+            queryset = WorkOrder.objects.full_text_search(keyword)
         else:
-            queryset = Order.objects.all()
-            filter = OrderFilter(self.request.GET, queryset=queryset)
+            queryset = WorkOrder.objects.all()
+            filter = WorkOrderFilter(self.request.GET, queryset=queryset)
             queryset = filter.qs
 
         queryset = queryset.filter(is_archived=False)

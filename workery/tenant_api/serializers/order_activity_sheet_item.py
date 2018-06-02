@@ -29,8 +29,8 @@ from tenant_foundation.models import (
     Comment,
     ActivitySheetItem,
     Associate,
-    Order,
-    OrderComment,
+    WorkOrder,
+    WorkOrderComment,
     Organization,
     TaskItem
 )
@@ -45,7 +45,7 @@ def get_todays_date_plus_days(days=0):
 
 
 class ActivitySheetItemCreateSerializer(serializers.Serializer):
-    job = serializers.PrimaryKeyRelatedField(many=False, queryset=Order.objects.all(), required=True)
+    job = serializers.PrimaryKeyRelatedField(many=False, queryset=WorkOrder.objects.all(), required=True)
     associate = serializers.PrimaryKeyRelatedField(many=False, queryset=Associate.objects.all(), required=True)
     comment = serializers.CharField(required=True)
     has_accepted_job = serializers.BooleanField(

@@ -29,8 +29,8 @@ from tenant_foundation.models import (
     Comment,
     ActivitySheetItem,
     Associate,
-    Order,
-    OrderComment,
+    WorkOrder,
+    WorkOrderComment,
     Organization,
     TaskItem
 )
@@ -44,8 +44,8 @@ def get_todays_date_plus_days(days=0):
     return timezone.now() + timedelta(days=days)
 
 
-class OrderCompleteCreateSerializer(serializers.Serializer):
-    job = serializers.PrimaryKeyRelatedField(many=False, queryset=Order.objects.all(), required=True)
+class WorkOrderCompleteCreateSerializer(serializers.Serializer):
+    job = serializers.PrimaryKeyRelatedField(many=False, queryset=WorkOrder.objects.all(), required=True)
     comment = serializers.CharField(required=False)
     has_agreed_to_meet = serializers.BooleanField(required=True)
 
@@ -89,7 +89,7 @@ class OrderCompleteCreateSerializer(serializers.Serializer):
                 last_modified_by=self.context['user'],
                 text=comment_text
             )
-            OrderComment.objects.create(
+            WorkOrderComment.objects.create(
                 about=job,
                 comment=comment_obj,
             )

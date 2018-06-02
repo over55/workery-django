@@ -9,28 +9,28 @@ from rest_framework import authentication, viewsets, permissions, status
 from rest_framework.response import Response
 from tenant_api.pagination import StandardResultsSetPagination
 from tenant_api.permissions.order import (
-   CanListCreateOrderPermission,
-   CanRetrieveUpdateDestroyOrderPermission
+   CanListCreateWorkOrderPermission,
+   CanRetrieveUpdateDestroyWorkOrderPermission
 )
 from tenant_api.serializers.order_postpone import (
-    OrderPostponeCreateSerializer,
+    WorkOrderPostponeCreateSerializer,
 )
 from tenant_foundation.models import ActivitySheetItem
 
 
-class OrderPostponeCreateAPIView(generics.CreateAPIView):
-    serializer_class = OrderPostponeCreateSerializer
+class WorkOrderPostponeCreateAPIView(generics.CreateAPIView):
+    serializer_class = WorkOrderPostponeCreateSerializer
     permission_classes = (
         permissions.IsAuthenticated,
         IsAuthenticatedAndIsActivePermission,
-        CanListCreateOrderPermission
+        CanListCreateWorkOrderPermission
     )
 
     def post(self, request, format=None):
         """
         Create
         """
-        serializer = OrderPostponeCreateSerializer(data=request.data, context={
+        serializer = WorkOrderPostponeCreateSerializer(data=request.data, context={
             'user': request.user,
             'franchise': request.tenant
         })

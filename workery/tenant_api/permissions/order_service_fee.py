@@ -4,7 +4,7 @@ from rest_framework import permissions
 from shared_foundation.utils import has_permission
 
 
-class CanListCreateOrderServiceFeePermission(permissions.BasePermission):
+class CanListCreateWorkOrderServiceFeePermission(permissions.BasePermission):
     message = _('You do not have permission to access this API-endpoint.')
 
     def has_permission(self, request, view):
@@ -21,7 +21,7 @@ class CanListCreateOrderServiceFeePermission(permissions.BasePermission):
         return False
 
 
-class CanRetrieveUpdateDestroyOrderServiceFeePermission(permissions.BasePermission):
+class CanRetrieveUpdateDestroyWorkOrderServiceFeePermission(permissions.BasePermission):
     message = _('You do not have permission to access this API-endpoint.')
 
     def has_object_permission(self, request, view, obj):

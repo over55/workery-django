@@ -35,9 +35,9 @@ from tenant_foundation.models import (
     Comment,
     Customer,
     Organization,
-    Order,
-    OrderComment,
-    OrderServiceFee,
+    WorkOrder,
+    WorkOrderComment,
+    WorkOrderServiceFee,
     SkillSet,
     Tag
 )
@@ -64,7 +64,7 @@ class Command(BaseCommand):
 
         # Used for debugging purposes.
         self.stdout.write(
-            self.style.SUCCESS(_('Importing Orders at path: %(url)s ...') % {
+            self.style.SUCCESS(_('Importing WorkOrders at path: %(url)s ...') % {
                 'url': full_filepath
             })
         )
@@ -91,7 +91,7 @@ class Command(BaseCommand):
 
                     # # Used for debugging purposes only.
                     # self.stdout.write(
-                    #     self.style.SUCCESS(_('Importing Order #%(id)s') % {
+                    #     self.style.SUCCESS(_('Importing WorkOrder #%(id)s') % {
                     #         'id': i
                     #     })
                     # )
@@ -101,11 +101,11 @@ class Command(BaseCommand):
 
         # Used for debugging purposes.
         self.stdout.write(
-            self.style.SUCCESS(_('Successfully imported Orders.'))
+            self.style.SUCCESS(_('Successfully imported WorkOrders.'))
         )
 
     def run_import_from_dict(self, row_dict, index):
-        service_fee_obj = OrderServiceFee.objects.get(id=1)
+        service_fee_obj = WorkOrderServiceFee.objects.get(id=1)
 
         try:
             # For debugging purposes.
@@ -185,7 +185,7 @@ class Command(BaseCommand):
 
             # Begin processing...
             if customer and associate:
-                order, create = Order.objects.update_or_create(
+                order, create = WorkOrder.objects.update_or_create(
                     id=order_pk,
                     defaults={
                         'id': order_pk,
@@ -231,7 +231,7 @@ class Command(BaseCommand):
                         comment = Comment.objects.create(text=comment_text)
 
                     # Map user commment to job.
-                    OrderComment.objects.update_or_create(
+                    WorkOrderComment.objects.update_or_create(
                         about=order,
                         comment=comment,
                         defaults={
@@ -248,7 +248,7 @@ class Command(BaseCommand):
                         comment = Comment.objects.create(text=follow_up_comment_text)
 
                     # Map user follow up commment to job.
-                    OrderComment.objects.update_or_create(
+                    WorkOrderComment.objects.update_or_create(
                         about=order,
                         comment=comment,
                         defaults={
@@ -259,7 +259,7 @@ class Command(BaseCommand):
 
         except Exception as e:
             self.stdout.write(
-                self.style.NOTICE(_('Importing Order #%(id)s with exception "%(e)s".') % {
+                self.style.NOTICE(_('Importing WorkOrder #%(id)s with exception "%(e)s".') % {
                     'e': str(e),
                     'id': str(index)
                 })

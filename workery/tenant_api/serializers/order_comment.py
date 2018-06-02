@@ -23,17 +23,17 @@ from rest_framework.validators import UniqueValidator
 from shared_api.custom_fields import PhoneNumberField
 from shared_foundation.constants import CUSTOMER_GROUP_ID
 from shared_foundation.models import SharedUser
-# from tenant_api.serializers.order_comment import OrderCommentSerializer
+# from tenant_api.serializers.order_comment import WorkOrderCommentSerializer
 from tenant_foundation.constants import *
 from tenant_foundation.models import (
     Comment,
-    OrderComment,
-    Order,
+    WorkOrderComment,
+    WorkOrder,
     Organization
 )
 
 
-class OrderListCreateSerializer(serializers.ModelSerializer):
+class WorkOrderListCreateSerializer(serializers.ModelSerializer):
     # about = serializers.PrimaryKeyRelatedField(many=False, read_only=True)
     # comment = serializers.PrimaryKeyRelatedField(many=False, read_only=True)
     extra_text = serializers.CharField(write_only=True, allow_null=True)
@@ -41,7 +41,7 @@ class OrderListCreateSerializer(serializers.ModelSerializer):
 
     # Meta Information.
     class Meta:
-        model = OrderComment
+        model = WorkOrderComment
         fields = (
             'id',
             'created_at',
@@ -72,7 +72,7 @@ class OrderListCreateSerializer(serializers.ModelSerializer):
             last_modified_by=self.context['created_by'],
             text=text
         )
-        OrderComment.objects.create(
+        WorkOrderComment.objects.create(
             about=about,
             comment=comment,
         )

@@ -9,36 +9,36 @@ from rest_framework import authentication, viewsets, permissions, status
 from rest_framework.response import Response
 from tenant_api.pagination import StandardResultsSetPagination
 from tenant_api.permissions.order import (
-   CanListCreateOrderPermission,
-   CanRetrieveUpdateDestroyOrderPermission
+   CanListCreateWorkOrderPermission,
+   CanRetrieveUpdateDestroyWorkOrderPermission
 )
 from tenant_api.serializers.order_comment import (
-    OrderListCreateSerializer,
+    WorkOrderListCreateSerializer,
 )
-from tenant_foundation.models import Order
+from tenant_foundation.models import WorkOrder
 
 
-class OrderCommentListCreateAPIView(generics.ListCreateAPIView):
-    serializer_class = OrderListCreateSerializer
+class WorkOrderCommentListCreateAPIView(generics.ListCreateAPIView):
+    serializer_class = WorkOrderListCreateSerializer
     pagination_class = StandardResultsSetPagination
     permission_classes = (
         permissions.IsAuthenticated,
         IsAuthenticatedAndIsActivePermission,
-        CanListCreateOrderPermission
+        CanListCreateWorkOrderPermission
     )
 
     def get_queryset(self):
         """
         List
         """
-        queryset = Order.objects.all().order_by('-created')
+        queryset = WorkOrder.objects.all().order_by('-created')
         return queryset
 
     def post(self, request, format=None):
         """
         Create
         """
-        serializer = OrderListCreateSerializer(data=request.data, context={
+        serializer = WorkOrderListCreateSerializer(data=request.data, context={
             'created_by': request.user,
             'franchise': request.tenant
         })

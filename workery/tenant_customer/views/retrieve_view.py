@@ -6,7 +6,7 @@ from django.utils.decorators import method_decorator
 from django.utils.translation import ugettext_lazy as _
 from shared_foundation.mixins import ExtraRequestProcessingMixin
 from tenant_api.filters.customer import CustomerFilter
-from tenant_foundation.models import Customer, Order
+from tenant_foundation.models import Customer, WorkOrder
 
 
 class CustomerLiteRetrieveView(LoginRequiredMixin, DetailView, ExtraRequestProcessingMixin):
@@ -134,7 +134,7 @@ class CustomerRetrieveForJobsListView(LoginRequiredMixin, DetailView, ExtraReque
         modified_context['parameters'] = self.get_params_dict([])
 
         # Required for navigation
-        modified_context['jobs'] = Order.objects.filter(
+        modified_context['jobs'] = WorkOrder.objects.filter(
             customer = modified_context['customer']
         )
 

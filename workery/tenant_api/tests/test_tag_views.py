@@ -22,7 +22,7 @@ from shared_foundation.models import SharedUser
 from tenant_foundation.models import (
     Associate,
     Customer,
-    Order,
+    WorkOrder,
     Tag
 )
 

@@ -10,7 +10,7 @@ from tenant_foundation.models import (
     Associate,
     AwayLog,
     Customer,
-    Order,
+    WorkOrder,
     TaskItem
 )
 

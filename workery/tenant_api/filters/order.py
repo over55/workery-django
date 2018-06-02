@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
 import django_filters
 from phonenumber_field.modelfields import PhoneNumberField
-from tenant_foundation.models import Order
+from tenant_foundation.models import WorkOrder
 from django.db import models
 
 
-class OrderFilter(django_filters.FilterSet):
+class WorkOrderFilter(django_filters.FilterSet):
     class Meta:
-        model = Order
+        model = WorkOrder
         fields = [
             'customer',
         ]

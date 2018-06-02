@@ -8,11 +8,11 @@ from shared_foundation.mixins import ExtraRequestProcessingMixin
 from tenant_api.filters.staff import StaffFilter
 from tenant_foundation.models import (
     SkillSet,
-    OrderServiceFee
+    WorkOrderServiceFee
 )
 
 
-class OrderServiceFeeListView(LoginRequiredMixin, ListView, ExtraRequestProcessingMixin):
+class WorkOrderServiceFeeListView(LoginRequiredMixin, ListView, ExtraRequestProcessingMixin):
     context_object_name = 'order_service_fee_list'
     template_name = 'tenant_setting/order_service_fee/list_view.html'
     paginate_by = 100
@@ -30,7 +30,7 @@ class OrderServiceFeeListView(LoginRequiredMixin, ListView, ExtraRequestProcessi
         return modified_context
 
     def get_queryset(self):
-        queryset = OrderServiceFee.objects.all().order_by('title')
+        queryset = WorkOrderServiceFee.objects.all().order_by('title')
 
         # # The following code will use the 'django-filter'
         # filter = CustomerFilter(self.request.GET, queryset=queryset)
@@ -38,9 +38,9 @@ class OrderServiceFeeListView(LoginRequiredMixin, ListView, ExtraRequestProcessi
         return queryset
 
 
-class OrderServiceFeeUpdateView(LoginRequiredMixin, DetailView):
+class WorkOrderServiceFeeUpdateView(LoginRequiredMixin, DetailView):
     context_object_name = 'order_service_fee'
-    model = OrderServiceFee
+    model = WorkOrderServiceFee
     template_name = 'tenant_setting/order_service_fee/update_view.html'
 
     def get_object(self):
@@ -58,7 +58,7 @@ class OrderServiceFeeUpdateView(LoginRequiredMixin, DetailView):
         return modified_context
 
 
-class OrderServiceFeeCreateView(LoginRequiredMixin, TemplateView):
+class WorkOrderServiceFeeCreateView(LoginRequiredMixin, TemplateView):
     template_name = 'tenant_setting/order_service_fee/create_view.html'
 
     def get_context_data(self, **kwargs):

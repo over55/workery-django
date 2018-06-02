@@ -19,9 +19,9 @@ from tenant_foundation.models import (
     Customer,
     InsuranceRequirement,
     Organization,
-    Order,
-    # OrderComment,
-    OrderServiceFee,
+    WorkOrder,
+    # WorkOrderComment,
+    WorkOrderServiceFee,
     ResourceCategory,
     ResourceItem,
     ResourceItemSortOrder,
@@ -383,7 +383,7 @@ class Command(BaseCommand):
             [3, "Tier 3 - 15%", "-", 15.0],
         ]
         for fee_arr in SERVICE_FEE_ARRAY:
-            OrderServiceFee.objects.update_or_create(
+            WorkOrderServiceFee.objects.update_or_create(
                 id=int(fee_arr[0]),
                 defaults={
                     'id': int(fee_arr[0]),

@@ -6,12 +6,12 @@ from django.views.generic import DetailView, ListView, TemplateView
 from django.utils.decorators import method_decorator
 from django.utils.translation import ugettext_lazy as _
 from shared_foundation.mixins import ExtraRequestProcessingMixin
-from tenant_foundation.models import Order
+from tenant_foundation.models import WorkOrder
 
 
 class UnpaidJobOrderListView(LoginRequiredMixin, ListView, ExtraRequestProcessingMixin):
     context_object_name = 'job_list'
-    queryset = Order.objects.filter(
+    queryset = WorkOrder.objects.filter(
         invoice_service_fee_payment_date=None,
         is_archived=False
     ).order_by('-id')
@@ -25,15 +25,15 @@ class UnpaidJobOrderListView(LoginRequiredMixin, ListView, ExtraRequestProcessin
         modified_context['current_page'] = "financials"
 
         # Get count of total tasks.
-        modified_context['unpaid_count'] = Order.objects.filter(
+        modified_context['unpaid_count'] = WorkOrder.objects.filter(
             invoice_service_fee_payment_date=None,
             is_archived=False
         ).count()
-        modified_context['paid_count'] = Order.objects.filter(
+        modified_context['paid_count'] = WorkOrder.objects.filter(
             ~Q(invoice_service_fee_payment_date=None) &
             Q(is_archived=False)
         ).count()
-        modified_context['all_count'] = Order.objects.filter(is_archived=False).count()
+        modified_context['all_count'] = WorkOrder.objects.filter(is_archived=False).count()
 
         # DEVELOPERS NOTE:
         # - We will extract the URL parameters and save them into our context
@@ -46,7 +46,7 @@ class UnpaidJobOrderListView(LoginRequiredMixin, ListView, ExtraRequestProcessin
 
 class PaidJobOrderListView(LoginRequiredMixin, ListView, ExtraRequestProcessingMixin):
     context_object_name = 'job_list'
-    queryset = Order.objects.filter(
+    queryset = WorkOrder.objects.filter(
         ~Q(invoice_service_fee_payment_date=None) &
         Q(is_archived=False)
     ).order_by('-invoice_service_fee_payment_date')
@@ -60,15 +60,15 @@ class PaidJobOrderListView(LoginRequiredMixin, ListView, ExtraRequestProcessingM
         modified_context['current_page'] = "financials"
 
         # Get count of total tasks.
-        modified_context['unpaid_count'] = Order.objects.filter(
+        modified_context['unpaid_count'] = WorkOrder.objects.filter(
             invoice_service_fee_payment_date=None,
             is_archived=False
         ).count()
-        modified_context['paid_count'] = Order.objects.filter(
+        modified_context['paid_count'] = WorkOrder.objects.filter(
             ~Q(invoice_service_fee_payment_date=None) &
             Q(is_archived=False)
         ).count()
-        modified_context['all_count'] = Order.objects.filter(is_archived=False).count()
+        modified_context['all_count'] = WorkOrder.objects.filter(is_archived=False).count()
 
         # DEVELOPERS NOTE:
         # - We will extract the URL parameters and save them into our context
@@ -81,7 +81,7 @@ class PaidJobOrderListView(LoginRequiredMixin, ListView, ExtraRequestProcessingM
 
 class AllJobOrderListView(LoginRequiredMixin, ListView, ExtraRequestProcessingMixin):
     context_object_name = 'job_list'
-    queryset = Order.objects.filter(is_archived=False).order_by('-id')
+    queryset = WorkOrder.objects.filter(is_archived=False).order_by('-id')
     template_name = 'tenant_financial/list/all_view.html'
     paginate_by = 100
 
@@ -92,15 +92,15 @@ class AllJobOrderListView(LoginRequiredMixin, ListView, ExtraRequestProcessingMi
         modified_context['current_page'] = "financials"
 
         # Get count of total tasks.
-        modified_context['unpaid_count'] = Order.objects.filter(
+        modified_context['unpaid_count'] = WorkOrder.objects.filter(
             invoice_service_fee_payment_date=None,
             is_archived=False
         ).count()
-        modified_context['paid_count'] = Order.objects.filter(
+        modified_context['paid_count'] = WorkOrder.objects.filter(
             ~Q(invoice_service_fee_payment_date=None) &
             Q(is_archived=False)
         ).count()
-        modified_context['all_count'] = Order.objects.filter(is_archived=False).count()
+        modified_context['all_count'] = WorkOrder.objects.filter(is_archived=False).count()
 
         # DEVELOPERS NOTE:
         # - We will extract the URL parameters and save them into our context
@@ -113,7 +113,7 @@ class AllJobOrderListView(LoginRequiredMixin, ListView, ExtraRequestProcessingMi
 
 class JobRetrieveView(LoginRequiredMixin, DetailView, ExtraRequestProcessingMixin):
     context_object_name = 'job_item'
-    model = Order
+    model = WorkOrder
     template_name = 'tenant_financial/retrieve/view.html'
 
     def get_object(self):
@@ -145,7 +145,7 @@ class JobRetrieveView(LoginRequiredMixin, DetailView, ExtraRequestProcessingMixi
 
 class JobUpdateView(LoginRequiredMixin, DetailView, ExtraRequestProcessingMixin):
     context_object_name = 'job_item'
-    model = Order
+    model = WorkOrder
     template_name = 'tenant_financial/update/view.html'
 
     def get_object(self):
