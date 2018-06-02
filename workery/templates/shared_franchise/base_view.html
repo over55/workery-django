@@ -54,7 +54,7 @@
                     <hr class="nav-divider">
                     <ul class="nav flex-column">
                         <li class="nav-item">
-                            <a class="nav-link {% if current_page == 'franchise' %}active{% endif %}" href="{% url 'workery_tenant_dashboard_master' %}">
+                            <a class="nav-link {% if menu_id == 'franchise' %}active{% endif %}" href="{% url 'workery_tenant_dashboard_master' %}">
                             <i class="fas fa-sitemap"></i>&nbsp;{% trans 'Franchises' %}
                             </a>
                         </li>
@@ -63,17 +63,17 @@
                     <ul class="nav flex-column">
                         {% comment %}
                         <li class="nav-item">
-                            <a class="nav-link {% if current_page == 'setting' %}active{% endif %}" href="{% url 'workery_tenant_settings_launchpad' %}"><i class="fas fa-cog"></i> Settings</a>
+                            <a class="nav-link {% if menu_id == 'setting' %}active{% endif %}" href="{% url 'workery_tenant_settings_launchpad' %}"><i class="fas fa-cog"></i> Settings</a>
                         </li>
                         <li class="nav-item">
                             <!-- NOTE: EXECUTIVE MEMBERS DO NOT GET ACCESS TO THE PROFILES PAGE. -->
-                            <a class="nav-link {% if current_page == 'profile' %}active{% endif %}" href="{% url 'workery_tenant_account_update' logged_in_user_id %}">
+                            <a class="nav-link {% if menu_id == 'profile' %}active{% endif %}" href="{% url 'workery_tenant_account_update' logged_in_user_id %}">
                             <i class="fas fa-address-card"></i>&nbsp;Profile
                             </a>
 
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link {% if current_page == 'help' %}active{% endif %}" href="{% url 'workery_tenant_help_category_list' %}"><i class="fas fa-question-circle"></i> Help</a>
+                            <a class="nav-link {% if menu_id == 'help' %}active{% endif %}" href="{% url 'workery_tenant_help_category_list' %}"><i class="fas fa-question-circle"></i> Help</a>
                         </li>
                         {% endcomment %}
                         <li class="nav-item">

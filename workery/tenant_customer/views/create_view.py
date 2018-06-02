@@ -18,7 +18,7 @@ class PickCustomerTypeInCreateView(LoginRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['current_page'] = "customers" # Required for navigation
+        context['menu_id'] = "customers" # Required for navigation
         return context
 
 
@@ -27,7 +27,7 @@ class ResidentialCustomerCreateView(LoginRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['current_page'] = "customers" # Required for navigation
+        context['menu_id'] = "customers" # Required for navigation
         context['tags'] = Tag.objects.all()
         context['skill_sets'] = SkillSet.objects.all()
         return context
@@ -38,7 +38,7 @@ class ResidentialCustomerConfirmCreateView(LoginRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['current_page'] = "customers" # Required for navigation
+        context['menu_id'] = "customers" # Required for navigation
         return context
 
 
@@ -47,7 +47,7 @@ class CommercialCustomerCreateView(LoginRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['current_page'] = "customers" # Required for navigation
+        context['menu_id'] = "customers" # Required for navigation
         context['tags'] = Tag.objects.all()
         context['skill_sets'] = SkillSet.objects.all()
         return context
@@ -58,5 +58,5 @@ class CommercialCustomerConfirmCreateView(LoginRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['current_page'] = "customers" # Required for navigation
+        context['menu_id'] = "customers" # Required for navigation
         return context

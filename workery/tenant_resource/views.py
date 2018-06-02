@@ -18,7 +18,7 @@ class ResourceCategoryListView(LoginRequiredMixin, ListView, ExtraRequestProcess
         modified_context = super().get_context_data(**kwargs)
 
         # Required for navigation
-        modified_context['current_page'] = "resource"
+        modified_context['menu_id'] = "resource"
 
         # DEVELOPERS NOTE:
         # - We will extract the URL parameters and save them into our context
@@ -43,7 +43,7 @@ class ResourceCategoryRetrieveView(LoginRequiredMixin, DetailView, ExtraRequestP
         modified_context = super().get_context_data(**kwargs)
 
         # Required for navigation
-        modified_context['current_page'] = "resource"
+        modified_context['menu_id'] = "resource"
 
         # DEVELOPERS NOTE:
         # - We will extract the URL parameters and save them into our context

@@ -17,7 +17,7 @@ class FranchiseListView(ListView):
 
     def get_context_data(self, **kwargs):
         modified_context = super().get_context_data(**kwargs)
-        modified_context['current_page'] = "franchise"
+        modified_context['menu_id'] = "franchise"
         return modified_context
 
     def get_queryset(self):
@@ -31,7 +31,7 @@ class FranchiseCreatePage1of3View(TemplateView):
 
     def get_context_data(self, **kwargs):
         modified_context = super().get_context_data(**kwargs)
-        modified_context['current_page'] = 'franchise' # Required
+        modified_context['menu_id'] = 'franchise' # Required
         return modified_context # Return our modified context.
 
 
@@ -41,7 +41,7 @@ class FranchiseCreatePage2of3View(TemplateView):
 
     def get_context_data(self, **kwargs):
         modified_context = super().get_context_data(**kwargs)
-        modified_context['current_page'] = 'franchise' # Required
+        modified_context['menu_id'] = 'franchise' # Required
         return modified_context # Return our modified context.
 
 
@@ -51,5 +51,5 @@ class FranchiseCreatePage3of3View(TemplateView):
 
     def get_context_data(self, **kwargs):
         modified_context = super().get_context_data(**kwargs)
-        modified_context['current_page'] = 'franchise' # Required
+        modified_context['menu_id'] = 'franchise' # Required
         return modified_context # Return our modified context.

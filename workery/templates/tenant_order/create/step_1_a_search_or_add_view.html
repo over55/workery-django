@@ -243,9 +243,10 @@
 	  <div class="form-row">
 	    <div class="col-md-8 text-center mx-auto mb-3">
 	    	<h3 class="p-2">- or -</h3>
-            <a href="{% url 'workery_tenant_pick_customer_create' %}" role="button" target="_blank">
-                <i class="fas fa-external-link-alt"></i>
-                Add New</a>
+            <a href="{% url 'workery_tenant_pick_customer_create' %}?back_id=create_job" role="button">
+                <i class="fas fa-link"></i>
+                Add New
+            </a>
 	    </div>
 	  </div>
 	</form>

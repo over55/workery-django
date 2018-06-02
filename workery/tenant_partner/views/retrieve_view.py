@@ -30,7 +30,7 @@ class PartnerLiteRetrieveView(LoginRequiredMixin, DetailView, ExtraRequestProces
         modified_context['template'] = template
 
         # Required for navigation
-        modified_context['current_page'] = "partners"
+        modified_context['menu_id'] = "partners"
 
         # DEVELOPERS NOTE:
         # - We will extract the URL parameters and save them into our context
@@ -62,7 +62,7 @@ class PartnerFullRetrieveView(LoginRequiredMixin, DetailView, ExtraRequestProces
         modified_context['template'] = template
 
         # Required for navigation
-        modified_context['current_page'] = "partners"
+        modified_context['menu_id'] = "partners"
 
         # DEVELOPERS NOTE:
         # - We will extract the URL parameters and save them into our context
@@ -94,7 +94,7 @@ class PartnerCommentsRetrieveView(LoginRequiredMixin, DetailView, ExtraRequestPr
         modified_context['template'] = template
 
         # Required for navigation
-        modified_context['current_page'] = "partners"
+        modified_context['menu_id'] = "partners"
 
         # DEVELOPERS NOTE:
         # - We will extract the URL parameters and save them into our context

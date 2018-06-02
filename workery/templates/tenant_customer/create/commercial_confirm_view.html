@@ -36,10 +36,12 @@
     <!------------------------------------------------------------------------->
     <nav aria-label="breadcrumb">
 	  	<ol class="breadcrumb">
+            {% if parameters.back_id != 'create_job' %}
 	    	<li class="breadcrumb-item"><a href="{% url 'workery_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
             <li class="breadcrumb-item"><a href="{% url 'workery_tenant_customer_summary' %}">{% trans 'Clients' %}</a></li>
             <li class="breadcrumb-item"><a href="{% url 'workery_tenant_pick_customer_create' %}">{% trans 'Add' %}</a></li>
             <li class="breadcrumb-item active" aria-current="page">{% trans 'Commercial Client' %}</li>
+            {% endif %}
 	  	</ol>
 	</nav>
     <!------------------------------------------------------------------------->

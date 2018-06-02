@@ -34,7 +34,7 @@ class CustomerUpdateView(LoginRequiredMixin, DetailView):
         modified_context['template'] = template
 
         # Required for navigation
-        modified_context['current_page'] = "customers"
+        modified_context['menu_id'] = "customers"
 
         # Extra
         modified_context['tags'] = Tag.objects.all()

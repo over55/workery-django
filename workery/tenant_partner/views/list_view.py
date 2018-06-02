@@ -23,7 +23,7 @@ class PartnerSummaryView(LoginRequiredMixin, ListView, ExtraRequestProcessingMix
         modified_context = super().get_context_data(**kwargs)
 
         # Required for navigation
-        modified_context['current_page'] = "partners"
+        modified_context['menu_id'] = "partners"
 
         # DEVELOPERS NOTE:
         # - We will extract the URL parameters and save them into our context
@@ -52,7 +52,7 @@ class PartnerListView(LoginRequiredMixin, ListView, ExtraRequestProcessingMixin)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['current_page'] = "partners" # Required for navigation
+        context['menu_id'] = "partners" # Required for navigation
         return context
 
     def get_queryset(self):

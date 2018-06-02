@@ -14,7 +14,7 @@ class PartnerSearchView(LoginRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['current_page'] = "partners"
+        context['menu_id'] = "partners"
         return context
 
 
@@ -28,7 +28,7 @@ class PartnerSearchResultView(LoginRequiredMixin, ListView, ExtraRequestProcessi
         modified_context = super().get_context_data(**kwargs)
 
         # Required for navigation
-        modified_context['current_page'] = "partners"
+        modified_context['menu_id'] = "partners"
 
         # DEVELOPERS NOTE:
         # - This class based view will have URL parameters for filtering and

@@ -20,7 +20,7 @@ class MemberCreateView(LoginRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         modified_context = super().get_context_data(**kwargs)
-        modified_context['current_page'] = "associates" # Required for navigation
+        modified_context['menu_id'] = "associates" # Required for navigation
         modified_context['insurance_requirements'] = InsuranceRequirement.objects.all()
         modified_context['tags'] = Tag.objects.all()
         modified_context['skill_sets'] = SkillSet.objects.all()
@@ -33,5 +33,5 @@ class MemberConfirmCreateView(LoginRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         modified_context = super().get_context_data(**kwargs)
-        modified_context['current_page'] = "associates" # Required for navigation
+        modified_context['menu_id'] = "associates" # Required for navigation
         return modified_context

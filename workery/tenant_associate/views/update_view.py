@@ -35,7 +35,7 @@ class MemberUpdateView(LoginRequiredMixin, DetailView):
         modified_context['template'] = template
 
         # Required for navigation
-        modified_context['current_page'] = "associates"
+        modified_context['menu_id'] = "associates"
 
         # Extra
         modified_context['insurance_requirements'] = InsuranceRequirement.objects.all()

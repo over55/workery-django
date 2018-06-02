@@ -18,7 +18,7 @@ class PartnerCreateView(LoginRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['current_page'] = "partners" # Required for navigation
+        context['menu_id'] = "partners" # Required for navigation
         context['tags'] = Tag.objects.all()
         context['skill_sets'] = SkillSet.objects.all()
         return context
@@ -29,5 +29,5 @@ class PartnerConfirmCreateView(LoginRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['current_page'] = "partners" # Required for navigation
+        context['menu_id'] = "partners" # Required for navigation
         return context

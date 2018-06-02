@@ -31,7 +31,7 @@ class JobLiteRetrieveView(LoginRequiredMixin, DetailView, ExtraRequestProcessing
         modified_context['template'] = template
 
         # Required for navigation
-        modified_context['current_page'] = "jobs"
+        modified_context['menu_id'] = "jobs"
 
         # DEVELOPERS NOTE:
         # - We will extract the URL parameters and save them into our context
@@ -63,7 +63,7 @@ class JobFullRetrieveView(LoginRequiredMixin, DetailView, ExtraRequestProcessing
         modified_context['template'] = template
 
         # Required for navigation
-        modified_context['current_page'] = "jobs"
+        modified_context['menu_id'] = "jobs"
 
         # DEVELOPERS NOTE:
         # - We will extract the URL parameters and save them into our context
@@ -95,7 +95,7 @@ class JobRetrieveForActivitySheetListView(LoginRequiredMixin, DetailView, ExtraR
         modified_context['template'] = template
 
         # Required for navigation
-        modified_context['current_page'] = "jobs"
+        modified_context['menu_id'] = "jobs"
 
         # DEVELOPERS NOTE:
         # - We will extract the URL parameters and save them into our context
@@ -132,7 +132,7 @@ class JobRetrieveForTasksListView(LoginRequiredMixin, DetailView, ExtraRequestPr
         modified_context['template'] = template
 
         # Required for navigation
-        modified_context['current_page'] = "jobs"
+        modified_context['menu_id'] = "jobs"
 
         # DEVELOPERS NOTE:
         # - We will extract the URL parameters and save them into our context
@@ -169,7 +169,7 @@ class JobRetrieveForCommentsListAndCreateView(LoginRequiredMixin, DetailView, Ex
         modified_context['template'] = template
 
         # Required for navigation
-        modified_context['current_page'] = "jobs"
+        modified_context['menu_id'] = "jobs"
 
         # DEVELOPERS NOTE:
         # - We will extract the URL parameters and save them into our context
@@ -201,7 +201,7 @@ class JobRetrieveForCloseCreateView(LoginRequiredMixin, DetailView, ExtraRequest
         modified_context['template'] = template
 
         # Required for navigation
-        modified_context['current_page'] = "jobs"
+        modified_context['menu_id'] = "jobs"
 
         # DEVELOPERS NOTE:
         # - We will extract the URL parameters and save them into our context
@@ -233,7 +233,7 @@ class JobRetrieveForPostponeCreateView(LoginRequiredMixin, DetailView, ExtraRequ
         modified_context['template'] = template
 
         # Required for navigation
-        modified_context['current_page'] = "jobs"
+        modified_context['menu_id'] = "jobs"
 
         # DEVELOPERS NOTE:
         # - We will extract the URL parameters and save them into our context
@@ -265,7 +265,7 @@ class JobRetrieveForUnassignCreateView(LoginRequiredMixin, DetailView, ExtraRequ
         modified_context['template'] = template
 
         # Required for navigation
-        modified_context['current_page'] = "jobs"
+        modified_context['menu_id'] = "jobs"
 
         # DEVELOPERS NOTE:
         # - We will extract the URL parameters and save them into our context
@@ -290,7 +290,7 @@ class ArchivedJobFullRetrieveView(LoginRequiredMixin, DetailView, ExtraRequestPr
         modified_context = super().get_context_data(**kwargs)
 
         # Required for navigation
-        modified_context['current_page'] = "jobs"
+        modified_context['menu_id'] = "jobs"
 
         # DEVELOPERS NOTE:
         # - We will extract the URL parameters and save them into our context

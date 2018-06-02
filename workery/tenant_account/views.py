@@ -28,7 +28,7 @@ class AccountUpdateView(LoginRequiredMixin, DetailView, ExtraRequestProcessingMi
         modified_context = super().get_context_data(**kwargs)
 
         # Required for navigation
-        modified_context['current_page'] = "profile"
+        modified_context['menu_id'] = "profile"
 
         # DEVELOPERS NOTE:
         # - We will extract the URL parameters and save them into our context

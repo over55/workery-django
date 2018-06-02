@@ -30,7 +30,7 @@ class JobUpdateView(LoginRequiredMixin, DetailView):
         modified_context['template'] = template
 
         # Required for navigation
-        modified_context['current_page'] = "jobs"
+        modified_context['menu_id'] = "jobs"
 
         # Set our dependencies
         modified_context['skillsets'] = SkillSet.objects.all()

@@ -18,7 +18,7 @@ class TeamCreateView(LoginRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['current_page'] = "team" # Required for navigation
+        context['menu_id'] = "team" # Required for navigation
         context['tags'] = Tag.objects.all()
         context['skill_sets'] = SkillSet.objects.all()
         return context
@@ -29,5 +29,5 @@ class TeamCreateConfirmView(LoginRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['current_page'] = "team" # Required for navigation
+        context['menu_id'] = "team" # Required for navigation
         return context

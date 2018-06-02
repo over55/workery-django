@@ -26,7 +26,7 @@ class PendingTaskListView(LoginRequiredMixin, ListView, ExtraRequestProcessingMi
         modified_context = super().get_context_data(**kwargs)
 
         # Required for navigation
-        modified_context['current_page'] = "task"
+        modified_context['menu_id'] = "task"
 
         # DEVELOPERS NOTE:
         # - We will extract the URL parameters and save them into our context
@@ -58,7 +58,7 @@ class ClosedTaskListView(LoginRequiredMixin, ListView, ExtraRequestProcessingMix
         modified_context = super().get_context_data(**kwargs)
 
         # Required for navigation
-        modified_context['current_page'] = "task"
+        modified_context['menu_id'] = "task"
 
         # DEVELOPERS NOTE:
         # - We will extract the URL parameters and save them into our context
@@ -88,7 +88,7 @@ class PendingTaskRetrieveView(LoginRequiredMixin, DetailView, ExtraRequestProces
         modified_context = super().get_context_data(**kwargs)
 
         # Required for navigation
-        modified_context['current_page'] = "task"
+        modified_context['menu_id'] = "task"
 
         # Return our modified context.
         return modified_context
@@ -109,7 +109,7 @@ class PendingTaskRetrieveForActivitySheetView(LoginRequiredMixin, DetailView, Ex
         modified_context = super().get_context_data(**kwargs)
 
         # Required for navigation
-        modified_context['current_page'] = "task"
+        modified_context['menu_id'] = "task"
 
         # DEVELOPERS NOTE:
         # - We will extract the URL parameters and save them into our context
@@ -164,7 +164,7 @@ class PendingTaskRetrieveForActivitySheetAndAssignAssociateCreateView(LoginRequi
         modified_context = super().get_context_data(**kwargs)
 
         # Required for navigation
-        modified_context['current_page'] = "task"
+        modified_context['menu_id'] = "task"
 
         # DEVELOPERS NOTE:
         # - We will extract the URL parameters and save them into our context
@@ -190,7 +190,7 @@ class PendingTaskRetrieveAndCompleteCreateView(LoginRequiredMixin, DetailView, E
         modified_context = super().get_context_data(**kwargs)
 
         # Required for navigation
-        modified_context['current_page'] = "task"
+        modified_context['menu_id'] = "task"
 
         # Return our modified context.
         return modified_context

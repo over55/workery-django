@@ -30,7 +30,7 @@ class CustomerLiteRetrieveView(LoginRequiredMixin, DetailView, ExtraRequestProce
         modified_context['template'] = template
 
         # Required for navigation
-        modified_context['current_page'] = "customers"
+        modified_context['menu_id'] = "customers"
 
         # DEVELOPERS NOTE:
         # - We will extract the URL parameters and save them into our context
@@ -62,7 +62,7 @@ class CustomerFullRetrieveView(LoginRequiredMixin, DetailView, ExtraRequestProce
         modified_context['template'] = template
 
         # Required for navigation
-        modified_context['current_page'] = "customers"
+        modified_context['menu_id'] = "customers"
 
         # DEVELOPERS NOTE:
         # - We will extract the URL parameters and save them into our context
@@ -94,7 +94,7 @@ class CustomerRetrieveForCommentListAndCreateView(LoginRequiredMixin, DetailView
         modified_context['template'] = template
 
         # Required for navigation
-        modified_context['current_page'] = "customers"
+        modified_context['menu_id'] = "customers"
 
         # DEVELOPERS NOTE:
         # - We will extract the URL parameters and save them into our context
@@ -126,7 +126,7 @@ class CustomerRetrieveForJobsListView(LoginRequiredMixin, DetailView, ExtraReque
         modified_context['template'] = template
 
         # Required for navigation
-        modified_context['current_page'] = "customers"
+        modified_context['menu_id'] = "customers"
 
         # DEVELOPERS NOTE:
         # - We will extract the URL parameters and save them into our context

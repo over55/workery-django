@@ -56,53 +56,53 @@
                 <hr class="nav-divider">
                 <ul class="nav flex-column">
                     <li class="nav-item">
-                        <a class="nav-link {% if current_page == 'dashboard' %}active{% endif %}" href="{% url 'workery_tenant_dashboard_master' %}">
+                        <a class="nav-link {% if menu_id == 'dashboard' %}active{% endif %}" href="{% url 'workery_tenant_dashboard_master' %}">
                         <i class="fas fa-tachometer-alt"></i>&nbsp;{% trans 'Dashboard' %}
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {% if current_page == 'task' %}active{% endif %}" href="{% url 'workery_tenant_task_list' %}">
+                        <a class="nav-link {% if menu_id == 'task' %}active{% endif %}" href="{% url 'workery_tenant_task_list' %}">
                         <i class="fa fa-list-ol"></i>&nbsp;Tasks
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {% if current_page == 'jobs' %}active{% endif %}" href="{% url 'workery_tenant_job_summary' %}">
+                        <a class="nav-link {% if menu_id == 'jobs' %}active{% endif %}" href="{% url 'workery_tenant_job_summary' %}">
                         <i class="fa fa-wrench"></i>&nbsp;{% trans 'Jobs' %}
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {% if current_page == 'reports' %}active{% endif %}" href="{% url 'workery_tenant_reports_list_master' %}">
+                        <a class="nav-link {% if menu_id == 'reports' %}active{% endif %}" href="{% url 'workery_tenant_reports_list_master' %}">
                         <i class="fa fa-chart-bar"></i>&nbsp;Reports
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {% if current_page == 'customers' %}active{% endif %}" href="{% url 'workery_tenant_customer_summary' %}">
+                        <a class="nav-link {% if menu_id == 'customers' %}active{% endif %}" href="{% url 'workery_tenant_customer_summary' %}">
                         <i class="fa fa-user-circle"></i>&nbsp;{% trans 'Clients' %}
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {% if current_page == 'associates' %}active{% endif %}" href="{% url 'workery_tenant_member_summary' %}">
+                        <a class="nav-link {% if menu_id == 'associates' %}active{% endif %}" href="{% url 'workery_tenant_member_summary' %}">
                         <i class="fas fa-id-card"></i>&nbsp;{% trans 'Members' %}
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {% if current_page == 'team' %}active{% endif %}" href="{% url 'workery_tenant_team_summary' %}">
+                        <a class="nav-link {% if menu_id == 'team' %}active{% endif %}" href="{% url 'workery_tenant_team_summary' %}">
                         <i class="fas fa-user-tie"></i>&nbsp;{% trans 'Staff' %}
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {% if current_page == 'partners' %}active{% endif %}" href="{% url 'workery_tenant_partner_summary' %}">
+                        <a class="nav-link {% if menu_id == 'partners' %}active{% endif %}" href="{% url 'workery_tenant_partner_summary' %}">
                             <i class="fa fa-handshake"></i>&nbsp;Partners
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {% if current_page == 'financials' %}active{% endif %}" href="{% url 'workery_tenant_unpaid_jobs_list' %}">
+                        <a class="nav-link {% if menu_id == 'financials' %}active{% endif %}" href="{% url 'workery_tenant_unpaid_jobs_list' %}">
                             <i class="fa fa-credit-card"></i>&nbsp;Financials
                         </a>
                     </li>
                     {% comment %}
                     <li class="nav-item">
-                        <a class="nav-link {% if current_page == 'resource' %}active{% endif %}" href="{% url 'workery_tenant_resource_category_list' %}">
+                        <a class="nav-link {% if menu_id == 'resource' %}active{% endif %}" href="{% url 'workery_tenant_resource_category_list' %}">
                         <i class="fas fa-file-alt"></i>&nbsp;Resources
                         </a>
                     </li>
@@ -117,18 +117,18 @@
                         </li>
                     {% endif %}
                     <li class="nav-item">
-                        <a class="nav-link {% if current_page == 'setting' %}active{% endif %}" href="{% url 'workery_tenant_settings_launchpad' %}"><i class="fas fa-cog"></i> Settings</a>
+                        <a class="nav-link {% if menu_id == 'setting' %}active{% endif %}" href="{% url 'workery_tenant_settings_launchpad' %}"><i class="fas fa-cog"></i> Settings</a>
                     </li>
                     <li class="nav-item">
                         <!-- NOTE: EXECUTIVE MEMBERS DO NOT GET ACCESS TO THE PROFILES PAGE. -->
                         {% comment %}
-                        <a class="nav-link {% if current_page == 'profile' %}active{% endif %}" href="{% url 'workery_tenant_account_update' logged_in_user_id %}">
+                        <a class="nav-link {% if menu_id == 'profile' %}active{% endif %}" href="{% url 'workery_tenant_account_update' logged_in_user_id %}">
                             <i class="fas fa-address-card"></i>&nbsp;Profile
                         </a>
                         {% endcomment %}
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {% if current_page == 'help' %}active{% endif %}" href="{% url 'workery_tenant_help_category_list' %}"><i class="fas fa-question-circle"></i> Help</a>
+                        <a class="nav-link {% if menu_id == 'help' %}active{% endif %}" href="{% url 'workery_tenant_help_category_list' %}"><i class="fas fa-question-circle"></i> Help</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" onclick="ajax_logout();" style="cursor:pointer">

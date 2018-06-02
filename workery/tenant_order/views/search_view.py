@@ -14,7 +14,7 @@ class JobSearchView(LoginRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['current_page'] = "jobs"
+        context['menu_id'] = "jobs"
         return context
 
 
@@ -27,7 +27,7 @@ class JobSearchResultView(LoginRequiredMixin, ListView, ExtraRequestProcessingMi
         modified_context = super().get_context_data(**kwargs)
 
         # Required for navigation
-        modified_context['current_page'] = "jobs"
+        modified_context['menu_id'] = "jobs"
 
         # DEVELOPERS NOTE:
         # - This class based view will have URL parameters for filtering and

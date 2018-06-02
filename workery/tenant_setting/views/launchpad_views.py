@@ -18,7 +18,7 @@ class LaunchpadView(LoginRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['current_page'] = "setting" # Required for navigation
+        context['menu_id'] = "setting" # Required for navigation
         context['tags'] = Tag.objects.all()
         context['skill_sets'] = SkillSet.objects.all()
         return context

@@ -27,7 +27,7 @@ class JobSummaryView(LoginRequiredMixin, ListView, ExtraRequestProcessingMixin):
         modified_context = super().get_context_data(**kwargs)
 
         # Required for navigation
-        modified_context['current_page'] = "jobs"
+        modified_context['menu_id'] = "jobs"
 
         # DEVELOPERS NOTE:
         # - We will extract the URL parameters and save them into our context
@@ -46,7 +46,7 @@ class JobListView(LoginRequiredMixin, ListView, ExtraRequestProcessingMixin):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['current_page'] = "jobs" # Required for navigation
+        context['menu_id'] = "jobs" # Required for navigation
         return context
 
     def get_queryset(self):
@@ -75,7 +75,7 @@ class ArchivedJobListView(LoginRequiredMixin, ListView, ExtraRequestProcessingMi
         modified_context = super().get_context_data(**kwargs)
 
         # Required for navigation
-        modified_context['current_page'] = "jobs"
+        modified_context['menu_id'] = "jobs"
 
         # DEVELOPERS NOTE:
         # - We will extract the URL parameters and save them into our context

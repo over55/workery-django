@@ -22,7 +22,7 @@ class UnpaidJobOrderListView(LoginRequiredMixin, ListView, ExtraRequestProcessin
         modified_context = super().get_context_data(**kwargs)
 
         # Required for navigation
-        modified_context['current_page'] = "financials"
+        modified_context['menu_id'] = "financials"
 
         # Get count of total tasks.
         modified_context['unpaid_count'] = WorkOrder.objects.filter(
@@ -57,7 +57,7 @@ class PaidJobOrderListView(LoginRequiredMixin, ListView, ExtraRequestProcessingM
         modified_context = super().get_context_data(**kwargs)
 
         # Required for navigation
-        modified_context['current_page'] = "financials"
+        modified_context['menu_id'] = "financials"
 
         # Get count of total tasks.
         modified_context['unpaid_count'] = WorkOrder.objects.filter(
@@ -89,7 +89,7 @@ class AllJobOrderListView(LoginRequiredMixin, ListView, ExtraRequestProcessingMi
         modified_context = super().get_context_data(**kwargs)
 
         # Required for navigation
-        modified_context['current_page'] = "financials"
+        modified_context['menu_id'] = "financials"
 
         # Get count of total tasks.
         modified_context['unpaid_count'] = WorkOrder.objects.filter(
@@ -125,7 +125,7 @@ class JobRetrieveView(LoginRequiredMixin, DetailView, ExtraRequestProcessingMixi
         modified_context = super().get_context_data(**kwargs)
 
         # Required for navigation
-        modified_context['current_page'] = "task"
+        modified_context['menu_id'] = "task"
 
         # Validate the template selected.
         template = self.kwargs['template']
@@ -157,7 +157,7 @@ class JobUpdateView(LoginRequiredMixin, DetailView, ExtraRequestProcessingMixin)
         modified_context = super().get_context_data(**kwargs)
 
         # Required for navigation
-        modified_context['current_page'] = "task"
+        modified_context['menu_id'] = "task"
 
         # Validate the template selected.
         template = self.kwargs['template']

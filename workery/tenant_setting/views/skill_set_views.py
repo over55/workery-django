@@ -20,7 +20,7 @@ class SkillSetListView(LoginRequiredMixin, ListView, ExtraRequestProcessingMixin
 
     def get_context_data(self, **kwargs):
         modified_context = super().get_context_data(**kwargs)
-        modified_context['current_page'] = "settings" # Required for navigation
+        modified_context['menu_id'] = "settings" # Required for navigation
 
         # DEVELOPERS NOTE:
         # - We will extract the URL parameters and save them into our context
@@ -53,7 +53,7 @@ class SkillSetUpdateView(LoginRequiredMixin, DetailView):
         modified_context = super().get_context_data(**kwargs)
 
         # Required for navigation
-        modified_context['current_page'] = "settings"
+        modified_context['menu_id'] = "settings"
 
         # Add extra database lookups.
         modified_context['insurance_requirements'] = InsuranceRequirement.objects.all()
@@ -70,7 +70,7 @@ class SkillSetCreateView(LoginRequiredMixin, TemplateView):
         modified_context = super().get_context_data(**kwargs)
 
         # Required for navigation
-        modified_context['current_page'] = "setting"
+        modified_context['menu_id'] = "setting"
 
         # Add extra database lookups.
         modified_context['insurance_requirements'] = InsuranceRequirement.objects.all()

@@ -34,7 +34,7 @@ class PartnerUpdateView(LoginRequiredMixin, DetailView):
         modified_context['template'] = template
 
         # Required for navigation
-        modified_context['current_page'] = "partners"
+        modified_context['menu_id'] = "partners"
 
         # Extra
         modified_context['tags'] = Tag.objects.all()

@@ -14,7 +14,7 @@ class MemberSearchView(LoginRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['current_page'] = "associates"
+        context['menu_id'] = "associates"
         return context
 
 
@@ -28,7 +28,7 @@ class MemberSearchResultView(LoginRequiredMixin, ListView, ExtraRequestProcessin
         modified_context = super().get_context_data(**kwargs)
 
         # Required for navigation
-        modified_context['current_page'] = "associates"
+        modified_context['menu_id'] = "associates"
 
         # DEVELOPERS NOTE:
         # - This class based view will have URL parameters for filtering and

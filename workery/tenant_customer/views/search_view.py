@@ -14,7 +14,7 @@ class CustomerSearchView(LoginRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['current_page'] = "customers"
+        context['menu_id'] = "customers"
         return context
 
 
@@ -28,7 +28,7 @@ class CustomerSearchResultView(LoginRequiredMixin, ListView, ExtraRequestProcess
         modified_context = super().get_context_data(**kwargs)
 
         # Required for navigation
-        modified_context['current_page'] = "customers"
+        modified_context['menu_id'] = "customers"
 
         # DEVELOPERS NOTE:
         # - This class based view will have URL parameters for filtering and

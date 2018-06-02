@@ -34,7 +34,7 @@ class TeamUpdateView(LoginRequiredMixin, DetailView, ExtraRequestProcessingMixin
         modified_context['template'] = template
 
         # Required for navigation
-        modified_context['current_page'] = "team"
+        modified_context['menu_id'] = "team"
 
         # Extra
         modified_context['tags'] = Tag.objects.all()

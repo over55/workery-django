@@ -25,7 +25,7 @@ class DashboardView(LoginRequiredMixin, TemplateView, ExtraRequestProcessingMixi
     def get_context_data(self, **kwargs):
         modified_context = super().get_context_data(**kwargs)
 
-        modified_context['current_page'] = 'dashboard' # Required
+        modified_context['menu_id'] = 'dashboard' # Required
 
         modified_context['associates_count'] = Associate.objects.filter(
             owner__is_active=True

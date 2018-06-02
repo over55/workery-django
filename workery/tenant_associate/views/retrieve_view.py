@@ -30,7 +30,7 @@ class MemberLiteRetrieveView(LoginRequiredMixin, DetailView, ExtraRequestProcess
         modified_context['template'] = template
 
         # Required for navigation
-        modified_context['current_page'] = "associates"
+        modified_context['menu_id'] = "associates"
 
         # DEVELOPERS NOTE:
         # - We will extract the URL parameters and save them into our context
@@ -65,7 +65,7 @@ class MemberFullRetrieveView(LoginRequiredMixin, DetailView, ExtraRequestProcess
         modified_context['template'] = template
 
         # Required for navigation
-        modified_context['current_page'] = "associates"
+        modified_context['menu_id'] = "associates"
 
         # DEVELOPERS NOTE:
         # - We will extract the URL parameters and save them into our context
@@ -100,7 +100,7 @@ class MemberRetrieveForCommentsListAndCreateView(LoginRequiredMixin, DetailView,
         modified_context['template'] = template
 
         # Required for navigation
-        modified_context['current_page'] = "associates"
+        modified_context['menu_id'] = "associates"
 
         # DEVELOPERS NOTE:
         # - We will extract the URL parameters and save them into our context
@@ -132,7 +132,7 @@ class MemberRetrieveForActivitySheetListView(LoginRequiredMixin, DetailView, Ext
         modified_context['template'] = template
 
         # Required for navigation
-        modified_context['current_page'] = "associates"
+        modified_context['menu_id'] = "associates"
 
         # DEVELOPERS NOTE:
         # - We will extract the URL parameters and save them into our context
@@ -169,7 +169,7 @@ class MemberRetrieveForJobsListView(LoginRequiredMixin, DetailView, ExtraRequest
         modified_context['template'] = template
 
         # Required for navigation
-        modified_context['current_page'] = "associates"
+        modified_context['menu_id'] = "associates"
 
         # DEVELOPERS NOTE:
         # - We will extract the URL parameters and save them into our context

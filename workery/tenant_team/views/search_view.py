@@ -19,7 +19,7 @@ class TeamSearchView(LoginRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['current_page'] = "team"
+        context['menu_id'] = "team"
         return context
 
 
@@ -33,7 +33,7 @@ class TeamSearchResultView(LoginRequiredMixin, ListView, ExtraRequestProcessingM
         modified_context = super().get_context_data(**kwargs)
 
         # Required for navigation
-        modified_context['current_page'] = "team"
+        modified_context['menu_id'] = "team"
 
         # DEVELOPERS NOTE:
         # - This class based view will have URL parameters for filtering and

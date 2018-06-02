@@ -20,7 +20,7 @@ class ReportListView(LoginRequiredMixin, TemplateView, ExtraRequestProcessingMix
 
     def get_context_data(self, **kwargs):
         modified_context = super().get_context_data(**kwargs)
-        modified_context['current_page'] = 'reports' # Required
+        modified_context['menu_id'] = 'reports' # Required
         return modified_context
 
 
@@ -29,7 +29,7 @@ class Report01DetailView(LoginRequiredMixin, TemplateView, ExtraRequestProcessin
 
     def get_context_data(self, **kwargs):
         modified_context = super().get_context_data(**kwargs)
-        modified_context['current_page'] = 'reports' # Required
+        modified_context['menu_id'] = 'reports' # Required
         return modified_context
 
 
@@ -38,7 +38,7 @@ class Report05DetailView(LoginRequiredMixin, TemplateView, ExtraRequestProcessin
 
     def get_context_data(self, **kwargs):
         modified_context = super().get_context_data(**kwargs)
-        modified_context['current_page'] = 'reports' # Required
+        modified_context['menu_id'] = 'reports' # Required
         return modified_context
 
 
@@ -47,7 +47,7 @@ class Report06DetailView(LoginRequiredMixin, TemplateView, ExtraRequestProcessin
 
     def get_context_data(self, **kwargs):
         modified_context = super().get_context_data(**kwargs)
-        modified_context['current_page'] = 'reports' # Required
+        modified_context['menu_id'] = 'reports' # Required
         return modified_context
 
 
@@ -56,7 +56,7 @@ class Report07DetailView(LoginRequiredMixin, TemplateView, ExtraRequestProcessin
 
     def get_context_data(self, **kwargs):
         modified_context = super().get_context_data(**kwargs)
-        modified_context['current_page'] = 'reports' # Required
+        modified_context['menu_id'] = 'reports' # Required
         return modified_context
 
 
@@ -65,7 +65,7 @@ class Report08DetailView(LoginRequiredMixin, TemplateView, ExtraRequestProcessin
 
     def get_context_data(self, **kwargs):
         modified_context = super().get_context_data(**kwargs)
-        modified_context['current_page'] = 'reports' # Required
+        modified_context['menu_id'] = 'reports' # Required
         return modified_context
 
 
@@ -74,7 +74,7 @@ class Report09DetailView(LoginRequiredMixin, TemplateView, ExtraRequestProcessin
 
     def get_context_data(self, **kwargs):
         modified_context = super().get_context_data(**kwargs)
-        modified_context['current_page'] = 'reports' # Required
+        modified_context['menu_id'] = 'reports' # Required
         return modified_context
 
 
@@ -83,7 +83,7 @@ class Report10DetailView(LoginRequiredMixin, TemplateView, ExtraRequestProcessin
 
     def get_context_data(self, **kwargs):
         modified_context = super().get_context_data(**kwargs)
-        modified_context['current_page'] = 'reports' # Required
+        modified_context['menu_id'] = 'reports' # Required
         return modified_context
 
 
@@ -92,7 +92,7 @@ class Report12DetailView(LoginRequiredMixin, TemplateView, ExtraRequestProcessin
 
     def get_context_data(self, **kwargs):
         modified_context = super().get_context_data(**kwargs)
-        modified_context['current_page'] = 'reports' # Required
+        modified_context['menu_id'] = 'reports' # Required
         return modified_context
 
 
@@ -101,5 +101,5 @@ class Report13DetailView(LoginRequiredMixin, TemplateView, ExtraRequestProcessin
 
     def get_context_data(self, **kwargs):
         modified_context = super().get_context_data(**kwargs)
-        modified_context['current_page'] = 'reports' # Required
+        modified_context['menu_id'] = 'reports' # Required
         return modified_context
