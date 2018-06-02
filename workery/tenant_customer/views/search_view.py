@@ -23,6 +23,7 @@ class CustomerSearchResultView(LoginRequiredMixin, WorkeryListView):
     template_name = 'tenant_customer/search/result_view.html'
     paginate_by = 100
     menu_id = "customers"
+    skip_parameters_array = ['page']
 
     def get_queryset(self):
         """
