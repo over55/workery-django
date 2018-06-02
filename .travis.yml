@@ -3,7 +3,9 @@ language: python
 python:
   - 3.6
 
-services: postgresql
+services:
+  - postgresql
+  - redis-server
 
 addons:
   - postgresql: "9.6"
@@ -21,6 +23,7 @@ before_script:
   - sudo apt-get autoremove postgis*
   - sudo apt-get autoremove postgresql*
   - sudo apt-get install postgresql-9.6-postgis-2.3
+  - sudo redis-server /etc/redis/redis.conf --port 6379
   - psql -c "CREATE USER django WITH PASSWORD '123password';" -U postgres
   - psql -c "CREATE DATABASE workery_db;" -U postgres
   - psql -c "GRANT ALL PRIVILEGES ON DATABASE workery_db to django;" -U postgres
