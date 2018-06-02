@@ -575,3 +575,17 @@ table.custom-cell-w tr th{width:35% !important;}
 .was-validated .pass_check {
 	color: #dc3545 !important;
 }
+.notif-icons {
+	position: absolute;
+	right: 120px;
+}
+.notif-icons a{
+	text-decoration: none !important;
+	font-size: 2rem;
+}
+.notif-icons .badge{
+	font-size: 1rem !important;
+	position: absolute;
+}
+.notif-icons .badge-1{top: 0; left: 20px;}
+.notif-icons .badge-2{top: 0; right: -5px;}
