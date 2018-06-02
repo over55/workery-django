@@ -57,3 +57,4 @@ class ArchivedJobListView(LoginRequiredMixin, WorkeryListView):
     template_name = 'tenant_order/list/archived_view.html'
     paginate_by = 100
     menu_id = 'jobs'
+    skip_parameters_array = ['page']
