@@ -9,9 +9,16 @@ class ExtraRequestProcessingMixin(object):
     """
     def get_param_urls(self, skip_parameters_array):
         parameters = ""
-        for param in self.request.GET:
+        for i, param in  enumerate(self.request.GET):
             if str(param) not in skip_parameters_array:
-                parameter = "&"+param+"="+self.request.GET.get(param, None)
+
+                # Figure out whether to use '?' or '&' operation.
+                operation = '?'
+                if i > 0:
+                    operation = '&'
+
+                # Generate the URL.
+                parameter = operation + param + "=" + self.request.GET.get(param, None)
                 parameters += parameter
 
         return parameters

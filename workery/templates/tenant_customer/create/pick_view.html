@@ -27,10 +27,15 @@
     <!------------------------------------------------------------------------->
     <nav aria-label="breadcrumb">
 	  	<ol class="breadcrumb">
-            {% if parameters.back_id != 'create_job' %}
-	    	<li class="breadcrumb-item"><a href="{% url 'workery_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
-            <li class="breadcrumb-item"><a href="{% url 'workery_tenant_customer_summary' %}">{% trans 'Clients' %}</a></li>
-            <li class="breadcrumb-item active" aria-current="page">{% trans 'Add' %}</li>
+            {% if parameters.back_id == 'create_job' %}
+                <li class="breadcrumb-item"><a href="{% url 'workery_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'workery_tenant_job_summary' %}">{% trans 'Jobs' %}</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'workery_tenant_job_search_or_add_create' %}">{% trans 'Add' %}</a></li>
+                <li class="breadcrumb-item active" aria-current="page">{% trans 'Add Client' %}</li>
+            {% else %}
+	    	    <li class="breadcrumb-item"><a href="{% url 'workery_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'workery_tenant_customer_summary' %}">{% trans 'Clients' %}</a></li>
+                <li class="breadcrumb-item active" aria-current="page">{% trans 'Add' %}</li>
             {% endif %}
 	  	</ol>
 	</nav>
@@ -41,9 +46,15 @@
     <!------------------------------------------------------------------------->
     <div class="row">
 		<div class="col-sm-3 p-3 mb-2">
-			<a class="btn btn-primary btn-lg" href="{% url 'workery_tenant_customer_summary' %}" role="button">
-               <i class="fas fa-arrow-left"></i> &nbsp;{% trans 'Back to Clients Home' %}
-            </a>
+            {% if parameters.back_id == 'create_job' %}
+                <a class="btn btn-primary btn-lg" href="{% url 'workery_tenant_job_search_or_add_create' %}" role="button">
+                    <i class="fas fa-arrow-left"></i> &nbsp;{% trans 'Back to Add Job' %}
+                </a>
+            {% else %}
+                <a class="btn btn-primary btn-lg" href="{% url 'workery_tenant_customer_summary' %}" role="button">
+                    <i class="fas fa-arrow-left"></i> &nbsp;{% trans 'Back to Clients Home' %}
+                </a>
+            {% endif %}
 		</div>
     </div>
     <!------------------------------------------------------------------------->
@@ -77,24 +88,24 @@
         <div class="col-md-4 my-4 mx-3">
             <div class="card box-shadow text-center mx-auto">
               <div class="card-custom-top-2">
-                <a href="{% url 'workery_tenant_residential_customer_create' %}" class="text-white"><i class="fas fa-home fa-3x"></i></a>
+                <a href="{% url 'workery_tenant_residential_customer_create' %}{{ filter_parameters }}" class="text-white"><i class="fas fa-home fa-3x"></i></a>
               </div>
               <div class="card-body">
                 <h3 class="card-title">Residential</h3>
                 <p class="card-text">Add a Residential Client</p>
-                <a href="{% url 'workery_tenant_residential_customer_create' %}" class="btn btn-success btn-lg">Go <i class="fas fa-arrow-circle-right"></i></a>
+                <a href="{% url 'workery_tenant_residential_customer_create' %}{{ filter_parameters }}" class="btn btn-success btn-lg">Go <i class="fas fa-arrow-circle-right"></i></a>
               </div>
             </div>
         </div>
         <div class="col-md-4 my-4 mx-3">
             <div class="card box-shadow text-center mx-auto">
               <div class="card-custom-top-2">
-                <a href="{% url 'workery_tenant_commercial_customer_create' %}" class="text-white"><i class="fas fa-building fa-3x"></i></a>
+                <a href="{% url 'workery_tenant_commercial_customer_create' %}{{ filter_parameters }}" class="text-white"><i class="fas fa-building fa-3x"></i></a>
               </div>
               <div class="card-body">
                 <h3 class="card-title">Commercial</h3>
                 <p class="card-text">Add a Commercial Client</p>
-                <a href="{% url 'workery_tenant_commercial_customer_create' %}" class="btn btn-success btn-lg">Go <i class="fas fa-arrow-circle-right"></i></a>
+                <a href="{% url 'workery_tenant_commercial_customer_create' %}{{ filter_parameters }}" class="btn btn-success btn-lg">Go <i class="fas fa-arrow-circle-right"></i></a>
               </div>
             </div>
         </div>

@@ -15,6 +15,7 @@ from tenant_foundation.models import Customer, WorkOrder, WorkOrderServiceFee, S
 class Step1ACreateOrAddCustomerView(LoginRequiredMixin, WorkeryTemplateView):
     template_name = 'tenant_order/create/step_1_a_search_or_add_view.html'
     menu_id = 'jobs'
+    skip_parameters_array = ['back_id']
 
 
 class Step1BCustomerSearchResultsView(LoginRequiredMixin, WorkeryListView):

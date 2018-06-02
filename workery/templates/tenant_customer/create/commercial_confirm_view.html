@@ -19,11 +19,29 @@
      *  THE "residential_create_confirm_form.html" FORM TEMPLATE.
      */
     function click_previous_button() {
-        window.location = "{% url 'workery_tenant_commercial_customer_create' %}";
+        window.location = "{% url 'workery_tenant_commercial_customer_create' %}{{ filter_parameters }}";
     }
 
     function click_submit_button() {
-        ajax_post_form_submission("{% url 'workery_tenant_customer_summary' %}?was_created=True");
+        {% if parameters.back_id == 'create_job' %}
+
+            // If this GUI page was loaded from the "Job Create" page then
+            // we must redirect back to their GUI.
+            ajax_post_form_submission("{% url 'workery_tenant_job_search_or_add_create' %}{{ filter_parameters }}&was_created=True");
+
+        {% else %}
+            {% if filter_parameters %}
+
+                // If there exists somesort of parameter in the URL then
+                // run the following URL.
+                ajax_post_form_submission("{% url 'workery_tenant_customer_summary' %}{{ filter_parameters }}&was_created=True");
+            {% else %}
+
+                // If no parameters exist then run the following.
+                ajax_post_form_submission("{% url 'workery_tenant_customer_summary' %}?was_created=True");
+
+            {% endif %}
+        {% endif %}
     }
 </script>
 <!----------------------------------------------------------------------------->
@@ -36,11 +54,16 @@
     <!------------------------------------------------------------------------->
     <nav aria-label="breadcrumb">
 	  	<ol class="breadcrumb">
-            {% if parameters.back_id != 'create_job' %}
-	    	<li class="breadcrumb-item"><a href="{% url 'workery_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
-            <li class="breadcrumb-item"><a href="{% url 'workery_tenant_customer_summary' %}">{% trans 'Clients' %}</a></li>
-            <li class="breadcrumb-item"><a href="{% url 'workery_tenant_pick_customer_create' %}">{% trans 'Add' %}</a></li>
-            <li class="breadcrumb-item active" aria-current="page">{% trans 'Commercial Client' %}</li>
+            {% if parameters.back_id == 'create_job' %}
+                <li class="breadcrumb-item"><a href="{% url 'workery_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'workery_tenant_job_summary' %}">{% trans 'Jobs' %}</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'workery_tenant_job_search_or_add_create' %}">{% trans 'Add' %}</a></li>
+                <li class="breadcrumb-item active" aria-current="page">{% trans 'Add Client' %}</li>
+            {% else %}
+                <li class="breadcrumb-item"><a href="{% url 'workery_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'workery_tenant_customer_summary' %}">{% trans 'Clients' %}</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'workery_tenant_pick_customer_create' %}">{% trans 'Add' %}</a></li>
+                <li class="breadcrumb-item active" aria-current="page">{% trans 'Commercial Client' %}</li>
             {% endif %}
 	  	</ol>
 	</nav>
@@ -51,10 +74,17 @@
     <!------------------------------------------------------------------------->
     <div class="row">
 		<div class="col-sm-3 p-3 mb-2">
-			<a class="btn btn-primary btn-lg" href="{% url 'workery_tenant_customer_summary' %}" role="button">
-                	<i class="fas fa-arrow-left"></i> &nbsp;{% trans 'Back to Clients Home' %}</a>
+            {% if parameters.back_id == 'create_job' %}
+                <a class="btn btn-primary btn-lg" href="{% url 'workery_tenant_job_search_or_add_create' %}" role="button">
+                    <i class="fas fa-arrow-left"></i> &nbsp;{% trans 'Back to Add Job' %}
+                </a>
+            {% else %}
+                <a class="btn btn-primary btn-lg" href="{% url 'workery_tenant_customer_summary' %}" role="button">
+                    <i class="fas fa-arrow-left"></i> &nbsp;{% trans 'Back to Clients Home' %}
+                </a>
+            {% endif %}
 		</div>
-	</div>
+    </div>
     <!------------------------------------------------------------------------->
     <!-- end BACK BUTTON -->
 
