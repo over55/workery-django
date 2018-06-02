@@ -1,15 +1,18 @@
 # -*- coding: utf-8 -*-
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
-from django.views.generic.edit import CreateView, FormView, UpdateView
-from django.views.generic import DetailView, ListView, TemplateView
 from django.utils.decorators import method_decorator
 from django.utils.translation import ugettext_lazy as _
-from shared_foundation.mixins import ExtraRequestProcessingMixin
+from shared_foundation.mixins import (
+    ExtraRequestProcessingMixin,
+    WorkeryTemplateView,
+    WorkeryListView,
+    WorkeryDetailView
+)
 from tenant_foundation.models import WorkOrder
 
 
-class UnpaidJobOrderListView(LoginRequiredMixin, ListView, ExtraRequestProcessingMixin):
+class UnpaidJobOrderListView(LoginRequiredMixin, WorkeryListView):
     context_object_name = 'job_list'
     queryset = WorkOrder.objects.filter(
         invoice_service_fee_payment_date=None,
@@ -17,12 +20,10 @@ class UnpaidJobOrderListView(LoginRequiredMixin, ListView, ExtraRequestProcessin
     ).order_by('-id')
     template_name = 'tenant_financial/list/unpaid_view.html'
     paginate_by = 100
+    menu_id = "financials"
 
     def get_context_data(self, **kwargs):
         modified_context = super().get_context_data(**kwargs)
-
-        # Required for navigation
-        modified_context['menu_id'] = "financials"
 
         # Get count of total tasks.
         modified_context['unpaid_count'] = WorkOrder.objects.filter(
@@ -35,16 +36,11 @@ class UnpaidJobOrderListView(LoginRequiredMixin, ListView, ExtraRequestProcessin
         ).count()
         modified_context['all_count'] = WorkOrder.objects.filter(is_archived=False).count()
 
-        # DEVELOPERS NOTE:
-        # - We will extract the URL parameters and save them into our context
-        #   so we can use this to help the pagination.
-        modified_context['parameters'] = self.get_params_dict([])
-
         # Return our modified context.
         return modified_context
 
 
-class PaidJobOrderListView(LoginRequiredMixin, ListView, ExtraRequestProcessingMixin):
+class PaidJobOrderListView(LoginRequiredMixin, WorkeryListView):
     context_object_name = 'job_list'
     queryset = WorkOrder.objects.filter(
         ~Q(invoice_service_fee_payment_date=None) &
@@ -52,12 +48,10 @@ class PaidJobOrderListView(LoginRequiredMixin, ListView, ExtraRequestProcessingM
     ).order_by('-invoice_service_fee_payment_date')
     template_name = 'tenant_financial/list/paid_view.html'
     paginate_by = 100
+    menu_id = "financials"
 
     def get_context_data(self, **kwargs):
         modified_context = super().get_context_data(**kwargs)
-
-        # Required for navigation
-        modified_context['menu_id'] = "financials"
 
         # Get count of total tasks.
         modified_context['unpaid_count'] = WorkOrder.objects.filter(
@@ -70,26 +64,19 @@ class PaidJobOrderListView(LoginRequiredMixin, ListView, ExtraRequestProcessingM
         ).count()
         modified_context['all_count'] = WorkOrder.objects.filter(is_archived=False).count()
 
-        # DEVELOPERS NOTE:
-        # - We will extract the URL parameters and save them into our context
-        #   so we can use this to help the pagination.
-        modified_context['parameters'] = self.get_params_dict([])
-
         # Return our modified context.
         return modified_context
 
 
-class AllJobOrderListView(LoginRequiredMixin, ListView, ExtraRequestProcessingMixin):
+class AllJobOrderListView(LoginRequiredMixin, WorkeryListView):
     context_object_name = 'job_list'
     queryset = WorkOrder.objects.filter(is_archived=False).order_by('-id')
     template_name = 'tenant_financial/list/all_view.html'
     paginate_by = 100
+    menu_id = "financials"
 
     def get_context_data(self, **kwargs):
         modified_context = super().get_context_data(**kwargs)
-
-        # Required for navigation
-        modified_context['menu_id'] = "financials"
 
         # Get count of total tasks.
         modified_context['unpaid_count'] = WorkOrder.objects.filter(
@@ -102,19 +89,15 @@ class AllJobOrderListView(LoginRequiredMixin, ListView, ExtraRequestProcessingMi
         ).count()
         modified_context['all_count'] = WorkOrder.objects.filter(is_archived=False).count()
 
-        # DEVELOPERS NOTE:
-        # - We will extract the URL parameters and save them into our context
-        #   so we can use this to help the pagination.
-        modified_context['parameters'] = self.get_params_dict([])
-
         # Return our modified context.
         return modified_context
 
 
-class JobRetrieveView(LoginRequiredMixin, DetailView, ExtraRequestProcessingMixin):
+class JobRetrieveView(LoginRequiredMixin, WorkeryDetailView):
     context_object_name = 'job_item'
     model = WorkOrder
     template_name = 'tenant_financial/retrieve/view.html'
+    menu_id = "financials"
 
     def get_object(self):
         obj = super().get_object()  # Call the superclass
@@ -123,9 +106,6 @@ class JobRetrieveView(LoginRequiredMixin, DetailView, ExtraRequestProcessingMixi
     def get_context_data(self, **kwargs):
         # Get the context of this class based view.
         modified_context = super().get_context_data(**kwargs)
-
-        # Required for navigation
-        modified_context['menu_id'] = "task"
 
         # Validate the template selected.
         template = self.kwargs['template']
@@ -134,19 +114,15 @@ class JobRetrieveView(LoginRequiredMixin, DetailView, ExtraRequestProcessingMixi
             raise PermissionDenied(_('You entered wrong format.'))
         modified_context['template'] = template
 
-        # DEVELOPERS NOTE:
-        # - We will extract the URL parameters and save them into our context
-        #   so we can use this to help the pagination.
-        modified_context['parameters'] = self.get_params_dict([])
-
         # Return our modified context.
         return modified_context
 
 
-class JobUpdateView(LoginRequiredMixin, DetailView, ExtraRequestProcessingMixin):
+class JobUpdateView(LoginRequiredMixin, WorkeryDetailView):
     context_object_name = 'job_item'
     model = WorkOrder
     template_name = 'tenant_financial/update/view.html'
+    menu_id = "financials"
 
     def get_object(self):
         obj = super().get_object()  # Call the superclass
@@ -155,9 +131,6 @@ class JobUpdateView(LoginRequiredMixin, DetailView, ExtraRequestProcessingMixin)
     def get_context_data(self, **kwargs):
         # Get the context of this class based view.
         modified_context = super().get_context_data(**kwargs)
-
-        # Required for navigation
-        modified_context['menu_id'] = "task"
 
         # Validate the template selected.
         template = self.kwargs['template']

@@ -2,22 +2,23 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
 from django.views.generic.edit import CreateView, FormView, UpdateView
-from django.views.generic import DetailView, ListView, TemplateView
 from django.utils.decorators import method_decorator
 from django.utils.translation import ugettext_lazy as _
-from shared_foundation.mixins import ExtraRequestProcessingMixin
+from shared_foundation.mixins import (
+    ExtraRequestProcessingMixin,
+    WorkeryTemplateView,
+    WorkeryListView,
+    WorkeryDetailView
+)
 from tenant_api.filters.order import WorkOrderFilter
 from tenant_foundation.models import ActivitySheetItem, Associate, Customer, WorkOrder, SkillSet, TaskItem
 
 
-class JobLiteRetrieveView(LoginRequiredMixin, DetailView, ExtraRequestProcessingMixin):
+class JobLiteRetrieveView(LoginRequiredMixin, WorkeryDetailView):
     context_object_name = 'job'
     model = WorkOrder
     template_name = 'tenant_order/retrieve/lite_view.html'
-
-    def get_object(self):
-        order = super().get_object()  # Call the superclass
-        return order                  # Return the object
+    menu_id = 'jobs'
 
     def get_context_data(self, **kwargs):
         # Get the context of this class based view.
@@ -30,26 +31,15 @@ class JobLiteRetrieveView(LoginRequiredMixin, DetailView, ExtraRequestProcessing
             raise PermissionDenied(_('You entered wrong format.'))
         modified_context['template'] = template
 
-        # Required for navigation
-        modified_context['menu_id'] = "jobs"
-
-        # DEVELOPERS NOTE:
-        # - We will extract the URL parameters and save them into our context
-        #   so we can use this to help the pagination.
-        modified_context['parameters'] = self.get_params_dict([])
-
         # Return our modified context.
         return modified_context
 
 
-class JobFullRetrieveView(LoginRequiredMixin, DetailView, ExtraRequestProcessingMixin):
+class JobFullRetrieveView(LoginRequiredMixin, WorkeryDetailView):
     context_object_name = 'job'
     model = WorkOrder
     template_name = 'tenant_order/retrieve/full_view.html'
-
-    def get_object(self):
-        order = super().get_object()  # Call the superclass
-        return order                  # Return the object
+    menu_id = 'jobs'
 
     def get_context_data(self, **kwargs):
         # Get the context of this class based view.
@@ -61,27 +51,16 @@ class JobFullRetrieveView(LoginRequiredMixin, DetailView, ExtraRequestProcessing
             from django.core.exceptions import PermissionDenied
             raise PermissionDenied(_('You entered wrong format.'))
         modified_context['template'] = template
-
-        # Required for navigation
-        modified_context['menu_id'] = "jobs"
-
-        # DEVELOPERS NOTE:
-        # - We will extract the URL parameters and save them into our context
-        #   so we can use this to help the pagination.
-        modified_context['parameters'] = self.get_params_dict([])
 
         # Return our modified context.
         return modified_context
 
 
-class JobRetrieveForActivitySheetListView(LoginRequiredMixin, DetailView, ExtraRequestProcessingMixin):
+class JobRetrieveForActivitySheetListView(LoginRequiredMixin, WorkeryDetailView):
     context_object_name = 'job'
     model = WorkOrder
     template_name = 'tenant_order/retrieve/for/activity_sheet_list_view.html'
-
-    def get_object(self):
-        order = super().get_object()  # Call the superclass
-        return order                  # Return the object
+    menu_id = 'jobs'
 
     def get_context_data(self, **kwargs):
         # Get the context of this class based view.
@@ -93,14 +72,6 @@ class JobRetrieveForActivitySheetListView(LoginRequiredMixin, DetailView, ExtraR
             from django.core.exceptions import PermissionDenied
             raise PermissionDenied(_('You entered wrong format.'))
         modified_context['template'] = template
-
-        # Required for navigation
-        modified_context['menu_id'] = "jobs"
-
-        # DEVELOPERS NOTE:
-        # - We will extract the URL parameters and save them into our context
-        #   so we can use this to help the pagination.
-        modified_context['parameters'] = self.get_params_dict([])
 
         # Fetch all the activity sheets we already have
         modified_context['activity_sheet_items'] = ActivitySheetItem.objects.filter(
@@ -111,14 +82,11 @@ class JobRetrieveForActivitySheetListView(LoginRequiredMixin, DetailView, ExtraR
         return modified_context
 
 
-class JobRetrieveForTasksListView(LoginRequiredMixin, DetailView, ExtraRequestProcessingMixin):
+class JobRetrieveForTasksListView(LoginRequiredMixin, WorkeryDetailView):
     context_object_name = 'job'
     model = WorkOrder
     template_name = 'tenant_order/retrieve/for/task_list_view.html'
-
-    def get_object(self):
-        order = super().get_object()  # Call the superclass
-        return order                  # Return the object
+    menu_id = 'jobs'
 
     def get_context_data(self, **kwargs):
         # Get the context of this class based view.
@@ -131,14 +99,6 @@ class JobRetrieveForTasksListView(LoginRequiredMixin, DetailView, ExtraRequestPr
             raise PermissionDenied(_('You entered wrong format.'))
         modified_context['template'] = template
 
-        # Required for navigation
-        modified_context['menu_id'] = "jobs"
-
-        # DEVELOPERS NOTE:
-        # - We will extract the URL parameters and save them into our context
-        #   so we can use this to help the pagination.
-        modified_context['parameters'] = self.get_params_dict([])
-
         # Fetch all the activity sheets we already have
         modified_context['task_items'] = TaskItem.objects.filter(
            job=modified_context['job']
@@ -148,14 +108,11 @@ class JobRetrieveForTasksListView(LoginRequiredMixin, DetailView, ExtraRequestPr
         return modified_context
 
 
-class JobRetrieveForCommentsListAndCreateView(LoginRequiredMixin, DetailView, ExtraRequestProcessingMixin):
+class JobRetrieveForCommentsListAndCreateView(LoginRequiredMixin, WorkeryDetailView):
     context_object_name = 'job'
     model = WorkOrder
     template_name = 'tenant_order/retrieve/for/comments_view.html'
-
-    def get_object(self):
-        order = super().get_object()  # Call the superclass
-        return order                  # Return the object
+    menu_id = 'jobs'
 
     def get_context_data(self, **kwargs):
         # Get the context of this class based view.
@@ -168,26 +125,15 @@ class JobRetrieveForCommentsListAndCreateView(LoginRequiredMixin, DetailView, Ex
             raise PermissionDenied(_('You entered wrong format.'))
         modified_context['template'] = template
 
-        # Required for navigation
-        modified_context['menu_id'] = "jobs"
-
-        # DEVELOPERS NOTE:
-        # - We will extract the URL parameters and save them into our context
-        #   so we can use this to help the pagination.
-        modified_context['parameters'] = self.get_params_dict([])
-
         # Return our modified context.
         return modified_context
 
 
-class JobRetrieveForCloseCreateView(LoginRequiredMixin, DetailView, ExtraRequestProcessingMixin):
+class JobRetrieveForCloseCreateView(LoginRequiredMixin, WorkeryDetailView):
     context_object_name = 'job'
     model = WorkOrder
     template_name = 'tenant_order/retrieve/for/close_view.html'
-
-    def get_object(self):
-        order = super().get_object()  # Call the superclass
-        return order                  # Return the object
+    menu_id = 'jobs'
 
     def get_context_data(self, **kwargs):
         # Get the context of this class based view.
@@ -200,26 +146,15 @@ class JobRetrieveForCloseCreateView(LoginRequiredMixin, DetailView, ExtraRequest
             raise PermissionDenied(_('You entered wrong format.'))
         modified_context['template'] = template
 
-        # Required for navigation
-        modified_context['menu_id'] = "jobs"
-
-        # DEVELOPERS NOTE:
-        # - We will extract the URL parameters and save them into our context
-        #   so we can use this to help the pagination.
-        modified_context['parameters'] = self.get_params_dict([])
-
         # Return our modified context.
         return modified_context
 
 
-class JobRetrieveForPostponeCreateView(LoginRequiredMixin, DetailView, ExtraRequestProcessingMixin):
+class JobRetrieveForPostponeCreateView(LoginRequiredMixin, WorkeryDetailView):
     context_object_name = 'job'
     model = WorkOrder
     template_name = 'tenant_order/retrieve/for/postpone_view.html'
-
-    def get_object(self):
-        order = super().get_object()  # Call the superclass
-        return order                  # Return the object
+    menu_id = 'jobs'
 
     def get_context_data(self, **kwargs):
         # Get the context of this class based view.
@@ -232,26 +167,15 @@ class JobRetrieveForPostponeCreateView(LoginRequiredMixin, DetailView, ExtraRequ
             raise PermissionDenied(_('You entered wrong format.'))
         modified_context['template'] = template
 
-        # Required for navigation
-        modified_context['menu_id'] = "jobs"
-
-        # DEVELOPERS NOTE:
-        # - We will extract the URL parameters and save them into our context
-        #   so we can use this to help the pagination.
-        modified_context['parameters'] = self.get_params_dict([])
-
         # Return our modified context.
         return modified_context
 
 
-class JobRetrieveForUnassignCreateView(LoginRequiredMixin, DetailView, ExtraRequestProcessingMixin):
+class JobRetrieveForUnassignCreateView(LoginRequiredMixin, WorkeryDetailView):
     context_object_name = 'job'
     model = WorkOrder
     template_name = 'tenant_order/retrieve/for/unassign_view.html'
-
-    def get_object(self):
-        order = super().get_object()  # Call the superclass
-        return order                  # Return the object
+    menu_id = 'jobs'
 
     def get_context_data(self, **kwargs):
         # Get the context of this class based view.
@@ -264,38 +188,12 @@ class JobRetrieveForUnassignCreateView(LoginRequiredMixin, DetailView, ExtraRequ
             raise PermissionDenied(_('You entered wrong format.'))
         modified_context['template'] = template
 
-        # Required for navigation
-        modified_context['menu_id'] = "jobs"
-
-        # DEVELOPERS NOTE:
-        # - We will extract the URL parameters and save them into our context
-        #   so we can use this to help the pagination.
-        modified_context['parameters'] = self.get_params_dict([])
-
         # Return our modified context.
         return modified_context
 
 
-class ArchivedJobFullRetrieveView(LoginRequiredMixin, DetailView, ExtraRequestProcessingMixin):
+class ArchivedJobFullRetrieveView(LoginRequiredMixin, WorkeryDetailView):
     context_object_name = 'job'
     model = WorkOrder
     template_name = 'tenant_order/retrieve/for/archive_view.html'
-
-    def get_object(self):
-        order = super().get_object()  # Call the superclass
-        return order                  # Return the object
-
-    def get_context_data(self, **kwargs):
-        # Get the context of this class based view.
-        modified_context = super().get_context_data(**kwargs)
-
-        # Required for navigation
-        modified_context['menu_id'] = "jobs"
-
-        # DEVELOPERS NOTE:
-        # - We will extract the URL parameters and save them into our context
-        #   so we can use this to help the pagination.
-        modified_context['parameters'] = self.get_params_dict([])
-
-        # Return our modified context.
-        return modified_context
+    menu_id = 'jobs'

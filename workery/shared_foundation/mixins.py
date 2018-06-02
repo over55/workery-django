@@ -47,7 +47,8 @@ class WorkeryTemplateView(TemplateView, ExtraRequestProcessingMixin):
         #   searching records.
         # - We will extract the URL parameters and save them into our context
         #   so we can use this to help the pagination.
-        base_context['url_parameters'] = self.get_param_urls(self.skip_parameters_array)
+        base_context['filter_parameters'] = self.get_param_urls(self.skip_parameters_array)
+        base_context['parameters'] = self.get_params_dict(self.skip_parameters_array)
 
         # Return our custom context based on our `workery` app.
         return base_context
@@ -59,7 +60,7 @@ class WorkeryListView(ListView, ExtraRequestProcessingMixin):
     have a few enhancements suited for our `workery` app.
     """
     menu_id =  None  # Required for navigation
-    workery_skip_parameters_array = []
+    skip_parameters_array = []
 
     def get_context_data(self, **kwargs):
         """
@@ -75,7 +76,37 @@ class WorkeryListView(ListView, ExtraRequestProcessingMixin):
         #   searching records.
         # - We will extract the URL parameters and save them into our context
         #   so we can use this to help the pagination.
-        base_context['url_parameters'] = self.get_param_urls(self.workery_skip_parameters_array)
+        base_context['filter_parameters'] = self.get_param_urls(self.skip_parameters_array)
+        base_context['parameters'] = self.get_params_dict(self.skip_parameters_array)
+
+        # Return our custom context based on our `workery` app.
+        return base_context
+
+
+class WorkeryDetailView(DetailView, ExtraRequestProcessingMixin):
+    """
+    An opinionated modification on the class-based "ListView" view to
+    have a few enhancements suited for our `workery` app.
+    """
+    menu_id =  None  # Required for navigation
+    skip_parameters_array = []
+
+    def get_context_data(self, **kwargs):
+        """
+        Override the 'get_context_data' function do add our enhancements.
+        """
+        base_context = super().get_context_data(**kwargs)
+
+        # Attach a "menu_id" object to the view.
+        base_context['menu_id'] = self.menu_id
+
+        # DEVELOPERS NOTE:
+        # - This class based view will have URL parameters for filtering and
+        #   searching records.
+        # - We will extract the URL parameters and save them into our context
+        #   so we can use this to help the pagination.
+        base_context['filter_parameters'] = self.get_param_urls(self.skip_parameters_array)
+        base_context['parameters'] = self.get_params_dict(self.skip_parameters_array)
 
         # Return our custom context based on our `workery` app.
         return base_context

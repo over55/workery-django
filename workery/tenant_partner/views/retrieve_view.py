@@ -1,22 +1,22 @@
 # -*- coding: utf-8 -*-
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic.edit import CreateView, FormView, UpdateView
-from django.views.generic import DetailView, ListView, TemplateView
 from django.utils.decorators import method_decorator
 from django.utils.translation import ugettext_lazy as _
-from shared_foundation.mixins import ExtraRequestProcessingMixin
+from shared_foundation.mixins import (
+    ExtraRequestProcessingMixin,
+    WorkeryTemplateView,
+    WorkeryListView,
+    WorkeryDetailView
+)
 from tenant_api.filters.partner import PartnerFilter
 from tenant_foundation.models import Partner
 
 
-class PartnerLiteRetrieveView(LoginRequiredMixin, DetailView, ExtraRequestProcessingMixin):
+class PartnerLiteRetrieveView(LoginRequiredMixin, WorkeryDetailView):
     context_object_name = 'partner'
     model = Partner
     template_name = 'tenant_partner/retrieve/lite_view.html'
-
-    def get_object(self):
-        partner = super().get_object()  # Call the superclass
-        return partner                  # Return the object
+    menu_id = "partners"
 
     def get_context_data(self, **kwargs):
         # Get the context of this class based view.
@@ -29,22 +29,15 @@ class PartnerLiteRetrieveView(LoginRequiredMixin, DetailView, ExtraRequestProces
             raise PermissionDenied(_('You entered wrong format.'))
         modified_context['template'] = template
 
-        # Required for navigation
-        modified_context['menu_id'] = "partners"
-
-        # DEVELOPERS NOTE:
-        # - We will extract the URL parameters and save them into our context
-        #   so we can use this to help the pagination.
-        modified_context['parameters'] = self.get_params_dict([])
-
         # Return our modified context.
         return modified_context
 
 
-class PartnerFullRetrieveView(LoginRequiredMixin, DetailView, ExtraRequestProcessingMixin):
+class PartnerFullRetrieveView(LoginRequiredMixin, WorkeryDetailView):
     context_object_name = 'partner'
     model = Partner
     template_name = 'tenant_partner/retrieve/full_view.html'
+    menu_id = "partners"
 
     def get_object(self):
         partner = super().get_object()  # Call the superclass
@@ -60,23 +53,16 @@ class PartnerFullRetrieveView(LoginRequiredMixin, DetailView, ExtraRequestProces
             from django.core.exceptions import PermissionDenied
             raise PermissionDenied(_('You entered wrong format.'))
         modified_context['template'] = template
-
-        # Required for navigation
-        modified_context['menu_id'] = "partners"
-
-        # DEVELOPERS NOTE:
-        # - We will extract the URL parameters and save them into our context
-        #   so we can use this to help the pagination.
-        modified_context['parameters'] = self.get_params_dict([])
 
         # Return our modified context.
         return modified_context
 
 
-class PartnerCommentsRetrieveView(LoginRequiredMixin, DetailView, ExtraRequestProcessingMixin):
+class PartnerCommentsRetrieveView(LoginRequiredMixin, WorkeryDetailView):
     context_object_name = 'partner'
     model = Partner
     template_name = 'tenant_partner/retrieve/for/comments_view.html'
+    menu_id = "partners"
 
     def get_object(self):
         partner = super().get_object()  # Call the superclass
@@ -92,14 +78,6 @@ class PartnerCommentsRetrieveView(LoginRequiredMixin, DetailView, ExtraRequestPr
             from django.core.exceptions import PermissionDenied
             raise PermissionDenied(_('You entered wrong format.'))
         modified_context['template'] = template
-
-        # Required for navigation
-        modified_context['menu_id'] = "partners"
-
-        # DEVELOPERS NOTE:
-        # - We will extract the URL parameters and save them into our context
-        #   so we can use this to help the pagination.
-        modified_context['parameters'] = self.get_params_dict([])
 
         # Return our modified context.
         return modified_context

@@ -1,15 +1,18 @@
 # -*- coding: utf-8 -*-
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.edit import CreateView, FormView, UpdateView
-from django.views.generic import DetailView, ListView, TemplateView
 from django.utils.decorators import method_decorator
 from django.utils.translation import ugettext_lazy as _
-from shared_foundation.mixins import ExtraRequestProcessingMixin
+from shared_foundation.mixins import (
+    ExtraRequestProcessingMixin,
+    WorkeryTemplateView,
+    WorkeryListView
+)
 from tenant_api.filters.order import WorkOrderFilter
 from tenant_foundation.models import WorkOrder
 
 
-class JobSummaryView(LoginRequiredMixin, ListView, ExtraRequestProcessingMixin):
+class JobSummaryView(LoginRequiredMixin, WorkeryListView):
     context_object_name = 'job_list'
     queryset = WorkOrder.objects.filter(
         is_cancelled=False,
@@ -22,32 +25,15 @@ class JobSummaryView(LoginRequiredMixin, ListView, ExtraRequestProcessingMixin):
     )
     template_name = 'tenant_order/summary/view.html'
     paginate_by = 100
-
-    def get_context_data(self, **kwargs):
-        modified_context = super().get_context_data(**kwargs)
-
-        # Required for navigation
-        modified_context['menu_id'] = "jobs"
-
-        # DEVELOPERS NOTE:
-        # - We will extract the URL parameters and save them into our context
-        #   so we can use this to help the pagination.
-        modified_context['parameters'] = self.get_params_dict([])
-
-        # Return our modified context.
-        return modified_context
+    menu_id = 'jobs'
 
 
-class JobListView(LoginRequiredMixin, ListView, ExtraRequestProcessingMixin):
+class JobListView(LoginRequiredMixin, WorkeryListView):
     context_object_name = 'job_list'
     queryset = WorkOrder.objects.filter(is_archived=False).order_by('-id')
     template_name = 'tenant_order/list/view.html'
     paginate_by = 100
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['menu_id'] = "jobs" # Required for navigation
-        return context
+    menu_id = 'jobs'
 
     def get_queryset(self):
         queryset = super(JobListView, self).get_queryset() # Get the base.
@@ -60,7 +46,7 @@ class JobListView(LoginRequiredMixin, ListView, ExtraRequestProcessingMixin):
         return queryset
 
 
-class ArchivedJobListView(LoginRequiredMixin, ListView, ExtraRequestProcessingMixin):
+class ArchivedJobListView(LoginRequiredMixin, WorkeryListView):
     context_object_name = 'job_list'
     queryset = WorkOrder.objects.filter(
         is_archived=True
@@ -70,17 +56,4 @@ class ArchivedJobListView(LoginRequiredMixin, ListView, ExtraRequestProcessingMi
     )
     template_name = 'tenant_order/list/archived_view.html'
     paginate_by = 100
-
-    def get_context_data(self, **kwargs):
-        modified_context = super().get_context_data(**kwargs)
-
-        # Required for navigation
-        modified_context['menu_id'] = "jobs"
-
-        # DEVELOPERS NOTE:
-        # - We will extract the URL parameters and save them into our context
-        #   so we can use this to help the pagination.
-        modified_context['parameters'] = self.get_params_dict([])
-
-        # Return our modified context.
-        return modified_context
+    menu_id = 'jobs'

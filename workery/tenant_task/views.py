@@ -1,16 +1,18 @@
 # -*- coding: utf-8 -*-
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
-from django.views.generic.edit import CreateView, FormView, UpdateView
-from django.views.generic import DetailView, ListView, TemplateView
 from django.utils.decorators import method_decorator
 from django.utils.translation import ugettext_lazy as _
-from shared_foundation.mixins import ExtraRequestProcessingMixin
+from shared_foundation.mixins import (
+    ExtraRequestProcessingMixin,
+    WorkeryTemplateView,
+    WorkeryListView,
+    WorkeryDetailView
+)
 from tenant_foundation.models import ActivitySheetItem, Associate, AwayLog, Customer, TaskItem
 
 
-
-class PendingTaskListView(LoginRequiredMixin, ListView, ExtraRequestProcessingMixin):
+class PendingTaskListView(LoginRequiredMixin, WorkeryListView):
     context_object_name = 'task_list'
     queryset = TaskItem.objects.filter(
         is_closed=False
@@ -21,17 +23,10 @@ class PendingTaskListView(LoginRequiredMixin, ListView, ExtraRequestProcessingMi
     )
     template_name = 'tenant_task/pending/list_view.html'
     paginate_by = 100
+    menu_id = "task"
 
     def get_context_data(self, **kwargs):
         modified_context = super().get_context_data(**kwargs)
-
-        # Required for navigation
-        modified_context['menu_id'] = "task"
-
-        # DEVELOPERS NOTE:
-        # - We will extract the URL parameters and save them into our context
-        #   so we can use this to help the pagination.
-        modified_context['parameters'] = self.get_params_dict([])
 
         # Get count of total tasks.
         modified_context['pending_count'] = TaskItem.objects.filter(is_closed=False).count()
@@ -42,7 +37,7 @@ class PendingTaskListView(LoginRequiredMixin, ListView, ExtraRequestProcessingMi
 
 
 
-class ClosedTaskListView(LoginRequiredMixin, ListView, ExtraRequestProcessingMixin):
+class ClosedTaskListView(LoginRequiredMixin, WorkeryListView):
     context_object_name = 'task_list'
     queryset = TaskItem.objects.filter(
         is_closed=True
@@ -53,17 +48,10 @@ class ClosedTaskListView(LoginRequiredMixin, ListView, ExtraRequestProcessingMix
     )
     template_name = 'tenant_task/closed/list_view.html'
     paginate_by = 100
+    menu_id = "task"
 
     def get_context_data(self, **kwargs):
         modified_context = super().get_context_data(**kwargs)
-
-        # Required for navigation
-        modified_context['menu_id'] = "task"
-
-        # DEVELOPERS NOTE:
-        # - We will extract the URL parameters and save them into our context
-        #   so we can use this to help the pagination.
-        modified_context['parameters'] = self.get_params_dict([])
 
         # Get count of total tasks.
         modified_context['pending_count'] = TaskItem.objects.filter(is_closed=False).count()
@@ -74,47 +62,22 @@ class ClosedTaskListView(LoginRequiredMixin, ListView, ExtraRequestProcessingMix
 
 
 
-class PendingTaskRetrieveView(LoginRequiredMixin, DetailView, ExtraRequestProcessingMixin):
+class PendingTaskRetrieveView(LoginRequiredMixin, WorkeryDetailView):
     context_object_name = 'task_item'
     model = TaskItem
     template_name = 'tenant_task/pending/retrieve_view.html'
-
-    def get_object(self):
-        obj = super().get_object()  # Call the superclass
-        return obj                  # Return the object
-
-    def get_context_data(self, **kwargs):
-        # Get the context of this class based view.
-        modified_context = super().get_context_data(**kwargs)
-
-        # Required for navigation
-        modified_context['menu_id'] = "task"
-
-        # Return our modified context.
-        return modified_context
+    menu_id = "task"
 
 
-
-class PendingTaskRetrieveForActivitySheetView(LoginRequiredMixin, DetailView, ExtraRequestProcessingMixin):
+class PendingTaskRetrieveForActivitySheetView(LoginRequiredMixin, WorkeryDetailView):
     context_object_name = 'task_item'
     model = TaskItem
     template_name = 'tenant_task/component/assign/retrieve_view.html'
-
-    def get_object(self):
-        order = super().get_object()  # Call the superclass
-        return order                  # Return the object
+    menu_id = "task"
 
     def get_context_data(self, **kwargs):
         # Get the context of this class based view.
         modified_context = super().get_context_data(**kwargs)
-
-        # Required for navigation
-        modified_context['menu_id'] = "task"
-
-        # DEVELOPERS NOTE:
-        # - We will extract the URL parameters and save them into our context
-        #   so we can use this to help the pagination.
-        modified_context['parameters'] = self.get_params_dict([])
 
         task_item = modified_context['task_item']
 
@@ -150,47 +113,15 @@ class PendingTaskRetrieveForActivitySheetView(LoginRequiredMixin, DetailView, Ex
 
 
 
-class PendingTaskRetrieveForActivitySheetAndAssignAssociateCreateView(LoginRequiredMixin, DetailView, ExtraRequestProcessingMixin):
+class PendingTaskRetrieveForActivitySheetAndAssignAssociateCreateView(LoginRequiredMixin, WorkeryDetailView):
     context_object_name = 'task_item'
     model = TaskItem
     template_name = 'tenant_task/component/assign/create_view.html'
-
-    def get_object(self):
-        obj = super().get_object()  # Call the superclass
-        return obj                  # Return the object
-
-    def get_context_data(self, **kwargs):
-        # Get the context of this class based view.
-        modified_context = super().get_context_data(**kwargs)
-
-        # Required for navigation
-        modified_context['menu_id'] = "task"
-
-        # DEVELOPERS NOTE:
-        # - We will extract the URL parameters and save them into our context
-        #   so we can use this to help the pagination.
-        modified_context['parameters'] = self.get_params_dict([])
-
-        # Return our modified context.
-        return modified_context
+    menu_id = "task"
 
 
-
-class PendingTaskRetrieveAndCompleteCreateView(LoginRequiredMixin, DetailView, ExtraRequestProcessingMixin):
+class PendingTaskRetrieveAndCompleteCreateView(LoginRequiredMixin, WorkeryDetailView):
     context_object_name = 'task_item'
     model = TaskItem
     template_name = 'tenant_task/component/complete/create_view.html'
-
-    def get_object(self):
-        order = super().get_object()  # Call the superclass
-        return order                  # Return the object
-
-    def get_context_data(self, **kwargs):
-        # Get the context of this class based view.
-        modified_context = super().get_context_data(**kwargs)
-
-        # Required for navigation
-        modified_context['menu_id'] = "task"
-
-        # Return our modified context.
-        return modified_context
+    menu_id = "task"

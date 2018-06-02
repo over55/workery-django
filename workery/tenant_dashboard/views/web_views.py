@@ -4,7 +4,12 @@ from django.views.generic.edit import CreateView, FormView, UpdateView
 from django.views.generic import DetailView, ListView, TemplateView
 from django.utils.decorators import method_decorator
 from django.utils.translation import ugettext_lazy as _
-from shared_foundation.mixins import ExtraRequestProcessingMixin
+from shared_foundation.mixins import (
+    ExtraRequestProcessingMixin,
+    WorkeryTemplateView,
+    WorkeryListView,
+    WorkeryDetailView
+)
 from tenant_api.filters.customer import CustomerFilter
 from tenant_foundation.models import (
     Associate,
@@ -15,17 +20,15 @@ from tenant_foundation.models import (
 )
 
 
-class DashboardView(LoginRequiredMixin, TemplateView, ExtraRequestProcessingMixin):
+class DashboardView(LoginRequiredMixin, WorkeryTemplateView):
     """
     The default entry point into our dashboard.
     """
-
     template_name = 'tenant_dashboard/master_view.html'
+    menu_id = "dashboard"
 
     def get_context_data(self, **kwargs):
         modified_context = super().get_context_data(**kwargs)
-
-        modified_context['menu_id'] = 'dashboard' # Required
 
         modified_context['associates_count'] = Associate.objects.filter(
             owner__is_active=True
@@ -49,11 +52,6 @@ class DashboardView(LoginRequiredMixin, TemplateView, ExtraRequestProcessingMixi
         ).prefetch_related(
             'associate'
         )
-
-        # DEVELOPERS NOTE:
-        # - We will extract the URL parameters and save them into our
-        #   `modified_context` so we can use in this view.
-        modified_context['parameters'] = self.get_params_dict([])
 
         # Return our modified context.
         return modified_context
