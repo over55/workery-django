@@ -1,4 +1,4 @@
-{% load staticfiles i18n foundation_tags %}
+{% load staticfiles i18n shared_foundation_tags tenant_foundation_tags %}
 <!DOCTYPE html>
 <html lang="{{ request.language }}">
 <head>
@@ -42,17 +42,23 @@
   </head>
 <body>
     <header class="navbar navbar-dark fixed-top bg-dark justify-content-between">
-	<a class="navbar-brand" href="{% url 'workery_tenant_dashboard_master' %}"><img class="img-fluid" src="{% static 'img/compressed-logo.png' %}" alt="{% trans 'The Workery' %}" width="200px" /></a>
-        <!-- Notification UI icons -->
+	<a class="navbar-brand" href="{% url 'workery_tenant_dashboard_master' %}">
+        <img class="img-fluid" src="{% static 'img/compressed-logo.png' %}" alt="{% trans 'The Workery' %}" width="200px" />
+    </a>
+
+    <!-- Notification UI icons -->
 	<div class="notif-icons">
-		<a href="#" class="text-white px-2" alt="Notifications">
-			<span class="badge badge-info badge-pill badge-1">5</span> <i class="far fa-check-square"></i> 
+		<a href="{% url 'workery_tenant_task_list' %}" class="text-white px-2" alt="Notifications">
+			<span class="badge badge-info badge-pill badge-1">{{ get_pending_tasks_count }}</span>&nbsp;<i class="far fa-check-square"></i>
 		</a>
+        {% comment %}
 		<a href="#" class="text-white px-2" alt="Notifications">
-			<span class="badge badge-info badge-pill badge-2">9</span> <i class="fas fa-bell"></i> 
+			<span class="badge badge-info badge-pill badge-2">9</span> <i class="fas fa-bell"></i>
 		</a>
+        {% endcomment %}
 	</div>
-	<!-- Notification UI icons End -->
+	<!-- end Notification UI icons -->
+
 	<button class="navbar-toggler" type="button" id="sidebarCollapse">
       		<i class="fa fa-bars"></i>
     	</button>
