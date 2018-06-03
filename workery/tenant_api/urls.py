@@ -19,6 +19,7 @@ from tenant_api.views.staff_comment import StaffCommentListCreateAPIView
 from tenant_api.views.tag import TagListCreateAPIView, TagRetrieveUpdateDestroyAPIView
 from tenant_api.views.utility import FindCustomerMatchingAPIView
 from tenant_api.views.order_activite_sheet_item import ActivitySheetItemCreateAPIView
+from tenant_api.views.public_image_upload import PublicImageUploadListCreateAPIView
 from tenant_api.views.order_complete import WorkOrderCompleteCreateAPIView
 from tenant_api.views.order_close import WorkOrderCloseCreateAPIView
 from tenant_api.views.order_postpone import WorkOrderPostponeCreateAPIView
@@ -46,6 +47,9 @@ urlpatterns = [
     # Insurance Requirements
     url(r'^api/insurance_requirements$', InsuranceRequirementListCreateAPIView.as_view(), name='workery_insurance_requirement_list_create_api_endpoint'),
     url(r'^api/insurance_requirement/(?P<pk>[^/.]+)/$', InsuranceRequirementRetrieveUpdateDestroyAPIView.as_view(), name='workery_insurance_requirement_retrieve_update_destroy_api_endpoint'),
+
+    # Public Image Uploads.
+    url(r'^api/public-image-uploads$', PublicImageUploadListCreateAPIView.as_view(), name='workery_public_image_upload_list_create_api_endpoint'),
 
     # WorkOrders
     url(r'^api/orders$', WorkOrderListCreateAPIView.as_view(), name='workery_order_list_create_api_endpoint'),
