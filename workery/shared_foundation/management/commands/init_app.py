@@ -125,6 +125,13 @@ class Command(BaseCommand):
             'can_post_order_service_fee',
             'can_put_order_service_fee',
             'can_delete_order_service_fee',
+
+            # --- Public Image Upload --- #
+            'can_get_public_image_uploads',
+            'can_get_public_image_upload',
+            'can_post_public_image_upload',
+            'can_put_public_image_upload',
+            'can_delete_public_image_upload',
         ]
         permissions = Permission.objects.filter(codename__in=permission_codenames)
         for permission in permissions.all():
@@ -221,6 +228,13 @@ class Command(BaseCommand):
             'can_post_order_service_fee',
             'can_put_order_service_fee',
             'can_delete_order_service_fee',
+
+            # --- Public Image Upload --- #
+            'can_get_public_image_uploads',
+            'can_get_public_image_upload',
+            'can_post_public_image_upload',
+            'can_put_public_image_upload',
+            'can_delete_public_image_upload',
         ]
         permissions = Permission.objects.filter(codename__in=permission_codenames)
         for permission in permissions.all():
@@ -314,6 +328,13 @@ class Command(BaseCommand):
             'can_post_order_service_fee',
             'can_put_order_service_fee',
             'can_delete_order_service_fee',
+
+            # --- Public Image Upload --- #
+            'can_get_public_image_uploads',
+            'can_get_public_image_upload',
+            'can_post_public_image_upload',
+            'can_put_public_image_upload',
+            'can_delete_public_image_upload',
         ]
         permissions = Permission.objects.filter(codename__in=permission_codenames)
         for permission in permissions.all():
@@ -344,6 +365,13 @@ class Command(BaseCommand):
             # --- Work Order Service Fee --- #
             'can_get_order_service_fees',
             'can_get_order_service_fee',
+
+            # --- Public Image Upload --- #
+            'can_get_public_image_uploads',
+            'can_get_public_image_upload',
+            'can_post_public_image_upload',
+            'can_put_public_image_upload',
+            'can_delete_public_image_upload',
         ]
         permissions = Permission.objects.filter(codename__in=permission_codenames)
         for permission in permissions.all():
@@ -376,6 +404,13 @@ class Command(BaseCommand):
             # --- Work Order Service Fee --- #
             'can_get_order_service_fees',
             'can_get_order_service_fee',
+
+            # --- Public Image Upload --- #
+            'can_get_public_image_uploads',
+            'can_get_public_image_upload',
+            'can_post_public_image_upload',
+            'can_put_public_image_upload',
+            'can_delete_public_image_upload',
         ]
         permissions = Permission.objects.filter(codename__in=permission_codenames)
         for permission in permissions.all():

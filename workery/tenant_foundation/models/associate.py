@@ -269,6 +269,14 @@ class Associate(AbstractPerson):
         blank=True,
         db_index=True
     )
+    avatar_image = models.ForeignKey(
+        "PublicImageUpload",
+        help_text=_('The avatar image of this associate.'),
+        related_name="%(app_label)s_%(class)s_avatar_image_related",
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True,
+    )
 
     #
     #  FUNCTIONS
