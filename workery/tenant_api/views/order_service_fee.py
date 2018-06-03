@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import django_filters
+from ipware import get_client_ip
 from django_filters import rest_framework as filters
 from starterkit.drf.permissions import IsAuthenticatedAndIsActivePermission
 from django.conf.urls import url, include
@@ -39,6 +40,7 @@ class WorkOrderServiceFeeListCreateAPIView(generics.ListCreateAPIView):
         """
         Create
         """
+        client_ip, is_routable = get_client_ip(self.request)
         serializer = WorkOrderServiceFeeListCreateSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
@@ -70,6 +72,7 @@ class WorkOrderServiceFeeRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDes
         """
         Update
         """
+        client_ip, is_routable = get_client_ip(self.request)
         order_service_fee = get_object_or_404(OrderServiceFee, pk=pk)
         self.check_object_permissions(request, order_service_fee)  # Validate permissions.
         serializer = WorkOrderServiceFeeRetrieveUpdateDestroySerializer(order_service_fee, data=request.data)

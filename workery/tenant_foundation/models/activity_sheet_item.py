@@ -95,6 +95,18 @@ class ActivitySheetItem(models.Model):
         blank=True,
         null=True
     )
+    created_from = models.GenericIPAddressField(
+        _("Created from"),
+        help_text=_('The IP address of the creator.'),
+        blank=True,
+        null=True
+    )
+    created_from_is_public = models.BooleanField(
+        _("Is the IP "),
+        help_text=_('Is creator a public IP and is routable.'),
+        default=False,
+        blank=True
+    )
 
     #
     #  FUNCTIONS

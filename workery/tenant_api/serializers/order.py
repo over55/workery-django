@@ -129,7 +129,9 @@ class WorkOrderListCreateSerializer(serializers.ModelSerializer):
             description=description,
             start_date=start_date,
             follow_up_days_number=follow_up_days_number,
-            invoice_service_fee=invoice_service_fee
+            invoice_service_fee=invoice_service_fee,
+            created_from = self.context['created_from'],
+            created_from_is_public = self.context['created_from_is_public'],
         )
         logger.info("Created order object.")
 
@@ -157,7 +159,9 @@ class WorkOrderListCreateSerializer(serializers.ModelSerializer):
             comment = Comment.objects.create(
                 created_by=self.context['created_by'],
                 last_modified_by=self.context['created_by'],
-                text=extra_comment
+                text=extra_comment,
+                created_from = self.context['created_from'],
+                created_from_is_public = self.context['created_from_is_public']
             )
             WorkOrderComment.objects.create(
                 about=order,
@@ -292,6 +296,8 @@ class WorkOrderRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         instance.skill_sets.set(skill_sets)
         instance.start_date = validated_data.get('start_date', instance.start_date)
         instance.follow_up_days_number = validated_data.get('follow_up_days_number', instance.follow_up_days_number)
+        instance.last_modified_from = self.context['last_modified_from']
+        instance.last_modified_from_is_public = self.context['last_modified_from_is_public']
 
         # Financial information.
         instance.invoice_service_fee = validated_data.get('invoice_service_fee', instance.invoice_service_fee)
@@ -333,7 +339,9 @@ class WorkOrderRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
             comment = Comment.objects.create(
                 created_by=self.context['last_modified_by'],
                 last_modified_by=self.context['last_modified_by'],
-                text=extra_comment
+                text=extra_comment,
+                created_from = self.context['last_modified_from'],
+                created_from_is_public = self.context['last_modified_from_is_public']
             )
             WorkOrderComment.objects.create(
                 about=instance,

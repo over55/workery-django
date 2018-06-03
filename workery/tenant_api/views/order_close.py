@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from ipware import get_client_ip
 from django_filters.rest_framework import DjangoFilterBackend
 from starterkit.drf.permissions import IsAuthenticatedAndIsActivePermission
 from django.conf.urls import url, include
@@ -28,6 +29,7 @@ class WorkOrderCloseCreateAPIView(generics.CreateAPIView):
         """
         Create
         """
+        client_ip, is_routable = get_client_ip(self.request)
         serializer = WorkOrderCloseCreateSerializer(data=request.data, context={
             'user': request.user,
             'franchise': request.tenant

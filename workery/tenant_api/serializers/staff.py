@@ -253,6 +253,8 @@ class StaffListCreateSerializer(serializers.ModelSerializer):
             gender=validated_data.get('gender', None),
 
             # Misc
+            created_from = self.context['created_from'],
+            created_from_is_public = self.context['created_from_is_public'],
             # . . .
 
             # Contact Point
@@ -329,7 +331,9 @@ class StaffListCreateSerializer(serializers.ModelSerializer):
             comment = Comment.objects.create(
                 created_by=self.context['created_by'],
                 last_modified_by=self.context['created_by'],
-                text=extra_comment
+                text=extra_comment,
+                created_from = self.context['created_from'],
+                created_from_is_public = self.context['created_from_is_public']
             )
             staff_comment = StaffComment.objects.create(
                 about=staff,
@@ -523,6 +527,8 @@ class StaffRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         instance.police_check=validated_data.get('police_check', None)
         instance.drivers_license_class=validated_data.get('drivers_license_class', None)
         instance.how_hear=validated_data.get('how_hear', None)
+        instance.last_modified_from = self.context['last_modified_from']
+        instance.last_modified_from_is_public = self.context['last_modified_from_is_public']
         # 'organizations', #TODO: IMPLEMENT.
 
         # Contact Point
@@ -573,7 +579,9 @@ class StaffRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
             comment = Comment.objects.create(
                 created_by=self.context['last_modified_by'],
                 last_modified_by=self.context['last_modified_by'],
-                text=extra_comment
+                text=extra_comment,
+                created_from = self.context['last_modified_from'],
+                created_from_is_public = self.context['last_modified_from_is_public']
             )
             staff_comment = StaffComment.objects.create(
                 staff=instance,

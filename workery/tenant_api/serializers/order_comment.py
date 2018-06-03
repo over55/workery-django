@@ -70,7 +70,9 @@ class WorkOrderListCreateSerializer(serializers.ModelSerializer):
         comment = Comment.objects.create(
             created_by=self.context['created_by'],
             last_modified_by=self.context['created_by'],
-            text=text
+            text=text,
+            created_from = self.context['created_from'],
+            created_from_is_public = self.context['created_from_is_public']
         )
         WorkOrderComment.objects.create(
             about=about,

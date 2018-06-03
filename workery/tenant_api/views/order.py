@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import django_filters
+from ipware import get_client_ip
 from django_filters import rest_framework as filters
 from starterkit.drf.permissions import IsAuthenticatedAndIsActivePermission
 from django.conf.urls import url, include
@@ -41,8 +42,11 @@ class WorkOrderListCreateAPIView(generics.ListCreateAPIView):
         """
         Create
         """
+        client_ip, is_routable = get_client_ip(self.request)
         serializer = WorkOrderListCreateSerializer(data=request.data, context={
             'created_by': request.user,
+            'created_from': client_ip,
+            'created_from_is_public': is_routable,
             'franchise': request.tenant
         })
         serializer.is_valid(raise_exception=True)
@@ -76,10 +80,13 @@ class WorkOrderRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIVie
         """
         Update
         """
+        client_ip, is_routable = get_client_ip(self.request)
         order = get_object_or_404(Order, pk=pk)
         self.check_object_permissions(request, order)  # Validate permissions.
         serializer = WorkOrderRetrieveUpdateDestroySerializer(order, data=request.data, context={
             'last_modified_by': request.user,
+            'last_modified_from': client_ip,
+            'last_modified_from_is_public': is_routable,
             'franchise': request.tenant
         })
         serializer.is_valid(raise_exception=True)

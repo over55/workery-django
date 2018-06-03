@@ -359,6 +359,8 @@ class CustomerListCreateSerializer(serializers.ModelSerializer):
             job_info_read=validated_data.get('job_info_read', False),
             how_hear=validated_data.get('how_hear', None),
             type_of=type_of_customer,
+            created_from = self.context['created_from'],
+            created_from_is_public = self.context['created_from_is_public'],
 
             # Contact Point
             email=email,
@@ -447,7 +449,9 @@ class CustomerListCreateSerializer(serializers.ModelSerializer):
             comment = Comment.objects.create(
                 created_by=self.context['created_by'],
                 last_modified_by=self.context['created_by'],
-                text=extra_comment
+                text=extra_comment,
+                created_from = self.context['created_from'],
+                created_from_is_public = self.context['created_from_is_public']
             )
             CustomerComment.objects.create(
                 about=customer,
@@ -643,6 +647,8 @@ class CustomerRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
 
         # # Misc (Read Only)
         instance.last_modified_by = self.context['last_modified_by']
+        instance.last_modified_from = self.context['last_modified_from']
+        instance.last_modified_from_is_public = self.context['last_modified_from_is_public']
         # 'organizations', #TODO: FIX
 
         # Contact Point
@@ -693,7 +699,9 @@ class CustomerRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
             comment = Comment.objects.create(
                 created_by=self.context['last_modified_by'],
                 last_modified_by=self.context['last_modified_by'],
-                text=extra_comment
+                text=extra_comment,
+                created_from = self.context['last_modified_from'],
+                created_from_is_public = self.context['last_modified_from_is_public']
             )
             CustomerComment.objects.create(
                 about=instance,

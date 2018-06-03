@@ -327,6 +327,8 @@ class AssociateListCreateSerializer(serializers.ModelSerializer):
             drivers_license_class=validated_data.get('drivers_license_class', None),
             how_hear=validated_data.get('how_hear', None),
             how_hear_other=validated_data.get('how_hear_other', None),
+            created_from = self.context['created_from'],
+            created_from_is_public = self.context['created_from_is_public'],
             # 'organizations', #TODO: IMPLEMENT.
 
             # Contact Point
@@ -392,7 +394,9 @@ class AssociateListCreateSerializer(serializers.ModelSerializer):
             comment = Comment.objects.create(
                 created_by=self.context['created_by'],
                 last_modified_by=self.context['created_by'],
-                text=extra_comment
+                text=extra_comment,
+                created_from = self.context['created_from'],
+                created_from_is_public = self.context['created_from_is_public']
             )
             AssociateComment.objects.create(
                 about=associate,
@@ -634,6 +638,8 @@ class AssociateRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         instance.drivers_license_class=validated_data.get('drivers_license_class', instance.drivers_license_class)
         instance.how_hear=validated_data.get('how_hear', instance.how_hear)
         instance.how_hear_other=validated_data.get('how_hear_other', instance.how_hear_other)
+        instance.last_modified_from = self.context['last_modified_from']
+        instance.last_modified_from_is_public = self.context['last_modified_from_is_public']
         # 'organizations', #TODO: IMPLEMENT.
 
         # Contact Point
@@ -698,7 +704,9 @@ class AssociateRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
             comment = Comment.objects.create(
                 created_by=self.context['last_modified_by'],
                 last_modified_by=self.context['last_modified_by'],
-                text=extra_comment
+                text=extra_comment,
+                created_from = self.context['last_modified_from'],
+                created_from_is_public = self.context['last_modified_from_is_public']
             )
             AssociateComment.objects.create(
                 about=instance,

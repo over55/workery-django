@@ -214,6 +214,18 @@ class Associate(AbstractPerson):
         blank=True,
         null=True,
     )
+    created_from = models.GenericIPAddressField(
+        _("Created from"),
+        help_text=_('The IP address of the creator.'),
+        blank=True,
+        null=True
+    )
+    created_from_is_public = models.BooleanField(
+        _("Is the IP "),
+        help_text=_('Is creator a public IP and is routable.'),
+        default=False,
+        blank=True
+    )
     last_modified_by = models.ForeignKey(
         SharedUser,
         help_text=_('The user whom modified this object last.'),
@@ -221,6 +233,18 @@ class Associate(AbstractPerson):
         on_delete=models.SET_NULL,
         blank=True,
         null=True,
+    )
+    last_modified_from = models.GenericIPAddressField(
+        _("Last modified from"),
+        help_text=_('The IP address of the modifier.'),
+        blank=True,
+        null=True
+    )
+    last_modified_from_is_public = models.BooleanField(
+        _("Is the IP "),
+        help_text=_('Is modifier a public IP and is routable.'),
+        default=False,
+        blank=True
     )
     tags = models.ManyToManyField(
         "Tag",

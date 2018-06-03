@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import django_filters
+from ipware import get_client_ip
 from django_filters import rest_framework as filters
 from starterkit.drf.permissions import IsAuthenticatedAndIsActivePermission
 from django.conf.urls import url, include
@@ -39,6 +40,7 @@ class AwayLogListCreateAPIView(generics.ListCreateAPIView):
         """
         Create
         """
+        client_ip, is_routable = get_client_ip(self.request)
         serializer = AwayLogListCreateSerializer(data=request.data, context={
             'created_by': request.user,
             'franchise': request.tenant
@@ -73,6 +75,7 @@ class AwayLogRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView)
         """
         Update
         """
+        client_ip, is_routable = get_client_ip(self.request)
         obj = get_object_or_404(AwayLog, pk=pk)
         self.check_object_permissions(request, obj)  # Validate permissions.
         serializer = AwayLogRetrieveUpdateDestroySerializer(obj, data=request.data)

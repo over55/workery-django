@@ -84,6 +84,8 @@ class PublicImageUploadListCreateSerializer(serializers.ModelSerializer):
             if obj.avatar_image:
                 obj.avatar_image.delete()
             obj.avatar_image = image_upload
+            obj.last_modified_from = self.context['created_from']
+            obj.last_modified_from_is_public = self.context['created_from_is_public']
             obj.save()
             logger.info("Attached public image upload to associate.")
 
@@ -92,6 +94,8 @@ class PublicImageUploadListCreateSerializer(serializers.ModelSerializer):
             if obj.avatar_image:
                 obj.avatar_image.delete()
             obj.avatar_image = image_upload
+            obj.last_modified_from = self.context['created_from']
+            obj.last_modified_from_is_public = self.context['created_from_is_public']
             obj.save()
             logger.info("Attached public image upload to customer.")
 
@@ -100,6 +104,8 @@ class PublicImageUploadListCreateSerializer(serializers.ModelSerializer):
             if obj.avatar_image:
                 obj.avatar_image.delete()
             obj.avatar_image = image_upload
+            obj.last_modified_from = self.context['created_from']
+            obj.last_modified_from_is_public = self.context['created_from_is_public']
             obj.save()
             logger.info("Attached public image upload to partner.")
 
@@ -108,6 +114,8 @@ class PublicImageUploadListCreateSerializer(serializers.ModelSerializer):
             if obj.avatar_image:
                 obj.avatar_image.delete()
             obj.avatar_image = image_upload
+            obj.last_modified_from = self.context['created_from']
+            obj.last_modified_from_is_public = self.context['created_from_is_public']
             obj.save()
             logger.info("Attached public image upload to staff.")
 

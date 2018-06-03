@@ -87,7 +87,9 @@ class WorkOrderCompleteCreateSerializer(serializers.Serializer):
             comment_obj = Comment.objects.create(
                 created_by=self.context['user'],
                 last_modified_by=self.context['user'],
-                text=comment_text
+                text=comment_text,
+                created_from = self.context['created_from'],
+                created_from_is_public = self.context['created_from_is_public']
             )
             WorkOrderComment.objects.create(
                 about=job,
