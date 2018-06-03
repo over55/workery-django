@@ -566,7 +566,7 @@ PHONENUMBER_DB_FORMAT = 'E164'     # Format: +1xxxyyyzzzz
 # https://github.com/jazzband/sorl-thumbnail
 
 THUMBNAIL_ENGINE = 'workery.snorlutil.Engine'
-THUMBNAIL_DEBUG=True
+THUMBNAIL_DEBUG = env('DEBUG', default=False)
 THUMBNAIL_FORCE_OVERWRITE = True
 
 
