@@ -102,8 +102,8 @@ class WorkOrderPostponeCreateSerializer(serializers.Serializer):
                 created_by=self.context['user'],
                 last_modified_by=self.context['user'],
                 text=additional_comment_text,
-                created_from = self.context['created_from'],
-                created_from_is_public = self.context['created_from_is_public']
+                created_from = self.context['from'],
+                created_from_is_public = self.context['from_is_public']
             )
             WorkOrderComment.objects.create(
                 about=job,
@@ -132,6 +132,9 @@ class WorkOrderPostponeCreateSerializer(serializers.Serializer):
         task_item.closing_reason = reason
         task_item.closing_reason_other = reason_other
         task_item.last_modified_by = self.context['user']
+        task_item.created_from = self.context['from']
+        task_item.created_from_is_public = self.context['from_is_public']
+        task_item.last_modified_by = self.context['user']
         task_item.save()
 
         # For debugging purposes only.
@@ -151,6 +154,8 @@ class WorkOrderPostponeCreateSerializer(serializers.Serializer):
             was_postponed = False,
             job = task_item.job,
             created_by = self.context['user'],
+            created_from = self.context['from'],
+            created_from_is_public = self.context['from_is_public'],
             last_modified_by = self.context['user']
         )
 

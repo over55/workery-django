@@ -127,6 +127,9 @@ class SharedUser(AbstractBaseUser, PermissionsMixin):
         '''
         return self.first_name
 
+    def __str__(self):
+        return self.get_full_name()
+
     def email_user(self, subject, message, from_email=None, **kwargs):
         '''
         Sends an email to this SharedUser.

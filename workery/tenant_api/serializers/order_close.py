@@ -156,6 +156,9 @@ class WorkOrderCloseCreateSerializer(serializers.Serializer):
         job.invoice_tax_amount = Money(invoice_tax_amount, WORKERY_APP_DEFAULT_MONEY_CURRENCY)
         job.invoice_total_amount = Money(invoice_total_amount, WORKERY_APP_DEFAULT_MONEY_CURRENCY)
         job.invoice_service_fee_amount = Money(invoice_service_fee_amount, WORKERY_APP_DEFAULT_MONEY_CURRENCY)
+        job.last_modified_by = self.context['user']
+        job.last_modified_from = self.context['from']
+        job.last_modified_from_is_public = self.context['from_is_public']
         job.save()
 
         # For debugging purposes only.
@@ -169,8 +172,8 @@ class WorkOrderCloseCreateSerializer(serializers.Serializer):
                 created_by=self.context['user'],
                 last_modified_by=self.context['user'],
                 text=additional_comment_text,
-                created_from = self.context['created_from'],
-                created_from_is_public = self.context['created_from_is_public']
+                created_from = self.context['from'],
+                created_from_is_public = self.context['from_is_public']
             )
             WorkOrderComment.objects.create(
                 about=job,
@@ -287,6 +290,8 @@ class WorkOrderCloseCreateSerializer(serializers.Serializer):
                 is_closed = False,
                 job = job,
                 created_by = self.context['user'],
+                created_from = self.context['from'],
+                created_from_is_public = self.context['from_is_public'],
                 last_modified_by = self.context['user']
             )
 

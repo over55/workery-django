@@ -99,8 +99,8 @@ class WorkOrderUnassignCreateSerializer(serializers.Serializer):
                 created_by=self.context['user'],
                 last_modified_by=self.context['user'],
                 text=additional_comment_text,
-                created_from = self.context['created_from'],
-                created_from_is_public = self.context['created_from_is_public']
+                created_from = self.context['from'],
+                created_from_is_public = self.context['from_is_public']
             )
             WorkOrderComment.objects.create(
                 about=job,

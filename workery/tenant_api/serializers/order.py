@@ -291,13 +291,13 @@ class WorkOrderRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         instance.is_ongoing = validated_data.get('is_ongoing', instance.is_ongoing)
         instance.is_home_support_service = validated_data.get('is_home_support_service', instance.is_home_support_service)
         instance.last_modified_by = self.context['last_modified_by']
+        instance.last_modified_from = self.context['last_modified_from']
+        instance.last_modified_from_is_public = self.context['last_modified_from_is_public']
         instance.description = validated_data.get('description', instance.description)
         skill_sets = validated_data.get('skill_sets', instance.skill_sets)
         instance.skill_sets.set(skill_sets)
         instance.start_date = validated_data.get('start_date', instance.start_date)
         instance.follow_up_days_number = validated_data.get('follow_up_days_number', instance.follow_up_days_number)
-        instance.last_modified_from = self.context['last_modified_from']
-        instance.last_modified_from_is_public = self.context['last_modified_from_is_public']
 
         # Financial information.
         instance.invoice_service_fee = validated_data.get('invoice_service_fee', instance.invoice_service_fee)

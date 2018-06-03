@@ -640,6 +640,7 @@ class AssociateRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         instance.how_hear_other=validated_data.get('how_hear_other', instance.how_hear_other)
         instance.last_modified_from = self.context['last_modified_from']
         instance.last_modified_from_is_public = self.context['last_modified_from_is_public']
+        instance.last_modified_by = self.context['last_modified_by']
         # 'organizations', #TODO: IMPLEMENT.
 
         # Contact Point

@@ -527,6 +527,7 @@ class StaffRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         instance.police_check=validated_data.get('police_check', None)
         instance.drivers_license_class=validated_data.get('drivers_license_class', None)
         instance.how_hear=validated_data.get('how_hear', None)
+        instance.last_modified_by = self.context['last_modified_by']
         instance.last_modified_from = self.context['last_modified_from']
         instance.last_modified_from_is_public = self.context['last_modified_from_is_public']
         # 'organizations', #TODO: IMPLEMENT.

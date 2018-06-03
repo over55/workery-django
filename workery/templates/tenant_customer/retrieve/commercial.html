@@ -147,6 +147,47 @@
                     </td>
                 </tr>
                 <!-- ############ end BUSINESS ############ -->
+                <!-- ############ SYSTEM ############ -->
+                <tr class="bg-primary text-white">
+                    <th scope="row" colspan="2">System</th>
+                </tr>
+                <tr>
+                    <th scope="row" class="bg-light">Created at</th>
+                    <td>
+                        {% if customer.created %}{{ customer.created }}{% else %}-{% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row" class="bg-light">Created by</th>
+                    <td>
+                        {% if customer.created_by %}{{ customer.created_by }}{% else %}-{% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row" class="bg-light">Created from</th>
+                    <td>
+                        {% if customer.created_from %}{{ customer.created_from }}{% else %}-{% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row" class="bg-light">Modified at</th>
+                    <td>
+                        {% if customer.last_modified %}{{ customer.last_modified }}{% else %}-{% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row" class="bg-light">Modified by</th>
+                    <td>
+                        {% if customer.last_modified_by %}{{ customer.last_modified_by }}{% else %}-{% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row" class="bg-light">Modified from</th>
+                    <td>
+                        {% if customer.last_modified_from %}{{ customer.last_modified_from }}{% else %}-{% endif %}
+                    </td>
+                </tr>
+                <!-- ############ end SYSTEM ############ -->
              </tbody>
         </table>
 </div>
