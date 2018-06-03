@@ -2,6 +2,9 @@
 import logging
 from datetime import datetime, timedelta
 from dateutil import tz
+from starterkit.utils import (
+    int_or_none
+)
 from django.conf import settings
 from django.contrib.auth.models import Group
 from django.contrib.auth import authenticate
@@ -36,7 +39,7 @@ class PublicImageUploadListCreateSerializer(serializers.ModelSerializer):
         allow_blank=False,
         write_only=True
     )
-    upload_id = serializers.IntegerField(
+    upload_id = serializers.CharField(
         required=True,
         write_only=True
     )
@@ -59,7 +62,7 @@ class PublicImageUploadListCreateSerializer(serializers.ModelSerializer):
         #-----------------------------
         image_file = validated_data.get('image_file', None)
         upload_type_of = validated_data.get('upload_type_of', None)
-        upload_id = validated_data.get('upload_id', None)
+        upload_id = int_or_none(validated_data.get('upload_id', None))
         created_by = self.context['created_by']
         created_from = self.context['created_from']
         created_from_is_public = self.context['created_from_is_public']

@@ -36,6 +36,38 @@
         $( "#id_detail_form" ).show();
     }
 </script>
+<!-- CUSTOM JAVASCRIPT -->
+<script>
+    /**
+     *  Function will asynchronously upload the cover image.
+     */
+    function ajax_upload_image() {
+        if ($('#id_image').val() == "") {
+            alert(_("Please select an image to upload"));
+            // $.notify("Please select an image to upload", "danger");
+            return false;
+        }
+
+        // Extract the information.
+        var image = document.getElementById('id_image').files[0];
+        var meta = {
+           'upload_id': {{ partner.id }},
+           'upload_type_of': 'partner_avatar_image'
+        };
+        console.log(meta);
+
+        // Insert or Update.
+        create_public_image_upload(meta, image, function(json_result) {
+            location.reload();
+            // console.log(json_result);
+            // $('#id_hidden_url').attr('src', json_result['imagefile']);
+            // $('#id_hidden_upload_id').val(json_result['id']);
+            // $('#id_image_placeholder').attr('src', json_result['imagefile']);
+        });
+    }
+</script>
+<!-- end CUSTOM JAVASCRIPT -->
+
 
 <main id="main" role="main">
 
@@ -55,20 +87,20 @@
                 <a href="{% url 'workery_tenant_partner_search' %}">{% trans 'Search' %}</a>
             </li>
             <li class="breadcrumb-item active" aria-current="page">{% trans 'Search Results' %}</li>
-            <li class="breadcrumb-item active" aria-current="page">{% trans 'Partner #' %}{{ object.id }}</li>
+            <li class="breadcrumb-item active" aria-current="page">{% trans 'Partner #' %}{{ partner.id }}</li>
 
             {% elif template == 'list' %}
 
             <li class="breadcrumb-item"><a href="{% url 'workery_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
             <li class="breadcrumb-item"><a href="{% url 'workery_tenant_partner_summary' %}">{% trans 'Partners' %}</a></li>
             <li class="breadcrumb-item"><a href="{% url 'workery_tenant_partner_list' %}">{% trans 'List' %}</a></li>
-            <li class="breadcrumb-item active" aria-current="page">{% trans 'Partner #' %}{{ object.id|intcomma }}</li>
+            <li class="breadcrumb-item active" aria-current="page">{% trans 'Partner #' %}{{ partner.id|intcomma }}</li>
 
             {% else %}
 
 	    	<li class="breadcrumb-item"><a href="{% url 'workery_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
             <li class="breadcrumb-item"><a href="{% url 'workery_tenant_partner_summary' %}">{% trans 'Partners' %}</a></li>
-            <li class="breadcrumb-item active" aria-current="page">{% trans 'Partner #' %}{{ object.id|intcomma }}</li>
+            <li class="breadcrumb-item active" aria-current="page">{% trans 'Partner #' %}{{ partner.id|intcomma }}</li>
 
             {% endif %}
 	  	</ol>
@@ -132,7 +164,12 @@
         <div class="col-md-10 mx-auto rounded bg-light border p-2" id="id_master_form">
             <div class="row">
                 <div class="col-sm-5">
-                    <img src="{% static 'img/placeholder.png' %}" class="img-fluid rounded" alt="Profile Picture">
+                    {% if partner.avatar_image %}
+                        <img src="{{ partner.avatar_image.image_file.url }}" class="img-fluid rounded" alt="Profile Picture">
+                    {% else %}
+                        <img src="{% static 'img/placeholder.png' %}" class="img-fluid rounded" alt="Profile Picture">
+                    {% endif %}
+                    <input id="id_image" type="file" name="files[]"  multiple  onchange="ajax_upload_image();">
                 </div>
                 <div class="col-sm-7 px-4 py-3">
                     <h3>{{ partner.given_name }}&nbsp;{{ partner.last_name }}</h3>

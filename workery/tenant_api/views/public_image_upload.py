@@ -23,9 +23,9 @@ class PublicImageUploadListCreateAPIView(generics.ListCreateAPIView):
     serializer_class = PublicImageUploadListCreateSerializer
     pagination_class = StandardResultsSetPagination
     permission_classes = (
-        permissions.IsAuthenticated,
-        IsAuthenticatedAndIsActivePermission,
-        CanListCreatePublicImageUploadPermission
+        # permissions.IsAuthenticated,
+        # IsAuthenticatedAndIsActivePermission,
+        # CanListCreatePublicImageUploadPermission
     )
 
     def get_queryset(self):

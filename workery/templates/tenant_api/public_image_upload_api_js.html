@@ -1,0 +1,43 @@
+<script>
+    /**
+     *  Function will create a new image upload and return the inserted
+     *  results through the callback.
+     */
+    function create_public_image_upload(meta, image, callback)
+    {
+        var data = new FormData();
+        data.append('format', 'json');
+        data.append('image_file', image);
+        data.append('upload_type_of', meta['upload_type_of']);
+        data.append('upload_id', meta['upload_id']);
+
+        var url = "{% url 'workery_public_image_upload_list_create_api_endpoint'  %}";
+        var type = "POST";
+        jQuery.ajax({
+            url: url,
+            headers: {
+                Authorization: rest_api_token
+            },
+            data: data,
+            cache: false,
+            contentType: false,
+            processData: false,
+            type: type,
+            success: function(json_result){
+                // Debugging code
+                var json_text = JSON.stringify(json_result, null, 2);
+                console.log(json_text);
+
+                // Call back the function with the JSON results.
+                callback(json_result);
+            },
+            error: function(xhr,status,error) {
+                console.debug(status + ': ' + error + ' -- ' + xhr.responseText);
+                alert(xhr.responseText);
+            },
+            complete: function(xhr,status) {
+                // Do nothing.
+            }
+        });
+    }
+</script>
