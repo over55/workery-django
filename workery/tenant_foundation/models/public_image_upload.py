@@ -132,3 +132,14 @@ class PublicImageUpload(models.Model):
 
     def __str__(self):
         return str(self.pk)
+
+    def delete(self, *args, **kwargs):
+        """
+            Overrided delete functionality to include deleting the s3 file
+            that we have stored on the system. Currently the deletion funciton
+            is missing this functionality as it's our responsibility to handle
+            the local files.
+        """
+        if self.image_file:
+            self.image_file.delete()
+        super(PublicImageUpload, self).delete(*args, **kwargs) # Call the "real" delete() method

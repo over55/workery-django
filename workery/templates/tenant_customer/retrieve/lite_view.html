@@ -22,6 +22,10 @@
             return false;
         }
 
+        // Attach a "loading" gif.
+        var loading_url = "{% static 'app/img/ajax-loading.gif' %}";
+        $('#profile_image').attr('src', loading_url);
+
         // Extract the information.
         var image = document.getElementById('id_image').files[0];
         var meta = {
@@ -142,9 +146,9 @@
             <div class="row">
                 <div class="col-sm-4">
                     {% if customer.avatar_image %}
-                        <img src="{{ customer.avatar_image.image_file.url }}" class="img-fluid rounded" alt="Profile Picture">
+                        <img id="profile_image" src="{{ customer.avatar_image.image_file.url }}" class="img-fluid rounded" alt="Profile Picture">
                     {% else %}
-                        <img src="{% static 'img/placeholder.png' %}" class="img-fluid rounded" alt="Profile Picture">
+                        <img id="profile_image" src="{% static 'img/placeholder.png' %}" class="img-fluid rounded" alt="Profile Picture">
                     {% endif %}
                     <input id="id_image" type="file" name="files[]"  multiple  onchange="ajax_upload_image();">
                 </div>

@@ -81,24 +81,32 @@ class PublicImageUploadListCreateSerializer(serializers.ModelSerializer):
         # Attach the uploaded image to the specific object type.
         if upload_type_of == "associate_avatar_image":
             obj = Associate.objects.get(id=upload_id)
+            if obj.avatar_image:
+                obj.avatar_image.delete()
             obj.avatar_image = image_upload
             obj.save()
             logger.info("Attached public image upload to associate.")
 
         if upload_type_of == "customer_avatar_image":
             obj = Customer.objects.get(id=upload_id)
+            if obj.avatar_image:
+                obj.avatar_image.delete()
             obj.avatar_image = image_upload
             obj.save()
             logger.info("Attached public image upload to customer.")
 
         if upload_type_of == "partner_avatar_image":
             obj = Partner.objects.get(id=upload_id)
+            if obj.avatar_image:
+                obj.avatar_image.delete()
             obj.avatar_image = image_upload
             obj.save()
             logger.info("Attached public image upload to partner.")
 
         if upload_type_of == "staff_avatar_image":
             obj = Staff.objects.get(id=upload_id)
+            if obj.avatar_image:
+                obj.avatar_image.delete()
             obj.avatar_image = image_upload
             obj.save()
             logger.info("Attached public image upload to staff.")
