@@ -92,6 +92,7 @@ SHARED_APPS = (
     'debug_toolbar',
     'raven.contrib.django.raven_compat',
     'storages',
+    'sorl.thumbnail',
     # . . .
 
     # Shared Apps
@@ -559,6 +560,14 @@ SESSION_REDIS = {
 
 PHONENUMBER_DEFAULT_REGION = 'CA'  # ISO-3166-1 Country: Canada
 PHONENUMBER_DB_FORMAT = 'E164'     # Format: +1xxxyyyzzzz
+
+
+# sorl-thumbnail
+# https://github.com/jazzband/sorl-thumbnail
+
+THUMBNAIL_ENGINE = 'workery.snorlutil.Engine'
+THUMBNAIL_DEBUG=True
+THUMBNAIL_FORCE_OVERWRITE = True
 
 
 # Application Specific Variables #

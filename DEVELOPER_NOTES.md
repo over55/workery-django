@@ -35,7 +35,7 @@ pip install django-phonenumber-field      # Telephone field using Google's libph
 pip install raven --upgrade               # entry is cross-platform application monitoring, with a focus on error reporting.
 pip install boto3                         # AWS SDK for Python
 pip install django-storages               # Collection of custom storage backends for Django.
-
+pip install sorl-thumbnail                # Thumbnails for Django
 
 #TODO: IMPLEMENT...
 pip install dateutil                      # Useful extensions to the standard Python datetime features

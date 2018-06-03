@@ -4,6 +4,7 @@ import phonenumbers
 import pytz
 from djmoney.money import Money
 from datetime import date, datetime, timedelta
+from sorl.thumbnail import ImageField
 from django.conf import settings
 from django.db import models
 from django.db import transaction
@@ -71,7 +72,7 @@ class PublicImageUpload(models.Model):
     #  FIELDS
     #
 
-    image_file = models.ImageField(
+    image_file = ImageField(
         upload_to = 'uploads/%Y/%m/%d/',
         help_text=_('The upload image.'),
         storage=PublicMediaStorage()
