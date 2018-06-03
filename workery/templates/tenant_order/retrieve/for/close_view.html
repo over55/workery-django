@@ -140,7 +140,7 @@
 	}
 	return frags.join(' ');
     }
-	 
+
     //
     function click_submit_button() {
         // If there was another reason, track it down.
@@ -252,8 +252,8 @@
 
                 // STEP 2: CLEAR EXISTING TEXT.
                 $('#all_error_result').html("");
-		$('#all_error_result').removeClass('error-block');
-		    
+		        $('#all_error_result').removeClass('error-block');
+
                 // STEP 3: PRINT OUR ERROR.
                 for(var prop in err) {
                     if(err.hasOwnProperty(prop)) {
@@ -366,9 +366,9 @@
                                     <label for="reason">Reason <sup>*</sup></label>
                                     <select class="form-control form-control-lg border border-primary" id="reason" name="reason" required="">
                                         <option value="0" selected="selected">Please select reason</option>
+                                        <option value="4">Job completed by Associate</option>
                                         <option value="2">Quote was too high</option>
                                         <option value="3">Job completed by someone else</option>
-                                        <option value="4">Job completed by Associate</option>
                                         <option value="5">Work no longer needed</option>
                                         <option value="6">Client not satisfied with Associate</option>
                                         <option value="7">Client did work themselves</option>
