@@ -67,7 +67,7 @@ class WorkOrderRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIVie
         """
         Retrieve
         """
-        order = get_object_or_404(Order, pk=pk)
+        order = get_object_or_404(WorkOrder, pk=pk)
         self.check_object_permissions(request, order)  # Validate permissions.
         serializer = WorkOrderRetrieveUpdateDestroySerializer(order, many=False)
         # queryset = serializer.setup_eager_loading(self, queryset)
@@ -81,7 +81,7 @@ class WorkOrderRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIVie
         Update
         """
         client_ip, is_routable = get_client_ip(self.request)
-        order = get_object_or_404(Order, pk=pk)
+        order = get_object_or_404(WorkOrder, pk=pk)
         self.check_object_permissions(request, order)  # Validate permissions.
         serializer = WorkOrderRetrieveUpdateDestroySerializer(order, data=request.data, context={
             'last_modified_by': request.user,
@@ -97,7 +97,7 @@ class WorkOrderRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIVie
         """
         Delete
         """
-        order = get_object_or_404(Order, pk=pk)
+        order = get_object_or_404(WorkOrder, pk=pk)
         self.check_object_permissions(request, order)  # Validate permissions.
         order.delete()
         return Response(data=[], status=status.HTTP_200_OK)
