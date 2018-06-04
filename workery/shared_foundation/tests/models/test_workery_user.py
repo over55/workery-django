@@ -38,4 +38,4 @@ class TestOver55User(TenantTestCase):
 
     def test_str(self):
         self.assertIsNotNone(str(self.user))
-        self.assertIn(TEST_USER_EMAIL, str(self.user))
+        self.assertIn("Bart Mika", str(self.user))

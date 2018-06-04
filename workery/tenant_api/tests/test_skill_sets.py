@@ -207,6 +207,8 @@ class SkillSetListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
         response = self.exec_client.post(url, data=json.dumps({
             'category': 'test_category',
             'sub_category': 'test_sub_category',
+            'description': 'Some generic description.',
+            'insurance_requirements': [1]
         }), content_type='application/json')
         self.assertIsNotNone(response)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
@@ -217,6 +219,8 @@ class SkillSetListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
         response = self.manager_client.post(url, data=json.dumps({
             'category': 'test_category_two',
             'sub_category': 'test_sub_category_two',
+            'description': 'Some generic description.',
+            'insurance_requirements': [1]
         }), content_type='application/json')
         self.assertIsNotNone(response)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
@@ -227,6 +231,8 @@ class SkillSetListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
         response = self.staff_client.post(url, data=json.dumps({
             'category': 'test_category_three',
             'sub_category': 'test_sub_category_three',
+            'description': 'Some generic description.',
+            'insurance_requirements': [1]
         }), content_type='application/json')
         self.assertIsNotNone(response)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
@@ -271,6 +277,8 @@ class SkillSetListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
         data = json.dumps({
             'category': 'test_category',
             'sub_category': 'test_sub_category',
+            'description': 'Some generic description.',
+            'insurance_requirements': [1]
         })
 
         # Executive
