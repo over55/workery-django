@@ -61,6 +61,18 @@
     <!------------------------------------------------------------------------->
     <script>
         /**
+         *  Function will return next years start date.
+         */
+        function get_next_years_due_date() {
+            var due_date = new Date();
+            // var dd = targetDate.getDate();
+            // var mm = targetDate.getMonth() + 1; // 0 is January, so we must add 1
+            var yyyy = due_date.getFullYear();
+            yyyy += 1;
+            return yyyy + "-01-01";
+        }
+
+        /**
          *  When page loads, the following code will be run first.
          */
         $(document).ready(function () {
@@ -89,7 +101,7 @@
                 dateFormat: 'yy-mm-dd'  // https://stackoverflow.com/a/7500097
             });
 
-	    //------------------------//
+	        //------------------------//
             // SELECT2 INITIALIZATION //
             //------------------------//
 
@@ -147,6 +159,13 @@
             $('#police_check').val(localStorage.getItem("tmp_associate_member_police_check"));
             $('#drivers_license_class').val(localStorage.getItem("tmp_associate_member_drivers_license_class"));
             $('#how_hear').val(localStorage.getItem("tmp_associate_member_how_hear"));
+
+            // Pick the dues start date (if it was not done).
+            var dues_date = $('#dues_date').val();
+            if ( dues_date === undefined || dues_date === null || dues_date == "") {
+                var next_dues_date = get_next_years_due_date();
+                $('#dues_date').val(next_dues_date);
+            }
 
             //---------------------------//
             // RADIOFIELD INITIALIZATION //
@@ -812,13 +831,13 @@
                 <div class="form-group col-md-7 mb-4">
                     <label for="address_region">Province <sup>*</sup></label>
                     <select class="custom-select form-control-lg border-primary" id="address_region" name="address_region" required>
-		    </select>
+		            </select>
                     <div id="address_region-error" class="invalid-feedback"></div>
                 </div>
                 <div class="form-group col-md-7 mb-4">
                     <label for="address_country">Country <sup>*</sup></label>
                     <select class="custom-select form-control-lg border-primary" id="address_country" name="address_country" required>
-		    </select>
+		            </select>
                     <div id="address_country-error" class="invalid-feedback"></div>
                 </div>
                 <div class="form-group col-md-7 mb-4">
@@ -847,7 +866,7 @@
                 </div>
                 <div class="form-group col-md-12 mb-4">
                     <label for="hourly_salary_desired">Hourly Rate <sup>*</sup></label>
-                    <input type="number" class="form-control form-control-lg border border-success" id="hourly_salary_desired" name="hourly_salary_desired" placeholder="Hourly Rate" minlength="3" maxlength="255" min="0" required>
+                    <input type="number" class="form-control form-control-lg border border-primary" id="hourly_salary_desired" name="hourly_salary_desired" placeholder="Hourly Rate" minlength="3" maxlength="255" min="0" required>
                     <div id="hourly_salary_desired-error" class="invalid-feedback"></div>
                 </div>
                 <div class="form-group col-md-12 mb-4">
