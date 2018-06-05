@@ -545,7 +545,8 @@ class AssociateRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
             },
             "hourly_salary_desired": {
                 "error_messages": {
-                    "min_value": _("Ensure this value is greater than or equal to 0.")
+                    "min_value": _("Ensure this value is greater than or equal to 0."),
+                    "invalid": _("Please enter a value with no $, such as 20")
                 }
             }
         }
