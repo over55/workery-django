@@ -85,9 +85,7 @@
 
         // Calculate
         var total_amount = 0;
-        total_amount += invoice_labour_amount;
-        total_amount += invoice_material_amount;
-        total_amount += invoice_tax_amount;
+        total_amount = invoice_labour_amount + invoice_material_amount + invoice_tax_amount;
         service_fee = service_fee / 100.0;
         service_fee = service_fee * invoice_labour_amount;
 
@@ -97,7 +95,7 @@
 
         // Update the GUI.
         $('#invoice_total_amount').val(String(total_amount));
-        $('#invoice_service_fee_amount').val(service_fee);
+        $('#invoice_service_fee_amount').val(service_fee.toFixed(2));
     }
 
     function click_cancel_button() {
