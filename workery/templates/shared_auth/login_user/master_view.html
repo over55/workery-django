@@ -51,7 +51,7 @@
 
                 // Return with an error status.
                 } else {
-                    alert("Wrong login credentials.");
+                    alert("Wrong login credentials." + json_results['password'] + json_results['email_or_username']);
                 }
             },
             function(xhr, status, error) {
