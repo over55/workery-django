@@ -20,6 +20,17 @@
     }); // end Document Start
 
     /**
+     *  Function to make text readable removing underscore and capitalizing
+     */
+    function humanize(str) {
+	var frags = str.split('_');
+	for (i=0; i<frags.length; i++) {
+		frags[i] = frags[i].charAt(0).toUpperCase() + frags[i].slice(1);
+	}
+	return frags.join(' ');
+    }
+
+    /**
      * Function will take the EMAIL and PASSWORD, submit the information to the
      * server and have either an error returned or an API KEY which
      */
@@ -55,8 +66,23 @@
                 }
             },
             function(xhr, status, error) {
-                alert(error);
-                // Convert the error json into string.
+                var err = JSON.parse(xhr.responseText);
+                // For debugging purposes only.
+                console.log(err);
+                $('#all_error_result').html("");
+		$('#all_error_result').removeClass('error-block');
+                for(var prop in err) {
+                    if(err.hasOwnProperty(prop)) {
+                        var val = err[prop];
+                        var fdname = humanize(prop);
+		        // Errors box code
+		        $('#all_error_result').append("<div class='form-error'><b>"+fdname+":</b> "+val+" </div>");
+		        $('#all_error_result').addClass('error-block');
+			            
+                    }
+                }
+                // alert("Wrong login credentials.");
+		// Convert the error json into string.
                 // var string = JSON.stringify( error );
                 // console.log(string);
             }
