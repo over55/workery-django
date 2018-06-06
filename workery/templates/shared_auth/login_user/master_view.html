@@ -51,11 +51,27 @@
 
                 // Return with an error status.
                 } else {
-                    alert("Wrong login credentials." + json_results['password'] + json_results['email_or_username']);
+                    alert("Wrong login credentials.");
                 }
             },
             function(xhr, status, error) {
-                alert("Wrong login credentials.");
+                var err = JSON.parse(xhr.responseText);
+                // For debugging purposes only.
+                console.log(err);
+                $('#all_error_result').html("");
+		        $('#all_error_result').removeClass('error-block');
+                for(var prop in err) {
+                    if(err.hasOwnProperty(prop)) {
+                        var val = err[prop];
+                        var fdname = humanize(prop);
+			            // Errors box code
+			            $('#all_error_result').append("<div class='form-error'><b>"+fdname+":</b> "+val+" </div>");
+			            $('#all_error_result').addClass('error-block');
+			            
+                    }
+                }
+
+                // alert("Wrong login credentials.");
                 // Convert the error json into string.
                 // var string = JSON.stringify( error );
                 // console.log(string);
@@ -115,6 +131,8 @@
             <div class="form-group m-0 text-center">
                 <input id="id_login_btn" type="button" value="{% trans 'Sign In' %}" class="btn btn-lg btn-info btn-fxw px-5" onclick="ajax_login();">
             </div>
+            <div id="all_error_result" name="all_error_result" class="alert alert-error fade show" role="alert">
+	        </div>
             <h5 class="text-center my-3">
             <a href="{% url 'workery_send_reset_password_email_master' %}" class="text-info plain-link">{% trans 'Forgot Password?' %}</a></h5>
          </form>
