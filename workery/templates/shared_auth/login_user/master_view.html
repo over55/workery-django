@@ -134,6 +134,10 @@
                   <input id="id_password" name="password" placeholder="{% trans 'Password' %}" class="form-control form-control-lg" type="password" value="" autocapitalize="off" />
                </div>
             </div>
+	    <!-- Error Output -->
+	    <div id="all_error_result" name="all_error_result" class="alert alert-error fade show my-2" role="alert">
+	    </div>
+            <!-- Error Output end -->
             <div class="custom-control custom-checkbox my-3">
                <input type="checkbox" class="custom-control-input" id="customCheck1">
                <label class="custom-control-label" for="customCheck1">{% trans 'Remember me' %}</label>
@@ -141,8 +145,6 @@
             <div class="form-group m-0 text-center">
                 <input id="id_login_btn" type="button" value="{% trans 'Sign In' %}" class="btn btn-lg btn-info btn-fxw px-5" onclick="ajax_login();">
             </div>
-            <div id="all_error_result" name="all_error_result" class="alert alert-error fade show" role="alert">
-	        </div>
             <h5 class="text-center my-3">
             <a href="{% url 'workery_send_reset_password_email_master' %}" class="text-info plain-link">{% trans 'Forgot Password?' %}</a></h5>
          </form>
