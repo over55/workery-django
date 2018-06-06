@@ -28,7 +28,7 @@
             maxDate: 'today'
         });
         $( "#invoice_service_fee_payment_date" ).datepicker({
-            dateFormat: 'yy-mm-dd',
+            dateFormat: 'yy-mm-dd'
         });
 
         //------------------------------//
@@ -75,9 +75,7 @@
 
         // Calculate
         var total_amount = 0;
-        total_amount += invoice_labour_amount;
-        total_amount += invoice_material_amount;
-        total_amount += invoice_tax_amount;
+        total_amount = invoice_labour_amount + invoice_material_amount + invoice_tax_amount;
         service_fee = service_fee / 100.0;
         service_fee = service_fee * total_amount;
 
@@ -87,9 +85,20 @@
 
         // Update the GUI.
         $('#invoice_total_amount').val(String(total_amount));
-        $('#invoice_service_fee_amount').val(service_fee);
+        $('#invoice_service_fee_amount').val(service_fee.toFixed(2));
     }
-
+    
+    /**
+     *  Function to make text readable removing underscore and capitalizing
+     */
+    function humanize(str) {
+    	var frags = str.split('_');
+    	for (i=0; i<frags.length; i++) {
+    			frags[i] = frags[i].charAt(0).toUpperCase() + frags[i].slice(1);
+    	}
+    	return frags.join(' ');
+    }
+	
     //
     function click_submit_button() {
         // Get our "financial" information.
@@ -162,13 +171,19 @@
 
                 // STEP 2: CLEAR EXISTING TEXT.
                 $('#all_error_result').html("");
-
+		$('#all_error_result').removeClass('error-block');
                 // STEP 3: PRINT OUR ERROR.
                 for(var prop in err) {
                     if(err.hasOwnProperty(prop)) {
                         var val = err[prop];
                         console.log(val);
-                        $('#all_error_result').append("<p><b>"+prop+"</b> "+val+"</p><br />");
+			var fdname = humanize(prop);
+			// Errors box code
+                        $('#all_error_result').append("<div class='form-error'><b>"+fdname+":</b> "+val+" </div>");
+			$('#all_error_result').addClass('error-block');
+			// Inline fields errors code
+			$('#'+prop+'-error').html("<ul><li>"+val+"</li></ul>");
+			$('#update-job-form').addClass('was-validated');
                     }
                 }
 
@@ -241,27 +256,23 @@
 
     <!-- FORM -->
     <!------------------------------------------------------------------------->
-    <div class="container">
-        <div class="row align-items-start">
-            <!-- FORM -->
-            <!------------------------------------------------------------------------->
-            <div class="col-sm-6 mx-auto mt-2">
+    <div class="col-sm-5 mx-auto mt-2">
                 <!-- Residential form -->
                 <div class="col-sm-12 fade show active" id="client-form" aria-labelledby="commercial">
                     <!-- Error Output -->
-                    <div id="all_error_result" name="all_error_result"></div>
-                    <!-- end Error Output -->
+                    <div id="all_error_result" name="all_error_result" class="alert alert-error fade show" role="alert">
+	    	    </div>
+		    <!-- end Error Output -->
                     <p><span class="text-secondary font-italic"><sup>*</sup>&nbsp;-&nbsp;Indicates required field to fill out.</span></p>
-                    <form id="add-client-form" method="post" class="needs-validation" action="" novalidate>
+                    <form id="update-job-form" method="post" class="needs-validation" action="" novalidate>
                         <div class="form-row">
-                            <div class="form-row">
                                 <!-- Invoice Date -->
-                                <div class="form-group col-md-12 mb-4">
+                                <div class="form-group col-md-7 mb-4">
                                     <label for="invoice_date">Invoice Date</label>
                                     <div class="input-group input-group-lg">
                                         <input type="text" class="form-control form-control-lg border border-primary" id="invoice_date" name="invoice_date" placeholder="yyyy-mm-dd" required value="{% if job_item.invoice_date %}{{ job_item.invoice_date|date:"Y-m-d" }}{% endif %}">
                                         <div class="input-group-append">
-                                            <span class="input-group-text dob-icon bg-success border-success"><i class="far fa-calendar-alt"></i></span>
+                                            <span class="input-group-text c-icon-white bg-success border-success"><i class="far fa-calendar-alt"></i></span>
                                         </div>
                                         <div id="invoice_date-error" class="invalid-feedback"></div>
                                     </div>
@@ -275,35 +286,35 @@
                                 </div>
                                 <!-- end Invoice ID -->
                                 <!-- Invoice Quote -->
-                                <div class="form-group col-md-12 mb-4">
+                                <div class="form-group col-md-7 mb-4">
                                     <label for="invoice_quote_amount">Original Quote</label>
                                     <input type="number" class="form-control form-control-lg border border-success" id="invoice_quote_amount" name="invoice_quote_amount" placeholder="Invoice Quote" value="{{ job_item.invoice_quote_amount.amount }}">
                                     <div id="invoice_quote_amount-error" class="invalid-feedback"></div>
                                 </div>
                                 <!-- end Invoice Quote -->
                                 <!-- Invoice Labour -->
-                                <div class="form-group col-md-12 mb-4">
+                                <div class="form-group col-md-7 mb-4">
                                     <label for="invoice_labour_amount">Total Labour</label>
                                     <input type="number" class="form-control form-control-lg border border-success" id="invoice_labour_amount" name="invoice_labour_amount" placeholder="Total Labour" value="{{ job_item.invoice_labour_amount.amount }}">
                                     <div id="invoice_labour_amount-error" class="invalid-feedback"></div>
                                 </div>
                                 <!-- end Invoice Labour -->
                                 <!-- Invoice Material -->
-                                <div class="form-group col-md-12 mb-4">
+                                <div class="form-group col-md-7 mb-4">
                                     <label for="invoice_material_amount">Total Materials</label>
                                     <input type="number" class="form-control form-control-lg border border-success" id="invoice_material_amount" name="invoice_material_amount" placeholder="Total Material" value="{{ job_item.invoice_material_amount.amount }}">
                                     <div id="invoice_material_amount-error" class="invalid-feedback"></div>
                                 </div>
                                 <!-- end Invoice Material -->
                                 <!-- Invoice Tax -->
-                                <div class="form-group col-md-12 mb-4">
+                                <div class="form-group col-md-7 mb-4">
                                     <label for="invoice_tax_amount">Total Tax</label>
                                     <input type="number" class="form-control form-control-lg border border-success" id="invoice_tax_amount" name="invoice_tax_amount" placeholder="Total Tax" value="{{ job_item.invoice_tax_amount.amount }}">
                                     <div id="invoice_tax_amount-error" class="invalid-feedback"></div>
                                 </div>
                                 <!-- end Invoice Material -->
                                 <!-- Invoice Total -->
-                                <div class="form-group col-md-12 mb-4">
+                                <div class="form-group col-md-7 mb-4">
                                     <label for="invoice_total_amount">Total</label>
                                     <input type="number" class="form-control form-control-lg border border-success" id="invoice_total_amount" name="invoice_total_amount" placeholder="Total" readonly value="{{ job_item.invoice_total_amount.amount }}">
                                     <div id="invoice_total_amount-error" class="invalid-feedback"></div>
@@ -317,7 +328,7 @@
                                 </div>
                                 <!-- end Invoice Total -->
                                 <!-- Service Fee Payment Date -->
-                                <div class="form-group col-md-12 mb-4">
+                                <div class="form-group col-md-7 mb-4">
                                     <label for="invoice_service_fee_payment_date">Service Fee Payment Date</label>
                                     <div class="input-group input-group-lg">
                                         <input type="text" class="form-control form-control-lg border border-primary" id="invoice_service_fee_payment_date" name="invoice_service_fee_payment_date" placeholder="yyyy-mm-dd" required value="{% if job_item.invoice_service_fee_payment_date %}{{ job_item.invoice_service_fee_payment_date|date:"Y-m-d" }}{% endif %}">
@@ -337,11 +348,8 @@
                                 </div>
                                 <!--------------------------------------------------------------------->
                                 <!-- end UPDATE BUTTON -->
-                            </div>
                         </div>
                     </form>
-                </div>
-            </div>
         </div>
     </div>
     <!------------------------------------------------------------------------->
