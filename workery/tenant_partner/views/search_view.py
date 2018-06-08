@@ -38,10 +38,11 @@ class PartnerSearchResultView(LoginRequiredMixin, WorkeryListView):
         else:
             queryset = super(PartnerSearchResultView, self).get_queryset()
 
-        # The following code will use the 'django-filter'
-        filter = PartnerFilter(self.request.GET, queryset=queryset)
-        queryset = filter.qs
-        queryset = queryset.prefetch_related(
-            'owner',
-        )
+            # The following code will use the 'django-filter'
+            filter = PartnerFilter(self.request.GET, queryset=queryset)
+            queryset = filter.qs
+
+        # Attach owners.
+        queryset = queryset.prefetch_related('owner')
+
         return queryset
