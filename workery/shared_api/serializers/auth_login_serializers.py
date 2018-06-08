@@ -21,7 +21,7 @@ class AuthCustomTokenSerializer(serializers.Serializer):
         try:
             user = SharedUser.objects.get(email=email_or_username)
         except SharedUser.DoesNotExist:
-            raise exceptions.ValidationError(_('Password or email is not valid.'))
+            raise exceptions.ValidationError(_('This E-Mail address is not registered.'))
 
         if not user.is_active:
             raise exceptions.ValidationError(_('Your account is suspended!'))
@@ -32,4 +32,4 @@ class AuthCustomTokenSerializer(serializers.Serializer):
             attrs['authenticated_user'] = authenticated_user
             return attrs
         else:
-            raise exceptions.ValidationError(_('Password or email is not valid.'))
+            raise exceptions.ValidationError(_('Incorrect Pasword'))
