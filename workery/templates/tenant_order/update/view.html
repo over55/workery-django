@@ -44,7 +44,7 @@
     	}
     	return frags.join(' ');
     }
-	
+
     function ajax_post_form_submission() {
         var description = $('#description').val();
         console.log("Description:", description);
@@ -76,7 +76,23 @@
         var invoice_service_fee_payment_date = $('#invoice_service_fee_payment_date').val();
         console.log("invoice_service_fee_payment_date:", completion_date);
 
+        // Attach "customer".
+        {% if job.customer %}
+        var customer_id = {{ job.customer.id }};
+        {% else %}
+        var customer_id = null;
+        {% endif %}
+
+        // Attach "associate".
+        {% if job.associate %}
+        var associate_id = {{ job.associate.id }};
+        {% else %}
+        var associate_id = null;
+        {% endif %}
+
         var data_dict = {
+            'customer': customer_id,
+            'associate': associate_id,
             'description': description,
             'skill_sets': skill_sets,
             'assignment_date': assignment_date,
@@ -85,6 +101,7 @@
             'is_cancelled': is_cancelled,
             'completion_date': completion_date,
             'hours': hours,
+            'invoice_service_fee': {{ job.invoice_service_fee }},
             'invoice_service_fee_payment_date': invoice_service_fee_payment_date,
             'extra_comment': null
         };
@@ -201,7 +218,7 @@
             <div id="all_error_result" name="all_error_result" class="alert alert-error fade show" role="alert">
 	    </div>
 	    <!-- end Error Output -->
-            
+
             <form id="update-job-form" method="post" class="needs-validation" action="" novalidate>
 
             <p class="border-bottom mb-3 pb-1 text-secondary">Describe the Job:</p>
@@ -330,7 +347,7 @@
     <a id="return-to-top" href="#" class="btn-info btn-lg back-to-top" role="button" title="Back to top"><i class="fas fa-angle-up fa-2x"></i></a>
     <!-- end RETURN-TO-TOP -->
 </main>
-	
+
 <script type="text/javascript">
 // // Populate our 'select2' chosen values.
         $('#skill_sets').select2();
