@@ -82,7 +82,7 @@
         $('#invoice_total_amount').val(String(total_amount));
         $('#invoice_service_fee_amount').val(service_fee.toFixed(2));
     }
-    
+
     /**
      *  Function to make text readable removing underscore and capitalizing
      */
@@ -93,7 +93,7 @@
     	}
     	return frags.join(' ');
     }
-	
+
     //
     function click_submit_button() {
         // Get our "financial" information.
@@ -132,12 +132,26 @@
         console.log("invoice_service_fee_amount", invoice_service_fee_amount);
         console.log("invoice_service_fee_payment_date", invoice_service_fee_payment_date);
 
+        // Attach customer
+        {% if job_item.customer %}
+        var customer_id = {{ job_item.customer.id }};
+        {% else %}
+        var customer_id = null;
+        {% endif %}
+
+        // Attach associate.
+        {% if job_item.associate %}
+        var associate_id = {{ job_item.associate.id }};
+        {% else %}
+        var associate_id = null;
+        {% endif %}
+
         // Submit to our API web-service.
         update_job_api(
             {{ job_item.id }},
             {
-                'customer': {{ job_item.customer.id }},
-                'associate': {{ job_item.associate.id }},
+                'customer': customer_id,
+                'associate': associate_id,
                 'extra_comment': null,
                 'invoice_date': invoice_date,
                 'invoice_id': invoice_id,
