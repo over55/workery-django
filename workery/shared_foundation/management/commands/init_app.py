@@ -30,7 +30,7 @@ class Command(BaseCommand):
         """
         current_site = Site.objects.get_current()
         current_site.domain = settings.WORKERY_APP_HTTP_DOMAIN
-        current_site.name = "Over55"
+        current_site.name = "Workery"
         current_site.save()
 
     def process_groups(self):

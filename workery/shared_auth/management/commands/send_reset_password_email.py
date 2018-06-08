@@ -39,7 +39,7 @@ class Command(BaseCommand):
             reverse_url_id='workery_reset_password_email',
             resolve_url_args=[pr_access_code]
         )
-        subject = "Over55: Password Reset"
+        subject = "Workery: Password Reset"
         param = {
             'url': url,
             'web_view_url': web_view_url,
