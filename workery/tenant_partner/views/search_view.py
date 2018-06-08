@@ -36,7 +36,7 @@ class PartnerSearchResultView(LoginRequiredMixin, WorkeryListView):
             queryset = Partner.objects.full_text_search(keyword)
             queryset = queryset.order_by('-created')
         else:
-            queryset = super(PartnerListView, self).get_queryset()
+            queryset = super(PartnerSearchResultView, self).get_queryset()
 
         # The following code will use the 'django-filter'
         filter = PartnerFilter(self.request.GET, queryset=queryset)
