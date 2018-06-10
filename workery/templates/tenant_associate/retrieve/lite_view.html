@@ -12,9 +12,6 @@
 
 <!-- CUSTOM JAVASCRIPT -->
 <script>
-    $("#id_image_placeholder").click(function () {
-    	$("#id_image").trigger('click');
-    });
     /**
      *  Function will asynchronously upload the cover image.
      */
@@ -66,8 +63,11 @@
           });
         };
         SetRatingStar();
-	    
-	$("#upload-btn").click(function () {
+
+	$("#id_image_placeholder").click(function () {
+    		$("#id_image").trigger('click');
+    	});
+        $("#upload-btn").click(function () {
     		$("#id_image").trigger('click');
     	});
 	$("#upload-btn").css("cursor", "pointer");
