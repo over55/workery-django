@@ -60,7 +60,7 @@ class WorkOrderServiceFeeRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDes
         """
         Retrieve
         """
-        order_service_fee = get_object_or_404(OrderServiceFee, pk=pk)
+        order_service_fee = get_object_or_404(WorkOrderServiceFee, pk=pk)
         self.check_object_permissions(request, order_service_fee)  # Validate permissions.
         serializer = WorkOrderServiceFeeRetrieveUpdateDestroySerializer(order_service_fee, many=False)
         return Response(
@@ -73,7 +73,7 @@ class WorkOrderServiceFeeRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDes
         Update
         """
         client_ip, is_routable = get_client_ip(self.request)
-        order_service_fee = get_object_or_404(OrderServiceFee, pk=pk)
+        order_service_fee = get_object_or_404(WorkOrderServiceFee, pk=pk)
         self.check_object_permissions(request, order_service_fee)  # Validate permissions.
         serializer = WorkOrderServiceFeeRetrieveUpdateDestroySerializer(order_service_fee, data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -84,7 +84,7 @@ class WorkOrderServiceFeeRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDes
         """
         Delete
         """
-        order_service_fee = get_object_or_404(OrderServiceFee, pk=pk)
+        order_service_fee = get_object_or_404(WorkOrderServiceFee, pk=pk)
         self.check_object_permissions(request, order_service_fee)  # Validate permissions.
         order_service_fee.delete()
         return Response(data=[], status=status.HTTP_200_OK)
