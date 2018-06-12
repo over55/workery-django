@@ -63,6 +63,16 @@
           });
         };
         SetRatingStar();
+
+	$("#id_image_placeholder").click(function () {
+    		$("#id_image").trigger('click');
+    	});
+        $("#upload-btn").click(function () {
+    		$("#id_image").trigger('click');
+    	});
+	$("#upload-btn").css("cursor", "pointer");
+	$("#id_image_placeholder").css("cursor", "pointer");
+
     });
 </script>
 
@@ -71,7 +81,7 @@
     <!-- BREADCRUMB -->
     <!------------------------------------------------------------------------->
     <nav aria-label="breadcrumb">
-	  	<ol class="breadcrumb">
+	  <ol class="breadcrumb">
             {% if template == 'search' %}
 
             <li class="breadcrumb-item">
@@ -95,12 +105,12 @@
 
             {% else %}
 
-	    	<li class="breadcrumb-item"><a href="{% url 'workery_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
+	    <li class="breadcrumb-item"><a href="{% url 'workery_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
             <li class="breadcrumb-item"><a href="{% url 'workery_tenant_member_summary' %}">{% trans 'Members' %}</a></li>
             <li class="breadcrumb-item active" aria-current="page">{% trans 'Member #' %}{{ associate.id|intcomma }}</li>
 
             {% endif %}
-	  	</ol>
+	  </ol>
 	</nav>
     <!------------------------------------------------------------------------->
     <!-- end BREADCRUMB -->
@@ -123,7 +133,7 @@
     <div class="row">
 		<div class="col-sm-3 p-3 mb-2">
 			<a class="btn btn-primary btn-lg" href="{% if template == 'search' %}{% url 'workery_tenant_member_search' %}{% elif template == 'list' %}{% url 'workery_tenant_member_list' %}{% else %}{% url 'workery_tenant_member_summary' %}{% endif %}" role="button">
-                <i class="fas fa-arrow-left"></i> &nbsp;{% if template == 'search' %}{% trans 'Back to Search' %}{% elif template == 'list' %}{% trans 'Back to Member\'s List' %}{% else %}{% trans 'Back to Member\'s Home' %}{% endif %}</a>
+                	<i class="fas fa-arrow-left"></i> &nbsp;{% if template == 'search' %}{% trans 'Back to Search' %}{% elif template == 'list' %}{% trans 'Back to Member\'s List' %}{% else %}{% trans 'Back to Member\'s Home' %}{% endif %}</a>
 		</div>
 	</div>
     <!------------------------------------------------------------------------->
@@ -170,14 +180,16 @@
         <div class="col-md-10 mx-auto rounded bg-light border p-2" id="id_master_form">
             <div class="row">
                 <!-- IMAGE SECTION -->
-                <div class="col-sm-4">
+                <div class="col-sm-4 text-center">
+		    <!-- Image Upload -->
+                    <input id="id_image" type="file" name="files[]" accept="image/*" class="d-none" multiple onchange="ajax_upload_image();">
+                    <!-- end Image Upload -->
                     <!-- Image Placeholder -->
                     {% if associate.avatar_image %}
                         {% thumbnail associate.avatar_image.image_file "350x350" format='JPEG' background="#ffffff" as im %}
                             <img src="{{ im.url }}"
                                   id="id_image_placeholder"
-                                style="height:350px;width:350px;"
-                                  alt="{{ associate }} {% trans 'Picture' %}"
+                                 alt="{{ associate }} {% trans 'Picture' %}"
                                width="{{ im.width }}"
                               height="{{ im.height }}"
                                class="img-thumbnail center-block mb0 add-cover-image img-fluid rounded" />
@@ -185,17 +197,14 @@
                     {% else %}
                         <img src="{% static 'img/placeholder.png' %}"
                               id="id_image_placeholder"
-                           style="height:350px;width:350px;"
                              alt="{{ associate }} {% trans 'Picture' %}"
                            width="350"
                           height="350"
                            class="img-thumbnail center-block mb0 add-cover-image img-fluid rounded" />
                     {% endif %}
                     <!-- /.Image Placeholder -->
-
-                    <!-- Image Upload -->
-                    <input id="id_image" type="file" name="files[]"  multiple  onchange="ajax_upload_image();">
-                    <!-- end Image Upload -->
+		    <h5 id="upload-btn" class="text-muted p-1">Click to upload</h5>
+		    
                 </div>
                 <!-- end IMAGE SECTION -->
                 <div class="col-sm-8 p-2">
