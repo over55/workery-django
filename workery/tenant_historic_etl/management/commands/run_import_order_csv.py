@@ -6,6 +6,8 @@ import sys
 import re
 import os.path as ospath
 import codecs
+import datetime
+import pytz
 from decimal import *
 from djmoney.money import Money
 from django.db.models import Sum
@@ -48,6 +50,9 @@ from tenant_foundation.utils import *
 Run manually in console:
 python manage.py run_import_order_csv "london" "/Users/bmika/Developer/over55/workery-django/workery/tenant_historic_etl/csv/prod_orders.csv"
 """
+
+# Get the native timezone that the database originally used.
+toronto_timezone = pytz.timezone('America/Toronto')
 
 
 class Command(BaseCommand):
@@ -107,6 +112,9 @@ class Command(BaseCommand):
     def run_import_from_dict(self, row_dict, index):
         service_fee_obj = WorkOrderServiceFee.objects.get(id=1)
 
+        milestone_date = datetime(2016, 12, 31, 23, 00)
+        milestone_date = milestone_date.replace(tzinfo=toronto_timezone) # Make timezone aware.
+
         try:
             # For debugging purposes.
             # print(row_dict)
@@ -142,6 +150,19 @@ class Command(BaseCommand):
             if completion_date is None or completion_date == "":
                 if payment_date:
                     local_completion_date = local_payment_date
+                else:
+                    local_completion_date = milestone_date
+                    local_payment_date = milestone_date
+
+            # Special rule - Anything older then Dec 31 2016 is automatically
+            #                closed and paid for.
+            if local_completion_date < milestone_date or local_assign_date < milestone_date:
+                local_payment_date = local_completion_date
+
+            # Special rule - if no local payment date set then we automatically
+            #                set to the Dec 31 2016.
+            if local_payment_date is None or local_payment_date == "":
+                local_payment_date = milestone_date
 
             # Convert to money.
             local_service_fee = Money(0.00, WORKERY_APP_DEFAULT_MONEY_CURRENCY)
