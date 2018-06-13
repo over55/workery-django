@@ -146,6 +146,9 @@ class Command(BaseCommand):
             local_payment_date = self.get_date_from_formatting3(payment_date)
             local_completion_date = self.get_date_from_formatting3(completion_date)
 
+            if local_assign_date is None or local_assign_date == "":
+                local_assign_date = milestone_date
+
             # Minor fix.
             if completion_date is None or completion_date == "":
                 if payment_date:
