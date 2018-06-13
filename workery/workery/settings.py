@@ -18,6 +18,7 @@ import re
 import raven # Third party library
 import sys
 from django.utils.log import DEFAULT_LOGGING
+from trapdoor.utils import get_suspicious_paths_to_ignore_array
 
 '''
 django-environ
@@ -459,6 +460,7 @@ IGNORABLE_404_URLS = [
     re.compile(r'^/favicon\.ico$'),
     re.compile(r'^/robots\.txt$'),
 ]
+IGNORABLE_404_URLS += get_suspicious_paths_to_ignore_array()
 
 
 #
