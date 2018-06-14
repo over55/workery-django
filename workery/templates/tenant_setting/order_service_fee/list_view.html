@@ -123,18 +123,6 @@
                          {% trans 'Edit' %}
                         </button>
                         </a>
-			<!-- Modal -->
-			<div class="modal fade" id="confirmDelete" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-		  		<div class="modal-dialog" role="document">
-		    			<div class="modal-content">
-		      			<div class="modal-body">
-		        			<p class="m-3 p-2">WARNING: you are about to PERMANENTLY delete this item - this action CANNOT BE UNDONE. Do you want to continue?</p>
-		        			<button type="button" class="btn btn-lg btn-secondary float-left m-2" data-dismiss="modal">No</button>
-		        			<button type="button" class="btn btn-lg btn-primary float-right m-2" id="yes_submit" onclick="ajax_delete({{ order_service_fee.id }});">Yes</button>
-		      			</div>
-		    			</div>
-		  		</div>
-			</div>
                     </td>
                 </tr>
                 {% endfor %}
@@ -162,4 +150,16 @@
     <a id="return-to-top" href="#" class="btn-info btn-lg back-to-top" role="button" title="Back to top"><i class="fas fa-angle-up fa-2x"></i></a>
     <!-- end RETURN-TO-TOP -->
 </main>
+<!-- Modal -->
+<div class="modal fade" id="confirmDelete" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  		<div class="modal-dialog" role="document">
+    			<div class="modal-content">
+      			<div class="modal-body">
+        			<p class="m-3 p-2">WARNING: you are about to PERMANENTLY delete this item - this action CANNOT BE UNDONE. Do you want to continue?</p>
+        			<button type="button" class="btn btn-lg btn-secondary float-left m-2" data-dismiss="modal">No</button>
+        			<button type="button" class="btn btn-lg btn-primary float-right m-2" id="yes_submit" onclick="ajax_delete({{ order_service_fee.id }});">Yes</button>
+      			</div>
+   			</div>
+ 		</div>
+</div>
 {% endblock content %}
