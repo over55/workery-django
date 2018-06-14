@@ -22,226 +22,6 @@
 <!----------------------------------------------------------------------------->
 <script>
     /**
-     *  When page loads, the following code will be run first.
-     */
-    $(document).ready(function () {
-        //---------------------------//
-        // DATEPICKER INITIALIZATION //
-        //---------------------------//
-
-        // Initialize our datepicker jQuery code with our HTML view.
-        $( "#birthdate" ).datepicker({
-            dateFormat: 'yy-mm-dd',
-	        maxDate: 'today'
-        });
-        $( "#dues_date" ).datepicker({
-            dateFormat: 'yy-mm-dd'  // https://stackoverflow.com/a/7500097
-        });
-        $( "#commercial_insurance_expiry_date" ).datepicker({
-            dateFormat: 'yy-mm-dd'  // https://stackoverflow.com/a/7500097
-        });
-        $( "#auto_insurance_expiry_date" ).datepicker({
-            dateFormat: 'yy-mm-dd'  // https://stackoverflow.com/a/7500097
-        });
-        $( "#wsib_insurance_date" ).datepicker({
-            dateFormat: 'yy-mm-dd'  // https://stackoverflow.com/a/7500097
-        });
-        $( "#police_check" ).datepicker({
-            dateFormat: 'yy-mm-dd'  // https://stackoverflow.com/a/7500097
-        });
-
-	//------------------------//
-        // SELECT2 INITIALIZATION //
-        //------------------------//
-
-        var insurance_requirement_ids = [];
-        {% for insurance_requirement in associate.insurance_requirements.all %}
-        insurance_requirement_ids.push({{ insurance_requirement.id }});
-        {% endfor %}
-        $('#insurance_requirements').val(insurance_requirement_ids);
-
-        // // Populate our 'select2' chosen values.
-        var tag_ids = [];
-        {% for tag in associate.tags.all %}
-        tag_ids.push({{ tag.id }});
-        {% endfor %}
-        $('#tags').val(tag_ids);
-
-        var skill_set_ids = [];
-        {% for skill_set in associate.skill_sets.all %}
-        skill_set_ids.push({{ skill_set.id }});
-        {% endfor %}
-        $('#skill_sets').val(skill_set_ids);
-
-        var vehicle_type_ids = [];
-        {% for vehicle_type in associate.vehicle_types.all %}
-        vehicle_type_ids.push({{ vehicle_type.id }});
-        {% endfor %}
-        $('#vehicle_types').val(vehicle_type_ids);
-
-        // Initialize our 'select2' element.
-        $('#insurance_requirements').select2();
-        $('#tags').select2();
-        $('#skill_sets').select2();
-        $("#vehicle_types").select2({
-    		tags: true,
-	});
-
-        //----------------------------------------//
-        // TEXTFIELD / SELECTFIELD INITIALIZATION //
-        //----------------------------------------//
-
-        // Set the gender.
-        $('#gender').val('{% if associate.gender %}{{ associate.gender }}{% endif %}');
-
-        //----------------------//
-        // RADIO INITIALIZATION //
-        //----------------------//
-
-        {% if associate.is_ok_to_email == True %}$("#is_ok_to_email").prop("checked", true);{% else %}$("#is_ok_to_email2").prop("checked", true);{% endif %}
-        {% if associate.is_ok_to_text == True %}$("#is_ok_to_text").prop("checked", true);{% else %}$("#is_ok_to_text2").prop("checked", true);{% endif %}
-        {% if associate.owner.is_active == True %}$("#is_active").prop("checked", true);{% else %}$("#is_active2").prop("checked", true);{% endif %}
-        {% if associate.has_car == True %}$("#has_car").prop("checked", true);{% else %}$("#has_car2").prop("checked", true);{% endif %}
-        {% if associate.has_van == True %}$("#has_van").prop("checked", true);{% else %}$("#has_van2").prop("checked", true);{% endif %}
-        {% if associate.has_truck == True %}$("#has_truck").prop("checked", true);{% else %}$("#has_truck2").prop("checked", true);{% endif %}
-
-        //-----------------------------//
-        // MISC / OTHER INITIALIZATION //
-        //-----------------------------//
-
-        // --- How hear ---
-        var how_hear = {{ associate.how_hear }};
-        if (how_hear == 1) {
-            $("#how_hear_other_div").show();
-        } else {
-            $("#how_hear_other_div").hide();
-        }
-
-        // --- How hear (other) ---
-        var how_hear_other = "{{ associate.how_hear_other }}";
-        if (how_hear == 1) {
-            $("#how_hear_other").val(how_hear_other);
-        }
-
-        //------------------------------//
-        // EVENT HANDLER INITIALIZATION //
-        //------------------------------//
-
-        // --- How hear ---
-        $('#how_hear').on('change',function(){
-            if( $(this).val()==="1" || $(this).val()===1){
-                $("#how_hear_other_div").show();
-            }
-            else{
-                $("#how_hear_other_div").hide();
-            }
-        });
-
-        // --- Email ---
-        // The following code continously checks to see if the current user
-        // is assigned to the email.
-        $('#email').keypress(debounce(function (event) {
-            // do the Ajax request
-            var email = $('#email').val();
-            console.log(email);
-        }, 250));
-
-        //---------------------------------//
-        // COUNTRY/PROVINCE INITIALIZATION //
-        //---------------------------------//
-
-        // THIS IS WHERE YOU CAN ADD YOUR COUNTRY/PROVINCE DROPDOWN JS CODE....
-	$(function(){
-	  $('#address_country').change(function(){
-	    loadState($(this).find(':selected').val())
-	  });
-	  {% if associate.address_country %}loadState('{{associate.address_country}}');{% else %}loadState('CA');{% endif %}
-    	});
-	let c_dropdown = $('#address_country');
-	c_dropdown.empty();
-	c_dropdown.append('<option selected="true" disabled>Choose Country</option>');
-	{% if associate.address_country %}c_dropdown.val('{{associate.address_country}}');{% else %}c_dropdown.prop('selectedIndex', 1);{% endif %}
-	const state = "{% url 'workery_get_provinces_api_endpoint' %}?format=json";
-        const country = "{% url 'workery_get_countries_api_endpoint' %}?format=json";
-	console.log(state);
-        console.log(country); // KANWAR - PLEASE IMPLEMENT.
-	// Populate dropdown with list of countries
-	$.getJSON(country, function (data) {
-	  $.each(data, function (key, entry) {
-	    	c_dropdown.append($('<option></option>').attr('value', entry.code).text(entry.country));
-	  })
-	});
-	function loadState(countryId){
-		let p_dropdown = $('#address_region');
-		p_dropdown.empty();
-		p_dropdown.append('<option selected="true" disabled>Choose State/Province</option>');
-		p_dropdown.prop('selectedIndex', 0);
-		// Populate dropdown with list of provinces
-		$.getJSON(state, function (data) {
-		  $.each(data, function (key, entry) {
-		    if(entry.country == countryId){
-		    	p_dropdown.append($('<option></option>').attr('value', entry.short).text(entry.name));
-		    }
-		  })
-		});
-		{% if associate.address_region %}p_dropdown.val('{{associate.address_region}}');{% endif %}
-		if(countryId == 'CA'){
-			p_dropdown.prop('selectedIndex', 1);
-		}
-    	}
-
-	/**
-	 *  Password Strength Check Validation.
-	 */
-	var checkPassword = document.getElementById("password");
-	var s_letter = document.getElementById("s_lowercase");
-	var s_capital = document.getElementById("s_uppercase");
-	var s_character = document.getElementById("s_special");
-	var s_length = document.getElementById("min_char");
-	// When the user starts to type something inside the password field
-	checkPassword.onkeyup = function() {
-  		// Validate lowercase letters
-  		var lowerCaseLetters = /[a-z]/g;
-		  if(checkPassword.value.match(lowerCaseLetters)) {
-		    s_letter.classList.remove("pass_check");
-		    s_letter.classList.add("pass_valid");
-		  } else {
-		    s_letter.classList.remove("pass_valid");
-		    s_letter.classList.add("pass_check");
-		  }
-
-  		// Validate capital letters
-  		var upperCaseLetters = /[A-Z]/g;
-		  if(checkPassword.value.match(upperCaseLetters)) {
-		    s_capital.classList.remove("pass_check");
-		    s_capital.classList.add("pass_valid");
-		  } else {
-		    s_capital.classList.remove("pass_valid");
-		    s_capital.classList.add("pass_check");
-		  }
-  		// Validate numbers
-  		var specialChar = /[!@#\$%\^&\*]/g;
-		  if(checkPassword.value.match(specialChar)) {
-		    s_character.classList.remove("pass_check");
-		    s_character.classList.add("pass_valid");
-		  } else {
-		    s_character.classList.remove("pass_valid");
-		    s_character.classList.add("pass_check");
-		  }
-
-  		// Validate length
-		  if(checkPassword.value.length >= 8) {
-		    s_length.classList.remove("pass_check");
-		    s_length.classList.add("pass_valid");
-		  } else {
-		    s_length.classList.remove("pass_valid");
-		    s_length.classList.add("pass_check");
-		  }
-	}
-
-    }); // end Ready
-
-    /**
      *  Function will unlock the submit button.
      */
     function disable_btn() {
@@ -940,7 +720,7 @@
 </main>
 
 <script type="text/javascript">
-	/**
+    /**
      *  When page loads, the following code will be run first.
      */
     $(document).ready(function () {
@@ -1075,11 +855,18 @@
 	    loadState($(this).find(':selected').val())
 	  });
 	  {% if associate.address_country %}loadState('{{associate.address_country}}');{% else %}loadState('CA');{% endif %}
+	  	var default_country = '{{associate.address_country}}';									       
+		if(default_country == 'Canada'){
+			loadState('CA');
+		}
     	});
 	let c_dropdown = $('#address_country');
 	c_dropdown.empty();
 	c_dropdown.append('<option selected="true" disabled>Choose Country</option>');
 	{% if associate.address_country %}c_dropdown.val('{{associate.address_country}}');{% else %}c_dropdown.prop('selectedIndex', 1);{% endif %}
+	if(default_country == 'Canada'){
+		c_dropdown.prop('selectedIndex', 1);
+	}
 	const state = "{% url 'workery_get_provinces_api_endpoint' %}?format=json";
         const country = "{% url 'workery_get_countries_api_endpoint' %}?format=json";
 	console.log(state);
@@ -1103,8 +890,9 @@
 		    }
 		  })
 		});
-		{% if associate.address_region %}p_dropdown.val('{{associate.address_region}}');{% endif %}
-		if(countryId == 'CA'){
+		{% if associate.address_region %}p_dropdown.val('{{associate.address_region}}');{% else %}p_dropdown.prop('selectedIndex', 1);{% endif %}
+		var default_state = '{{associate.address_region}}';
+		if(default_state == 'Ontario' || default_state == 'On'){
 			p_dropdown.prop('selectedIndex', 1);
 		}
     	}
