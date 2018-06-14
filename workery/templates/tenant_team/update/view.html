@@ -79,7 +79,7 @@
 	let c_dropdown = $('#address_country');
 	c_dropdown.empty();
 	c_dropdown.append('<option selected="true" disabled>Choose Country</option>');
-	{% if staff.address_country %}c_dropdown.val('{{staff.address_country}}');{% else %}c_dropdown.prop('selectedIndex', 1);{% endif %}
+	{% if staff.address_country %}c_dropdown.val('{{staff.address_country}}');{% else %}c_dropdown.val('CA');{% endif %}
 	const state = "{% url 'workery_get_provinces_api_endpoint' %}?format=json";
         const country = "{% url 'workery_get_countries_api_endpoint' %}?format=json";
 	console.log(state);
@@ -103,10 +103,8 @@
 		    }
 		  })
 		});
-		{% if staff.address_region %}p_dropdown.val('{{staff.address_region}}');{% endif %}
-		if(countryId == 'CA'){
-			p_dropdown.prop('selectedIndex', 1);
-		}
+		{% if staff.address_region %}p_dropdown.val('{{staff.address_region}}');{% else %}p_dropdown.prop('selectedIndex', 1);{% endif %}
+		
     	}
 
 	/**
