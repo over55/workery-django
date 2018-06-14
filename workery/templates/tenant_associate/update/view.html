@@ -865,7 +865,7 @@
 	c_dropdown.append('<option selected="true" disabled>Choose Country</option>');
 	{% if associate.address_country %}c_dropdown.val('{{associate.address_country}}');{% else %}c_dropdown.prop('selectedIndex', 1);{% endif %}
 	if(default_country == 'Canada'){
-		c_dropdown.prop('selectedIndex', 1);
+		c_dropdown.val('CA');
 	}
 	const state = "{% url 'workery_get_provinces_api_endpoint' %}?format=json";
         const country = "{% url 'workery_get_countries_api_endpoint' %}?format=json";
@@ -893,7 +893,7 @@
 		{% if associate.address_region %}p_dropdown.val('{{associate.address_region}}');{% else %}p_dropdown.prop('selectedIndex', 1);{% endif %}
 		var default_state = '{{associate.address_region}}';
 		if(default_state == 'Ontario' || default_state == 'On'){
-			p_dropdown.prop('selectedIndex', 1);
+			p_dropdown.val('ON');
 		}
     	}
 
