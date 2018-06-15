@@ -150,7 +150,7 @@ class WorkOrderCloseCreateSerializer(serializers.Serializer):
         # --- FINANCIAL DETAILS ---
         # -------------------------
         if job.closing_reason == 4:
-            job.state = WORK_ORDER_STATE.COMPLATED_AND_PAID
+            job.state = WORK_ORDER_STATE.COMPLETED_AND_PAID
         else:
             job.state = WORK_ORDER_STATE.CANCELLED
         job.invoice_date = invoice_date
@@ -235,7 +235,7 @@ class WorkOrderCloseCreateSerializer(serializers.Serializer):
             job.closing_reason = reason
             job.closing_reason_other = reason_other
             job.last_modified_by = self.context['user']
-            job.state = WORK_ORDER_STATE.COMPLATED_AND_PAID
+            job.state = WORK_ORDER_STATE.COMPLETED_AND_PAID
             job.completion_date = get_todays_date_plus_days(0)
             job.latest_pending_task = None
 

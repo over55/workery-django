@@ -32,7 +32,7 @@ class WORK_ORDER_STATE:
     ONGOING = 'ongoing'
     IN_PROGRESS = 'in_progress'
     COMPLETED_BUT_UNPAID = 'completed_and_unpaid'
-    COMPLATED_AND_PAID = 'completed_and_paid'
+    COMPLETED_AND_PAID = 'completed_and_paid'
     ARCHIVED = 'archived'
 
 
