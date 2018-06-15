@@ -50,6 +50,13 @@ class SharedFranchise(TenantMixin, AbstractSharedThing, AbstractSharedContactPoi
         default="CAN",
         blank=True,
     )
+    timezone_name = models.CharField(
+        _("Timezone Name"),
+        max_length=63,
+        help_text=_('The timezone for this tenant.'),
+        default="America/Toronto",
+        blank=True,
+    )
     is_archived = models.BooleanField(
         _("Is Archived"),
         help_text=_('Indicates whether this franchise was archived.'),
