@@ -181,20 +181,6 @@ class Command(BaseCommand):
             if is_active == '1':
                 is_active = True
 
-            # Finally title the words.
-            if given_name:
-                given_name = given_name.title()
-            if last_name:
-                last_name = last_name.title()
-            if address:
-                address = address.title()
-            if city:
-                city = city.title()
-            if province:
-                province = province.title()
-            if ldn_area:
-                ldn_area = ldn_area.title()
-
             # Format the `how_hear` and `how_hear_other`.
             how_hear_other = None
             if how_hear is not None and how_hear != "" and len(how_hear) > 0:
