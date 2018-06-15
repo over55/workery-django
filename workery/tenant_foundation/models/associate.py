@@ -176,7 +176,7 @@ class Associate(AbstractPerson):
     )
     drivers_license_class = models.CharField(
         _("Divers License Class"),
-        max_length=7,
+        max_length=31,
         help_text=_('The associates license class for driving.'),
         blank=True,
         null=True,

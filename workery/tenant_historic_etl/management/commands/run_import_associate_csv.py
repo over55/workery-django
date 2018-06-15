@@ -109,34 +109,32 @@ class Command(BaseCommand):
             last_name = row_dict[1]              # LNAME
             given_name = row_dict[2]             # GNAMES
             business = row_dict[3]               # BUSINESS
-            middle_name = row_dict[4]            # MNAME
-            is_active = row_dict[5]              # ACTIVE?
-            birthdate = row_dict[6]              # BIRTHDATE
-            address = row_dict[7]                # ADDRESS
-            join_date = row_dict[8]              # DATE
-            phone = row_dict[9]                  # PHONE
-            fax = row_dict[10]                   # FAX
-            cell = row_dict[11]                  # CELL
-            email = row_dict[12]                 # E-MAIL
-            city = row_dict[13]                  # CITY
-            province = row_dict[14]              # PROV
-            postal_code = row_dict[15]           # POSTCODE
-            ldn_area = row_dict[16]              # LONDAREA
-            hourly_salary_desired = row_dict[17] # HRLYSALDESIR
-            limit_special = row_dict[18]         # LIMITSPECIAL
-            dues_date = row_dict[19]               # DUES PD
-            commercial_insurance_expiry_date = row_dict[20]               # INS DUE
-            police_check = row_dict[21]          # POLCHK
-            drivers_license_class = row_dict[22] # DRLICCLASS
-            comments_text = row_dict[23]         # COMMENTS
-            has_car = row_dict[24]               # Car?
-            has_van = row_dict[25]               # Van?
-            has_truck = row_dict[26]             # Truck?
-            is_full_time = row_dict[27]          # Full Time
-            is_part_time = row_dict[28]          # Part Time
-            is_contract_time = row_dict[29]      # Contract
-            is_small_job = row_dict[30]          # Small Jobs
-            how_hear = row_dict[31]              # How Hear
+            is_active = row_dict[4]              # ACTIVE?
+            birthdate = row_dict[5]              # BIRTHDATE
+            address = row_dict[6]                # ADDRESS
+            join_date = row_dict[7]              # DATE
+            phone = row_dict[8]                  # PHONE
+            cell = row_dict[9]                   # CELL
+            email = row_dict[10]                 # E-MAIL
+            city = row_dict[11]                  # CITY
+            province = row_dict[12]              # PROV
+            postal_code = row_dict[13]           # POSTCODE
+            ldn_area = row_dict[14]              # LONDAREA
+            hourly_salary_desired = row_dict[15] # HRLYSALDESIR
+            limit_special = row_dict[16]         # LIMITSPECIAL
+            dues_date = row_dict[17]               # DUES PD
+            commercial_insurance_expiry_date = row_dict[18]               # INS DUE
+            police_check = row_dict[19]          # POLCHK
+            drivers_license_class = row_dict[20] # DRLICCLASS
+            comments_text = row_dict[21]         # COMMENTS
+            has_car = row_dict[22]               # Car?
+            has_van = row_dict[23]               # Van?
+            has_truck = row_dict[24]             # Truck?
+            is_full_time = row_dict[25]          # Full Time
+            is_part_time = row_dict[26]          # Part Time
+            is_contract_time = row_dict[27]      # Contract
+            is_small_job = row_dict[28]          # Small Jobs
+            how_hear = row_dict[29]              # How Hear
 
             # Convert the datetime.
             local_birthdate = get_dt_from_toronto_timezone_ms_access_dt_string(birthdate)
@@ -157,11 +155,6 @@ class Command(BaseCommand):
             province = 'ON' if province is '' else province
             province = 'ON' if province is None else province
             city = "London" if city is '' else city
-            fax = fax.replace('(', '')
-            fax = fax.replace(')', '')
-            fax = fax.replace('-', '')
-            fax = fax.replace(' ', '')
-            fax = fax.replace('.', '')
 
             phone = phone.replace('(', '')
             phone = phone.replace(')', '')
@@ -217,8 +210,6 @@ class Command(BaseCommand):
                 phone = phonenumbers.parse(str(phone), "CA")
             if cell:
                 cell = phonenumbers.parse(str(cell), "CA")
-            if fax:
-                fax = phonenumbers.parse(str(fax), "CA")
 
             # Update or create.
             associate, created_associate = Associate.objects.update_or_create(
@@ -228,7 +219,6 @@ class Command(BaseCommand):
                     'last_name':last_name,
                     'given_name':given_name,
                     'business':business,
-                    'middle_name':middle_name,
                     # 'is_active':bool_or_none(is_active),
                     'birthdate':local_birthdate,
                     'address_country':'Canada',
@@ -237,7 +227,6 @@ class Command(BaseCommand):
                     'telephone_type_of': TELEPHONE_CONTACT_POINT_TYPE_OF_ID,
                     'other_telephone': cell,
                     'other_telephone_type_of': MOBILE_CONTACT_POINT_TYPE_OF_ID,
-                    'fax_number':fax,
                     'email':email,
                     'address_locality':city,
                     'address_region':province,
