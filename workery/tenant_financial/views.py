@@ -9,14 +9,15 @@ from shared_foundation.mixins import (
     WorkeryListView,
     WorkeryDetailView
 )
-from tenant_foundation.models import WorkOrder
+from tenant_foundation.models import WORK_ORDER_STATE, WorkOrder
 
 
 class UnpaidJobOrderListView(LoginRequiredMixin, WorkeryListView):
     context_object_name = 'job_list'
     queryset = WorkOrder.objects.filter(
-        invoice_service_fee_payment_date=None,
-        is_archived=False
+        Q(invoice_service_fee_payment_date=None) &
+        ~Q(state=WORK_ORDER_STATE.ARCHIVED) &
+        ~Q(state=WORK_ORDER_STATE.CANCELLED)
     ).order_by('-id')
     template_name = 'tenant_financial/list/unpaid_view.html'
     paginate_by = 100
@@ -27,14 +28,21 @@ class UnpaidJobOrderListView(LoginRequiredMixin, WorkeryListView):
 
         # Get count of total tasks.
         modified_context['unpaid_count'] = WorkOrder.objects.filter(
-            invoice_service_fee_payment_date=None,
-            is_archived=False
+            Q(invoice_service_fee_payment_date=None) &
+            ~Q(state=WORK_ORDER_STATE.ARCHIVED) &
+            ~Q(state=WORK_ORDER_STATE.CANCELLED)
         ).count()
+
         modified_context['paid_count'] = WorkOrder.objects.filter(
             ~Q(invoice_service_fee_payment_date=None) &
-            Q(is_archived=False)
+            ~Q(state=WORK_ORDER_STATE.ARCHIVED) &
+            ~Q(state=WORK_ORDER_STATE.CANCELLED)
         ).count()
-        modified_context['all_count'] = WorkOrder.objects.filter(is_archived=False).count()
+
+        modified_context['all_count'] = WorkOrder.objects.filter(
+            ~Q(state=WORK_ORDER_STATE.ARCHIVED) &
+            ~Q(state=WORK_ORDER_STATE.CANCELLED)
+        ).count()
 
         # Return our modified context.
         return modified_context
@@ -44,7 +52,8 @@ class PaidJobOrderListView(LoginRequiredMixin, WorkeryListView):
     context_object_name = 'job_list'
     queryset = WorkOrder.objects.filter(
         ~Q(invoice_service_fee_payment_date=None) &
-        Q(is_archived=False)
+        ~Q(state=WORK_ORDER_STATE.ARCHIVED) &
+        ~Q(state=WORK_ORDER_STATE.CANCELLED)
     ).order_by('-invoice_service_fee_payment_date')
     template_name = 'tenant_financial/list/paid_view.html'
     paginate_by = 100
@@ -55,14 +64,19 @@ class PaidJobOrderListView(LoginRequiredMixin, WorkeryListView):
 
         # Get count of total tasks.
         modified_context['unpaid_count'] = WorkOrder.objects.filter(
-            invoice_service_fee_payment_date=None,
-            is_archived=False
+            Q(invoice_service_fee_payment_date=None) &
+            ~Q(state=WORK_ORDER_STATE.ARCHIVED) &
+            ~Q(state=WORK_ORDER_STATE.CANCELLED)
         ).count()
         modified_context['paid_count'] = WorkOrder.objects.filter(
             ~Q(invoice_service_fee_payment_date=None) &
-            Q(is_archived=False)
+            ~Q(state=WORK_ORDER_STATE.ARCHIVED) &
+            ~Q(state=WORK_ORDER_STATE.CANCELLED)
         ).count()
-        modified_context['all_count'] = WorkOrder.objects.filter(is_archived=False).count()
+        modified_context['all_count'] = WorkOrder.objects.filter(
+            ~Q(state=WORK_ORDER_STATE.ARCHIVED) &
+            ~Q(state=WORK_ORDER_STATE.CANCELLED)
+        ).count()
 
         # Return our modified context.
         return modified_context
@@ -70,7 +84,10 @@ class PaidJobOrderListView(LoginRequiredMixin, WorkeryListView):
 
 class AllJobOrderListView(LoginRequiredMixin, WorkeryListView):
     context_object_name = 'job_list'
-    queryset = WorkOrder.objects.filter(is_archived=False).order_by('-id')
+    queryset = WorkOrder.objects.filter(
+        ~Q(state=WORK_ORDER_STATE.ARCHIVED) &
+        ~Q(state=WORK_ORDER_STATE.CANCELLED)
+    ).order_by('-id')
     template_name = 'tenant_financial/list/all_view.html'
     paginate_by = 100
     menu_id = "financials"
@@ -80,14 +97,19 @@ class AllJobOrderListView(LoginRequiredMixin, WorkeryListView):
 
         # Get count of total tasks.
         modified_context['unpaid_count'] = WorkOrder.objects.filter(
-            invoice_service_fee_payment_date=None,
-            is_archived=False
+            Q(invoice_service_fee_payment_date=None) &
+            ~Q(state=WORK_ORDER_STATE.ARCHIVED) &
+            ~Q(state=WORK_ORDER_STATE.CANCELLED)
         ).count()
         modified_context['paid_count'] = WorkOrder.objects.filter(
             ~Q(invoice_service_fee_payment_date=None) &
-            Q(is_archived=False)
+            ~Q(state=WORK_ORDER_STATE.ARCHIVED) &
+            ~Q(state=WORK_ORDER_STATE.CANCELLED)
         ).count()
-        modified_context['all_count'] = WorkOrder.objects.filter(is_archived=False).count()
+        modified_context['all_count'] = WorkOrder.objects.filter(
+            ~Q(state=WORK_ORDER_STATE.ARCHIVED) &
+            ~Q(state=WORK_ORDER_STATE.CANCELLED)
+        ).count()
 
         # Return our modified context.
         return modified_context

@@ -16,6 +16,7 @@ from tenant_foundation.models import (
     Associate,
     AwayLog,
     Customer,
+    WORK_ORDER_STATE,
     WorkOrder,
     TaskItem,
     SkillSet
@@ -46,10 +47,10 @@ def report_01_streaming_csv_view(request):
     to_dt = parser.parse(to_dt)
 
     jobs = WorkOrder.objects.filter(
-        completion_date__isnull=False,
-        invoice_service_fee_amount=0,
-        is_cancelled=False,
-        invoice_service_fee_payment_date__range=(from_dt,to_dt),
+        Q(completion_date__isnull=False) &
+        Q(invoice_service_fee_amount=0) &
+        ~Q(status=WORK_ORDER_STATE.CANCELLED) &
+        Q(invoice_service_fee_payment_date__range=(from_dt,to_dt))
     )
 
     # Generate the CSV header row.
@@ -136,8 +137,8 @@ def report_06_streaming_csv_view(request):
     to_dt = parser.parse(to_dt)
 
     cancelled_jobs = WorkOrder.objects.filter(
-        completion_date__range=(from_dt,to_dt),
-        is_cancelled=True
+        Q(completion_date__range=(from_dt,to_dt)) &
+        Q(state=WORK_ORDER_STATE.CANCELLED)
     ).order_by('-completion_date')
 
     # Generate the CSV header row.

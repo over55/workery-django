@@ -37,6 +37,7 @@ from tenant_foundation.models import (
     Comment,
     Customer,
     Organization,
+    WORK_ORDER_STATE,
     WorkOrder,
     WorkOrderComment,
     WorkOrderServiceFee,
@@ -127,18 +128,27 @@ class Command(BaseCommand):
             category = row_dict[5]
             assign_date = row_dict[6]
             is_ongoing = int_or_none(row_dict[7])
-            is_cancelled = int_or_none(row_dict[8])
+            is_cancelled = int_or_none(row_dict[8]) #skip
             completion_date = row_dict[9]
             hours = row_dict[10]
             service_fee = row_dict[11]
             payment_date = row_dict[12] # do not import this field!
-            comment_text = row_dict[13]
-            follow_up_comment_text = row_dict[14]
-            time_and_budget = row_dict[15]
-            time_and_budget = row_dict[16]
-            punctual = row_dict[17]
-            professional = row_dict[18]
-            refer = row_dict[19]
+            status = row_dict[13]
+            comment_text = row_dict[14]
+            follow_up_comment_text = row_dict[15]
+            workmanship = row_dict[16]
+            time_and_budget = row_dict[17]
+            punctual = row_dict[18]
+            professional = row_dict[19]
+            refer = row_dict[20]
+
+            # Status
+            if status == 'assigned':
+                status = WORK_ORDER_STATE.IN_PROGRESS
+            if status == 'completed_and_paid':
+                status = WORK_ORDER_STATE.COMPLETED_AND_PAID
+            if status == 'completed_and_unpaid':
+                status = WORK_ORDER_STATE.COMPLETED_BUT_UNPAID
 
             # Convert the datetime.
             # local_birthdate = self.get_date_from_formatting1(birthdate)
@@ -148,24 +158,6 @@ class Command(BaseCommand):
 
             if local_assign_date is None or local_assign_date == "":
                 local_assign_date = milestone_date
-
-            # Minor fix.
-            if completion_date is None or completion_date == "":
-                if payment_date:
-                    local_completion_date = local_payment_date
-                else:
-                    local_completion_date = milestone_date
-                    local_payment_date = milestone_date
-
-            # Special rule - Anything older then Dec 31 2016 is automatically
-            #                closed and paid for.
-            if local_completion_date < milestone_date or local_assign_date < milestone_date:
-                local_payment_date = local_completion_date
-
-            # Special rule - if no local payment date set then we automatically
-            #                set to the Dec 31 2016.
-            if local_payment_date is None or local_payment_date == "":
-                local_payment_date = milestone_date
 
             # Convert to money.
             local_service_fee = Money(0.00, WORKERY_APP_DEFAULT_MONEY_CURRENCY)
@@ -187,12 +179,11 @@ class Command(BaseCommand):
 
             # Boolean
             is_ongoing = True if is_ongoing == 1 else False
-            is_cancelled = True if is_cancelled == 1 else False
 
             # Generate our closing reason.
             closing_reason = 0
             closing_reason_other = None
-            if is_cancelled:
+            if status == WORK_ORDER_STATE.CANCELLED:
                 closing_reason = 1
                 if follow_up_comment_text:
                     closing_reason_other = follow_up_comment_text
@@ -217,7 +208,6 @@ class Command(BaseCommand):
                         'associate': associate,
                         'assignment_date': local_assign_date,
                         'is_ongoing': is_ongoing,
-                        'is_cancelled': is_cancelled,
                         'closing_reason': closing_reason,
                         'closing_reason_other': closing_reason_other,
                         'completion_date': local_completion_date,
@@ -228,7 +218,7 @@ class Command(BaseCommand):
                         'invoice_service_fee': service_fee_obj,
                         'invoice_service_fee_amount': local_service_fee,
                         'type_of': RESIDENTIAL_JOB_TYPE_OF_ID, # WE PUT THIS BECAUSE WE ARE NOT IMPORTING COMMERCIAL!
-                        'is_archived': True
+                        'state': status
                     }
                 )
 

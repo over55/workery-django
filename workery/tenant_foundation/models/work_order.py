@@ -4,6 +4,7 @@ import phonenumbers
 import pytz
 from djmoney.money import Money
 from datetime import date, datetime, timedelta
+from django_fsm import FSMField, transition
 from django.conf import settings
 from django.db import models
 from django.db import transaction
@@ -23,6 +24,16 @@ from shared_foundation.constants import WORKERY_APP_DEFAULT_MONEY_CURRENCY
 from shared_foundation.models import SharedUser
 from tenant_foundation.constants import UNASSIGNED_JOB_TYPE_OF_ID, JOB_TYPE_OF_CHOICES
 from tenant_foundation.utils import *
+
+
+class WORK_ORDER_STATE:
+    PENDING = 'pending'
+    CANCELLED = 'cancelled'
+    ONGOING = 'ongoing'
+    IN_PROGRESS = 'in_progress'
+    COMPLETED_BUT_UNPAID = 'completed_and_unpaid'
+    COMPLATED_AND_PAID = 'completed_and_paid'
+    ARCHIVED = 'archived'
 
 
 class WorkOrderManager(models.Manager):
@@ -129,12 +140,6 @@ class WorkOrder(models.Model):
         default=False,
         blank=True
     )
-    is_cancelled = models.BooleanField(
-        _("Is Cancelled"),
-        help_text=_('Track whether this order was cancelled.'),
-        default=False,
-        blank=True
-    )
     start_date = models.DateField(
         _('Start Date'),
         help_text=_('The date that this order will begin.'),
@@ -147,10 +152,14 @@ class WorkOrder(models.Model):
         blank=True,
         null=True
     )
-    hours = models.PositiveSmallIntegerField(
+    hours = models.DecimalField(
         _("Hours"),
         help_text=_('The total amount of hours worked on for this order by the associate.'),
-        default=0
+        default=0,
+        max_digits=7,
+        decimal_places=1,
+        blank=True,
+        null=True
     )
     skill_sets = models.ManyToManyField(
         "SkillSet",
@@ -217,12 +226,17 @@ class WorkOrder(models.Model):
         through='ActivitySheetItem',
         related_name="%(app_label)s_%(class)s_activity_sheet_items_related"
     )
-    is_archived = models.BooleanField(
-        _("Is Archived"),
-        help_text=_('Indicates whether order was archived.'),
-        default=False,
+
+    #
+    # State
+    #
+
+    state = FSMField(
+        _('State'),
+        help_text=_('The state of this job order.'),
+        default=WORK_ORDER_STATE.PENDING,
         blank=True,
-        db_index=True
+        db_index=True,
     )
 
     #

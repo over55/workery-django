@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models import Q, Prefetch
 from django.views.generic.edit import CreateView, FormView, UpdateView
 from django.utils.decorators import method_decorator
 from django.utils.translation import ugettext_lazy as _
@@ -9,16 +10,15 @@ from shared_foundation.mixins import (
     WorkeryListView
 )
 from tenant_api.filters.order import WorkOrderFilter
-from tenant_foundation.models import WorkOrder
+from tenant_foundation.models import WorkOrder, WORK_ORDER_STATE
 
 
 class JobSummaryView(LoginRequiredMixin, WorkeryListView):
     context_object_name = 'job_list'
     queryset = WorkOrder.objects.filter(
-        is_cancelled=False,
-        completion_date__isnull=True,
-        invoice_service_fee_payment_date__isnull=True,
-        is_archived=False
+        Q(state=WORK_ORDER_STATE.ARCHIVED) &
+        Q(completion_date__isnull=True) &
+        Q(invoice_service_fee_payment_date__isnull=True)
     ).order_by('-id').prefetch_related(
         'customer',
         'associate'
@@ -30,7 +30,9 @@ class JobSummaryView(LoginRequiredMixin, WorkeryListView):
 
 class JobListView(LoginRequiredMixin, WorkeryListView):
     context_object_name = 'job_list'
-    queryset = WorkOrder.objects.filter(is_archived=False).order_by('-id')
+    queryset = WorkOrder.objects.exclude(
+        state=WORK_ORDER_STATE.ARCHIVED
+    ).order_by('-id')
     template_name = 'tenant_order/list/view.html'
     paginate_by = 100
     menu_id = 'jobs'
@@ -41,7 +43,9 @@ class JobListView(LoginRequiredMixin, WorkeryListView):
         # The following code will use the 'django-filter'
         filter = WorkOrderFilter(self.request.GET, queryset=queryset)
         queryset = filter.qs
-        queryset = queryset.filter(is_archived=False)
+        queryset = queryset.exclude(
+            state=WORK_ORDER_STATE.ARCHIVED
+        )
         queryset = queryset.prefetch_related('customer', 'associate')
         return queryset
 
@@ -49,7 +53,7 @@ class JobListView(LoginRequiredMixin, WorkeryListView):
 class ArchivedJobListView(LoginRequiredMixin, WorkeryListView):
     context_object_name = 'job_list'
     queryset = WorkOrder.objects.filter(
-        is_archived=True
+        state=WORK_ORDER_STATE.ARCHIVED
     ).order_by('-id').prefetch_related(
         'customer',
         'associate'

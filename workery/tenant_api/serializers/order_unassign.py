@@ -30,6 +30,7 @@ from tenant_foundation.models import (
     ActivitySheetItem,
     Associate,
     WorkOrder,
+    WORK_ORDER_STATE,
     WorkOrderComment,
     Organization,
     TaskItem
@@ -132,6 +133,7 @@ class WorkOrderUnassignCreateSerializer(serializers.Serializer):
 
         # Update our job.
         job.associate = None
+        job.state = WORK_ORDER_STATE.PENDING
         job.save()
 
         # For debugging purposes only.

@@ -29,6 +29,7 @@ from tenant_foundation.models import (
     Comment,
     ActivitySheetItem,
     Associate,
+    WORK_ORDER_STATE,
     WorkOrder,
     WorkOrderComment,
     Organization,
@@ -142,6 +143,7 @@ class WorkOrderCompleteCreateSerializer(serializers.Serializer):
 
             # Attach our next job.
             job.latest_pending_task = next_task_item
+            job.state = WORK_ORDER_STATE.COMPLETED_BUT_UNPAID
             job.save()
 
         else:
@@ -167,6 +169,7 @@ class WorkOrderCompleteCreateSerializer(serializers.Serializer):
 
             # Attach our next job.
             job.latest_pending_task = next_task_item
+            job.state = WORK_ORDER_STATE.IN_PROGRESS
             job.save()
 
         # # STEP 6 - Assign our new variables and return the validated data.

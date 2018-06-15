@@ -30,6 +30,7 @@ from tenant_foundation.models import (
     ActivitySheetItem,
     Associate,
     WorkOrder,
+    WORK_ORDER_STATE,
     WorkOrderComment,
     Organization,
     TaskItem
@@ -153,6 +154,7 @@ class ActivitySheetItemCreateSerializer(serializers.Serializer):
 
             # Attached our new TaskItem to the Job.
             job.latest_pending_task = next_task_item
+            job.state = WORK_ORDER_STATE.IN_PROGRESS
             job.save()
 
         # STEP 5 - Assign our new variables and return the validated data.

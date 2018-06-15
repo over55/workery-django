@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models import Q, Prefetch
 from django.views.generic.edit import CreateView, FormView, UpdateView
 from django.views.generic import DetailView, ListView, TemplateView
 from django.utils.decorators import method_decorator
@@ -15,6 +16,7 @@ from tenant_foundation.models import (
     Associate,
     AwayLog,
     Customer,
+    WORK_ORDER_STATE,
     WorkOrder,
     TaskItem
 )
@@ -37,10 +39,10 @@ class DashboardView(LoginRequiredMixin, WorkeryTemplateView):
         modified_context['customers_count'] = Customer.objects.all().count()
 
         modified_context['jobs_count'] = WorkOrder.objects.filter(
-            is_cancelled=False,
-            completion_date__isnull=True,
-            invoice_service_fee_payment_date__isnull=True,
-            is_archived=False
+            Q(completion_date__isnull=True) &
+            Q(invoice_service_fee_payment_date__isnull=True) &
+            ~Q(state=WORK_ORDER_STATE.ARCHIVED) &
+            ~Q(state=WORK_ORDER_STATE.CANCELLED)
         ).count()
 
         modified_context['tasks_count'] = TaskItem.objects.filter(

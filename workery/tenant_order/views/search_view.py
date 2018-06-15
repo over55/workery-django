@@ -10,7 +10,7 @@ from shared_foundation.mixins import (
     WorkeryDetailView
 )
 from tenant_api.filters.order import WorkOrderFilter
-from tenant_foundation.models import WorkOrder
+from tenant_foundation.models import WorkOrder, WORK_ORDER_STATE
 
 
 class JobSearchView(LoginRequiredMixin, WorkeryTemplateView):
@@ -39,7 +39,7 @@ class JobSearchResultView(LoginRequiredMixin, WorkeryListView):
             filter = WorkOrderFilter(self.request.GET, queryset=queryset)
             queryset = filter.qs
 
-        queryset = queryset.filter(is_archived=False)
+        queryset = queryset.exclude(state=WORK_ORDER_STATE.ARCHIVED)
 
         # Added join
         queryset = queryset.prefetch_related(

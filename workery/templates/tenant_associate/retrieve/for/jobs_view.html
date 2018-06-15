@@ -153,14 +153,22 @@
                             <td>{% if job.assignment_date %}{{ job.assignment_date }}{% else %}-{% endif %}</td>
                             <td>{% if job.completion_date %}{{ job.completion_date }}{% else %}-{% endif %}</td>
                             <td>
-                                {% if job.is_cancelled %}
+                                {% if job.state == WORK_ORDER_STATE.PENDING %}
+                                    {% trans 'Pending' %}
+                                {% elif job.state == WORK_ORDER_STATE.CANCELLED %}
                                     {% trans 'Cancelled' %}
+                                {% elif job.state == WORK_ORDER_STATE.ONGOING %}
+                                    {% trans 'Ongoing' %}
+                                {% elif job.state == WORK_ORDER_STATE.IN_PROGRESS %}
+                                    {% trans 'In Progress' %}
+                                {% elif job.state == WORK_ORDER_STATE.COMPLETED_BUT_UNPAID %}
+                                    {% trans 'Completed but unpaid' %}
+                                {% elif job.state == WORK_ORDER_STATE.COMPLATED_AND_PAID %}
+                                    {% trans 'Completed and paid' %}
+                                {% elif job.state == WORK_ORDER_STATE.ARCHIVED %}
+                                    {% trans 'Archived' %}
                                 {% else %}
-                                    {% if job.completion_date or job.invoice_service_fee_payment_date %}
-                                        {% trans 'Completed' %}
-                                    {% else %}
-                                        {% trans 'Pending' %}
-                                    {% endif %}
+                                    -
                                 {% endif %}
                             </td>
                             <td>

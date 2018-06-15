@@ -55,7 +55,7 @@
                     <th>{% trans 'Assigned Date' %}</th>
                     <th>{% trans 'Ongoing' %}</th>
                     <th>{% trans 'Completion Date' %}</th>
-                    <th>{% trans 'Cancelled' %}</th>
+                    <th>{% trans 'Status' %}</th>
                     <th></th>
                 </tr>
             </thead>
@@ -77,7 +77,25 @@
                     <td>{% if job.assignment_date %}{{ job.assignment_date }}{% else %}-{% endif %}</td>
                     <td>{{ job.is_ongoing }}</td>
                     <td>{% if job.completion_date %}{{ job.completion_date }}{% else %}-{% endif %}</td>
-                    <td>{{ job.is_cancelled }}</td>
+                    <td>
+                        {% if job.state == WORK_ORDER_STATE.PENDING %}
+                            {% trans 'Pending' %}
+                        {% elif job.state == WORK_ORDER_STATE.CANCELLED %}
+                            {% trans 'Cancelled' %}
+                        {% elif job.state == WORK_ORDER_STATE.ONGOING %}
+                            {% trans 'Ongoing' %}
+                        {% elif job.state == WORK_ORDER_STATE.IN_PROGRESS %}
+                            {% trans 'In Progress' %}
+                        {% elif job.state == WORK_ORDER_STATE.COMPLETED_BUT_UNPAID %}
+                            {% trans 'Completed but unpaid' %}
+                        {% elif job.state == WORK_ORDER_STATE.COMPLATED_AND_PAID %}
+                            {% trans 'Completed and paid' %}
+                        {% elif job.state == WORK_ORDER_STATE.ARCHIVED %}
+                            {% trans 'Archived' %}
+                        {% else %}
+                            -
+                        {% endif %}
+                    </td>
                     <td>
                         <a href="{% url 'workery_tenant_job_retrieve' 'search' job.id %}?page={{ page_obj.number }}{{ filter_parameters }}">{% trans 'View' %}</a>
                     </td>

@@ -30,6 +30,7 @@ from tenant_foundation.models import (
     Comment,
     ActivitySheetItem,
     Associate,
+    WORK_ORDER_STATE,
     WorkOrder,
     WorkOrderComment,
     Organization,
@@ -148,6 +149,10 @@ class WorkOrderCloseCreateSerializer(serializers.Serializer):
         # -------------------------
         # --- FINANCIAL DETAILS ---
         # -------------------------
+        if job.closing_reason == 4:
+            job.state = WORK_ORDER_STATE.COMPLATED_AND_PAID
+        else:
+            job.state = WORK_ORDER_STATE.CANCELLED
         job.invoice_date = invoice_date
         job.invoice_id = invoice_id
         job.invoice_quote_amount = Money(invoice_quote_amount, WORKERY_APP_DEFAULT_MONEY_CURRENCY)
@@ -211,7 +216,7 @@ class WorkOrderCloseCreateSerializer(serializers.Serializer):
             job.closing_reason = reason
             job.closing_reason_other = reason_other
             job.last_modified_by = self.context['user']
-            job.is_cancelled = True
+            job.state = WORK_ORDER_STATE.CANCELLED
             job.completion_date = get_todays_date_plus_days(0)
             job.latest_pending_task = None
             job.save()
@@ -230,7 +235,7 @@ class WorkOrderCloseCreateSerializer(serializers.Serializer):
             job.closing_reason = reason
             job.closing_reason_other = reason_other
             job.last_modified_by = self.context['user']
-            job.is_cancelled = False
+            job.state = WORK_ORDER_STATE.COMPLATED_AND_PAID
             job.completion_date = get_todays_date_plus_days(0)
             job.latest_pending_task = None
 
@@ -259,14 +264,16 @@ class WorkOrderCloseCreateSerializer(serializers.Serializer):
             # STEP 4 - Update the associate score by re-computing the average
             #          score and saving it with the profile.
             jobs_count = WorkOrder.objects.filter(
-                is_cancelled = False,
-                associate = job.associate,
-                closing_reason = 4,
+                Q(associate = job.associate) &
+                Q(closing_reason = 4) &
+                ~Q(state=WORK_ORDER_STATE.CANCELLED) &
+                ~Q(state=WORK_ORDER_STATE.ARCHIVED)
             ).count()
             summation_results = WorkOrder.objects.filter(
-                is_cancelled = False,
-                associate = job.associate,
-                closing_reason = 4,
+                Q(associate = job.associate) &
+                Q(closing_reason = 4) &
+                ~Q(state=WORK_ORDER_STATE.CANCELLED) &
+                ~Q(state=WORK_ORDER_STATE.ARCHIVED)                
             ).aggregate(Sum('score'))
 
             score_sum = summation_results['score__sum']
@@ -302,6 +309,7 @@ class WorkOrderCloseCreateSerializer(serializers.Serializer):
 
             # Attach our next job.
             job.latest_pending_task = next_task_item
+            job.state = WORK_ORDER_STATE.ONGOING
             job.save()
 
         #--------------------#

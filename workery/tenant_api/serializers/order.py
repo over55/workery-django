@@ -73,7 +73,6 @@ class WorkOrderListCreateSerializer(serializers.ModelSerializer):
             'completion_date',
             'customer',
             'hours',
-            'is_cancelled',
             'is_ongoing',
             'is_home_support_service',
             # 'created_by',
@@ -105,7 +104,6 @@ class WorkOrderListCreateSerializer(serializers.ModelSerializer):
         completion_date = validated_data.get('completion_date', None)
         customer = validated_data['customer']
         hours = validated_data.get('hours', 0)
-        is_cancelled = validated_data.get('is_cancelled', False)
         is_ongoing = validated_data.get('is_ongoing', False)
         is_home_support_service = validated_data.get('is_home_support_service', False)
         created_by = self.context['created_by']
@@ -121,7 +119,6 @@ class WorkOrderListCreateSerializer(serializers.ModelSerializer):
             assignment_date=assignment_date,
             is_ongoing=is_ongoing,
             is_home_support_service=is_home_support_service,
-            is_cancelled=is_cancelled,
             completion_date=completion_date,
             hours=hours,
             created_by=created_by,
@@ -243,7 +240,6 @@ class WorkOrderRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
             'completion_date',
             'customer',
             'hours',
-            'is_cancelled',
             'is_ongoing',
             'is_home_support_service',
             # 'created_by',
@@ -287,7 +283,6 @@ class WorkOrderRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         instance.completion_date = validated_data.get('completion_date', instance.completion_date)
         instance.customer = validated_data.get('customer', instance.customer)
         instance.hours = validated_data.get('hours', instance.hours)
-        instance.is_cancelled = validated_data.get('is_cancelled', instance.is_cancelled)
         instance.is_ongoing = validated_data.get('is_ongoing', instance.is_ongoing)
         instance.is_home_support_service = validated_data.get('is_home_support_service', instance.is_home_support_service)
         instance.last_modified_by = self.context['last_modified_by']

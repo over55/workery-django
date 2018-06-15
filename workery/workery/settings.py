@@ -94,6 +94,7 @@ SHARED_APPS = (
     'raven.contrib.django.raven_compat',
     'storages',
     'sorl.thumbnail',
+    'django_fsm',
     # . . .
 
     # Shared Apps
