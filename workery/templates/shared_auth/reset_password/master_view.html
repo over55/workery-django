@@ -48,7 +48,6 @@
 					// Errors box code
 					$('#all_error_result').append("<div class='form-error'><b>"+fdname+":</b> "+val+" </div>");
 					$('#all_error_result').addClass('error-block');
-
 				    }
 				}
 				// alert("Wrong login credentials.");
@@ -90,7 +89,8 @@
                 placeholder="{% trans 'Password' %}"
                       class="form-control form-control-lg"
                        type="password" autofocus
-             autocapitalize="off" />
+             autocapitalize="off" 
+			 required />
                </div>
             </div>
             <div class="form-group mb-2">
@@ -106,7 +106,8 @@
                       class="form-control form-control-lg"
                        type="password"
                       value=""
-             autocapitalize="off" />
+             autocapitalize="off"
+			 required />
                </div>
             </div>
             <!-- Error Output -->
