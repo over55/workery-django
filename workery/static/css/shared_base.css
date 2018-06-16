@@ -591,7 +591,8 @@ table.custom-cell-w tr th{width:35% !important;}
 .notif-icons .badge-2{top: 0; right: -5px;}
 .notif-icons-mobile {
 	position: absolute;
-	right: 137px;
+	right: 0;
+	width: 100%;
 }
 .notif-icons-mobile a{
 	text-decoration: none !important;
