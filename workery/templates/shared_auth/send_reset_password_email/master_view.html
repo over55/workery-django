@@ -25,8 +25,10 @@
                 }
             },
             function(xhr, status, error) {
-                alert("Wrong email or username.");
-                // Convert the error json into string.
+                // Errors box code
+		        $('#all_error_result').append("<div class='form-error'> Wrong email or username.</div>");
+		        $('#all_error_result').addClass('error-block');
+			    // Convert the error json into string.
                 // var string = JSON.stringify( error );
                 // console.log(string);
             }
@@ -67,6 +69,10 @@
                </div>
                {% endcomment %}
             </div>
+            <!-- Error Output -->
+	        <div id="all_error_result" name="all_error_result" class="alert alert-error fade show my-2" role="alert">
+	        </div>
+            <!-- Error Output end -->
             <div class="form-group m-0 text-center">
                 <input type="button" value="Reset Password" class="btn btn-lg btn-info btn-fxw px-5" onclick="ajax_send_reset_password_email();">
             </div>
