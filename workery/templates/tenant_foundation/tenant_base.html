@@ -69,8 +69,7 @@
             <!----------------------------------------------------------------->
             <nav id="sidebar">
 		<p class="text-center text-light mt-3 mb-2 d-none d-sm-block">{% trans 'Menu' %}</p>
-                <p class="d-block d-sm-none text-right text-light mt-3 mb-2 mr-4">
-		   <div class="notif-icons-mobile">
+                   <div class="d-block d-sm-none notif-icons-mobile">
 			<!-- Notification UI icons for mobile -->
 			<a href="{% url 'workery_tenant_task_list' %}" class="text-white px-2" alt="Notifications">
 				<span class="badge badge-info badge-pill badge-1">{% get_pending_tasks_count %}</span>&nbsp;<i class="far fa-check-square"></i>
@@ -81,10 +80,9 @@
 			</a>
         		{% endcomment %}
 			<!-- end Notification UI icons mobile -->	
-			{% trans 'Menu' %}
+			<p class="text-right text-light mt-3 mb-2 mr-4">{% trans 'Menu' %}</p>
 		    </div>
-		</p>
-                <hr class="nav-divider">
+		<hr class="nav-divider">
                 <ul class="nav flex-column">
                     <li class="nav-item">
                         <a class="nav-link {% if menu_id == 'dashboard' %}active{% endif %}" href="{% url 'workery_tenant_dashboard_master' %}">
