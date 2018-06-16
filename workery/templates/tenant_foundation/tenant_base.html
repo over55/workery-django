@@ -69,18 +69,18 @@
             <!----------------------------------------------------------------->
             <nav id="sidebar">
 		<p class="text-center text-light mt-3 mb-2 d-none d-sm-block">{% trans 'Menu' %}</p>
-                   <div class="d-block d-sm-none notif-icons-mobile">
+                   <div class="d-block d-sm-none notif-icons-mobile pt-3">
 			<!-- Notification UI icons for mobile -->
-			<a href="{% url 'workery_tenant_task_list' %}" class="text-white px-2" alt="Notifications">
+			<a href="{% url 'workery_tenant_task_list' %}" class="text-white px-2 pt-3" alt="Notifications">
 				<span class="badge badge-info badge-pill badge-1">{% get_pending_tasks_count %}</span>&nbsp;<i class="far fa-check-square"></i>
 			</a>
         		{% comment %}
-			<a href="#" class="text-white px-2" alt="Notifications">
+			<a href="#" class="text-white px-2 pt-3" alt="Notifications">
 				<span class="badge badge-info badge-pill badge-2">9</span> <i class="fas fa-bell"></i>
 			</a>
         		{% endcomment %}
 			<!-- end Notification UI icons mobile -->	
-			<p class="text-right text-light mt-3 mb-2 mr-4">{% trans 'Menu' %}</p>
+			<p class="text-right text-light my-2 mr-4 float-right">{% trans 'Menu' %}</p>
 		    </div>
 		<hr class="nav-divider">
                 <ul class="nav flex-column">
