@@ -590,7 +590,6 @@ table.custom-cell-w tr th{width:35% !important;}
 .notif-icons .badge-1{top: 0; left: 25px;}
 .notif-icons .badge-2{top: 0; right: -5px;}
 .notif-icons-mobile {
-	position: absolute;
 	right: 0;
 	width: 100%;
 }
@@ -602,5 +601,5 @@ table.custom-cell-w tr th{width:35% !important;}
 	font-size: 0.85rem !important;
 	position: absolute;
 }
-.notif-icons-mobile .badge-1{top: 0; left: 24px;}
-.notif-icons-mobile .badge-2{top: 0; right: -3px;}
+.notif-icons-mobile .badge-1{top: 16px; left: 24px;}
+.notif-icons-mobile .badge-2{top: 16px; right: -3px;}
