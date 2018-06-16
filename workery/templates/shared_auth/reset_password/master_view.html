@@ -11,6 +11,17 @@
 {% block content %}
 <!-- JS -->
 <script>
+    /**
+     *  Function to make text readable removing underscore and capitalizing
+     */
+    function humanize(str) {
+	var frags = str.split('_');
+	for (i=0; i<frags.length; i++) {
+		frags[i] = frags[i].charAt(0).toUpperCase() + frags[i].slice(1);
+	}
+	return frags.join(' ');
+    }
+	
     function ajax_reset_password() {
 	    var data = {
 		    'password': $('#id_password').val(),
@@ -23,6 +34,27 @@
 			function(json_results) {
 			    console.log(json_results);
 				window.location = "{% url 'workery_login_redirector' %}";
+			},
+			function(xhr, status, error) {
+				var err = JSON.parse(xhr.responseText);
+				// For debugging purposes only.
+				console.log(err);
+				$('#all_error_result').html("");
+				$('#all_error_result').removeClass('error-block');
+				for(var prop in err) {
+				    if(err.hasOwnProperty(prop)) {
+					var val = err[prop];
+					var fdname = humanize(prop);
+					// Errors box code
+					$('#all_error_result').append("<div class='form-error'><b>"+fdname+":</b> "+val+" </div>");
+					$('#all_error_result').addClass('error-block');
+
+				    }
+				}
+				// alert("Wrong login credentials.");
+				// Convert the error json into string.
+				// var string = JSON.stringify( error );
+				// console.log(string);
 			},
 			function(error_results) {
 			    console.log(error_results);
@@ -77,7 +109,10 @@
              autocapitalize="off" />
                </div>
             </div>
-            <br />
+            <!-- Error Output -->
+	    <div id="all_error_result" name="all_error_result" class="alert alert-error fade show my-2" role="alert">
+	    </div>
+            <!-- Error Output end -->
             <input type="button" value="{% trans 'Reset Password and Sign-In' %}" class="btn btn-lg btn-primary btn-block" onclick="ajax_reset_password();">
             <h5 class="text-center mt-3 mb-3">
             <a href="{% url 'workery_login_master' %}" class="text-primary plain-link">{% trans 'Cancel' %}</a></h2>
