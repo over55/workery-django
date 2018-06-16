@@ -68,14 +68,14 @@
 <div class="container">
    <div class="row">
       <div class="col-sm-12 text-center">
-          <img class="img-fluid" src="{% static 'img/workery-logo.jpeg' %}" alt="Logo" width="200px" />
+          <img class="img-fluid" src="{% static 'img/workery-logo.jpeg' %}" alt="Logo" width="180px" />
       </div>
    </div>
    <div class="row">
       <div class="col-sm-6 mx-auto">
          <form>
               <h3 class="text-center"><i class="fa fa-key fa-2x"></i></h3>
-            <h2 class="form-signin-heading text-center mb-3">{% trans 'Reset Password' %}</h2>
+            <h2 class="form-signin-heading text-center mb-1">{% trans 'Reset Password' %}</h2>
              <p class="text-center lead">Please enter your new password below to reset.</p>
             <div class="form-group mb-1">
                <div class="input-group input-group-lg">
@@ -115,7 +115,7 @@
 	    </div>
             <!-- Error Output end -->
             <input type="button" value="{% trans 'Reset Password and Sign-In' %}" class="btn btn-lg btn-primary btn-block" onclick="ajax_reset_password();">
-            <h5 class="text-center mt-3 mb-3">
+            <h5 class="text-center mt-2 mb-0">
             <a href="{% url 'workery_login_master' %}" class="text-primary plain-link">{% trans 'Cancel' %}</a></h2>
          </form>
       </div>
