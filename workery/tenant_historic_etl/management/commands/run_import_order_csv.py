@@ -151,6 +151,8 @@ class Command(BaseCommand):
                 status = WORK_ORDER_STATE.COMPLETED_AND_PAID
             if status == 'completed_and_unpaid':
                 status = WORK_ORDER_STATE.COMPLETED_BUT_UNPAID
+            if status == 'completed_but_unpaid':
+                status = WORK_ORDER_STATE.COMPLETED_BUT_UNPAID
 
             # --- closing_reason / closing_reason_other ---
             closing_reason = 0

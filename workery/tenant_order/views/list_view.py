@@ -16,9 +16,10 @@ from tenant_foundation.models import WorkOrder, WORK_ORDER_STATE
 class JobSummaryView(LoginRequiredMixin, WorkeryListView):
     context_object_name = 'job_list'
     queryset = WorkOrder.objects.filter(
-        Q(state=WORK_ORDER_STATE.ARCHIVED) &
         Q(completion_date__isnull=True) &
-        Q(invoice_service_fee_payment_date__isnull=True)
+        Q(invoice_service_fee_payment_date__isnull=True) &
+        ~Q(state=WORK_ORDER_STATE.ARCHIVED) &
+        ~Q(state=WORK_ORDER_STATE.CANCELLED)
     ).order_by('-id').prefetch_related(
         'customer',
         'associate'
