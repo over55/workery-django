@@ -39,8 +39,7 @@ class DashboardView(LoginRequiredMixin, WorkeryTemplateView):
         modified_context['customers_count'] = Customer.objects.all().count()
 
         modified_context['jobs_count'] = WorkOrder.objects.filter(
-            Q(completion_date__isnull=True) &
-            Q(invoice_service_fee_payment_date__isnull=True) &
+            ~Q(state=WORK_ORDER_STATE.COMPLETED_AND_PAID) &
             ~Q(state=WORK_ORDER_STATE.ARCHIVED) &
             ~Q(state=WORK_ORDER_STATE.CANCELLED)
         ).count()
