@@ -265,7 +265,7 @@ class Command(BaseCommand):
             associate = Associate.objects.filter(id=int_or_none(associate_pk),).first()
 
             # Begin processing...
-            if customer and associate:
+            if customer:
                 order, create = WorkOrder.objects.update_or_create(
                     id=order_pk,
                     defaults={
