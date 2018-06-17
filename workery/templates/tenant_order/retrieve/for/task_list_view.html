@@ -201,6 +201,24 @@
                                             Client not satisfied with Associate
                                         {% elif task_item.closing_reason == 7 %}
                                             Client did work themselves
+                                        {% elif task_item.closing_reason == 8 %}
+                                            No Associate available
+                                        {% elif task_item.closing_reason == 9 %}
+                                            Work environment unsuitable
+                                        {% elif task_item.closing_reason == 10 %}
+                                            Client did not return call
+                                        {% elif task_item.closing_reason == 11 %}
+                                            Associate did not have necessary equipment
+                                        {% elif task_item.closing_reason == 12 %}
+                                            Repair not possible
+                                        {% elif task_item.closing_reason == 13 %}
+                                            Could not meet deadline
+                                        {% elif task_item.closing_reason == 14 %}
+                                            Associate did not call client
+                                        {% elif task_item.closing_reason == 15 %}
+                                            Member issue
+                                        {% elif task_item.closing_reason == 16 %}
+                                            Client billing issue
                                         {% else %}
                                             {{ task_item.closing_reason_other }}
                                         {% endif %}

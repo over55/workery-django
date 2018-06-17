@@ -160,7 +160,7 @@ class Command(BaseCommand):
                 #
                 if cancellation_reason.lower() == "quote was too high":
                     closing_reason = 2
-                elif cancellation_reason.lower() ==  "quote too high":
+                elif cancellation_reason.lower() == "quote too high":
                     closing_reason = 2
                 elif cancellation_reason.lower() == "job completed by someone else":
                     closing_reason = 3
@@ -172,6 +172,24 @@ class Command(BaseCommand):
                     closing_reason = 6
                 elif cancellation_reason.lower() == "client did work themselves":
                     closing_reason = 7
+                elif cancellation_reason.lower() == "no associate available":
+                    closing_reason = 8
+                elif cancellation_reason.lower() == "work environment unsuitable":
+                    closing_reason = 9
+                elif cancellation_reason.lower() == "client did not return call":
+                    closing_reason = 10
+                elif cancellation_reason.lower() == "associate did not have necessary equipment":
+                    closing_reason = 11
+                elif cancellation_reason.lower() == "repair not possible":
+                    closing_reason = 12
+                elif cancellation_reason.lower() == "could not meet deadline":
+                    closing_reason = 13
+                elif cancellation_reason.lower() == "associate did not call client":
+                    closing_reason = 14
+                elif cancellation_reason.lower() == "member issue":
+                    closing_reason = 15
+                elif cancellation_reason.lower() == "client billing issue":
+                    closing_reason = 16
                 else:
                     if cancellation_reason is None or len(cancellation_reason) == 0:
                         closing_reason_other = "-"
