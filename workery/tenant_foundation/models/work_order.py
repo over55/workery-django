@@ -290,8 +290,8 @@ class WorkOrder(models.Model):
         blank=True,
         null=True
     )
-    invoice_id = models.PositiveSmallIntegerField(
-        _("Type Of"),
+    invoice_id = models.PositiveIntegerField(
+        _("Invoice ID"),
         help_text=_('The type of job this is.'),
         default=UNASSIGNED_JOB_TYPE_OF_ID,
         choices=JOB_TYPE_OF_CHOICES,
