@@ -119,7 +119,7 @@
                         {% elif job.state == WORK_ORDER_STATE.ARCHIVED %}
                             {% trans 'Archived' %}
                         {% else %}
-                            -
+                            {{ job.state }}
                         {% endif %}
                     </td>
                     <td>
