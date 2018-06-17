@@ -33,6 +33,7 @@ from shared_foundation.models import (
 )
 from tenant_foundation.constants import *
 from tenant_foundation.models import (
+    ActivitySheetItem,
     Associate,
     Comment,
     Customer,
@@ -340,6 +341,21 @@ class Command(BaseCommand):
                         defaults={
                             'about': order,
                             'comment': comment
+                        }
+                    )
+
+                # --- Completion status ---
+                if status == WORK_ORDER_STATE.COMPLETED_AND_PAID:
+                    ActivitySheetItem.objects.update_or_create(
+                        job=order,
+                        associate=associate,
+                        defaults={
+                            'job': order,
+                            'associate': associate,
+                            'comment': comment_text,
+                            'has_accepted_job': True,
+                            'created_at': local_completion_date,
+                            'created_by': None,
                         }
                     )
 
