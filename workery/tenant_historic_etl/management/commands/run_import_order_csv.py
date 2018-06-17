@@ -132,17 +132,19 @@ class Command(BaseCommand):
             completion_date = row_dict[9]
             hours = row_dict[10]
             service_fee = row_dict[11]
-            payment_date = row_dict[12] # do not import this field!
+            payment_date = row_dict[12]
             status = row_dict[13]
-            comment_text = row_dict[14]
-            follow_up_comment_text = row_dict[15]
-            workmanship = row_dict[16]
-            time_and_budget = row_dict[17]
-            punctual = row_dict[18]
-            professional = row_dict[19]
-            refer = row_dict[20]
+            cancellation_reason = row_dict[14]
+            comment_text = row_dict[15]
+            inv_no = int_or_none(row_dict[16])
+            follow_up_comment_text = row_dict[17]
+            workmanship = int_or_none(row_dict[18])     # 1 / 5
+            time_and_budget = int_or_none(row_dict[19]) # 2 / 5
+            punctual = int_or_none(row_dict[20])        # 3 / 5
+            professional = int_or_none(row_dict[21])    # 4 / 5
+            refer = int_or_none(row_dict[22])           # 5 / 5
 
-            # Status
+            # --- Status ---
             if status == 'assigned':
                 status = WORK_ORDER_STATE.IN_PROGRESS
             if status == 'completed_and_paid':
@@ -150,8 +152,56 @@ class Command(BaseCommand):
             if status == 'completed_and_unpaid':
                 status = WORK_ORDER_STATE.COMPLETED_BUT_UNPAID
 
-            # Convert the datetime.
-            # local_birthdate = self.get_date_from_formatting1(birthdate)
+            # --- closing_reason / closing_reason_other ---
+            closing_reason = 0
+            closing_reason_other = None
+            if status == WORK_ORDER_STATE.CANCELLED:
+                closing_reason = 1
+                #
+                if cancellation_reason.lower() == "quote was too high":
+                    closing_reason = 2
+                elif cancellation_reason.lower() ==  "quote too high":
+                    closing_reason = 2
+                elif cancellation_reason.lower() == "job completed by someone else":
+                    closing_reason = 3
+                elif cancellation_reason.lower() == "job completed by associate":
+                    closing_reason = 4
+                elif cancellation_reason.lower() == "work no longer needed":
+                    closing_reason = 5
+                elif cancellation_reason.lower() == "client not satisfied with associate":
+                    closing_reason = 6
+                elif cancellation_reason.lower() == "client did work themselves":
+                    closing_reason = 7
+                else:
+                    if cancellation_reason is None or len(cancellation_reason) == 0:
+                        closing_reason_other = "-"
+                    else:
+                        closing_reason_other = cancellation_reason
+
+            # --- Score ---
+            score = 0
+            if workmanship is not None:
+                score += workmanship
+            else:
+                workmanship = 0
+            if time_and_budget is not None:
+                score += time_and_budget
+            else:
+                time_and_budget = 0
+            if punctual is not None:
+                score += punctual
+            else:
+                punctual = 0
+            if professional is not None:
+                score += professional
+            else:
+                professional = 0
+            if refer is not None:
+                score += refer
+            else:
+                refer = 0
+
+            # --- Convert the datetime ---
             local_assign_date = self.get_date_from_formatting3(assign_date)
             local_payment_date = self.get_date_from_formatting3(payment_date)
             local_completion_date = self.get_date_from_formatting3(completion_date)
@@ -159,7 +209,7 @@ class Command(BaseCommand):
             if local_assign_date is None or local_assign_date == "":
                 local_assign_date = milestone_date
 
-            # Convert to money.
+            # --- Convert to money ---
             local_service_fee = Money(0.00, WORKERY_APP_DEFAULT_MONEY_CURRENCY)
             if service_fee:
                 service_fee = service_fee.replace('$', '')
@@ -170,27 +220,18 @@ class Command(BaseCommand):
                 # - The "service_fee" is deprecated and will not be included.
                 # - The "payment_date" is deprecated and will not be included.
 
-            # Conver to integer.
+            # --- Convert to integer ---
             if hours is None:
                 hourse = 0
             if hours is '':
                 hours = 0
             hours = int(float(hours))
 
-            # Boolean
-            is_ongoing = True if is_ongoing == 1 else False
+            if inv_no is None:
+                inv_no = 0
 
-            # Generate our closing reason.
-            closing_reason = 0
-            closing_reason_other = None
-            if status == WORK_ORDER_STATE.CANCELLED:
-                closing_reason = 1
-                if follow_up_comment_text:
-                    closing_reason_other = follow_up_comment_text
-                if comment_text:
-                    closing_reason_other = comment_text
-                if closing_reason_other is None:
-                    closing_reason_other = "-"
+            # --- Boolean ---
+            is_ongoing = True if is_ongoing == 1 else False
 
             # Lookup the customer and process it if the customer exists.
             customer = Customer.objects.filter(id=int_or_none(customer_pk),).first()
@@ -218,7 +259,14 @@ class Command(BaseCommand):
                         'invoice_service_fee': service_fee_obj,
                         'invoice_service_fee_amount': local_service_fee,
                         'type_of': RESIDENTIAL_JOB_TYPE_OF_ID, # WE PUT THIS BECAUSE WE ARE NOT IMPORTING COMMERCIAL!
-                        'state': status
+                        'state': status,
+                        'was_job_satisfactory': workmanship,
+                        'was_job_finished_on_time_and_on_budget': time_and_budget,
+                        'was_associate_punctual': punctual,
+                        'was_associate_professional': professional,
+                        'would_customer_refer_our_organization': refer,
+                        'score': score,
+                        'invoice_id': inv_no
                     }
                 )
 
