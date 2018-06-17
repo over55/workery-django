@@ -345,7 +345,7 @@ class Command(BaseCommand):
                     )
 
                 # --- Completion status ---
-                if status == WORK_ORDER_STATE.COMPLETED_AND_PAID:
+                if status == WORK_ORDER_STATE.COMPLETED_AND_PAID and associate:
                     ActivitySheetItem.objects.update_or_create(
                         job=order,
                         associate=associate,
