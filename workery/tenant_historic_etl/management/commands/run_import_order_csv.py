@@ -360,48 +360,57 @@ class Command(BaseCommand):
                         }
                     )
 
-                    TaskItem.objects.create(
-                        type_of = FOLLOW_UP_CUSTOMER_SURVEY_TASK_ITEM_TYPE_OF_ID,
-                        title = _('7 day follow up'),
-                        description = _('Please call up the client and perform the satisfaction survey.'),
-                        due_date = timezone.now(),
-                        is_closed = True,
-                        job = order,
-                        created_at = local_completion_date,
-                        created_by = None,
-                        created_from = '127.0.0.1',
-                        created_from_is_public = False,
-                        last_modified_by = None
+                    TaskItem.objects.update_or_create(
+                        job=order,
+                        defaults={
+                            'type_of': FOLLOW_UP_CUSTOMER_SURVEY_TASK_ITEM_TYPE_OF_ID,
+                            'title': _('7 day follow up'),
+                            'description': _('Please call up the client and perform the satisfaction survey.'),
+                            'due_date': timezone.now(),
+                            'is_closed': True,
+                            'job': order,
+                            'created_at': local_completion_date,
+                            'created_by': None,
+                            'created_from': '127.0.0.1',
+                            'created_from_is_public': False,
+                            'last_modified_by': None
+                        }
                     )
 
                 if status == WORK_ORDER_STATE.COMPLETED_BUT_UNPAID:
-                    TaskItem.objects.create(
-                        type_of = FOLLOW_UP_CUSTOMER_SURVEY_TASK_ITEM_TYPE_OF_ID,
-                        title = _('7 day follow up'),
-                        description = _('Please call up the client and perform the satisfaction survey.'),
-                        due_date = timezone.now(),
-                        is_closed = False,
-                        job = order,
-                        created_at = local_completion_date,
-                        created_by = None,
-                        created_from = '127.0.0.1',
-                        created_from_is_public = False,
-                        last_modified_by = None
+                    TaskItem.objects.update_or_create(
+                        job=order,
+                        defaults={
+                            'type_of': FOLLOW_UP_CUSTOMER_SURVEY_TASK_ITEM_TYPE_OF_ID,
+                            'title': _('7 day follow up'),
+                            'description': _('Please call up the client and perform the satisfaction survey.'),
+                            'due_date': timezone.now(),
+                            'is_closed': False,
+                            'job': order,
+                            'created_at': local_completion_date,
+                            'created_by': None,
+                            'created_from': '127.0.0.1',
+                            'created_from_is_public': False,
+                            'last_modified_by': None
+                        }
                     )
 
                 if status == WORK_ORDER_STATE.IN_PROGRESS:
-                    TaskItem.objects.create(
-                        type_of = FOLLOW_UP_CUSTOMER_SURVEY_TASK_ITEM_TYPE_OF_ID,
-                        title = _('7 day follow up'),
-                        description = _('Please call up the client and perform the satisfaction survey.'),
-                        due_date = timezone.now(),
-                        is_closed = False,
-                        job = order,
-                        created_at = local_completion_date,
-                        created_by = None,
-                        created_from = '127.0.0.1',
-                        created_from_is_public = False,
-                        last_modified_by = None
+                    TaskItem.objects.update_or_create(
+                        job=order,
+                        defaults={
+                            'type_of': FOLLOW_UP_CUSTOMER_SURVEY_TASK_ITEM_TYPE_OF_ID,
+                            'title': _('7 day follow up'),
+                            'description': _('Please call up the client and perform the satisfaction survey.'),
+                            'due_date': timezone.now(),
+                            'is_closed': False,
+                            'job': order,
+                            'created_at': local_completion_date,
+                            'created_by': None,
+                            'created_from': '127.0.0.1',
+                            'created_from_is_public': False,
+                            'last_modified_by': None
+                        }
                     )
 
         except Exception as e:
