@@ -43,7 +43,8 @@ from tenant_foundation.models import (
     WorkOrderComment,
     WorkOrderServiceFee,
     SkillSet,
-    Tag
+    Tag,
+    TaskItem
 )
 from tenant_foundation.utils import *
 
@@ -345,7 +346,7 @@ class Command(BaseCommand):
                     )
 
                 # --- Completion status ---
-                if status == WORK_ORDER_STATE.COMPLETED_AND_PAID and associate:
+                if status == WORK_ORDER_STATE.COMPLETED_AND_PAID and associate and local_completion_date:
                     ActivitySheetItem.objects.update_or_create(
                         job=order,
                         associate=associate,
@@ -357,6 +358,20 @@ class Command(BaseCommand):
                             'created_at': local_completion_date,
                             'created_by': None,
                         }
+                    )
+
+                    TaskItem.objects.create(
+                        type_of = FOLLOW_UP_CUSTOMER_SURVEY_TASK_ITEM_TYPE_OF_ID,
+                        title = _('7 day follow up'),
+                        description = _('Please call up the client and perform the satisfaction survey.'),
+                        due_date = timezone.now(),
+                        is_closed = False,
+                        job = order,
+                        created_at = local_completion_date,
+                        created_by = None,
+                        created_from = '127.0.0.1',
+                        created_from_is_public = False,
+                        last_modified_by = None
                     )
 
         except Exception as e:
