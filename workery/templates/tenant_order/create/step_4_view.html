@@ -24,10 +24,10 @@
         // Populate our 'select2' chosen values.
         var tmp_skillsets = localStorage.getObj("tmp_skillsets");
         $('#skillsets').val(tmp_skillsets);
-
+	// Default service fee id
+	$('#order_service_fee').val(3);
         // Initialize our 'select2' element.
         $('.js-example-basic-multiple').select2();
-
         $('#order_service_fee').val(localStorage.getItem("tmp_order_service_fee_id"));
     });
 
