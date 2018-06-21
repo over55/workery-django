@@ -442,12 +442,12 @@
             <p class="border-bottom mb-3 pb-1 text-secondary">Contact Point</p>
             <div class="form-row">
                 <div class="form-group col-md-7 mb-4">
-                    <label for="telephone">Phone <sup>*</sup></label>
+                    <label for="telephone">Primary Phone <sup>*</sup></label>
                     <input type="text" class="form-control form-control-lg border border-primary" id="telephone" name="telephone" placeholder="(xxx) xxx-xxxx" minlength="10" maxlength="31" required value="{% if associate.telephone %}{{ associate.telephone }}{% endif %}">
                     <div id="telephone-error" class="invalid-feedback"></div>
                 </div>
                 <div class="form-group col-md-7 mb-4">
-                    <label for="other_telephone">Mobile</label>
+                    <label for="other_telephone">Secondary Phone</label>
                     <input type="text" class="form-control form-control-lg border border-success" id="other_telephone" name="other_telephone" placeholder="(xxx) xxx-xxxx" minlength="10" maxlength="31" value="{% if associate.other_telephone %}{{ associate.other_telephone }}{% endif %}">
                     <div id="other_telephone-error" class="invalid-feedback"></div>
                 </div>
@@ -549,7 +549,7 @@
                     <div id="limit_special-error" class="invalid-feedback"></div>
                 </div>
                 <div class="form-group col-md-7 mb-4">
-                    <label for="dues_date">Dues Date</label>
+                    <label for="dues_date">Member Dues Expiry</label>
                     <div class="input-group input-group-lg">
                         <input type="text" class="form-control form-control-lg border border-success" id="dues_date" name="dues_date" placeholder="yyyy-mm-dd" value="{% if associate.dues_date %}{{ associate.dues_date|date:"Y-m-d" }}{% endif %}" required>
                         <div class="input-group-append">
