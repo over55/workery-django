@@ -194,13 +194,13 @@
                     <th scope="row" colspan="2">Contact Point</th>
                 </tr>
                 <tr>
-                    <th scope="row" class="bg-light">Phone</th>
+                    <th scope="row" class="bg-light">Primary Phone</th>
                     <td id="phonenumber">
                         {% if associate.telephone %}<a href="tel:{{ associate.telephone }}">{{ associate.telephone|pretty_formatted_phonenumber }}</a>{% else %}-{% endif %}
                     </td>
                 </tr>
                 <tr>
-                    <th scope="row" class="bg-light">Mobile</th>
+                    <th scope="row" class="bg-light">Secondary Mobile</th>
                     <td id="mobile">
                         {% if associate.other_telephone %}<a href="tel:{{ associate.other_telephone }}">{{ associate.other_telephone|pretty_formatted_phonenumber }}</a>{% else %}-{% endif %}
                     </td>
@@ -298,7 +298,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <th scope="row" class="bg-light">Dues date</th>
+                    <th scope="row" class="bg-light">Member Dues Expiry</th>
                     <td id="dues_date">
                         {% if associate.dues_date %}{{ associate.dues_date }}{% else %}-{% endif %}
                     </td>
