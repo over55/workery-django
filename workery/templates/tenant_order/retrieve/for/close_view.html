@@ -386,7 +386,7 @@
                                 <!-- REASON (OTHER) -->
                                 <div class="form-group col-md-12 mb-4" id="reason_other_div" style="display: none;">
                                     <label for="reason_other">Reason (Other) <sup>*</sup></label>
-                                    <input type="text" class="form-control form-control-lg border border-primary" id="reason_other" name="reason_other" placeholder="Text" minlength="3" value="">
+                                    <input type="text" class="form-control form-control-lg border border-primary" id="reason_other" name="reason_other" placeholder="Text" minlength="3" value="" required="">
                                     <div id="reason_other-error" class="invalid-feedback"></div>
                                 </div>
                                 <!-- end REASON (OTHER) -->
@@ -399,7 +399,7 @@
                                     <div class="form-group col-md-12 mb-4">
                                         <label for="invoice_date">Invoice Date</label>
                                         <div class="input-group input-group-lg">
-                                            <input type="text" class="form-control form-control-lg border border-primary" id="invoice_date" name="invoice_date" placeholder="yyyy-mm-dd">
+                                            <input type="text" class="form-control form-control-lg border border-primary" id="invoice_date" name="invoice_date" placeholder="yyyy-mm-dd" required="">
                                             <div class="input-group-append">
                                                 <span class="input-group-text dob-icon bg-success border-success"><i class="far fa-calendar-alt"></i></span>
                                             </div>
@@ -411,7 +411,7 @@
                                     <!-- Invoice ID -->
                                     <div class="form-group col-md-12 mb-4">
                                         <label for="invoice_id">Invoice ID #</label>
-                                        <input type="number" class="form-control form-control-lg border border-success" id="invoice_id" name="invoice_id" placeholder="Invoice ID #">
+                                        <input type="number" class="form-control form-control-lg border border-success" id="invoice_id" name="invoice_id" placeholder="Invoice ID #" required="">
                                         <div id="invoice_id-error" class="invalid-feedback"></div>
                                     </div>
                                     <!-- end Invoice ID -->
@@ -419,7 +419,7 @@
                                     <!-- Invoice Quote -->
                                     <div class="form-group col-md-12 mb-4">
                                         <label for="invoice_quote_amount">Original Quote</label>
-                                        <input type="number" class="form-control form-control-lg border border-success" id="invoice_quote_amount" name="invoice_quote_amount" placeholder="Invoice Quote">
+                                        <input type="number" class="form-control form-control-lg border border-success" id="invoice_quote_amount" name="invoice_quote_amount" placeholder="Invoice Quote" required="">
                                         <div id="invoice_quote_amount-error" class="invalid-feedback"></div>
                                     </div>
                                     <!-- end Invoice Quote -->
@@ -427,7 +427,7 @@
                                     <!-- Invoice Labour -->
                                     <div class="form-group col-md-12 mb-4">
                                         <label for="invoice_labour_amount">Total Labour</label>
-                                        <input type="number" class="form-control form-control-lg border border-success" id="invoice_labour_amount" name="invoice_labour_amount" placeholder="Total Labour">
+                                        <input type="number" class="form-control form-control-lg border border-success" id="invoice_labour_amount" name="invoice_labour_amount" placeholder="Total Labour" required="">
                                         <div id="invoice_labour_amount-error" class="invalid-feedback"></div>
                                     </div>
                                     <!-- end Invoice Labour -->
@@ -435,7 +435,7 @@
                                     <!-- Invoice Material -->
                                     <div class="form-group col-md-12 mb-4">
                                         <label for="invoice_material_amount">Total Materials</label>
-                                        <input type="number" class="form-control form-control-lg border border-success" id="invoice_material_amount" name="invoice_material_amount" placeholder="Total Material">
+                                        <input type="number" class="form-control form-control-lg border border-success" id="invoice_material_amount" name="invoice_material_amount" placeholder="Total Material" required="">
                                         <div id="invoice_material_amount-error" class="invalid-feedback"></div>
                                     </div>
                                     <!-- end Invoice Material -->
@@ -443,7 +443,7 @@
                                     <!-- Invoice Tax -->
                                     <div class="form-group col-md-12 mb-4">
                                         <label for="invoice_tax_amount">Total Tax</label>
-                                        <input type="number" class="form-control form-control-lg border border-success" id="invoice_tax_amount" name="invoice_tax_amount" placeholder="Total Tax">
+                                        <input type="number" class="form-control form-control-lg border border-success" id="invoice_tax_amount" name="invoice_tax_amount" placeholder="Total Tax" required="">
                                         <div id="invoice_tax_amount-error" class="invalid-feedback"></div>
                                     </div>
                                     <!-- end Invoice Material -->
@@ -451,7 +451,7 @@
                                     <!-- Invoice Total -->
                                     <div class="form-group col-md-12 mb-4">
                                         <label for="invoice_total_amount">Total</label>
-                                        <input type="number" class="form-control form-control-lg border border-success" id="invoice_total_amount" name="invoice_total_amount" placeholder="Total" readonly>
+                                        <input type="number" class="form-control form-control-lg border border-success" id="invoice_total_amount" name="invoice_total_amount" required="" placeholder="Total" readonly>
                                         <div id="invoice_total_amount-error" class="invalid-feedback"></div>
                                     </div>
                                     <!-- end Invoice Total -->
@@ -459,7 +459,7 @@
                                     <!-- Invoice Service Fee -->
                                     <div class="form-group col-md-12 mb-4">
                                         <label for="invoice_service_fee_amount">Service Fee</label>
-                                        <input type="number" class="form-control form-control-lg border border-success" id="invoice_service_fee_amount" name="invoice_service_fee_amount" placeholder="Service Fee" readonly>
+                                        <input type="number" class="form-control form-control-lg border border-success" id="invoice_service_fee_amount" name="invoice_service_fee_amount" required="" placeholder="Service Fee" readonly>
                                         <div id="invoice_service_fee_amount-error" class="invalid-feedback"></div>
                                     </div>
                                     <!-- end Invoice Total -->
