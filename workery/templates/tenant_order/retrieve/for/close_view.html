@@ -282,7 +282,7 @@
     <!-- BREADCRUMB -->
     <!------------------------------------------------------------------------->
     <nav aria-label="breadcrumb">
-	  	<ol class="breadcrumb">
+	  <ol class="breadcrumb">
             {% if template == 'search' %}
 
             <li class="breadcrumb-item">
@@ -321,12 +321,10 @@
             <li class="breadcrumb-item active" aria-current="page">{% trans 'Close Job' %}</li>
 
             {% endif %}
-	  	</ol>
-	  	</ol>
-	</nav>
+	  </ol>
+    </nav>
     <!------------------------------------------------------------------------->
     <!-- end BREADCRUMB -->
-
     <!-- NOTIFICATION -->
     <!------------------------------------------------------------------------->
     {% if parameters.was_modified == 'True' %}
@@ -399,9 +397,9 @@
                                 <div id="customer_satisfaction_survey_div" style="display: none;">
                                     <!-- Invoice Date -->
                                     <div class="form-group col-md-12 mb-4">
-                                        <label for="invoice_date">Invoice Date&nbsp;<sup>*</sup></label>
+                                        <label for="invoice_date">Invoice Date</label>
                                         <div class="input-group input-group-lg">
-                                            <input type="text" class="form-control form-control-lg border border-primary" id="invoice_date" name="invoice_date" placeholder="yyyy-mm-dd" required>
+                                            <input type="text" class="form-control form-control-lg border border-primary" id="invoice_date" name="invoice_date" placeholder="yyyy-mm-dd">
                                             <div class="input-group-append">
                                                 <span class="input-group-text dob-icon bg-success border-success"><i class="far fa-calendar-alt"></i></span>
                                             </div>
@@ -429,7 +427,7 @@
                                     <!-- Invoice Labour -->
                                     <div class="form-group col-md-12 mb-4">
                                         <label for="invoice_labour_amount">Total Labour</label>
-                                        <input type="number" class="form-control form-control-lg border border-success" id="invoice_labour_amount" name="invoice_labour_amount" placeholder="Total Labour" required>
+                                        <input type="number" class="form-control form-control-lg border border-success" id="invoice_labour_amount" name="invoice_labour_amount" placeholder="Total Labour">
                                         <div id="invoice_labour_amount-error" class="invalid-feedback"></div>
                                     </div>
                                     <!-- end Invoice Labour -->
@@ -437,7 +435,7 @@
                                     <!-- Invoice Material -->
                                     <div class="form-group col-md-12 mb-4">
                                         <label for="invoice_material_amount">Total Materials</label>
-                                        <input type="number" class="form-control form-control-lg border border-success" id="invoice_material_amount" name="invoice_material_amount" placeholder="Total Material" required>
+                                        <input type="number" class="form-control form-control-lg border border-success" id="invoice_material_amount" name="invoice_material_amount" placeholder="Total Material">
                                         <div id="invoice_material_amount-error" class="invalid-feedback"></div>
                                     </div>
                                     <!-- end Invoice Material -->
