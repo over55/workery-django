@@ -49,9 +49,9 @@
         <table class="table table-bordered custom-cell-w">
             <tbody>
                 <tr class="bg-dark">
-                    <th scope="row" colspan="2" class="text-light">Task Details {% if task_item.type_of == 3 %}- {{ task_item.title }} {% endif %}</th>
+                    <th scope="row" colspan="2" class="text-light">Task Details {% if task_item.type_of == 3 or task_item.type_of == 2 %}- {{ task_item.title }} {% endif %}</th>
                 </tr>
-                {% if task_item.type_of != 3 %}
+                {% if task_item.type_of != 3 or task_item.type_of != 2 %}
                 <tr>
                     <th scope="row" class="bg-light">Task</th>
                     <td>
@@ -87,7 +87,7 @@
                         </a>
                     </td>
                 </tr>
-                {% if task_item.type_of != 3 %}
+                {% if task_item.type_of != 3 or task_item.type_of != 2 %}
                 <tr>
                     <th scope="row" class="bg-light">Last Modified At</th>
                     <td id="selected_description_id">
@@ -95,7 +95,7 @@
                     </td>
                 </tr>
                 {% endif %}
-                {% if task_item.type_of != 3 %}
+                {% if task_item.type_of != 3 or task_item.type_of != 2 %}
                 <tr>
                     <th scope="row" class="bg-light">Last Modified By</th>
                     <td id="selected_comment_id" target="_blank">
@@ -105,7 +105,7 @@
                     </td>
                 </tr>
                 {% endif %}
-                {% if task_item.type_of == 3 %}
+                {% if task_item.type_of == 3 or task_item.type_of != 2 %}
                 <tr>
                     <th scope="row" class="bg-light">Client Name</th>
                     <td id="client_name">
