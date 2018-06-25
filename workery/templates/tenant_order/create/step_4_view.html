@@ -25,7 +25,8 @@
         var tmp_skillsets = localStorage.getObj("tmp_skillsets");
         $('#skillsets').val(tmp_skillsets);
 	// Default service fee id
-	$('#order_service_fee').prop('selectedIndex', 3);
+        let o_service_fee = $('#order_service_fee');
+	o_service_fee.prop('selectedIndex', 3);
         // Initialize our 'select2' element.
         $('.js-example-basic-multiple').select2();
         $('#order_service_fee').val(localStorage.getItem("tmp_order_service_fee_id"));
@@ -196,4 +197,10 @@
     <a id="return-to-top" href="#" class="btn-info btn-lg back-to-top" role="button" title="Back to top"><i class="fas fa-angle-up fa-2x"></i></a>
     <!-- end RETURN-TO-TOP -->
 </main>
+<script>
+	$(document).ready(function() {
+      		let o_service_fee = $('#order_service_fee');
+		o_service_fee.prop('selectedIndex', 3);
+	});
+</script>
 {% endblock content %}
