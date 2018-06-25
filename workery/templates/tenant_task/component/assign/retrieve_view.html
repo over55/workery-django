@@ -66,7 +66,7 @@
                 <tr>
                     <th>{% trans 'Name' %}</th>
                     <th>{% trans 'Total Contact Count' %}</th>
-                    <th>{% trans 'Insurance Requirement(s)' %}</th>
+                    <th>{% trans 'Phone Number' %}</th>
                     <th></th>
                 </tr>
             </thead>
@@ -78,11 +78,7 @@
                     </td>
                     <td>{{ associate.activity_sheet.count }}</td>
                     <td>
-                        {% for insurance_requirement in associate.insurance_requirements.all %}
-                            <span class="badge badge-info badge-lg">{{ insurance_requirement }}</span>
-                        {% empty %}
-                            -
-                        {% endfor %}
+                        {{ associate.telephone|pretty_formatted_phonenumber }}
                     </td>
                     <td>
                         <a href="{% url 'workery_tenant_pending_task_retrieve_for_activity_sheet_retrieve_and_create' task_item.id %}?associate_id={{ associate.id }}">Assign</a>
