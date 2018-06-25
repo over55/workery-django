@@ -114,8 +114,38 @@ function get_selected_radio_value(radiofields_name) {
     </div>
     <!------------------------------------------------------------------------->
     <!-- end STEP NAVIGATION -->
-
-
+    {% if task_item.type_of == 2 %}
+    <div class="row py-2">
+		<div class="col-md-10 mx-auto py-3">
+			<!-- ######################## Task Summary Table ######################## -->
+				<table class="table table-bordered custom-cell-w">
+				    <tbody>
+					<tr class="bg-primary text-white">
+					    <th scope="row" colspan="2" id="Task">48 hour follow up</th>
+					</tr>
+					<tr>
+					    <th scope="row" class="bg-light">Customer Name</th>
+					    <td id="customer">
+						-
+					    </td>
+					</tr>
+					<tr>
+					    <th scope="row" class="bg-light">Associate Name</th>
+					    <td id="associate">
+						-
+					    </td>
+					</tr>
+					<tr>
+					    <th scope="row" class="bg-light">Job Description</th>
+					    <td id="description">
+						-
+					    </td>
+					</tr>
+				    </tbody>
+				</table>
+		</div>
+    </div>
+    {% endif %}
     <!-- FORM -->
     <!------------------------------------------------------------------------->
     <div class="col-sm-5 mx-auto mt-2">
