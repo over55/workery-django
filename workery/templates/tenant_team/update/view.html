@@ -104,7 +104,7 @@
 		  })
 		});
 		{% if staff.address_region %}p_dropdown.val('{{staff.address_region}}');{% else %}p_dropdown.prop('selectedIndex', 1);{% endif %}
-		
+
     	}
 
 	/**
@@ -411,7 +411,7 @@
             <div id="all_error_result" name="all_error_result" class="alert alert-error fade show" role="alert">
 	    </div>
 	    <!-- end Error Output -->
-            
+
             <form id="update-staff-form" method="post" class="needs-validation" action="" novalidate>
             <!-- ############ PERSON ############ -->
             <p class="border-bottom mb-3 pb-1 text-secondary">Personal Information</p>
@@ -597,7 +597,7 @@
     <a id="return-to-top" href="#" class="btn-info btn-lg back-to-top" role="button" title="Back to top"><i class="fas fa-angle-up fa-2x"></i></a>
     <!-- end RETURN-TO-TOP -->
 </main>
-	
+
 <script type="text/javascript">
 // // Populate our 'select2' chosen values.
         var tag_ids = [];
@@ -609,5 +609,5 @@
         // Initialize our 'select2' element.
         $('#tags').select2();
 </script>
-	 
+
 {% endblock content %}

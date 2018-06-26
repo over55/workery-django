@@ -185,14 +185,14 @@
                            class="img-thumbnail center-block mb0 add-cover-image img-fluid rounded" />
                     {% endif %}
                     <!-- /.Image Placeholder -->
-		    <h5 id="upload-btn" class="text-muted p-1">Click to upload</h5>    
+		    <h5 id="upload-btn" class="text-muted p-1">Click to upload</h5>
                 </div>
                 <!-- end IMAGE SECTION -->
 
                 <div class="col-sm-8 p-2">
                     <h3>{{ staff.given_name }}&nbsp;{{ staff.last_name }}</h3>
                     <p class="text-muted mb-2">{{ staff.address_locality }},&nbsp;{{ staff.address_region }},&nbsp;{{ staff.address_country }}&nbsp;<i class="fas fa-map-marker-alt"></i></p>
-                    <p class="mb-2"><i class="fas fa-envelope"></i>&nbsp;{% if staff.owner.email %}<a href="mailto:{{ staff.owner.email }}">{{ staff.owner.email }}</a>{% else %}-{% endif %}</p>
+                    <p class="mb-2"><i class="fas fa-envelope"></i>&nbsp;{% if staff.email %}<a href="mailto:{{ staff.email }}">{{ staff.email }}</a>{% else %}-{% endif %}</p>
                     <p class="mb-2"><i class="fas fa-phone-square"></i>&nbsp;{% if staff.telephone %}<a href="tel:{{ staff.telephone }}">{{ staff.telephone|pretty_formatted_phonenumber }}</a>{% else %}-{% endif %}</p>
                     <p class="m-0"><strong>Tag(s):</strong></p>
                     <p class="mb-2">

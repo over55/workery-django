@@ -178,10 +178,10 @@
                 <tr>
                     <th scope="row" class="bg-light">E-Mail</th>
                     <td id="email">
-                        {% if staff.owner.email %}<a href="mailto:{{ staff.owner.email }}">{{ staff.owner.email }}</a>{% else %}-{% endif %}
+                        {% if staff.email %}<a href="mailto:{{ staff.email }}">{{ staff.email }}</a>{% else %}-{% endif %}
                     </td>
                 </tr>
-		<tr>
+		        <tr>
                     <th scope="row" class="bg-light">Ok to E-Mail?</th>
                     <td id="ok_to_email">
                         {% if staff.is_ok_to_email == True %}Yes{% else %}No{% endif %}

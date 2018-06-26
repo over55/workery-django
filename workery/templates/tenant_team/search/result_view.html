@@ -82,7 +82,7 @@
                     <td>
                         {% if staff.telephone %}<a href="tel:{{ staff.telephone }}">{{ staff.telephone|pretty_formatted_phonenumber }}</a>{% else %}-{% endif %}
                     </td>
-                    <td>{% if staff.owner.email %}<a href="mailto:{{ staff.owner.email }}">{{ staff.owner.email }}</a>{% else %}-{% endif %}</td>
+                    <td>{% if staff.email %}<a href="mailto:{{ staff.email }}">{{ staff.email }}</a>{% else %}-{% endif %}</td>
                     <td>
                         <a href="{% url 'workery_tenant_team_lite_retrieve' 'search' staff.id %}?page={{ page_obj.number }}{{ filter_parameters }}">{% trans 'View' %}</a>
                     </td>
