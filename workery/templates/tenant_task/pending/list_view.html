@@ -85,7 +85,7 @@
                     </td>
                     <td>
                         {% if task_item.job.associate %}
-                            {{ task_item.job.associate }}
+                            <a href="{% url 'workery_tenant_member_lite_retrieve' 'summary' task_item.job.associate.id %}" target="_blank">{{ task_item.job.associate }}&nbsp;<i class="fas fa-external-link-alt"></i></a>
                         {% else %}
                             {% trans 'Unassigned' %}
                         {% endif %}
