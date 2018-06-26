@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
+from datetime import date, datetime, timedelta
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
 from django.utils.decorators import method_decorator
+from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 from shared_foundation.mixins import (
     ExtraRequestProcessingMixin,
@@ -81,9 +83,14 @@ class PendingTaskRetrieveForActivitySheetView(LoginRequiredMixin, WorkeryDetailV
 
         task_item = modified_context['task_item']
 
+        # Get 30 days from right now...
+        today = timezone.now()
+        today_minus_30_days = today - timedelta(days=30)
+
         # STEP 1 - Find all the items belonging to this job and get the `pk` values.
         activity_sheet_associate_pks = ActivitySheetItem.objects.filter(
-           job=task_item.job
+           job=task_item.job,
+           created_at__gte=today_minus_30_days  # Only return latest within the past 30 days.
         ).values_list('associate_id', flat=True)
 
         # STEP 2 -
