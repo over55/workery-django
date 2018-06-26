@@ -25,8 +25,17 @@
             }
         );
     }
-</script>
 
+    function set_id(skill_set_id) {
+        $('#id_hidden_id').val(skill_set_id);
+    }
+
+    function ajax_delete_from_hidden_input_id() {
+        var id = $('#id_hidden_id').val();
+        ajax_delete(id);
+    }
+</script>
+<input type="hidden" id="id_hidden_id" value="0" />
 <main id="main" role="main">
 
     <!-- BREADCRUMB -->
@@ -104,6 +113,7 @@
                     <td>
 
                         <button id="id_delete_btn"
+                           onclick="set_id({{ tag.id }})"
                              class="btn btn-danger btn-lg m-2 float-right px-4"
                               type="button"
                            data-toggle="modal" data-target="#confirmDelete">
@@ -126,7 +136,7 @@
 		      			<div class="modal-body">
 		        			<p class="m-3 p-2">WARNING: you are about to PERMANENTLY delete this item - this action CANNOT BE UNDONE. Do you want to continue?</p>
 		        			<button type="button" class="btn btn-lg btn-secondary float-left m-2" data-dismiss="modal">No</button>
-		        			<button type="button" class="btn btn-lg btn-primary float-right m-2" id="yes_submit" onclick="ajax_delete({{ tag.id }});">Yes</button>
+		        			<button type="button" class="btn btn-lg btn-primary float-right m-2" id="yes_submit" onclick="ajax_delete_from_hidden_input_id();">Yes</button>
 		      			</div>
 		    			</div>
 		  		</div>
