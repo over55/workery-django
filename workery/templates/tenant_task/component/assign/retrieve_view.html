@@ -76,7 +76,7 @@
                     <td>
                         <a href="{% url 'workery_tenant_member_lite_retrieve' 'summary' associate.id %}" target="_blank">{{ associate }}&nbsp;<i class="fas fa-external-link-alt"></i></a>
                     </td>
-                    <td>{{ associate.activity_sheet.count }}</td>
+                    <td>{{ associate.past_30_days_activity_sheet_count }}</td>
                     <td>
                         {{ associate.telephone|pretty_formatted_phonenumber }}
                     </td>

@@ -346,6 +346,14 @@ class Associate(AbstractPerson):
         '''
         super(Associate, self).save(*args, **kwargs)
 
+    def past_30_days_activity_sheet_count(self):
+        # Get 30 days from right now...
+        today = timezone.now()
+        today_minus_30_days = today - timedelta(days=30)
+
+        # Count only items within the past 30 days.
+        return self.activity_sheet.filter(created_at__gte=today_minus_30_days).count()
+
 
 # def validate_model(sender, **kwargs):
 #     if 'raw' in kwargs and not kwargs['raw']:
