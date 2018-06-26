@@ -352,7 +352,7 @@ class Associate(AbstractPerson):
         today_minus_30_days = today - timedelta(days=30)
 
         # Count only items within the past 30 days.
-        return self.activity_sheet.filter(created_at__gte=today_minus_30_days).count()
+        return self.activity_sheet.filter(created__gte=today_minus_30_days).count()
 
 
 # def validate_model(sender, **kwargs):
