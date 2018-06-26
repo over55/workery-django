@@ -62,6 +62,7 @@
         <table class="table table-striped">
             <thead>
                 <tr>
+                    <th>{% trans 'ID #' %}</th>
                     <th>{% trans 'Due Date' %}</th>
                     <th>{% trans 'Task' %}</th>
                     <th>{% trans 'Client Name' %}</th>
@@ -72,6 +73,7 @@
             <tbody>
                 {% for task_item in task_list %}
                 <tr>
+                    <td>{{ task_item.id }}</td>
                     <td>{{ task_item.due_date }}</td>
                     <td>{{ task_item.title }}</td>
                     <td>
