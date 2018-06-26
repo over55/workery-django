@@ -3,6 +3,7 @@ import django_filters
 from django_filters import rest_framework as filters
 from starterkit.drf.permissions import IsAuthenticatedAndIsActivePermission
 from django.conf.urls import url, include
+from django.db import transaction
 from django.shortcuts import get_list_or_404, get_object_or_404
 from rest_framework import generics
 from rest_framework import authentication, viewsets, permissions, status
@@ -30,6 +31,7 @@ class SkillSetListCreateAPIView(generics.ListCreateAPIView):
         CanListCreateSkillSetPermission
     )
 
+    @transaction.atomic
     def get_queryset(self):
         """
         List
@@ -37,6 +39,7 @@ class SkillSetListCreateAPIView(generics.ListCreateAPIView):
         queryset = SkillSet.objects.all().order_by('category', 'sub_category')
         return queryset
 
+    @transaction.atomic
     def post(self, request, format=None):
         """
         Create
@@ -56,6 +59,7 @@ class SkillSetRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView
         CanRetrieveUpdateDestroySkillSetPermission
     )
 
+    @transaction.atomic
     def get(self, request, pk=None):
         """
         Retrieve
@@ -68,6 +72,7 @@ class SkillSetRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView
             status=status.HTTP_200_OK
         )
 
+    @transaction.atomic
     def put(self, request, pk=None):
         """
         Update
@@ -79,6 +84,7 @@ class SkillSetRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView
         serializer.save()
         return Response(serializer.data, status=status.HTTP_200_OK)
 
+    @transaction.atomic
     def delete(self, request, pk=None):
         """
         Delete
