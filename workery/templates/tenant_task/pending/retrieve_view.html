@@ -107,7 +107,7 @@
                 <tr>
                     <th scope="row" class="bg-light">Client Name</th>
                     <td id="client_name">
-                        -                       
+                        -
                     </td>
                 </tr>
                 <tr>
@@ -123,6 +123,16 @@
                     </td>
                 </tr>
                 {% endif %}
+                <tr>
+                    <th scope="row" class="bg-light">Skill Set(s)</th>
+                    <td id="skill_sets">
+                        {% for skill_set in task_item.job.skill_sets.all %}
+                            <span class="badge badge-info badge-lg">{{ skill_set.sub_category }}</span>
+                        {% empty %}
+                            -
+                        {% endfor %}
+                    </td>
+                </tr>
                 <tr>
                     <th scope="row" class="bg-light">Required Action</th>
                     <td id="selected_comment_id">

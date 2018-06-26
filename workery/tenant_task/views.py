@@ -83,14 +83,9 @@ class PendingTaskRetrieveForActivitySheetView(LoginRequiredMixin, WorkeryDetailV
 
         task_item = modified_context['task_item']
 
-        # Get 30 days from right now...
-        today = timezone.now()
-        today_minus_30_days = today - timedelta(days=30)
-
         # STEP 1 - Find all the items belonging to this job and get the `pk` values.
         activity_sheet_associate_pks = ActivitySheetItem.objects.filter(
-           job=task_item.job,
-           created_at__gte=today_minus_30_days  # Only return latest within the past 30 days.
+           job=task_item.job
         ).values_list('associate_id', flat=True)
 
         # STEP 2 -

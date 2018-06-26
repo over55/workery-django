@@ -115,7 +115,9 @@
                     </td>
                     <td>{{ item.has_accepted_job }}</td>
                     <td>{{ item.comment }}</td>
-                    <td></td>
+                    <td>
+                        <a href="{% url 'workery_tenant_pending_task_retrieve_for_activity_sheet_retrieve_and_create' task_item.id %}?associate_id={{ item.associate.id }}">Re-assign</a>
+                    </td>
                 </tr>
                 {% empty %}
                 No activity sheet items yet.
