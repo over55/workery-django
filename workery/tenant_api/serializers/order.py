@@ -112,10 +112,18 @@ class WorkOrderListCreateSerializer(serializers.ModelSerializer):
         follow_up_days_number = validated_data.get('follow_up_days_number', 0)
         invoice_service_fee = validated_data.get('invoice_service_fee', None)
 
+        # Assign the job type based off of the customers type.
+        job_type_of = UNASSIGNED_JOB_TYPE_OF_ID
+        if customer.type_of == RESIDENTIAL_CUSTOMER_TYPE_OF_ID:
+            job_type_of = RESIDENTIAL_JOB_TYPE_OF_ID
+        if customer.type_of == RESIDENTIAL_CUSTOMER_TYPE_OF_ID:
+            job_type_of = COMMERCIAL_JOB_TYPE_OF_ID
+
         # Create our object.
         order = WorkOrder.objects.create(
             customer=customer,
             associate=associate,
+            type_of=job_type_of,
             assignment_date=assignment_date,
             is_ongoing=is_ongoing,
             is_home_support_service=is_home_support_service,
