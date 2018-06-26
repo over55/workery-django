@@ -454,6 +454,7 @@ RAVEN_CONFIG = {
 # https://docs.djangoproject.com/en/2.0/howto/error-reporting/
 
 IGNORABLE_404_URLS = [
+    re.compile(r'^$'),
     re.compile(r'^/$'),
     re.compile(r'\.(php|cgi)$'),
     re.compile(r'^/phpmyadmin/'),
