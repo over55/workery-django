@@ -231,12 +231,35 @@ class StaffListCreateSerializer(serializers.ModelSerializer):
         validated_data['telephone'] = telephone
         validated_data['other_telephone'] = other_telephone
 
+        # Extract our "email" field.
+        email = validated_data.get('email', None)
+
+        #-------------------
+        # Create our user.
+        #-------------------
+
+        owner = SharedUser.objects.create(
+            first_name=validated_data['given_name'],
+            last_name=validated_data['last_name'],
+            email=email,
+            is_active=validated_data['is_active'],
+            franchise=self.context['franchise'],
+            was_email_activated=True
+        )
+        logger.info("Created shared user.")
+
+        # Attach the user to the `group` group.
+        group_membership = validated_data.get('group_membership', None)
+        owner.groups.set([int(group_membership)])
+
+        # Update the password.
+        password = validated_data.get('password', None)
+        owner.set_password(password)
+        owner.save()
+
         #---------------------------------------------------
         # Create our `Staff` object in our tenant schema.
         #---------------------------------------------------
-        # Extract our "email" field.
-        owner = None
-        email = validated_data.get('email', None)
 
         # Create an "Staff".
         staff = Staff.objects.create(
@@ -288,33 +311,11 @@ class StaffListCreateSerializer(serializers.ModelSerializer):
         )
         logger.info("Created staff member.")
 
-        #-------------------
-        # Create our user.
-        #-------------------
-
-        user = SharedUser.objects.create(
-            first_name=validated_data['given_name'],
-            last_name=validated_data['last_name'],
-            email=email,
-            is_active=validated_data['is_active'],
-            franchise=self.context['franchise'],
-            was_email_activated=True
-        )
-        logger.info("Created shared user.")
-
-        # Attach the user to the `group` group.
-        group_membership = validated_data.get('group_membership', None)
-        user.groups.set([int(group_membership)])
-
-        # Update the password.
-        password = validated_data.get('password', None)
-        user.set_password(password)
-        user.save()
-
         # Update our staff again.
-        staff.owner = user
+        staff.owner = owner
         staff.email = email
         staff.save()
+        logger.info("Attached user object to staff member.")
 
         #------------------------
         # Set our `Tag` objects.
@@ -483,14 +484,26 @@ class StaffRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         """
         Override this function to include extra functionality.
         """
-        if instance.owner is None:
-            raise Exception("Owner has not been assigned")
-
         # For debugging purposes only.
         # print(validated_data)
 
         # Get our inputs.
         email = validated_data.get('email', instance.email)
+
+        #-------------------------------------
+        # Bugfix: Created `SharedUser` object.
+        #-------------------------------------
+        if instance.owner is None:
+            instance.owner = SharedUser.objects.create(
+                first_name=validated_data['given_name'],
+                last_name=validated_data['last_name'],
+                email=email,
+                is_active=validated_data['is_active'],
+                franchise=self.context['franchise'],
+                was_email_activated=True
+            )
+            instance.save()
+            logger.info("BUGFIX: Created shared user and attached to staff.")
 
         #---------------------------
         # Update `SharedUser` object.
