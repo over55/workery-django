@@ -25,6 +25,23 @@
    // STEP 2 OF 2: Save the api key in the browser.
    localStorage.setItem("private_api_key", private_api_key);
    localStorage.setItem("private_api_key_orig_iat", private_api_key_orig_iat);
+   
+   function ajax_delete(obj_id) {
+        delete_away_log_api(
+            parseInt(obj_id),
+            function(away_log) {
+                console.log(away_log);
+                window.location = "{% url 'workery_tenant_settings_away_log_list' %}?was_deleted=True";
+            },
+            function(json_results) {
+                console.log(json_results);
+            },
+            function(xhr, status) {
+                console.log(xhr, status);
+            }
+        );
+    }
+
 </script>
 {% endif %}
 
@@ -87,6 +104,7 @@
                   <th scope="col">Associate</th>
                   <th scope="col">Reason</th>
                   <th scope="col">Away until</th>
+                  <th></th>
                 </tr>
               </thead>
               <tbody>
@@ -108,6 +126,14 @@
                     {% else %}
                      further notice.
                     {% endif %}
+                  </td>
+                  <td>
+                     <button id="id_delete_btn"
+                             class="text-danger close"
+                             type="button"
+                           onclick="ajax_delete({{ awaylog.id }});">
+                         <i class="fas fa-times"></i>
+                     </button>
                   </td>
                 </tr>
                 {% empty %}
