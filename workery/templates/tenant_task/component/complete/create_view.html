@@ -126,19 +126,31 @@ function get_selected_radio_value(radiofields_name) {
 					<tr>
 					    <th scope="row" class="bg-light">Customer Name</th>
 					    <td id="customer">
-						-
+                            {% if task_item.job.customer %}
+                                <a href="{% url 'workery_tenant_customer_lite_retrieve' 'summary' task_item.job.customer.id %}" target="_blank">
+                                    {{ task_item.job.customer }}&nbsp;<i class="fas fa-external-link-alt"></i>
+                                </a>
+                            {% else %}
+                                {% trans 'Unassigned' %}
+                            {% endif %}
 					    </td>
 					</tr>
 					<tr>
 					    <th scope="row" class="bg-light">Associate Name</th>
 					    <td id="associate">
-						-
+                            {% if task_item.job.associate %}
+                                <a href="{% url 'workery_tenant_member_lite_retrieve' 'summary' task_item.job.associate.id %}" target="_blank">
+                                    {{ task_item.job.associate }}&nbsp;<i class="fas fa-external-link-alt"></i>
+                                </a>
+                            {% else %}
+                                {% trans 'Unassigned' %}
+                            {% endif %}
 					    </td>
 					</tr>
 					<tr>
 					    <th scope="row" class="bg-light">Job Description</th>
 					    <td id="description">
-						-
+						    {{ task_item.description }}
 					    </td>
 					</tr>
 				    </tbody>
