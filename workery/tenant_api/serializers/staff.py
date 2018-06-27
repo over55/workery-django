@@ -487,7 +487,7 @@ class StaffRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         # print(validated_data)
 
         # Get our inputs.
-        email = validated_data.get('email', instance.owner.email)
+        email = validated_data.get('email', instance.email)
 
         #---------------------------
         # Update `SharedUser` object.
