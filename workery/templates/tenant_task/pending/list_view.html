@@ -1,5 +1,5 @@
 {% extends 'tenant_foundation/tenant_base.html' %}
-{% load staticfiles i18n shared_foundation_tags humanize %}
+{% load staticfiles i18n shared_foundation_tags humanize tz %}
 
 {% block title %}
 {% trans 'Tasks | Workery' %}
@@ -72,7 +72,7 @@
             <tbody>
                 {% for task_item in task_list %}
                 <tr>
-                    <td>{{ task_item.due_date }}</td>
+                    <td>{{ task_item.due_date|timezone:request.tenant.timezone_name }}</td>
                     <td>{{ task_item.title }}</td>
                     <td>
                         {% if task_item.job.customer %}

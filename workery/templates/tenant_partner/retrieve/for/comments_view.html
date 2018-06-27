@@ -209,7 +209,7 @@ function click_add_button() {
                                 </h5>
                                 <h6 class="col-sm-2 text-secondary text-right">
                                     {% if comment.created_by %}
-                                        {{ comment.created_at|timezone:request.tenant.timezone_name|date:"N j, Y"}} <br> {{ comment.created_at|timezone:request.tenant.timezone_name|date:"P"}}
+                                        {{ comment.created_at|timezone:request.tenant.timezone_name|date:"N j, Y" }} <br> {{ comment.created_at|timezone:request.tenant.timezone_name|date:"P" }}
                                     {% else %}
                                         {% trans '-' %}
                                     {% endif %}

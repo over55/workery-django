@@ -1,4 +1,4 @@
-{% load staticfiles i18n humanize shared_foundation_tags %}
+{% load staticfiles i18n humanize tz shared_foundation_tags %}
 <div class="col-md-10 mx-auto py-2" id="id_detail_form">
         <h3 class="py-2 text-center mb-4">Client Details</h3>
         <!-- ############ PERSON ############ -->
@@ -154,7 +154,7 @@
                 <tr>
                     <th scope="row" class="bg-light">Created at</th>
                     <td>
-                        {% if customer.created %}{{ customer.created }}{% else %}-{% endif %}
+                        {% if customer.created %}{{ customer.created|timezone:request.tenant.timezone_name }}{% else %}-{% endif %}
                     </td>
                 </tr>
                 <tr>
@@ -172,7 +172,7 @@
                 <tr>
                     <th scope="row" class="bg-light">Modified at</th>
                     <td>
-                        {% if customer.last_modified %}{{ customer.last_modified }}{% else %}-{% endif %}
+                        {% if customer.last_modified %}{{ customer.last_modified|timezone:request.tenant.timezone_name }}{% else %}-{% endif %}
                     </td>
                 </tr>
                 <tr>

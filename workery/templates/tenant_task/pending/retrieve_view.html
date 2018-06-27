@@ -1,5 +1,5 @@
 {% extends 'tenant_foundation/tenant_base.html' %}
-{% load staticfiles i18n shared_foundation_tags humanize %}
+{% load staticfiles i18n shared_foundation_tags humanize tz %}
 {% block title %}
 {% trans 'Task #' %}{{ task_item.id|intcomma }} {% trans '| Workery' %}
 {% endblock title %}
@@ -76,7 +76,7 @@
                 <tr>
                     <th scope="row" class="bg-light">Created At</th>
                     <td id="selected_job_type_id">
-                        {{ task_item.created_at }}
+                        {{ task_item.created_at|timezone:request.tenant.timezone_name }}
                     </td>
                 </tr>
                 <tr>
