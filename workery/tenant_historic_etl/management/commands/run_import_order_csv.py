@@ -364,7 +364,7 @@ class Command(BaseCommand):
                     #     job=order,
                     #     defaults={
                     #         'type_of': FOLLOW_UP_CUSTOMER_SURVEY_TASK_ITEM_TYPE_OF_ID,
-                    #         'title': _('7 day follow up'),
+                    #         'title': _('Completion Survey'),
                     #         'description': _('Please call up the client and perform the satisfaction survey.'),
                     #         'due_date': timezone.now(),
                     #         'is_closed': True,
@@ -382,7 +382,7 @@ class Command(BaseCommand):
                 #         job=order,
                 #         defaults={
                 #             'type_of': FOLLOW_UP_CUSTOMER_SURVEY_TASK_ITEM_TYPE_OF_ID,
-                #             'title': _('7 day follow up'),
+                #             'title': _('Completion Survey'),
                 #             'description': _('Please call up the client and perform the satisfaction survey.'),
                 #             'due_date': timezone.now(),
                 #             'is_closed': False,
@@ -400,7 +400,7 @@ class Command(BaseCommand):
                         job=order,
                         defaults={
                             'type_of': FOLLOW_UP_CUSTOMER_SURVEY_TASK_ITEM_TYPE_OF_ID,
-                            'title': _('7 day follow up'),
+                            'title': _('Completion Survey'),
                             'description': _('Please call up the client and perform the satisfaction survey.'),
                             'due_date': timezone.now(),
                             'is_closed': False,

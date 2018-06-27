@@ -125,7 +125,7 @@ class WorkOrderCompleteCreateSerializer(serializers.Serializer):
             # STEP 5 - Create our new task for following up.
             next_task_item = TaskItem.objects.create(
                 type_of = FOLLOW_UP_CUSTOMER_SURVEY_TASK_ITEM_TYPE_OF_ID,
-                title = _('7 day follow up'),
+                title = _('Completion Survey'),
                 description = _('Please call up the client and perform the satisfaction survey.'),
                 due_date = get_todays_date_plus_days(7),
                 is_closed = False,
