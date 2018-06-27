@@ -105,6 +105,7 @@
                 // 'other_telephone_type_of': {{ shared_constants.MOBILE_CONTACT_POINT_TYPE_OF_ID }},
                 // 'fax_number': fax_number
                 'schema_name': localStorage.getItem("tmp_shared_franchise_schema_name"),
+                'timezone_name': localStorage.getItem("tmp_shared_franchise_timezone_name"),
             },
             function(result_dict) { // Success
                 // FOR DEBUGGING PURPOSES ONLY.
@@ -122,6 +123,7 @@
                 localStorage.removeItem("tmp_shared_franchise_postal_code");
                 localStorage.removeItem("tmp_shared_franchise_post_office_box_number");
                 localStorage.removeItem("tmp_shared_franchise_schema_name")
+                localStorage.removeItem("tmp_shared_franchise_timezone_name")
                 // localStorage.removeItem("tmp_shared_franchise_email");
                 // localStorage.removeItem("tmp_shared_franchise_telephone");
                 // localStorage.removeItem("tmp_shared_franchise_other_telephone");

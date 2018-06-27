@@ -1,5 +1,5 @@
 {% extends 'shared_franchise/base_view.html' %}
-{% load staticfiles i18n shared_foundation_tags humanize %}
+{% load staticfiles i18n shared_foundation_tags humanize tz %}
 
 {% block title %}
 {% trans 'Franchises | Workery' %}
@@ -83,8 +83,9 @@
         // $('#email').val(localStorage.getItem("tmp_shared_franchise_email"));
         // $('#telephone').val(localStorage.getItem("tmp_shared_franchise_telephone"));
         // $('#comment').val(localStorage.getItem("tmp_shared_franchise_comment"));
+        $('#timezone_name').val(localStorage.getItem("tmp_shared_franchise_timezone_name"));
 
-// All fields individual inline validation check
+                // All fields individual inline validation check
 			    var form_franchise = document.getElementById('add-franchise-form');
 
 			    var a_shortname = document.getElementById('short_name');
@@ -351,6 +352,7 @@
         // // var telephone_extension = $('#id_telephone_extension').val();
         // var other_telephone = $('#other_phonenumber').val();
         // // var fax_number = $('#id_fax_number').val();
+        var timezone_name = $('#timezone_name').val();
 
 
         //----------------------------------------------------------------//
@@ -371,6 +373,7 @@
         // localStorage.setItem("tmp_shared_franchise_email", email);
         // localStorage.setItem("tmp_shared_franchise_telephone", telephone);
         // localStorage.setItem("tmp_shared_franchise_other_telephone", other_telephone);
+        localStorage.setItem("tmp_shared_franchise_timezone_name", timezone_name);
 
         //----------------------------------------------------------------//
         //              VALIDATE ALL THE FIELDS IN THIS FORM              //
@@ -390,6 +393,7 @@
                 'postal_code': localStorage.getItem("tmp_shared_franchise_postal_code"),
                 'post_office_box_number': localStorage.getItem("tmp_shared_franchise_post_office_box_number"),
                 'schema_name': localStorage.getItem("tmp_shared_franchise_schema_name"),
+                'timezone_name': localStorage.getItem("tmp_shared_franchise_timezone_name"),
                 // 'email': localStorage.getItem("tmp_shared_franchise_email"),
                 // 'area_served': area_served,
                 // 'fax_number': null,
@@ -419,7 +423,7 @@
 
                 // STEP 2: CLEAR EXISTING TEXT.
                 $('#all_error_result').html("");
-		$('#all_error_result').removeClass('error-block');
+		        $('#all_error_result').removeClass('error-block');
 
                 // STEP 3: PRINT OUR ERROR IN THE TOP ERROR PANEL.
                 for(var prop in err) {
@@ -428,7 +432,7 @@
                         var fdname = humanize(prop);
 
                         $('#all_error_result').append("<div class='form-error'><b>"+fdname+":</b> "+val+" </div>");
-			$('#all_error_result').addClass('error-block');
+			            $('#all_error_result').addClass('error-block');
                     }
                 }
 
@@ -571,6 +575,17 @@
                     <input type="text" class="form-control form-control-lg border border-success" id="post_office_box_number" name="post_office_box_number" placeholder="Post Office Box #" minlength="3" maxlength="255" required>
                     <div id="post_office_box_number-error" class="invalid-feedback"></div>
                 </div>
+
+                <div class="form-group col-md-7 mb-4">
+                    {% get_current_timezone as TIME_ZONE %}
+                    <label for="timezone">Time zone:</label>
+                    <select name="timezone_name" id="timezone_name" class="form-control form-control-lg">
+                        {% for tz in timezones %}
+                            <option value="{{ tz }}"{% if tz == request.tenant.timezone_name %} selected{% endif %}>{{ tz }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
             </div>
             <!----------------------------------------------------------------->
             <!----------------------------------------------------------------->

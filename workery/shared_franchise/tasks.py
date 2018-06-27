@@ -21,6 +21,7 @@ def create_franchise_func(validated_data):
     street_address = validated_data.get('street_address', None)
     street_address_extra = validated_data.get('street_address_extra', None)
     schema_name = validated_data.get('schema_name', None)
+    timezone_name = validated_data.get('timezone_name', None)
     logger.info("Input data:", str(validated_data))
     call_command(
         'create_franchise',
@@ -35,5 +36,6 @@ def create_franchise_func(validated_data):
         postal_code,
         street_address,
         street_address_extra,
+        timezone_name,
         verbosity=0
     )

@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import pytz
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.views.generic.edit import CreateView, FormView, UpdateView
@@ -32,6 +33,7 @@ class FranchiseCreatePage1of3View(TemplateView):
     def get_context_data(self, **kwargs):
         modified_context = super().get_context_data(**kwargs)
         modified_context['menu_id'] = 'franchise' # Required
+        modified_context['timezones'] = pytz.common_timezones
         return modified_context # Return our modified context.
 
 

@@ -43,6 +43,11 @@ class SharedFranchiseListCreateSerializer(serializers.ModelSerializer):
         allow_blank=False,
     )
 
+    timezone_name = serializers.CharField(
+        required=True,
+        allow_blank=False,
+    )
+
     class Meta:
         model = SharedFranchise
         fields = (
@@ -53,6 +58,7 @@ class SharedFranchiseListCreateSerializer(serializers.ModelSerializer):
             'description',
             'name',
             'url',
+            'timezone_name',
 
             # # ContactPoint
             # 'area_served',
@@ -106,7 +112,7 @@ class SharedFranchiseListCreateSerializer(serializers.ModelSerializer):
         street_address_extra = validated_data.get('street_address_extra', None)
         schema_name = validated_data.get('schema_name', None)
         until_date = validated_data.get('until_date', None)
-        until_date = validated_data.get('until_date', None)
+        timezone_name = validated_data.get('timezone_name', None)
         logger.info("Input data:", str(validated_data))
 
         # #-----------------------------

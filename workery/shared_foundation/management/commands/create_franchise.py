@@ -37,6 +37,7 @@ class Command(BaseCommand):
         parser.add_argument('postal_code', nargs='+', type=str)
         parser.add_argument('street_address', nargs='+', type=str)
         parser.add_argument('street_address_extra', nargs='+', type=str)
+        parser.add_argument('timezone_name', nargs='+', type=str)
 
     def handle(self, *args, **options):
         # Get the user inputs.
@@ -51,6 +52,7 @@ class Command(BaseCommand):
         postal_code = options['postal_code'][0]
         street_address = options['street_address'][0]
         street_address_extra = options['street_address_extra'][0]
+        timezone_name = options['timezone_name'][0]
 
         # Connection needs first to be at the public schema, as this is where
         # the database needs to be set before creating a new tenant. If this is
@@ -68,7 +70,7 @@ class Command(BaseCommand):
         self.begin_processing(schema_name, name, alternate_name, description,
                              address_country, address_locality, address_region,
                              post_office_box_number, postal_code, street_address,
-                             street_address_extra)
+                             street_address_extra, timezone_name)
 
         # Used for debugging purposes.
         self.stdout.write(
@@ -78,7 +80,7 @@ class Command(BaseCommand):
     def begin_processing(self, schema_name, name, alternate_name, description,
                          address_country, address_locality, address_region,
                          post_office_box_number, postal_code, street_address,
-                         street_address_extra):
+                         street_address_extra, timezone_name):
         """
         Functin will create a new tenant based on the parameters.
         """
@@ -95,7 +97,8 @@ class Command(BaseCommand):
             post_office_box_number=post_office_box_number,
             postal_code=postal_code,
             street_address=street_address,
-            street_address_extra=street_address_extra
+            street_address_extra=street_address_extra,
+            timezone_name=timezone_name
         )
         tenant.save()
 
