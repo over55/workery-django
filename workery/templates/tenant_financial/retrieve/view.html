@@ -55,6 +55,19 @@
     <!------------------------------------------------------------------------->
     <!-- end BACK BUTTON -->
 
+    <!-- NOTIFICATION -->
+    <!------------------------------------------------------------------------->
+    {% if parameters.was_modified == 'True' %}
+        <div class="alert bg-success text-white alert-dismissible fade show" role="alert">
+		    Job financials <strong>Successfully</strong> modified.
+		    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+		        <span aria-hidden="true">×</span>
+		    </button>
+		</div>
+    {% endif %}
+    <!------------------------------------------------------------------------->
+    <!-- end NOTIFICATION -->
+
     <h1>{% trans 'View Job Financials' %}</h1>
 
     <!-- FORM -->

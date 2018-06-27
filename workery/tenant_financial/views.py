@@ -9,7 +9,7 @@ from shared_foundation.mixins import (
     WorkeryListView,
     WorkeryDetailView
 )
-from tenant_foundation.models import WORK_ORDER_STATE, WorkOrder
+from tenant_foundation.models import WORK_ORDER_STATE, WorkOrder, WorkOrderServiceFee
 
 
 class UnpaidJobOrderListView(LoginRequiredMixin, WorkeryListView):
@@ -128,6 +128,9 @@ class JobUpdateView(LoginRequiredMixin, WorkeryDetailView):
             from django.core.exceptions import PermissionDenied
             raise PermissionDenied(_('You entered wrong format.'))
         modified_context['template'] = template
+
+        # Attach all the service fees.
+        modified_context['service_fees'] = WorkOrderServiceFee.objects.all()
 
         # Return our modified context.
         return modified_context

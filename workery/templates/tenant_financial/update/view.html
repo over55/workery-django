@@ -65,8 +65,10 @@
         console.log("invoice_material_amount", invoice_material_amount);
         console.log("invoice_tax_amount", invoice_tax_amount);
 
-        // Constants
-        var service_fee = parseFloat("{{ job_item.invoice_service_fee.percentage }}");
+        // Fetch the selected "service fee" which `Workery` will be charging.
+        var service_fee = $('#service_fees option:selected').text();
+        service_fee = service_fee.replace(" %", "");
+        service_fee = service_fee = parseFloat(service_fee);
 
         // Calculate
         var total_amount = 0;
@@ -104,6 +106,7 @@
         var invoice_material_amount = $('#invoice_material_amount').val();
         var invoice_tax_amount = $('#invoice_tax_amount').val();
         var invoice_total_amount = $('#invoice_total_amount').val();
+        var invoice_service_fee_id = $('#service_fees').val();
         var invoice_service_fee_amount = $('#invoice_service_fee_amount').val();
         var invoice_service_fee_payment_date = $('#invoice_service_fee_payment_date').val();
 
@@ -161,7 +164,7 @@
                 'invoice_tax_amount': invoice_tax_amount,
                 'invoice_total_amount': invoice_total_amount,
                 'invoice_service_fee_amount': invoice_service_fee_amount,
-                'invoice_service_fee': {{ job_item.invoice_service_fee.id }},
+                'invoice_service_fee': invoice_service_fee_id,
                 'invoice_service_fee_payment_date': invoice_service_fee_payment_date
             },
             function(result_dict) { // Success
@@ -277,7 +280,7 @@
                         <div class="form-row">
                                 <!-- Invoice Date -->
                                 <div class="form-group col-md-7 mb-4">
-                                    <label for="invoice_date">Invoice Date</label>
+                                    <label for="invoice_date">Invoice Date&nbsp;<sup>*</sup></label>
                                     <div class="input-group input-group-lg">
                                         <input type="text" class="form-control form-control-lg border border-primary" id="invoice_date" name="invoice_date" placeholder="yyyy-mm-dd" required value="{% if job_item.invoice_date %}{{ job_item.invoice_date|date:"Y-m-d" }}{% endif %}">
                                         <div class="input-group-append">
@@ -322,6 +325,17 @@
                                     <div id="invoice_tax_amount-error" class="invalid-feedback"></div>
                                 </div>
                                 <!-- end Invoice Material -->
+                                <!-- Service Fee -->
+                                <div class="form-group col-md-7 mb-4">
+                                    <label for="service_fees">Service Fee Rate&nbsp;<sup>*</sup></label>
+                                    <select class="custom-select form-control-lg border-primary" id="service_fees" name="service_fees" required onchange="calculate_total_and_service_fee();">
+                                        {% for service_fee in service_fees.all %}
+                                            <option value="{{ service_fee.id }}" {% if job_item.invoice_service_fee == service_fee %}selected="true"{% endif %}>{{ service_fee.percentage }} %</option>
+                                        {% endfor %}
+                    		        </select>
+                                    <div id="service_fees-error" class="invalid-feedback"></div>
+                                </div>
+                                <!-- end Service Fee -->
                                 <!-- Invoice Total -->
                                 <div class="form-group col-md-7 mb-4">
                                     <label for="invoice_total_amount">Total</label>
@@ -338,7 +352,7 @@
                                 <!-- end Invoice Total -->
                                 <!-- Service Fee Payment Date -->
                                 <div class="form-group col-md-7 mb-4">
-                                    <label for="invoice_service_fee_payment_date">Service Fee Payment Date</label>
+                                    <label for="invoice_service_fee_payment_date">Service Fee Payment Date&nbsp;<sup>*</sup></label>
                                     <div class="input-group input-group-lg">
                                         <input type="text" class="form-control form-control-lg border border-primary" id="invoice_service_fee_payment_date" name="invoice_service_fee_payment_date" placeholder="yyyy-mm-dd" required value="{% if job_item.invoice_service_fee_payment_date %}{{ job_item.invoice_service_fee_payment_date|date:"Y-m-d" }}{% endif %}">
                                         <div class="input-group-append">
