@@ -66,9 +66,11 @@
         console.log("invoice_tax_amount", invoice_tax_amount);
 
         // Fetch the selected "service fee" which `Workery` will be charging.
-        var service_fee = $('#service_fees option:selected').text();
-        service_fee = service_fee.replace(" %", "");
-        service_fee = service_fee = parseFloat(service_fee);
+        var service_fee_str = $('#service_fees').val();
+        var service_fee_arr = service_fee_str.split("|");
+        var service_fee_id = service_fee_arr[0];
+        var service_fee_percentage = service_fee_arr[1];
+        var service_fee = service_fee = parseFloat(service_fee_percentage);
 
         // Calculate
         var total_amount = 0;
@@ -106,9 +108,13 @@
         var invoice_material_amount = $('#invoice_material_amount').val();
         var invoice_tax_amount = $('#invoice_tax_amount').val();
         var invoice_total_amount = $('#invoice_total_amount').val();
-        var invoice_service_fee_id = $('#service_fees').val();
         var invoice_service_fee_amount = $('#invoice_service_fee_amount').val();
         var invoice_service_fee_payment_date = $('#invoice_service_fee_payment_date').val();
+
+        // Get our service fee id.
+        var invoice_service_fee_str = $('#service_fees').val();
+        var invoice_service_fee_arr = invoice_service_fee_str.split("|");
+        var invoice_service_fee_id = invoice_service_fee_arr[0];
 
         // Convert to our django format.
         if (invoice_date !== undefined && invoice_date != null && invoice_date.length > 0) {
@@ -183,7 +189,7 @@
 
                 // STEP 2: CLEAR EXISTING TEXT.
                 $('#all_error_result').html("");
-		$('#all_error_result').removeClass('error-block');
+		        $('#all_error_result').removeClass('error-block');
                 // STEP 3: PRINT OUR ERROR.
                 for(var prop in err) {
                     if(err.hasOwnProperty(prop)) {
@@ -330,7 +336,7 @@
                                     <label for="service_fees">Service Fee Rate&nbsp;<sup>*</sup></label>
                                     <select class="custom-select form-control-lg border-primary" id="service_fees" name="service_fees" required onchange="calculate_total_and_service_fee();">
                                         {% for service_fee in service_fees.all %}
-                                            <option value="{{ service_fee.id }}" {% if job_item.invoice_service_fee == service_fee %}selected="true"{% endif %}>{{ service_fee.percentage }} %</option>
+                                            <option value="{{ service_fee.id }}|{{ service_fee.percentage }}" {% if job_item.invoice_service_fee == service_fee %}selected="true"{% endif %}>{{ service_fee.title }} %</option>
                                         {% endfor %}
                     		        </select>
                                     <div id="service_fees-error" class="invalid-feedback"></div>
