@@ -26,7 +26,7 @@
    // STEP 2 OF 2: Save the api key in the browser.
    localStorage.setItem("private_api_key", private_api_key);
    localStorage.setItem("private_api_key_orig_iat", private_api_key_orig_iat);
-   
+
    {% endif %}
 
    function ajax_delete(obj_id) {
@@ -34,7 +34,7 @@
             parseInt(obj_id),
             function(away_log) {
                 console.log(away_log);
-                window.location = "{% url 'workery_tenant_settings_away_log_list' %}?was_deleted=True";
+                window.location = "{% url 'workery_tenant_dashboard_master' %}?was_deleted=True";
             },
             function(json_results) {
                 console.log(json_results);
@@ -46,6 +46,7 @@
     }
 
 </script>
+
 
 <main id="main" role="main">
     <h1>Dashboard</h1>
@@ -95,6 +96,19 @@
         </div>
 
     </section>
+
+    <!-- NOTIFICATION -->
+    <!------------------------------------------------------------------------->
+    {% if parameters.was_deleted == 'True' %}
+        <div class="alert bg-success text-white alert-dismissible fade show" role="alert">
+            Announcement <strong>Successfully</strong> deleted.
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">×</span>
+            </button>
+        </div>
+    {% endif %}
+    <!------------------------------------------------------------------------->
+    <!-- end NOTIFICATION -->
 
     <!-- AWAY LOGS -->
     <div class="jumbotron">
