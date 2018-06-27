@@ -72,7 +72,7 @@
             <tbody>
                 {% for task_item in task_list %}
                 <tr>
-                    <td>{{ task_item.due_date|timezone:timezone_name }}</td>
+                    <td>{{ task_item.due_date }}</td>
                     <td>{{ task_item.title }}</td>
                     <td>
                         {% if task_item.job.customer %}
