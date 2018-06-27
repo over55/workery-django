@@ -494,16 +494,22 @@ class StaffRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         # Bugfix: Created `SharedUser` object.
         #-------------------------------------
         if instance.owner is None:
-            instance.owner = SharedUser.objects.create(
-                first_name=validated_data['given_name'],
-                last_name=validated_data['last_name'],
-                email=email,
-                is_active=validated_data['is_active'],
-                franchise=self.context['franchise'],
-                was_email_activated=True
-            )
-            instance.save()
-            logger.info("BUGFIX: Created shared user and attached to staff.")
+            owner = SharedUser.objects.filter(email=email).first()
+            if owner:
+                instance.owner = owner
+                instance.save()
+                logger.info("BUGFIX: Attached existing shared user to staff.")
+            else:
+                instance.owner = SharedUser.objects.create(
+                    first_name=validated_data['given_name'],
+                    last_name=validated_data['last_name'],
+                    email=email,
+                    is_active=validated_data['is_active'],
+                    franchise=self.context['franchise'],
+                    was_email_activated=True
+                )
+                instance.save()
+                logger.info("BUGFIX: Created shared user and attached to staff.")
 
         #---------------------------
         # Update `SharedUser` object.
