@@ -483,6 +483,9 @@ class StaffRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         """
         Override this function to include extra functionality.
         """
+        if instance.owner is None:
+            raise Exception("Owner has not been assigned")
+
         # For debugging purposes only.
         # print(validated_data)
 
