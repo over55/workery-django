@@ -16,7 +16,9 @@ from tenant_foundation.models import WorkOrder, WORK_ORDER_STATE
 class JobSummaryView(LoginRequiredMixin, WorkeryListView):
     context_object_name = 'job_list'
     queryset = WorkOrder.objects.filter(
-        state=WORK_ORDER_STATE.IN_PROGRESS
+        Q(state=WORK_ORDER_STATE.NEW) |
+        Q(state=WORK_ORDER_STATE.IN_PROGRESS) |
+        Q(state=WORK_ORDER_STATE.DECLINED)
     ).order_by('-id').prefetch_related(
         'customer',
         'associate'

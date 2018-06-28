@@ -27,6 +27,8 @@ from tenant_foundation.utils import *
 
 
 class WORK_ORDER_STATE:
+    NEW = 'new'
+    DECLINED = 'declined'
     PENDING = 'pending'
     CANCELLED = 'cancelled'
     ONGOING = 'ongoing'
@@ -234,7 +236,7 @@ class WorkOrder(models.Model):
     state = FSMField(
         _('State'),
         help_text=_('The state of this job order.'),
-        default=WORK_ORDER_STATE.PENDING,
+        default=WORK_ORDER_STATE.NEW,
         blank=True,
         db_index=True,
     )

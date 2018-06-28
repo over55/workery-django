@@ -131,9 +131,9 @@ class WorkOrderUnassignCreateSerializer(serializers.Serializer):
                 'id': str(task_item.id)
             })
 
-        # Update our job.
+        # Update our job to be in a `declined` state.
         job.associate = None
-        job.state = WORK_ORDER_STATE.PENDING
+        job.state = WORK_ORDER_STATE.DECLINED
         job.save()
 
         # For debugging purposes only.

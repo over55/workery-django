@@ -157,6 +157,11 @@ class ActivitySheetItemCreateSerializer(serializers.Serializer):
             job.state = WORK_ORDER_STATE.IN_PROGRESS
             job.save()
 
+        else:
+            job.associate = None
+            job.state = WORK_ORDER_STATE.DECLINED
+            job.save()
+
         # STEP 5 - Assign our new variables and return the validated data.
         validated_data['id'] = obj.id
         return validated_data

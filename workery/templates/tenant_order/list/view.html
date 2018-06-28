@@ -108,8 +108,12 @@
                             {% trans 'Completed and paid' %}
                         {% elif job.state == WORK_ORDER_STATE.ARCHIVED %}
                             {% trans 'Archived' %}
+                        {% elif job.state == WORK_ORDER_STATE.DECLINED %}
+                            {% trans 'Declined' %}
+                        {% elif job.state == WORK_ORDER_STATE.NEW %}
+                            {% trans 'New' %}
                         {% else %}
-                            -
+                            {{ job.state }}
                         {% endif %}
                     </td>
                     <td>

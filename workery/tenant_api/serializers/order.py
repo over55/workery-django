@@ -21,6 +21,7 @@ from tenant_foundation.constants import *
 from tenant_foundation.models import (
     Comment,
     WorkOrderComment,
+    WORK_ORDER_STATE,
     WorkOrder,
     SkillSet,
     Tag,
@@ -137,6 +138,7 @@ class WorkOrderListCreateSerializer(serializers.ModelSerializer):
             invoice_service_fee=invoice_service_fee,
             created_from = self.context['created_from'],
             created_from_is_public = self.context['created_from_is_public'],
+            state=WORK_ORDER_STATE.NEW 
         )
         logger.info("Created order object.")
 
