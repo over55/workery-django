@@ -66,12 +66,6 @@
                     </td>
                 </tr>
                 <tr>
-                    <th scope="row" class="bg-light">Job Description</th>
-                    <td>
-                        -
-                    </td>
-                </tr>
-                <tr>
                     <th scope="row" class="bg-light">Job #</th>
                     <td id="selected_skillsets_id">
                         <a href="{% url 'workery_tenant_job_retrieve' 'summary' task_item.job.id %}" target="_blank">
@@ -137,6 +131,12 @@
                     </td>
                 </tr>
                 {% endif %}
+                <tr>
+                    <th scope="row" class="bg-light">Job Description</th>
+                    <td>
+                        -
+                    </td>
+                </tr>
                 <tr>
                     <th scope="row" class="bg-light">Skill Set(s)</th>
                     <td id="skill_sets">
