@@ -29,7 +29,10 @@ def pretty_formatted_phonenumber(phone):
     Template tag converts the "PhoneNumber" object into a "NATIONAL" format.
     See: https://github.com/daviddrysdale/python-phonenumbers
     """
-    return phonenumbers.format_number(phone, phonenumbers.PhoneNumberFormat.NATIONAL)
+    if phone:
+        return phonenumbers.format_number(phone, phonenumbers.PhoneNumberFormat.NATIONAL)
+    else:
+        return "-"
 
 
 @register.simple_tag
