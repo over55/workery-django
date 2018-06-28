@@ -166,7 +166,9 @@
                 <tr>
                     <th scope="row" class="bg-light">Created from</th>
                     <td>
-                        {% if customer.created_from %}{{ customer.created_from }}{% else %}-{% endif %}
+                        {% if customer.created_from %}
+                            <a href="https://whatismyipaddress.com/ip/{{ customer.created_from }}" target="_blank">{{ customer.created_from }}&nbsp;<i class="fas fa-external-link-alt"></i></a>
+                        {% else %}-{% endif %}
                     </td>
                 </tr>
                 <tr>
@@ -184,7 +186,9 @@
                 <tr>
                     <th scope="row" class="bg-light">Modified from</th>
                     <td>
-                        {% if customer.last_modified_from %}{{ customer.last_modified_from }}{% else %}-{% endif %}
+                        {% if customer.last_modified_from %}
+                            <a href="https://whatismyipaddress.com/ip/{{ customer.last_modified_from }}" target="_blank">{{ customer.last_modified_from }}&nbsp;<i class="fas fa-external-link-alt"></i></a>
+                        {% else %}-{% endif %}
                     </td>
                 </tr>
                 <!-- ############ end SYSTEM ############ -->

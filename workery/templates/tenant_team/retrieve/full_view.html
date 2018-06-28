@@ -260,7 +260,9 @@
             <tr>
                 <th scope="row" class="bg-light">Created from</th>
                 <td>
-                    {% if staff.created_from %}{{ staff.created_from }}{% else %}-{% endif %}
+                    {% if staff.created_from %}
+                        <a href="https://whatismyipaddress.com/ip/{{ staff.created_from }}" target="_blank">{{ staff.created_from }}&nbsp;<i class="fas fa-external-link-alt"></i></a>
+                    {% else %}-{% endif %}
                 </td>
             </tr>
             <tr>
@@ -278,7 +280,9 @@
             <tr>
                 <th scope="row" class="bg-light">Modified from</th>
                 <td>
-                    {% if staff.last_modified_from %}{{ staff.last_modified_from }}{% else %}-{% endif %}
+                    {% if staff.last_modified_from %}
+                        <a href="https://whatismyipaddress.com/ip/{{ staff.last_modified_from }}" target="_blank">{{ staff.last_modified_from }}&nbsp;<i class="fas fa-external-link-alt"></i></a>
+                    {% else %}-{% endif %}
                 </td>
             </tr>
             <!-- ############ end SYSTEM ############ -->

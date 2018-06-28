@@ -396,7 +396,9 @@
                 <tr>
                     <th scope="row" class="bg-light">Created from</th>
                     <td>
-                        {% if associate.created_from %}{{ associate.created_from }}{% else %}-{% endif %}
+                        {% if associate.created_from %}
+                            <a href="https://whatismyipaddress.com/ip/{{ associate.created_from }}" target="_blank">{{ associate.created_from }}&nbsp;<i class="fas fa-external-link-alt"></i></a>
+                        {% else %}-{% endif %}
                     </td>
                 </tr>
                 <tr>
@@ -414,7 +416,9 @@
                 <tr>
                     <th scope="row" class="bg-light">Modified from</th>
                     <td>
-                        {% if associate.last_modified_from %}{{ associate.last_modified_from }}{% else %}-{% endif %}
+                        {% if owner.last_modified_from %}
+                            <a href="https://whatismyipaddress.com/ip/{{ owner.last_modified_from }}" target="_blank">{{ owner.last_modified_from }}&nbsp;<i class="fas fa-external-link-alt"></i></a>
+                        {% else %}-{% endif %}
                     </td>
                 </tr>
                 <!-- ############ end SYSTEM ############ -->
