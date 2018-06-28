@@ -57,6 +57,64 @@
     </div>
     <!------------------------------------------------------------------------->
     <!-- end STEP NAVIGATION -->
+
+    {% if task_item.type_of == 1 %}
+    <div class="row py-2">
+		<div class="col-md-10 mx-auto py-3">
+			<!-- ######################## Task Summary Table ######################## -->
+				<table class="table table-bordered custom-cell-w">
+				    <tbody>
+					<tr class="bg-primary text-white">
+					    <th scope="row" colspan="2" id="Task">Assign Associate</th>
+					</tr>
+                    <tr>
+					    <th scope="row" class="bg-light">Order No.</th>
+					    <td id="order_no">
+                            -
+					    </td>
+					</tr>
+					<tr>
+					    <th scope="row" class="bg-light">Customer Name</th>
+					    <td id="customer">
+                            -
+					    </td>
+					</tr>
+					<tr>
+					    <th scope="row" class="bg-light">Customer Phone</th>
+					    <td id="telephone">
+                            -
+					    </td>
+					</tr>
+					<tr>
+					    <th scope="row" class="bg-light">Customer Address</th>
+					    <td id="address">
+						    -
+					    </td>
+					</tr>
+                    <tr>
+					    <th scope="row" class="bg-light">Customer City</th>
+					    <td id="city">
+						    -
+					    </td>
+					</tr>
+                    <tr>
+					    <th scope="row" class="bg-light">Job Description</th>
+					    <td id="job_description">
+						    -
+					    </td>
+					</tr>
+                    <tr>
+					    <th scope="row" class="bg-light">Job Comments</th>
+					    <td id="job_comments">
+						    -
+					    </td>
+					</tr>
+				    </tbody>
+				</table>
+		</div>
+    </div>
+    {% endif %}
+
     <!-- FORM -->
     <!------------------------------------------------------------------------->
     <h2>Available Associates</h2>
