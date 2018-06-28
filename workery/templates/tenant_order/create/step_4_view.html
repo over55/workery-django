@@ -2,7 +2,7 @@
 {% load staticfiles i18n shared_foundation_tags humanize %}
 
 {% block title %}
-{% trans 'Clients List | Workery' %}
+{% trans 'Add New Job | Workery' %}
 {% endblock title %}
 
 {% block header_content %}
@@ -65,7 +65,7 @@
 	// STEP 2: CLEAR EXISTING ERROR TEXT.
         $('#all_error_result').html("");
 	$('#all_error_result').removeClass('error-block');
-	    
+
 	if (tmp_skillsets !== '' && order_service_fee !== '') {
 		// Redirect to the next page in the form.
         	window.location = "{% url 'workery_tenant_job_step_5_create' %}";
