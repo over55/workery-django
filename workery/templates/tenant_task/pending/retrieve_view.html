@@ -148,6 +148,16 @@
                     </td>
                 </tr>
                 <tr>
+                    <th scope="row" class="bg-light">Comment(s)</th>
+                    <td id="comments">
+                        <a href="#">
+                            <button id="comments_btn" class="btn btn-warning btn-lg btn-fxw" type="button">
+                                <i class="fas fa-comment"></i>&nbsp;{% trans 'Comments' %}
+                            </button>
+                        </a>
+                    </td>
+                </tr>
+                <tr>
                     <th scope="row" class="bg-light">Required Action</th>
                     <td id="selected_comment_id">
                         {% if task_item.type_of == 1 %}
