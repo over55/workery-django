@@ -43,7 +43,7 @@ class Command(BaseCommand):
         """
         parser.add_argument('schema_name', nargs='+', type=str)
         parser.add_argument('id', nargs='+', type=str)
-        parser.add_argument('status', nargs='+', type=str)
+        parser.add_argument('state', nargs='+', type=str)
 
     def handle(self, *args, **options):
         # Connection needs first to be at the public schema, as this is where
@@ -54,7 +54,7 @@ class Command(BaseCommand):
         # Get the user inputs.
         schema_name = options['schema_name'][0]
         worker_order_id = options['id'][0]
-        status = options['status'][0]
+        state = options['state'][0]
 
         try:
             franchise = SharedFranchise.objects.get(schema_name=schema_name)
@@ -69,8 +69,8 @@ class Command(BaseCommand):
         except WorkOrder.DoesNotExist:
             raise CommandError(_('Work order does not exist!'))
 
-        # Change status.
-        work_order.status = status
+        # Change state.
+        work_order.state = state
         work_order.save()
 
         # For debugging purposes.
