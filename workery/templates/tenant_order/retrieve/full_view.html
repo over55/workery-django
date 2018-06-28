@@ -161,7 +161,7 @@
 			<tr>
 			    <th scope="row" class="bg-light">Assignment Date</th>
 			    <td id="assignment_date">
-				{% if job.assignment_date %}{{ job.assignment_date|timezone:request.tenant.timezone_name }}{% else %}-{% endif %}
+				{% if job.assignment_date %}{{ job.assignment_date }}{% else %}-{% endif %}
 			    </td>
 			</tr>
 			<tr>
@@ -201,7 +201,7 @@
 			<tr>
 			    <th scope="row" class="bg-light">Completion date</th>
 			    <td id="completion_date">
-				{% if job.completion_date %}{{ job.completion_date|timezone:request.tenant.timezone_name }}{% else %}-{% endif %}
+				{% if job.completion_date %}{{ job.completion_date }}{% else %}-{% endif %}
 			    </td>
 			</tr>
 			<tr>
@@ -229,7 +229,7 @@
 			    <th scope="row" class="bg-light">Invoice Date</th>
 			    <td id="invoice_date">
 				{% if job.invoice_date %}
-                    {{ job.invoice_date|timezone:request.tenant.timezone_name }}
+                    {{ job.invoice_date }}
                 {% else %}
                     -
                 {% endif %}
@@ -299,7 +299,7 @@
 			    <th scope="row" class="bg-light">Invoice Service Fee Payment Date</th>
 			    <td id="order_invoice_service_fee_payment_date">
 				{% if job.invoice_service_fee_payment_date %}
-                                    {{ job.invoice_service_fee_payment_date|timezone:request.tenant.timezone_name }}
+                                    {{ job.invoice_service_fee_payment_date }}
                                 {% else %}
                                     -
                                 {% endif %}

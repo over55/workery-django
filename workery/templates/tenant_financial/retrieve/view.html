@@ -98,7 +98,11 @@
                 <tr>
                     <th scope="row" class="bg-light">Invoice Date</th>
                     <td id="selected_invoice_date">
-                        {{ job_item.invoice_date }}
+                        {% if job_item.invoice_date %}
+                            {{ job_item.invoice_date }}
+                        {% else %}
+                            -
+                        {% endif %}
                     </td>
                 </tr>
                 <tr>
