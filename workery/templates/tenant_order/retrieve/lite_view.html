@@ -142,7 +142,11 @@
                 <tr>
                     <th scope="row" class="bg-light">Client Name</th>
                     <td id="selected_customer_name">
-                        {% if job.customer %}<a href="{% url 'workery_tenant_customer_lite_retrieve' template job.customer.id %}" target="_blank">{{ job.customer }}&nbsp;<i class="fas fa-external-link-alt"></i></a>{% else %}-{% endif %}
+                        {% if job.customer %}
+                            <a href="{% url 'workery_tenant_customer_lite_retrieve' template job.customer.id %}" target="_blank">
+                                {{ job.customer }}&nbsp;<i class="fas fa-external-link-alt"></i>
+                            </a>
+                        {% else %}-{% endif %}
                     </td>
                 </tr>
                 <tr>

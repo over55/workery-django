@@ -38,7 +38,7 @@ function click_add_button() {
             console.log(result_dict);
 
             // REDIRECT.
-            if (state == "{{ ACTIVITY_SHEET_ITEM_STATE.ACCEPTED }}") {
+            if (state == "{{ ACTIVITY_SHEET_ITEM_STATE.ACCEPTED }}" || state == "{{ ACTIVITY_SHEET_ITEM_STATE.PENDING }}" ) {
                 // REDIRECT TO SUCCESS PAGE.
                 window.location = "{% url 'workery_tenant_task_list' %}?was_closed=True";
             } else {
