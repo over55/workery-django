@@ -83,7 +83,7 @@
                     <th scope="row" class="bg-light">Created by</th>
                     <td id="selected_home_support_id">
                         {% if task_item.created_by %}
-                            <a href="{% url 'workery_tenant_team_retrieve_from_user_id_redirect' template task_item.created_by.id %}" target="_blank">
+                            <a href="{% url 'workery_tenant_team_retrieve_from_user_id_redirect' 'summary' task_item.created_by.id %}" target="_blank">
                                 {{ task_item.created_by.get_full_name }}&nbsp;<i class="fas fa-external-link-alt"></i>
                             </a>
                         {% else %}
@@ -102,7 +102,7 @@
                     <th scope="row" class="bg-light">Last Modified By</th>
                     <td id="selected_comment_id" target="_blank">
                         {% if task_item.last_modified_by %}
-                            <a href="{% url 'workery_tenant_team_retrieve_from_user_id_redirect' template task_item.last_modified_by.id %}">
+                            <a href="{% url 'workery_tenant_team_retrieve_from_user_id_redirect' 'summary' task_item.last_modified_by.id %}">
                                 {{ task_item.last_modified_by.get_full_name }}&nbsp;<i class="fas fa-external-link-alt"></i>
                             </a>
                         {% else %}
@@ -162,7 +162,7 @@
                 <tr>
                     <th scope="row" class="bg-light">Comment(s)</th>
                     <td id="comments">
-                        <a href="{% url 'workery_tenant_job_comments_retrieve' 'summary' task_item.job.associate.id %}" target="_blank">
+                        <a href="{% url 'workery_tenant_job_comments_retrieve' 'summary' task_item.job.id %}" target="_blank">
                             <button id="comments_btn" class="btn btn-warning btn-lg btn-fxw" type="button">
                                 <i class="fas fa-comment"></i>&nbsp;{% trans 'Comments' %}
                             </button>
