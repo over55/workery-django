@@ -141,19 +141,22 @@ class ActivitySheetItemCreateSerializer(serializers.Serializer):
 
             # Create the task message / time based on the `state`.
             title = None
+            description = None
             due_date = None
             if state == ACTIVITY_SHEET_ITEM_STATE.ACCEPTED:
                 title = _('48 hour follow up')
+                description = _('Please call up the client and confirm that the associate and client have agreed on scheduled meeting date in the future.')
                 due_date = get_todays_date_plus_days(2)
             elif state == ACTIVITY_SHEET_ITEM_STATE.PENDING:
                 title = _('24 hour follow up')
+                description = _('Please contact the Associate to confirm if they want the job.')
                 due_date = get_todays_date_plus_days(1)
 
             # STEP 5 - Create our new task for following up.
             next_task_item = TaskItem.objects.create(
                 type_of = FOLLOW_UP_IS_JOB_COMPLETE_TASK_ITEM_TYPE_OF_ID,
                 title = title,
-                description = _('Please call up the client and confirm that the associate and client have agreed on scheduled meeting date in the future.'),
+                description = description,
                 due_date = due_date,
                 is_closed = False,
                 job = task_item.job,
