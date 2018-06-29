@@ -310,25 +310,21 @@
 		    </tbody>
 		</table>
 	    </div>
-                    <!-- UPDATE BUTTON -->
-                    <!--------------------------------------------------------------------->
-                    {% if job.state == WORK_ORDER_STATE.STATE %}
-                        <!-- Do nothing. -->
-                    {% else %}
-                        {% if job.completion_date or job.invoice_service_fee_payment_date %}
-                            <!-- Do nothing. -->
-                        {% else %}
-                            <div class="form-group col-md-12 mb-3 mx-auto text-center">
-                                <a href="{% url 'workery_tenant_job_update' template object.id %}">
-                                    <button  id="id_submit_btn"	class="btn btn-warning btn-lg btn-fxw mt-4" type="button">
-                                        <i class="fas fa-edit"></i>&nbsp;{% trans 'Edit Job' %}
-                                    </button>
-                                </a>
-                            </div>
-                        {% endif %}
-                    {% endif %}
-                    <!--------------------------------------------------------------------->
-                    <!-- end UPDATE BUTTON -->
+        <!-- UPDATE BUTTON -->
+        <!--------------------------------------------------------------------->
+        {% if job.state == WORK_ORDER_STATE.COMPLETED_AND_PAID or job.state == WORK_ORDER_STATE.COMPLETED_BUT_UNPAID %}
+            <!-- Do nothing. -->
+        {% else %}
+        <div class="form-group col-md-12 mb-3 mx-auto text-center">
+            <a href="{% url 'workery_tenant_job_update' template object.id %}">
+                <button  id="id_submit_btn"	class="btn btn-warning btn-lg btn-fxw mt-4" type="button">
+                    <i class="fas fa-edit"></i>&nbsp;{% trans 'Edit Job' %}
+                </button>
+            </a>
+        </div>
+        {% endif %}
+        <!--------------------------------------------------------------------->
+        <!-- end UPDATE BUTTON -->
     </div>
     <!------------------------------------------------------------------------->
     <!-- end FORM -->
