@@ -42,11 +42,17 @@
     <!------------------------------------------------------------------------->
     <div class="row">
         <div class="step-navigation">
-            <div id="step-1" class="st-grey active">
+	    <div id="step-1" class="st-grey">
+                <a href="#">
+                    <i class="fas fa-question-circle"></i>
+                    <span class="">Unasssigned Tasks</span>
+                </a>
+            </div>
+            <div id="step-2" class="st-grey active">
                 <i class="fas fa-clock"></i>
                 <span class="">Pending Tasks ({{ pending_count|intcomma }})</span>
             </div>
-            <div id="step-2" class="st-grey">
+            <div id="step-3" class="st-grey">
                 <a href="{% url 'workery_tenant_closed_task_list' %}">
                     <i class="fas fa-check-circle"></i>
                     <span class="">Closed Tasks ({{ closed_count|intcomma }})</span>

@@ -132,6 +132,12 @@
                 </tr>
                 {% endif %}
                 <tr>
+                    <th scope="row" class="bg-light">Job Description</th>
+                    <td>
+                        -
+                    </td>
+                </tr>
+                <tr>
                     <th scope="row" class="bg-light">Skill Set(s)</th>
                     <td id="skill_sets">
                         {% for skill_set in task_item.job.skill_sets.all %}
@@ -139,6 +145,16 @@
                         {% empty %}
                             -
                         {% endfor %}
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row" class="bg-light">Comment(s)</th>
+                    <td id="comments">
+                        <a href="#">
+                            <button id="comments_btn" class="btn btn-warning btn-lg btn-fxw" type="button">
+                                <i class="fas fa-comment"></i>&nbsp;{% trans 'Comments' %}
+                            </button>
+                        </a>
                     </td>
                 </tr>
                 <tr>
