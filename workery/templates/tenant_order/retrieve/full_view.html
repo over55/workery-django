@@ -130,6 +130,12 @@
 			<tr class="bg-primary text-white">
 			    <th scope="row" colspan="2">Job Details</th>
 			</tr>
+            <tr>
+                <th scope="row" class="bg-light">Order #</th>
+                <td id="selected_order_id">
+                    {{ job.id|intcomma }}
+                </td>
+            </tr>
 			<tr>
 			    <th scope="row" class="bg-light">Customer</th>
 			    <td id="customer">
@@ -145,11 +151,11 @@
 			<tr>
 			    <th scope="row" class="bg-light">Skill Sets</th>
 			    <td id="skill_sets">
-				{% for skill_set in job.skill_sets.all %}
-                                    <span class="badge badge-info badge-lg">{{ skill_set.sub_category }}</span>
-                                {% empty %}
-                                    -
-                                {% endfor %}
+				    {% for skill_set in job.skill_sets.all %}
+                        <span class="badge badge-info badge-lg">{{ skill_set.sub_category }}</span>
+                    {% empty %}
+                        -
+                    {% endfor %}
 			    </td>
 			</tr>
 			<tr>
@@ -161,24 +167,24 @@
 			<tr>
 			    <th scope="row" class="bg-light">Assignment Date</th>
 			    <td id="assignment_date">
-				{% if job.assignment_date %}{{ job.assignment_date }}{% else %}-{% endif %}
+				   {% if job.assignment_date %}{{ job.assignment_date }}{% else %}-{% endif %}
 			    </td>
 			</tr>
 			<tr>
 			    <th scope="row" class="bg-light">Is Home Support Service</th>
 			    <td id="is_home_support_service">
-				{{ job.is_home_support_service }}
+				   {{ job.is_home_support_service }}
 			    </td>
 			</tr>
 			<tr>
 			    <th scope="row" class="bg-light">Is ongoing?</th>
 			    <td id="is_ongoing">
-				{{ job.is_ongoing }}
+				    {{ job.is_ongoing }}
 			    </td>
 			</tr>
-			<tr>
-			    <th scope="row" class="bg-light">Status</th>
-			    <td id="status">
+            <tr>
+                <th scope="row" class="bg-light">Status</th>
+                <td id="selected_status">
                     {% if job.state == WORK_ORDER_STATE.PENDING %}
                         {% trans 'Pending' %}
                     {% elif job.state == WORK_ORDER_STATE.CANCELLED %}
@@ -193,11 +199,15 @@
                         {% trans 'Completed and paid' %}
                     {% elif job.state == WORK_ORDER_STATE.ARCHIVED %}
                         {% trans 'Archived' %}
+                    {% elif job.state == WORK_ORDER_STATE.DECLINED %}
+                        {% trans 'Declined' %}
+                    {% elif job.state == WORK_ORDER_STATE.NEW %}
+                        {% trans 'New' %}
                     {% else %}
-                        -
+                        {{ job.state }}
                     {% endif %}
-			    </td>
-			</tr>
+                </td>
+            </tr>
 			<tr>
 			    <th scope="row" class="bg-light">Completion date</th>
 			    <td id="completion_date">
@@ -210,16 +220,16 @@
 				{{ job.hours }}
 			    </td>
 			</tr>
-                    {% if job.latest_pending_task %}
-			<tr>
-			    <th scope="row" class="bg-light">Required Task</th>
-			    <td id="latest_pending_task">
-				<a href="{% url 'workery_tenant_pending_task_retrieve' job.latest_pending_task.id %}" target="_blank">
-                                        {{ job.latest_pending_task.title }}&nbsp;<i class="fas fa-external-link-alt"></i>
-                                </a>
-			    </td>
-			</tr>
-                    {% endif %}
+            {% if job.latest_pending_task %}
+			    <tr>
+			        <th scope="row" class="bg-light">Required Task</th>
+			        <td id="latest_pending_task">
+			        <a href="{% url 'workery_tenant_pending_task_retrieve' job.latest_pending_task.id %}" target="_blank">
+                        {{ job.latest_pending_task.title }}&nbsp;<i class="fas fa-external-link-alt"></i>
+                    </a>
+			        </td>
+			    </tr>
+            {% endif %}
                     	<!-- ######################## end JOB DETAILS ######################### -->
                     	<!-- ####################### FINANCIAL DETAILS ######################## -->
 		    	<tr class="bg-primary text-white">
