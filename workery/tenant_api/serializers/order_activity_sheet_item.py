@@ -27,6 +27,7 @@ from shared_foundation.models import SharedUser
 from tenant_foundation.constants import *
 from tenant_foundation.models import (
     Comment,
+    ACTIVITY_SHEET_ITEM_STATE,
     ActivitySheetItem,
     Associate,
     WorkOrder,
@@ -49,10 +50,10 @@ class ActivitySheetItemCreateSerializer(serializers.Serializer):
     job = serializers.PrimaryKeyRelatedField(many=False, queryset=WorkOrder.objects.all(), required=True)
     associate = serializers.PrimaryKeyRelatedField(many=False, queryset=Associate.objects.all(), required=True)
     comment = serializers.CharField(required=True)
-    has_accepted_job = serializers.BooleanField(
+    state = serializers.CharField(
         required=True,
         error_messages={
-            "invalid": "Please pick either 'Yes' or 'No' choice."
+            "invalid": "Please pick either 'Yes', 'No', or 'Pending' choice."
         }
     )
 
@@ -62,7 +63,7 @@ class ActivitySheetItemCreateSerializer(serializers.Serializer):
             'job',
             'associate',
             'comment',
-            'has_accepted_job',
+            'state',
         )
 
     def validate(self, data):
@@ -88,21 +89,22 @@ class ActivitySheetItemCreateSerializer(serializers.Serializer):
         job = validated_data.get('job', None)
         associate = validated_data.get('associate', None)
         comment = validated_data.get('comment', None)
-        has_accepted_job = validated_data.get('has_accepted_job', None)
+        state = validated_data.get('state', None)
 
         # STEP 2 - Create our activity sheet item.
         obj = ActivitySheetItem.objects.create(
             job=job,
             associate=associate,
             comment=comment,
-            has_accepted_job=has_accepted_job,
+            has_accepted_job=False,
+            state=state,
             created_by=self.context['user'],
         )
 
         # For debugging purposes only.
         logger.info("ActivitySheetItem was created.")
 
-        if has_accepted_job:
+        if state == ACTIVITY_SHEET_ITEM_STATE.ACCEPTED:
 
             # STEP 3 - Update our job.
             obj.job.associate = associate

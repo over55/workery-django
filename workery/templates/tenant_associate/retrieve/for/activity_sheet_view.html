@@ -135,7 +135,15 @@
                         <tr>
                             <td>{{ activity_sheet_item.id|intcomma }}</td>
                             <td><a href="{% url 'workery_tenant_job_retrieve' template activity_sheet_item.job.id %}" target="_blank">{{ activity_sheet_item.job.id|intcomma }}&nbsp;<i class="fas fa-external-link-alt"></i></a></td>
-                            <td>{{ activity_sheet_item.has_accepted_job }}</td>
+                            <td>
+                                {% if activity_sheet_item.state == ACTIVITY_SHEET_ITEM_STATE.ACCEPTED %}
+                                    {% trans 'Accepted' %}
+                                {% elif activity_sheet_item.state == ACTIVITY_SHEET_ITEM_STATE.DECLINED %}
+                                    {% trans 'Declined' %}
+                                {% else %}
+                                    {% trans 'Pending' %}
+                                {% endif %}
+                            </td>
                             <td>{{ activity_sheet_item.created_at|timezone:request.tenant.timezone_name }}</td>
                             <td>{{ activity_sheet_item.comment }}</td>
                         </tr>

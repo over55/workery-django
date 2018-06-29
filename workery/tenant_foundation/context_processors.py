@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
 from tenant_foundation import constants
-from tenant_foundation.models import WORK_ORDER_STATE
+from tenant_foundation.models import (
+    WORK_ORDER_STATE,
+    ACTIVITY_SHEET_ITEM_STATE
+)
 
 def tenant_constants(request):
     """
@@ -9,5 +12,6 @@ def tenant_constants(request):
     """
     return {
         'tenant_constants': constants,
+        'ACTIVITY_SHEET_ITEM_STATE': ACTIVITY_SHEET_ITEM_STATE,
         'WORK_ORDER_STATE': WORK_ORDER_STATE
     }

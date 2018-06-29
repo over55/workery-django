@@ -144,7 +144,15 @@
                             <td>
                                 {% if activity_sheet_item.job.associate %}<a href="{% url 'workery_tenant_member_lite_retrieve' 'summary' activity_sheet_item.job.associate.id %}" target="_blank">{{ activity_sheet_item.job.associate }}&nbsp;<i class="fas fa-external-link-alt"></i></a>{% else %}-{% endif %}
                             </td>
-                            <td>{{ activity_sheet_item.has_accepted_job }}</td>
+                            <td>
+                                {% if activity_sheet_item.state == ACTIVITY_SHEET_ITEM_STATE.ACCEPTED %}
+                                    {% trans 'Accepted' %}
+                                {% elif activity_sheet_item.state == ACTIVITY_SHEET_ITEM_STATE.DECLINED %}
+                                    {% trans 'Declined' %}
+                                {% else %}
+                                    {% trans 'Pending' %}
+                                {% endif %}
+                            </td>
                             <td>{{ activity_sheet_item.created_at|timezone:request.tenant.timezone_name }}</td>
                             <td>{{ activity_sheet_item.comment }}</td>
                         </tr>

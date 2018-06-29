@@ -33,6 +33,7 @@ from shared_foundation.models import (
 )
 from tenant_foundation.constants import *
 from tenant_foundation.models import (
+    ACTIVITY_SHEET_ITEM_STATE,
     ActivitySheetItem,
     Associate,
     Comment,
@@ -355,6 +356,7 @@ class Command(BaseCommand):
                             'associate': associate,
                             'comment': comment_text,
                             'has_accepted_job': True,
+                            'state': ACTIVITY_SHEET_ITEM_STATE.ACCEPTED,
                             'created_at': local_completion_date,
                             'created_by': None,
                         }

@@ -23,7 +23,7 @@ function click_back_button() {
  *  (2)
  */
 function click_add_button() {
-    var has_accepted_job = get_selected_radio_value('has_accepted_job');
+    var state = get_selected_radio_value('state');
 
     //
     create_activity_sheet_item_api(
@@ -31,14 +31,14 @@ function click_add_button() {
             'job': {{ task_item.job.id }},
             'associate': {{ parameters.associate_id }},
             'comment': $('#comment').val(),
-            'has_accepted_job': has_accepted_job,
+            'state': state,
         },
         function(result_dict) { // Success
             // FOR DEBUGGING PURPOSES ONLY.
             console.log(result_dict);
 
             // REDIRECT.
-            if (has_accepted_job == "true") {
+            if (state == "{{ ACTIVITY_SHEET_ITEM_STATE.ACCEPTED }}") {
                 // REDIRECT TO SUCCESS PAGE.
                 window.location = "{% url 'workery_tenant_task_list' %}?was_closed=True";
             } else {
@@ -147,18 +147,23 @@ function get_selected_radio_value(radiofields_name) {
             <div class="form-group col-md-12 mb-4">
                 <p class="mb-1">Accepted Job? <sup>*</sup></p>
                 <div class="form-radio custom-control custom-radio custom-control-inline">
-                    <input type="radio" id="has_accepted_job" name="has_accepted_job" value="true" class="custom-control-input form-check-input">
-                    <label class="custom-control-label form-check-label" for="has_accepted_job">Yes</label>
+                    <input type="radio" id="state" name="state" value="{{ ACTIVITY_SHEET_ITEM_STATE.ACCEPTED }}" class="custom-control-input form-check-input">
+                    <label class="custom-control-label form-check-label" for="state">Yes</label>
                 </div>
                 <div class="form-radio custom-control custom-radio custom-control-inline">
-                    <input type="radio" id="has_accepted_job2" name="has_accepted_job" value="false" class="custom-control-input form-check-input">
-                    <label class="custom-control-label form-check-label" for="has_accepted_job2">No</label>
-                    <div id="has_accepted_job-error" class="invalid-feedback ml-2"></div>
+                    <input type="radio" id="state2" name="state" value="{{ ACTIVITY_SHEET_ITEM_STATE.DECLINED }}" class="custom-control-input form-check-input">
+                    <label class="custom-control-label form-check-label" for="state2">No</label>
+                    <div id="state-error" class="invalid-feedback ml-2"></div>
+                </div>
+                <div class="form-radio custom-control custom-radio custom-control-inline">
+                    <input type="radio" id="state3" name="state" value="{{ ACTIVITY_SHEET_ITEM_STATE.PENDING }}" class="custom-control-input form-check-input">
+                    <label class="custom-control-label form-check-label" for="state3">Pending</label>
+                    <div id="state-error" class="invalid-feedback ml-2"></div>
                 </div>
             </div>
             <div class="form-group col-md-12 mb-4 p-0">
                 <label for="comment" class="font-b6">Comment&nbsp;<sup>*</sup></label>
-                <textarea class="form-control form-control-lg border border-success" id="comment" name="comment" placeholder="How here..." rows="4" minlength="10" required></textarea>
+                <textarea class="form-control form-control-lg border border-primary" id="comment" name="comment" placeholder="How here..." rows="4" minlength="10" required></textarea>
                 <div id="comment-error" class="invalid-feedback"></div>
                 <small class="form-text text-muted">Maximum 1,000 characters.</small>
             </div>

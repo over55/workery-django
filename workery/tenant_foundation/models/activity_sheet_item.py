@@ -2,6 +2,7 @@
 import csv
 import pytz
 from datetime import date, datetime, timedelta
+from django_fsm import FSMField, transition
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.db import models
@@ -17,6 +18,12 @@ from starterkit.utils import (
 from shared_foundation.models import SharedUser
 from shared_foundation.constants import *
 from tenant_foundation.utils import *
+
+
+class ACTIVITY_SHEET_ITEM_STATE:
+    PENDING = 'pending'
+    ACCEPTED = 'accepted'
+    DECLINED = 'declined'
 
 
 class ActivitySheetItemManager(models.Manager):
@@ -82,9 +89,16 @@ class ActivitySheetItem(models.Model):
         null=True,
         default='',
     )
-    has_accepted_job = models.BooleanField(
+    has_accepted_job = models.BooleanField(  # DEPRECATED FIELD
         _("Has Accepted Job"),
         help_text=_('Indicates whether associate has accepted or rejected this job offer.'),
+    )
+    state = FSMField(
+        _('State'),
+        help_text=_('The state of this activity sheet item for the job offer.'),
+        default=ACTIVITY_SHEET_ITEM_STATE.PENDING,
+        blank=True,
+        db_index=True,
     )
     created_at = models.DateTimeField(auto_now_add=True, db_index=True)
     created_by = models.ForeignKey(

@@ -160,7 +160,7 @@
             <thead>
                 <tr>
                     <th>{% trans 'Name' %}</th>
-                    <th>{% trans 'Has Accepted?' %}</th>
+                    <th>{% trans 'Status' %}</th>
                     <th>{% trans 'Comment' %}</th>
                     <th></th>
                 </tr>
@@ -171,7 +171,15 @@
                     <td>
                         <a href="{% url 'workery_tenant_member_lite_retrieve' 'summary' item.associate.id %}" target="_blank">{{ item.associate }}&nbsp;<i class="fas fa-external-link-alt"></i></a>
                     </td>
-                    <td>{{ item.has_accepted_job }}</td>
+                    <td>
+                        {% if item.state == ACTIVITY_SHEET_ITEM_STATE.ACCEPTED %}
+                            {% trans 'Accepted' %}
+                        {% elif item.state == ACTIVITY_SHEET_ITEM_STATE.DECLINED %}
+                            {% trans 'Declined' %}
+                        {% else %}
+                            {% trans 'Pending' %}
+                        {% endif %}
+                    </td>
                     <td>{{ item.comment }}</td>
                     <td>
                         <a href="{% url 'workery_tenant_pending_task_retrieve_for_activity_sheet_retrieve_and_create' task_item.id %}?associate_id={{ item.associate.id }}">Re-assign</a>
