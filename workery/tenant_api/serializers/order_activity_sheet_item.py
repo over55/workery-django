@@ -107,8 +107,6 @@ class ActivitySheetItemCreateSerializer(serializers.Serializer):
         if state == ACTIVITY_SHEET_ITEM_STATE.ACCEPTED or state == ACTIVITY_SHEET_ITEM_STATE.PENDING:
 
             # STEP 3 - Update our job.
-            if state == ACTIVITY_SHEET_ITEM_STATE.PENDING:
-                obj.job.state = WORK_ORDER_STATE.PENDING
             obj.job.associate = associate
             obj.job.assignment_date = get_todays_date_plus_days()
             obj.job.save()
@@ -171,7 +169,14 @@ class ActivitySheetItemCreateSerializer(serializers.Serializer):
 
             # Attached our new TaskItem to the Job.
             job.latest_pending_task = next_task_item
-            job.state = WORK_ORDER_STATE.IN_PROGRESS
+
+            # Change state
+            if state == ACTIVITY_SHEET_ITEM_STATE.ACCEPTED:
+                job.state = WORK_ORDER_STATE.IN_PROGRESS
+            if state == ACTIVITY_SHEET_ITEM_STATE.PENDING:
+                job.state = WORK_ORDER_STATE.PENDING
+
+            # Save our new task and job state updated.
             job.save()
 
         else:
