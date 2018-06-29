@@ -155,6 +155,14 @@
         var associate_id = null;
         {% endif %}
 
+        // Changed state.
+        var state = "";
+        if (invoice_labour_amount > 0 && invoice_service_fee_amount > 0) {
+            state = "{{ WORK_ORDER_STATE.COMPLETED_AND_PAID }}";
+        } else {
+            state = "{{ WORK_ORDER_STATE.COMPLETED_BUT_UNPAID }}";
+        }
+
         // Submit to our API web-service.
         update_job_api(
             {{ job_item.id }},
@@ -171,14 +179,21 @@
                 'invoice_total_amount': invoice_total_amount,
                 'invoice_service_fee_amount': invoice_service_fee_amount,
                 'invoice_service_fee': invoice_service_fee_id,
-                'invoice_service_fee_payment_date': invoice_service_fee_payment_date
+                'invoice_service_fee_payment_date': invoice_service_fee_payment_date,
+                'state': state
             },
             function(result_dict) { // Success
                 // FOR DEBUGGING PURPOSES ONLY.
                 console.log(result_dict);
 
-                // REDIRECT TO SUCCESS PAGE.
-                window.location = "{% url 'workery_tenant_financlial_job_retrieve' template job_item.id %}?was_modified=True";
+                // REDIRECT TO SUCCESS PAGE BASED ON STATUS.
+                if (state == "{{ WORK_ORDER_STATE.COMPLETED_AND_PAID }}") {
+                    window.location = "{% url 'workery_tenant_financlial_job_retrieve' 'paid-jobs' job_item.id %}?was_modified=True";
+                }
+                if (state == "{{ WORK_ORDER_STATE.COMPLETED_BUT_UNPAID }}") {
+                    window.location = "{% url 'workery_tenant_financlial_job_retrieve' 'unpaid-jobs' job_item.id %}?was_modified=True";
+                }
+
             },
             function(xhr,status,error) { // Error
                 // STEP 1: Convert to JSON.

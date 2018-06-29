@@ -138,7 +138,7 @@ class WorkOrderListCreateSerializer(serializers.ModelSerializer):
             invoice_service_fee=invoice_service_fee,
             created_from = self.context['created_from'],
             created_from_is_public = self.context['created_from_is_public'],
-            state=WORK_ORDER_STATE.NEW 
+            state=WORK_ORDER_STATE.NEW
         )
         logger.info("Created order object.")
 
@@ -267,7 +267,8 @@ class WorkOrderRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
             'invoice_material_amount',
             'invoice_tax_amount',
             'invoice_total_amount',
-            'invoice_service_fee_amount'
+            'invoice_service_fee_amount',
+            'state'
         )
 
     def setup_eager_loading(cls, queryset):
@@ -303,6 +304,7 @@ class WorkOrderRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         instance.skill_sets.set(skill_sets)
         instance.start_date = validated_data.get('start_date', instance.start_date)
         instance.follow_up_days_number = validated_data.get('follow_up_days_number', instance.follow_up_days_number)
+        instance.state = validated_data.get('state', instance.state)
 
         # Financial information.
         instance.invoice_service_fee = validated_data.get('invoice_service_fee', instance.invoice_service_fee)
@@ -319,6 +321,8 @@ class WorkOrderRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         # Save the model.
         instance.save()
         logger.info("Updated order object.")
+
+        print(instance.state)
 
         #-----------------------------
         # Set our `Tags` objects.
