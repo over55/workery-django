@@ -60,6 +60,7 @@
                     <th>{% trans 'Client Name' %}</th>
                     <th>{% trans 'Associate Name' %}</th>
                     <th>{% trans 'Payment Date' %}</th>
+		    <th>{% trans 'Status' %}</th>
                     <th></th>
                 </tr>
             </thead>
@@ -90,6 +91,10 @@
                             -
                         {% endif %}
                     </td>
+		    <td>
+			<!-- Job Status column -->
+		    	- 
+		    </td>
                     <td>
                         <a href="{% url 'workery_tenant_financlial_job_retrieve' 'all-jobs' job_item.id %}?page={{ page_obj.number }}">{% trans 'View' %}</a>
                     </td>
