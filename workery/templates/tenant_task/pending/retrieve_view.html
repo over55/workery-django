@@ -134,7 +134,11 @@
                 <tr>
                     <th scope="row" class="bg-light">Job Description</th>
                     <td>
-                        -
+                        {% if task_item.job.description %}
+                            {{ task_item.job.description }}
+                        {% else %}
+                            -
+                        {% endif %}
                     </td>
                 </tr>
                 <tr>
