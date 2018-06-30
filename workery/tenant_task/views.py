@@ -39,7 +39,6 @@ class PendingTaskListView(LoginRequiredMixin, WorkeryListView):
         return modified_context
 
 
-
 class ClosedTaskListView(LoginRequiredMixin, WorkeryListView):
     context_object_name = 'task_list'
     queryset = TaskItem.objects.filter(
@@ -63,7 +62,6 @@ class ClosedTaskListView(LoginRequiredMixin, WorkeryListView):
 
         # Return our modified context.
         return modified_context
-
 
 
 class PendingTaskRetrieveView(LoginRequiredMixin, WorkeryDetailView):
@@ -116,7 +114,6 @@ class PendingTaskRetrieveForActivitySheetView(LoginRequiredMixin, WorkeryDetailV
         return modified_context
 
 
-
 class PendingTaskRetrieveForActivitySheetAndAssignAssociateCreateView(LoginRequiredMixin, WorkeryDetailView):
     context_object_name = 'task_item'
     model = TaskItem
@@ -129,3 +126,28 @@ class PendingTaskRetrieveAndCompleteCreateView(LoginRequiredMixin, WorkeryDetail
     model = TaskItem
     template_name = 'tenant_task/component/complete/create_view.html'
     menu_id = "task"
+
+
+class UnassignedTaskListView(LoginRequiredMixin, WorkeryListView):
+    context_object_name = 'task_list'
+    queryset = TaskItem.objects.filter(
+        job__associate=None
+    ).prefetch_related(
+        'job',
+        'created_by',
+        'last_modified_by'
+    )
+    template_name = 'tenant_task/unassigned/list_view.html'
+    paginate_by = 100
+    menu_id = "task"
+
+    def get_context_data(self, **kwargs):
+        modified_context = super().get_context_data(**kwargs)
+
+        # Get count of total tasks.
+        modified_context['unassigned_count'] = TaskItem.objects.filter(job__associate=None).count()
+        modified_context['pending_count'] = TaskItem.objects.filter(is_closed=False).count()
+        modified_context['closed_count'] = TaskItem.objects.filter(is_closed=True).count()
+
+        # Return our modified context.
+        return modified_context

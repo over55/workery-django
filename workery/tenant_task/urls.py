@@ -7,6 +7,7 @@ from tenant_task import views
 
 urlpatterns = (
     # Active List
+    path('unassigned-tasks/', views.UnassignedTaskListView.as_view(), name='workery_tenant_unassigned_task_list'),
     path('pending-tasks/', views.PendingTaskListView.as_view(), name='workery_tenant_task_list'),
     path('closed-tasks/', views.ClosedTaskListView.as_view(), name='workery_tenant_closed_task_list'),
 
