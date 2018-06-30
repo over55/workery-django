@@ -31,6 +31,7 @@ class PendingTaskListView(LoginRequiredMixin, WorkeryListView):
         modified_context = super().get_context_data(**kwargs)
 
         # Get count of total tasks.
+        modified_context['unassigned_count'] = TaskItem.objects.filter(job__associate=None).count()
         modified_context['pending_count'] = TaskItem.objects.filter(is_closed=False).count()
         modified_context['closed_count'] = TaskItem.objects.filter(is_closed=True).count()
 
@@ -56,6 +57,7 @@ class ClosedTaskListView(LoginRequiredMixin, WorkeryListView):
         modified_context = super().get_context_data(**kwargs)
 
         # Get count of total tasks.
+        modified_context['unassigned_count'] = TaskItem.objects.filter(job__associate=None).count()
         modified_context['pending_count'] = TaskItem.objects.filter(is_closed=False).count()
         modified_context['closed_count'] = TaskItem.objects.filter(is_closed=True).count()
 
