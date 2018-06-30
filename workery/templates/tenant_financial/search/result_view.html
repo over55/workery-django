@@ -1,0 +1,150 @@
+{% extends 'tenant_foundation/tenant_base.html' %}
+{% load staticfiles i18n shared_foundation_tags humanize %}
+
+{% block title %}
+{% trans 'Financials Search | Workery' %}
+{% endblock title %}
+
+{% block header_content %}
+{% endblock header_content %}
+
+{% block content %}
+
+<script>
+    function ajax_get_customers() {
+        var criteria = [];
+
+        tenant_get_customers(
+            criteria,
+            function(json_results) {
+                console.log(json_results)
+            },
+            function(error) {
+                console.debug(error);
+                // alert(error);
+            }
+        );
+    }
+</script>
+
+<main id="main" role="main">
+
+    <!-- BREADCRUMB -->
+    <!------------------------------------------------------------------------->
+    <nav aria-label="breadcrumb">
+	  	<ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="{% url 'workery_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a>
+            </li>
+            {% if template == "unpaid-jobs" %}
+               <li class="breadcrumb-item" aria-current="page">
+                   <a href="{% url 'workery_tenant_unpaid_jobs_list' %}">
+                       {% trans 'Financials' %}
+                   </a>
+               </li>
+   	  	       <li class="breadcrumb-item active" aria-current="page">
+                   <a href="{% url 'workery_tenant_unpaid_jobs_list' %}">
+                       {% trans 'Unpaid Jobs' %}
+                   </a>
+               </li>
+   	  	    <li class="breadcrumb-item active" aria-current="page">
+                <a href="{% url 'workery_tenant_financlial_job_search' template %}">
+                    {% trans 'Search' %}
+                </a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">{% trans 'Search Results' %}</li>
+            {% else %}
+                ---TODO---
+            {% endif %}
+	  	</ol>
+	</nav>
+    <!------------------------------------------------------------------------->
+    <!-- end BREADCRUMB -->
+
+    <!-- BACK BUTTON -->
+    <!------------------------------------------------------------------------->
+    <div class="row">
+		<div class="col-sm-3 p-3 mb-2">
+			<a class="btn btn-primary btn-lg" href="{% url 'workery_tenant_financlial_job_search' template %}" role="button">
+               <i class="fas fa-arrow-left"></i>&nbsp;{% trans 'Back to Financials Search' %}
+            </a>
+		</div>
+    </div>
+    <!------------------------------------------------------------------------->
+    <!-- end BACK BUTTON -->
+
+    <h2>{% trans 'Search Results' %}</h2>
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>{% trans 'Order ID #' %}&nbsp;<i class="fas fa-external-link-alt"></i></th>
+                    <th>{% trans 'Client' %}&nbsp;<i class="fas fa-external-link-alt"></i></th>
+                    <th>{% trans 'Associate' %}&nbsp;<i class="fas fa-external-link-alt"></i></th>
+                    <th><i class="fas fa-external-link-alt"></i></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for order in order_list %}
+                <tr>
+                    <td>
+                        <a href="{% url 'workery_tenant_job_retrieve' 'summary' order.id %}?page={{ page_obj.number }}{{ filter_parameters }}" target="_blank">
+                            {{ order.id|intcomma }}
+                        </a>
+                    </td>
+                    <td>
+                        <a href="{% url 'workery_tenant_customer_lite_retrieve' 'summary' order.customer.id %}?page={{ page_obj.number }}{{ filter_parameters }}" target="_blank">
+                            {{ order.customer }}
+                        </a>
+                    </td>
+                    <td>
+                        {% if order.associate %}
+                            <a href="{% url 'workery_tenant_member_lite_retrieve' 'summary' order.associate.id %}?page={{ page_obj.number }}{{ filter_parameters }}" target="_blank">
+                                {{ order.associate }}
+                            </a>
+                        {% else %}
+                            -
+                        {% endif %}
+                    </td>
+                    <td>
+                        <a href="{% url 'workery_tenant_financlial_job_retrieve' template order.id %}" target="_blank">
+                            {% trans 'View' %}&nbsp;<i class="fas fa-chevron-right"></i>
+                        </a>
+                    </td>
+                </tr>
+                {% empty %}
+                    No customers yet.
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="pagination">
+        <span class="step-links">
+            {% if page_obj.has_previous %}
+                {% if filter_parameters %}
+                    <a href="{{ filter_parameters }}&page={{ page_obj.previous_page_number }}">previous</a>
+                {% else %}
+                    <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+                {% endif %}
+            {% endif %}
+
+            <span class="current">
+                Page {{ page_obj.number }} of {{ paginator.num_pages }}.
+            </span>
+
+            {% if page_obj.has_next %}
+                {% if filter_parameters %}
+                    <a href="{{ filter_parameters }}&page={{ page_obj.next_page_number }}">next</a>
+                {% else %}
+                    <a href="?page={{ page_obj.next_page_number }}">next</a>
+                {% endif %}
+            {% endif %}
+        </span>
+    </div>
+
+    <!-- RETURN-TO-TOP -->
+    <a id="return-to-top" href="#" class="btn-info btn-lg back-to-top" role="button" title="Back to top"><i class="fas fa-angle-up fa-2x"></i></a>
+    <!-- end RETURN-TO-TOP -->
+</main>
+{% endblock content %}

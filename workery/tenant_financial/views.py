@@ -9,6 +9,7 @@ from shared_foundation.mixins import (
     WorkeryListView,
     WorkeryDetailView
 )
+from tenant_api.filters.order import WorkOrderFilter
 from tenant_foundation.models import WORK_ORDER_STATE, WorkOrder, WorkOrderServiceFee
 
 
@@ -131,6 +132,56 @@ class JobUpdateView(LoginRequiredMixin, WorkeryDetailView):
 
         # Attach all the service fees.
         modified_context['service_fees'] = WorkOrderServiceFee.objects.all()
+
+        # Return our modified context.
+        return modified_context
+
+
+
+class WorkOrderSearchView(LoginRequiredMixin, WorkeryTemplateView):
+    template_name = 'tenant_financial/search/search_view.html'
+    menu_id = "financials"
+
+
+class WorkOrderSearchResultView(LoginRequiredMixin, WorkeryListView):
+    context_object_name = 'order_list'
+    queryset = WorkOrder.objects.order_by('-created')
+    template_name = 'tenant_financial/search/result_view.html'
+    paginate_by = 100
+    menu_id = "financials"
+    skip_parameters_array = ['page']
+
+    def get_queryset(self):
+        """
+        Override the default queryset to allow dynamic filtering with
+        GET parameterss using the 'django-filter' library.
+        """
+        # Run our search query.
+        queryset = None  # The queryset we will be returning.
+        keyword = self.request.GET.get('keyword', None)
+        if keyword:
+            queryset = WorkOrder.objects.full_text_search(keyword)
+            queryset = queryset.order_by('-created')
+        else:
+            queryset = super(WorkOrderSearchResultView, self).get_queryset()
+            filter = WorkOrderFilter(self.request.GET, queryset=queryset)
+            queryset = filter.qs
+
+        # Attach owners.
+        queryset = queryset.prefetch_related('customer', 'associate',)
+
+        return queryset.order_by('-id')
+
+    def get_context_data(self, **kwargs):
+        # Get the context of this class based view.
+        modified_context = super().get_context_data(**kwargs)
+
+        # Validate the template selected.
+        template = self.kwargs['template']
+        if template not in ['unpaid-jobs',]:
+            from django.core.exceptions import PermissionDenied
+            raise PermissionDenied(_('You entered wrong format.'))
+        modified_context['template'] = template
 
         # Return our modified context.
         return modified_context

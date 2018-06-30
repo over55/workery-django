@@ -6,7 +6,7 @@ from tenant_financial import views
 
 
 urlpatterns = (
-    # # Active List
+    # Active List
     path('financials/unpaid-jobs/', views.UnpaidJobOrderListView.as_view(), name='workery_tenant_unpaid_jobs_list'),
     path('financials/paid-jobs/', views.PaidJobOrderListView.as_view(), name='workery_tenant_paid_jobs_list'),
     path('financials/all-jobs/', views.AllJobOrderListView.as_view(), name='workery_tenant_all_jobs_list'),
@@ -17,4 +17,7 @@ urlpatterns = (
     # Update
     path('financials/<str:template>/detail/<int:pk>/edit', views.JobUpdateView.as_view(), name='workery_tenant_financlial_job_update'),
 
+    # Search
+    path('financials/<str:template>/search/', views.WorkOrderSearchView.as_view(), name='workery_tenant_financlial_job_search'),
+    path('financials/<str:template>/search/results/', views.WorkOrderSearchResultView.as_view(), name='workery_tenant_financlial_job_search_results'),
 )

@@ -97,7 +97,7 @@
                         {% endif %}
                     </td>
                     <td>
-                        <a href="{% url 'workery_tenant_job_retrieve' 'search' job.id %}?page={{ page_obj.number }}{{ filter_parameters }}">{% trans 'View' %}&nbsp;<i class="fas fa-chevron-right"></a></a>
+                        <a href="{% url 'workery_tenant_job_retrieve' 'search' job.id %}?page={{ page_obj.number }}{{ filter_parameters }}">{% trans 'View' %}&nbsp;<i class="fas fa-chevron-right"></i></a>
                     </td>
                 </tr>
                 {% empty %}

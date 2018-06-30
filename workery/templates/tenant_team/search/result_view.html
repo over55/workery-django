@@ -84,7 +84,7 @@
                     </td>
                     <td>{% if staff.email %}<a href="mailto:{{ staff.email }}">{{ staff.email }}</a>{% else %}-{% endif %}</td>
                     <td>
-                        <a href="{% url 'workery_tenant_team_lite_retrieve' 'search' staff.id %}?page={{ page_obj.number }}{{ filter_parameters }}">{% trans 'View' %}&nbsp;<i class="fas fa-chevron-right"></a></a>
+                        <a href="{% url 'workery_tenant_team_lite_retrieve' 'search' staff.id %}?page={{ page_obj.number }}{{ filter_parameters }}">{% trans 'View' %}&nbsp;<i class="fas fa-chevron-right"></i></a>
                     </td>
                 </tr>
                 {% empty %}

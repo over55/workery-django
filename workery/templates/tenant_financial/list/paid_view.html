@@ -87,7 +87,7 @@
                         {{ job_item.invoice_service_fee_payment_date }}
                     </td>
                     <td>
-                        <a href="{% url 'workery_tenant_financlial_job_retrieve' 'paid-jobs' job_item.id %}?page={{ page_obj.number }}">{% trans 'View' %}&nbsp;<i class="fas fa-chevron-right"></a></a>
+                        <a href="{% url 'workery_tenant_financlial_job_retrieve' 'paid-jobs' job_item.id %}?page={{ page_obj.number }}">{% trans 'View' %}&nbsp;<i class="fas fa-chevron-right"></i></a>
                     </td>
                 </tr>
                 {% empty %}
