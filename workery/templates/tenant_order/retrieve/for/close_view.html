@@ -395,7 +395,10 @@
                                     <label for="reason">Reason <sup>*</sup></label>
                                     <select class="form-control form-control-lg border border-primary" id="reason" name="reason" required="">
                                         <option value="0" selected="selected">Please select reason</option>
-                                        <option value="4">Job completed by Associate</option>
+                                        {% if job.associate %}
+                                            <!-- Only grant this option if an associate was selected -->
+                                            <option value="4">Job completed by Associate</option>
+                                        {% endif %}
                                         <option value="2">Quote was too high</option>
                                         <option value="3">Job completed by someone else</option>
                                         <option value="5">Work no longer needed</option>
