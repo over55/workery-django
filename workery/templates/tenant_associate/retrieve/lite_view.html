@@ -49,6 +49,9 @@
 
 <script>
     $(document).ready(function () {
+        var score_value = "{{ associate.score }}"; // This is the score for the associate
+        console.log("Score:", score_value,"/", "5");
+
         var $star_rating = $('.star-rating .fa-star');
         var $star_rating_value = $('.star-rating');
         var SetRatingStar = function() {
@@ -204,7 +207,7 @@
                     {% endif %}
                     <!-- /.Image Placeholder -->
 		    <h5 id="upload-btn" class="text-muted p-1">Click to upload</h5>
-		    
+
                 </div>
                 <!-- end IMAGE SECTION -->
                 <div class="col-sm-8 p-2">
