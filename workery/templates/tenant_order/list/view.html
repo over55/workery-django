@@ -63,6 +63,7 @@
                     <th>{% trans 'Client' %}&nbsp;<i class="fas fa-external-link-alt"></i></th>
                     <th>{% trans 'Associate' %}&nbsp;<i class="fas fa-external-link-alt"></i></th>
                     <th>{% trans 'Assigned Date' %}</th>
+                    <th>{% trans 'Start Date' %}</th>
                     <th>{% trans 'Completion Date' %}</th>
                     <th>{% trans 'Status' %}</th>
                     <th></th>
@@ -92,6 +93,7 @@
                         {% else %}-{% endif %}
                     </td>
                     <td>{% if job.assignment_date %}{{ job.assignment_date }}{% else %}-{% endif %}</td>
+                    <td>{% if job.start_date %}{{ job.start_date }}{% else %}-{% endif %}</td>
                     <td>{% if job.completion_date %}{{ job.completion_date }}{% else %}-{% endif %}</td>
                     <td>
                         {% if job.state == WORK_ORDER_STATE.PENDING %}
