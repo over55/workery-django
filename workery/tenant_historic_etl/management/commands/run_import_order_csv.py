@@ -355,7 +355,6 @@ class Command(BaseCommand):
                             'job': order,
                             'associate': associate,
                             'comment': comment_text,
-                            'has_accepted_job': True,
                             'state': ACTIVITY_SHEET_ITEM_STATE.ACCEPTED,
                             'created_at': local_completion_date,
                             'created_by': None,

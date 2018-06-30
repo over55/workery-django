@@ -89,10 +89,6 @@ class ActivitySheetItem(models.Model):
         null=True,
         default='',
     )
-    has_accepted_job = models.BooleanField(  # DEPRECATED FIELD
-        _("Has Accepted Job"),
-        help_text=_('Indicates whether associate has accepted or rejected this job offer.'),
-    )
     state = FSMField(
         _('State'),
         help_text=_('The state of this activity sheet item for the job offer.'),

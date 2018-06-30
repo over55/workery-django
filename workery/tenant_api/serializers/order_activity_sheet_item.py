@@ -96,7 +96,6 @@ class ActivitySheetItemCreateSerializer(serializers.Serializer):
             job=job,
             associate=associate,
             comment=comment,
-            has_accepted_job=False,
             state=state,
             created_by=self.context['user'],
         )
