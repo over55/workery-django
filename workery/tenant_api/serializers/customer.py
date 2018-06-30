@@ -615,7 +615,7 @@ class CustomerRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
                     first_name=validated_data['given_name'],
                     last_name=validated_data['last_name'],
                     email=email,
-                    is_active=validated_data['is_active'],
+                    is_active=True,
                     franchise=self.context['franchise'],
                     was_email_activated=True
                 )
