@@ -217,7 +217,7 @@ class WorkOrder(models.Model):
         "TaskItem",
         help_text=_('The latest pending task of our job order.'),
         related_name="%(app_label)s_%(class)s_latest_pending_task_related",
-        on_delete=models.CASCADE,
+        on_delete=models.SET_NULL,
         blank=True,
         null=True
     )
@@ -379,7 +379,7 @@ class WorkOrder(models.Model):
         SharedUser,
         help_text=_('The user whom created this order.'),
         related_name="%(app_label)s_%(class)s_created_by_related",
-        on_delete=models.CASCADE,
+        on_delete=models.SET_NULL,
         blank=True,
         null=True
     )

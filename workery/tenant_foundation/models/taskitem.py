@@ -140,7 +140,7 @@ class TaskItem(models.Model):
         SharedUser,
         help_text=_('The user whom created this order.'),
         related_name="%(app_label)s_%(class)s_created_by_related",
-        on_delete=models.CASCADE,
+        on_delete=models.SET_NULL,
         blank=True,
         null=True
     )
