@@ -86,6 +86,7 @@ class CustomerRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView
             'last_modified_by': request.user,
             'last_modified_from': client_ip,
             'last_modified_from_is_public': is_routable,
+            'franchise': request.tenant
         })
         serializer.is_valid(raise_exception=True)
         serializer.save()
