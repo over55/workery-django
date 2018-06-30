@@ -59,9 +59,9 @@
             <thead>
                 <tr>
                     <th></th>
-                    <th>{% trans '#' %}</th>
-                    <th>{% trans 'Client' %}</th>
-                    <th>{% trans 'Associate' %}</th>
+                    <th>{% trans 'ID #' %}</th>
+                    <th>{% trans 'Client' %}&nbsp;<i class="fas fa-external-link-alt"></i></th>
+                    <th>{% trans 'Associate' %}&nbsp;<i class="fas fa-external-link-alt"></i></th>
                     <th>{% trans 'Assigned Date' %}</th>
                     <th>{% trans 'Completion Date' %}</th>
                     <th>{% trans 'Status' %}</th>
@@ -117,7 +117,7 @@
                         {% endif %}
                     </td>
                     <td>
-                        <a href="{% url 'workery_tenant_job_retrieve' 'list' job.id %}?page={{ page_obj.number }}">{% trans 'View' %}</a>
+                        <a href="{% url 'workery_tenant_job_retrieve' 'list' job.id %}?page={{ page_obj.number }}">{% trans 'View' %}&nbsp;<i class="fas fa-chevron-right"></a></a>
                     </td>
                 </tr>
                 {% empty %}

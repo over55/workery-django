@@ -106,7 +106,7 @@
                     </td>
                     <td>{% if partner.owner.email %}<a href="mailto:{{ partner.owner.email }}">{{ partner.owner.email }}</a>{% else %}-{% endif %}</td>
                     <td>
-                        <a href="{% url 'workery_tenant_partner_lite_retrieve' 'summary' partner.id %}?page={{ page_obj.number }}">{% trans 'View' %}</a>
+                        <a href="{% url 'workery_tenant_partner_lite_retrieve' 'summary' partner.id %}?page={{ page_obj.number }}">{% trans 'View' %}&nbsp;<i class="fas fa-chevron-right"></a></a>
                     </td>
                 </tr>
                 {% empty %}

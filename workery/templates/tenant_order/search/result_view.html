@@ -49,7 +49,7 @@
             <thead>
                 <tr>
                     <th></th>
-                    <th>{% trans '#' %}</th>
+                    <th>{% trans 'ID #' %}</th>
                     <th>{% trans 'Client' %}</th>
                     <th>{% trans 'Associate' %}</th>
                     <th>{% trans 'Assigned Date' %}</th>
@@ -97,7 +97,7 @@
                         {% endif %}
                     </td>
                     <td>
-                        <a href="{% url 'workery_tenant_job_retrieve' 'search' job.id %}?page={{ page_obj.number }}{{ filter_parameters }}">{% trans 'View' %}</a>
+                        <a href="{% url 'workery_tenant_job_retrieve' 'search' job.id %}?page={{ page_obj.number }}{{ filter_parameters }}">{% trans 'View' %}&nbsp;<i class="fas fa-chevron-right"></a></a>
                     </td>
                 </tr>
                 {% empty %}
