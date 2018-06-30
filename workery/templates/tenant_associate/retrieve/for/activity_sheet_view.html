@@ -124,7 +124,7 @@
                     <thead>
                         <tr>
                             <th>{% trans 'ID #' %}</th>
-                            <th>{% trans 'Order ID' %}</th>
+                            <th>{% trans 'Order ID' %}&nbsp;<i class="fas fa-external-link-alt"></i></th>
                             <th>{% trans 'Has Accepted?' %}</th>
                             <th>{% trans 'Created At' %}</th>
                             <th>{% trans 'Reason' %}</th>
@@ -134,7 +134,7 @@
                         {% for activity_sheet_item in activity_sheet_items.all %}
                         <tr>
                             <td>{{ activity_sheet_item.id|intcomma }}</td>
-                            <td><a href="{% url 'workery_tenant_job_retrieve' template activity_sheet_item.job.id %}" target="_blank">{{ activity_sheet_item.job.id|intcomma }}&nbsp;<i class="fas fa-external-link-alt"></i></a></td>
+                            <td><a href="{% url 'workery_tenant_job_retrieve' template activity_sheet_item.job.id %}" target="_blank">{{ activity_sheet_item.job.id|intcomma }}</a></td>
                             <td>
                                 {% if activity_sheet_item.state == ACTIVITY_SHEET_ITEM_STATE.ACCEPTED %}
                                     {% trans 'Accepted' %}
