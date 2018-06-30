@@ -123,7 +123,7 @@
                 <table class="table table-bordered custom-cell-w">
                     <tbody>
                         <tr class="bg-dark">
-                            <th scope="row" colspan="2" class="text-light">Task ID #{{ task_item.id|intcomma }} - Task Details</th>
+                            <th scope="row" colspan="2" class="text-light">Task ID #{{ task_item.id|intcomma }}</th>
                         </tr>
                         <tr>
                             <th scope="row" class="bg-light">Staff</th>
@@ -231,7 +231,21 @@
                         </tr>
                     </tbody>
                 </table>
-                <br />
+
+                <!-- View Task -->
+                {% if not task_item.is_closed %}
+                    <p style="text-align: right;">
+                        <a href="{% url 'workery_tenant_pending_task_retrieve' task_item.id %}" target="_blank">
+                            {% trans 'View details' %}&nbsp;<i class="fas fa-external-link-alt"></i>
+                        </a>
+                    </a>
+                {% else %}
+                    <p style="text-align: right; color: grey;">
+                        {% trans 'View details' %}&nbsp;<i class="fas fa-external-link-alt"></i>&nbsp;(closed)
+                    </p>
+                {% endif %}
+                <!-- end View Task -->
+                <br /><br />
             {% empty %}
                 No tasks yet.
             {% endfor %}
