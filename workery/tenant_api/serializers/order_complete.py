@@ -40,9 +40,9 @@ from tenant_foundation.models import (
 logger = logging.getLogger(__name__)
 
 
-def get_todays_date_plus_days(days=0):
+def get_date_plus_days(dt, days=0):
     """Returns the current date plus paramter number of days."""
-    return timezone.now() + timedelta(days=days)
+    return dt + timedelta(days=days)
 
 
 class WorkOrderCompleteCreateSerializer(serializers.Serializer):
@@ -83,7 +83,7 @@ class WorkOrderCompleteCreateSerializer(serializers.Serializer):
         job = validated_data.get('job', None)
         comment_text = validated_data.get('comment', None)
         has_agreed_to_meet = validated_data.get('has_agreed_to_meet', None)
-        meeting_date = validated_data.get('meeting_date', None)
+        meeting_date = validated_data.get('meeting_date', timezone.now())
 
         # STEP 2 - If the user has submitted an optional comment for the job
         #          then we will include it.
@@ -130,7 +130,7 @@ class WorkOrderCompleteCreateSerializer(serializers.Serializer):
                 type_of = FOLLOW_UP_CUSTOMER_SURVEY_TASK_ITEM_TYPE_OF_ID,
                 title = _('Completion Survey'),
                 description = _('Please call up the client and perform the satisfaction survey.'),
-                due_date = get_todays_date_plus_days(7),
+                due_date = get_date_plus_days(meeting_date, 7),
                 is_closed = False,
                 job = task_item.job,
                 created_by = self.context['user'],
@@ -152,10 +152,7 @@ class WorkOrderCompleteCreateSerializer(serializers.Serializer):
 
             # Updated the start date to either right now or the agreed upon
             # date between associate and client.
-            if meeting_date:
-                job.start_date = meeting_date
-            else:
-                job.start_date = timezone.now()
+            job.start_date = meeting_date
 
             # Save our changes.
             job.save()
@@ -167,7 +164,7 @@ class WorkOrderCompleteCreateSerializer(serializers.Serializer):
                 type_of = FOLLOW_UP_CUSTOMER_SURVEY_TASK_ITEM_TYPE_OF_ID,
                 title = _('48 hour follow up'),
                 description = _('Please call up the client and confirm that the associate and client have agreed on scheduled meeting date in the future.'),
-                due_date = get_todays_date_plus_days(2),
+                due_date = get_date_plus_days(timezone.now(), 2),
                 is_closed = False,
                 job = task_item.job,
                 created_by = self.context['user'],
