@@ -42,7 +42,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         # Get the user inputs.
         schema_name = options['schema_name'][0]
-        order_id = options['id'][0]
+        order_id = int_or_none(options['id'][0])
 
         try:
             franchise = SharedFranchise.objects.get(schema_name=schema_name)
