@@ -78,8 +78,8 @@
     <div class="row">
 		<div class="col-sm-3 p-3 mb-2">
 			<a class="btn btn-primary btn-lg" href="{% if template == 'search' %}{% url 'workery_tenant_job_search' %}{% elif template == 'list' %}{% url 'workery_tenant_job_list' %}{% else %}{% url 'workery_tenant_job_summary' %}{% endif %}" role="button">
-               			<i class="fas fa-arrow-left"></i> &nbsp;{% trans 'Back to Jobs Home' %}
-            		</a>
+               	<i class="fas fa-arrow-left"></i> &nbsp;{% trans 'Back to Jobs Home' %}
+            </a>
 		</div>
     </div>
     <!------------------------------------------------------------------------->
@@ -139,13 +139,13 @@
 			<tr>
 			    <th scope="row" class="bg-light">Customer</th>
 			    <td id="customer">
-				{% if job.customer %}<a href="{% url 'workery_tenant_customer_lite_retrieve' template job.customer.id %}" target="_blank">{{ job.customer }}&nbsp;<i class="fas fa-external-link-alt"></i></a>{% else %}-{% endif %}
+				    {% if job.customer %}<a href="{% url 'workery_tenant_customer_lite_retrieve' template job.customer.id %}" target="_blank">{{ job.customer }}&nbsp;<i class="fas fa-external-link-alt"></i></a>{% else %}-{% endif %}
 			    </td>
 			</tr>
 			<tr>
 			    <th scope="row" class="bg-light">Description</th>
 			    <td id="description">
-				{% if job.description %}{{ job.description }}{% else %}-{% endif %}
+				    {% if job.description %}{{ job.description }}{% else %}-{% endif %}
 			    </td>
 			</tr>
 			<tr>
