@@ -208,6 +208,12 @@
                     {% endif %}
                 </td>
             </tr>
+            <tr>
+			    <th scope="row" class="bg-light">Start date</th>
+			    <td id="completion_date">
+				    {% if job.start_date %}{{ job.start_date }}{% else %}<i>{% trans 'No specified' %}</i>{% endif %}
+			    </td>
+			</tr>
 			<tr>
 			    <th scope="row" class="bg-light">Completion date</th>
 			    <td id="completion_date">
@@ -258,11 +264,11 @@
 			<tr>
 			    <th scope="row" class="bg-light">Invoice Quote</th>
 			    <td id="invoice_quote_amount">
-				{% if job.invoice_quote_amount %}
-                                    {{ job.invoice_quote_amount }}
-                                {% else %}
-                                    -
-                                {% endif %}
+				    {% if job.invoice_quote_amount %}
+                        {{ job.invoice_quote_amount }}
+                    {% else %}
+                        -
+                    {% endif %}
 			    </td>
 			</tr>
 			<tr>

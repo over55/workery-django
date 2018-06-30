@@ -49,6 +49,7 @@ class WorkOrderCompleteCreateSerializer(serializers.Serializer):
     job = serializers.PrimaryKeyRelatedField(many=False, queryset=WorkOrder.objects.all(), required=True)
     comment = serializers.CharField(required=False)
     has_agreed_to_meet = serializers.BooleanField(required=True)
+    meeting_date = serializers.DateField(required=False)
 
     # Meta Information.
     class Meta:
@@ -56,6 +57,7 @@ class WorkOrderCompleteCreateSerializer(serializers.Serializer):
             'job',
             'comment',
             'has_agreed_to_meet',
+            'meeting_date'
         )
 
     def validate(self, data):
@@ -81,6 +83,7 @@ class WorkOrderCompleteCreateSerializer(serializers.Serializer):
         job = validated_data.get('job', None)
         comment_text = validated_data.get('comment', None)
         has_agreed_to_meet = validated_data.get('has_agreed_to_meet', None)
+        meeting_date = validated_data.get('meeting_date', None)
 
         # STEP 2 - If the user has submitted an optional comment for the job
         #          then we will include it.
@@ -143,7 +146,18 @@ class WorkOrderCompleteCreateSerializer(serializers.Serializer):
 
             # Attach our next job.
             job.latest_pending_task = next_task_item
+
+            # Change state.
             job.state = WORK_ORDER_STATE.COMPLETED_BUT_UNPAID
+
+            # Updated the start date to either right now or the agreed upon
+            # date between associate and client.
+            if meeting_date:
+                job.start_date = meeting_date
+            else:
+                job.start_date = timezone.now()
+
+            # Save our changes.
             job.save()
 
         else:

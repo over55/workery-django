@@ -11,6 +11,27 @@
 {% block content %}
 
 <script>
+/**
+ *  When page loads, the following code will be run first.
+ */
+$(document).ready(function () {
+    // Initialize our datepicker jQuery code with our HTML view.
+    $( "#meeting_date" ).datepicker({
+        dateFormat: 'yy-mm-dd',
+        // minDate: 'today'
+    });
+
+    // PLUG IN EVENT LISTENER ON REASON DROPDOWN CHANGE.
+    $('input[type=radio][name=has_associate_and_client_agreed_to_meet]').change(function() {
+        if( $(this).val() === "true" ){
+            $("#meeting_date_div").show();
+        }
+        else {
+            $("#meeting_date_div").hide();
+        }
+    });
+});
+
 
 function click_back_button() {
     window.location = "{% url 'workery_tenant_pending_task_retrieve' task_item.id %}";
@@ -23,14 +44,25 @@ function click_back_button() {
  *  (2)
  */
 function click_add_button() {
-    var has_agreed_to_meet = get_selected_radio_value('has_agreed_to_meet');
+    // Get our radio value.
+    var has_agreed_to_meet = get_selected_radio_value('has_associate_and_client_agreed_to_meet');
 
+    // Get our meeting date value.
+    var meeting_date = $('#meeting_date').val();
+    if (meeting_date !== undefined && meeting_date != null && meeting_date.length > 0) {
+        var mydate = new Date(meeting_date); // Convert "MM DD, YYYY" to JS DATE
+        meeting_date = mydate.toISOString().substring(0, 10); // Convert JS DATE to "YYYY-MM-DD"
+    } else {
+        meeting_date = '';
+    }
 
+    // Submit to the API endpoint.
     create_order_complete_api(
         {
             'job': {{ task_item.job.id }},
             'comment': $('#comment').val(),
             'has_agreed_to_meet': has_agreed_to_meet,
+            'meeting_date': meeting_date
         },
         function(result_dict) { // Success
             // FOR DEBUGGING PURPOSES ONLY.
@@ -123,6 +155,14 @@ function get_selected_radio_value(radiofields_name) {
 					<tr class="bg-primary text-white">
 					    <th scope="row" colspan="2" id="Task">48 hour follow up</th>
 					</tr>
+                    <tr>
+					    <th scope="row" class="bg-light">Order ID #</th>
+					    <td id="order">
+                            <a href="{% url 'workery_tenant_job_retrieve' 'summary' task_item.job.id %}" target="_blank">
+                                {{ task_item.job.id|intcomma }}&nbsp;<i class="fas fa-external-link-alt"></i>
+                            </a>
+					    </td>
+					</tr>
 					<tr>
 					    <th scope="row" class="bg-light">Customer Name</th>
 					    <td id="customer">
@@ -176,15 +216,29 @@ function get_selected_radio_value(radiofields_name) {
             <div class="form-group col-md-12 mb-4">
                 <p class="mb-1">Have the Client and Associate Member agreed to meet? <sup>*</sup></p>
                 <div class="form-radio custom-control custom-radio custom-control-inline">
-                    <input type="radio" id="has_agreed_to_meet" name="has_agreed_to_meet" value="true" class="custom-control-input form-check-input">
+                    <input type="radio" id="has_agreed_to_meet" name="has_associate_and_client_agreed_to_meet" value="true" class="custom-control-input form-check-input">
                     <label class="custom-control-label form-check-label" for="has_agreed_to_meet">Yes</label>
                 </div>
                 <div class="form-radio custom-control custom-radio custom-control-inline">
-                    <input type="radio" id="has_agreed_to_meet2" name="has_agreed_to_meet" value="false" class="custom-control-input form-check-input">
+                    <input type="radio" id="has_agreed_to_meet2" name="has_associate_and_client_agreed_to_meet" value="false" class="custom-control-input form-check-input">
                     <label class="custom-control-label form-check-label" for="has_agreed_to_meet2">No</label>
                     <div id="has_agreed_to_meet-error" class="invalid-feedback ml-2"></div>
                 </div>
             </div>
+
+            <!-- Meeting date -->
+            <div class="form-group p-0 col-md-7 mb-4" id="meeting_date_div" style="display: none;">
+                <label for="meeting_date" class="font-b6">Client meeting date</label>
+                <div class="input-group input-group-lg">
+                    <input type="text" class="form-control form-control-lg border border-success" id="meeting_date" name="meeting_date" placeholder="yyyy-mm-dd" required>
+                    <div class="input-group-append">
+                        <span class="input-group-text dob-icon bg-success border-success"><i class="far fa-calendar-alt"></i></span>
+                    </div>
+                    <div id="meeting_date-error" class="invalid-feedback"></div>
+                </div>
+            </div>
+            <!-- end Meeting date -->
+
             <div class="form-group col-md-12 mb-4 p-0">
                 <label for="comment" class="font-b6">Any comments?</label>
                 <textarea class="form-control form-control-lg border border-success" id="comment" name="comment" placeholder="How here..." rows="4" minlength="10" required></textarea>

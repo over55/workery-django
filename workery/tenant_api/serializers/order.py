@@ -109,7 +109,7 @@ class WorkOrderListCreateSerializer(serializers.ModelSerializer):
         is_home_support_service = validated_data.get('is_home_support_service', False)
         created_by = self.context['created_by']
         description = validated_data.get('description', None)
-        start_date = validated_data.get('start_date', timezone.now())
+        start_date = validated_data.get('start_date', None)
         follow_up_days_number = validated_data.get('follow_up_days_number', 0)
         invoice_service_fee = validated_data.get('invoice_service_fee', None)
 
