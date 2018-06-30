@@ -56,9 +56,9 @@
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th>{% trans 'Order #' %}</th>
-                    <th>{% trans 'Client Name' %}</th>
-                    <th>{% trans 'Associate Name' %}</th>
+                    <th>{% trans 'Order #' %}&nbsp;<i class="fas fa-external-link-alt"></i></th>
+                    <th>{% trans 'Client' %}&nbsp;<i class="fas fa-external-link-alt"></i></th>
+                    <th>{% trans 'Associate' %}&nbsp;<i class="fas fa-external-link-alt"></i></th>
                     <th></th>
                 </tr>
             </thead>
@@ -66,24 +66,24 @@
                 {% for job_item in job_list %}
                 <tr>
                     <td id="selected_order_id">
-                        <a href="{% url 'workery_tenant_job_retrieve' 'summary' job_item.customer.id %}" target="_blank">{{ job_item.id|intcomma }}&nbsp;<i class="fas fa-external-link-alt"></i></a>
+                        <a href="{% url 'workery_tenant_job_retrieve' 'summary' job_item.customer.id %}" target="_blank">{{ job_item.id|intcomma }}</a>
                     </td>
                     <td>
                         {% if job_item.customer %}
-                            <a href="{% url 'workery_tenant_customer_lite_retrieve' 'summary' job_item.customer.id %}" target="_blank">{{ job_item.customer }}&nbsp;<i class="fas fa-external-link-alt"></i></a>
+                            <a href="{% url 'workery_tenant_customer_lite_retrieve' 'summary' job_item.customer.id %}" target="_blank">{{ job_item.customer }}</a>
                         {% else %}
                             {% trans 'Unassigned' %}
                         {% endif %}
                     </td>
                     <td>
                         {% if job_item.associate %}
-                            <a href="{% url 'workery_tenant_member_lite_retrieve' 'summary' job_item.associate.id %}" target="_blank">{{ job_item.associate }}&nbsp;<i class="fas fa-external-link-alt"></i></a>
+                            <a href="{% url 'workery_tenant_member_lite_retrieve' 'summary' job_item.associate.id %}" target="_blank">{{ job_item.associate }}</a>
                         {% else %}
                             {% trans 'Unassigned' %}
                         {% endif %}
                     </td>
                     <td>
-                        <a href="{% url 'workery_tenant_financlial_job_retrieve' 'unpaid-jobs' job_item.id %}?page={{ page_obj.number }}">{% trans 'View' %}</a>
+                        <a href="{% url 'workery_tenant_financlial_job_retrieve' 'unpaid-jobs' job_item.id %}?page={{ page_obj.number }}">{% trans 'View' %}&nbsp;<i class="fas fa-chevron-right"></a></a>
                     </td>
                 </tr>
                 {% empty %}
