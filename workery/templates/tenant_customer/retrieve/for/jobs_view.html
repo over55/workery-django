@@ -2,7 +2,7 @@
 {% load staticfiles i18n humanize shared_foundation_tags %}
 
 {% block title %}
-{% trans 'Client List | Workery' %}
+{% trans 'Client Job Listing | Workery' %}
 {% endblock title %}
 
 {% block header_content %}
@@ -120,12 +120,12 @@
                     <thead>
                         <tr>
 
-                            <th>{% trans '#' %}</th>
-                            <th>{% trans 'Associate' %}</th>
+                            <th>{% trans 'Order ID #' %}&nbsp;<i class="fas fa-external-link-alt"></i></th>
+                            <th>{% trans 'Associate' %}&nbsp;<i class="fas fa-external-link-alt"></i></th>
                             <th>{% trans 'Assigned Date' %}</th>
                             <th>{% trans 'Completion Date' %}</th>
                             <th>{% trans 'Status' %}</th>
-                            <th></th>
+                            <th><i class="fas fa-external-link-alt"></i></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -134,7 +134,7 @@
                             <td>{{ job.id|intcomma }}</td>
                             <td>
                                 {% if job.associate %}
-                                    <a href="{% url 'workery_tenant_member_lite_retrieve' template job.associate.id %}" target="_blank">{{ job.associate }}&nbsp;<i class="fas fa-external-link-alt"></i></a>
+                                    <a href="{% url 'workery_tenant_member_lite_retrieve' template job.associate.id %}" target="_blank">{{ job.associate }}</a>
                                 {% else %}-{% endif %}
                             </td>
                             <td>{% if job.assignment_date %}{{ job.assignment_date }}{% else %}-{% endif %}</td>
@@ -159,11 +159,11 @@
                                 {% endif %}
                             </td>
                             <td>
-                                <a href="{% url 'workery_tenant_job_retrieve' 'list' job.id %}?page={{ page_obj.number }}" target="_blank">{% trans 'View' %}&nbsp;<i class="fas fa-external-link-alt"></i></a>
+                                <a href="{% url 'workery_tenant_job_retrieve' 'list' job.id %}?page={{ page_obj.number }}" target="_blank">{% trans 'View' %}&nbsp;<i class="fas fa-chevron-right"></i></a>
                             </td>
                         </tr>
                         {% empty %}
-                        No jobs yet.
+                            No jobs yet.
                         {% endfor %}
                     </tbody>
                 </table>
