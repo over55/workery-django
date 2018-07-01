@@ -415,7 +415,7 @@
             }
             var address_locality = $('#address_locality').val();
             var address_country = $('#address_country').val();
-            if (address_country == null) {
+            if (address_country == null || address_country == "" || address_country.length == 0) {
                 address_country = "Canada";
             }
             var postal_code = $('#postal_code').val();

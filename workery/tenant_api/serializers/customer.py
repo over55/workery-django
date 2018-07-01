@@ -525,68 +525,60 @@ class CustomerRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
     #
 
     organization_name = serializers.CharField(
-        source="organization.name",
         write_only=True,
-        required=True,
+        required=False,
         allow_blank=False,
+        allow_null=False,
         max_length=63,
-        validators=[
-            UniqueValidator(
-                queryset=Organization.objects.all(),
-            )
-        ],
+        # validators=[
+        #     UniqueValidator(
+        #         queryset=Organization.objects.all(),
+        #     )
+        # ],
     )
     organization_type_of = serializers.CharField(
-        source="organization.type_of",
         write_only=True,
         required=True,
         allow_blank=True,
         max_length=63,
     )
     organization_address_country = serializers.CharField(
-        source="organization.address_country",
         write_only=True,
         required=False,
         allow_blank=True,
         max_length=127,
     )
     organization_address_locality = serializers.CharField(
-        source="organization.address_locality",
         write_only=True,
         required=False,
         allow_blank=True,
         max_length=127,
     )
     organization_address_region = serializers.CharField(
-        source="organization.address_region",
         write_only=True,
         required=False,
         allow_blank=True,
         max_length=127,
     )
     organization_post_office_box_number = serializers.CharField(
-        source="organization.post_office_box_number",
         write_only=True,
         required=False,
         allow_blank=True,
         max_length=255,
     )
     organization_postal_code = serializers.CharField(
-        source="organization.postal_code",
         write_only=True,
         required=False,
         allow_blank=True,
         max_length=127,
     )
     organization_street_address = serializers.CharField(
-        source="organization.street_address",
         write_only=True,
         required=False,
         allow_blank=True,
         max_length=255,
     )
     organization_street_address_extra = serializers.CharField(
-        source="organization.street_address_extra",
         write_only=True,
         required=False,
         allow_blank=True,
@@ -676,9 +668,26 @@ class CustomerRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
             'created_by',
             'last_modified_by',
             'tags',
-            'comments'
+            'comments',
+            'organization'
         )
         return queryset
+
+    def validate(self, data):
+        """
+        Override the validator to provide additional custom validation based
+        on our custom logic.
+
+        1. If 'type_of' == Commercial then make sure 'email' was inputted.
+        """
+        # CASE 1 - Other reason
+        if data['type_of'] == COMMERCIAL_CUSTOMER_TYPE_OF_ID:
+            email = data.get('email', None)
+            if email is None:
+                raise serializers.ValidationError(_("Please provide an email if client is commercial."))
+
+        # Return our data.
+        return data
 
     def update(self, instance, validated_data):
         """
@@ -819,9 +828,9 @@ class CustomerRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
                 comment=comment,
             )
 
-        #------------------------------
-        # Update `Organization` object.
-        #------------------------------
+        #----------------------------------------
+        # Update or create `Organization` object.
+        #----------------------------------------
         if type_of_customer == COMMERCIAL_CUSTOMER_TYPE_OF_ID:
             logger.info("Detected commercial customer...")
 
@@ -854,11 +863,11 @@ class CustomerRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
                 logger.info("Created organization.")
                 if created:
                     logger.info("Created organization.")
-                    organization.owner = owner
+                    organization.owner = instance.owner
                     organization.save()
 
-                customer.organization = organization
-                customer.save()
+                instance.organization = organization
+                instance.save()
                 logger.info("Attached created organization to customer.")
 
         #---------------------------
