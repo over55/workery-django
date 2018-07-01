@@ -146,6 +146,22 @@
                         {% if customer.organization %}{{ customer.organization }}{% else %}-{% endif %}
                     </td>
                 </tr>
+                <tr>
+                    <th scope="row" class="bg-light">Company Type</th>
+                    <td id="street_address">
+                        {% if customer.organization %}
+                            {% if customer.organization.type_of == tenant_constants.PRIVATE_ORGANIZATION_TYPE_OF_ID %}
+                                Private
+                            {% elif customer.organization.type_of == tenant_constants.NON_PROFIT_ORGANIZATION_TYPE_OF_ID %}
+                                Non-Profit
+                            {% elif customer.organization.type_of == tenant_constants.GOVERNMENT_ORGANIZATION_TYPE_OF_ID %}
+                                Government
+                            {% else %}
+                                {{ customer.organization.type_of }}
+                            {% endif %}
+                        {% endif %}
+                    </td>
+                </tr>
                 <!-- ############ end BUSINESS ############ -->
                 <!-- ############ SYSTEM ############ -->
                 <tr class="bg-primary text-white">
