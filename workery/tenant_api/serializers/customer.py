@@ -604,7 +604,7 @@ class CustomerRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         #-----------------------------------------------------------
         # Bugfix: Created `SharedUser` object if not created before.
         #-----------------------------------------------------------
-        if instance.owner is None:
+        if instance.owner is None and email:
             owner = SharedUser.objects.filter(email=email).first()
             if owner:
                 instance.owner = owner
@@ -645,8 +645,11 @@ class CustomerRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         #---------------------------
         # Update `Customer` object.
         #---------------------------
+        # Update email instance.
         instance.description = validated_data.get('description', instance.description)
-        instance.email = email
+        if email:
+            instance.email = email
+
         # Profile
         instance.given_name = validated_data.get('given_name', instance.given_name)
         instance.middle_name = validated_data.get('middle_name', instance.middle_name)
