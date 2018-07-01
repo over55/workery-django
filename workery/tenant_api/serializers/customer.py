@@ -218,7 +218,8 @@ class CustomerListCreateSerializer(serializers.ModelSerializer):
             # 'comments',
             'password',
             'password_repeat',
-            # 'organization',
+
+            # Organization
             'organization_name',
             'organization_type_of',
             'organization_address_country',
@@ -396,6 +397,7 @@ class CustomerListCreateSerializer(serializers.ModelSerializer):
         #-----------------------------------
         # Create or update our Organization.
         #-----------------------------------
+        type_of_customer = validated_data.get('type_of', UNASSIGNED_CUSTOMER_TYPE_OF_ID)
         if type_of_customer == COMMERCIAL_JOB_TYPE_OF_ID:
             logger.info("Detected commercial customer...")
             organization_name = validated_data.get('organization_name', None)
@@ -518,6 +520,79 @@ class CustomerRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         style={'input_type': 'password'}
     )
 
+    #
+    # Fields used for mapping to organizations.
+    #
+
+    organization_name = serializers.CharField(
+        source="organization.name",
+        write_only=True,
+        required=True,
+        allow_blank=False,
+        max_length=63,
+        validators=[
+            UniqueValidator(
+                queryset=Organization.objects.all(),
+            )
+        ],
+    )
+    organization_type_of = serializers.CharField(
+        source="organization.type_of",
+        write_only=True,
+        required=True,
+        allow_blank=True,
+        max_length=63,
+    )
+    organization_address_country = serializers.CharField(
+        source="organization.address_country",
+        write_only=True,
+        required=False,
+        allow_blank=True,
+        max_length=127,
+    )
+    organization_address_locality = serializers.CharField(
+        source="organization.address_locality",
+        write_only=True,
+        required=False,
+        allow_blank=True,
+        max_length=127,
+    )
+    organization_address_region = serializers.CharField(
+        source="organization.address_region",
+        write_only=True,
+        required=False,
+        allow_blank=True,
+        max_length=127,
+    )
+    organization_post_office_box_number = serializers.CharField(
+        source="organization.post_office_box_number",
+        write_only=True,
+        required=False,
+        allow_blank=True,
+        max_length=255,
+    )
+    organization_postal_code = serializers.CharField(
+        source="organization.postal_code",
+        write_only=True,
+        required=False,
+        allow_blank=True,
+        max_length=127,
+    )
+    organization_street_address = serializers.CharField(
+        source="organization.street_address",
+        write_only=True,
+        required=False,
+        allow_blank=True,
+        max_length=255,
+    )
+    organization_street_address_extra = serializers.CharField(
+        source="organization.street_address_extra",
+        write_only=True,
+        required=False,
+        allow_blank=True,
+        max_length=255,
+    )
+
     class Meta:
         model = Customer
         fields = (
@@ -552,6 +627,17 @@ class CustomerRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
             # Misc (Write Only)
             'password',
             'password_repeat',
+
+            # Organization
+            'organization_name',
+            'organization_type_of',
+            'organization_address_country',
+            'organization_address_locality',
+            'organization_address_region',
+            'organization_post_office_box_number',
+            'organization_postal_code',
+            'organization_street_address',
+            'organization_street_address_extra',
 
             # Contact Point
             'area_served',
@@ -600,6 +686,7 @@ class CustomerRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         """
         # Get our inputs.
         email = validated_data.get('email', instance.email)
+        type_of_customer = validated_data.get('type_of', UNASSIGNED_CUSTOMER_TYPE_OF_ID)
 
         #-----------------------------------------------------------
         # Bugfix: Created `SharedUser` object if not created before.
@@ -731,6 +818,48 @@ class CustomerRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
                 about=instance,
                 comment=comment,
             )
+
+        #------------------------------
+        # Update `Organization` object.
+        #------------------------------
+        if type_of_customer == COMMERCIAL_CUSTOMER_TYPE_OF_ID:
+            logger.info("Detected commercial customer...")
+
+            organization_name = validated_data.get('organization_name', None)
+            organization_type_of = validated_data.get('organization_type_of', None)
+            organization_address_country = validated_data.get('organization_address_country', None)
+            organization_address_locality = validated_data.get('organization_address_locality', None)
+            organization_address_region = validated_data.get('organization_address_region', None)
+            organization_post_office_box_number = validated_data.get('organization_post_office_box_number', None)
+            organization_postal_code = validated_data.get('organization_postal_code', None)
+            organization_street_address = validated_data.get('organization_street_address', None)
+            organization_street_address_extra = validated_data.get('organization_street_address_extra', None)
+
+            if organization_name and organization_type_of:
+                organization, created = Organization.objects.update_or_create(
+                    name=organization_name,
+                    type_of=organization_type_of,
+                    defaults={
+                        'type_of': organization_type_of,
+                        'name': organization_name,
+                        'address_country': organization_address_country,
+                        'address_locality': organization_address_locality,
+                        'address_region': organization_address_region,
+                        'post_office_box_number': organization_post_office_box_number,
+                        'postal_code': organization_postal_code,
+                        'street_address': organization_street_address,
+                        'street_address_extra': organization_street_address_extra,
+                    }
+                )
+                logger.info("Created organization.")
+                if created:
+                    logger.info("Created organization.")
+                    organization.owner = owner
+                    organization.save()
+
+                customer.organization = organization
+                customer.save()
+                logger.info("Attached created organization to customer.")
 
         #---------------------------
         # Update validation data.
