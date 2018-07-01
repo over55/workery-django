@@ -116,68 +116,60 @@ class CustomerListCreateSerializer(serializers.ModelSerializer):
     #
 
     organization_name = serializers.CharField(
-        source="organization.name",
         write_only=True,
-        required=True,
+        required=False,
         allow_blank=False,
+        allow_null=False,
         max_length=63,
-        validators=[
-            UniqueValidator(
-                queryset=Organization.objects.all(),
-            )
-        ],
+        # validators=[
+        #     UniqueValidator(
+        #         queryset=Organization.objects.all(),
+        #     )
+        # ],
     )
     organization_type_of = serializers.CharField(
-        source="organization.type_of",
         write_only=True,
         required=True,
         allow_blank=True,
         max_length=63,
     )
     organization_address_country = serializers.CharField(
-        source="organization.address_country",
         write_only=True,
         required=False,
         allow_blank=True,
         max_length=127,
     )
     organization_address_locality = serializers.CharField(
-        source="organization.address_locality",
         write_only=True,
         required=False,
         allow_blank=True,
         max_length=127,
     )
     organization_address_region = serializers.CharField(
-        source="organization.address_region",
         write_only=True,
         required=False,
         allow_blank=True,
         max_length=127,
     )
     organization_post_office_box_number = serializers.CharField(
-        source="organization.post_office_box_number",
         write_only=True,
         required=False,
         allow_blank=True,
         max_length=255,
     )
     organization_postal_code = serializers.CharField(
-        source="organization.postal_code",
         write_only=True,
         required=False,
         allow_blank=True,
         max_length=127,
     )
     organization_street_address = serializers.CharField(
-        source="organization.street_address",
         write_only=True,
         required=False,
         allow_blank=True,
         max_length=255,
     )
     organization_street_address_extra = serializers.CharField(
-        source="organization.street_address_extra",
         write_only=True,
         required=False,
         allow_blank=True,
