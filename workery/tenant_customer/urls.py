@@ -29,5 +29,6 @@ urlpatterns = (
     path('clients/<str:template>/detail/<int:pk>/comments/', retrieve_view.CustomerRetrieveForCommentListAndCreateView.as_view(), name='workery_tenant_customer_retrieve_for_comment_list_and_create'),
 
     # Update
-    path('clients/<str:template>/detail/<int:pk>/edit/', update_view.CustomerUpdateView.as_view(), name='workery_tenant_customer_update'),
+    path('clients/<str:template>/residential-detail/<int:pk>/edit/', update_view.ResidentialCustomerUpdateView.as_view(), name='workery_tenant_residential_customer_update'),
+    path('clients/<str:template>/commercial-detail/<int:pk>/edit/', update_view.CommercialCustomerUpdateView.as_view(), name='workery_tenant_commercial_customer_update'),
 )

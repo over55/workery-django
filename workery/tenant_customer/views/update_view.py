@@ -16,10 +16,35 @@ from tenant_foundation.models import (
 )
 
 
-class CustomerUpdateView(LoginRequiredMixin, WorkeryDetailView):
+class ResidentialCustomerUpdateView(LoginRequiredMixin, WorkeryDetailView):
     context_object_name = 'customer'
     model = Customer
-    template_name = 'tenant_customer/update/view.html'
+    template_name = 'tenant_customer/update/residential_view.html'
+    menu_id = "customers"
+
+    def get_context_data(self, **kwargs):
+        # Get the context of this class based view.
+        modified_context = super().get_context_data(**kwargs)
+
+        # Validate the template selected.
+        template = self.kwargs['template']
+        if template not in ['search', 'summary', 'list']:
+            from django.core.exceptions import PermissionDenied
+            raise PermissionDenied(_('You entered wrong format.'))
+        modified_context['template'] = template
+
+        # Extra
+        modified_context['tags'] = Tag.objects.all()
+        modified_context['skill_sets'] = SkillSet.objects.all()
+
+        # Return our modified context.
+        return modified_context
+
+
+class CommercialCustomerUpdateView(LoginRequiredMixin, WorkeryDetailView):
+    context_object_name = 'customer'
+    model = Customer
+    template_name = 'tenant_customer/update/commercial_view.html'
     menu_id = "customers"
 
     def get_context_data(self, **kwargs):

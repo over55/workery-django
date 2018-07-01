@@ -39,7 +39,7 @@
 
             {% else %}
 
-	    <li class="breadcrumb-item"><a href="{% url 'workery_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
+	        <li class="breadcrumb-item"><a href="{% url 'workery_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
             <li class="breadcrumb-item"><a href="{% url 'workery_tenant_customer_summary' %}">{% trans 'Clients' %}</a></li>
             <li class="breadcrumb-item active" aria-current="page">{% trans 'Client #' %}{{ object.id|intcomma }}</li>
 
@@ -67,7 +67,8 @@
     <div class="row">
 		<div class="col-sm-3 p-3 mb-2">
 			<a class="btn btn-primary btn-lg" href="{% if template == 'search' %}{% url 'workery_tenant_customer_search' %}{% elif template == 'list' %}{% url 'workery_tenant_customer_list' %}{% else %}{% url 'workery_tenant_customer_summary' %}{% endif %}" role="button">
-                	<i class="fas fa-arrow-left"></i> &nbsp;{% if template == 'search' %}{% trans 'Back to Search' %}{% elif template == 'list' %}{% trans 'Back to Client List' %}{% else %}{% trans 'Back to Client\'s Home' %}{% endif %}</a>
+                <i class="fas fa-arrow-left"></i> &nbsp;{% if template == 'search' %}{% trans 'Back to Search' %}{% elif template == 'list' %}{% trans 'Back to Client List' %}{% else %}{% trans 'Back to Client\'s Home' %}{% endif %}
+            </a>
 		</div>
 	</div>
     <!------------------------------------------------------------------------->
@@ -117,7 +118,7 @@
         <!-- UPDATE BUTTON -->
         <!--------------------------------------------------------------------->
         <div class="form-group col-md-12 mb-3 mx-auto text-center">
-            <a href="{% url 'workery_tenant_customer_update' template customer.id %}">
+            <a href="{% if customer.type_of == tenant_constants.RESIDENTIAL_CUSTOMER_TYPE_OF_ID %}{% url 'workery_tenant_residential_customer_update' template customer.id %}{% elif customer.type_of == tenant_constants.COMMERCIAL_CUSTOMER_TYPE_OF_ID %}{% url 'workery_tenant_commercial_customer_update' template customer.id %}{% endif %}">
                 <button id="id_submit_btn" class="btn btn-warning btn-lg btn-fxw mt-4" type="button">
                     <i class="fas fa-edit"></i>&nbsp;{% trans 'Edit Client' %}
                 </button>

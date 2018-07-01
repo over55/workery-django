@@ -769,7 +769,7 @@
 	    	<li class="breadcrumb-item"><a href="{% url 'workery_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
             <li class="breadcrumb-item"><a href="{% url 'workery_tenant_customer_summary' %}">{% trans 'Clients' %}</a></li>
             <li class="breadcrumb-item"><a href="{% url 'workery_tenant_customer_full_retrieve' template customer.id %}">{% trans 'Client #' %}{{ customer.id|intcomma }}</a></li>
-            <li class="breadcrumb-item active" aria-current="page">{% trans 'Edit' %}</li>
+            <li class="breadcrumb-item active" aria-current="page">{% trans 'Commercial Edit' %}</li>
 
             {% endif %}
 	  	</ol>
@@ -789,12 +789,12 @@
     <!------------------------------------------------------------------------->
     <!-- end BACK BUTTON -->
 
-    <h1 id="id_page_title">{% trans 'Edit Client' %}</h1>
+    <h1 id="id_page_title">{% trans 'Edit Commercial Client' %}</h1>
 
     <!-- FORM -->
     <!------------------------------------------------------------------------->
     <div class="col-sm-5 mx-auto mt-2">
-        <!-- Residential form -->
+        <!-- Commercial form -->
         <div class="col-sm-12 fade show active" id="client-form" aria-labelledby="residential">
             <p><span class="text-secondary font-italic"><sup>*</sup>&nbsp;-&nbsp;Indicates required field to fill out.</span></p>
             <!-- Error Output -->
