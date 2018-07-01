@@ -52,8 +52,8 @@ class Command(BaseCommand):
         # Connection will set it back to our tenant.
         connection.set_schema(schema_name, True) # Switch to Tenant.
 
-        # Defensive Code: Prevent continuing if the email already exists.
-        if not SharedUser.objects.filter(id=order_id).exists():
+        # Defensive Code: Prevent continuing if the ID# does not exist.
+        if not WorkOrder.objects.filter(id=order_id).exists():
             raise CommandError(_('ID # does not exists, please pick another ID #.'))
 
         # Create the user.
