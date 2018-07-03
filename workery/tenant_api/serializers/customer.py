@@ -379,8 +379,8 @@ class CustomerListCreateSerializer(serializers.ModelSerializer):
             street_address_extra=validated_data.get('street_address_extra', None),
 
             # Password
-            password=password,
-            password_repeat=password_repeat,
+            password=validated_data['password'],
+            password_repeat=validated_data['password_repeat'],
             
             # Geo-coordinate
             elevation=validated_data.get('elevation', None),
