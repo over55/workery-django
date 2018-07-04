@@ -661,7 +661,10 @@
         update_customer_api(
             {{ customer.id }}, // Staff PK
             {
+                // --- System ---
                 'id': {{ customer.id }},
+
+                // --- Personal ---
                 'given_name': given_name,
                 'middle_name': null,
                 'last_name': last_name,
@@ -692,6 +695,21 @@
                 'password': password,
                 'password_repeat': password_repeat,
                 'extra_comment': comment,
+
+                // --- System ---
+                'type_of': {{ tenant_constants.RESIDENTIAL_CUSTOMER_TYPE_OF_ID }},
+
+                // --- ORGANIZATION ---
+                'organization_name': null,
+                'organization_type_of': null,
+                'organization_address_country': null,
+                'organization_address_locality': null,
+                'organization_address_region': null,
+                'organization_street_address': null,
+                'organization_street_address_extra': null,
+                'organization_postal_code': null,
+                'organization_post_office_box_number': null,
+                'organization_tags': null,
             },
             function(result_dict) { // Success
                 console.log(result_dict);
