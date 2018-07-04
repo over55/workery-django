@@ -390,6 +390,13 @@ class StaffRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         }
     )
 
+    # This field is used to assign the user to the group.
+    group_membership = serializers.CharField(
+        write_only=True,
+        allow_null=False,
+    )
+
+
     # All comments are created by our `create` function and not by
     # # `django-rest-framework`.
     # comments = StaffCommentSerializer(many=True, read_only=True)
@@ -414,6 +421,7 @@ class StaffRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
             'last_modified',
             # 'owner',
             'description',
+            'group_membership',
 
             # Person
             'given_name',
@@ -528,6 +536,13 @@ class StaffRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         instance.owner.is_active = validated_data.get('is_active', instance.owner.is_active)
         instance.owner.save()
         logger.info("Updated the shared user.")
+
+        # Attach the user to the `group` group.
+        group_membership = validated_data.get('group_membership', None)
+        if group_membership != "NaN":
+            group_membership = int(group_membership)
+            instance.owner.groups.set([group_membership])
+            logger.info("Updated the group membership.")
 
         #---------------------------
         # Update `Staff` object.
