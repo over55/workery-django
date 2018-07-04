@@ -34,7 +34,7 @@ class Command(BaseCommand):
     def add_arguments(self, parser):
         """
         Run manually in console:
-        python manage.py delete_shared_account_by_email "london" "bart+manager@workery.ca"
+        python manage.py delete_tenant_account_by_email "london" "bart+manager@workery.ca"
         """
         parser.add_argument('schema_name', nargs='+', type=str)
         parser.add_argument('email', nargs='+', type=str)

@@ -34,7 +34,7 @@ class Command(BaseCommand):
     def add_arguments(self, parser):
         """
         Run manually in console:
-        python manage.py delete_tenant_account_by_id "london" 666
+        python manage.py delete_tenant_customer_by_id "london" 666
         """
         parser.add_argument('schema_name', nargs='+', type=str)
         parser.add_argument('id', nargs='+', type=int)
@@ -53,15 +53,19 @@ class Command(BaseCommand):
         connection.set_schema(schema_name, True) # Switch to Tenant.
 
         # Defensive Code: Prevent continuing if the email already exists.
-        if not SharedUser.objects.filter(id=id).exists():
-            raise CommandError(_('Email does not exists, please pick another email.'))
+        user = None
+        if Customer.objects.filter(id=id).exists():
+            # Create the user.
+            customer = Customer.objects.get(id=id)
+            user = customer.owner
+            customer.delete()
+            self.stdout.write(self.style.SUCCESS(_('Deleted "Customer" object.')))
 
-        # Create the user.
-        user = SharedUser.objects.get(id=id)
-        user.delete()
-        self.stdout.write(self.style.SUCCESS(_('Deleted "User" object.')))
+            if user:
+                user.delete()
+                self.stdout.write(self.style.SUCCESS(_('Deleted "SharedUser" object.')))
 
         # For debugging purposes.
         self.stdout.write(
-            self.style.SUCCESS(_('Successfully deleted a tenant account.'))
+            self.style.SUCCESS(_('Successfully deleted a tenant customer.'))
         )
