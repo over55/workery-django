@@ -270,6 +270,12 @@
                     <th scope="row" colspan="2">System</th>
                 </tr>
                 <tr>
+                    <th scope="row" class="bg-light">User ID #</th>
+                    <td>
+                        {% if partner.owner %}{{ partner.owner.id|intcomma }}{% else %}-{% endif %}
+                    </td>
+                </tr>
+                <tr>
                     <th scope="row" class="bg-light">Created at</th>
                     <td>
                         {% if partner.created|timezone:request.tenant.timezone_name %}{{ partner.created }}{% else %}-{% endif %}

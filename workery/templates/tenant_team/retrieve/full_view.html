@@ -152,13 +152,13 @@
                         {% if staff.description %}{{ staff.description }}{% else %}-{% endif %}
                     </td>
                 </tr>
-		<tr>
+		        <tr>
                     <th scope="row" class="bg-light">Tags</th>
                     <td id="tags">
                         {% for tag in staff.tags.all %}<span class="badge badge-info badge-lg" id="tag_id_{{ tag.id }}">{{ tag }}</span>{% empty %}-{% endfor %}
                     </td>
                 </tr>
-		<!-- ############ end PERSON ############ -->
+		        <!-- ############ end PERSON ############ -->
                 <!-- ############ CONTACT POINT ############ -->
                 <tr class="bg-primary text-white">
                     <th scope="row" colspan="2">Contact Point</th>
@@ -244,6 +244,12 @@
             <!-- ############ SYSTEM ############ -->
             <tr class="bg-primary text-white">
                 <th scope="row" colspan="2">System</th>
+            </tr>
+            <tr>
+                <th scope="row" class="bg-light">User ID #</th>
+                <td>
+                    {% if staff.owner %}{{ staff.owner.id|intcomma }}{% else %}-{% endif %}
+                </td>
             </tr>
             <tr>
                 <th scope="row" class="bg-light">Created at</th>
