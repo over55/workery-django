@@ -252,6 +252,16 @@
                 </td>
             </tr>
             <tr>
+                <th scope="row" class="bg-light">Group</th>
+                <td>
+                    {% if staff.owner %}
+                        {% for group in staff.owner.groups.all %}
+                            {{ group }}
+                        {% endfor %}
+                    {% else %}-{% endif %}
+                </td>
+            </tr>
+            <tr>
                 <th scope="row" class="bg-light">Created at</th>
                 <td>
                     {% if staff.created %}{{ staff.created }}{% else %}-{% endif %}
