@@ -37,6 +37,10 @@
             <div id="step-2" class="st-grey">
                 <span class="num">2.</span><span class="">Complete Task</span>
             </div>
+            {% elif task_item.type_of == 4 %}
+            <div id="step-2" class="st-grey">
+                <span class="num">2.</span><span class="">Follow Up</span>
+            </div>
             {% endif %}
         </div>
     </div>
@@ -193,6 +197,16 @@
                         {% elif task_item.type_of == 3 %}
                         <div class="col-sm-4">
                             <a href="{% url 'workery_tenant_job_retrieve_for_close_create' 'task' task_item.job.id %}?task_id={{ task_item.id }}">
+                            <button  id="id_submit_btn"
+                                class="btn btn-success btn-lg btn-fxw mt-4"
+                                type="button">
+                            <i class="fas fa-arrow-right"></i>&nbsp;{% trans 'Begin' %}
+                            </button>
+                            </a>
+                        </div>
+                        {% elif task_item.type_of == 4 %}
+                        <div class="col-sm-4">
+                            <a href="{% url 'workery_tenant_pending_task_retrieve_for_activity_sheet_follow_up_with_associate_retrieve' task_item.id %}">
                             <button  id="id_submit_btn"
                                 class="btn btn-success btn-lg btn-fxw mt-4"
                                 type="button">

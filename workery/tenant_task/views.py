@@ -151,3 +151,10 @@ class UnassignedTaskListView(LoginRequiredMixin, WorkeryListView):
 
         # Return our modified context.
         return modified_context
+
+
+class PendingTaskRetrieveForActivityFollowUpWithAssociateSheetView(LoginRequiredMixin, WorkeryDetailView):
+    context_object_name = 'task_item'
+    model = TaskItem
+    template_name = 'tenant_task/component/pending_follow_up/create_view.html'
+    menu_id = "task"

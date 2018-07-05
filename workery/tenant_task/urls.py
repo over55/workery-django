@@ -17,6 +17,7 @@ urlpatterns = (
     # Assign
     path('pending-tasks/<int:pk>/activity-sheet/', views.PendingTaskRetrieveForActivitySheetView.as_view(), name='workery_tenant_pending_task_retrieve_for_activity_sheet_retrieve'),
     path('pending-tasks/<int:pk>/activity-sheet/create', views.PendingTaskRetrieveForActivitySheetAndAssignAssociateCreateView.as_view(), name='workery_tenant_pending_task_retrieve_for_activity_sheet_retrieve_and_create'),
+    path('pending-tasks/<int:pk>/activity-sheet/pending-follow-up', views.PendingTaskRetrieveForActivityFollowUpWithAssociateSheetView.as_view(), name='workery_tenant_pending_task_retrieve_for_activity_sheet_follow_up_with_associate_retrieve'),
 
     # Complete
     path('pending-tasks/<int:pk>/complete/', views.PendingTaskRetrieveAndCompleteCreateView.as_view(), name='workery_tenant_pending_task_retrieve_and_complete_create'),
