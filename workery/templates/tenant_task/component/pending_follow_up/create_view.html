@@ -23,13 +23,10 @@ function click_back_button() {
  *  (2)
  */
 function click_add_button() {
-    alert("Developer will implement this.");
-    return;
-
     var state = get_selected_radio_value('state');
 
     //
-    create_activity_sheet_item_api(
+    create_pending_activity_sheet_item_api(
         {
             'job': {{ task_item.job.id }},
             'associate': {{ task_item.job.associate_id }},

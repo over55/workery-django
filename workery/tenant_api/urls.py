@@ -19,6 +19,7 @@ from tenant_api.views.staff_comment import StaffCommentListCreateAPIView
 from tenant_api.views.tag import TagListCreateAPIView, TagRetrieveUpdateDestroyAPIView
 from tenant_api.views.utility import FindCustomerMatchingAPIView
 from tenant_api.views.order_activite_sheet_item import ActivitySheetItemCreateAPIView
+from tenant_api.views.order_pending_follow_up import PendingActivitySheetItemCreateAPIView
 from tenant_api.views.public_image_upload import PublicImageUploadListCreateAPIView
 from tenant_api.views.order_complete import WorkOrderCompleteCreateAPIView
 from tenant_api.views.order_close import WorkOrderCloseCreateAPIView
@@ -58,6 +59,7 @@ urlpatterns = [
 
     # WorkOrders - Update
     url(r'^api/orders/activity-sheet-item/assign$', ActivitySheetItemCreateAPIView.as_view(), name='workery_order_activity_sheet_item_create_api_endpoint'),
+    url(r'^api/orders/activity-sheet-item/pending$', PendingActivitySheetItemCreateAPIView.as_view(), name='workery_order_pending_activity_sheet_item_create_api_endpoint'),
     url(r'^api/orders/complete$', WorkOrderCompleteCreateAPIView.as_view(), name='workery_order_order_complete_create_api_endpoint'),
     url(r'^api/orders/close$', WorkOrderCloseCreateAPIView.as_view(), name='workery_order_order_close_create_api_endpoint'),
     url(r'^api/orders/postpone$', WorkOrderPostponeCreateAPIView.as_view(), name='workery_order_order_postpone_create_api_endpoint'),
