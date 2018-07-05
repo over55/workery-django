@@ -211,7 +211,7 @@
                         {% if associate.owner.email %}<a href="mailto:{{ associate.owner.email }}">{{ associate.owner.email }}</a>{% else %}-{% endif %}
                     </td>
                 </tr>
-		<tr>
+		        <tr>
                     <th scope="row" class="bg-light">Ok to E-Mail?</th>
                     <td id="ok_to_email">
                         {% if associate.is_ok_to_email == True %}Yes{% else %}No{% endif %}
