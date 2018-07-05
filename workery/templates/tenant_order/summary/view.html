@@ -73,6 +73,7 @@
             <thead>
                 <tr>
                     <th></th>
+                    <th>{% trans 'ID #' %}</th>
                     <th>{% trans 'Client' %}&nbsp;<i class="fas fa-external-link-alt"></i></th>
                     <th>{% trans 'Associate' %}&nbsp;<i class="fas fa-external-link-alt"></i></th>
                     <th>{% trans 'Assignment Date' %}</th>
@@ -93,6 +94,7 @@
                             <i class="fa fa-question fa-lg"></i>
                         {% endif %}
                     </td>
+                    <td>{{ job.id|intcomma }}</td>
                     <td>
                         {% if job.customer %}
                             <a href="{% url 'workery_tenant_customer_lite_retrieve' 'summary' job.customer.id %}" target="_blank">{{ job.customer }}</a>
