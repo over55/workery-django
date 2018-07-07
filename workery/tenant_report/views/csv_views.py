@@ -138,7 +138,8 @@ def report_06_streaming_csv_view(request):
 
     cancelled_jobs = WorkOrder.objects.filter(
         Q(completion_date__range=(from_dt,to_dt)) &
-        Q(state=WORK_ORDER_STATE.CANCELLED)
+        Q(state=WORK_ORDER_STATE.CANCELLED) &
+        Q(associate__isnull=False)
     ).order_by('-completion_date')
 
     # Generate the CSV header row.
@@ -158,13 +159,19 @@ def report_06_streaming_csv_view(request):
         elif cancelled_job.closing_reason == 4:
             closing_reason = _("Weather")
 
+        # Minor defensive code.
+        associate = cancelled_job.associate
+        associate_id = '-' if associate is None else associate.id
+        associate = '-' if associate is None else associate
+        closing_reason = '-' if closing_reason is None else closing_reason
+
         # Generate the reason.
         rows += ([
             str(cancelled_job.id),
             str(cancelled_job.completion_date),
             str(closing_reason),
-            str(cancelled_job.associate.id),
-            str(cancelled_job.associate),
+            str(associate_id),
+            str(associate),
         ],)
 
     # Create the virtual CSV file and stream all the data in real time to the
