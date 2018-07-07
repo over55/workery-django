@@ -91,50 +91,48 @@ class PendingFollowUpCreateSerializer(serializers.Serializer):
         comment = validated_data.get('comment', None)
         state = validated_data.get('state', None)
 
-        # STEP 2 - Create our activity sheet item.
-        obj = ActivitySheetItem.objects.create(
+        # STEP 2 - Lookup the most recent task which has not been closed
+        #          for the particular job order.
+        task_item = TaskItem.objects.filter(
+            type_of=FOLLOW_UP_DID_ASSOCIATE_ACCEPT_JOB_TASK_ITEM_TYPE_OF_ID,
             job=job,
-            associate=associate,
-            comment=comment,
-            state=state,
-            created_by=self.context['user'],
-        )
+            is_closed=False
+        ).order_by('due_date').first()
 
         # For debugging purposes only.
-        logger.info("ActivitySheetItem was created.")
+        logger.info("Found task #%(task_item)s" % {
+            'task_item': str(task_item.id)
+        })
+
+        # STEP 3 - Update our TaskItem to be closed.
+        task_item.is_closed = True
+        task_item.last_modified_by = self.context['user']
+        task_item.save()
+
+        # For debugging purposes only.
+        logger.info("Task #%(task_item)s was closed." % {
+            'task_item': str(task_item.id)
+        })
+
+        # STEP 4 - Lookup our current activity sheet and set the status of
+        #          the activity sheet based on the users decision.
+        current_activity_sheet_item = ActivitySheetItem.objects.get(
+            job=job,
+            associate=associate,
+        )
+        current_activity_sheet_item.state = state
+        current_activity_sheet_item.last_modified_by = self.context['user']
+        current_activity_sheet_item.save()
 
         if state == ACTIVITY_SHEET_ITEM_STATE.ACCEPTED or state == ACTIVITY_SHEET_ITEM_STATE.PENDING:
 
-            # STEP 3 - Update our job.
-            obj.job.associate = associate
-            obj.job.assignment_date = get_todays_date_plus_days()
-            obj.job.save()
+            # STEP 5 - Update our job.
+            current_activity_sheet_item.job.associate = associate
+            current_activity_sheet_item.job.assignment_date = get_todays_date_plus_days()
+            current_activity_sheet_item.job.save()
 
             # For debugging purposes only.
             logger.info("Associate assigned to Job.")
-
-            # STEP 4 - Lookup the most recent task which has not been closed
-            #          for the particular job order.
-            task_item = TaskItem.objects.filter(
-                type_of=FOLLOW_UP_DID_ASSOCIATE_ACCEPT_JOB_TASK_ITEM_TYPE_OF_ID,
-                job=job,
-                is_closed=False
-            ).order_by('due_date').first()
-
-            # For debugging purposes only.
-            logger.info("Found task #%(task_item)s" % {
-                'task_item': str(task_item.id)
-            })
-
-            # STEP 4 - Update our TaskItem if job was accepted.
-            task_item.is_closed = True
-            task_item.last_modified_by = self.context['user']
-            task_item.save()
-
-            # For debugging purposes only.
-            logger.info("Task #%(task_item)s was closed." % {
-                'task_item': str(task_item.id)
-            })
 
             # Create the task message / time based on the `state`.
             title = None
@@ -147,12 +145,12 @@ class PendingFollowUpCreateSerializer(serializers.Serializer):
                 due_date = get_todays_date_plus_days(2)
                 type_of = FOLLOW_UP_IS_JOB_COMPLETE_TASK_ITEM_TYPE_OF_ID
             elif state == ACTIVITY_SHEET_ITEM_STATE.PENDING:
-                title = _('24 hour follow up')
+                title = _('Pending')
                 description = _('Please contact the Associate to confirm if they want the job.')
                 due_date = get_todays_date_plus_days(1)
                 type_of = FOLLOW_UP_DID_ASSOCIATE_ACCEPT_JOB_TASK_ITEM_TYPE_OF_ID
 
-            # STEP 5 - Create our new task for following up.
+            # STEP 6 - Create our new task for following up.
             next_task_item = TaskItem.objects.create(
                 type_of = type_of,
                 title = title,
@@ -184,8 +182,9 @@ class PendingFollowUpCreateSerializer(serializers.Serializer):
         else:
             job.associate = None
             job.state = WORK_ORDER_STATE.DECLINED
+            job.latest_pending_task = None # No new tasks get created.
             job.save()
 
         # STEP 5 - Assign our new variables and return the validated data.
-        validated_data['id'] = obj.id
+        validated_data['id'] = current_activity_sheet_item.id
         return validated_data

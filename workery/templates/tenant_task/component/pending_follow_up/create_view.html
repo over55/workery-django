@@ -11,6 +11,24 @@
 {% block content %}
 
 <script>
+/**
+ *  When page loads, the following code will be run first.
+ */
+$(document).ready(function () {
+    // DEFENSIVE CODE:
+    // If there is no associate assigned then we need to automatically load
+    // up the pending list, this page cannot exist.
+    if ("{{ task_item.job.associate_id }}" == "None") {
+        window.location = "{% url 'workery_tenant_task_list' %}";
+    }
+
+    // DEFENSIVE CODE:
+    // If this task has already been closed then please redirect to the
+    // pending list.
+    if (parseInt("{{ task_item.is_closed }}")) {
+        window.location = "{% url 'workery_tenant_task_list' %}";
+    }
+});
 
 function click_back_button() {
     window.location = "{% url 'workery_tenant_pending_task_retrieve' task_item.id %}";
@@ -29,7 +47,7 @@ function click_add_button() {
     create_pending_activity_sheet_item_api(
         {
             'job': {{ task_item.job.id }},
-            'associate': {{ task_item.job.associate_id }},
+            'associate': parseInt("{{ task_item.job.associate_id }}"),
             'comment': $('#comment').val(),
             'state': state,
         },
@@ -37,14 +55,8 @@ function click_add_button() {
             // FOR DEBUGGING PURPOSES ONLY.
             console.log(result_dict);
 
-            // REDIRECT.
-            if (state == "{{ ACTIVITY_SHEET_ITEM_STATE.ACCEPTED }}" || state == "{{ ACTIVITY_SHEET_ITEM_STATE.PENDING }}" ) {
-                // REDIRECT TO SUCCESS PAGE.
-                window.location = "{% url 'workery_tenant_task_list' %}?was_closed=True";
-            } else {
-                // REDIRECT BACK TO ACTIVITY PAGE.
-                window.location = "{% url 'workery_tenant_pending_task_retrieve_for_activity_sheet_retrieve' task_item.id %}?was_modified=True";
-            }
+            // REDIRECT TO SUCCESS PAGE.
+            window.location = "{% url 'workery_tenant_task_list' %}?was_closed=True";
         },
         function(xhr,status,error) { // Error
             // STEP 1: Convert to JSON.
@@ -121,6 +133,10 @@ function get_selected_radio_value(radiofields_name) {
     </div>
     <!------------------------------------------------------------------------->
     <!-- end STEP NAVIGATION -->
+
+    <!-- Error Output -->
+    <div id="all_error_result" name="all_error_result"></div>
+    <!-- end Error Output -->
 
     <!------------------------------------------------------------------------->
     {% if task_item.type_of == 4 %}
@@ -204,9 +220,7 @@ function get_selected_radio_value(radiofields_name) {
         <!-- Associate form -->
         <div class="col-sm-12 fade show active" id="member-form" aria-labelledby="associate">
 
-            <!-- Error Output -->
-            <div id="all_error_result" name="all_error_result"></div>
-            <!-- end Error Output -->
+
 
             <p><span class="text-secondary font-italic"><sup>*</sup>&nbsp;-&nbsp;Indicates required field to fill out.</span></p>
 
@@ -246,7 +260,7 @@ function get_selected_radio_value(radiofields_name) {
                  class="btn btn-success btn-lg mt-4 float-right pl-4 pr-4"
                   type="button"
                onclick="click_add_button();">
-                Assign <i class="fas fa-arrow-right"></i></button>
+                <i class="fas fa-check-circle"></i>&nbsp;Assign</button>
 
         </div>
     </div>
