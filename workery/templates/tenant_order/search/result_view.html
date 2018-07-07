@@ -113,7 +113,7 @@
                 {% if filter_parameters %}
                     <a href="{{ filter_parameters }}&page={{ page_obj.previous_page_number }}">previous</a>
                 {% else %}
-                    <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+                    <a href="?page={{ page_obj.previous_page_number }}"><i class="fas fa-angle-left"></i>&nbsp;previous</a>
                 {% endif %}
             {% endif %}
 
@@ -125,7 +125,7 @@
                 {% if filter_parameters %}
                     <a href="{{ filter_parameters }}&page={{ page_obj.next_page_number }}">next</a>
                 {% else %}
-                    <a href="?page={{ page_obj.next_page_number }}">next</a>
+                    <a href="?page={{ page_obj.next_page_number }}">next&nbsp;<i class="fas fa-angle-right"></i></a>
                 {% endif %}
             {% endif %}
         </span>
