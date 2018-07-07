@@ -9,7 +9,8 @@ from starterkit.drf.validation import (
 )
 from starterkit.utils import (
     get_random_string,
-    get_unique_username_from_email
+    get_unique_username_from_email,
+    int_or_none
 )
 from django.conf import settings
 from django.contrib.auth.models import Group
@@ -249,8 +250,9 @@ class StaffListCreateSerializer(serializers.ModelSerializer):
         logger.info("Created shared user.")
 
         # Attach the user to the `group` group.
-        group_membership = validated_data.get('group_membership', None)
-        owner.groups.set([int(group_membership)])
+        group_membership = int_or_none(validated_data.get('group_membership', None))
+        if group_membership:
+            owner.groups.set([group_membership])
 
         # Update the password.
         password = validated_data.get('password', None)
