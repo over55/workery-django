@@ -49,7 +49,7 @@ def report_01_streaming_csv_view(request):
     jobs = WorkOrder.objects.filter(
         Q(completion_date__isnull=False) &
         Q(invoice_service_fee_amount=0) &
-        ~Q(status=WORK_ORDER_STATE.CANCELLED) &
+        ~Q(state=WORK_ORDER_STATE.CANCELLED) &
         Q(invoice_service_fee_payment_date__range=(from_dt,to_dt))
     )
 
