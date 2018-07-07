@@ -147,7 +147,7 @@ class ActivitySheetItemCreateSerializer(serializers.Serializer):
                 due_date = get_todays_date_plus_days(2)
                 type_of = FOLLOW_UP_IS_JOB_COMPLETE_TASK_ITEM_TYPE_OF_ID
             elif state == ACTIVITY_SHEET_ITEM_STATE.PENDING:
-                title = _('24 hour follow up')
+                title = _('Pending')
                 description = _('Please contact the Associate to confirm if they want the job.')
                 due_date = get_todays_date_plus_days(1)
                 type_of = FOLLOW_UP_DID_ASSOCIATE_ACCEPT_JOB_TASK_ITEM_TYPE_OF_ID
