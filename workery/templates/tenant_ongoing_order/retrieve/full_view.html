@@ -110,9 +110,13 @@
     <!------------------------------------------------------------------------->
     <div class="col-md-10 mx-auto mb-4 py-2">
         <h3 class="py-2 text-center mb-4" id="id_page_title">Ongoing Job Details</h3>
+
         <!-- Error Output -->
         <div id="all_error_result" name="all_error_result"></div>
         <!-- end Error Output -->
+
+        <!-- CURRENT TABLE -->
+        <!--------------------------------------------------------------------->
         <table class="table table-bordered custom-cell-w">
             <tbody>
                 <tr class="bg-dark">
@@ -178,6 +182,52 @@
                 {% endif %}
             </tbody>
         </table>
+        <!--------------------------------------------------------------------->
+        <!-- end CURRENT TABLE -->
+
+        <br />
+        <h3 class="py-2 text-center mb-4" id="id_page_title">Closed Jobs</h3>
+
+        <!-- PREVIOUS TABLE -->
+        <!--------------------------------------------------------------------->
+        <table class="table table-striped">
+
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>{% trans 'ID #' %}</th>
+                    <th>{% trans 'Start Date' %}</th>
+                    <th>{% trans 'Completion Date' %}</th>
+                    <th><i class="fas fa-external-link-alt"></i></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for closed_job in job.closed_orders.all %}
+                <tr>
+                    <td>
+                        {% if closed_job.customer.type_of == tenant_constants.RESIDENTIAL_CUSTOMER_TYPE_OF_ID %}
+                            <i class="fa fa-home fa-lg"></i>
+                        {% elif closed_job.customer.type_of == tenant_constants.COMMERCIAL_CUSTOMER_TYPE_OF_ID %}
+                            <i class="fa fa-building fa-lg"></i>
+                        {% else %}
+                            <i class="fa fa-question fa-lg"></i>
+                        {% endif %}
+                    </td>
+                    <td>{{ closed_job.id|intcomma }}</td>
+                    <td>{% if closed_job.start_date %}{{ closed_job.start_date }}{% else %}-{% endif %}</td>
+                    <td>{% if closed_job.completion_date %}{{ closed_job.completion_date }}{% else %}-{% endif %}</td>
+                    <td>
+                        <a href="{% url 'workery_tenant_job_retrieve' 'summary' closed_job.id %}" target="_blank">{% trans 'View' %}&nbsp;<i class="fas fa-chevron-right"></i></a>
+                    </td>
+                </tr>
+                {% empty %}
+                No jobs yet.
+                {% endfor %}
+            </tbody>
+        </table>
+        <!--------------------------------------------------------------------->
+        <!-- end PREVIOUS TABLE -->
+
     </div>
     <!------------------------------------------------------------------------->
     <!-- end FORM -->
