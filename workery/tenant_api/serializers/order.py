@@ -341,8 +341,6 @@ class WorkOrderRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         instance.save()
         logger.info("Updated order object.")
 
-        print(instance.state)
-
         #-----------------------------
         # Set our `Tags` objects.
         #-----------------------------
@@ -376,6 +374,27 @@ class WorkOrderRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
                 comment=comment,
             )
             logger.info("Created and set comment with order.")
+
+        #---------------------------------------
+        # Update our `OngoingWorkOrder` objects.
+        #---------------------------------------
+        if instance.is_ongoing:
+            ongoing_work_order, created = OngoingWorkOrder.objects.update_or_create(
+                open_order=instance,
+                defaults={
+                    'customer': instance.customer,
+                    'associate': instance.associate,
+                    'open_order': instance,
+                    'state': ONGOING_WORK_ORDER_STATE.RUNNING
+                }
+            )
+            instance.ongoing_work_order = ongoing_work_order
+            instance.save()
+            logger.info("Created (ongoing) order object.")
+        else:
+            if instance.ongoing_work_order:
+                instance.ongoing_work_order = None
+                instance.save()
 
         # Update validation data.
         # validated_data['comments'] = WorkOrderComment.objects.filter(order=instance)

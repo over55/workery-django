@@ -54,6 +54,10 @@ def get_todays_date(days=0):
 
 
 class OngoingWorkOrder(models.Model):
+    """
+    The model used to keep track and aggregate all `WorkOrder` objects which
+    are ongoing.
+    """
     class Meta:
         app_label = 'tenant_foundation'
         db_table = 'workery_ongoing_work_orders'
