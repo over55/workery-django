@@ -74,3 +74,27 @@ class OngoingJobFullRetrieveView(LoginRequiredMixin, WorkeryDetailView):
 
         # Return our modified context.
         return modified_context
+
+
+class OngoingJobUpdateView(LoginRequiredMixin, WorkeryDetailView):
+    context_object_name = 'job'
+    model = OngoingWorkOrder
+    template_name = 'tenant_order/update/view.html'
+    menu_id = 'jobs'
+
+    def get_context_data(self, **kwargs):
+        # Get the context of this class based view.
+        modified_context = super().get_context_data(**kwargs)
+
+        # Validate the template selected.
+        template = self.kwargs['template']
+        if template not in ['search', 'summary', 'list']:
+            from django.core.exceptions import PermissionDenied
+            raise PermissionDenied(_('You entered wrong format.'))
+        modified_context['template'] = template
+
+        # Set our dependencies
+        modified_context['skillsets'] = SkillSet.objects.all()
+
+        # Return our modified context.
+        return modified_context
