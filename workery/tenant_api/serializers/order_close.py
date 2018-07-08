@@ -284,34 +284,6 @@ class WorkOrderCloseCreateSerializer(serializers.Serializer):
                 'total_score': str(total_score)
             })
 
-        #---------------------------------#
-        # Ongoing jobs require new ticket #
-        #---------------------------------#
-        if job.is_ongoing:
-            follow_up_days_number = int(job.follow_up_days_number)
-            next_task_item = TaskItem.objects.create(
-                type_of = FOLLOW_UP_CUSTOMER_SURVEY_TASK_ITEM_TYPE_OF_ID,
-                title = _('Completion Survey'),
-                description = _('Please call up the client and perform the satisfaction survey.'),
-                due_date = get_todays_date_plus_days(follow_up_days_number),
-                is_closed = False,
-                job = job,
-                created_by = self.context['user'],
-                created_from = self.context['from'],
-                created_from_is_public = self.context['from_is_public'],
-                last_modified_by = self.context['user']
-            )
-
-            # For debugging purposes only.
-            logger.info("Task #%(id)s was created." % {
-                'id': str(next_task_item.id)
-            })
-
-            # Attach our next job.
-            job.latest_pending_task = next_task_item
-            job.state = WORK_ORDER_STATE.ONGOING
-            job.save()
-
         #--------------------#
         # Updated the output #
         #--------------------#
