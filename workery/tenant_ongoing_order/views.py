@@ -80,7 +80,7 @@ class OngoingJobUpdateView(LoginRequiredMixin, WorkeryDetailView):
     context_object_name = 'job'
     model = OngoingWorkOrder
     template_name = 'tenant_ongoing_order/update/view.html'
-    menu_id = 'jobs'
+    menu_id = 'ongoing-jobs'
 
     def get_context_data(self, **kwargs):
         # Get the context of this class based view.
@@ -92,9 +92,6 @@ class OngoingJobUpdateView(LoginRequiredMixin, WorkeryDetailView):
             from django.core.exceptions import PermissionDenied
             raise PermissionDenied(_('You entered wrong format.'))
         modified_context['template'] = template
-
-        # Set our dependencies
-        modified_context['skillsets'] = SkillSet.objects.all()
 
         # Return our modified context.
         return modified_context

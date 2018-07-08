@@ -20,6 +20,72 @@
     $(document).ready(function () {
         // Do nothing.
     }); // end Ready
+
+    function ajax_post_form_submission() {
+        var state = $('#state').val();
+        console.log("State:", state);
+
+        // Attach "customer".
+        {% if job.customer %}
+        var customer_id = {{ job.customer.id }};
+        {% else %}
+        var customer_id = null;
+        {% endif %}
+
+        // Attach "associate".
+        {% if job.associate %}
+        var associate_id = {{ job.associate.id }};
+        {% else %}
+        var associate_id = null;
+        {% endif %}
+
+        var data_dict = {
+            'customer': customer_id,
+            'associate': associate_id,
+            'state': state,
+            'open_order': {{ job.open_order.id }}
+        };
+
+        update_ongoing_job_api(
+            {{ job.id }},
+            data_dict,
+            function(json_results) {
+                console.log(json_results);
+                window.location = "{% url 'workery_tenant_ongoing_job_full_retrieve' template job.id %}?was_modified=True";
+            },
+	        function(xhr,status,error) { // Error
+                // STEP 1: Convert to JSON.
+                var err = JSON.parse(xhr.responseText);
+                // For debugging purposes only.
+                console.log(err);
+                // STEP 2: CLEAR EXISTING TEXT.
+                $('#all_error_result').html("");
+		        $('#all_error_result').removeClass('error-block');
+                // STEP 3: PRINT OUR ERROR.
+                for(var prop in err) {
+                    if(err.hasOwnProperty(prop)) {
+                        var val = err[prop];
+                        console.log(val);
+                        var fdname = humanize(prop);
+			// Errors box code
+                        $('#all_error_result').append("<div class='form-error'><b>"+fdname+":</b> "+val+" </div>");
+			$('#all_error_result').addClass('error-block');
+			// Inline fields errors code
+			$('#'+prop+'-error').html("<ul><li>"+val+"</li></ul>");
+			$('#update-job-form').addClass('was-validated');
+                    }
+                }
+                // STEP 4: FOCUS TO WHERE THE ERROR IS OCCURING.
+                $('html, body').animate({ scrollTop: $('#id_page_title').offset().top }, 'slow');
+            },
+            function(error_json) {
+                console.log(error_json);
+            },
+            function(completed, hr){
+
+            }
+        );
+    }
 </script>
 <!----------------------------------------------------------------------------->
 <!-- end CUSTOM JAVASCRIPT -->
@@ -70,19 +136,36 @@
     <div class="col-sm-5 mx-auto mt-2">
         <!-- Residential form -->
         <div class="col-sm-12 fade show active" id="client-form" aria-labelledby="residential">
-            <p><span class="text-secondary font-italic"><sup>*</sup>&nbsp;-&nbsp;Indicates required field to fill out.</span></p>
+            <p>
+                <span class="text-secondary font-italic">
+                    <sup>*</sup>&nbsp;-&nbsp;Indicates required field to fill out.
+                </span>
+            </p>
             <!-- Error Output -->
             <div id="all_error_result" name="all_error_result" class="alert alert-error fade show" role="alert">
 	    </div>
 	    <!-- end Error Output -->
 
             <form id="update-job-form" method="post" class="needs-validation" action="" novalidate>
+
+                <div class="form-group col-md-7 mb-4 p-0">
+                    <label for="state">Status&nbsp;<sup>*</sup></label>
+                    <select class="custom-select form-control-lg border-primary" id="state" name="state" required>
+                        <option value="">Status...</option>
+                        <option value="{{ ONGOING_WORK_ORDER_STATE.IDLE }}" {% if job.state == ONGOING_WORK_ORDER_STATE.IDLE %}selected="true"{% endif %}>{% trans 'Idle' %}</option>
+                        <option value="{{ ONGOING_WORK_ORDER_STATE.RUNNING }}" {% if job.state == ONGOING_WORK_ORDER_STATE.RUNNING %}selected="true"{% endif %}>{% trans 'Running' %}</option>
+                        <option value="{{ ONGOING_WORK_ORDER_STATE.TERMINATED }}" {% if job.state == ONGOING_WORK_ORDER_STATE.TERMINATED %}selected="true"{% endif %}>{% trans 'Terminate' %}</option>
+                    </select>
+                    <div id="state-error" class="invalid-feedback"></div>
+                </div>
+
                 <!-- end SUBMIT BUTTON -->
                 <div class="form-group col-md-12 mb-3 mx-auto text-center">
-                    <button  id="id_submit_btn"
-                        class="btn btn-primary btn-lg btn-fxw mt-4"
-                        type="button">
-                    <i class="fas fa-check"></i>&nbsp;{% trans 'Update Ongoing Job' %}
+                    <button id="id_submit_btn"
+                         class="btn btn-primary btn-lg btn-fxw mt-4"
+                       onclick="ajax_post_form_submission();"
+                          type="button">
+                        <i class="fas fa-check"></i>&nbsp;{% trans 'Update Ongoing Job' %}
                     </button>
                 </div>
                 <!-- end SUBMIT BUTTON -->
