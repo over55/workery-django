@@ -330,7 +330,7 @@
             			    <th scope="row" class="bg-light">ID #</th>
             			    <td id="invoice_date">
             				{% if job.ongoing_work_order %}
-                                <a href="{% url 'workery_tenant_ongoing_job_lite_retrieve' 'running' job.ongoing_work_order.id %}" target="_blank">
+                                <a href="{% url 'workery_tenant_ongoing_job_lite_retrieve' 'summary' job.ongoing_work_order.id %}" target="_blank">
                                     {{ job.ongoing_work_order.id }}&nbsp;<i class="fas fa-external-link-alt"></i>
                                 </a>
                             {% else %}
