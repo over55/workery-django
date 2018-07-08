@@ -1,0 +1,181 @@
+{% extends 'tenant_foundation/tenant_base.html' %}
+{% load staticfiles i18n humanize tz shared_foundation_tags %}
+
+{% block title %}
+{% trans 'Job Details | Workery' %}
+{% endblock title %}
+
+{% block header_content %}
+{% endblock header_content %}
+
+{% block content %}
+
+<!-- API JAVASCRIPT -->
+<!----------------------------------------------------------------------------->
+{% include 'tenant_api/skillset_api_js.html' %}
+<!----------------------------------------------------------------------------->
+<!-- end API JAVASCRIPT -->
+
+<!-- CUSTOM JAVASCRIPT -->
+<!----------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------->
+<!-- end CUSTOM JAVASCRIPT -->
+
+<main id="main" role="main">
+
+    <!-- BREADCRUMB -->
+    <!------------------------------------------------------------------------->
+    <nav aria-label="breadcrumb">
+	  	<ol class="breadcrumb">
+            {% if template == 'search' %}
+
+            <li class="breadcrumb-item">
+                <a href="{% url 'workery_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a>
+            </li>
+            <li class="breadcrumb-item">
+                <a href="{% url 'workery_tenant_job_summary' %}">{% trans 'Jobs' %}</a>
+            </li>
+            <li class="breadcrumb-item">
+                <a href="{% url 'workery_tenant_job_search' %}">{% trans 'Search' %}</a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">{% trans 'Search Results' %}</li>
+            <li class="breadcrumb-item active" aria-current="page">{% trans 'Job #' %}{{ object.id|intcomma }}</li>
+
+            {% elif template == 'list' %}
+
+            <li class="breadcrumb-item"><a href="{% url 'workery_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'workery_tenant_job_summary' %}">{% trans 'Jobs' %}</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'workery_tenant_job_list' %}">{% trans 'List' %}</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{% trans 'Job #' %}{{ object.id|intcomma }}</li>
+
+            {% else %}
+
+	    	<li class="breadcrumb-item"><a href="{% url 'workery_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'workery_tenant_job_summary' %}">{% trans 'Jobs' %}</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{% trans 'Job #' %}{{ object.id|intcomma }}</li>
+
+            {% endif %}
+	  	</ol>
+	</nav>
+    <!------------------------------------------------------------------------->
+    <!-- end BREADCRUMB -->
+
+    <!-- NOTIFICATION -->
+    <!------------------------------------------------------------------------->
+    {% if parameters.was_modified == 'True' %}
+    <div class="alert bg-success text-white alert-dismissible fade show" role="alert">
+        Job <strong>Successfully</strong> updated.
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">×</span>
+        </button>
+    </div>
+    {% endif %}
+    <!------------------------------------------------------------------------->
+    <!-- end NOTIFICATION -->
+
+    <!-- BACK BUTTON -->
+    <!------------------------------------------------------------------------->
+    <div class="row">
+		<div class="col-sm-3 p-3 mb-2">
+			<a class="btn btn-primary btn-lg" href="{% if template == 'search' %}{% url 'workery_tenant_job_search' %}{% elif template == 'list' %}{% url 'workery_tenant_job_list' %}{% else %}{% url 'workery_tenant_job_summary' %}{% endif %}" role="button">
+               <i class="fas fa-arrow-left"></i> &nbsp;{% trans 'Back to Jobs Home' %}
+            </a>
+		</div>
+    </div>
+    <!------------------------------------------------------------------------->
+    <!-- end BACK BUTTON -->
+
+    <h1>{% trans 'View Job' %}</h1>
+
+    <!-- STEP NAVIGATION -->
+    <!------------------------------------------------------------------------->
+    <div class="row">
+        <div class="step-navigation">
+            <div class="st-grey">
+                <a href="{% url 'workery_tenant_job_retrieve' template job.id %}">
+                    <i class="far fa-id-badge"></i>&nbsp;<span class="">Summary</span>
+                </a>
+            </div>
+            <div class="st-grey">
+                <a href="{% url 'workery_tenant_job_full_retrieve' template job.id %}">
+                    <i class="far fa-id-card"></i>&nbsp;<span class="">Details</span>
+                </a>
+            </div>
+            <div class="st-grey active">
+                <i class="far fa-address-book"></i>&nbsp;<span class="">Activity Sheet</span>
+            </div>
+            <div class="st-grey">
+                <a href="{% url 'workery_tenant_job_retrieve_for_tasks_list' template job.id %}">
+                    <i class="far fa-clock"></i>&nbsp;<span class="">Tasks</span>
+                </a>
+            </div>
+            <div class="st-grey">
+                <a href="{% url 'workery_tenant_job_comments_retrieve' template job.id %}">
+                    <i class="far fa-comments"></i>&nbsp;<span class="">Comments</span>
+                </a>
+            </div>
+        </div>
+    </div>
+    <!------------------------------------------------------------------------->
+    <!-- end STEP NAVIGATION -->
+
+    <!-- FORM -->
+    <!------------------------------------------------------------------------->
+    <div class="row">
+	<!-- Residential form -->
+        <div class="col-md-12 fade show active" aria-labelledby="residential">
+        <h3 class="pt-4 pb-2 text-center">Activity Sheet</h3>
+        <form id="add-customer-form" method="post" class="needs-validation" action="" novalidate>
+            <!-- ACTIVITY SHEET -->
+            <!------------------------------------------------------------->
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>{% trans 'Associate' %}&nbsp;<i class="fas fa-external-link-alt"></i></th>
+                            <th>{% trans 'Status' %}</th>
+                            <th>{% trans 'Created At' %}</th>
+                            <th>{% trans 'Reason' %}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for activity_sheet_item in activity_sheet_items.all %}
+                        <tr>
+                            <td>
+                                {% if activity_sheet_item.job.associate %}<a href="{% url 'workery_tenant_member_lite_retrieve' 'summary' activity_sheet_item.job.associate.id %}" target="_blank">{{ activity_sheet_item.job.associate }}</a>{% else %}-{% endif %}
+                            </td>
+                            <td>
+                                {% if activity_sheet_item.state == ACTIVITY_SHEET_ITEM_STATE.ACCEPTED %}
+                                    {% trans 'Accepted' %}
+                                {% elif activity_sheet_item.state == ACTIVITY_SHEET_ITEM_STATE.DECLINED %}
+                                    {% trans 'Declined' %}
+                                {% else %}
+                                    {% trans 'Pending' %}
+                                {% endif %}
+                            </td>
+                            <td>{{ activity_sheet_item.created_at|timezone:request.tenant.timezone_name }}</td>
+                            <td>{{ activity_sheet_item.comment }}</td>
+                        </tr>
+                        {% empty %}
+                           No activity sheet items yet.
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <!------------------------------------------------------------->
+            <!-- end ACTIVITY SHEET -->
+
+        </form>
+        </div>
+    </div>
+    <!------------------------------------------------------------------------->
+    <!-- end FORM -->
+
+
+    <!-- RETURN-TO-TOP -->
+    <a id="return-to-top" href="#" class="btn-info btn-lg back-to-top" role="button" title="Back to top"><i class="fas fa-angle-up fa-2x"></i></a>
+    <!-- end RETURN-TO-TOP -->
+
+</main>
+
+{% endblock content %}

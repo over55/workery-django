@@ -369,6 +369,18 @@ class WorkOrder(models.Model):
         db_index=True
     )
 
+    #
+    #  ONGOING WORK ORDER
+    #
+
+    ongoing_work_order = models.ForeignKey(
+        "OngoingWorkOrder",
+        help_text=_('The ongoing work order that this work order is a part of.'),
+        related_name="%(app_label)s_%(class)s_ongoing_work_order_related",
+        on_delete=models.CASCADE,
+        blank=True,
+        null=True
+    )
 
     #
     #  SYSTEM

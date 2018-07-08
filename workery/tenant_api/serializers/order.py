@@ -23,6 +23,8 @@ from tenant_foundation.models import (
     WorkOrderComment,
     WORK_ORDER_STATE,
     WorkOrder,
+    ONGOING_WORK_ORDER_STATE,
+    OngoingWorkOrder,
     SkillSet,
     Tag,
     TaskItem
@@ -113,6 +115,10 @@ class WorkOrderListCreateSerializer(serializers.ModelSerializer):
         follow_up_days_number = validated_data.get('follow_up_days_number', 0)
         invoice_service_fee = validated_data.get('invoice_service_fee', None)
 
+        #---------------------------------
+        # Create our `WorkOrder` objects.
+        #---------------------------------
+
         # Assign the job type based off of the customers type.
         job_type_of = UNASSIGNED_JOB_TYPE_OF_ID
         if customer.type_of == RESIDENTIAL_CUSTOMER_TYPE_OF_ID:
@@ -141,6 +147,19 @@ class WorkOrderListCreateSerializer(serializers.ModelSerializer):
             state=WORK_ORDER_STATE.NEW
         )
         logger.info("Created order object.")
+
+        #---------------------------------------
+        # Create our `OngoingWorkOrder` objects.
+        #---------------------------------------
+        if is_ongoing:
+            order.ongoing_work_order = OngoingWorkOrder.objects.create(
+                customer=customer,
+                associate=associate,
+                open_order=order,
+                state=ONGOING_WORK_ORDER_STATE.RUNNING
+            )
+            order.save()
+            logger.info("Created (ongoing) order object.")
 
         #-----------------------------
         # Set our `Tags` objects.

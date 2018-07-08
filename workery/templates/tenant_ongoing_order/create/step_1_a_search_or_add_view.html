@@ -1,0 +1,277 @@
+{% extends 'tenant_foundation/tenant_base.html' %}
+{% load staticfiles i18n %}
+
+{% block title %}
+{% trans 'Add New Job | Workery' %}
+{% endblock title %}
+
+{% block header_content %}
+{% endblock header_content %}
+
+{% block content %}
+
+
+<!-- CUSTOM JAVASCRIPT -->
+<!----------------------------------------------------------------------------->
+<script>
+    ///
+    // Search Fields Validation
+    // Example starter JavaScript for disabling form submissions if there are invalid fields
+    (function() {
+      'use strict';
+        window.addEventListener('load', function() {
+                // Fetch all the forms fields we want to apply custom Bootstrap validation styles to
+
+                var form_advanced_search = document.getElementById('advanced-searchForm');
+
+                var firstname = document.getElementById('firstname');
+                var f_error = document.getElementById('firstname-error');
+
+                var lastname = document.getElementById('lastname');
+                var l_error = document.getElementById('lastname-error');
+
+		        var email_id = document.getElementById('email-id');
+                var email_error = document.getElementById('email-error');
+
+                var phonenumber = document.getElementById('phonenumber');
+                var pn_error = document.getElementById('phonenumber-error');
+                var pn_pattern = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
+
+
+
+                // Loop over them and prevent submission
+                $(function(){
+
+                    // validation for advanced search fields
+                    $('#advanced-searchForm').on('submit',function(e){
+                        if(firstname.validity.valueMissing) {
+                            f_error.innerHTML = "Field should not be blank.";
+                            form_advanced_search.classList.add('was-validated');
+                            e.preventDefault();
+                        }
+                        if(firstname.validity.tooShort) {
+                            f_error.innerHTML = "Fill in at least 3 characters.";
+                            form_advanced_search.classList.add('was-validated');
+                            e.preventDefault();
+                        }
+                        if(lastname.validity.valueMissing) {
+                            l_error.innerHTML = "Field should not be blank.";
+                            form_advanced_search.classList.add('was-validated');
+                            e.preventDefault();
+                        }
+                        if(lastname.validity.tooShort) {
+                            l_error.innerHTML = "Fill in at least 3 characters.";
+                            form_advanced_search.classList.add('was-validated');
+                            e.preventDefault();
+                        }
+			if(email_id.validity.valueMissing) {
+			    email_error.innerHTML = "Field should not be blank.";
+			    form_advanced_search.classList.add('was-validated');
+			    e.preventDefault();
+			}
+			if(email_id.validity.typeMismatch || email_id.validity.tooShort) {
+			    email_error.innerHTML = "Please provide a valid E-mail ID.";
+			    form_advanced_search.classList.add('was-validated');
+			    e.preventDefault();
+			}
+                        if(phonenumber.validity.valueMissing) {
+                            pn_error.innerHTML = "Field should not be blank.";
+                            form_advanced_search.classList.add('was-validated');
+                            e.preventDefault();
+                        }
+                        if(phonenumber.validity.tooShort) {
+                            pn_error.innerHTML = "Fill in valid 10 digits phone number.";
+                            form_advanced_search.classList.add('was-validated');
+                            e.preventDefault();
+                        }
+                        // Phone number format validation
+                        if(!phonenumber.value.match(pn_pattern)) {
+                            if(phonenumber.value.length == 0){
+                                pn_error.style.display = "none";
+                            }else {
+                                pn_error.innerHTML = "Fill in valid 10 digits phonee number.";
+                                pn_error.style.display = "block";
+                                form_advanced_search.classList.add('was-validated');
+                                e.preventDefault();
+                            }
+                        }
+
+
+                    });
+                });
+                // To hide phone field valid format error text
+                $('#phonenumber').on('input',function(){
+                        if(phonenumber.value.match(pn_pattern)) {
+                            pn_error.style.display = "none";
+                        }
+                });
+
+                 /**
+             * TOO CHECK AT LEAST ONE ADVANCED SEARCH FIELD IS FILLED
+             *
+             * 1. gather all checkboxes and radio buttons
+             * 2. gather all inputs that are not checkboxes or radios, and are not buttons (submit/button/reset)
+             * 3. get only those checkboxes and radio buttons that are checked
+             * 4. get only those field elements that have a value (spaces get trimmed)
+             * 5. if the length of both resulting collections is zero, nothing has been filled out
+             */
+                function checkFields(form) {
+                    var checks_radios = form.find(':checkbox, :radio'),
+                        inputs = form.find(':input').not(checks_radios).not('[type="submit"],[type="button"],[type="reset"]');
+
+                    var checked = checks_radios.filter(':checked');
+                    var filled = inputs.filter(function(){
+                        return $.trim($(this).val()).length > 0;
+                    });
+
+                    if(checked.length + filled.length === 0) {
+                        return false;
+                    }
+
+                    return true;
+                }
+
+                $(function(){
+                    $('#advanced-searchForm').on('submit',function(e){
+                        var oneFilled = checkFields($(this));
+			var form_error = document.getElementById('form-error');
+                        if(oneFilled === true) {
+                            return true;
+                        }else {
+                            form_error.innerHTML = "Please fill in atleast one field and hit search.";
+			    form_error.style.display = "block";
+			    form_advanced_search.classList.add('was-validated');
+                            e.preventDefault();
+                        }
+                    });
+                });
+        }, false);
+    })();
+</script>
+<!----------------------------------------------------------------------------->
+<!-- end CUSTOM JAVASCRIPT -->
+
+<main id="main" role="main">
+
+    <!-- BREADCRUMB -->
+    <!------------------------------------------------------------------------->
+    <nav aria-label="breadcrumb">
+	  	<ol class="breadcrumb">
+	    	<li class="breadcrumb-item"><a href="{% url 'workery_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'workery_tenant_job_summary' %}">{% trans 'Jobs' %}</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{% trans 'Add' %}</li>
+	  	</ol>
+	</nav>
+    <!------------------------------------------------------------------------->
+    <!-- end BREADCRUMB -->
+
+    <!-- BACK BUTTON -->
+    <!------------------------------------------------------------------------->
+    <div class="row">
+		<div class="col-sm-3 p-3 mb-2">
+			<a class="btn btn-primary btn-lg" href="{% url 'workery_tenant_job_summary' %}" role="button">
+               <i class="fas fa-arrow-left"></i> &nbsp;{% trans 'Back to Jobs Home' %}
+            </a>
+		</div>
+    </div>
+    <!------------------------------------------------------------------------->
+    <!-- end BACK BUTTON -->
+
+    <!-- NOTIFICATION -->
+    <!------------------------------------------------------------------------->
+    {% if parameters.was_created == 'True' %}
+        <div class="alert bg-success text-white alert-dismissible fade show" role="alert">
+		    Client <strong>Successfully</strong> created.
+		    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+		        <span aria-hidden="true">×</span>
+		    </button>
+		</div>
+    {% endif %}
+    <!------------------------------------------------------------------------->
+    <!-- end NOTIFICATION -->
+
+    <h1>{% trans 'Add Job' %}</h1>
+
+    <!-- STEP NAVIGATION -->
+    <!------------------------------------------------------------------------->
+    <div class="row">
+        <div class="step-navigation">
+            <div id="step-1" class="st-grey active">
+                <span class="num">1.</span><span class="">Search or Add</span>
+            </div>
+            <div id="step-2" class="st-grey">
+                <span class="num">2.</span><span class="">Job Type</span>
+            </div>
+            <div id="step-3" class="st-grey">
+                <span class="num">3.</span><span class="">Describe Job</span>
+            </div>
+            <div id="step-4" class="st-grey">
+                <span class="num">4.</span><span class="">Skills Required</span>
+            </div>
+            <div id="step-5" class="st-grey">
+                <span class="num">5.</span><span class="">Comments</span>
+            </div>
+            <div id="step-6" class="st-grey">
+                <span class="num">6.</span><span class="">Review</span>
+            </div>
+        </div>
+    </div>
+    <!------------------------------------------------------------------------->
+    <!-- end STEP NAVIGATION -->
+
+    <!-- FORM -->
+    <!------------------------------------------------------------------------->
+    <div class="col-sm-6 mx-auto mt-4 pt-2">
+	<p><strong>Search for existing client:</strong></p>
+    <form id="advanced-searchForm" method="get" class="needs-validation" action="{% url "workery_tenant_job_customer_search_results_create" %}" novalidate>
+      <div class="form-row">
+	      <div class="form-group col-md-12 mb-4">
+              <label for="firstname">First name</label>
+              <input type="text" class="form-control form-control-lg border border-primary" id="firstname" name="given_name" placeholder="First name" minlength="3">
+              <div id="firstname-error" class="invalid-feedback"></div>
+	      </div>
+	      <div class="form-group col-md-12 mb-4">
+              <label for="lastname">Last name</label>
+              <input type="text" class="form-control form-control-lg border border-primary" id="lastname" name="last_name" placeholder="Last name" minlength="3">
+              <div id="lastname-error" class="invalid-feedback"></div>
+	      </div>
+	      <div class="form-group col-md-7 mb-4">
+              <label for="phonenumber">Phone</label>
+              <input type="text" class="form-control form-control-lg border border-primary" id="phonenumber" name="telephone" placeholder="(xxx) xxx-xxxx" minlength="10" maxlength="14">
+              <div id="phonenumber-error" class="invalid-feedback"></div>
+	      </div>
+	      <div class="form-group col-md-12 mb-4">
+	        <label for="email-id">E-mail</label>
+	        <input type="email" class="form-control form-control-lg border border-primary" id="email-id" name="email_id" placeholder="Email ID">
+	        <div id="email-error" class="invalid-feedback"></div>
+	      </div>
+
+	    <div class="col-md-8 mb-3 mt-2 text-center mx-auto">
+		<div id="form-error" class="invalid-feedback"></div>
+		<div class="align-self-center">
+			<button class="btn btn-success btn-lg btn-block mt-3" type="submit"><i class="fas fa-search"></i> Search</button>
+	        </div>
+	    </div>
+	  </div>
+	  <div class="form-row">
+	    <div class="col-md-8 text-center mx-auto mb-3">
+	    	<h3 class="p-2">- or -</h3>
+            <a href="{% url 'workery_tenant_pick_customer_create' %}?back_id=create_job" role="button">
+                <i class="fas fa-link"></i>
+                Add New
+            </a>
+	    </div>
+	  </div>
+	</form>
+	</div>
+
+    <!------------------------------------------------------------------------->
+    <!-- end FORM -->
+
+
+    <!-- RETURN-TO-TOP -->
+    <a id="return-to-top" href="#" class="btn-info btn-lg back-to-top" role="button" title="Back to top"><i class="fas fa-angle-up fa-2x"></i></a>
+    <!-- end RETURN-TO-TOP -->
+</main>
+
+{% endblock content %}

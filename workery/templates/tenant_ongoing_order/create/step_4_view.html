@@ -1,0 +1,206 @@
+{% extends 'tenant_foundation/tenant_base.html' %}
+{% load staticfiles i18n shared_foundation_tags humanize %}
+
+{% block title %}
+{% trans 'Add New Job | Workery' %}
+{% endblock title %}
+
+{% block header_content %}
+{% endblock header_content %}
+
+{% block content %}
+
+<!-- API JAVASCRIPT -->
+<!----------------------------------------------------------------------------->
+{% include 'tenant_api/skillset_api_js.html' %}
+<!----------------------------------------------------------------------------->
+<!-- end API JAVASCRIPT -->
+
+<!-- CUSTOM JAVASCRIPT -->
+<!----------------------------------------------------------------------------->
+<script>
+    // Pre-populate the field with previous data.
+    $(document).ready(function() {
+        // Populate our 'select2' chosen values.
+        var tmp_skillsets = localStorage.getObj("tmp_skillsets");
+        $('#skillsets').val(tmp_skillsets);
+	// Default service fee id
+        let o_service_fee = $('#order_service_fee');
+	o_service_fee.prop('selectedIndex', 3);
+        // Initialize our 'select2' element.
+        $('.js-example-basic-multiple').select2();
+        $('#order_service_fee').val(localStorage.getItem("tmp_order_service_fee_id"));
+    });
+
+    // Save this field.
+    function ajax_submit() {
+        var tmp_skillsets = $('#skillsets').val();
+        localStorage.setObj("tmp_skillsets", tmp_skillsets);
+	if (tmp_skillsets == undefined || tmp_skillsets == null || tmp_skillsets.length == 0) {
+            tmp_skillsets = '';
+        }
+
+        var ids_string = tmp_skillsets.toString();
+        localStorage.setObj("tmp_skillset_ids", tmp_skillsets);
+
+        var order_service_fee = $('#order_service_fee').val();
+        if (order_service_fee == undefined || order_service_fee == null || order_service_fee.length == 0) {
+            order_service_fee = '';
+        }
+
+        var order_service_fee_text = $( "#order_service_fee option:selected" ).text();
+        localStorage.setItem("tmp_order_service_fee_text", order_service_fee_text);
+
+        // CREATE AN ARRAY OF ITEMS TO FILTER.
+        var skills_arr = [];
+        for (var i = 0; i < tmp_skillsets.length; i++) {
+            var option_id = tmp_skillsets[i];
+            var option_value = $('#option_id_'+option_id).text();
+            skills_arr.push(option_value);
+        } // end FOR LOOP.
+        localStorage.setObj("tmp_skillset_values", skills_arr);
+
+        localStorage.setItem("tmp_order_service_fee_id", order_service_fee);
+
+	// STEP 2: CLEAR EXISTING ERROR TEXT.
+        $('#all_error_result').html("");
+	$('#all_error_result').removeClass('error-block');
+
+	if (tmp_skillsets !== '' && order_service_fee !== '') {
+		// Redirect to the next page in the form.
+        	window.location = "{% url 'workery_tenant_job_step_5_create' %}";
+	} else {
+		if (tmp_skillsets == '') {
+			// Errors box code
+			$('#all_error_result').append("<div class='form-error'><b>Skill(s):</b> This field may not be blank. </div>");
+			$('#all_error_result').addClass('error-block');
+			// Inline fields errors code
+			$('#skillsets-error').html("<ul><li>This field may not be blank.</li></ul>");
+			$('#residential-job').addClass('was-validated');
+		}
+		if (order_service_fee == '') {
+			// Errors box code
+			$('#all_error_result').append("<div class='form-error'><b>Service Fee:</b> This field may not be blank. </div>");
+			$('#all_error_result').addClass('error-block');
+			// Inline fields errors code
+			$('#order_service_fee-error').html("<ul><li>This field may not be blank.</li></ul>");
+			$('#residential-job').addClass('was-validated');
+		}
+	}
+    }
+
+    function ajax_previous() {
+        window.location = "{% url 'workery_tenant_job_step_3_create' %}";
+    }
+</script>
+<!----------------------------------------------------------------------------->
+<!-- end CUSTOM JAVASCRIPT -->
+
+<main id="main" role="main">
+    <!-- BREADCRUMB -->
+    <!------------------------------------------------------------------------->
+    <nav aria-label="breadcrumb">
+	  <ol class="breadcrumb">
+	    	<li class="breadcrumb-item"><a href="{% url 'workery_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
+            	<li class="breadcrumb-item"><a href="{% url 'workery_tenant_job_summary' %}">{% trans 'Jobs' %}</a></li>
+            	<li class="breadcrumb-item active" aria-current="page">{% trans 'Add' %}</li>
+	  </ol>
+    </nav>
+    <!------------------------------------------------------------------------->
+    <!-- end BREADCRUMB -->
+
+    <!-- BACK BUTTON -->
+    <!------------------------------------------------------------------------->
+    <div class="row">
+		<div class="col-sm-3 p-3 mb-2">
+			<a class="btn btn-primary btn-lg" href="{% url 'workery_tenant_job_summary' %}" role="button">
+               		<i class="fas fa-arrow-left"></i> &nbsp;{% trans 'Back to Jobs Home' %}
+            		</a>
+		</div>
+    </div>
+    <!------------------------------------------------------------------------->
+    <!-- end BACK BUTTON -->
+
+    <h1>Add Job</h1>
+
+
+    <!-- STEP NAVIGATION -->
+    <!------------------------------------------------------------------------->
+    <div class="row">
+	   <div class="step-navigation">
+		<div id="step-1" class="st-grey">
+            		<a href="{% url 'workery_tenant_job_search_or_add_create' %}">
+			    <span class="num">1.</span><span class="">Search or Add</span>
+            		</a>
+		</div>
+		<div id="step-2" class="st-grey">
+            		<a href="{% url 'workery_tenant_job_step_2_create' %}">
+			    <span class="num">2.</span><span class="">Job Type</span>
+            		</a>
+		</div>
+		<div id="step-3" class="st-grey">
+            		<a href="{% url 'workery_tenant_job_step_3_create' %}">
+                	    <span class="num">3.</span><span class="">Describe Job</span>
+            		</a>
+		</div>
+		<div id="step-4" class="st-grey active">
+			<span class="num">4.</span><span class="">Skills Required</span>
+		</div>
+        	<div id="step-5" class="st-grey">
+            		<span class="num">5.</span><span class="">Comments</span>
+		</div>
+        	<div id="step-6" class="st-grey">
+			<span class="num">6.</span><span class="">Review</span>
+		</div>
+	   </div>
+	</div>
+    <!------------------------------------------------------------------------->
+    <!-- end STEP NAVIGATION -->
+
+    <div class="col-md-5 mx-auto mt-2">
+		<h3 class="pt-4 pb-2 text-center">Add Job</h3>
+	    	<!-- Error Output -->
+        	<div id="all_error_result" name="all_error_result" class="alert alert-error fade show" role="alert">
+		</div>
+        	<!-- end Error Output -->
+		<form id="residential-job" class="needs-validation" action="" novalidate>
+		<div class="form-row">
+		    <div class="form-group col-md-12 mb-4">
+			<label for="skillsets" class="font-b6">Please select required job skill(s):</label>
+			<select id="skillsets" name="skillsets" class="js-example-basic-multiple form-control form-control-lg border border-success" name="states[]" multiple="multiple">
+			{% for skillset in skillsets %}
+				<option value="{{ skillset.id }}" id="option_id_{{ skillset.id }}">{{ skillset.sub_category }}</option>
+			{% endfor %}
+			</select>
+			<div id="skillsets-error" class="invalid-feedback"></div>
+		    </div>
+		    <div class="form-group col-md-12 mb-4">
+			<label for="order_service_fee" class="font-b6">Service Fee</label>
+			<select class="custom-select form-control-lg border-success" id="order_service_fee" name="order_service_fee" required>
+			    <option value="" selected>Service fee...</option>
+			    {% for service_fee in servicefees.all %}
+				<option value="{{ service_fee.id }}">{{ service_fee.title }}</option>
+			    {% endfor %}
+			</select>
+			<div id="order_service_fee-error" class="invalid-feedback"></div>
+		    </div>
+		</div>
+		<div class="form-group mb-3 mx-auto text-center p-0">
+			<button class="btn btn-success btn-lg mt-4 float-right pl-4 pr-4" type="button" onclick="ajax_submit();">Next <i class="fas fa-arrow-right"></i></button>
+			<button class="btn btn-orange btn-lg mt-4 float-left pl-4 pr-4" type="button" onclick="ajax_previous();"><i class="fas fa-arrow-left"></i> Back</button>
+		</div>
+		</form>
+    </div>
+
+
+    <!-- RETURN-TO-TOP -->
+    <a id="return-to-top" href="#" class="btn-info btn-lg back-to-top" role="button" title="Back to top"><i class="fas fa-angle-up fa-2x"></i></a>
+    <!-- end RETURN-TO-TOP -->
+</main>
+<script>
+	$(document).ready(function() {
+      		let o_service_fee = $('#order_service_fee');
+		o_service_fee.prop('selectedIndex', 3);
+	});
+</script>
+{% endblock content %}

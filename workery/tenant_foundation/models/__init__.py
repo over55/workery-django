@@ -29,6 +29,8 @@ from tenant_foundation.models.organization_associate_affiliation import Organiza
 # WorkOrder Models
 from tenant_foundation.models.work_order import WORK_ORDER_STATE
 from tenant_foundation.models.work_order import WorkOrder
+from tenant_foundation.models.ongoing_work_order import ONGOING_WORK_ORDER_STATE
+from tenant_foundation.models.ongoing_work_order import OngoingWorkOrder
 
 # Resource
 from tenant_foundation.models.resource_category import ResourceCategory

@@ -1,0 +1,324 @@
+{% extends 'tenant_foundation/tenant_base.html' %}
+{% load staticfiles i18n humanize shared_foundation_tags %}
+
+{% block title %}
+{% trans 'Job Details | Workery' %}
+{% endblock title %}
+
+{% block header_content %}
+{% endblock header_content %}
+
+{% block content %}
+
+<!-- API JAVASCRIPT -->
+<!----------------------------------------------------------------------------->
+{% include 'tenant_api/skillset_api_js.html' %}
+<!----------------------------------------------------------------------------->
+<!-- end API JAVASCRIPT -->
+
+<!-- CUSTOM JAVASCRIPT -->
+<!----------------------------------------------------------------------------->
+<!----------------------------------------------------------------------------->
+<!-- end CUSTOM JAVASCRIPT -->
+
+<main id="main" role="main">
+
+    <!-- BREADCRUMB -->
+    <!------------------------------------------------------------------------->
+    <nav aria-label="breadcrumb">
+	  	<ol class="breadcrumb">
+
+	    	<li class="breadcrumb-item"><a href="{% url 'workery_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'workery_tenant_job_archive_list' %}">{% trans 'Archived Jobs' %}</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{% trans 'Archived Job #' %}{{ object.id|intcomma }}</li>
+
+	  	</ol>
+	</nav>
+    <!------------------------------------------------------------------------->
+    <!-- end BREADCRUMB -->
+
+
+    <!-- BACK BUTTON -->
+    <!------------------------------------------------------------------------->
+    <div class="row">
+		<div class="col-sm-3 p-3 mb-2">
+			<a class="btn btn-primary btn-lg" href="{% url 'workery_tenant_job_archive_list' %}" role="button">
+               <i class="fas fa-arrow-left"></i> &nbsp;{% trans 'Back to Job Archives Home' %}
+            </a>
+		</div>
+    </div>
+    <!------------------------------------------------------------------------->
+    <!-- end BACK BUTTON -->
+
+    <h1>{% trans 'View Archived Job' %}</h1>
+
+    <!-- FORM -->
+    <!------------------------------------------------------------------------->
+    <div class="row">
+	<!-- Residential form -->
+        <div class="col-md-12 fade show active" aria-labelledby="residential">
+            <h3 class="pt-4 pb-2 text-center">Job Details</h3>
+            <form id="add-customer-form" method="post" class="needs-validation" action="" novalidate>
+    	        <div class="col-sm-5 mx-auto mt-2">
+                    <!-- ################################################################## -->
+                    <!-- ######################## JOB DETAILS ######################## -->
+                    <!-- ################################################################## -->
+                    <p class="border-bottom mb-3 pb-1 text-secondary">Job Details</p>
+                    <div class="form-row">
+                        <div class="form-group col-md-12 mb-4">
+                            <label for="customer">Customer</label>
+                            <p>{% if job.customer %}<a href="{% url 'workery_tenant_customer_lite_retrieve' 'summary' job.customer.id %}" target="_blank">{{ job.customer }}&nbsp;<i class="fas fa-external-link-alt"></i></a>{% else %}-{% endif %}</p>
+                            <div id="customer-error" class="invalid-feedback"></div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-12 mb-4">
+                            <label for="description">Description</label>
+                            <p>{% if job.description %}{{ job.description }}{% else %}-{% endif %}</p>
+                            <div id="description-error" class="invalid-feedback"></div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-12 mb-4">
+                            <label for="skill_sets">Skill Sets</label>
+                            <p>
+                                {% for skill_set in job.skill_sets.all %}
+                                    <span class="badge badge-info badge-lg">{{ skill_set.sub_category }}</span>
+                                {% empty %}
+                                    -
+                                {% endfor %}
+                            </p>
+                            <div id="skill_sets-error" class="invalid-feedback"></div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-12 mb-4">
+                            <label for="associate">Assigned Associate</label>
+                            <p>{% if job.associate %}<a href="{% url 'workery_tenant_member_lite_retrieve' 'summary' job.associate.id %}" target="_blank">{{ job.associate }}&nbsp;<i class="fas fa-external-link-alt"></i></a>{% else %}-{% endif %}</p>
+                            <div id="associate-error" class="invalid-feedback"></div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-12 mb-4">
+                            <label for="assignment_date">Assignment Date</label>
+                            <p>{% if job.assignment_date %}{{ job.assignment_date }}{% else %}-{% endif %}</p>
+                            <div id="assignment_date-error" class="invalid-feedback"></div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-12 mb-4">
+                            <label for="is_home_support_service">Is Home Support Service</label>
+                            <p>{{ job.is_home_support_service }}</p>
+                            <div id="is_home_support_service-error" class="invalid-feedback"></div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-12 mb-4">
+                            <label for="is_ongoing">Is ongoing?</label>
+                            <p>{{ job.is_ongoing }}</p>
+                            <div id="is_ongoing-error" class="invalid-feedback"></div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-12 mb-4">
+                            <label for="status">Status</label>
+                            <p>
+                                {% if job.state == WORK_ORDER_STATE.PENDING %}
+                                    {% trans 'Pending' %}
+                                {% elif job.state == WORK_ORDER_STATE.CANCELLED %}
+                                    {% trans 'Cancelled' %}
+                                {% elif job.state == WORK_ORDER_STATE.ONGOING %}
+                                    {% trans 'Ongoing' %}
+                                {% elif job.state == WORK_ORDER_STATE.IN_PROGRESS %}
+                                    {% trans 'In Progress' %}
+                                {% elif job.state == WORK_ORDER_STATE.COMPLETED_BUT_UNPAID %}
+                                    {% trans 'Completed but unpaid' %}
+                                {% elif job.state == WORK_ORDER_STATE.COMPLETED_AND_PAID %}
+                                    {% trans 'Completed and paid' %}
+                                {% elif job.state == WORK_ORDER_STATE.ARCHIVED %}
+                                    {% trans 'Archived' %}
+                                {% else %}
+                                    -
+                                {% endif %}
+                            </p>
+                            <div id="status-error" class="invalid-feedback"></div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-12 mb-4">
+                            <label for="completion_date">Completion date</label>
+                            <p>{% if job.completion_date %}{{ job.completion_date }}{% else %}-{% endif %}</p>
+                            <div id="completion_date-error" class="invalid-feedback"></div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-12 mb-4">
+                            <label for="hours">Hours</label>
+                            <p>{{ job.hours }}</p>
+                            <div id="hours-error" class="invalid-feedback"></div>
+                        </div>
+                    </div>
+                    {% if job.latest_pending_task %}
+                        <div class="form-row">
+                            <div class="form-group col-md-12 mb-4">
+                                <label for="latest_pending_task">Required Task</label>
+                                <p>
+                                    <a href="{% url 'workery_tenant_pending_task_retrieve' job.latest_pending_task.id %}" target="_blank">
+                                        {{ job.latest_pending_task.title }}&nbsp;<i class="fas fa-external-link-alt"></i>
+                                    </a>
+                                </p>
+                                <div id="latest_pending_task-error" class="invalid-feedback"></div>
+                            </div>
+                        </div>
+                    {% endif %}
+                    <!-- ################################################################## -->
+                    <!-- ######################## end JOB DETAILS ######################### -->
+                    <!-- ################################################################## -->
+
+
+                    <!-- ################################################################## -->
+                    <!-- ####################### FINANCIAL DETAILS ######################## -->
+                    <!-- ################################################################## -->
+                    <p class="border-bottom mb-3 pb-1 text-secondary">Financial Details</p>
+                    <div class="form-row">
+                        <div class="form-group col-md-12 mb-4">
+                            <label for="invoice_date">Invoice Date</label>
+                            <p>
+                                {% if job.invoice_date %}
+                                    {{ job.invoice_date }}
+                                {% else %}
+                                    -
+                                {% endif %}
+                            </p>
+                            <div id="invoice_date-error" class="invalid-feedback"></div>
+                        </div>
+                        <div class="form-group col-md-12 mb-4">
+                            <label for="invoice_id">Invoice ID #</label>
+                            <p>
+                                {% if job.invoice_id %}
+                                    {{ job.invoice_id }}
+                                {% else %}
+                                    -
+                                {% endif %}
+                            </p>
+                            <div id="invoice_id-error" class="invalid-feedback"></div>
+                        </div>
+                        <div class="form-group col-md-12 mb-4">
+                            <label for="invoice_quote_amount">Invoice Quote</label>
+                            <p>
+                                {% if job.invoice_quote_amount %}
+                                    {{ job.invoice_quote_amount }}
+                                {% else %}
+                                    -
+                                {% endif %}
+                            </p>
+                            <div id="invoice_quote_amount-error" class="invalid-feedback"></div>
+                        </div>
+                        <div class="form-group col-md-12 mb-4">
+                            <label for="invoice_labour_amount">Invoice Labour</label>
+                            <p>
+                                {% if job.invoice_labour_amount %}
+                                    {{ job.invoice_labour_amount }}
+                                {% else %}
+                                    -
+                                {% endif %}
+                            </p>
+                            <div id="invoice_labour_amount-error" class="invalid-feedback"></div>
+                        </div>
+                        <div class="form-group col-md-12 mb-4">
+                            <label for="invoice_material_amount">Invoice Material</label>
+                            <p>
+                                {% if job.invoice_material_amount %}
+                                    {{ job.invoice_material_amount }}
+                                {% else %}
+                                    -
+                                {% endif %}
+                            </p>
+                            <div id="invoice_material_amount-error" class="invalid-feedback"></div>
+                        </div>
+                        <div class="form-group col-md-12 mb-4">
+                            <label for="invoice_tax_amount">Invoice Tax</label>
+                            <p>
+                                {% if job.invoice_tax_amount %}
+                                    {{ job.invoice_tax_amount }}
+                                {% else %}
+                                    -
+                                {% endif %}
+                            </p>
+                            <div id="invoice_tax_amount-error" class="invalid-feedback"></div>
+                        </div>
+                        <div class="form-group col-md-12 mb-4">
+                            <label for="invoice_total_amount">Invoice Total</label>
+                            <p>
+                                {% if job.invoice_total_amount %}
+                                    {{ job.invoice_total_amount }}
+                                {% else %}
+                                    -
+                                {% endif %}
+                            </p>
+                            <div id="invoice_total_amount-error" class="invalid-feedback"></div>
+                        </div>
+                        <div class="form-group col-md-12 mb-4">
+                            <label for="order_service_fee">Invoice Service Fee</label>
+                            <p>
+                                {% if job.invoice_service_fee_amount %}
+                                    {{ job.invoice_service_fee_amount }}
+                                {% else %}
+                                    -
+                                {% endif %}
+                            </p>
+                            <div id="order_service_fee-error" class="invalid-feedback"></div>
+                        </div>
+                        <div class="form-group col-md-12 mb-4">
+                            <label for="order_invoice_service_fee_payment_date">Invoice Service Fee Payment Date</label>
+                            <p>
+                                {% if job.invoice_service_fee_payment_date %}
+                                    {{ job.invoice_service_fee_payment_date }}
+                                {% else %}
+                                    -
+                                {% endif %}
+                            </p>
+                            <div id="order_invoice_service_fee_payment_date-error" class="invalid-feedback"></div>
+                        </div>
+
+                    </div>
+                    <!-- ################################################################## -->
+                    <!-- ####################### FINANCIAL DETAILS ######################## -->
+                    <!-- ################################################################## -->
+
+
+                    <!-- UPDATE BUTTON -->
+                    <!--------------------------------------------------------------------->
+                    {% if job.state == WORK_ORDER_STATE.CANCELLED %}
+                        <!-- Do nothing. -->
+                    {% else %}
+                        {% if job.completion_date or job.invoice_service_fee_payment_date %}
+                            <!-- Do nothing. -->
+                        {% else %}
+                            <div class="form-group col-md-12 mb-3 mx-auto text-center">
+                                <a href="{% url 'workery_tenant_job_update' template object.id %}">
+                                    <button  id="id_submit_btn"	class="btn btn-orange btn-lg btn-fxw mt-4" type="button">
+                                        <i class="fas fa-pencil-alt"></i>&nbsp;{% trans 'Edit Job' %}
+                                    </button>
+                                </a>
+                            </div>
+                        {% endif %}
+                    {% endif %}
+                    <!--------------------------------------------------------------------->
+                    <!-- end UPDATE BUTTON -->
+
+    	        </div>
+            </form>
+        </div>
+    </div>
+    <!------------------------------------------------------------------------->
+    <!-- end FORM -->
+
+
+    <!-- RETURN-TO-TOP -->
+    <a id="return-to-top" href="#" class="btn-info btn-lg back-to-top" role="button" title="Back to top"><i class="fas fa-angle-up fa-2x"></i></a>
+    <!-- end RETURN-TO-TOP -->
+
+</main>
+
+{% endblock content %}

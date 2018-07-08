@@ -114,7 +114,12 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link {% if menu_id == 'jobs' %}active{% endif %}" href="{% url 'workery_tenant_job_summary' %}">
-                        <i class="fa fa-wrench"></i>&nbsp;{% trans 'Jobs' %}
+                        <i class="fa fa-wrench"></i>&nbsp;{% trans 'Jobs (Single)' %}
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if menu_id == 'ongoing-jobs' %}active{% endif %}" href="{% url 'workery_tenant_ongoing_job_list' %}">
+                        <i class="fa fa-redo"></i>&nbsp;{% trans 'Jobs (Ongoing)' %}
                         </a>
                     </li>
                     <li class="nav-item">

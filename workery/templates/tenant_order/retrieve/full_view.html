@@ -236,10 +236,10 @@
 			        </td>
 			    </tr>
             {% endif %}
-                    	<!-- ######################## end JOB DETAILS ######################### -->
-                    	<!-- ####################### FINANCIAL DETAILS ######################## -->
-		    	<tr class="bg-primary text-white">
-			    <th scope="row" colspan="2">Financial Details</th>
+            <!-- ######################## end JOB DETAILS ######################### -->
+        	<!-- ####################### FINANCIAL DETAILS ######################## -->
+		    <tr class="bg-primary text-white">
+		    <th scope="row" colspan="2">Financial Details</th>
 			</tr>
 			<tr>
 			    <th scope="row" class="bg-light">Invoice Date</th>
@@ -274,21 +274,21 @@
 			<tr>
 			    <th scope="row" class="bg-light">Invoice Labour</th>
 			    <td id="invoice_labour_amount">
-				{% if job.invoice_labour_amount %}
-                                    {{ job.invoice_labour_amount }}
-                                {% else %}
-                                    -
-                                {% endif %}
+					{% if job.invoice_labour_amount %}
+            	        {{ job.invoice_labour_amount }}
+            	    {% else %}
+            	        -
+            	    {% endif %}
 			    </td>
 			</tr>
 			<tr>
 			    <th scope="row" class="bg-light">Invoice Material</th>
 			    <td id="invoice_material_amount">
-				{% if job.invoice_material_amount %}
-                                    {{ job.invoice_material_amount }}
-                                {% else %}
-                                    -
-                                {% endif %}
+					{% if job.invoice_material_amount %}
+                        {{ job.invoice_material_amount }}
+                    {% else %}
+                        -
+                    {% endif %}
 			    </td>
 			</tr>
 			<tr>
@@ -322,6 +322,23 @@
 			    </td>
 			</tr>
                     	<!-- ####################### FINANCIAL DETAILS ######################## -->
+                        <!-- ####################### ONGOING WORK ORDER DETAILS ######################## -->
+            		    <tr class="bg-primary text-white">
+            		    <th scope="row" colspan="2">Ongoing Job Details</th>
+            			</tr>
+            			<tr>
+            			    <th scope="row" class="bg-light">ID #</th>
+            			    <td id="invoice_date">
+            				{% if job.ongoing_work_order %}
+                                <a href="{% url 'workery_tenant_ongoing_job_lite_retrieve' 'running' job.ongoing_work_order.id %}" target="_blank">
+                                    {{ job.ongoing_work_order.id }}&nbsp;<i class="fas fa-external-link-alt"></i>
+                                </a>
+                            {% else %}
+                                -
+                            {% endif %}
+            			    </td>
+            			</tr>
+                        <!-- ####################### end ONGOING WORK ORDER DETAILS ######################## -->
                     	<!-- ################################################################## -->
 		    </tbody>
 		</table>
