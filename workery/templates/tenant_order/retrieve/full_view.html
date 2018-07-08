@@ -315,13 +315,14 @@
 			    <th scope="row" class="bg-light">Invoice Service Fee Payment Date</th>
 			    <td id="order_invoice_service_fee_payment_date">
 				{% if job.invoice_service_fee_payment_date %}
-                                    {{ job.invoice_service_fee_payment_date }}
-                                {% else %}
-                                    -
-                                {% endif %}
+                    {{ job.invoice_service_fee_payment_date }}
+                {% else %}
+                    -
+                {% endif %}
 			    </td>
 			</tr>
                     	<!-- ####################### FINANCIAL DETAILS ######################## -->
+                        {% if job.ongoing_work_order %}
                         <!-- ####################### ONGOING WORK ORDER DETAILS ######################## -->
             		    <tr class="bg-primary text-white">
             		    <th scope="row" colspan="2">Ongoing Job Details</th>
@@ -339,6 +340,7 @@
             			    </td>
             			</tr>
                         <!-- ####################### end ONGOING WORK ORDER DETAILS ######################## -->
+                        {% endif %}
                     	<!-- ################################################################## -->
 		    </tbody>
 		</table>
