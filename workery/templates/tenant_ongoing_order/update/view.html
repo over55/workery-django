@@ -13,136 +13,13 @@
 
 <!-- CUSTOM JAVASCRIPT -->
 <!----------------------------------------------------------------------------->
-<script>
+<script type="text/javascript">
     /**
      *  When page loads, the following code will be run first.
      */
     $(document).ready(function () {
-        // Initialize our datepicker jQuery code with our HTML view.
-        $( "#assignment_date" ).datepicker({
-            dateFormat: 'yy-mm-dd'  // https://stackoverflow.com/a/7500097
-        });
-        $( "#completion_date" ).datepicker({
-            dateFormat: 'yy-mm-dd'  // https://stackoverflow.com/a/7500097
-        });
-        $( "#invoice_service_fee_payment_date" ).datepicker({
-            dateFormat: 'yy-mm-dd'  // https://stackoverflow.com/a/7500097
-        });
-
-        // Initialize our datepicker jQuery code with our HTML view.
-        $('#skill_sets').select2();
-
+        // Do nothing.
     }); // end Ready
-
-    /**
-     *  Function to make text readable removing underscore and capitalizing
-     */
-    function humanize(str) {
-    	var frags = str.split('_');
-    	for (i=0; i<frags.length; i++) {
-    			frags[i] = frags[i].charAt(0).toUpperCase() + frags[i].slice(1);
-    	}
-    	return frags.join(' ');
-    }
-
-    function ajax_post_form_submission() {
-        var description = $('#description').val();
-        console.log("Description:", description);
-
-        var skill_sets = $('#skill_sets').val();
-        console.log("skill_sets:", skill_sets);
-
-        var assignment_date = $('#assignment_date').val();
-        console.log("assignment_date:", assignment_date);
-
-        var is_ongoing = $('input[name=is_ongoing]:checked').val();
-        is_ongoing = (is_ongoing == "true") ? true : false;
-        console.log(is_ongoing);
-
-        var home_support = $('input[name=is_home_support_service]:checked').val();
-        home_support = (home_support == 'true') ? true : false;
-        console.log(home_support);
-
-        var completion_date = $('#completion_date').val();
-        console.log("completion_date:", completion_date);
-
-        var hours = $('#hours').val();
-        console.log("hours:", hours);
-
-        var invoice_service_fee_payment_date = $('#invoice_service_fee_payment_date').val();
-        console.log("invoice_service_fee_payment_date:", completion_date);
-
-        // Attach "customer".
-        {% if job.customer %}
-        var customer_id = {{ job.customer.id }};
-        {% else %}
-        var customer_id = null;
-        {% endif %}
-
-        // Attach "associate".
-        {% if job.associate %}
-        var associate_id = {{ job.associate.id }};
-        {% else %}
-        var associate_id = null;
-        {% endif %}
-
-        var data_dict = {
-            'customer': customer_id,
-            'associate': associate_id,
-            'description': description,
-            'skill_sets': skill_sets,
-            'assignment_date': assignment_date,
-            'is_ongoing': is_ongoing,
-            'is_home_support_service': home_support,
-            'completion_date': completion_date,
-            'hours': hours,
-            'invoice_service_fee': {{ job.invoice_service_fee }},
-            'invoice_service_fee_payment_date': invoice_service_fee_payment_date,
-            'extra_comment': null
-        };
-
-        update_job_api(
-            {{ job.id }},
-            data_dict,
-            function(json_results) {
-                console.log(json_results);
-                window.location = "{% url 'workery_tenant_job_full_retrieve' template job.id %}?was_modified=True";
-            },
-	    function(xhr,status,error) { // Error
-                // STEP 1: Convert to JSON.
-                var err = JSON.parse(xhr.responseText);
-                // For debugging purposes only.
-                console.log(err);
-                // STEP 2: CLEAR EXISTING TEXT.
-                $('#all_error_result').html("");
-		$('#all_error_result').removeClass('error-block');
-                // STEP 3: PRINT OUR ERROR.
-                for(var prop in err) {
-                    if(err.hasOwnProperty(prop)) {
-                        var val = err[prop];
-                        console.log(val);
-                        var fdname = humanize(prop);
-			// Errors box code
-                        $('#all_error_result').append("<div class='form-error'><b>"+fdname+":</b> "+val+" </div>");
-			$('#all_error_result').addClass('error-block');
-			// Inline fields errors code
-			$('#'+prop+'-error').html("<ul><li>"+val+"</li></ul>");
-			$('#update-job-form').addClass('was-validated');
-                    }
-                }
-                // STEP 4: FOCUS TO WHERE THE ERROR IS OCCURING.
-                $('html, body').animate({ scrollTop: $('#id_page_title').offset().top }, 'slow');
-            },
-            function(error_json) {
-                console.log(error_json);
-            },
-            function(completed, hr){
-
-            }
-        );
-    }
-
-
 </script>
 <!----------------------------------------------------------------------------->
 <!-- end CUSTOM JAVASCRIPT -->
@@ -155,32 +32,17 @@
 	  	<ol class="breadcrumb">
             {% if template == 'search' %}
 
-            <li class="breadcrumb-item">
-                <a href="{% url 'workery_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a>
-            </li>
-            <li class="breadcrumb-item">
-                <a href="{% url 'workery_tenant_job_summary' %}">{% trans 'Jobs' %}</a>
-            </li>
-            <li class="breadcrumb-item">
-                <a href="{% url 'workery_tenant_job_search' %}">{% trans 'Search' %}</a>
-            </li>
-            <li class="breadcrumb-item active">{% trans 'Search Results' %}</li>
-            <li class="breadcrumb-item"><a href="{% url 'workery_tenant_job_retrieve' template job.id %}">{% trans 'Job #' %}{{ job.id|intcomma }}</a></li>
-            <li class="breadcrumb-item active" aria-current="page">{% trans 'Edit' %}</li>
+            TODO
 
             {% elif template == 'list' %}
 
-            <li class="breadcrumb-item"><a href="{% url 'workery_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
-            <li class="breadcrumb-item"><a href="{% url 'workery_tenant_job_summary' %}">{% trans 'Jobs' %}</a></li>
-            <li class="breadcrumb-item"><a href="{% url 'workery_tenant_job_list' %}">{% trans 'List' %}</a></li>
-            <li class="breadcrumb-item"><a href="{% url 'workery_tenant_job_retrieve' template job.id %}">{% trans 'Job #' %}{{ job.id|intcomma }}</a></li>
-            <li class="breadcrumb-item active" aria-current="page">{% trans 'Edit' %}</li>
+            TODO
 
             {% else %}
 
-	    <li class="breadcrumb-item"><a href="{% url 'workery_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
-            <li class="breadcrumb-item"><a href="{% url 'workery_tenant_job_summary' %}">{% trans 'Jobs' %}</a></li>
-            <li class="breadcrumb-item"><a href="{% url 'workery_tenant_job_retrieve' template job.id %}">{% trans 'Job #' %}{{ job.id|intcomma }}</a></li>
+	        <li class="breadcrumb-item"><a href="{% url 'workery_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'workery_tenant_ongoing_job_list' %}">{% trans 'Ongoing Jobs' %}</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'workery_tenant_ongoing_job_full_retrieve' template job.id %}">{% trans 'Ongoing Job #' %}{{ job.id|intcomma }}</a></li>
             <li class="breadcrumb-item active" aria-current="page">{% trans 'Edit' %}</li>
 
             {% endif %}
@@ -193,15 +55,15 @@
     <!------------------------------------------------------------------------->
     <div class="row">
 		<div class="col-sm-3 p-3 mb-2">
-			<a class="btn btn-primary btn-lg" href="{% url 'workery_tenant_job_full_retrieve' template job.id %}" role="button">
-               <i class="fas fa-arrow-left"></i> &nbsp;{% trans 'Back to Job Detail' %}
+			<a class="btn btn-primary btn-lg" href="{% url 'workery_tenant_ongoing_job_full_retrieve' template job.id %}" role="button">
+               <i class="fas fa-arrow-left"></i> &nbsp;{% trans 'Back to Ongoing Job Detail' %}
             </a>
 		</div>
     </div>
     <!------------------------------------------------------------------------->
     <!-- end BACK BUTTON -->
 
-    <h1 id="id_page_title">{% trans 'Edit Job' %}</h1>
+    <h1 id="id_page_title">{% trans 'Edit Ongoing Job' %}</h1>
 
     <!-- FORM -->
     <!------------------------------------------------------------------------->
@@ -215,109 +77,16 @@
 	    <!-- end Error Output -->
 
             <form id="update-job-form" method="post" class="needs-validation" action="" novalidate>
-
-            <p class="border-bottom mb-3 pb-1 text-secondary">Describe the Job:</p>
-            <div class="form-row">
-                <div class="form-group col-md-12 mb-4">
-                        <textarea class="form-control form-control-lg border border-primary" id="description" name="description" placeholder="Describe here..." rows="4" minlength="10" required>{{ job.description }}</textarea>
-                    <div id="description-error" class="invalid-feedback"></div>
+                <!-- end SUBMIT BUTTON -->
+                <div class="form-group col-md-12 mb-3 mx-auto text-center">
+                    <button  id="id_submit_btn"
+                        class="btn btn-primary btn-lg btn-fxw mt-4"
+                        type="button">
+                    <i class="fas fa-check"></i>&nbsp;{% trans 'Update Ongoing Job' %}
+                    </button>
                 </div>
-            </div>
-
-            <p class="border-bottom mb-3 pb-1 text-secondary">Please select required job skill(s):</p>
-            <div class="form-row">
-                <div class="form-group col-md-12 mb-4">
-                    <label for="skill_sets" class="font-b6"></label>
-                    <select id="skill_sets" name="states[]" multiple="multiple" class="form-control form-control-lg border border-primary">
-                        {% for skillset in skillsets %}
-                            <option value="{{ skillset.id }}" id="option_id_{{ skillset.id }}" {% if skillset in job.skill_sets.all %}selected="selected"{% endif %}>{{ skillset.sub_category }}</option>
-                        {% endfor %}
-                    </select>
-                    <div id="skill_sets-error" class="invalid-feedback"></div>
-                </div>
-            </div>
-
-            <div class="form-group p-0 col-md-7 mb-4">
-                <label for="assignment_date">Assignment Date</label>
-                <div class="input-group input-group-lg">
-                    <input type="text" class="form-control form-control-lg border border-success" id="assignment_date" name="assignment_date" placeholder="yyyy-mm-dd" value="{% if job.assignment_date %}{{ job.assignment_date|date:"Y-m-d" }}{% endif %}" required>
-                    <div class="input-group-append">
-                        <span class="input-group-text c-icon-white bg-success border-success"><i class="far fa-calendar-alt"></i></span>
-                    </div>
-                    <div id="assignment_date-error" class="invalid-feedback"></div>
-                </div>
-            </div>
-
-            <div class="form-group my-3 py-2">
-            <p class="mb-1 font-b6">Is this job one time or ongoing?</p>
-            <div class="form-radio custom-control custom-radio mb-2">
-               <input type="radio" id="is_ongoing" name="is_ongoing" value="false" class="custom-control-input form-check-input" required {% if job.is_ongoing == False %}checked="checked"{% endif %}>
-               <label class="custom-control-label form-check-label" for="is_ongoing">One time</label>
-            </div>
-            <div class="form-radio custom-control custom-radio">
-               <input type="radio" id="is_ongoing2" name="is_ongoing" value="true" class="custom-control-input form-check-input" required {% if job.is_ongoing == True %}checked="checked"{% endif %}>
-               <label class="custom-control-label form-check-label" for="is_ongoing2">Ongoing</label>
-               <div id="is_ongoing-error" class="invalid-feedback"></div>
-            </div>
-        </div>
-
-
-        <div class="form-group my-3 pt-2">
-            <p class="mb-1 font-b6">Is this job a home support service?</p>
-            <div class="form-radio custom-control custom-radio mb-2">
-               <input type="radio" id="is_home_support_service" name="is_home_support_service" value="true" class="custom-control-input form-check-input" required {% if job.is_home_support_service == True %}checked="checked"{% endif %}>
-               <label class="custom-control-label form-check-label" for="is_home_support_service">Yes</label>
-            </div>
-            <div class="form-radio custom-control custom-radio">
-               <input type="radio" id="is_home_support_service2" name="is_home_support_service" value="false" class="custom-control-input form-check-input" required {% if job.is_home_support_service == False %}checked="checked"{% endif %}>
-               <label class="custom-control-label form-check-label" for="is_home_support_service2">No</label>
-               <div id="is_home_support_service-error" class="invalid-feedback"></div>
-            </div>
-        </div>
-
-
-        <div class="form-group p-0 col-md-7 mb-4">
-            <label for="completion_date">Completion Date</label>
-            <div class="input-group input-group-lg">
-                <input type="text" class="form-control form-control-lg border border-success" id="completion_date" name="completion_date" placeholder="yyyy-mm-dd" value="{% if job.completion_date %}{{ job.completion_date|date:"Y-m-d" }}{% endif %}" required>
-                <div class="input-group-append">
-                    <span class="input-group-text c-icon-white bg-success border-success"><i class="far fa-calendar-alt"></i></span>
-                </div>
-                <div id="completion_date-error" class="invalid-feedback"></div>
-            </div>
-        </div>
-
-
-        <div class="form-group p-0 col-md-7 mb-4">
-            <label for="hours">Hours</label>
-            <div class="input-group input-group-lg">
-                <input type="text" class="form-control form-control-lg border border-success" id="hours" name="hours" placeholder="Hours" minlength="3" maxlength="127" required value="{{ job.hours }}">
-                <div id="hours-error" class="invalid-feedback"></div>
-            </div>
-        </div>
-
-
-        <div class="form-group p-0 col-md-7 mb-4">
-            <label for="invoice_service_fee_payment_date">Invoice Service Fee Payment Date</label>
-            <div class="input-group input-group-lg">
-                <input type="text" class="form-control form-control-lg border border-success" id="invoice_service_fee_payment_date" name="invoice_service_fee_payment_date" placeholder="yyyy-mm-dd" value="{% if job.invoice_service_fee_payment_date %}{{ job.invoice_service_fee_payment_date|date:"Y-m-d" }}{% endif %}" required>
-                <div class="input-group-append">
-                    <span class="input-group-text c-icon-white bg-success border-success"><i class="far fa-calendar-alt"></i></span>
-                </div>
-                <div id="invoice_service_fee_payment_date-error" class="invalid-feedback"></div>
-            </div>
-        </div>
-
-            <!-- end SUBMIT BUTTON -->
-            <div class="form-group col-md-12 mb-3 mx-auto text-center">
-                <button  id="id_submit_btn"
-                    class="btn btn-primary btn-lg btn-fxw mt-4"
-                    onclick="ajax_post_form_submission();"
-                    type="button">
-                <i class="fas fa-check"></i>&nbsp;{% trans 'Update Job' %}
-                </button>
-            </div>
-            <!-- end SUBMIT BUTTON -->
+                <!-- end SUBMIT BUTTON -->
+            </form>
         </div>
     </div>
     <!------------------------------------------------------------------------->
@@ -328,10 +97,4 @@
     <a id="return-to-top" href="#" class="btn-info btn-lg back-to-top" role="button" title="Back to top"><i class="fas fa-angle-up fa-2x"></i></a>
     <!-- end RETURN-TO-TOP -->
 </main>
-
-<script type="text/javascript">
-// // Populate our 'select2' chosen values.
-        $('#skill_sets').select2();
-</script>
-
 {% endblock content %}

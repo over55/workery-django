@@ -79,7 +79,7 @@ class OngoingJobFullRetrieveView(LoginRequiredMixin, WorkeryDetailView):
 class OngoingJobUpdateView(LoginRequiredMixin, WorkeryDetailView):
     context_object_name = 'job'
     model = OngoingWorkOrder
-    template_name = 'tenant_order/update/view.html'
+    template_name = 'tenant_ongoing_order/update/view.html'
     menu_id = 'jobs'
 
     def get_context_data(self, **kwargs):
