@@ -72,6 +72,10 @@ class OngoingJobFullRetrieveView(LoginRequiredMixin, WorkeryDetailView):
             raise PermissionDenied(_('You entered wrong format.'))
         modified_context['template'] = template
 
+        # Get sorted values.
+        job = modified_context['job']
+        modified_context['ordered_closed_jobs'] = job.closed_orders.order_by('-id')
+
         # Return our modified context.
         return modified_context
 

@@ -202,7 +202,7 @@
                 </tr>
             </thead>
             <tbody>
-                {% for closed_job in job.closed_orders.all %}
+                {% for closed_job in ordered_closed_jobs.all %}
                 <tr>
                     <td>
                         {% if closed_job.customer.type_of == tenant_constants.RESIDENTIAL_CUSTOMER_TYPE_OF_ID %}
