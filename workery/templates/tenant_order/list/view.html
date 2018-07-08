@@ -80,6 +80,7 @@
                         {% else %}
                             <i class="fa fa-question fa-lg"></i>
                         {% endif %}
+                        {% if job.is_ongoing %}<i class="fa fa-redo fa-lg"></i>{% endif %}
                     </td>
                     <td>{{ job.id|intcomma }}</td>
                     <td>
