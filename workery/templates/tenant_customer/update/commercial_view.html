@@ -108,21 +108,21 @@
             {% for tag in customer.tags.all %}
             tag_ids.push({{ tag.id }});
             {% endfor %}
-            $('#person_tags').val(tag_ids);
+            $('#tags').val(tag_ids);
 
             // Initialize our 'select2' element.
-            $('#person_tags').select2();
+            $('#tags').select2();
 
             {% if customer.is_ok_to_email == True %}
-                $("#ok_to_email").prop("checked", true);
+                $("#is_ok_to_email").prop("checked", true);
             {% else %}
-                $("#ok_to_email2").prop("checked", true);
+                $("#is_ok_to_email2").prop("checked", true);
             {% endif %}
 
             {% if customer.is_ok_to_text == True %}
-                $("#ok_to_text").prop("checked", true);
+                $("#is_ok_to_text").prop("checked", true);
             {% else %}
-                $("#ok_to_text2").prop("checked", true);
+                $("#is_ok_to_text2").prop("checked", true);
             {% endif %}
 
         	// This is to set default Phone type
@@ -133,51 +133,43 @@
     	    var other_phn_type = $('#other_telephone_type_of');
     	    other_phn_type.prop('selectedIndex', 0);
 
-            // THIS IS WHERE YOU CAN ADD YOUR COUNTRY/PROVINCE DROPDOWN JS CODE....
-            $(function(){
-        	  $('#address_country').change(function(){
-        	    loadState($(this).find(':selected').val())
-        	  });
-        	  loadState('CA');
-            });
-
-            let c_dropdown = $('#address_country');
-            c_dropdown.empty();
-        	c_dropdown.append('<option selected="true" disabled>Choose Country</option>');
-        	c_dropdown.prop('selectedIndex', 1);
-
-            const state = "{% url 'workery_get_provinces_api_endpoint' %}?format=json";
-            const country = "{% url 'workery_get_countries_api_endpoint' %}?format=json";
-
-    	    console.log(state);
-            console.log(country); // KANWAR - PLEASE IMPLEMENT.
-
-            // Populate dropdown with list of countries
-        	$.getJSON(country, function (data) {
-        	  $.each(data, function (key, entry) {
-        	    	c_dropdown.append($('<option></option>').attr('value', entry.code).text(entry.country));
-        	  })
-        	});
-
-    	function loadState(countryId){
-    		let p_dropdown = $('#address_region');
-    		p_dropdown.empty();
-    		p_dropdown.append('<option selected="true" disabled>Choose State/Province</option>');
-    		p_dropdown.prop('selectedIndex', 0);
-
-    		// Populate dropdown with list of provinces
-    		$.getJSON(state, function (data) {
-    		  $.each(data, function (key, entry) {
-    		    if(entry.country == countryId){
-    		    	p_dropdown.append($('<option></option>').attr('value', entry.short).text(entry.name));
-    		    }
-    		  })
-    		});
-    		if(countryId == 'CA'){
-    			p_dropdown.prop('selectedIndex', 1);
-    		}
-        	}
-        	// end country/province dropdown function
+// THIS IS WHERE YOU CAN ADD YOUR COUNTRY/PROVINCE DROPDOWN JS CODE....
+	$(function(){
+	  $('#address_country').change(function(){
+	    loadState($(this).find(':selected').val())
+	  });
+	  {% if customer.address_country %}loadState('{{customer.address_country}}');{% else %}loadState('CA');{% endif %}
+    	});
+	let c_dropdown = $('#address_country');
+	c_dropdown.empty();
+	c_dropdown.append('<option selected="true" disabled>Choose Country</option>');
+	{% if customer.address_country %}c_dropdown.val('{{customer.address_country}}');{% else %}c_dropdown.prop('selectedIndex', 1);{% endif %}
+	const state = "{% url 'workery_get_provinces_api_endpoint' %}?format=json";
+        const country = "{% url 'workery_get_countries_api_endpoint' %}?format=json";
+	console.log(state);
+        console.log(country); // KANWAR - PLEASE IMPLEMENT.
+	// Populate dropdown with list of countries
+	$.getJSON(country, function (data) {
+	  $.each(data, function (key, entry) {
+	    	c_dropdown.append($('<option></option>').attr('value', entry.code).text(entry.country));
+	  })
+	});
+	function loadState(countryId){
+		let p_dropdown = $('#address_region');
+		p_dropdown.empty();
+		p_dropdown.append('<option selected="true" disabled>Choose State/Province</option>');
+		p_dropdown.prop('selectedIndex', 0);
+		// Populate dropdown with list of provinces
+		$.getJSON(state, function (data) {
+		  $.each(data, function (key, entry) {
+		    if(entry.country == countryId){
+		    	p_dropdown.append($('<option></option>').attr('value', entry.short).text(entry.name));
+		    }
+		  })
+		});
+		{% if customer.address_region %}p_dropdown.val('{{customer.address_region}}');{% else %}p_dropdown.prop('selectedIndex', 1);{% endif %}
+		
+    	}
 
     	/**
     	 *  Password Strength Check Validation.
@@ -395,8 +387,8 @@
             if (gender == undefined || gender == null || gender.length == 0) {
                 gender = '';
             }
-            var ok_to_email = get_selected_radio_value('ok_to_email');
-            var ok_to_text = get_selected_radio_value('ok_to_text');
+            var ok_to_email = get_selected_radio_value('is_ok_to_email');
+            var ok_to_text = get_selected_radio_value('is_ok_to_text');
             if (ok_to_email == 'yes') {
                 ok_to_email = true;
             } else {
@@ -411,12 +403,12 @@
             var street_address_extra = $('#street_address_extra').val();
             var address_region = $('#address_region').val();
             if (address_region == null) {
-                address_region = "Ontario";
+                address_region = "ON";
             }
             var address_locality = $('#address_locality').val();
             var address_country = $('#address_country').val();
             if (address_country == null || address_country == "" || address_country.length == 0) {
-                address_country = "Canada";
+                address_country = "CA";
             }
             var postal_code = $('#postal_code').val();
             var post_office_box_number = $('#post_office_box_number').val();
@@ -433,7 +425,7 @@
             var person_tags = $('#tags').val();
             var company_tags = $('#organization_tags').val();
             var description = $('#description').val();
-            var comment = $('#comment').val();
+            var comment = $('#extra_comment').val();
 
             // SAVE ARRAY OF VALUE ITEMS.
             var person_tags_arr = [];
@@ -456,7 +448,6 @@
                 {
                     // --- System ---
                     'id': {{ customer.id }},
-
                     // --- PERSON ---
                     'given_name': given_name,
                     'middle_name': null,
@@ -514,20 +505,21 @@
                     console.log(err);
 
                     // STEP 2: CLEAR EXISTING TEXT.
-                    $('#all_error_result').html("");
-    		        $('#all_error_result').removeClass('error-block');
-
-                    // STEP 3: PRINT OUR ERROR.
-                    for(var prop in err) {
-                        if(err.hasOwnProperty(prop)) {
-                            var val = err[prop];
-                            console.log(val);
-                            var fdname = humanize(prop);
-
-                            $('#all_error_result').append("<div class='form-error'><b>"+fdname+":</b> "+val+" </div>");
-    			            $('#all_error_result').addClass('error-block');
-                        }
+                $('#all_error_result').html("");
+		$('#all_error_result').removeClass('error-block');
+                // STEP 3: PRINT OUR ERROR IN THE TOP ERROR PANEL.
+                for(var prop in err) {
+                    if(err.hasOwnProperty(prop)) {
+			var val = err[prop];
+			var fdname = humanize(prop);
+			// Errors box code
+                        $('#all_error_result').append("<div class='form-error'><b>"+fdname+":</b> "+val+" </div>");
+			$('#all_error_result').addClass('error-block');
+			// Inline fields errors code
+			$('#'+prop+'-error').html("<ul><li>"+val+"</li></ul>");
+			$('#add-client-form').addClass('was-validated');
                     }
+                }
 
                     // STEP 4: FOCUS TO WHERE THE ERROR IS OCCURING.
                     $('html, body').animate({ scrollTop: $('#id_page_title').offset().top }, 'slow');
@@ -604,25 +596,25 @@
                 <div class="form-group col-md-12 mb-4">
                     <p class="mb-1">Ok to E-Mail? <sup>*</sup></p>
                     <div class="form-radio custom-control custom-radio custom-control-inline">
-                        <input type="radio" id="ok_to_email" name="ok_to_email" value="yes" class="custom-control-input form-check-input">
-                        <label class="custom-control-label form-check-label" for="ok_to_email">Yes</label>
+                        <input type="radio" id="is_ok_to_email" name="is_ok_to_email" value="yes" class="custom-control-input form-check-input">
+                        <label class="custom-control-label form-check-label" for="is_ok_to_email">Yes</label>
                     </div>
                     <div class="form-radio custom-control custom-radio custom-control-inline">
-                        <input type="radio" id="ok_to_email2" name="ok_to_email" value="no" class="custom-control-input form-check-input">
-                        <label class="custom-control-label form-check-label" for="ok_to_email2">No</label>
-			         <div id="ok_to_email-error" class="invalid-feedback ml-2"></div>
+                        <input type="radio" id="is_ok_to_email2" name="is_ok_to_email" value="no" class="custom-control-input form-check-input">
+                        <label class="custom-control-label form-check-label" for="is_ok_to_email2">No</label>
+			         <div id="is_ok_to_email-error" class="invalid-feedback ml-2"></div>
                     </div>
                 </div>
                 <div class="form-group col-md-12 mb-4">
                     <p class="mb-1">Ok to Text? <sup>*</sup></p>
                     <div class="form-radio custom-control custom-radio custom-control-inline">
-                        <input type="radio" id="ok_to_text" name="ok_to_text" value="yes" class="custom-control-input form-check-input">
-                        <label class="custom-control-label form-check-label" for="ok_to_text">Yes</label>
+                        <input type="radio" id="is_ok_to_text" name="is_ok_to_text" value="yes" class="custom-control-input form-check-input">
+                        <label class="custom-control-label form-check-label" for="is_ok_to_text">Yes</label>
                     </div>
                     <div class="form-radio custom-control custom-radio custom-control-inline">
-                        <input type="radio" id="ok_to_text2" name="ok_to_text" value="no" class="custom-control-input form-check-input">
-                        <label class="custom-control-label form-check-label" for="ok_to_text2">No</label>
-			        <div id="ok_to_text-error" class="invalid-feedback ml-2"></div>
+                        <input type="radio" id="is_ok_to_text2" name="is_ok_to_text" value="no" class="custom-control-input form-check-input">
+                        <label class="custom-control-label form-check-label" for="is_ok_to_text2">No</label>
+			        <div id="is_ok_to_text-error" class="invalid-feedback ml-2"></div>
                     </div>
                 </div>
                 <div class="form-group col-md-7 mb-4">
@@ -738,9 +730,9 @@
             <p class="border-bottom mb-3 pb-1 text-secondary">Account</p>
             <div class="form-row">
                 <div class="form-group col-md-12 mb-4">
-      		      <label for="comment" class="font-b6">Additional Comments:</label>
-      		      <textarea class="form-control form-control-lg border border-success" id="comment" name="comment" placeholder="Write any additional comments here..." rows="4" minlength="10" required></textarea>
-      		      <div id="comment-error" class="invalid-feedback"></div>
+      		      <label for="extra_comment" class="font-b6">Additional Comments:</label>
+      		      <textarea class="form-control form-control-lg border border-success" id="extra_comment" name="extra_comment" placeholder="Write any additional comments here..." rows="4" minlength="10" required></textarea>
+      		      <div id="extra_comment-error" class="invalid-feedback"></div>
                   <small class="form-text text-muted">Maximum 1,000 characters.</small>
                 </div>
                 <div class="form-group col-md-12 mb-4">
