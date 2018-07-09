@@ -89,7 +89,7 @@
 		  })
 		});
 
-		{% if customer.address_region %}p_dropdown.val('{{customer.address_region}}');{% else %}p_dropdown.prop('selectedIndex', 1);{% endif %}
+		{% if customer.address_region == 'Ontario' %}p_dropdown.prop('selectedIndex', 1);{% else %}p_dropdown.val('{{customer.address_region}}');{% endif %}
     	}
 
 	/**
