@@ -12,6 +12,16 @@
 
 <!-- CUSTOM JAVASCRIPT -->
 <script>
+    $(document).ready(function () {
+    	$("#id_image_placeholder").click(function () {
+    		$("#id_image").trigger('click');
+    	});
+        $("#upload-btn").click(function () {
+    		$("#id_image").trigger('click');
+    	});
+	$("#upload-btn").css("cursor", "pointer");
+	$("#id_image_placeholder").css("cursor", "pointer");
+    });
     /**
      *  Function will asynchronously upload the cover image.
      */
