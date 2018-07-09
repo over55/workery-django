@@ -68,6 +68,7 @@
         <table class="table table-striped">
             <thead>
                 <tr>
+                    <th></th>
                     <th>{% trans 'Due Date' %}</th>
                     <th>{% trans 'Task' %}</th>
                     <th>{% trans 'Client' %}&nbsp;<i class="fas fa-external-link-alt"></i></th>
@@ -78,6 +79,16 @@
             <tbody>
                 {% for task_item in task_list %}
                 <tr>
+                    <td>
+                        {% if task_item.job.customer.type_of == tenant_constants.RESIDENTIAL_CUSTOMER_TYPE_OF_ID %}
+                            <i class="fa fa-home fa-lg"></i>
+                        {% elif task_item.job.customer.type_of == tenant_constants.COMMERCIAL_CUSTOMER_TYPE_OF_ID %}
+                            <i class="fa fa-building fa-lg"></i>
+                        {% else %}
+                            <i class="fa fa-question fa-lg"></i>
+                        {% endif %}
+                        {% if task_item.job.is_ongoing %}<i class="fa fa-redo fa-lg"></i>{% endif %}
+                    </td>
                     <td>{{ task_item.due_date }}</td>
                     <td>{{ task_item.title }}</td>
                     <td>

@@ -103,7 +103,8 @@ SHARED_APPS = (
     'shared_foundation',
     'shared_api',
     'shared_auth',
-    'shared_github_webhook'
+    'shared_github_webhook',
+    'shared_etl'
     # . . .
 )
 

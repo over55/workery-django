@@ -170,23 +170,28 @@
                         {% endif %}
                     </td>
                 </tr>
-                {% if job.latest_pending_task %}
+                <tr class="bg-primary text-white">
+                    <th scope="row" colspan="2">Current Work Order Details</th>
+                </tr>
                 <tr>
-                    <th scope="row" class="bg-light">Required Task</th>
-                    <td id="selected_latest_pending_task">
-                        <a href="{% url 'workery_tenant_pending_task_retrieve' job.latest_pending_task.id %}" target="_blank">
-                            {{ job.latest_pending_task.title }}&nbsp;<i class="fas fa-external-link-alt"></i>
+                    <th scope="row" class="bg-light">Order #</th>
+                    <td>
+                        {% if job.open_order %}
+                        <a href="{% url 'workery_tenant_job_retrieve' 'summary' job.open_order.id %}" target="_blank">
+                            {{ job.open_order.id }}&nbsp;<i class="fas fa-external-link-alt"></i>
                         </a>
+                        {% else %}
+                           -
+                        {% endif %}
                     </td>
                 </tr>
-                {% endif %}
             </tbody>
         </table>
         <!--------------------------------------------------------------------->
         <!-- end CURRENT TABLE -->
 
         <br />
-        <h3 class="py-2 text-center mb-4" id="id_page_title">Closed Jobs</h3>
+        <h3 class="py-2 text-center mb-4" id="id_page_title">Past Closed Jobs</h3>
 
         <!-- PREVIOUS TABLE -->
         <!--------------------------------------------------------------------->
