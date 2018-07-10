@@ -74,7 +74,7 @@ function click_add_button() {
 
             // STEP 2: CLEAR EXISTING TEXT.
             $('#all_error_result').html("");
-	    $('#all_error_result').removeClass('error-block');
+	        $('#all_error_result').removeClass('error-block');
 
             // STEP 3: PRINT OUR ERROR.
             for(var prop in err) {
@@ -82,8 +82,8 @@ function click_add_button() {
                     var val = err[prop];
                     console.log(val);
                     var fdname = humanize(prop);
-		    $('#all_error_result').append("<div class='form-error'><b>"+fdname+":</b> "+val+" </div>");
-		    $('#all_error_result').addClass('error-block');
+		            $('#all_error_result').append("<div class='form-error'><b>"+fdname+":</b> "+val+" </div>");
+		            $('#all_error_result').addClass('error-block');
                 }
             }
             // STEP 4: FOCUS TO WHERE THE ERROR IS OCCURING.
@@ -223,14 +223,14 @@ function click_add_button() {
                     <div class="form-group">
                         <label for="comment">Add Comment/Note: </label>
                         <textarea class="form-control form-control-lg border border-primary" id="comment" name="comment" placeholder="Write a note here..." rows="4" required></textarea>
-			<div id="comment-error" class="invalid-feedback"></div>
+			            <div id="comment-error" class="invalid-feedback"></div>
                         <small class="form-text text-muted">Maximum 1,000 characters.</small>
                     </div>
                     <button id="id_submit_btn"
                          class="btn btn-lg float-right pl-4 pr-4 btn-primary"
-                          type="submit"
+                          type="button"
                        onclick="click_add_button();">
-                        <i class="fas fa-plus"></i>&nbsp;Add Note</button>
+                        <i class="fas fa-plus"></i>&nbsp;{% trans 'Add Note' %}</button>
                 </form>
 
                 <!------------------------------------------------------------------------->
