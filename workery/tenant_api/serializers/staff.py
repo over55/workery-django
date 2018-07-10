@@ -85,6 +85,7 @@ class StaffListCreateSerializer(serializers.ModelSerializer):
     group_membership = serializers.CharField(
         write_only=True,
         allow_null=False,
+        required=True
     )
 
     # Custom formatting of our telephone fields.
@@ -189,6 +190,14 @@ class StaffListCreateSerializer(serializers.ModelSerializer):
         """
         if value is None:
             raise serializers.ValidationError("This field may not be blank.")
+        return value
+
+    def validate_group_membership(self, value):
+        """
+        Include validation for valid choices.
+        """
+        if int_or_none(value) is None:
+            raise serializers.ValidationError("Please select a valid choice.")
         return value
 
     def setup_eager_loading(cls, queryset):
@@ -396,6 +405,7 @@ class StaffRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
     group_membership = serializers.CharField(
         write_only=True,
         allow_null=False,
+        required=True
     )
 
 
@@ -489,6 +499,14 @@ class StaffRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
             'tags',
         )
         return queryset
+
+    def validate_group_membership(self, value):
+        """
+        Include validation for valid choices.
+        """
+        if int_or_none(value) is None:
+            raise serializers.ValidationError("Please select a valid choice.")
+        return value
 
     def update(self, instance, validated_data):
         """
