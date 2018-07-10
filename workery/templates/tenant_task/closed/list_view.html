@@ -86,7 +86,7 @@
                     </td>
                     <td>
                         {% if task_item.job.associate %}
-                            <a href="{% url 'workery_tenant_member_lite_retrieve' 'summary' task_item.job.associate.id %}" target="_blank">{{ task_item.job.associate }}</a>
+                            <a href="{% url 'workery_tenant_member_lite_retrieve' 'summary' task_item.job.associate.id %}" target="_blank">{{ task_item.job.associate }}&nbsp;{% if task_item.job.state == WORK_ORDER_STATE.PENDING %}(Pending){% endif %}</a>
                         {% else %}
                             {% trans 'Unassigned' %}
                         {% endif %}

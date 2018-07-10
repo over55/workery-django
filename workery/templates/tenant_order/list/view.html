@@ -90,7 +90,7 @@
                     </td>
                     <td>
                         {% if job.associate %}
-                            <a href="{% url 'workery_tenant_member_lite_retrieve' 'summary' job.associate.id %}" target="_blank">{{ job.associate }}</a>
+                            <a href="{% url 'workery_tenant_member_lite_retrieve' 'summary' job.associate.id %}" target="_blank">{{ job.associate }}&nbsp;{% if task_item.job.state == WORK_ORDER_STATE.PENDING %}(Pending){% endif %}</a>
                         {% else %}-{% endif %}
                     </td>
                     <td>{% if job.assignment_date %}{{ job.assignment_date }}{% else %}-{% endif %}</td>

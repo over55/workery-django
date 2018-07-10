@@ -125,6 +125,9 @@ class PendingFollowUpCreateSerializer(serializers.Serializer):
         current_activity_sheet_item.save()
 
         if state == ACTIVITY_SHEET_ITEM_STATE.ACCEPTED or state == ACTIVITY_SHEET_ITEM_STATE.PENDING:
+            '''
+            Accepted or Pending
+            '''
 
             # STEP 5 - Update our job.
             current_activity_sheet_item.job.associate = associate
@@ -180,9 +183,33 @@ class PendingFollowUpCreateSerializer(serializers.Serializer):
             job.save()
 
         else:
+            '''
+            Declined
+            '''
+
+            #---------------------------------------------#
+            # Create a new task based on a new start date #
+            #---------------------------------------------#
+            next_task_item = TaskItem.objects.create(
+                created_by=self.context['user'],
+                last_modified_by=self.context['user'],
+                type_of = ASSIGNED_ASSOCIATE_TASK_ITEM_TYPE_OF_ID,
+                due_date = job.start_date,
+                is_closed = False,
+                job = job,
+                title = _('Assign an Associate'),
+                description = _('Please assign an associate to this job.')
+            )
+
+            # For debugging purposes only.
+            logger.info("Assignment Task #%(id)s was created b/c of unassignment." % {
+                'id': str(next_task_item.id)
+            })
+
+            # Attach our next job.
             job.associate = None
             job.state = WORK_ORDER_STATE.DECLINED
-            job.latest_pending_task = None # No new tasks get created.
+            job.latest_pending_task = next_task_item
             job.save()
 
         # STEP 5 - Assign our new variables and return the validated data.
