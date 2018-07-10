@@ -159,3 +159,17 @@ class SharedUser(AbstractBaseUser, PermissionsMixin):
         belongs to the executive group or not.
         """
         return self.groups.filter(id=constants.EXECUTIVE_GROUP_ID).exists()
+
+    def is_management_staff(self):
+        """
+        Function will return True or False depending on whether this user
+        belongs to the management group or not.
+        """
+        return self.groups.filter(id=constants.MANAGEMENT_GROUP_ID).exists()
+
+    def is_frontline_staff(self):
+        """
+        Function will return True or False depending on whether this user
+        belongs to the frontline staff group or not.
+        """
+        return self.groups.filter(id=constants.FRONTLINE_GROUP_ID).exists()

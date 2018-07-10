@@ -18,6 +18,14 @@
      */
     $(document).ready(function () {
 
+        // The following `django` code will automatically pick the staff
+        // group membership.
+        {% if staff.owner.is_management_staff %}
+            $('#account_type').val({{ shared_constants.MANAGEMENT_GROUP_ID }});
+        {% elif staff.owner.is_frontline_staff %}
+            $('#account_type').val({{ shared_constants.FRONTLINE_GROUP_ID }});
+        {% endif %}
+
         //----------------------------------------//
         // TEXTFIELD / SELECTFIELD INITIALIZATION //
         //----------------------------------------//
