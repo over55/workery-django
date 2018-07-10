@@ -36,7 +36,7 @@ from tenant_foundation.models import (
 class WorkOrderListCreateSerializer(serializers.ModelSerializer):
     # about = serializers.PrimaryKeyRelatedField(many=False, read_only=True)
     # comment = serializers.PrimaryKeyRelatedField(many=False, read_only=True)
-    extra_text = serializers.CharField(write_only=True, allow_null=True)
+    extra_text = serializers.CharField(write_only=True, allow_null=False)
     text = serializers.CharField(read_only=True)
 
     # Meta Information.
@@ -53,7 +53,7 @@ class WorkOrderListCreateSerializer(serializers.ModelSerializer):
     def setup_eager_loading(cls, queryset):
         """ Perform necessary eager loading of data. """
         queryset = queryset.prefetch_related(
-            'about', 'about', 'comment'
+            'about', 'comment'
         )
         return queryset
 
@@ -61,7 +61,6 @@ class WorkOrderListCreateSerializer(serializers.ModelSerializer):
         """
         Override the `create` function to add extra functinality.
         """
-
         #-----------------------------
         # Create our `Comment` object.
         #-----------------------------

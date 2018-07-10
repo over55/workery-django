@@ -38,6 +38,8 @@ function click_add_button() {
             // For debugging purposes only.
             console.log(err);
 
+            alert("Please fill in the comment.")
+
             // // STEP 2: CLEAR EXISTING TEXT.
             // $('#all_error_result').html();
             //
@@ -202,7 +204,7 @@ function click_add_button() {
                 <form>
                     <div class="form-group">
                         <label for="comment">Add Comment/Note: </label>
-                        <textarea class="form-control form-control-lg border border-primary" id="comment" name="comment" placeholder="Write a note here..." rows="4" required></textarea>
+                        <textarea class="form-control form-control-lg border border-primary" id="comment" name="comment" placeholder="Write a comment here..." rows="4" required></textarea>
                         <small id="comment-error" class="form-text text-muted">Maximum 1,000 characters.</small>
                     </div>
                     <button id="id_submit_btn"
