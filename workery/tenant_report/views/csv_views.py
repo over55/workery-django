@@ -143,7 +143,7 @@ def report_06_streaming_csv_view(request):
     ).order_by('-completion_date')
 
     # Generate the CSV header row.
-    rows = (["Job ID #", "Date", "Reason", "Associate ID #", "Associate Name"],)
+    rows = (["Job ID #", "Date", "Reason", "Associate ID #", "Associate Name", "Skill Set(s)"],)
 
     # Generate hte CSV data.
     for cancelled_job in cancelled_jobs.all():
@@ -159,11 +159,24 @@ def report_06_streaming_csv_view(request):
         elif cancelled_job.closing_reason == 4:
             closing_reason = _("Weather")
 
+        # Attach all the skill sets that are associated with each job.
+        skill_set_count = cancelled_job.skill_sets.count() - 1
+        skill_set_string = ""
+        for i, skill_set in enumerate(cancelled_job.skill_sets.all()):
+
+            skill_set_string += skill_set.sub_category
+
+            if i != skill_set_count:
+                skill_set_string += "|"
+            else:
+                pass # Skip last
+
         # Minor defensive code.
         associate = cancelled_job.associate
         associate_id = '-' if associate is None else associate.id
         associate = '-' if associate is None else associate
         closing_reason = '-' if closing_reason is None else closing_reason
+        skill_set_string = "-" if len(skill_set_string) is 0 else skill_set_string
 
         # Generate the reason.
         rows += ([
@@ -172,6 +185,7 @@ def report_06_streaming_csv_view(request):
             str(closing_reason),
             str(associate_id),
             str(associate),
+            skill_set_string
         ],)
 
     # Create the virtual CSV file and stream all the data in real time to the
