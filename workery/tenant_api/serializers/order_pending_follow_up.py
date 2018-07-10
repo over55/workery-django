@@ -116,10 +116,10 @@ class PendingFollowUpCreateSerializer(serializers.Serializer):
 
         # STEP 4 - Lookup our current activity sheet and set the status of
         #          the activity sheet based on the users decision.
-        current_activity_sheet_item = ActivitySheetItem.objects.get(
+        current_activity_sheet_item = ActivitySheetItem.objects.filter(
             job=job,
             associate=associate,
-        )
+        ).first()
         current_activity_sheet_item.state = state
         current_activity_sheet_item.last_modified_by = self.context['user']
         current_activity_sheet_item.save()
