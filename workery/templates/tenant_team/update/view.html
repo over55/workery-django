@@ -257,7 +257,7 @@
         var password_repeat = $('#password_repeat').val();
         var person_tags = $('#tags').val();
         var description = $('#description').val();
-        var group_membership = $('#group_membership').val();
+        var account_type = $('#account_type').val();
 
         // LOCK OUT THE "SUBMIT" BUTTON SO THE USER DOES NOT MAKE MULTI-CALLS.
         disable_btn();
@@ -301,7 +301,7 @@
                 'is_active': is_active,
                 'password': password,
                 'password_repeat': password_repeat,
-                'group_membership': parseInt(group_membership),
+                'account_type': parseInt(account_type),
             },
             function(result_dict) { // Success
                 console.log(result_dict);
@@ -532,13 +532,13 @@
             <div class="form-row">
 
                 <div class="form-group col-md-7 mb-4">
-                    <label for="group_membership">Account Type</label>
-                    <select class="custom-select form-control-lg border-primary" id="group_membership" name="group_membership" required>
+                    <label for="account_type">Account Type</label>
+                    <select class="custom-select form-control-lg border-primary" id="account_type" name="account_type" required>
                         <option value="" selected>Select account type...</option>
                         <option value="{{ shared_constants.MANAGEMENT_GROUP_ID }}" id="at_id_{{ shared_constants.MANAGEMENT_GROUP_ID }}">Manager</option>
                         <option value="{{ shared_constants.FRONTLINE_GROUP_ID }}" id="at_id_{{ shared_constants.FRONTLINE_GROUP_ID }}">Frontline</option>
                     </select>
-                    <div id="group_membership-error" class="invalid-feedback"></div>
+                    <div id="account_type-error" class="invalid-feedback"></div>
                 </div>
 
                 <div class="form-group col-md-12 mb-4">

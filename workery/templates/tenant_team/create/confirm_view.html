@@ -140,7 +140,7 @@
                 'password': password,
                 'password_repeat': password_repeat,
                 'tags': localStorage.getObj("tmp_team_member_person_tag_ids"),
-                'group_membership': parseInt(localStorage.getItem("tmp_team_member_group_membership")),
+                'account_type': parseInt(localStorage.getItem("tmp_team_member_account_type")),
                 'description': localStorage.getItem("tmp_team_member_description"),
                 'extra_comment': localStorage.getItem("tmp_team_member_comment"),
                 'is_active': localStorage.getItem("tmp_team_member_is_active"),
@@ -164,7 +164,7 @@
                 localStorage.removeItem("tmp_team_member_email");
                 localStorage.removeItem("tmp_team_member_telephone");
                 localStorage.removeItem("tmp_team_member_other_telephone");
-                localStorage.removeItem("tmp_team_member_group_membership");
+                localStorage.removeItem("tmp_team_member_account_type");
                 localStorage.removeItem("tmp_team_member_password");
                 localStorage.removeItem("tmp_team_member_password_repeat");
                 localStorage.removeItem("tmp_team_member_person_tag_ids")
@@ -272,14 +272,14 @@
              <!-- POPULATE THROUGH JS. -->
            </td>
          </tr>
-	     
+
          <tr>
            <th scope="row" class="bg-light">Phone Number #2</th>
            <td id="selected_other_phonenumber">
                <!-- POPULATE THROUGH JS. -->
            </td>
          </tr>
-	
+
          <tr>
            <th scope="row" class="bg-light">Date of Birth</th>
            <td id="selected_dob">
@@ -304,7 +304,7 @@
                <!-- POPULATE street_address JS. -->
            </td>
          </tr>
-	
+
          <tr>
            <th scope="row" class="bg-light">Street Address (Extra)</th>
            <td id="selected_street_address_extra">

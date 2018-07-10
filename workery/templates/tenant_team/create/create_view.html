@@ -88,7 +88,7 @@
             $('#post_office_box_number').val(localStorage.getItem("tmp_team_member_post_office_box_number"));
             $('#email').val(localStorage.getItem("tmp_team_member_email"));
             $('#telephone').val(localStorage.getItem("tmp_team_member_telephone"));
-            $('#group_membership').val(localStorage.getItem("tmp_team_member_group_membership"));
+            $('#account_type').val(localStorage.getItem("tmp_team_member_account_type"));
             $('#password').val(localStorage.getItem("tmp_team_member_password"));
             $('#password_repeat').val(localStorage.getItem("tmp_team_member_password_repeat"));
             $('#description').append(localStorage.getItem("tmp_team_member_description"));
@@ -326,7 +326,7 @@
             // var telephone_extension = $('#id_telephone_extension').val();
             var other_telephone = $('#other_telephone').val();
             // var fax_number = $('#id_fax_number').val
-            var group_membership = $('#group_membership').val();
+            var account_type = $('#account_type').val();
             var password = $('#password').val();
             var password_repeat = $('#password_repeat').val();
             var person_tags = $('#tags').val();
@@ -352,7 +352,7 @@
             localStorage.setItem("tmp_team_member_email", email);
             localStorage.setItem("tmp_team_member_telephone", telephone);
             localStorage.setItem("tmp_team_member_other_telephone", other_telephone);
-            localStorage.setItem("tmp_team_member_group_membership", group_membership);
+            localStorage.setItem("tmp_team_member_account_type", account_type);
             localStorage.setItem("tmp_team_member_password", password);
             localStorage.setItem("tmp_team_member_password_repeat", password_repeat);
             localStorage.setItem("tmp_team_member_description", description);
@@ -420,7 +420,7 @@
                     'password_repeat': password_repeat,
                     'is_active': localStorage.getItem("tmp_team_member_is_active"),
                     'tags': localStorage.getObj("tmp_team_member_person_tag_ids"),
-                    'group_membership': parseInt(localStorage.getItem("tmp_team_member_group_membership")),
+                    'account_type': parseInt(localStorage.getItem("tmp_team_member_account_type")),
                     'description': localStorage.getItem("tmp_team_member_description"),
                     'extra_comment': localStorage.getItem("tmp_team_member_comment"),
                 },
@@ -620,13 +620,13 @@
                   <small class="form-text text-muted">Maximum 1,000 characters.</small>
                 </div>
                 <div class="form-group col-md-7 mb-4">
-                    <label for="group_membership">Account Type</label>
-                    <select class="custom-select form-control-lg border-primary" id="group_membership" name="group_membership" required>
+                    <label for="account_type">Account Type</label>
+                    <select class="custom-select form-control-lg border-primary" id="account_type" name="account_type" required>
                         <option value="" selected>Select account type...</option>
                         <option value="{{ shared_constants.MANAGEMENT_GROUP_ID }}" id="at_id_{{ shared_constants.MANAGEMENT_GROUP_ID }}">Manager</option>
                         <option value="{{ shared_constants.FRONTLINE_GROUP_ID }}" id="at_id_{{ shared_constants.FRONTLINE_GROUP_ID }}">Frontline</option>
                     </select>
-                    <div id="group_membership-error" class="invalid-feedback"></div>
+                    <div id="account_type-error" class="invalid-feedback"></div>
                 </div>
                 <div class="form-group col-md-12 mb-4">
                     <label for="password">Password</label>

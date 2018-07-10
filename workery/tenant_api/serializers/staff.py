@@ -82,7 +82,7 @@ class StaffListCreateSerializer(serializers.ModelSerializer):
     extra_comment = serializers.CharField(write_only=True, allow_null=True)
 
     # This field is used to assign the user to the group.
-    group_membership = serializers.CharField(
+    account_type = serializers.CharField(
         write_only=True,
         allow_null=False,
         required=True
@@ -131,7 +131,7 @@ class StaffListCreateSerializer(serializers.ModelSerializer):
             'id',
             'created',
             'last_modified',
-            'group_membership',
+            'account_type',
             'description',
 
             # Person
@@ -192,7 +192,7 @@ class StaffListCreateSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError("This field may not be blank.")
         return value
 
-    def validate_group_membership(self, value):
+    def validate_account_type(self, value):
         """
         Include validation for valid choices.
         """
@@ -259,9 +259,9 @@ class StaffListCreateSerializer(serializers.ModelSerializer):
         logger.info("Created shared user.")
 
         # Attach the user to the `group` group.
-        group_membership = int_or_none(validated_data.get('group_membership', None))
-        if group_membership:
-            owner.groups.set([group_membership])
+        account_type = int_or_none(validated_data.get('account_type', None))
+        if account_type:
+            owner.groups.set([account_type])
 
         # Update the password.
         password = validated_data.get('password', None)
@@ -402,7 +402,7 @@ class StaffRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
     )
 
     # This field is used to assign the user to the group.
-    group_membership = serializers.CharField(
+    account_type = serializers.CharField(
         write_only=True,
         allow_null=False,
         required=True
@@ -433,7 +433,7 @@ class StaffRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
             'last_modified',
             # 'owner',
             'description',
-            'group_membership',
+            'account_type',
 
             # Person
             'given_name',
@@ -500,7 +500,7 @@ class StaffRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         )
         return queryset
 
-    def validate_group_membership(self, value):
+    def validate_account_type(self, value):
         """
         Include validation for valid choices.
         """
@@ -558,10 +558,10 @@ class StaffRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         logger.info("Updated the shared user.")
 
         # Attach the user to the `group` group.
-        group_membership = validated_data.get('group_membership', None)
-        if group_membership != "NaN":
-            group_membership = int(group_membership)
-            instance.owner.groups.set([group_membership])
+        account_type = validated_data.get('account_type', None)
+        if account_type != "NaN":
+            account_type = int(account_type)
+            instance.owner.groups.set([account_type])
             logger.info("Updated the group membership.")
 
         #---------------------------
