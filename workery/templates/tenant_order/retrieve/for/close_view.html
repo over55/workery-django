@@ -9,15 +9,35 @@
 {% endblock header_content %}
 
 {% block content %}
-
+<input id="id_show_customer_survey" name="show_customer_survey" value="" />
 <script>
+    function show_success_panel() {
+        $("#customer_satisfaction_survey_div").show();
+        $("#id_show_customer_survey").val(true);
+    }
+
+    function hide_success_panel() {
+        $("#customer_satisfaction_survey_div").hide();
+        $("#id_show_customer_survey").val(false);
+    }
+
+    function show_failure_panel() {
+        $("#failure_reason_survey_div").show();
+        $("#id_show_customer_survey").val(false);
+    }
+
+    function hide_failure_panel() {
+        $("#failure_reason_survey_div").hide();
+        $("#id_show_customer_survey").val(true);
+    }
+
     /**
      *  When page loads, the following code will be run first.
      */
     $(document).ready(function () {
-        //---------------------------//
-        // DATEPICKER INITIALIZATION //
-        //---------------------------//
+        //------------------------------//
+        //  DATEPICKER INITIALIZATION   //
+        //------------------------------//
 
         // Initialize our datepicker jQuery code with our HTML view.
         $( "#invoice_date" ).datepicker({
@@ -28,6 +48,19 @@
         //------------------------------//
         // EVENT HANDLER INITIALIZATION //
         //------------------------------//
+
+        $('input[type=radio][name=was_successfully_finished]').change(function() {
+            if (this.value == 'yes') {
+                // Load up the GUI for the customer survey for a successful job.
+                show_success_panel();
+                hide_failure_panel();
+            }
+            else if (this.value == 'no') {
+                // Load up the GUI for the reason why the job was not accomplished.
+                show_failure_panel();
+                hide_success_panel();
+            }
+        });
 
         // PLUG IN EVENT LISTENER ON REASON DROPDOWN CHANGE.
         $('#reason').on('change',function(){
@@ -100,13 +133,13 @@
 
     function click_cancel_button() {
         {% if template == 'search' %}
-        window.location = "{% url 'workery_tenant_job_retrieve' template job.id %}";
+            window.location = "{% url 'workery_tenant_job_retrieve' template job.id %}";
         {% elif template == 'task' %}
-        window.location = "{% url 'workery_tenant_pending_task_retrieve' parameters.task_id %}";
+            window.location = "{% url 'workery_tenant_pending_task_retrieve' parameters.task_id %}";
         {% elif template == 'list' %}
-        window.location = "{% url 'workery_tenant_job_retrieve' template job.id %}";
+            window.location = "{% url 'workery_tenant_job_retrieve' template job.id %}";
         {% else %}
-        window.location = "{% url 'workery_tenant_job_retrieve' template job.id %}";
+            window.location = "{% url 'workery_tenant_job_retrieve' template job.id %}";
         {% endif %}
     }
 
@@ -143,10 +176,20 @@
     function click_submit_button() {
         // If there was another reason, track it down.
         var reason = $('#reason').val();
-        if ( reason == 'other' ) {
-            reason = 1;
+
+        // IF THE USER INDICATED THE JOB WAS SUCCESSFULL THEN SIMPLY RETURN
+        // A SUCCESS REASON.
+        if (  $('#id_show_customer_survey').val() == 'true'  ) {
+            reason = 4; // SUCCESS JOB.
+
+        // ELSE USER INDICATED JOB WAS NOT SUCCESSFULL SO WE NEED TO EXTRACT
+        // THE REASON FOR THE FAILURE.
+        } else if (  $('#id_show_customer_survey').val() == 'false'  ) {
+            if ( reason == 'other' ) {
+                reason = 1;
+            }
+            reason = parseInt(reason);
         }
-        reason = parseInt(reason);
 
         // Get our "Customer Survey".
         var was_job_satisfactory = get_selected_radio_value('was_job_satisfactory');
@@ -381,51 +424,40 @@
             <div class="col-sm-6 mx-auto mt-2">
                 <!-- Residential form -->
                 <div class="col-sm-12 fade show active" id="client-form" aria-labelledby="commercial">
-                    <p><span class="text-secondary font-italic"><sup>*</sup>&nbsp;-&nbsp;Indicates required field to fill out.</span></p>
-		    <!-- Error Output -->
+                    <p>
+                        <span class="text-secondary font-italic"><sup>*</sup>&nbsp;-&nbsp;Indicates required field to fill out.</span>
+                    </p>
+
+		            <!-- Error Output -->
             	    <div id="all_error_result" name="all_error_result" class="alert alert-error fade show" role="alert">
-		    </div>
-		    <!-- end Error Output -->
+		            </div>
+		            <!-- end Error Output -->
+
                     <form id="add-client-form" method="post" class="needs-validation" action="" novalidate>
                         <div class="form-row">
                             <div class="form-row">
 
-                                <!-- REASON -->
+                                <!--------------------------------------------->
+                                <!--              YES/NO CHOICE              -->
+                                <!--------------------------------------------->
                                 <div class="form-group col-md-12 mb-4">
-                                    <label for="reason">Reason <sup>*</sup></label>
-                                    <select class="form-control form-control-lg border border-primary" id="reason" name="reason" required="">
-                                        <option value="0" selected="selected">Please select reason</option>
-                                        {% if job.associate %}
-                                            <!-- Only grant this option if an associate was selected -->
-                                            <option value="4">Job completed by Associate</option>
-                                        {% endif %}
-                                        <option value="2">Quote was too high</option>
-                                        <option value="3">Job completed by someone else</option>
-                                        <option value="5">Work no longer needed</option>
-                                        <option value="6">Client not satisfied with Associate</option>
-                                        <option value="7">Client did work themselves</option>
-                                        <option value="8">No Associate available</option>
-                                        <option value="9">Work environment unsuitable</option>
-                                        <option value="10">Client did not return call</option>
-                                        <option value="11">Associate did not have necessary equipment</option>
-                                        <option value="12">Repair not possible</option>
-                                        <option value="13">Could not meet deadline</option>
-                                        <option value="14">Associate did not call client</option>
-                                        <option value="15">Member issue</option>
-                                        <option value="16">Client billing issue</option>
-                                        <option value="other">Other</option>
-                                    </select>
-                                    <div id="reason-error" class="invalid-feedback"></div>
+                                    <p class="mb-1">Was this job successfully completed by the Associate?&nbsp;<sup>*</sup></p>
+                                    <div class="form-radio custom-control custom-radio mb-2">
+                                        <input type="radio" id="was_successfully_finished" name="was_successfully_finished" value="yes" class="custom-control-input form-check-input" required>
+                                        <label class="custom-control-label form-check-label" for="was_successfully_finished">Yes</label>
+                                    </div>
+                                    <div class="form-radio custom-control custom-radio">
+                                        <input type="radio" id="was_successfully_finished2" name="was_successfully_finished" value="no" class="custom-control-input form-check-input" required>
+                                        <label class="custom-control-label form-check-label" for="was_successfully_finished2">No</label>
+                    		            <small class="form-text text-muted">Selecting "yes" will close this job as success.</small>
+                    		            <div id="was_successfully_finished-error" class="invalid-feedback"></div>
+                                    </div>
                                 </div>
-                                <!-- end REASON -->
+                                <!--------------------------------------------->
+                                <!--            end YES/NO CHOICE            -->
+                                <!--------------------------------------------->
 
-                                <!-- REASON (OTHER) -->
-                                <div class="form-group col-md-12 mb-4" id="reason_other_div" style="display: none;">
-                                    <label for="reason_other">Reason (Other) <sup>*</sup></label>
-                                    <input type="text" class="form-control form-control-lg border border-primary" id="reason_other" name="reason_other" placeholder="Text" minlength="3" value="" required="">
-                                    <div id="reason_other-error" class="invalid-feedback"></div>
-                                </div>
-                                <!-- end REASON (OTHER) -->
+
 
                                 <!--------------------------------------------->
                                 <!--             CUSTOMER SUVERY             -->
@@ -580,44 +612,103 @@
                                 <!--           end CUSTOMER SUVERY           -->
                                 <!--------------------------------------------->
 
+
+                                <!--------------------------------------------->
+                                <!--          FAILURE REASON SUVERY          -->
+                                <!--------------------------------------------->
+                                <div id="failure_reason_survey_div" style="display: none;">
+
+                                    <!-- REASON -->
+                                    <div class="form-group col-md-12 mb-4">
+                                        <label for="reason">Reason <sup>*</sup></label>
+                                        <select class="form-control form-control-lg border border-primary" id="reason" name="reason" required="">
+                                            <option value="0" selected="selected">Please select reason</option>
+                                            {% comment %}
+                                                <!-- Only grant this option if an associate was selected -->
+                                                <option value="4">Job completed by Associate</option>
+                                            {% endcomment %}
+                                            <option value="2">Quote was too high</option>
+                                            <option value="3">Job completed by someone else</option>
+                                            <option value="5">Work no longer needed</option>
+                                            <option value="6">Client not satisfied with Associate</option>
+                                            <option value="7">Client did work themselves</option>
+                                            <option value="8">No Associate available</option>
+                                            <option value="9">Work environment unsuitable</option>
+                                            <option value="10">Client did not return call</option>
+                                            <option value="11">Associate did not have necessary equipment</option>
+                                            <option value="12">Repair not possible</option>
+                                            <option value="13">Could not meet deadline</option>
+                                            <option value="14">Associate did not call client</option>
+                                            <option value="15">Member issue</option>
+                                            <option value="16">Client billing issue</option>
+                                            <option value="other">Other</option>
+                                        </select>
+                                        <div id="reason-error" class="invalid-feedback"></div>
+                                    </div>
+                                    <!-- end REASON -->
+
+                                    <!-- REASON (OTHER) -->
+                                    <div class="form-group col-md-12 mb-4" id="reason_other_div" style="display: none;">
+                                        <label for="reason_other">Reason (Other) <sup>*</sup></label>
+                                        <input type="text" class="form-control form-control-lg border border-primary" id="reason_other" name="reason_other" placeholder="Text" minlength="3" value="" required="">
+                                        <div id="reason_other-error" class="invalid-feedback"></div>
+                                    </div>
+                                    <!-- end REASON (OTHER) -->
+
+                                </div>
+                                <!--------------------------------------------->
+                                <!--        end FAILURE REASON SUVERY        -->
+                                <!--------------------------------------------->
+
+
+
+                                <!--------------------------------------------->
+                                <!--           ADDITIONAL COMMENTS           -->
+                                <!--------------------------------------------->
                                 <div class="form-group col-md-12 mb-4">
                                     <label for="comment">Additional Comments:</label>
                                     <textarea class="form-control form-control-lg border border-success" id="comment" name="comment" placeholder="Write a note here..." rows="4" required></textarea>
                                     <div id="comment-error" class="invalid-feedback"></div>
                                 </div>
+                                <!--------------------------------------------->
+                                <!--         end ADDITIONAL COMMENTS         -->
+                                <!--------------------------------------------->
+
+
+
+                                <!-- BUTTONS -->
+                                <div class="form-group col-md-12 mb-3 p-0 mx-auto text-center">
+
+                                    <!-- ADD -->
+                                    <button id="id_submit_btn"
+                                         class="btn btn-primary btn-lg mt-4 float-right pl-4 pr-4"
+                                          type="button"
+                                       onclick="click_submit_button();">
+                                        <i class="fas fa-check"></i> Submit</button>
+                                    <!-- end ADD -->
+
+                                    <!-- CANCEL -->
+                                    <button id="id_cancel_btn"
+                                         class="btn btn-orange btn-lg mt-4 float-left pl-4 pr-4"
+                                          type="button"
+                                       onclick="click_cancel_button();">
+                                        <i class="fas fa-times"></i>&nbsp;Cancel
+                                    </button>
+                                    <!-- end CANCEL -->
+
+                                </div>
+                                <!-- end BUTTONS -->
+
+
 
                             </div>
                         </div>
                     </form>
 
-                    <!-- BUTTONS -->
-                    <div class="form-group col-md-12 mb-3 p-0 mx-auto text-center">
-
-                        <!-- ADD -->
-                        <button id="id_submit_btn"
-                             class="btn btn-primary btn-lg mt-4 float-right pl-4 pr-4"
-                              type="button"
-                           onclick="click_submit_button();">
-                            <i class="fas fa-check"></i> Submit</button>
-                        <!-- end ADD -->
-
-                        <!-- CANCEL -->
-                        <button id="id_cancel_btn"
-                             class="btn btn-orange btn-lg mt-4 float-left pl-4 pr-4"
-                              type="button"
-                           onclick="click_cancel_button();">
-                            <i class="fas fa-times"></i>&nbsp;Cancel
-                        </button>
-                        <!-- end CANCEL -->
-
-                    </div>
-                    <!-- end BUTTONS -->
-
                 </div>
             </div>
             <!------------------------------------------------------------------------->
             <!-- end FORM -->
-
         </div>
     </div>
 
