@@ -1,0 +1,216 @@
+{% extends 'tenant_foundation/tenant_base.html' %}
+{% load staticfiles i18n humanize shared_foundation_tags %}
+
+{% block title %}
+{% trans 'Client Details | Workery' %}
+{% endblock title %}
+
+{% block header_content %}
+{% endblock header_content %}
+
+{% block content %}
+
+<script>
+    /**
+     *  When page loads, the following code will be run first.
+     */
+    $(document).ready(function () {
+        // Do nothing.
+    });
+
+    function click_cancel_button() {
+        {% if template == 'search' %}
+        window.location = "{% url 'workery_tenant_job_retrieve' template job.id %}";
+        {% elif template == 'task' %}
+        window.location = "{% url 'workery_tenant_pending_task_retrieve' parameters.task_id %}";
+        {% elif template == 'list' %}
+        window.location = "{% url 'workery_tenant_job_retrieve' template job.id %}";
+        {% else %}
+        window.location = "{% url 'workery_tenant_job_retrieve' template job.id %}";
+        {% endif %}
+    }
+
+    //
+    function click_submit_button() {
+        // Submit to our API web-service.
+        create_order_reopen_api(
+            {
+                'job': {{ job.id }},
+                'reason': $('#comment').val(),
+            },
+            function(result_dict) { // Success
+                // FOR DEBUGGING PURPOSES ONLY.
+                console.log(result_dict);
+
+                // REDIRECT TO SUCCESS PAGE.
+                {% if template == 'task' %}
+                   window.location = "{% url 'workery_tenant_task_list' %}?was_closed=True";
+                {% else %}
+                    window.location = "{% url 'workery_tenant_job_retrieve' template job.id %}?was_closed=True";
+                {% endif %}
+            },
+            function(xhr,status,error) { // Error
+                // STEP 1: Convert to JSON.
+                var err = JSON.parse(xhr.responseText);
+
+                // For debugging purposes only.
+                console.log(err);
+
+                // STEP 2: CLEAR EXISTING TEXT.
+                $('#all_error_result').html("");
+
+                // STEP 3: PRINT OUR ERROR.
+                for(var prop in err) {
+                    if(err.hasOwnProperty(prop)) {
+                        var val = err[prop];
+                        console.log(val);
+                        $('#all_error_result').append("<p><b>"+prop+"</b> "+val+"</p><br />");
+                    }
+                }
+
+                // STEP 4: FOCUS TO WHERE THE ERROR IS OCCURING.
+                $('html, body').animate({ scrollTop: $('#id_page_title').offset().top }, 'slow');
+            },
+            function() { // Finally
+                // UNLOCK THE "SUBMIT" BUTTON TO BE AVAILABLE FOR USAGE.
+                // enable_btn();
+            }
+        );
+    }
+</script>
+
+<main id="main" role="main">
+
+    <!-- BREADCRUMB -->
+    <!------------------------------------------------------------------------->
+    <nav aria-label="breadcrumb">
+	  	<ol class="breadcrumb">
+            {% if template == 'search' %}
+
+            <li class="breadcrumb-item">
+                <a href="{% url 'workery_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a>
+            </li>
+            <li class="breadcrumb-item">
+                <a href="{% url 'workery_tenant_job_summary' %}">{% trans 'Jobs' %}</a>
+            </li>
+            <li class="breadcrumb-item">
+                <a href="{% url 'workery_tenant_job_search' %}">{% trans 'Search' %}</a>
+            </li>
+            <li class="breadcrumb-item">{% trans 'Search Results' %}</li>
+            <li class="breadcrumb-item"><a href="{% url 'workery_tenant_job_retrieve' template job.id %}">{% trans 'Job #' %}{{ object.id|intcomma }}</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{% trans 'Unassigning Associate from Job' %}</li>
+
+            {% elif template == 'task' %}
+
+            <li class="breadcrumb-item"><a href="{% url 'workery_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'workery_tenant_task_list' %}">{% trans 'Pending Tasks' %}</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'workery_tenant_pending_task_retrieve' parameters.task_id %}">{% trans 'Task #' %}{{ parameters.task_id|intcomma }}</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{% trans 'Unassigning Associate from Job' %}</li>
+
+            {% elif template == 'list' %}
+
+            <li class="breadcrumb-item"><a href="{% url 'workery_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'workery_tenant_job_summary' %}">{% trans 'Jobs' %}</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'workery_tenant_job_list' %}">{% trans 'List' %}</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'workery_tenant_job_retrieve' template job.id %}">{% trans 'Job #' %}{{ object.id|intcomma }}</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{% trans 'Unassigning Associate from Job' %}</li>
+
+            {% else %}
+
+            <li class="breadcrumb-item"><a href="{% url 'workery_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'workery_tenant_job_summary' %}">{% trans 'Jobs' %}</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'workery_tenant_job_retrieve' template job.id %}">{% trans 'Job #' %}{{ object.id|intcomma }}</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{% trans 'Unassigning Associate from Job' %}</li>
+
+            {% endif %}
+	  	</ol>
+	  	</ol>
+	</nav>
+    <!------------------------------------------------------------------------->
+    <!-- end BREADCRUMB -->
+
+    <!-- NOTIFICATION -->
+    <!------------------------------------------------------------------------->
+    {% if parameters.was_modified == 'True' %}
+    <div class="alert bg-success text-white alert-dismissible fade show" role="alert">
+        Client <strong>Successfully</strong> updated.
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">×</span>
+        </button>
+    </div>
+    {% endif %}
+    <!------------------------------------------------------------------------->
+    <!-- end NOTIFICATION -->
+
+    <h1 id="id_page_title">{% trans 'Re-open Job' %}</h1>
+
+    <div class="container">
+        <div class="row align-items-start">
+
+            <!-- FORM -->
+            <!------------------------------------------------------------------------->
+            <div class="col-sm-6 mx-auto mt-2">
+                <!-- Residential form -->
+                <div class="col-sm-12 fade show active" id="client-form" aria-labelledby="commercial">
+
+                    <!-- Error Output -->
+                    <div id="all_error_result" name="all_error_result"></div>
+                    <!-- end Error Output -->
+
+                    <p>
+                        <span class="text-secondary font-italic"><sup>*</sup>&nbsp;-&nbsp;Indicates required field to fill out.</span>
+                    </p>
+                    <form id="add-client-form" method="post" class="needs-validation" action="" novalidate>
+                        <div class="form-row">
+                            <div class="form-row">
+
+                                <!-- COMMENTS -->
+                                <div class="form-group col-md-12 mb-4">
+                                    <label for="comment">Please write the reason why you are re-opening this job:&nbsp;<sup>*</sup></label>
+                                    <textarea class="form-control form-control-lg border border-primary" id="comment" name="comment" placeholder="Write your reason here..." rows="4" required></textarea>
+                                    <div id="comment-error" class="invalid-feedback"></div>
+                                </div>
+                                <!-- end COMMENTS -->
+
+                            </div>
+                        </div>
+                    </form>
+
+                    <!-- BUTTONS -->
+                    <div class="form-group col-md-12 mb-3 p-0 mx-auto text-center">
+
+                        <!-- ADD -->
+                        <button id="id_submit_btn"
+                             class="btn btn-primary btn-lg mt-4 float-right pl-4 pr-4"
+                              type="button"
+                           onclick="click_submit_button();">
+                            <i class="fas fa-check"></i> Submit</button>
+                        <!-- end ADD -->
+
+                        <!-- CANCEL -->
+                        <button id="id_cancel_btn"
+                             class="btn btn-orange btn-lg mt-4 float-left pl-4 pr-4"
+                              type="button"
+                           onclick="click_cancel_button();">
+                            <i class="fas fa-times"></i>&nbsp;Cancel
+                        </button>
+                        <!-- end CANCEL -->
+
+                    </div>
+                    <!-- end BUTTONS -->
+
+                </div>
+            </div>
+            <!------------------------------------------------------------------------->
+            <!-- end FORM -->
+
+        </div>
+    </div>
+
+    <!-- RETURN-TO-TOP -->
+    <a id="return-to-top" href="#" class="btn-info btn-lg back-to-top" role="button" title="Back to top"><i class="fas fa-angle-up fa-2x"></i></a>
+    <!-- end RETURN-TO-TOP -->
+
+</main>
+
+{% endblock content %}

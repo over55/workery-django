@@ -25,6 +25,7 @@ from tenant_api.views.order_complete import WorkOrderCompleteCreateAPIView
 from tenant_api.views.order_close import WorkOrderCloseCreateAPIView
 from tenant_api.views.order_postpone import WorkOrderPostponeCreateAPIView
 from tenant_api.views.order_unassign import WorkOrderUnassignCreateAPIView
+from tenant_api.views.order_reopen import WorkOrderReopenCreateAPIView
 from tenant_api.views.order_service_fee import WorkOrderServiceFeeListCreateAPIView, WorkOrderServiceFeeRetrieveUpdateDestroyAPIView
 from tenant_api.views.ongoing_order import OngoingWorkOrderRetrieveUpdateDestroyAPIView
 
@@ -65,6 +66,7 @@ urlpatterns = [
     url(r'^api/orders/close$', WorkOrderCloseCreateAPIView.as_view(), name='workery_order_order_close_create_api_endpoint'),
     url(r'^api/orders/postpone$', WorkOrderPostponeCreateAPIView.as_view(), name='workery_order_order_postpone_create_api_endpoint'),
     url(r'^api/orders/activity-sheet-item/unassign$', WorkOrderUnassignCreateAPIView.as_view(), name='workery_order_order_unassign_create_api_endpoint'),
+    url(r'^api/orders/reopen$', WorkOrderReopenCreateAPIView.as_view(), name='workery_order_order_reopen_create_api_endpoint'),
 
     # Work Order Service Fees
     url(r'^api/order_service_fees$', WorkOrderServiceFeeListCreateAPIView.as_view(), name='workery_order_service_fee_list_create_api_endpoint'),
