@@ -25,25 +25,11 @@
         var state = $('#state').val();
         console.log("State:", state);
 
-        // Attach "customer".
-        {% if job.customer %}
-        var customer_id = {{ job.customer.id }};
-        {% else %}
-        var customer_id = null;
-        {% endif %}
-
-        // Attach "associate".
-        {% if job.associate %}
-        var associate_id = {{ job.associate.id }};
-        {% else %}
-        var associate_id = null;
-        {% endif %}
-
         var data_dict = {
-            'customer': customer_id,
-            'associate': associate_id,
+            'customer': {% if job.customer %}{{ job.customer.id }}{% else %}null{% endif %},
+            'associate': {% if job.associate %}{{ job.associate.id }}{% else %}null{% endif %},
             'state': state,
-            'open_order': {{ job.open_order.id }}
+            'open_order': {% if job.open_order %}{{ job.open_order.id }}{% else %}null{% endif %}
         };
 
         update_ongoing_job_api(
