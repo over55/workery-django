@@ -19,7 +19,6 @@ class MemberSearchView(LoginRequiredMixin, WorkeryTemplateView):
 
 class MemberSearchResultView(LoginRequiredMixin, WorkeryListView):
     context_object_name = 'associate_list'
-    queryset = Associate.objects.order_by('-created')
     template_name = 'tenant_associate/search/result_view.html'
     paginate_by = 100
     menu_id = "associates"
@@ -37,6 +36,7 @@ class MemberSearchResultView(LoginRequiredMixin, WorkeryListView):
             queryset = queryset.order_by('-created')
         else:
             queryset = super(MemberSearchResultView, self).get_queryset()
+        queryset = queryset.order_by('last_name', 'given_name')
 
         # The following code will use the 'django-filter'
         filter = AssociateFilter(self.request.GET, queryset=queryset)
