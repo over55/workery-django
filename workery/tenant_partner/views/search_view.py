@@ -19,7 +19,6 @@ class PartnerSearchView(LoginRequiredMixin, WorkeryTemplateView):
 
 class PartnerSearchResultView(LoginRequiredMixin, WorkeryListView):
     context_object_name = 'partner_list'
-    queryset = Partner.objects.order_by('-created')
     template_name = 'tenant_partner/search/result_view.html'
     paginate_by = 100
     menu_id = "partners"
@@ -34,11 +33,12 @@ class PartnerSearchResultView(LoginRequiredMixin, WorkeryListView):
         keyword = self.request.GET.get('keyword', None)
         if keyword:
             queryset = Partner.objects.full_text_search(keyword)
-            queryset = queryset.order_by('-created')
+            queryset = queryset.order_by('last_name', 'given_name')
         else:
             queryset = super(PartnerSearchResultView, self).get_queryset()
 
             # The following code will use the 'django-filter'
+            queryset = queryset.order_by('last_name', 'given_name')
             filter = PartnerFilter(self.request.GET, queryset=queryset)
             queryset = filter.qs
 

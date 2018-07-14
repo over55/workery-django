@@ -19,7 +19,6 @@ class CustomerSearchView(LoginRequiredMixin, WorkeryTemplateView):
 
 class CustomerSearchResultView(LoginRequiredMixin, WorkeryListView):
     context_object_name = 'customer_list'
-    queryset = Customer.objects.order_by('-created')
     template_name = 'tenant_customer/search/result_view.html'
     paginate_by = 100
     menu_id = "customers"
@@ -34,11 +33,11 @@ class CustomerSearchResultView(LoginRequiredMixin, WorkeryListView):
         keyword = self.request.GET.get('keyword', None)
         if keyword:
             queryset = Customer.objects.full_text_search(keyword)
-            queryset = queryset.order_by('-created')
+            queryset = queryset.order_by('last_name', 'given_name')
         else:
             queryset = super(CustomerSearchResultView, self).get_queryset()
+            queryset = queryset.order_by('last_name', 'given_name')
             filter = CustomerFilter(self.request.GET, queryset=queryset)
-            queryset = filter.qs
 
         # Attach owners.
         queryset = queryset.prefetch_related('owner')

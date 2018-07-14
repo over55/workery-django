@@ -39,9 +39,9 @@ class TeamSearchResultView(LoginRequiredMixin, WorkeryListView):
         keyword = self.request.GET.get('keyword', None)
         if keyword:
             queryset = Staff.objects.full_text_search(keyword)
-            queryset = queryset.order_by('-created')
         else:
             queryset = super(TeamListView, self).get_queryset()
+        queryset = queryset.order_by('last_name', 'given_name')
 
         # The following code will use the 'django-filter'
         filter = StaffFilter(self.request.GET, queryset=queryset)
