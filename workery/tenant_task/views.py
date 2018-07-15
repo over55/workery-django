@@ -20,6 +20,8 @@ class PendingTaskListView(LoginRequiredMixin, WorkeryListView):
         is_closed=False
     ).prefetch_related(
         'job',
+        'job__associate',
+        'job__customer',
         'created_by',
         'last_modified_by'
     )
@@ -45,6 +47,8 @@ class ClosedTaskListView(LoginRequiredMixin, WorkeryListView):
         is_closed=True
     ).prefetch_related(
         'job',
+        'job__associate',
+        'job__customer',
         'created_by',
         'last_modified_by'
     )
@@ -134,6 +138,8 @@ class UnassignedTaskListView(LoginRequiredMixin, WorkeryListView):
         job__associate=None
     ).prefetch_related(
         'job',
+        'job__associate',
+        'job__customer',
         'created_by',
         'last_modified_by'
     )

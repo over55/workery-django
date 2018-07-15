@@ -17,7 +17,10 @@ class UnpaidJobOrderListView(LoginRequiredMixin, WorkeryListView):
     context_object_name = 'job_list'
     queryset = WorkOrder.objects.filter(
         state=WORK_ORDER_STATE.COMPLETED_BUT_UNPAID
-    ).order_by('-id')
+    ).order_by('-id').prefetch_related(
+        'customer',
+        'associate',
+    )
     template_name = 'tenant_financial/list/unpaid_view.html'
     paginate_by = 100
     menu_id = "financials"
@@ -39,7 +42,12 @@ class UnpaidJobOrderListView(LoginRequiredMixin, WorkeryListView):
 
 class PaidJobOrderListView(LoginRequiredMixin, WorkeryListView):
     context_object_name = 'job_list'
-    queryset = WorkOrder.objects.filter(state=WORK_ORDER_STATE.COMPLETED_AND_PAID).order_by('-invoice_service_fee_payment_date')
+    queryset = WorkOrder.objects.filter(
+        state=WORK_ORDER_STATE.COMPLETED_AND_PAID
+    ).order_by('-invoice_service_fee_payment_date').prefetch_related(
+        'customer',
+        'associate',
+    )
     template_name = 'tenant_financial/list/paid_view.html'
     paginate_by = 100
     menu_id = "financials"
@@ -64,7 +72,10 @@ class AllJobOrderListView(LoginRequiredMixin, WorkeryListView):
     queryset = WorkOrder.objects.filter(
         Q(state=WORK_ORDER_STATE.COMPLETED_BUT_UNPAID) |
         Q(state=WORK_ORDER_STATE.COMPLETED_AND_PAID)
-    ).order_by('-id')
+    ).order_by('-id').prefetch_related(
+        'customer',
+        'associate',
+    )
     template_name = 'tenant_financial/list/all_view.html'
     paginate_by = 100
     menu_id = "financials"
