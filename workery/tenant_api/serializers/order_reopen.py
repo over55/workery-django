@@ -61,6 +61,36 @@ class WorkOrderReopenCreateSerializer(serializers.Serializer):
         job = validated_data.get('job', None)
         reason = validated_data.get('reason', None)
 
+        #---------------------------#
+        # Close all previous tasks. #
+        #---------------------------#
+        if job.latest_pending_task:
+            job.latest_pending_task.is_closed = True
+            job.latest_pending_task.closing_reason = 0
+            job.latest_pending_task.closing_reason_other = _('Closed because re-opending job.')
+            job.latest_pending_task.last_modified_by = self.context['user']
+            job.latest_pending_task.last_modified_by = self.context['user']
+            job.latest_pending_task.save()
+
+        #---------------------------------------------#
+        # Create a new task based on a new start date #
+        #---------------------------------------------#
+        task_item = TaskItem.objects.create(
+            created_by=self.context['user'],
+            last_modified_by=self.context['user'],
+            type_of = ASSIGNED_ASSOCIATE_TASK_ITEM_TYPE_OF_ID,
+            due_date = job.start_date,
+            is_closed = False,
+            job = job,
+            title = _('Assign an Associate'),
+            description = _('Please assign an associate to this job.')
+        )
+
+        # For debugging purposes only.
+        logger.info("Assignment Task #%(id)s was created b/c of unassignment." % {
+            'id': str(task_item.id)
+        })
+
         #------------------------------------------#
         # Create any additional optional comments. #
         #------------------------------------------#
@@ -80,12 +110,17 @@ class WorkOrderReopenCreateSerializer(serializers.Serializer):
             # For debugging purposes only.
             logger.info("Job comment created.")
 
+        #--------------------------#
+        # Update the `job` status. #
+        #--------------------------#
         # Update our job to be in a `declined` state.
         job.associate = None
-        job.state = WORK_ORDER_STATE.IN_PROGRESS
+        job.state = WORK_ORDER_STATE.NEW
+        job.latest_pending_task = task_item
         job.save()
 
         # For debugging purposes only.
         logger.info("Re-opened job.")
 
+        # Return the validated results.
         return validated_data

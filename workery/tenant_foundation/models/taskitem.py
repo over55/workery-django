@@ -116,6 +116,24 @@ class TaskItem(models.Model):
         null=True,
         default=0,
     )
+    """
+    2 - Quote was too high
+    3 - Job completed by someone else
+    4 - Job completed by Associate
+    5 - Work no longer needed
+    6 - Client not satisfied with Associate
+    7 - Client did work themselves
+    8 - No Associate available
+    9 - Work environment unsuitable
+    10 - Client did not return call
+    11 - Associate did not have necessary equipment
+    12 - Repair not possible
+    13 - Could not meet deadline
+    14 - Associate did not call client
+    15 - Member issue
+    16 - Client billing issue
+    else - {{ task_item.closing_reason_other }}
+    """
     closing_reason_other = models.CharField(
         _("Closing Reason other"),
         help_text=_('A specific reason this task was closed.'),

@@ -293,7 +293,7 @@
         </div>
     </div>
     {% endif %}
-    {% if job.state == WORK_ORDER_STATE.CANCELLED %}
+    {% if job.state == WORK_ORDER_STATE.CANCELLED or job.state == WORK_ORDER_STATE.DECLINED %}
     <div class="form-group col-md-10 mb-3 mx-auto text-center">
         <div class="row">
             <!-- end POSTPONE BUTTON -->
