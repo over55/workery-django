@@ -66,3 +66,8 @@ class Report12DetailView(LoginRequiredMixin, WorkeryTemplateView):
 class Report13DetailView(LoginRequiredMixin, WorkeryTemplateView):
     template_name = 'tenant_report/report_13_view.html'
     menu_id = "reports"
+
+
+class Report14DetailView(LoginRequiredMixin, WorkeryTemplateView):
+    template_name = 'tenant_report/report_14_view.html'
+    menu_id = "reports"

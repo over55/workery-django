@@ -428,3 +428,61 @@ def report_13_streaming_csv_view(request):
     )
     response['Content-Disposition'] = 'attachment; filename="jobs.csv"'
     return response
+
+
+def report_14_streaming_csv_view(request):
+    from_dt = request.GET.get('from_dt', None)
+    to_dt = request.GET.get('to_dt', None)
+
+    from_dt = parser.parse(from_dt)
+    to_dt = parser.parse(to_dt)
+
+    jobs = WorkOrder.objects.filter(
+        completion_date__range=(from_dt,to_dt),
+        customer__type_of=COMMERCIAL_JOB_TYPE_OF_ID,
+        customer__isnull=False,
+        associate__isnull=False
+    ).order_by('-id')
+
+    # Generate the CSV header row.
+    rows = (["Job ID #", "Completion date", "Associate", "Client", "WSIB Date", "Total Labour", "Invoice #", "Skill Sets"],)
+
+    # Generate hte CSV data.
+    for job in jobs.all():
+
+        # Get our list of skill sets.
+        all_skill_sets = job.skill_sets.all()
+        skill_set_text = ""
+        for i, skill_set in enumerate(all_skill_sets):
+            skill_set_text += skill_set.sub_category
+            if i > all_skill_sets.count():
+                skill_set_text += " / "
+
+        # Set the invoice ID.
+        invoice_id = "-" if job.invoice_id is None else job.invoice_id
+        invoice_id = "-" if job.invoice_id <= 0 else job.invoice_id
+        wsib_insurance_date = "-" if job.associate.wsib_insurance_date is None else job.associate.wsib_insurance_date
+        hours = "-" if job.hours <= 0 else job.hours
+
+        # Generate the reason.
+        rows += ([
+            str(job.id),
+            str(job.completion_date),
+            str(job.associate),
+            str(job.customer),
+            str(wsib_insurance_date),
+            str(hours),
+            str(invoice_id),
+            skill_set_text,
+        ],)
+
+    # Create the virtual CSV file and stream all the data in real time to the
+    # client.
+    pseudo_buffer = Echo()
+    writer = csv.writer(pseudo_buffer)
+    response = StreamingHttpResponse(
+        (writer.writerow(row) for row in rows),
+        content_type="text/csv"
+    )
+    response['Content-Disposition'] = 'attachment; filename="commercial_jobs.csv"'
+    return response
