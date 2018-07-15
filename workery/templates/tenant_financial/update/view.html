@@ -42,6 +42,13 @@
             calculate_total_and_service_fee();
         });
 
+        //------------------------------//
+        // EVENT HANDLER INITIALIZATION //
+        //------------------------------//
+
+        $("input[name=payment_job_status][value={{ job_item.state }}]").prop('checked', true);
+
+
     }); // end DOCUMENT START
 
     function calculate_total_and_service_fee() {
@@ -96,6 +103,17 @@
     			frags[i] = frags[i].charAt(0).toUpperCase() + frags[i].slice(1);
     	}
     	return frags.join(' ');
+    }
+
+    function get_selected_radio_value(radiofields_name) {
+        var radios = document.getElementsByName(radiofields_name);
+        for (var i = 0, length = radios.length; i < length; i++) {
+            if (radios[i].checked) {
+                // only one radio can be logically checked, don't check the rest
+                return radios[i].value;
+            }
+        }
+        return null;
     }
 
     //
@@ -156,12 +174,7 @@
         {% endif %}
 
         // Changed state.
-        var state = "";
-        if (invoice_labour_amount > 0 && invoice_service_fee_amount > 0) {
-            state = "{{ WORK_ORDER_STATE.COMPLETED_AND_PAID }}";
-        } else {
-            state = "{{ WORK_ORDER_STATE.COMPLETED_BUT_UNPAID }}";
-        }
+        var payment_job_status = get_selected_radio_value('payment_job_status');
 
         // Submit to our API web-service.
         update_job_api(
@@ -180,7 +193,7 @@
                 'invoice_service_fee_amount': invoice_service_fee_amount,
                 'invoice_service_fee': invoice_service_fee_id,
                 'invoice_service_fee_payment_date': invoice_service_fee_payment_date,
-                'state': state
+                'state': payment_job_status
             },
             function(result_dict) { // Success
                 // FOR DEBUGGING PURPOSES ONLY.
@@ -290,110 +303,125 @@
     <!-- FORM -->
     <!------------------------------------------------------------------------->
     <div class="col-sm-5 mx-auto mt-2">
-                <!-- Residential form -->
-                <div class="col-sm-12 fade show active" id="client-form" aria-labelledby="commercial">
-                    <!-- Error Output -->
-                    <div id="all_error_result" name="all_error_result" class="alert alert-error fade show" role="alert">
-	    	    </div>
-		    <!-- end Error Output -->
-                    <p><span class="text-secondary font-italic"><sup>*</sup>&nbsp;-&nbsp;Indicates required field to fill out.</span></p>
-                    <form id="update-job-form" method="post" class="needs-validation" action="" novalidate>
-                        <div class="form-row">
-                                <!-- Invoice Date -->
-                                <div class="form-group col-md-7 mb-4">
-                                    <label for="invoice_date">Invoice Date&nbsp;<sup>*</sup></label>
-                                    <div class="input-group input-group-lg">
-                                        <input type="text" class="form-control form-control-lg border border-primary" id="invoice_date" name="invoice_date" placeholder="yyyy-mm-dd" required value="{% if job_item.invoice_date %}{{ job_item.invoice_date|date:"Y-m-d" }}{% endif %}">
-                                        <div class="input-group-append">
-                                            <span class="input-group-text c-icon-white bg-success border-success"><i class="far fa-calendar-alt"></i></span>
-                                        </div>
-                                        <div id="invoice_date-error" class="invalid-feedback"></div>
-                                    </div>
-                                </div>
-                                <!-- end Invoice Date -->
-                                <!-- Invoice ID -->
-                                <div class="form-group col-md-12 mb-4">
-                                    <label for="invoice_id">Invoice ID #</label>
-                                    <input type="number" class="form-control form-control-lg border border-success" id="invoice_id" name="invoice_id" placeholder="Invoice ID #" value="{{ job_item.invoice_id }}">
-                                    <div id="invoice_id-error" class="invalid-feedback"></div>
-                                </div>
-                                <!-- end Invoice ID -->
-                                <!-- Invoice Quote -->
-                                <div class="form-group col-md-7 mb-4">
-                                    <label for="invoice_quote_amount">Original Quote</label>
-                                    <input type="number" class="form-control form-control-lg border border-success" id="invoice_quote_amount" name="invoice_quote_amount" placeholder="Invoice Quote" value="{{ job_item.invoice_quote_amount.amount }}">
-                                    <div id="invoice_quote_amount-error" class="invalid-feedback"></div>
-                                </div>
-                                <!-- end Invoice Quote -->
-                                <!-- Invoice Labour -->
-                                <div class="form-group col-md-7 mb-4">
-                                    <label for="invoice_labour_amount">Total Labour</label>
-                                    <input type="number" class="form-control form-control-lg border border-success" id="invoice_labour_amount" name="invoice_labour_amount" placeholder="Total Labour" value="{{ job_item.invoice_labour_amount.amount }}">
-                                    <div id="invoice_labour_amount-error" class="invalid-feedback"></div>
-                                </div>
-                                <!-- end Invoice Labour -->
-                                <!-- Invoice Material -->
-                                <div class="form-group col-md-7 mb-4">
-                                    <label for="invoice_material_amount">Total Materials</label>
-                                    <input type="number" class="form-control form-control-lg border border-success" id="invoice_material_amount" name="invoice_material_amount" placeholder="Total Material" value="{{ job_item.invoice_material_amount.amount }}">
-                                    <div id="invoice_material_amount-error" class="invalid-feedback"></div>
-                                </div>
-                                <!-- end Invoice Material -->
-                                <!-- Invoice Tax -->
-                                <div class="form-group col-md-7 mb-4">
-                                    <label for="invoice_tax_amount">Total Tax</label>
-                                    <input type="number" class="form-control form-control-lg border border-success" id="invoice_tax_amount" name="invoice_tax_amount" placeholder="Total Tax" value="{{ job_item.invoice_tax_amount.amount }}">
-                                    <div id="invoice_tax_amount-error" class="invalid-feedback"></div>
-                                </div>
-                                <!-- end Invoice Material -->
-                                <!-- Service Fee -->
-                                <div class="form-group col-md-7 mb-4">
-                                    <label for="service_fees">Service Fee Rate&nbsp;<sup>*</sup></label>
-                                    <select class="custom-select form-control-lg border-primary" id="service_fees" name="service_fees" required onchange="calculate_total_and_service_fee();">
-                                        {% for service_fee in service_fees.all %}
-                                            <option value="{{ service_fee.id }}|{{ service_fee.percentage }}" {% if job_item.invoice_service_fee == service_fee %}selected="true"{% endif %}>{{ service_fee.title }} %</option>
-                                        {% endfor %}
-                    		        </select>
-                                    <div id="service_fees-error" class="invalid-feedback"></div>
-                                </div>
-                                <!-- end Service Fee -->
-                                <!-- Invoice Total -->
-                                <div class="form-group col-md-7 mb-4">
-                                    <label for="invoice_total_amount">Total</label>
-                                    <input type="number" class="form-control form-control-lg border border-success" id="invoice_total_amount" name="invoice_total_amount" placeholder="Total" readonly value="{{ job_item.invoice_total_amount.amount }}">
-                                    <div id="invoice_total_amount-error" class="invalid-feedback"></div>
-                                </div>
-                                <!-- end Invoice Total -->
-                                <!-- Invoice Service Fee -->
-                                <div class="form-group col-md-12 mb-4">
-                                    <label for="invoice_service_fee_amount">Service Fee</label>
-                                    <input type="number" class="form-control form-control-lg border border-success" id="invoice_service_fee_amount" name="invoice_service_fee_amount" placeholder="Service Fee" readonly value="{{ job_item.invoice_service_fee_amount.amount }}">
-                                    <div id="invoice_service_fee_amount-error" class="invalid-feedback"></div>
-                                </div>
-                                <!-- end Invoice Total -->
-                                <!-- Service Fee Payment Date -->
-                                <div class="form-group col-md-7 mb-4">
-                                    <label for="invoice_service_fee_payment_date">Service Fee Payment Date&nbsp;<sup>*</sup></label>
-                                    <div class="input-group input-group-lg">
-                                        <input type="text" class="form-control form-control-lg border border-primary" id="invoice_service_fee_payment_date" name="invoice_service_fee_payment_date" placeholder="yyyy-mm-dd" required value="{% if job_item.invoice_service_fee_payment_date %}{{ job_item.invoice_service_fee_payment_date|date:"Y-m-d" }}{% endif %}">
-                                        <div class="input-group-append">
-                                            <span class="input-group-text dob-icon bg-success border-success"><i class="far fa-calendar-alt"></i></span>
-                                        </div>
-                                        <div id="invoice_service_fee_payment_date-error" class="invalid-feedback"></div>
-                                    </div>
-                                </div>
-                                <!-- end Service Fee Payment Date -->
-                                <!-- UPDATE BUTTON -->
-                                <!--------------------------------------------------------------------->
-                                <div class="form-group col-md-12 mb-3 mx-auto text-center">
-                                    <button  id="id_submit_btn"	class="btn btn-primary btn-lg btn-fxw mt-4" type="button" onclick="click_submit_button();">
-                                        <i class="fas fa-check"></i>&nbsp;{% trans 'Update Job' %}
-                                    </button>
-                                </div>
-                                <!--------------------------------------------------------------------->
-                                <!-- end UPDATE BUTTON -->
+        <!-- Residential form -->
+        <div class="col-sm-12 fade show active" id="client-form" aria-labelledby="commercial">
+            <!-- Error Output -->
+            <div id="all_error_result" name="all_error_result" class="alert alert-error fade show" role="alert">
+            </div>
+            <!-- end Error Output -->
+            <p><span class="text-secondary font-italic"><sup>*</sup>&nbsp;-&nbsp;Indicates required field to fill out.</span></p>
+            <form id="update-job-form" method="post" class="needs-validation" action="" novalidate>
+                <div class="form-row">
+                    <!-- STATE SELECTION -->
+                    <div class="form-group col-md-12 mb-4">
+                        <p class="mb-1">What is the payment status of this job?&nbsp;<sup>*</sup></p>
+                        <div class="form-radio custom-control custom-radio mb-2">
+                            <input type="radio" id="payment_job_status" name="payment_job_status" value="{{ WORK_ORDER_STATE.COMPLETED_AND_PAID }}" class="custom-control-input form-check-input" required>
+                            <label class="custom-control-label form-check-label" for="payment_job_status">Paid</label>
                         </div>
-                    </form>
+                        <div class="form-radio custom-control custom-radio">
+                            <input type="radio" id="payment_job_status2" name="payment_job_status" value="{{ WORK_ORDER_STATE.COMPLETED_BUT_UNPAID }}" class="custom-control-input form-check-input" required>
+                            <label class="custom-control-label form-check-label" for="payment_job_status2">Unpaid</label>
+                            <small class="form-text text-muted">Selecting "yes" will result in job being paid.</small>
+                            <div id="payment_job_status-error" class="invalid-feedback"></div>
+                        </div>
+                    </div>
+                    <!-- end STATE SELECTION-->
+                    <!-- Invoice Date -->
+                    <div class="form-group col-md-7 mb-4">
+                        <label for="invoice_date">Invoice Date&nbsp;<sup>*</sup></label>
+                        <div class="input-group input-group-lg">
+                            <input type="text" class="form-control form-control-lg border border-primary" id="invoice_date" name="invoice_date" placeholder="yyyy-mm-dd" required value="{% if job_item.invoice_date %}{{ job_item.invoice_date|date:"Y-m-d" }}{% endif %}">
+                            <div class="input-group-append">
+                                <span class="input-group-text c-icon-white bg-success border-success"><i class="far fa-calendar-alt"></i></span>
+                            </div>
+                            <div id="invoice_date-error" class="invalid-feedback"></div>
+                        </div>
+                    </div>
+                    <!-- end Invoice Date -->
+                    <!-- Invoice ID -->
+                    <div class="form-group col-md-12 mb-4">
+                        <label for="invoice_id">Invoice ID #</label>
+                        <input type="number" class="form-control form-control-lg border border-success" id="invoice_id" name="invoice_id" placeholder="Invoice ID #" value="{{ job_item.invoice_id }}">
+                        <div id="invoice_id-error" class="invalid-feedback"></div>
+                    </div>
+                    <!-- end Invoice ID -->
+                    <!-- Invoice Quote -->
+                    <div class="form-group col-md-7 mb-4">
+                        <label for="invoice_quote_amount">Original Quote</label>
+                        <input type="number" class="form-control form-control-lg border border-success" id="invoice_quote_amount" name="invoice_quote_amount" placeholder="Invoice Quote" value="{{ job_item.invoice_quote_amount.amount }}">
+                        <div id="invoice_quote_amount-error" class="invalid-feedback"></div>
+                    </div>
+                    <!-- end Invoice Quote -->
+                    <!-- Invoice Labour -->
+                    <div class="form-group col-md-7 mb-4">
+                        <label for="invoice_labour_amount">Total Labour</label>
+                        <input type="number" class="form-control form-control-lg border border-success" id="invoice_labour_amount" name="invoice_labour_amount" placeholder="Total Labour" value="{{ job_item.invoice_labour_amount.amount }}">
+                        <div id="invoice_labour_amount-error" class="invalid-feedback"></div>
+                    </div>
+                    <!-- end Invoice Labour -->
+                    <!-- Invoice Material -->
+                    <div class="form-group col-md-7 mb-4">
+                        <label for="invoice_material_amount">Total Materials</label>
+                        <input type="number" class="form-control form-control-lg border border-success" id="invoice_material_amount" name="invoice_material_amount" placeholder="Total Material" value="{{ job_item.invoice_material_amount.amount }}">
+                        <div id="invoice_material_amount-error" class="invalid-feedback"></div>
+                    </div>
+                    <!-- end Invoice Material -->
+                    <!-- Invoice Tax -->
+                    <div class="form-group col-md-7 mb-4">
+                        <label for="invoice_tax_amount">Total Tax</label>
+                        <input type="number" class="form-control form-control-lg border border-success" id="invoice_tax_amount" name="invoice_tax_amount" placeholder="Total Tax" value="{{ job_item.invoice_tax_amount.amount }}">
+                        <div id="invoice_tax_amount-error" class="invalid-feedback"></div>
+                    </div>
+                    <!-- end Invoice Material -->
+                    <!-- Service Fee -->
+                    <div class="form-group col-md-7 mb-4">
+                        <label for="service_fees">Service Fee Rate&nbsp;<sup>*</sup></label>
+                        <select class="custom-select form-control-lg border-primary" id="service_fees" name="service_fees" required onchange="calculate_total_and_service_fee();">
+                        {% for service_fee in service_fees.all %}
+                        <option value="{{ service_fee.id }}|{{ service_fee.percentage }}" {% if job_item.invoice_service_fee == service_fee %}selected="true"{% endif %}>{{ service_fee.title }} %</option>
+                        {% endfor %}
+                        </select>
+                        <div id="service_fees-error" class="invalid-feedback"></div>
+                    </div>
+                    <!-- end Service Fee -->
+                    <!-- Invoice Total -->
+                    <div class="form-group col-md-7 mb-4">
+                        <label for="invoice_total_amount">Total</label>
+                        <input type="number" class="form-control form-control-lg border border-success" id="invoice_total_amount" name="invoice_total_amount" placeholder="Total" readonly value="{{ job_item.invoice_total_amount.amount }}">
+                        <div id="invoice_total_amount-error" class="invalid-feedback"></div>
+                    </div>
+                    <!-- end Invoice Total -->
+                    <!-- Invoice Service Fee -->
+                    <div class="form-group col-md-12 mb-4">
+                        <label for="invoice_service_fee_amount">Service Fee</label>
+                        <input type="number" class="form-control form-control-lg border border-success" id="invoice_service_fee_amount" name="invoice_service_fee_amount" placeholder="Service Fee" readonly value="{{ job_item.invoice_service_fee_amount.amount }}">
+                        <div id="invoice_service_fee_amount-error" class="invalid-feedback"></div>
+                    </div>
+                    <!-- end Invoice Total -->
+                    <!-- Service Fee Payment Date -->
+                    <div class="form-group col-md-7 mb-4">
+                        <label for="invoice_service_fee_payment_date">Service Fee Payment Date&nbsp;<sup>*</sup></label>
+                        <div class="input-group input-group-lg">
+                            <input type="text" class="form-control form-control-lg border border-primary" id="invoice_service_fee_payment_date" name="invoice_service_fee_payment_date" placeholder="yyyy-mm-dd" required value="{% if job_item.invoice_service_fee_payment_date %}{{ job_item.invoice_service_fee_payment_date|date:"Y-m-d" }}{% endif %}">
+                            <div class="input-group-append">
+                                <span class="input-group-text dob-icon bg-success border-success"><i class="far fa-calendar-alt"></i></span>
+                            </div>
+                            <div id="invoice_service_fee_payment_date-error" class="invalid-feedback"></div>
+                        </div>
+                    </div>
+                    <!-- end Service Fee Payment Date -->
+                    <!-- UPDATE BUTTON -->
+                    <!--------------------------------------------------------------------->
+                    <div class="form-group col-md-12 mb-3 mx-auto text-center">
+                        <button  id="id_submit_btn"	class="btn btn-primary btn-lg btn-fxw mt-4" type="button" onclick="click_submit_button();">
+                        <i class="fas fa-check"></i>&nbsp;{% trans 'Update Job' %}
+                        </button>
+                    </div>
+                    <!--------------------------------------------------------------------->
+                    <!-- end UPDATE BUTTON -->
+                </div>
+            </form>
         </div>
     </div>
     <!------------------------------------------------------------------------->

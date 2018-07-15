@@ -114,6 +114,7 @@ class WorkOrderListCreateSerializer(serializers.ModelSerializer):
         start_date = validated_data.get('start_date', timezone.now())
         follow_up_days_number = validated_data.get('follow_up_days_number', 0)
         invoice_service_fee = validated_data.get('invoice_service_fee', None)
+        state = validated_data.get('state', WORK_ORDER_STATE.NEW)
 
         #---------------------------------
         # Create our `WorkOrder` objects.
@@ -144,7 +145,7 @@ class WorkOrderListCreateSerializer(serializers.ModelSerializer):
             invoice_service_fee=invoice_service_fee,
             created_from = self.context['created_from'],
             created_from_is_public = self.context['created_from_is_public'],
-            state=WORK_ORDER_STATE.NEW
+            state = state
         )
         logger.info("Created order object.")
 
