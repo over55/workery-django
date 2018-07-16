@@ -38,6 +38,7 @@ class CustomerSearchResultView(LoginRequiredMixin, WorkeryListView):
             queryset = Customer.objects.all()
             queryset = queryset.order_by('last_name', 'given_name')
             filter = CustomerFilter(self.request.GET, queryset=queryset)
+            queryset = filter.qs
 
         # Attach owners.
         queryset = queryset.prefetch_related('owner')

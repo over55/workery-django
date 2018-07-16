@@ -33,13 +33,16 @@ class MemberSearchResultView(LoginRequiredMixin, WorkeryListView):
         keyword = self.request.GET.get('keyword', None)
         if keyword:
             queryset = Associate.objects.full_text_search(keyword)
-            queryset = queryset.order_by('-created')
+            queryset = queryset.order_by('last_name', 'given_name')
         else:
-            queryset = super(MemberSearchResultView, self).get_queryset()
-        queryset = queryset.order_by('last_name', 'given_name')
+            queryset = Associate.objects.all()
 
-        # The following code will use the 'django-filter'
-        filter = AssociateFilter(self.request.GET, queryset=queryset)
-        queryset = filter.qs
+            # The following code will use the 'django-filter'
+            queryset = queryset.order_by('last_name', 'given_name')
+            filter = AssociateFilter(self.request.GET, queryset=queryset)
+            queryset = filter.qs
+
+        # Attach owners.
         queryset = queryset.prefetch_related('owner')
+
         return queryset

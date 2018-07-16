@@ -35,7 +35,7 @@ class PartnerSearchResultView(LoginRequiredMixin, WorkeryListView):
             queryset = Partner.objects.full_text_search(keyword)
             queryset = queryset.order_by('last_name', 'given_name')
         else:
-            queryset = super(PartnerSearchResultView, self).get_queryset()
+            queryset = Partner.objects.all()
 
             # The following code will use the 'django-filter'
             queryset = queryset.order_by('last_name', 'given_name')

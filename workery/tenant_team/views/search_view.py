@@ -24,7 +24,6 @@ class TeamSearchView(LoginRequiredMixin, WorkeryTemplateView):
 
 class TeamSearchResultView(LoginRequiredMixin, WorkeryListView):
     context_object_name = 'staff_list'
-    queryset = Staff.objects.order_by('-created')
     template_name = 'tenant_team/search/result_view.html'
     paginate_by = 100
     menu_id = "team"
@@ -39,14 +38,16 @@ class TeamSearchResultView(LoginRequiredMixin, WorkeryListView):
         keyword = self.request.GET.get('keyword', None)
         if keyword:
             queryset = Staff.objects.full_text_search(keyword)
+            queryset = queryset.order_by('last_name', 'given_name')
         else:
-            queryset = super(TeamListView, self).get_queryset()
-        queryset = queryset.order_by('last_name', 'given_name')
+            queryset = Staff.objects.all()
 
-        # The following code will use the 'django-filter'
-        filter = StaffFilter(self.request.GET, queryset=queryset)
-        queryset = filter.qs
-        queryset = queryset.prefetch_related(
-            'owner',
-        )
+            # The following code will use the 'django-filter'
+            queryset = queryset.order_by('last_name', 'given_name')
+            filter = StaffFilter(self.request.GET, queryset=queryset)
+            queryset = filter.qs
+
+        # Attach owners.
+        queryset = queryset.prefetch_related('owner')
+        
         return queryset
