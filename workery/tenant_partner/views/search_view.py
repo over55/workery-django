@@ -35,10 +35,21 @@ class PartnerSearchResultView(LoginRequiredMixin, WorkeryListView):
             queryset = Partner.objects.full_text_search(keyword)
             queryset = queryset.order_by('last_name', 'given_name')
         else:
-            queryset = Partner.objects.all()
+            # Remove special characters from the telephone
+            tel = self.request.GET.get('telephone')
+            tel = tel.replace('(', '')
+            tel = tel.replace(')', '')
+            tel = tel.replace('-', '')
+            tel = tel.replace('+', '')
+            tel = tel.replace(' ', '')
+            self.request.GET._mutable = True
+            self.request.GET['telephone'] = tel
 
-            # The following code will use the 'django-filter'
+            # Order our results.
+            queryset = Partner.objects.all()
             queryset = queryset.order_by('last_name', 'given_name')
+
+            # The following code will use the 'django-filter' library.
             filter = PartnerFilter(self.request.GET, queryset=queryset)
             queryset = filter.qs
 

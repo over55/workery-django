@@ -35,8 +35,21 @@ class CustomerSearchResultView(LoginRequiredMixin, WorkeryListView):
             queryset = Customer.objects.full_text_search(keyword)
             queryset = queryset.order_by('last_name', 'given_name')
         else:
+            # Order all entries.
             queryset = Customer.objects.all()
             queryset = queryset.order_by('last_name', 'given_name')
+
+            # Remove special characters from the telephone
+            tel = self.request.GET.get('telephone')
+            tel = tel.replace('(', '')
+            tel = tel.replace(')', '')
+            tel = tel.replace('-', '')
+            tel = tel.replace('+', '')
+            tel = tel.replace(' ', '')
+            self.request.GET._mutable = True
+            self.request.GET['telephone'] = tel
+
+            # The following code will use the 'django-filter' library.
             filter = CustomerFilter(self.request.GET, queryset=queryset)
             queryset = filter.qs
 

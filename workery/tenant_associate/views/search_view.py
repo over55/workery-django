@@ -35,10 +35,21 @@ class MemberSearchResultView(LoginRequiredMixin, WorkeryListView):
             queryset = Associate.objects.full_text_search(keyword)
             queryset = queryset.order_by('last_name', 'given_name')
         else:
+            # Remove special characters from the telephone
+            tel = self.request.GET.get('telephone')
+            tel = tel.replace('(', '')
+            tel = tel.replace(')', '')
+            tel = tel.replace('-', '')
+            tel = tel.replace('+', '')
+            tel = tel.replace(' ', '')
+            self.request.GET._mutable = True
+            self.request.GET['telephone'] = tel
+
+            # Order our data.
             queryset = Associate.objects.all()
+            queryset = queryset.order_by('last_name', 'given_name')
 
             # The following code will use the 'django-filter'
-            queryset = queryset.order_by('last_name', 'given_name')
             filter = AssociateFilter(self.request.GET, queryset=queryset)
             queryset = filter.qs
 
