@@ -200,10 +200,10 @@
                 console.log(result_dict);
 
                 // REDIRECT TO SUCCESS PAGE BASED ON STATUS.
-                if (state == "{{ WORK_ORDER_STATE.COMPLETED_AND_PAID }}") {
+                if (payment_job_status == "{{ WORK_ORDER_STATE.COMPLETED_AND_PAID }}") {
                     window.location = "{% url 'workery_tenant_financlial_job_retrieve' 'paid-jobs' job_item.id %}?was_modified=True";
                 }
-                if (state == "{{ WORK_ORDER_STATE.COMPLETED_BUT_UNPAID }}") {
+                if (payment_job_status == "{{ WORK_ORDER_STATE.COMPLETED_BUT_UNPAID }}") {
                     window.location = "{% url 'workery_tenant_financlial_job_retrieve' 'unpaid-jobs' job_item.id %}?was_modified=True";
                 }
 
