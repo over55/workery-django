@@ -9,11 +9,12 @@ from starterkit.utils import (
     get_random_string,
     get_unique_username_from_email
 )
-from shared_foundation import constants
+from shared_foundation.constants import *
 from shared_foundation.models import (
     SharedUser,
     SharedFranchise
 )
+from tenant_foundation.constants import *
 from tenant_foundation.models import (
     Associate,
     # Comment,
@@ -38,12 +39,12 @@ from tenant_foundation.utils import *
 
 
 class Command(BaseCommand):
-    help = _('Command will run `hotfix_2`.')
+    help = _('Command will run `hotfix_3`.')
 
     def add_arguments(self, parser):
         """
         Run manually in console:
-        python manage.py hotfix_2 "london"
+        python manage.py hotfix_3 "london"
         """
         parser.add_argument('schema_name', nargs='+', type=str)
 
@@ -64,24 +65,29 @@ class Command(BaseCommand):
         # Connection will set it back to our tenant.
         connection.set_schema(franchise.schema_name, True) # Switch to Tenant.
 
-        work_orders = WorkOrder.objects.filter(
-            Q(
-                Q(state=WORK_ORDER_STATE.IN_PROGRESS) |
-                Q(state=WORK_ORDER_STATE.ONGOING) |
-                Q(state=WORK_ORDER_STATE.NEW)
-            ) &
-            Q(is_ongoing=True) &
-            Q(ongoing_work_order__isnull=True)
+        work_orders = WorkOrder.objects.all().prefetch_related(
+            'customer',
+            'associate'
         )
         for work_order in work_orders:
-            print(work_order.id)
-            work_order.ongoing_work_order = OngoingWorkOrder.objects.create(
-                customer=work_order.customer,
-                associate=work_order.associate,
-                open_order=work_order,
-                state=ONGOING_WORK_ORDER_STATE.RUNNING
-            )
-            work_order.save()
+            # If customer is commercial, make sure job is commercial.
+            if work_order.type_of == COMMERCIAL_JOB_TYPE_OF_ID:
+                if work_order.customer.type_of == RESIDENTIAL_CUSTOMER_TYPE_OF_ID:
+                    print("Should be residential", work_order)
+
+            # If customer is residential, make sure job is residential.
+            if work_order.type_of == RESIDENTIAL_JOB_TYPE_OF_ID:
+                if work_order.customer.type_of == COMMERCIAL_CUSTOMER_TYPE_OF_ID:
+                    print("Should be commercial", work_order)
+
+            # If status is set to unassigned but user is assigned.
+            if work_order.type_of == UNASSIGNED_JOB_TYPE_OF_ID:
+                if work_order.associate:
+                    print("Has associate but is unassigned", work_order)
+                    if work_order.customer.type_of == RESIDENTIAL_CUSTOMER_TYPE_OF_ID:
+                        print("Should be residential", work_order)
+                    if work_order.customer.type_of == COMMERCIAL_CUSTOMER_TYPE_OF_ID:
+                        print("Should be commercial", work_order)
 
         # For debugging purposes.
         self.stdout.write(
