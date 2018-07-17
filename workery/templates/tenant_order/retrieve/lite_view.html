@@ -186,19 +186,19 @@
                     <td id="selected_job_type_id">
                         <!-- Type Of -->
                         {% if job.type_of == tenant_constants.RESIDENTIAL_JOB_TYPE_OF_ID %}
-                            {% trans 'Residential Job' %}
+                            {% trans 'Residential' %}
                         {% elif job.type_of == 3 %}
-                            {% trans 'Commercial Job' %}
+                            {% trans 'Commercial' %}
                         {% else %}
-                            {% trans 'Unassigned Job' %}
+                            {% trans 'Unassigned' %}
                         {% endif %}
                         <!-- end Type Of -->
 
                         <!-- Ongoing status -->
                         {% if job.is_ongoing %}
-                            {% trans '(Ongoing))' %}
+                            &nbsp;{% trans '(Ongoing))' %}
                         {% else %}
-                            {% trans '(One-time)' %}
+                            &nbsp;{% trans '(One-time)' %}
                         {% endif %}
                         <!-- end Ongoing status -->
                     </td>
