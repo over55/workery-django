@@ -109,7 +109,7 @@
                     {% if customer.telephone %}<a href="tel:{{ customer.telephone }}">{{ customer.telephone|pretty_formatted_phonenumber }}</a>{% else %}-{% endif %}
                     {% if customer.email %}<a href="tel:{{ customer.email }}">{{ customer.email }}</a>{% endif %}
    			    </p>
-			    <button  id="select-btn-{{ customer.id }}" type="button" class="btn btn-primary btn-lg btn-block" onclick="ajax_select({{ customer.id }}, '{{ customer }}', {{ customer.type_of }});">Select</button>
+			    <button  id="select-btn-{{ customer.id }}" type="button" class="btn btn-primary btn-lg btn-block" onclick='ajax_select({{ customer.id }}, "{{ customer }}", {{ customer.type_of }});'>Select</button>
    		    </div>
    	  </div>
     {% endfor %}
