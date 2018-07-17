@@ -80,7 +80,6 @@
             <tbody>
                 {% for task_item in task_list %}
                 <tr>
-                    <td>{{ task_item.id }}</td>
                     <td>
                         {% if task_item.job.customer.type_of == tenant_constants.RESIDENTIAL_CUSTOMER_TYPE_OF_ID %}
                             <i class="fa fa-home fa-lg"></i>
@@ -91,6 +90,7 @@
                         {% endif %}
                         {% if task_item.job.is_ongoing %}<i class="fa fa-redo fa-lg"></i>{% endif %}
                     </td>
+                    <td>{{ task_item.id }}</td>
                     <td>{{ task_item.due_date }}</td>
                     <td>{{ task_item.title }}</td>
                     <td>
