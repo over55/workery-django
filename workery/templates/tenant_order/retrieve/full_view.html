@@ -143,9 +143,9 @@
 			    </td>
 			</tr>
 			<tr>
-			    <th scope="row" class="bg-light">Phone Number</th>
+			    <th scope="row" class="bg-light">Phone Number {% if job.customer.telephone %}({% if job.customer.telephone_type_of == 1 %}Landline{% elif job.customer.telephone_type_of == 2 %}Mobile{% elif job.customer.telephone_type_of == 3 %}Work{% endif %}){% endif %}</th>
 			    <td id="phone">
-				    -
+                    {% if job.customer.telephone %}<a href="tel:{{ customer.telephone }}">{{ job.customer.telephone|pretty_formatted_phonenumber }}</a>{% else %}-{% endif %}
 			    </td>
 			</tr>
 			<tr>
