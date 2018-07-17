@@ -9,7 +9,7 @@ from shared_foundation.mixins import (
     WorkeryDetailView
 )
 from tenant_api.filters.associate import AssociateFilter
-from tenant_foundation.models import ActivitySheetItem, Associate
+from tenant_foundation.models import ActivitySheetItem, Associate, WorkOrder
 
 
 class MemberLiteRetrieveView(LoginRequiredMixin, WorkeryDetailView):
@@ -109,7 +109,7 @@ class MemberRetrieveForActivitySheetListView(LoginRequiredMixin, WorkeryDetailVi
         # Lookup the acitivty sheet items for this associate.
         modified_context['activity_sheet_items'] = ActivitySheetItem.objects.filter(
             associate = modified_context['associate']
-        ).order_by("-created_at")
+        ).order_by("-id")
 
         # Return our modified context.
         return modified_context
@@ -135,6 +135,11 @@ class MemberRetrieveForJobsListView(LoginRequiredMixin, WorkeryDetailView):
             from django.core.exceptions import PermissionDenied
             raise PermissionDenied(_('You entered wrong format.'))
         modified_context['template'] = template
+
+        # Lookup the acitivty sheet items for this associate.
+        modified_context['job_items'] = WorkOrder.objects.filter(
+            associate = modified_context['associate']
+        ).order_by("-id")
 
         # Return our modified context.
         return modified_context
