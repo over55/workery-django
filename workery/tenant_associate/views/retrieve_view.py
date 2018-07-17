@@ -109,6 +109,9 @@ class MemberRetrieveForActivitySheetListView(LoginRequiredMixin, WorkeryDetailVi
         # Lookup the acitivty sheet items for this associate.
         modified_context['activity_sheet_items'] = ActivitySheetItem.objects.filter(
             associate = modified_context['associate']
+        ).prefetch_related(
+            'job',
+            'associate',
         ).order_by("-id")
 
         # Return our modified context.
@@ -139,6 +142,9 @@ class MemberRetrieveForJobsListView(LoginRequiredMixin, WorkeryDetailView):
         # Lookup the acitivty sheet items for this associate.
         modified_context['job_items'] = WorkOrder.objects.filter(
             associate = modified_context['associate']
+        ).prefetch_related(
+            'associate',
+            'customer'
         ).order_by("-id")
 
         # Return our modified context.
