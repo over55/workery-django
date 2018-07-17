@@ -2,6 +2,7 @@
 from datetime import date, datetime, timedelta
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
+from django.http import Http404
 from django.utils.decorators import method_decorator
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
@@ -73,6 +74,19 @@ class PendingTaskRetrieveView(LoginRequiredMixin, WorkeryDetailView):
     model = TaskItem
     template_name = 'tenant_task/pending/retrieve_view.html'
     menu_id = "task"
+
+    def get_context_data(self, **kwargs):
+        # Get the context of this class based view.
+        modified_context = super().get_context_data(**kwargs)
+
+        # Defensive Code - Prevent access to detail if already closed.
+        task_item = modified_context['task_item']
+        if task_item.is_closed:
+            print(task_item)
+            raise Http404("Task was already closed!")
+
+        # Return our modified context.
+        return modified_context
 
 
 class PendingTaskRetrieveForActivitySheetView(LoginRequiredMixin, WorkeryDetailView):
