@@ -73,21 +73,20 @@ class Command(BaseCommand):
             # If customer is commercial, make sure job is commercial.
             if work_order.type_of == COMMERCIAL_JOB_TYPE_OF_ID:
                 if work_order.customer.type_of == RESIDENTIAL_CUSTOMER_TYPE_OF_ID:
-                    print("Should be residential", work_order)
+                    print("Commercial --> Residential", work_order)
 
             # If customer is residential, make sure job is residential.
             if work_order.type_of == RESIDENTIAL_JOB_TYPE_OF_ID:
                 if work_order.customer.type_of == COMMERCIAL_CUSTOMER_TYPE_OF_ID:
-                    print("Should be commercial", work_order)
+                    print("Residential --> Commercial", work_order)
 
             # If status is set to unassigned but user is assigned.
             if work_order.type_of == UNASSIGNED_JOB_TYPE_OF_ID:
                 if work_order.associate:
-                    print("Has associate but is unassigned", work_order)
                     if work_order.customer.type_of == RESIDENTIAL_CUSTOMER_TYPE_OF_ID:
-                        print("Should be residential", work_order)
+                        print("Unassigned --> residential", work_order)
                     if work_order.customer.type_of == COMMERCIAL_CUSTOMER_TYPE_OF_ID:
-                        print("Should be commercial", work_order)
+                        print("Unassigned --> commercial", work_order)
 
         # For debugging purposes.
         self.stdout.write(
