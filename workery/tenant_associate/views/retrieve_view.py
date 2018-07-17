@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.utils.decorators import method_decorator
 from django.utils.translation import ugettext_lazy as _
 from shared_foundation.mixins import (
@@ -140,12 +141,18 @@ class MemberRetrieveForJobsListView(LoginRequiredMixin, WorkeryDetailView):
         modified_context['template'] = template
 
         # Lookup the acitivty sheet items for this associate.
-        modified_context['job_items'] = WorkOrder.objects.filter(
+        jobs = WorkOrder.objects.filter(
             associate = modified_context['associate']
         ).prefetch_related(
             'associate',
             'customer'
         ).order_by("-id")
+
+        paginator = Paginator(jobs, 25) # Show 25 contacts per page
+        page = self.request.GET.get('page', 1)
+        jobs_items = paginator.get_page(page)
+
+        modified_context['paginated_job_items'] = jobs_items
 
         # Return our modified context.
         return modified_context

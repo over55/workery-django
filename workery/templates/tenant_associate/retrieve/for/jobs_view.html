@@ -133,7 +133,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {% for job in job_items.all %}
+                        {% for job in paginated_job_items %}
                         <tr>
                             <td>
                                 {% if job.customer.type_of == tenant_constants.RESIDENTIAL_CUSTOMER_TYPE_OF_ID %}
@@ -185,6 +185,26 @@
             <!-- end ACTIVITY SHEET -->
 
         </div>
+
+        <!-- PAGINATION -->
+        <div class="pagination">
+            <span class="step-links">
+                {% if paginated_job_items.has_previous %}
+                    <a href="?page=1">&laquo; first</a>
+                    <a href="?page={{ paginated_job_items.previous_page_number }}">previous</a>
+                {% endif %}
+
+                <span class="current">
+                    Page {{ paginated_job_items.number }} of {{ paginated_job_items.paginator.num_pages }}.
+                </span>
+
+                {% if paginated_job_items.has_next %}
+                    <a href="?page={{ paginated_job_items.next_page_number }}">next</a>
+                    <a href="?page={{ paginated_job_items.paginator.num_pages }}">last &raquo;</a>
+                {% endif %}
+            </span>
+        </div>
+        <!-- end PAGINATION -->
 
     </div>
 
