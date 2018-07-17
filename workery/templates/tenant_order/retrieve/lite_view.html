@@ -187,7 +187,7 @@
                         <!-- Type Of -->
                         {% if job.type_of == tenant_constants.RESIDENTIAL_JOB_TYPE_OF_ID %}
                             {% trans 'Residential' %}
-                        {% elif job.type_of == 3 %}
+                        {% elif job.type_of == tenant_constants.COMMERCIAL_JOB_TYPE_OF_ID %}
                             {% trans 'Commercial' %}
                         {% else %}
                             {% trans 'Unassigned' %}

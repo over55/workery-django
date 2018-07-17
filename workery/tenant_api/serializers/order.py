@@ -124,7 +124,7 @@ class WorkOrderListCreateSerializer(serializers.ModelSerializer):
         job_type_of = UNASSIGNED_JOB_TYPE_OF_ID
         if customer.type_of == RESIDENTIAL_CUSTOMER_TYPE_OF_ID:
             job_type_of = RESIDENTIAL_JOB_TYPE_OF_ID
-        if customer.type_of == RESIDENTIAL_CUSTOMER_TYPE_OF_ID:
+        if customer.type_of == COMMERCIAL_CUSTOMER_TYPE_OF_ID:
             job_type_of = COMMERCIAL_JOB_TYPE_OF_ID
 
         # Create our object.
