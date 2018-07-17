@@ -108,12 +108,18 @@ class MemberRetrieveForActivitySheetListView(LoginRequiredMixin, WorkeryDetailVi
         modified_context['template'] = template
 
         # Lookup the acitivty sheet items for this associate.
-        modified_context['activity_sheet_items'] = ActivitySheetItem.objects.filter(
+        activity_sheet_items = ActivitySheetItem.objects.filter(
             associate = modified_context['associate']
         ).prefetch_related(
             'job',
             'associate',
         ).order_by("-id")
+
+        paginator = Paginator(activity_sheet_items, 25) # Show 25 contacts per page
+        page = self.request.GET.get('page', 1)
+        paginated_activity_sheet_items = paginator.get_page(page)
+
+        modified_context['paginated_activity_sheet_items'] = paginated_activity_sheet_items
 
         # Return our modified context.
         return modified_context

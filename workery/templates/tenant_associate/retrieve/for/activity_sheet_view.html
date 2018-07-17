@@ -131,7 +131,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {% for activity_sheet_item in activity_sheet_items.all %}
+                        {% for activity_sheet_item in paginated_activity_sheet_items%}
                         <tr>
                             <td>{{ activity_sheet_item.id|intcomma }}</td>
                             <td><a href="{% url 'workery_tenant_job_retrieve' template activity_sheet_item.job.id %}" target="_blank">{{ activity_sheet_item.job.id|intcomma }}</a></td>
@@ -157,6 +157,26 @@
             <!-- end ACTIVITY SHEET -->
 
         </div>
+
+        <!-- PAGINATION -->
+        <div class="pagination">
+            <span class="step-links">
+                {% if paginated_activity_sheet_items.has_previous %}
+                    <a href="?page=1">&laquo; first</a>
+                    <a href="?page={{ paginated_activity_sheet_items.previous_page_number }}">previous</a>
+                {% endif %}
+
+                <span class="current">
+                    Page {{ paginated_activity_sheet_items.number }} of {{ paginated_activity_sheet_items.paginator.num_pages }}.
+                </span>
+
+                {% if paginated_activity_sheet_items.has_next %}
+                    <a href="?page={{ paginated_activity_sheet_items.next_page_number }}">next</a>
+                    <a href="?page={{ paginated_activity_sheet_items.paginator.num_pages }}">last &raquo;</a>
+                {% endif %}
+            </span>
+        </div>
+        <!-- end PAGINATION -->
 
     </div>
 
