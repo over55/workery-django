@@ -207,6 +207,10 @@ class WorkOrderListCreateSerializer(serializers.ModelSerializer):
         )
         logger.info("Created first task.")
 
+        # Update the work order to include our new pending task.
+        order.latest_pending_task = first_task
+        order.save()
+
         # Update validation data.
         # validated_data['comments'] = WorkOrderComment.objects.filter(order=order)
         validated_data['created'] = order.created
