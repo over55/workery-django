@@ -53,11 +53,6 @@ class Step3View(LoginRequiredMixin, WorkeryTemplateView):
     template_name = 'tenant_order/create/step_3_view.html'
     menu_id = 'jobs'
 
-
-class Step4View(LoginRequiredMixin, WorkeryTemplateView):
-    template_name = 'tenant_order/create/step_4_view.html'
-    menu_id = 'jobs'
-
     def get_context_data(self, **kwargs):
         modified_context = super().get_context_data(**kwargs)
         modified_context['menu_id'] = "jobs"
@@ -65,12 +60,10 @@ class Step4View(LoginRequiredMixin, WorkeryTemplateView):
         modified_context['servicefees'] = WorkOrderServiceFee.objects.all()
         return modified_context
 
+class Step4View(LoginRequiredMixin, WorkeryTemplateView):
+    template_name = 'tenant_order/create/step_4_view.html'
+    menu_id = 'jobs'
 
 class Step5View(LoginRequiredMixin, WorkeryTemplateView):
     template_name = 'tenant_order/create/step_5_view.html'
-    menu_id = 'jobs'
-
-
-class Step6View(LoginRequiredMixin, WorkeryTemplateView):
-    template_name = 'tenant_order/create/step_6_view.html'
     menu_id = 'jobs'
