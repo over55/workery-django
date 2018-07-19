@@ -54,3 +54,23 @@ class AbstractPostalAddress(models.Model):
         blank=True,
         null=True,
     )
+
+    def get_postal_address_without_postal_code(self):
+        address = ""
+        address += self.street_address
+        if self.street_address_extra:
+            address += self.street_address_extra
+        address += ', ' + self.address_locality
+        address += ', ' + self.address_region
+        address += ', ' + self.address_country
+        return address
+
+    def get_postal_address(self):
+        address = self.get_postal_address_without_postal_code()
+        address += ', ' + self.postal_code.upper()
+        return address
+
+    def get_google_maps_url(self):
+        return "https://www.google.com/maps/place/%(postal_address)s" % {
+            'postal_address': self.get_postal_address()
+        }

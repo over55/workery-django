@@ -207,50 +207,14 @@
 			<tr class="bg-primary text-white">
 			    <th scope="row" colspan="2">Postal Address</th>
 			</tr>
-			<tr>
-			    <th scope="row" class="bg-light">Street Address</th>
-			    <td id="street_address">
-				{% if partner.street_address %}{{ partner.street_address }}{% else %}-{% endif %}
-			    </td>
-			</tr>
-			<tr>
-			    <th scope="row" class="bg-light">Street Address (Extra)</th>
-			    <td id="street_address_extra">
-				{% if partner.street_address_extra %}{{ partner.street_address_extra }}{% else %}-{% endif %}
-			    </td>
-			</tr>
-			<tr>
-			    <th scope="row" class="bg-light">City</th>
-			    <td id="city">
-				{% if partner.address_locality %}{{ partner.address_locality }}{% else %}-{% endif %}
-			    </td>
-			</tr>
-			<tr>
-			    <th scope="row" class="bg-light">Province</th>
-			    <td id="region">
-				{% if partner.address_region %}{{ partner.address_region }}{% else %}-{% endif %}
-			    </td>
-			</tr>
-			<tr>
-			    <th scope="row" class="bg-light">Country</th>
-			    <td id="country">
-				{% if partner.address_country %}{{ partner.address_country }}{% else %}-{% endif %}
-			    </td>
-			</tr>
-			<tr>
-			    <th scope="row" class="bg-light">Postal Code</th>
-			    <td id="postal_code">
-				{% if partner.postal_code %}{{ partner.postal_code }}{% else %}-{% endif %}
-			    </td>
-			</tr>
-			<tr>
-			    <th scope="row" class="bg-light">Post Office Box #</th>
-			    <td id="post_office_box_number">
-				{% if partner.post_office_box_number %}{{ partner.post_office_box_number }}{% else %}-{% endif %}
-			    </td>
-			</tr>
-                	<!-- ############ end LOCATION ############ -->
-                	<!-- ############ ACCOUNT ############ -->
+            <tr>
+                <th scope="row" class="bg-light">Location</th>
+                <td id="street_address">
+                    <a href="{{ partner.get_google_maps_url }}" target="_blank">{{ partner.get_postal_address }}&nbsp;<i class="fas fa-map-marker-alt"></i></a>
+                </td>
+            </tr>
+            <!-- ############ end LOCATION ############ -->
+            <!-- ############ ACCOUNT ############ -->
 			<tr class="bg-primary text-white">
 			    <th scope="row" colspan="2">Account</th>
 			</tr>

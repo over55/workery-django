@@ -88,39 +88,9 @@
                     <th scope="row" colspan="2">Postal Address</th>
                 </tr>
                 <tr>
-                    <th scope="row" class="bg-light">Street Address</th>
+                    <th scope="row" class="bg-light">Location</th>
                     <td id="street_address">
-                        {% if customer.street_address %}{{ customer.street_address }}{% else %}-{% endif %}
-                    </td>
-                </tr>
-                <tr>
-                    <th scope="row" class="bg-light">Street Address (Extra)</th>
-                    <td id="street_address_extra">
-                        {% if customer.street_address_extra %}{{ customer.street_address_extra }}{% else %}-{% endif %}
-                    </td>
-                </tr>
-                <tr>
-                    <th scope="row" class="bg-light">City</th>
-                    <td id="city">
-                        {% if customer.address_locality %}{{ customer.address_locality }}{% else %}-{% endif %}
-                    </td>
-                </tr>
-                <tr>
-                    <th scope="row" class="bg-light">Province</th>
-                    <td id="region">
-                        {% if customer.address_region %}{{ customer.address_region }}{% else %}-{% endif %}
-                    </td>
-                </tr>
-                <tr>
-                    <th scope="row" class="bg-light">Country</th>
-                    <td id="country">
-                        {% if customer.address_country %}{{ customer.address_country }}{% else %}-{% endif %}
-                    </td>
-                </tr>
-                <tr>
-                    <th scope="row" class="bg-light">Postal Code</th>
-                    <td id="postal_code">
-                        {% if customer.postal_code %}{{ customer.postal_code }}{% else %}-{% endif %}
+                        <a href="{{ customer.get_google_maps_url }}" target="_blank">{{ customer.get_postal_address }}&nbsp;<i class="fas fa-map-marker-alt"></i></a>
                     </td>
                 </tr>
                 <tr>

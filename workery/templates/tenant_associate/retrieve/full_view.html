@@ -145,7 +145,7 @@
                         {% if associate.given_name %}{{ associate.given_name }}{% else %}-{% endif %}
                     </td>
                 </tr>
-		<tr>
+		        <tr>
                     <th scope="row" class="bg-light">Last Name</th>
                     <td id="last_name">
                         {% if associate.last_name %}{{ associate.last_name }}{% else %}-{% endif %}
@@ -169,7 +169,7 @@
                         {% if associate.description %}{{ associate.description }}{% else %}-{% endif %}
                     </td>
                 </tr>
-		<tr>
+		        <tr>
                     <th scope="row" class="bg-light">Tags</th>
                     <td id="tags">
                         {% for tag in associate.tags.all %}
@@ -178,7 +178,7 @@
                             {% endfor %}
                     </td>
                 </tr>
-		<tr>
+		        <tr>
                     <th scope="row" class="bg-light">Skill Sets</th>
                     <td id="skill_sets">
                         {% for skill_set in associate.skill_sets.all %}
@@ -229,50 +229,14 @@
                     <th scope="row" colspan="2">Postal Address</th>
                 </tr>
                 <tr>
-                    <th scope="row" class="bg-light">Street Address</th>
-                    <td id="street_address">
-                        {% if associate.street_address %}{{ associate.street_address }}{% else %}-{% endif %}
+                    <th scope="row" class="bg-light">Location</th>
+                    <td id="street_location">
+                        <a href="{{ associate.get_google_maps_url }}" target="_blank">{{ associate.get_postal_address }}&nbsp;<i class="fas fa-map-marker-alt"></i></a>
                     </td>
                 </tr>
-                <tr>
-                    <th scope="row" class="bg-light">Street Address (Extra)</th>
-                    <td id="street_address_extra">
-                        {% if associate.street_address_extra %}{{ associate.street_address_extra }}{% else %}-{% endif %}
-                    </td>
-                </tr>
-                <tr>
-                    <th scope="row" class="bg-light">City</th>
-                    <td id="city">
-                        {% if associate.address_locality %}{{ associate.address_locality }}{% else %}-{% endif %}
-                    </td>
-                </tr>
-                <tr>
-                    <th scope="row" class="bg-light">Province</th>
-                    <td id="region">
-                        {% if associate.address_region %}{{ associate.address_region }}{% else %}-{% endif %}
-                    </td>
-                </tr>
-                <tr>
-                    <th scope="row" class="bg-light">Country</th>
-                    <td id="country">
-                        {% if associate.address_country %}{{ associate.address_country }}{% else %}-{% endif %}
-                    </td>
-                </tr>
-                <tr>
-                    <th scope="row" class="bg-light">Postal Code</th>
-                    <td id="postal_code">
-                        {% if associate.postal_code %}{{ associate.postal_code }}{% else %}-{% endif %}
-                    </td>
-                </tr>
-		<tr>
-                    <th scope="row" class="bg-light">Post Office Box #</th>
-                    <td id="post_office_box_number">
-                        {% if associate.post_office_box_number %}{{ associate.post_office_box_number }}{% else %}-{% endif %}
-                    </td>
-                </tr>
-		<!-- ############ end LOCATION ############ -->
+		        <!-- ############ end LOCATION ############ -->
                 <!-- ############ DETAILS ############ -->
-		<tr class="bg-primary text-white">
+		        <tr class="bg-primary text-white">
                     <th scope="row" colspan="2">Details</th>
                 </tr>
                 <tr>
@@ -285,7 +249,7 @@
                             {% endfor %}
                     </td>
                 </tr>
-		<tr>
+		        <tr>
                     <th scope="row" class="bg-light">Hourly salary desired</th>
                     <td id="hourly_salary_desired">
                         {% if associate.hourly_salary_desired %}{{ associate.hourly_salary_desired }}{% else %}-{% endif %}

@@ -66,7 +66,7 @@
                     <p class="border-bottom mb-3 pb-1 text-secondary">Job Details</p>
                     <div class="form-row">
                         <div class="form-group col-md-12 mb-4">
-                            <label for="customer">Customer</label>
+                            <label for="customer">Client</label>
                             <p>{% if job.customer %}<a href="{% url 'workery_tenant_customer_lite_retrieve' 'summary' job.customer.id %}" target="_blank">{{ job.customer }}&nbsp;<i class="fas fa-external-link-alt"></i></a>{% else %}-{% endif %}</p>
                             <div id="customer-error" class="invalid-feedback"></div>
                         </div>

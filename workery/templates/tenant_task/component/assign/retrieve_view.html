@@ -74,58 +74,24 @@
 					    </td>
 					</tr>
 					<tr>
-					    <th scope="row" class="bg-light">Customer Name</th>
+					    <th scope="row" class="bg-light">Client Name</th>
 					    <td id="customer">
                             {% if task_item.job.customer %}<a href="{% url 'workery_tenant_customer_lite_retrieve' 'summary' task_item.job.customer.id %}" target="_blank">{{ task_item.job.customer }}&nbsp;<i class="fas fa-external-link-alt"></i></a>{% else %}-{% endif %}
 					    </td>
 					</tr>
 					<tr>
-					    <th scope="row" class="bg-light">Customer Phone</th>
+					    <th scope="row" class="bg-light">Client Phone</th>
 					    <td id="telephone">
                             {% if task_item.job.customer.telephone %}<a href="tel:{{ task_item.job.customer.telephone }}">{{ task_item.job.customer.telephone|pretty_formatted_phonenumber }}</a>{% else %}-{% endif %}
 
 					    </td>
 					</tr>
                     <tr>
-                        <th scope="row" class="bg-light">Customer Street Address</th>
+                        <th scope="row" class="bg-light">Client Location</th>
                         <td id="street_address">
-                            {% if task_item.job.customer.street_address %}{{ task_item.job.customer.street_address }}{% else %}-{% endif %}
-                        </td>
-                    </tr>
-                    <tr>
-                        <th scope="row" class="bg-light">Customer Street Address (Extra)</th>
-                        <td id="street_address_extra">
-                            {% if task_item.job.customer.street_address_extra %}{{ task_item.job.customer.street_address_extra }}{% else %}-{% endif %}
-                        </td>
-                    </tr>
-                    <tr>
-                        <th scope="row" class="bg-light">Customer City</th>
-                        <td id="city">
-                            {% if task_item.job.customer.address_locality %}{{ task_item.job.customer.address_locality }}{% else %}-{% endif %}
-                        </td>
-                    </tr>
-                    <tr>
-                        <th scope="row" class="bg-light">Customer Province</th>
-                        <td id="region">
-                            {% if task_item.job.customer.address_region %}{{ task_item.job.customer.address_region }}{% else %}-{% endif %}
-                        </td>
-                    </tr>
-                    <tr>
-                        <th scope="row" class="bg-light">Customer Country</th>
-                        <td id="country">
-                            {% if task_item.job.customer.address_country %}{{ task_item.job.customer.address_country }}{% else %}-{% endif %}
-                        </td>
-                    </tr>
-                    <tr>
-                        <th scope="row" class="bg-light">Customer Postal Code</th>
-                        <td id="postal_code">
-                            {% if task_item.job.customer.postal_code %}{{ task_item.job.customer.postal_code }}{% else %}-{% endif %}
-                        </td>
-                    </tr>
-                    <tr>
-                        <th scope="row" class="bg-light">Customer Post Office Box #</th>
-                        <td id="post_office_box_number">
-                            {% if task_item.job.customer.post_office_box_number %}{{ task_item.job.customer.post_office_box_number }}{% else %}-{% endif %}
+                            <a href="{{ task_item.job.customer.get_google_maps_url }}" target="_blank">
+                                {{ task_item.job.customer.get_postal_address_without_postal_code }}&nbsp;<i class="fas fa-map-marker-alt"></i>
+                            </a>
                         </td>
                     </tr>
                     <tr>

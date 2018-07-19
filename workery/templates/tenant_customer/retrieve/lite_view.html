@@ -113,7 +113,7 @@
     <div class="row">
 		<div class="col-sm-3 p-3 mb-2">
 			<a class="btn btn-primary btn-lg" href="{% if template == 'search' %}{% url 'workery_tenant_customer_search' %}{% elif template == 'list' %}{% url 'workery_tenant_customer_list' %}{% else %}{% url 'workery_tenant_customer_summary' %}{% endif %}" role="button">
-                	<i class="fas fa-arrow-left"></i> &nbsp;{% if template == 'search' %}{% trans 'Back to Search' %}{% elif template == 'list' %}{% trans 'Back to Client List' %}{% else %}{% trans 'Back to Client\'s Home' %}{% endif %}</a>
+                <i class="fas fa-arrow-left"></i> &nbsp;{% if template == 'search' %}{% trans 'Back to Search' %}{% elif template == 'list' %}{% trans 'Back to Client List' %}{% else %}{% trans 'Back to Client\'s Home' %}{% endif %}</a>
 		</div>
 	</div>
     <!------------------------------------------------------------------------->
@@ -154,7 +154,7 @@
         <!--------------------------------------------------------------------->
         <div class="col-md-10 mx-auto rounded bg-light border p-2" id="id_master_form">
             <div class="row">
-		
+
 		<!-- IMAGE SECTION -->
                 <div class="col-sm-4 text-center">
 		    <!-- Image Upload -->
@@ -185,7 +185,11 @@
 
                 <div class="col-sm-8 p-2">
                     <h3>{{ customer.given_name }}&nbsp;{{ customer.last_name }}</h3>
-                    <p class="text-muted mb-2">{{ customer.street_address }},&nbsp;{{ customer.address_locality }},&nbsp;{{ customer.address_region }},&nbsp;{{ customer.address_country }}&nbsp;<i class="fas fa-map-marker-alt"></i></p>
+                    <p class="text-muted mb-2">
+                        <a href="{{ customer.get_google_maps_url }}" target="_blank">
+                            {{ customer.get_postal_address_without_postal_code }}&nbsp;<i class="fas fa-map-marker-alt"></i>
+                        </a>
+                    </p>
                     <p class="mb-2"><i class="fas fa-envelope"></i>&nbsp;{% if customer.owner.email %}<a href="mailto:{{ customer.owner.email }}">{{ customer.owner.email }}</a>{% else %}-{% endif %}</p>
                     <p class="mb-2"><i class="fas fa-phone-square"></i>&nbsp;{% if customer.telephone %}<a href="tel:{{ customer.telephone }}">{{ customer.telephone|pretty_formatted_phonenumber }}</a>{% else %}-{% endif %}</p>
                     <p class="m-0"><strong>Tag(s):</strong></p>

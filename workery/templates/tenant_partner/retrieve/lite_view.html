@@ -200,7 +200,11 @@
 
                 <div class="col-sm-7 px-4 py-3">
                     <h3>{{ partner.given_name }}&nbsp;{{ partner.last_name }}</h3>
-                    <p class="text-muted">{{ partner.address_locality }},&nbsp;{{ partner.address_region }},&nbsp;{{ partner.address_country }}&nbsp;<i class="fas fa-map-marker-alt"></i></p>
+                    <p class="text-muted">
+                        <a href="{{ partner.get_google_maps_url }}" target="_blank">
+                            {{ partner.get_postal_address_without_postal_code }}&nbsp;<i class="fas fa-map-marker-alt"></i>
+                        </a>
+                        </p>
                     <p><i class="fas fa-envelope"></i>&nbsp;{% if partner.owner.email %}<a href="mailto:{{ partner.owner.email }}">{{ partner.owner.email }}</a>{% else %}-{% endif %}</p>
                     <p><i class="fas fa-phone-square"></i>&nbsp;{% if partner.telephone %}<a href="tel:{{ partner.telephone }}">{{ partner.telephone|pretty_formatted_phonenumber }}</a>{% else %}-{% endif %}</p>
                     <p class="m-0"><strong>Tag(s):</strong></p>

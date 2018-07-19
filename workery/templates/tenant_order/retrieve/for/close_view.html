@@ -191,7 +191,7 @@
             reason = parseInt(reason);
         }
 
-        // Get our "Customer Survey".
+        // Get our "Client Survey".
         var was_job_satisfactory = get_selected_radio_value('was_job_satisfactory');
         var was_job_finished_on_time_and_on_budget = get_selected_radio_value('was_job_finished_on_time_and_on_budget');
         var was_associate_punctual = get_selected_radio_value('was_associate_punctual');
@@ -393,7 +393,7 @@
 					    <th scope="row" colspan="2" id="Task">Completion Survey</th>
 					</tr>
 					<tr>
-					    <th scope="row" class="bg-light">Customer Name</th>
+					    <th scope="row" class="bg-light">Client Name</th>
 					    <td id="customer">
                             {% if job.customer %}
                                 <a href="{% url 'workery_tenant_customer_lite_retrieve' 'summary' job.customer.id %}" target="_blank">

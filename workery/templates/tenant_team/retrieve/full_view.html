@@ -199,45 +199,9 @@
                     <th scope="row" colspan="2">Postal Address</th>
                 </tr>
                 <tr>
-                    <th scope="row" class="bg-light">Street Address</th>
+                    <th scope="row" class="bg-light">Location</th>
                     <td id="street_address">
-                        {% if staff.street_address %}{{ staff.street_address }}{% else %}-{% endif %}
-                    </td>
-                </tr>
-                <tr>
-                    <th scope="row" class="bg-light">Street Address (Extra)</th>
-                    <td id="street_address_extra">
-                        {% if staff.street_address_extra %}{{ staff.street_address_extra }}{% else %}-{% endif %}
-                    </td>
-                </tr>
-                <tr>
-                    <th scope="row" class="bg-light">City</th>
-                    <td id="city">
-                        {% if staff.address_locality %}{{ staff.address_locality }}{% else %}-{% endif %}
-                    </td>
-                </tr>
-                <tr>
-                    <th scope="row" class="bg-light">Province</th>
-                    <td id="region">
-                        {% if staff.address_region %}{{ staff.address_region }}{% else %}-{% endif %}
-                    </td>
-                </tr>
-                <tr>
-                    <th scope="row" class="bg-light">Country</th>
-                    <td id="country">
-                        {% if staff.address_country %}{{ staff.address_country }}{% else %}-{% endif %}
-                    </td>
-                </tr>
-                <tr>
-                    <th scope="row" class="bg-light">Postal Code</th>
-                    <td id="postal_code">
-                        {% if staff.postal_code %}{{ staff.postal_code }}{% else %}-{% endif %}
-                    </td>
-                </tr>
-		        <tr>
-                    <th scope="row" class="bg-light">Post Office Box #</th>
-                    <td id="post_office_box_number">
-                        {% if staff.post_office_box_number %}{{ staff.post_office_box_number }}{% else %}-{% endif %}
+                        <a href="{{ staff.get_google_maps_url }}" target="_blank">{{ staff.get_postal_address }}&nbsp;<i class="fas fa-map-marker-alt"></i></a>
                     </td>
                 </tr>
 		    <!-- ############ end LOCATION ############ -->
