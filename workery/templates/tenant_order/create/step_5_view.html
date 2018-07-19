@@ -25,7 +25,6 @@
         var tmp_skillset_ids = localStorage.getObj("tmp_skillset_ids");
         var tmp_skillset_values = localStorage.getObj("tmp_skillset_values");
         var tmp_start_date = localStorage.getItem("tmp_start_date");
-        var tmp_order_service_fee_text = localStorage.getItem("tmp_order_service_fee_text");
 
         $('#selected_customer_name').append(tmp_customer_name);
 
@@ -50,9 +49,6 @@
 
         // Set our `comment` field.
         $('#selected_comment_id').append(tmp_comment);
-
-        // Service Fee
-        $('#selected_service_fee').append(tmp_order_service_fee_text);
     });
 
     function close_and_redirect() {
@@ -90,7 +86,6 @@
                 'customer': customer_id,
                 'associate': null,
                 'skill_sets': localStorage.getObj("tmp_skillset_ids"),
-                'invoice_service_fee': localStorage.getObj("tmp_order_service_fee_id",),
                 'is_ongoing': is_ongoing,
                 'is_home_support_service': is_home_support_service,
                 'description': localStorage.getItem("tmp_describe"),
@@ -260,12 +255,6 @@
             <tr>
               <th scope="row" class="bg-light">Skill(s) Required</th>
               <td id="selected_skillsets_id">
-                  <!-- THIS IS WHERE THE SKILLS GET LOADED -->
-              </td>
-            </tr>
-            <tr>
-              <th scope="row" class="bg-light">Service Fee</th>
-              <td id="selected_service_fee">
                   <!-- THIS IS WHERE THE SKILLS GET LOADED -->
               </td>
             </tr>

@@ -15,12 +15,9 @@
         // Populate our 'select2' chosen values.
         var tmp_skillsets = localStorage.getObj("tmp_skillsets");
         $('#skillsets').val(tmp_skillsets);
-	     // Default service fee id
-        let o_service_fee = $('#order_service_fee');
-	    o_service_fee.prop('selectedIndex', 3);
+
         // Initialize our 'select2' element.
         $('.js-example-basic-multiple').select2();
-        $('#order_service_fee').val(localStorage.getItem("tmp_order_service_fee_id"));
     });
 
     // Save this field.
@@ -37,14 +34,6 @@
         var ids_string = tmp_skillsets.toString();
         localStorage.setObj("tmp_skillset_ids", tmp_skillsets);
 
-        var order_service_fee = $('#order_service_fee').val();
-        if (order_service_fee == undefined || order_service_fee == null || order_service_fee.length == 0) {
-            order_service_fee = '';
-        }
-
-        var order_service_fee_text = $( "#order_service_fee option:selected" ).text();
-        localStorage.setItem("tmp_order_service_fee_text", order_service_fee_text);
-
         // CREATE AN ARRAY OF ITEMS TO FILTER.
         var skills_arr = [];
         for (var i = 0; i < tmp_skillsets.length; i++) {
@@ -54,13 +43,11 @@
         } // end FOR LOOP.
         localStorage.setObj("tmp_skillset_values", skills_arr);
 
-        localStorage.setItem("tmp_order_service_fee_id", order_service_fee);
-
 	    // STEP 2: CLEAR EXISTING ERROR TEXT.
         $('#all_error_result').html("");
 	    $('#all_error_result').removeClass('error-block');
 
-	    if (tmp_skillsets !== '' && order_service_fee !== '') {
+	    if (tmp_skillsets !== '') {
 		    // Redirect to the next page in the form.
         	window.location = "{% url 'workery_tenant_job_step_5_create' %}";
 	    } else {
@@ -72,14 +59,6 @@
 		    	$('#skillsets-error').html("<ul><li>This field may not be blank.</li></ul>");
 			    $('#residential-job').addClass('was-validated');
 		   }
-           if (order_service_fee == '') {
-               // Errors box code
-               $('#all_error_result').append("<div class='form-error'><b>Service Fee:</b> This field may not be blank. </div>");
-               $('#all_error_result').addClass('error-block');
-               // Inline fields errors code
-               $('#order_service_fee-error').html("<ul><li>This field may not be blank.</li></ul>");
-               $('#residential-job').addClass('was-validated');
-           }
 	    }
 
         // Redirect to the next page in the form.
@@ -161,16 +140,6 @@
                         {% endfor %}
                     </select>
                     <div id="skillsets-error" class="invalid-feedback"></div>
-                </div>
-                <div class="form-group col-md-12 mb-4">
-                    <label for="order_service_fee" class="font-b6">Service Fee</label>
-                    <select class="custom-select form-control-lg border-success" id="order_service_fee" name="order_service_fee" required>
-                        <option value="" selected>Service fee...</option>
-                        {% for service_fee in servicefees.all %}
-                        <option value="{{ service_fee.id }}">{{ service_fee.title }}</option>
-                        {% endfor %}
-                    </select>
-                    <div id="order_service_fee-error" class="invalid-feedback"></div>
                 </div>
             </div>
             <div class="form-group mb-3 mx-auto text-center p-0">
