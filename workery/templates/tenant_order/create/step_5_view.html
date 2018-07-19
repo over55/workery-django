@@ -51,7 +51,7 @@
         $('#selected_comment_id').append(tmp_comment);
     });
 
-    function close_and_redirect() {
+    function close_and_redirect(success_result) {
         ///////////////////////////////////
         // Delete all our selected data. //
         ///////////////////////////////////
@@ -68,13 +68,29 @@
         localStorage.removeItem("tmp_start_date");
         localStorage.removeItem("tmp_follow_up_days_number");
 
+        /////////////////////////////////////
+        // Get our pending task unique ID. //
+        /////////////////////////////////////
+        console.log(success_result);
+        var latest_pending_task_id = parseInt(success_result['latest_pending_task']);
+
         ////////////////////////////////////////////
         // Redirect to the next page in the form. //
         ////////////////////////////////////////////
-        window.location = "{% url 'workery_tenant_job_summary' %}?was_created=True";
+        var temp_url = "{% url 'workery_tenant_pending_task_retrieve' 0 %}?was_created=True";
+        var temp_url = temp_url.replace(0, latest_pending_task_id);
+        window.location = temp_url;
     }
 
-    function call_create_job(customer_id, success_callback) {
+    /**
+     *  Function will either (1) create a customer with job or (2) only create
+     *  a job and then clear the session.
+     */
+    function ajax_submit() {
+
+        var customer_id = localStorage.getItem("tmp_customer_id");
+
+
         var tmp_job_type = localStorage.getItem("tmp_job_type");
         var is_ongoing = tmp_job_type == "Ongoing" ? true : false;
         var tmp_home_support = localStorage.getItem("tmp_home_support");
@@ -93,7 +109,10 @@
                 'start_date': start_date,
                 'follow_up_days_number': localStorage.getItem("tmp_follow_up_days_number0")
             },
-            success_callback,
+            function(success_result) {
+                // Attach our success indicator
+                close_and_redirect(success_result);
+            },
             function(error_result) {
 
                 // STEP 1: Convert to JSON.
@@ -122,22 +141,6 @@
                 // Do nothing ...
             } // end FINISH
         ); // end CREATE API
-    }
-
-    function create_only_job(customer_id) {
-        call_create_job(customer_id, function() {
-            close_and_redirect();
-        });
-    } // end FUNC
-
-    /**
-     *  Function will either (1) create a customer with job or (2) only create
-     *  a job and then clear the session.
-     */
-    function ajax_submit() {
-
-        var customer_id = localStorage.getItem("tmp_customer_id");
-        create_only_job(customer_id);
 
     } // end FUNC.
 

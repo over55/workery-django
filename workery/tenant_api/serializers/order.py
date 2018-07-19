@@ -39,6 +39,7 @@ class WorkOrderListCreateSerializer(serializers.ModelSerializer):
     associate_last_name = serializers.ReadOnlyField(source='associate.owner.last_name')
     customer_first_name = serializers.ReadOnlyField(source='customer.owner.first_name')
     customer_last_name = serializers.ReadOnlyField(source='customer.owner.last_name')
+    latest_pending_task = serializers.ReadOnlyField()
 
     # created_by = serializers.ReadOnlyField()
     # last_modified_by = serializers.ReadOnlyField()
@@ -65,6 +66,7 @@ class WorkOrderListCreateSerializer(serializers.ModelSerializer):
             'associate_last_name',
             'customer_first_name',
             'customer_last_name',
+            'latest_pending_task',
 
             # Write only fields.
             'extra_comment',
@@ -219,6 +221,7 @@ class WorkOrderListCreateSerializer(serializers.ModelSerializer):
         validated_data['last_modified'] = self.context['created_by']
         # validated_data['extra_comment'] = None
         validated_data['assigned_skill_sets'] = order.skill_sets.all()
+        validated_data['latest_pending_task'] = first_task.id
 
         # Return our validated data.
         return validated_data
