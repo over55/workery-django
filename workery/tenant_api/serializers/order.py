@@ -84,7 +84,6 @@ class WorkOrderListCreateSerializer(serializers.ModelSerializer):
             'description',
             'start_date',
             'follow_up_days_number',
-            'invoice_service_fee',
         )
 
     def setup_eager_loading(cls, queryset):
@@ -97,7 +96,6 @@ class WorkOrderListCreateSerializer(serializers.ModelSerializer):
             'comments',
             'last_modified_by',
             'skill_sets',
-            'invoice_service_fee'
         )
         return queryset
 
@@ -113,7 +111,6 @@ class WorkOrderListCreateSerializer(serializers.ModelSerializer):
         description = validated_data.get('description', None)
         start_date = validated_data.get('start_date', timezone.now())
         follow_up_days_number = validated_data.get('follow_up_days_number', 0)
-        invoice_service_fee = validated_data.get('invoice_service_fee', None)
         state = validated_data.get('state', WORK_ORDER_STATE.NEW)
 
         #---------------------------------
@@ -142,7 +139,6 @@ class WorkOrderListCreateSerializer(serializers.ModelSerializer):
             description=description,
             start_date=start_date,
             follow_up_days_number=follow_up_days_number,
-            invoice_service_fee=invoice_service_fee,
             created_from = self.context['created_from'],
             created_from_is_public = self.context['created_from_is_public'],
             state = state
