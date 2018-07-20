@@ -28,6 +28,7 @@ class AssociateFilter(django_filters.FilterSet):
             # 'last_modified_by',
             # 'comments',
             'owner__email',
+            'owner__is_active',
             'telephone'
         ]
         filter_overrides = {

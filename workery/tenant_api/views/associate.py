@@ -13,12 +13,14 @@ from tenant_api.permissions.associate import (
    CanListCreateAssociatePermission,
    CanRetrieveUpdateDestroyAssociatePermission
 )
+from tenant_api.filters.associate import AssociateFilter
 from tenant_api.serializers.associate import (
     AssociateListCreateSerializer,
     AssociateRetrieveUpdateDestroySerializer
 )
 from tenant_foundation.models import Associate
 from django.db import transaction
+
 
 class AssociateListCreateAPIView(generics.ListCreateAPIView):
     serializer_class = AssociateListCreateSerializer
@@ -36,7 +38,14 @@ class AssociateListCreateAPIView(generics.ListCreateAPIView):
         """
         List
         """
+        # Fetch all the queries.
         queryset = Associate.objects.all().order_by('-created')
+
+        # The following code will use the 'django-filter'
+        filter = AssociateFilter(self.request.GET, queryset=queryset)
+        queryset = filter.qs
+
+        # Return our filtered list.
         return queryset
 
     @transaction.atomic

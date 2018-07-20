@@ -34,7 +34,7 @@
             // OVERRIDE OUR GUI TO GET OUR DATA FROM REMOTE API WEB-SERVICE.
             ajax: {
                 // THE URL OF OUR API WEB-SERVICE.
-                url: "{% url 'workery_associate_list_create_api_endpoint' %}",
+                url: "{% url 'workery_associate_list_create_api_endpoint' %}?owner__is_active=True",
 
                 // THE AUTH-CREDENTIALS OF OUR API WEB-SERVICE WHICH WE WILL
                 // ATTACH WITH THIS CALL.
