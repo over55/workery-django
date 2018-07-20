@@ -47,12 +47,29 @@
                        {% trans 'Unpaid Jobs' %}
                    </a>
                </li>
-   	  	    <li class="breadcrumb-item active" aria-current="page">
-                <a href="{% url 'workery_tenant_financlial_job_search' template %}">
-                    {% trans 'Search' %}
-                </a>
-            </li>
-            <li class="breadcrumb-item active" aria-current="page">{% trans 'Search Results' %}</li>
+               <li class="breadcrumb-item active" aria-current="page">
+                   <a href="{% url 'workery_tenant_financlial_job_search' template %}">
+                       {% trans 'Search' %}
+                   </a>
+               </li>
+               <li class="breadcrumb-item active" aria-current="page">{% trans 'Search Results' %}</li>
+            {% elif template == "paid-jobs" %}
+                <li class="breadcrumb-item" aria-current="page">
+                    <a href="{% url 'workery_tenant_paid_jobs_list' %}">
+                        {% trans 'Financials' %}
+                    </a>
+                </li>
+      	  	    <li class="breadcrumb-item active" aria-current="page">
+                    <a href="{% url 'workery_tenant_paid_jobs_list' %}">
+                        {% trans 'Paid Jobs' %}
+                    </a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">
+                    <a href="{% url 'workery_tenant_financlial_job_search' template %}">
+                        {% trans 'Search' %}
+                    </a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">{% trans 'Search Results' %}</li>
             {% else %}
                 ---TODO---
             {% endif %}

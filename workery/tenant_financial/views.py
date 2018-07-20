@@ -172,7 +172,6 @@ class WorkOrderSearchResultView(LoginRequiredMixin, WorkeryListView):
         keyword = self.request.GET.get('keyword', None)
         if keyword:
             queryset = WorkOrder.objects.full_text_search(keyword)
-            queryset = queryset.order_by('-created')
         else:
             queryset = super(WorkOrderSearchResultView, self).get_queryset()
             filter = WorkOrderFilter(self.request.GET, queryset=queryset)
@@ -181,6 +180,14 @@ class WorkOrderSearchResultView(LoginRequiredMixin, WorkeryListView):
         # Attach owners.
         queryset = queryset.prefetch_related('customer', 'associate',)
 
+        # Check what template we are in and filter accordingly.
+        template = self.kwargs['template']
+        if template == 'unpaid-jobs':
+            queryset = queryset.filter(state=WORK_ORDER_STATE.COMPLETED_BUT_UNPAID)
+        if template == 'paid-jobs':
+            queryset = queryset.filter(state=WORK_ORDER_STATE.COMPLETED_AND_PAID)
+
+        # Return the results filtered
         return queryset.order_by('-id')
 
     def get_context_data(self, **kwargs):
@@ -189,7 +196,7 @@ class WorkOrderSearchResultView(LoginRequiredMixin, WorkeryListView):
 
         # Validate the template selected.
         template = self.kwargs['template']
-        if template not in ['unpaid-jobs',]:
+        if template not in ['unpaid-jobs','paid-jobs',]:
             from django.core.exceptions import PermissionDenied
             raise PermissionDenied(_('You entered wrong format.'))
         modified_context['template'] = template

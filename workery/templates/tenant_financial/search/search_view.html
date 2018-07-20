@@ -26,7 +26,19 @@
                        {% trans 'Unpaid Jobs' %}
                    </a>
                </li>
-   	  	    <li class="breadcrumb-item active" aria-current="page">{% trans 'Search' %}</li>
+   	  	       <li class="breadcrumb-item active" aria-current="page">{% trans 'Search' %}</li>
+            {% elif template == "paid-jobs" %}
+                  <li class="breadcrumb-item" aria-current="page">
+                      <a href="{% url 'workery_tenant_paid_jobs_list' %}">
+                          {% trans 'Financials' %}
+                      </a>
+                  </li>
+                  <li class="breadcrumb-item active" aria-current="page">
+                      <a href="{% url 'workery_tenant_paid_jobs_list' %}">
+                          {% trans 'Paid Jobs' %}
+                      </a>
+                  </li>
+                  <li class="breadcrumb-item active" aria-current="page">{% trans 'Search' %}</li>
             {% else %}
                 ---TODO---
             {% endif %}
@@ -40,7 +52,7 @@
         {% if template == "unpaid-jobs" %}
             {% trans 'Unpaid Jobs Search' %}
         {% else %}
-            ---TODO---
+            {% trans 'Paid Jobs Search' %}
         {% endif %}
     </h1>
     <div id="m-search" class="col-sm-5 mx-auto mt-4 pt-4">
@@ -80,7 +92,7 @@
                     <input type="text" class="form-control form-control-lg border border-primary" id="phonenumber" name="telephone" placeholder="(xxx) xxx-xxxx" minlength="10" maxlength="14">
                     <div id="phonenumber-error" class="invalid-feedback"></div>
                 </div>
-		<div class="form-group col-md-12 mb-4">
+		    <div class="form-group col-md-12 mb-4">
 	        	<label for="email-id">E-mail</label>
 	        	<input type="email" class="form-control form-control-lg border border-primary" id="email-id" name="email_id" placeholder="Email ID">
 	        	<div id="email-error" class="invalid-feedback"></div>
@@ -169,7 +181,7 @@
                 var lastname = document.getElementById('lastname');
                 var l_error = document.getElementById('lastname-error');
 
-		var email_id = document.getElementById('email-id');
+		        var email_id = document.getElementById('email-id');
                 var email_error = document.getElementById('email-error');
 
                 var phonenumber = document.getElementById('phonenumber');
@@ -318,13 +330,13 @@
                 $(function(){
                     $('#advanced-searchForm').on('submit',function(e){
                         var oneFilled = checkFields($(this));
-			var form_error = document.getElementById('form-error');
+			            var form_error = document.getElementById('form-error');
                         if(oneFilled === true) {
                             return true;
                         }else {
                             form_error.innerHTML = "Please fill in atleast one field and hit search.";
-			    form_error.style.display = "block";
-			    form_advanced_search.classList.add('was-validated');
+			                form_error.style.display = "block";
+			                form_advanced_search.classList.add('was-validated');
                             e.preventDefault();
                         }
                     });
