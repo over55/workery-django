@@ -102,6 +102,12 @@ class PendingTaskRetrieveForActivitySheetView(LoginRequiredMixin, WorkeryDetailV
 
         task_item = modified_context['task_item']
 
+        # Defensive Code - Prevent access to detail if already closed.
+        task_item = modified_context['task_item']
+        if task_item.is_closed:
+            print(task_item)
+            raise Http404("Task was already closed!")
+
         # STEP 1 - Find all the items belonging to this job and get the `pk` values.
         activity_sheet_associate_pks = ActivitySheetItem.objects.filter(
            job=task_item.job
@@ -139,12 +145,42 @@ class PendingTaskRetrieveForActivitySheetAndAssignAssociateCreateView(LoginRequi
     template_name = 'tenant_task/component/assign/create_view.html'
     menu_id = "task"
 
+    def get_context_data(self, **kwargs):
+        # Get the context of this class based view.
+        modified_context = super().get_context_data(**kwargs)
+
+        task_item = modified_context['task_item']
+
+        # Defensive Code - Prevent access to detail if already closed.
+        task_item = modified_context['task_item']
+        if task_item.is_closed:
+            print(task_item)
+            raise Http404("Task was already closed!")
+
+        # Return our modified context.
+        return modified_context
+
 
 class PendingTaskRetrieveAndCompleteCreateView(LoginRequiredMixin, WorkeryDetailView):
     context_object_name = 'task_item'
     model = TaskItem
     template_name = 'tenant_task/component/complete/create_view.html'
     menu_id = "task"
+
+    def get_context_data(self, **kwargs):
+        # Get the context of this class based view.
+        modified_context = super().get_context_data(**kwargs)
+
+        task_item = modified_context['task_item']
+
+        # Defensive Code - Prevent access to detail if already closed.
+        task_item = modified_context['task_item']
+        if task_item.is_closed:
+            print(task_item)
+            raise Http404("Task was already closed!")
+
+        # Return our modified context.
+        return modified_context
 
 
 class UnassignedTaskListView(LoginRequiredMixin, WorkeryListView):

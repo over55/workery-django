@@ -186,6 +186,21 @@ class ActivitySheetItemCreateSerializer(serializers.Serializer):
             job.state = WORK_ORDER_STATE.DECLINED
             job.save()
 
+        comment_obj = Comment.objects.create(
+            created_by=self.context['user'],
+            last_modified_by=self.context['user'],
+            text=comment,
+            created_from = self.context['from'],
+            created_from_is_public = self.context['from_is_public']
+        )
+        WorkOrderComment.objects.create(
+            about=job,
+            comment=comment_obj,
+        )
+
+        # For debugging purposes only.
+        logger.info("Job comment created.")
+
         # STEP 5 - Assign our new variables and return the validated data.
         validated_data['id'] = obj.id
         return validated_data
