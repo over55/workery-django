@@ -34,7 +34,7 @@ class TaskItemManager(models.Manager):
         # For more details please read:
         # https://docs.djangoproject.com/en/2.0/ref/contrib/postgres/search/
         return TaskItem.objects.annotate(
-            search=SearchVector('title'),
+            search=SearchVector('title', 'description', 'job__indexed_text',),
         ).filter(search=keyword)
 
     def delete_all(self):
