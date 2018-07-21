@@ -147,11 +147,13 @@
                             <i class="fa fa-handshake"></i>&nbsp;Partners
                         </a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link {% if menu_id == 'financials' %}active{% endif %}" href="{% url 'workery_tenant_unpaid_jobs_list' %}">
-                            <i class="fa fa-credit-card"></i>&nbsp;Financials
-                        </a>
-                    </li>
+                    {% if request.user.is_executive or request.user.is_management_staff %}
+                        <li class="nav-item">
+                            <a class="nav-link {% if menu_id == 'financials' %}active{% endif %}" href="{% url 'workery_tenant_unpaid_jobs_list' %}">
+                                <i class="fa fa-credit-card"></i>&nbsp;Financials
+                            </a>
+                        </li>
+                    {% endif %}
                     {% comment %}
                     <li class="nav-item">
                         <a class="nav-link {% if menu_id == 'resource' %}active{% endif %}" href="{% url 'workery_tenant_resource_category_list' %}">

@@ -3,17 +3,19 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
 from django.utils.decorators import method_decorator
 from django.utils.translation import ugettext_lazy as _
+from shared_foundation import constants
 from shared_foundation.mixins import (
     ExtraRequestProcessingMixin,
     WorkeryTemplateView,
     WorkeryListView,
-    WorkeryDetailView
+    WorkeryDetailView,
+    GroupRequiredMixin
 )
 from tenant_api.filters.order import WorkOrderFilter
 from tenant_foundation.models import WORK_ORDER_STATE, WorkOrder, WorkOrderServiceFee
 
 
-class UnpaidJobOrderListView(LoginRequiredMixin, WorkeryListView):
+class UnpaidJobOrderListView(LoginRequiredMixin, GroupRequiredMixin, WorkeryListView):
     context_object_name = 'job_list'
     queryset = WorkOrder.objects.filter(
         state=WORK_ORDER_STATE.COMPLETED_BUT_UNPAID
@@ -24,6 +26,10 @@ class UnpaidJobOrderListView(LoginRequiredMixin, WorkeryListView):
     template_name = 'tenant_financial/list/unpaid_view.html'
     paginate_by = 100
     menu_id = "financials"
+    group_required = [
+        constants.EXECUTIVE_GROUP_ID,
+        constants.MANAGEMENT_GROUP_ID
+    ]
 
     def get_context_data(self, **kwargs):
         modified_context = super().get_context_data(**kwargs)
@@ -40,7 +46,7 @@ class UnpaidJobOrderListView(LoginRequiredMixin, WorkeryListView):
         return modified_context
 
 
-class PaidJobOrderListView(LoginRequiredMixin, WorkeryListView):
+class PaidJobOrderListView(LoginRequiredMixin, GroupRequiredMixin, WorkeryListView):
     context_object_name = 'job_list'
     queryset = WorkOrder.objects.filter(
         state=WORK_ORDER_STATE.COMPLETED_AND_PAID
@@ -51,6 +57,10 @@ class PaidJobOrderListView(LoginRequiredMixin, WorkeryListView):
     template_name = 'tenant_financial/list/paid_view.html'
     paginate_by = 100
     menu_id = "financials"
+    group_required = [
+        constants.EXECUTIVE_GROUP_ID,
+        constants.MANAGEMENT_GROUP_ID
+    ]
 
     def get_context_data(self, **kwargs):
         modified_context = super().get_context_data(**kwargs)
@@ -67,7 +77,7 @@ class PaidJobOrderListView(LoginRequiredMixin, WorkeryListView):
         return modified_context
 
 
-class AllJobOrderListView(LoginRequiredMixin, WorkeryListView):
+class AllJobOrderListView(LoginRequiredMixin, GroupRequiredMixin, WorkeryListView):
     context_object_name = 'job_list'
     queryset = WorkOrder.objects.filter(
         Q(state=WORK_ORDER_STATE.COMPLETED_BUT_UNPAID) |
@@ -79,6 +89,10 @@ class AllJobOrderListView(LoginRequiredMixin, WorkeryListView):
     template_name = 'tenant_financial/list/all_view.html'
     paginate_by = 100
     menu_id = "financials"
+    group_required = [
+        constants.EXECUTIVE_GROUP_ID,
+        constants.MANAGEMENT_GROUP_ID
+    ]
 
     def get_context_data(self, **kwargs):
         modified_context = super().get_context_data(**kwargs)
@@ -95,11 +109,15 @@ class AllJobOrderListView(LoginRequiredMixin, WorkeryListView):
         return modified_context
 
 
-class JobRetrieveView(LoginRequiredMixin, WorkeryDetailView):
+class JobRetrieveView(LoginRequiredMixin, GroupRequiredMixin, WorkeryDetailView):
     context_object_name = 'job_item'
     model = WorkOrder
     template_name = 'tenant_financial/retrieve/view.html'
     menu_id = "financials"
+    group_required = [
+        constants.EXECUTIVE_GROUP_ID,
+        constants.MANAGEMENT_GROUP_ID
+    ]
 
     def get_object(self):
         obj = super().get_object()  # Call the superclass
@@ -120,11 +138,15 @@ class JobRetrieveView(LoginRequiredMixin, WorkeryDetailView):
         return modified_context
 
 
-class JobUpdateView(LoginRequiredMixin, WorkeryDetailView):
+class JobUpdateView(LoginRequiredMixin, GroupRequiredMixin, WorkeryDetailView):
     context_object_name = 'job_item'
     model = WorkOrder
     template_name = 'tenant_financial/update/view.html'
     menu_id = "financials"
+    group_required = [
+        constants.EXECUTIVE_GROUP_ID,
+        constants.MANAGEMENT_GROUP_ID
+    ]
 
     def get_object(self):
         obj = super().get_object()  # Call the superclass
@@ -149,17 +171,25 @@ class JobUpdateView(LoginRequiredMixin, WorkeryDetailView):
 
 
 
-class WorkOrderSearchView(LoginRequiredMixin, WorkeryTemplateView):
+class WorkOrderSearchView(LoginRequiredMixin, GroupRequiredMixin, WorkeryTemplateView):
     template_name = 'tenant_financial/search/search_view.html'
     menu_id = "financials"
+    group_required = [
+        constants.EXECUTIVE_GROUP_ID,
+        constants.MANAGEMENT_GROUP_ID
+    ]
 
 
-class WorkOrderSearchResultView(LoginRequiredMixin, WorkeryListView):
+class WorkOrderSearchResultView(LoginRequiredMixin, GroupRequiredMixin, WorkeryListView):
     context_object_name = 'order_list'
     queryset = WorkOrder.objects.order_by('-created')
     template_name = 'tenant_financial/search/result_view.html'
     paginate_by = 100
     menu_id = "financials"
+    group_required = [
+        constants.EXECUTIVE_GROUP_ID,
+        constants.MANAGEMENT_GROUP_ID
+    ]
     skip_parameters_array = ['page']
 
     def get_queryset(self):

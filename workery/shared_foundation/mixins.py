@@ -1,5 +1,22 @@
 # -*- coding: utf-8 -*-
+from django.core.exceptions import PermissionDenied
+from django.urls import reverse
 from django.views.generic import DetailView, ListView, TemplateView
+
+
+class GroupRequiredMixin(object):
+    """
+    Mixin used to restrict authenticated user access to the required group
+    specified in the class-based view.
+    """
+    group_required = []
+
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            if request.user.groups.filter(id__in=self.group_required):
+                return super(GroupRequiredMixin, self).dispatch(request, *args, **kwargs)
+
+        raise PermissionDenied
 
 
 class ExtraRequestProcessingMixin(object):
