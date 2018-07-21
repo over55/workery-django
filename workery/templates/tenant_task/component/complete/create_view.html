@@ -192,6 +192,12 @@ function get_selected_radio_value(radiofields_name) {
 						    {{ task_item.description }}
 					    </td>
 					</tr>
+                    <tr>
+					    <th scope="row" class="bg-light">Job Comments</th>
+					    <td id="job_comments">
+						    <a href="{% url 'workery_tenant_job_comments_retrieve' 'summary' task_item.job.id  %}" target="_blank">{% trans 'View comments' %}&nbsp;({{ task_item.job.comments.count }})&nbsp;<i class="fas fa-external-link-alt"></i></a>
+					    </td>
+					</tr>
 				    </tbody>
 				</table>
 		</div>

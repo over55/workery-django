@@ -31,7 +31,7 @@
     {% endif %}
     <!------------------------------------------------------------------------->
     <!-- end NOTIFICATION -->
-    
+
     <!-- STEP NAVIGATION -->
     <!------------------------------------------------------------------------->
     {% if task_item.type_of != 3 %}
@@ -182,7 +182,7 @@
                 <tr>
                     <th scope="row" class="bg-light">Comment(s)</th>
                     <td id="comments">
-                        <a href="{% url 'workery_tenant_job_comments_retrieve' 'summary' task_item.job.id  %}" target="_blank">{% trans 'View comments' %}&nbsp;<i class="fas fa-external-link-alt"></i></a>
+                        <a href="{% url 'workery_tenant_job_comments_retrieve' 'summary' task_item.job.id  %}" target="_blank">{% trans 'View comments' %}&nbsp;({{ task_item.job.comments.count }})&nbsp;<i class="fas fa-external-link-alt"></i></a>
                     </td>
                 </tr>
                 <tr>
