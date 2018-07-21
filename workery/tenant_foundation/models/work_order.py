@@ -436,6 +436,62 @@ class WorkOrder(models.Model):
     def __str__(self):
         return str(self.pk)
 
+    def get_pretty_status(self):
+        """
+        Function returns the job status in a more user-friendly format.
+        """
+        if self.state == WORK_ORDER_STATE.PENDING:
+            return 'Pending'
+        elif self.state == WORK_ORDER_STATE.CANCELLED:
+            if self.closing_reason == 2:
+                return "Cancelled - Quote was too high"
+            elif self.closing_reason == 3:
+                return "Cancelled - Job completed by someone else"
+            elif self.closing_reason == 5:
+                return "Cancelled - Work no longer needed"
+            elif self.closing_reason == 6:
+                return "Cancelled - Client not satisfied with Associate"
+            elif self.closing_reason == 7:
+                return "Cancelled - Client did work themselves"
+            elif self.closing_reason == 8:
+                return "Cancelled - No Associate available"
+            elif self.closing_reason == 9:
+                return "Cancelled - Work environment unsuitable"
+            elif self.closing_reason == 10:
+                return "Cancelled - Client did not return call"
+            elif self.closing_reason == 11:
+                return "Cancelled - Associate did not have necessary equipment"
+            elif self.closing_reason == 12:
+                return "Cancelled - Repair not possible"
+            elif self.closing_reason == 13:
+                return "Cancelled - Could not meet deadline"
+            elif self.closing_reason == 14:
+                return "Cancelled - Associate did not call client"
+            elif self.closing_reason == 15:
+                return "Cancelled - Member issue"
+            elif self.closing_reason == 16:
+                return "Cancelled - Client billing issue"
+            else:
+                return "Cancelled - Other: "+self.closing_reason_other
+        elif self.state == WORK_ORDER_STATE.ONGOING:
+            return 'Ongoing'
+        elif self.state == WORK_ORDER_STATE.IN_PROGRESS:
+            return 'In Progress'
+        elif self.state == WORK_ORDER_STATE.COMPLETED_BUT_UNPAID:
+            return 'Completed but unpaid'
+        elif self.state == WORK_ORDER_STATE.COMPLETED_AND_PAID:
+            return 'Completed and paid'
+        elif self.state == WORK_ORDER_STATE.ARCHIVED:
+            return 'Archived'
+        elif self.state == WORK_ORDER_STATE.DECLINED:
+            return 'Declined'
+        elif self.state == WORK_ORDER_STATE.NEW:
+            return 'New'
+        else:
+            return self.state
+
+        return None
+
     """
     Override the `save` function to support save cached searchable terms.
     """
