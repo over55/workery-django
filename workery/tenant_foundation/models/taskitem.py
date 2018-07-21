@@ -4,6 +4,7 @@ import pytz
 from datetime import date, datetime, timedelta
 from django.conf import settings
 from django.contrib.auth.models import User
+from django.contrib.postgres.search import SearchVector, SearchVectorField
 from django.db import models
 from django.db import transaction
 from django.utils import timezone
@@ -26,6 +27,16 @@ from tenant_foundation.utils import *
 
 
 class TaskItemManager(models.Manager):
+    def full_text_search(self, keyword):
+        """Function performs full text search of various textfields."""
+        # The following code will use the native 'PostgreSQL' library
+        # which comes with Django to utilize the 'full text search' feature.
+        # For more details please read:
+        # https://docs.djangoproject.com/en/2.0/ref/contrib/postgres/search/
+        return TaskItem.objects.annotate(
+            search=SearchVector('title'),
+        ).filter(search=keyword)
+
     def delete_all(self):
         items = TaskItem.objects.all()
         for item in items.all():

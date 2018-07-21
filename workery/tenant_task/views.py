@@ -12,6 +12,7 @@ from shared_foundation.mixins import (
     WorkeryListView,
     WorkeryDetailView
 )
+from tenant_api.filters.task_item import TaskItemFilter
 from tenant_foundation.models import ActivitySheetItem, Associate, AwayLog, Customer, TaskItem
 
 
@@ -178,3 +179,65 @@ class PendingTaskRetrieveForActivityFollowUpWithAssociateSheetView(LoginRequired
     model = TaskItem
     template_name = 'tenant_task/component/pending_follow_up/create_view.html'
     menu_id = "task"
+
+
+class TaskSearchView(LoginRequiredMixin, WorkeryTemplateView):
+    template_name = 'tenant_task/search/search_view.html'
+    menu_id = "task"
+
+
+class TaskSearchResultView(LoginRequiredMixin, WorkeryListView):
+    context_object_name = 'task_list'
+    queryset = TaskItem.objects.order_by('-created')
+    template_name = 'tenant_task/search/result_view.html'
+    paginate_by = 100
+    menu_id = "task"
+    skip_parameters_array = ['page']
+
+    def get_queryset(self):
+        """
+        Override the default queryset to allow dynamic filtering with
+        GET parameterss using the 'django-filter' library.
+        """
+        # Run our search query.
+        queryset = None  # The queryset we will be returning.
+        keyword = self.request.GET.get('keyword', None)
+        if keyword:
+            queryset = TaskItem.objects.full_text_search(keyword)
+        else:
+            queryset = super(TaskSearchResultView, self).get_queryset()
+            filter = TaskItemFilter(self.request.GET, queryset=queryset)
+            queryset = filter.qs
+
+        # Attach owners.
+        queryset = queryset.prefetch_related(
+            'job',
+            'job__associate',
+            'job__customer',
+            'created_by',
+            'last_modified_by'
+        )
+
+        # Check what template we are in and filter accordingly.
+        template = self.kwargs['template']
+        if template == 'pending':
+            queryset = queryset.filter(is_closed=False)
+        else:
+            queryset = queryset.filter(is_closed=True)
+
+        # Return the results filtered
+        return queryset.order_by('-id')
+
+    def get_context_data(self, **kwargs):
+        # Get the context of this class based view.
+        modified_context = super().get_context_data(**kwargs)
+
+        # Validate the template selected.
+        template = self.kwargs['template']
+        if template not in ['pending',]:
+            from django.core.exceptions import PermissionDenied
+            raise PermissionDenied(_('You entered wrong format.'))
+        modified_context['template'] = template
+
+        # Return our modified context.
+        return modified_context
