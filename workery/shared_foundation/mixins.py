@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from django.core.exceptions import PermissionDenied
 from django.urls import reverse
+from django.utils.translation import ugettext_lazy as _
 from django.views.generic import DetailView, ListView, TemplateView
 
 
@@ -16,7 +17,7 @@ class GroupRequiredMixin(object):
             if request.user.groups.filter(id__in=self.group_required):
                 return super(GroupRequiredMixin, self).dispatch(request, *args, **kwargs)
 
-        raise PermissionDenied
+        raise PermissionDenied(_('You do not belong to group which was granted access to this view.'))
 
 
 class ExtraRequestProcessingMixin(object):
@@ -131,6 +132,57 @@ class WorkeryDetailView(DetailView, ExtraRequestProcessingMixin):
         #   so we can use this to help the pagination.
         base_context['filter_parameters'] = self.get_param_urls(self.skip_parameters_array)
         base_context['parameters'] = self.get_params_dict(self.skip_parameters_array)
+
+        # Return our custom context based on our `workery` app.
+        return base_context
+
+
+class ReturnIDParameterRequiredMixin(object):
+    """
+    Mixin used to restrict access to view based on whether the parameter in the
+    URL matches the specified IDs.
+    """
+    return_id_required = []
+
+    def dispatch(self, request, *args, **kwargs):
+        return_id = request.GET.get('return_id', None)
+        if return_id not in self.return_id_required:
+            raise PermissionDenied(_('You entered wrong format.'))
+        return super(ReturnIDParameterRequiredMixin, self).dispatch(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        """
+        Override the 'get_context_data' function do add our enhancements.
+        """
+        base_context = super().get_context_data(**kwargs)
+
+        # Attach the URL parameter to our view.
+        base_context['return_id'] = self.request.GET.get('return_id', None)
+
+        # Return our custom context based on our `workery` app.
+        return base_context
+
+
+class ParentNodeURLParameterRequiredMixin(object):
+    parent_node_required = []
+
+    def dispatch(self, request, *args, **kwargs):
+
+        # Validate the template selected.
+        parent_node = self.kwargs['parent_node']
+        if parent_node not in self.parent_node_required:
+            raise PermissionDenied(_('You entered wrong format.'))
+
+        return super(ParentNodeURLParameterRequiredMixin, self).dispatch(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        """
+        Override the 'get_context_data' function do add our enhancements.
+        """
+        base_context = super().get_context_data(**kwargs)
+
+        # Attach the URL parameter to our view.
+        base_context['parent_node'] = self.request.GET.get('parent_node', None)
 
         # Return our custom context based on our `workery` app.
         return base_context

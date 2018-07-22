@@ -28,6 +28,8 @@ from tenant_api.views.order_unassign import WorkOrderUnassignCreateAPIView
 from tenant_api.views.order_reopen import WorkOrderReopenCreateAPIView
 from tenant_api.views.order_service_fee import WorkOrderServiceFeeListCreateAPIView, WorkOrderServiceFeeRetrieveUpdateDestroyAPIView
 from tenant_api.views.ongoing_order import OngoingWorkOrderRetrieveUpdateDestroyAPIView
+from tenant_api.views.order_operation import CompletedWorkOrderUnassignOperationCreateAPIView
+
 
 
 urlpatterns = [
@@ -58,6 +60,9 @@ urlpatterns = [
     url(r'^api/orders$', WorkOrderListCreateAPIView.as_view(), name='workery_order_list_create_api_endpoint'),
     url(r'^api/order/(?P<pk>[^/.]+)/$', WorkOrderRetrieveUpdateDestroyAPIView.as_view(), name='workery_order_retrieve_update_destroy_api_endpoint'),
     url(r'^api/order-comments$', WorkOrderCommentListCreateAPIView.as_view(), name='workery_job_comment_list_create_api_endpoint'),
+
+    # WorkOrder - Operations
+    url(r'^api/orders/operation/closed-job/unassign$', CompletedWorkOrderUnassignOperationCreateAPIView.as_view(), name='workery_completed_order_unassign_operation_create_api_endpoint'),
 
     # WorkOrders - Update
     url(r'^api/orders/activity-sheet-item/assign$', ActivitySheetItemCreateAPIView.as_view(), name='workery_order_activity_sheet_item_create_api_endpoint'),

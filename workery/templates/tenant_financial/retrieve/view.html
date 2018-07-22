@@ -169,6 +169,18 @@
                         {% endif %}
                     </td>
                 </tr>
+                <tr>
+                    <th scope="row" class="bg-light">Available Operations</th>
+                    <td id="selected_operation">
+
+                        <a href="{% url 'workery_tenant_completed_job_unassign_operation' job_item.id %}?return_id=financials-pending">
+                            <button  id="id_submit_btn"	class="btn btn-danger btn-lg btn-fxw mt-4" type="button">
+                                <i class="fas fa-pencil-alt"></i>&nbsp;{% trans 'Cancel' %}
+                            </button>
+                        </a>
+
+                    </td>
+                </tr>
                 <!-- end Financial -->
             </tbody>
         </table>
