@@ -182,11 +182,14 @@
                         <!-- end Unassign -->
 
                         <!-- Close -->
+                        {% if job_item.state == WORK_ORDER_STATE.COMPLETED_AND_PAID %}
+                        <br />
                         <a href="{% url 'workery_tenant_completed_job_close_operation' job_item.id %}?return_id=financials-pending">
                             <button  id="id_submit_btn"	class="btn btn-danger btn-lg btn-fxw mt-4" type="button">
                                 <i class="fas fa-pencil-alt"></i>&nbsp;{% trans 'Close Job' %}
                             </button>
                         </a>
+                        {% endif %}
                         <!-- end Close -->
 
                     </td>
