@@ -45,7 +45,7 @@ def get_todays_date_plus_days(days=0):
     return timezone.now() + timedelta(days=days)
 
 
-class CompletedWorkOrderUnassignOperationSerializer(serializers.Serializer):
+class CompletedWorkOrderCloseOperationSerializer(serializers.Serializer):
     job = serializers.PrimaryKeyRelatedField(many=False, queryset=WorkOrder.objects.all(), required=True)
     reason = serializers.CharField(required=True, allow_blank=False)
     latest_pending_task = serializers.ReadOnlyField()
@@ -119,9 +119,8 @@ class CompletedWorkOrderUnassignOperationSerializer(serializers.Serializer):
         #------------------------------#
         # Assign our new ticket to job #
         #------------------------------#
-        job.associate = None
         job.latest_pending_task = task_item
-        job.state = WORK_ORDER_STATE.DECLINED
+        job.state = WORK_ORDER_STATE.COMPLETED_BUT_UNPAID
         job.save()
 
         # For debugging purposes only.

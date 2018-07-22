@@ -9,15 +9,8 @@ urlpatterns = (
     #
     # Completed Work Orders
     #
-    path('jobs/detail/<int:pk>/operation/closed-job/unassign',
-    # path('jobs/operation/<int:pk>/unassign-for-completed',
-    views.CompletedWorkOrderUnassignOperationView.as_view(),
-    name='workery_tenant_completed_job_unassign_operation'),
-
-    # path('jobs/<str:template>/detail/<int:pk>/operation/closed-job/close',
-    # # path('jobs/operation/<int:pk>/unassign-for-completed',
-    # views.CompletedWorkOrderUnassignOperationView.as_view(),
-    # name='workery_tenant_completed_job_unassign_operation'),
+    path('jobs/detail/<int:pk>/operation/closed-job/unassign', views.CompletedWorkOrderUnassignOperationView.as_view(), name='workery_tenant_completed_job_unassign_operation'),
+    path('jobs/detail/<int:pk>/operation/closed-job/close', views.CompletedWorkOrderCloseOperationView.as_view(), name='workery_tenant_completed_job_close_operation'),
 
     #
     # Non-Completed Work Orders

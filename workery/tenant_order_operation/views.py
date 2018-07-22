@@ -27,3 +27,15 @@ class CompletedWorkOrderUnassignOperationView(LoginRequiredMixin, GroupRequiredM
         constants.MANAGEMENT_GROUP_ID
     ]
     return_id_required = ['financials-pending']
+
+
+class CompletedWorkOrderCloseOperationView(LoginRequiredMixin, GroupRequiredMixin, ReturnIDParameterRequiredMixin, WorkeryDetailView):
+    context_object_name = 'job'
+    model = WorkOrder
+    template_name = 'tenant_order_operation/completed_work_order_close_operation.html'
+    menu_id = 'jobs'
+    group_required = [
+        constants.EXECUTIVE_GROUP_ID,
+        constants.MANAGEMENT_GROUP_ID
+    ]
+    return_id_required = ['financials-pending']
