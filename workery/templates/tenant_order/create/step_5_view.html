@@ -97,6 +97,8 @@
         var is_home_support_service = tmp_home_support == "Yes" ? true : false;
         var start_date = localStorage.getItem("start_date");
 
+        disable_btn(); // Disable button clicked.
+
         create_job_api(
             {
                 'customer': customer_id,
@@ -138,7 +140,8 @@
 
             }, // end ERROR
             function(xhr,status) {
-                // Do nothing ...
+                // Wait for a 5 seconds before enabling buttons again.
+                setTimeout(enable_btn(), 5000);
             } // end FINISH
         ); // end CREATE API
 
@@ -146,6 +149,22 @@
 
     function ajax_previous() {
         window.location = "{% url 'workery_tenant_job_step_4_create' %}";
+    }
+
+    /**
+     *  Function will unlock the submit button.
+     */
+    function disable_btn() {
+        $('#save_submit').prop("disabled", true);
+        $('#yes_submit').prop("disabled", true);
+    }
+
+    /**
+     *  Function will lock the submit button.
+     */
+    function enable_btn() {
+        $('#save_submit').prop("disabled", false);
+        $('#yes_submit').prop("disabled", false);
     }
 </script>
 <!----------------------------------------------------------------------------->
@@ -267,7 +286,7 @@
           </tbody>
         </table>
         <div class="form-group col-md-12 mb-3 p-0 mx-auto text-center">
-            <button class="btn btn-success btn-lg mt-4 float-right pl-4 pr-4" type="submit" data-toggle="modal" data-target="#yesModal"><i class="fas fa-check-circle"></i> &nbsp;Save</button>
+            <button class="btn btn-success btn-lg mt-4 float-right pl-4 pr-4" type="submit" data-toggle="modal" data-target="#yesModal" id="save_submit"><i class="fas fa-check-circle"></i> &nbsp;Save</button>
             <button class="btn btn-orange btn-lg mt-4 float-left pl-4 pr-4" type="button" onclick="ajax_previous();"><i class="fas fa-arrow-left"></i> Back</button>
         </div>
        </div>
