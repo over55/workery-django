@@ -92,35 +92,16 @@ class CompletedWorkOrderCloseOperationSerializer(serializers.Serializer):
         if job.latest_pending_task:
             job.latest_pending_task.is_closed = True
             job.latest_pending_task.closing_reason = 0
-            job.latest_pending_task.closing_reason_other = _('Closed because job was unassigned.')
+            job.latest_pending_task.closing_reason_other = _('Closed because job was closed.')
             job.latest_pending_task.created_by = self.context['user']
             job.latest_pending_task.last_modified_by = self.context['user']
             job.latest_pending_task.save()
 
-        #---------------------------------------------#
-        # Create a new task based on a new start date #
-        #---------------------------------------------#
-        task_item = TaskItem.objects.create(
-            created_by=self.context['user'],
-            last_modified_by=self.context['user'],
-            type_of = ASSIGNED_ASSOCIATE_TASK_ITEM_TYPE_OF_ID,
-            due_date = job.start_date,
-            is_closed = False,
-            job = job,
-            title = _('Assign an Associate'),
-            description = _('Please assign an associate to this job.')
-        )
-
-        # For debugging purposes only.
-        logger.info("Assignment Task #%(id)s was created b/c of unassignment." % {
-            'id': str(task_item.id)
-        })
-
-        #------------------------------#
-        # Assign our new ticket to job #
-        #------------------------------#
-        job.latest_pending_task = task_item
+        #----------------#
+        # Update the job #
+        #----------------#
         job.state = WORK_ORDER_STATE.COMPLETED_BUT_UNPAID
+        job.latest_pending_task = None
         job.save()
 
         # For debugging purposes only.
@@ -129,7 +110,7 @@ class CompletedWorkOrderCloseOperationSerializer(serializers.Serializer):
         #----------------------------#
         # Enhance our output results #
         #----------------------------#
-        validated_data['latest_pending_task'] = task_item.id
+        validated_data['latest_pending_task'] = None
 
         # Return our results.
         return validated_data

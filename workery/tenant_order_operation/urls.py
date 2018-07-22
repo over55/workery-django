@@ -11,6 +11,7 @@ urlpatterns = (
     #
     path('jobs/detail/<int:pk>/operation/closed-job/unassign', views.CompletedWorkOrderUnassignOperationView.as_view(), name='workery_tenant_completed_job_unassign_operation'),
     path('jobs/detail/<int:pk>/operation/closed-job/close', views.CompletedWorkOrderCloseOperationView.as_view(), name='workery_tenant_completed_job_close_operation'),
+    path('jobs/detail/<int:pk>/operation/closed-job/cancel', views.CompletedWorkOrderCancelOperationView.as_view(), name='workery_tenant_completed_job_cancel_operation'),
 
     #
     # Non-Completed Work Orders
