@@ -177,7 +177,7 @@
     <!-- end AWAY LOGS -->
 
     <!-- ORDER COMMENTS -->
-    <h1>{% trans 'Past 7 days comments' %}</h1>
+    <h1>{% trans 'Past 5 days comments' %}</h1>
     <div class="table-responsive">
         <table class="table table-striped">
             <thead>
@@ -188,7 +188,7 @@
                 </tr>
             </thead>
             <tbody>
-                {% for order_comment in past_7_day_comments %}
+                {% for order_comment in past_few_day_comments %}
                 <tr>
                     <td>
                         <a href="{% url 'workery_tenant_job_retrieve' 'summary' order_comment.about.id %}">{{ order_comment.about.id|intcomma }}</a>
