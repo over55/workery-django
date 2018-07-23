@@ -16,10 +16,11 @@ urlpatterns = (
     path('jobs/create/step-3/', create_views.Step3View.as_view(), name='workery_tenant_job_step_3_create'),
     path('jobs/create/step-4/', create_views.Step4View.as_view(), name='workery_tenant_job_step_4_create'),
     path('jobs/create/step-5/', create_views.Step5View.as_view(), name='workery_tenant_job_step_5_create'),
-    
+
     # List
     path('jobs/list/', list_view.JobListView.as_view(), name='workery_tenant_job_list'),
     path('archived-jobs/list/', list_view.ArchivedJobListView.as_view(), name='workery_tenant_job_archive_list'),
+    path('jobs/comments/', list_view.JobCommentsListView.as_view(), name='workery_tenant_job_comments_list'),
 
     # Search
     path('jobs/search/', search_view.JobSearchView.as_view(), name='workery_tenant_job_search'),

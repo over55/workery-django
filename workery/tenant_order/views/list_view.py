@@ -13,7 +13,7 @@ from shared_foundation.mixins import (
     WorkeryDetailView
 )
 from tenant_api.filters.order import WorkOrderFilter
-from tenant_foundation.models import WorkOrder, WORK_ORDER_STATE
+from tenant_foundation.models import WorkOrder, WorkOrderComment, WORK_ORDER_STATE
 
 
 class JobSummaryView(LoginRequiredMixin, GroupRequiredMixin, WorkeryListView):
@@ -80,3 +80,25 @@ class ArchivedJobListView(LoginRequiredMixin, GroupRequiredMixin, WorkeryListVie
         constants.MANAGEMENT_GROUP_ID,
         constants.FRONTLINE_GROUP_ID
     ]
+
+
+class JobCommentsListView(LoginRequiredMixin, GroupRequiredMixin, WorkeryListView):
+    context_object_name = 'comments_list'
+    queryset = WorkOrderComment.objects.order_by(
+        '-created_at'
+    ).prefetch_related(
+        'about',
+        'comment'
+    )
+    template_name = 'tenant_order/list/job_comments_view.html'
+    paginate_by = 100
+    menu_id = 'jobs'
+    group_required = [
+        constants.EXECUTIVE_GROUP_ID,
+        constants.MANAGEMENT_GROUP_ID,
+        constants.FRONTLINE_GROUP_ID
+    ]
+
+    def get_queryset(self):
+        queryset = super(JobCommentsListView, self).get_queryset() # Get the base.
+        return queryset

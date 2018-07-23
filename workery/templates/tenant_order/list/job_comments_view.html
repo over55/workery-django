@@ -1,0 +1,80 @@
+{% extends 'tenant_foundation/tenant_base.html' %}
+{% load staticfiles i18n shared_foundation_tags humanize %}
+
+{% block title %}
+{% trans 'Jobs List | Workery' %}
+{% endblock title %}
+
+{% block header_content %}
+{% endblock header_content %}
+
+{% block content %}
+
+<main id="main" role="main">
+
+    <!-- BREADCRUMB -->
+    <!------------------------------------------------------------------------->
+    <nav aria-label="breadcrumb">
+	  	<ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="{% url 'workery_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a>
+            </li>
+            <li class="breadcrumb-item">
+                <a href="{% url 'workery_tenant_job_summary' %}">{% trans 'Jobs' %}</a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">{% trans 'Comments' %}</li>
+	  	</ol>
+	</nav>
+    <!------------------------------------------------------------------------->
+    <!-- end BREADCRUMB -->
+
+    <h1>{% trans 'Comments' %}</h1>
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Job #</th>
+                    <th>Comment</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for order_comment in comments_list %}
+                <tr>
+                    <td>
+                        <a href="{% url 'workery_tenant_job_retrieve' 'summary' order_comment.about.id %}">{{ order_comment.about.id|intcomma }}</a>
+                    </td>
+                    <td>
+                        {{ order_comment.comment.text|truncatechars:150 }}{% if order_comment.comment.text|length > 150 %}...{% endif %}
+                    </td>
+                    <td>
+                        <a href="{% url 'workery_tenant_job_comments_retrieve' 'summary' order_comment.about.id %}">
+                            {% trans 'View' %}&nbsp;<i class="fas fa-chevron-right"></i>
+                        </a>
+                    </td>
+                </tr>
+                {% empty %}
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="pagination">
+        <span class="step-links">
+        {% if page_obj.has_previous %}
+        <a href="?page={{ page_obj.previous_page_number }}"><i class="fas fa-angle-left"></i>&nbsp;previous</a>
+        {% endif %}
+        <span class="current">
+        Page {{ page_obj.number }} of {{ paginator.num_pages }}.
+        </span>
+        {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}">next&nbsp;<i class="fas fa-angle-right"></i></a>
+        {% endif %}
+        </span>
+    </div>
+
+    <!-- RETURN-TO-TOP -->
+    <a id="return-to-top" href="#" class="btn-info btn-lg back-to-top" role="button" title="Back to top"><i class="fas fa-angle-up fa-2x"></i></a>
+    <!-- end RETURN-TO-TOP -->
+</main>
+{% endblock content %}

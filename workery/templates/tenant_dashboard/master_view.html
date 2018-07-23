@@ -177,7 +177,7 @@
     <!-- end AWAY LOGS -->
 
     <!-- ORDER COMMENTS -->
-    <h1>{% trans 'Past 5 days comments' %}</h1>
+    <h1>{% trans 'Past 5 day comments' %}</h1>
     <div class="table-responsive">
         <table class="table table-striped">
             <thead>
@@ -208,6 +208,7 @@
         </table>
     </div>
     <!-- end ORDER COMMENTS -->
+    <a href="{% url 'workery_tenant_job_comments_list' %}">See more comments&nbsp;<i class="fas fa-chevron-right"></i></a>
 
     <!-- RETURN-TO-TOP -->
     <a id="return-to-top" href="#" class="btn-info btn-lg back-to-top" role="button" title="Back to top"><i class="fas fa-angle-up fa-2x"></i></a>
