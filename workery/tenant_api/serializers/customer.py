@@ -202,11 +202,10 @@ class CustomerListCreateSerializer(serializers.ModelSerializer):
             'is_senior',
             'is_support',
             'job_info_read',
-            'how_hear',
             'type_of',
             'tags',
-            # 'how_hear',
-            # 'how_hear_other',
+            'how_hear',
+            'how_hear_other',
 
             # Misc (Read Only)
             # 'comments',
@@ -352,7 +351,8 @@ class CustomerListCreateSerializer(serializers.ModelSerializer):
             is_senior=validated_data.get('is_senior', False),
             is_support=validated_data.get('is_support', False),
             job_info_read=validated_data.get('job_info_read', False),
-            how_hear=validated_data.get('how_hear', None),
+            how_hear=validated_data.get('how_hear', 1),
+            how_hear_other=validated_data.get('how_hear_other', "Not answered"),
             type_of=type_of_customer,
             created_from = self.context['created_from'],
             created_from_is_public = self.context['created_from_is_public'],
@@ -603,11 +603,10 @@ class CustomerRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
             'is_senior',
             'is_support',
             'job_info_read',
-            'how_hear',
             'type_of',
             'tags',
-            # 'how_hear',
-            # 'how_hear_other',
+            'how_hear',
+            'how_hear_other',
 
             # Misc (Read Only)
             'extra_comment',
@@ -759,6 +758,7 @@ class CustomerRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         instance.is_support = validated_data.get('is_support', instance.is_support)
         instance.job_info_read = validated_data.get('job_info_read', instance.job_info_read)
         instance.how_hear = validated_data.get('how_hear', instance.how_hear)
+        instance.how_hear_other = validated_data.get('how_hear_other', instance.how_hear_other)
         instance.type_of=validated_data.get('type_of', instance.type_of)
 
         # # Misc (Read Only)

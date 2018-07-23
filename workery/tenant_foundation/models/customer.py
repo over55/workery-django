@@ -255,6 +255,29 @@ class Customer(AbstractPerson):
         else:
             return str(self.given_name)+" "+str(self.last_name)
 
+    def get_pretty_how_hear(self):
+        """
+        Return a user-friendly `how_hear` pretty formatted output.
+        """
+        if self.how_hear == 2:
+            return _('A friend or family member')
+        elif self.how_hear == 3:
+            return _('Google')
+        elif self.how_hear == 5:
+            return _('An Over 55 Associate')
+        elif self.how_hear == 6:
+            return _('Facebook')
+        elif self.how_hear == 7:
+            return _('Twitter')
+        elif self.how_hear == 8:
+            return _('Instagram')
+        elif self.how_hear == 9:
+            return _('Magazine Ad')
+        elif self.how_hear == 10:
+            return _('Event')
+        else:
+            return self.how_hear_other
+
     """
     Override the `save` function to support save cached searchable terms.
     """

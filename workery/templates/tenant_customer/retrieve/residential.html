@@ -95,6 +95,17 @@
                     </td>
                 </tr>
                 <!-- ############ end LOCATION ############ -->
+                <!-- ############ INTERNAL METRICS ############ -->
+                <tr class="bg-primary text-white">
+                    <th scope="row" colspan="2">Internal Metrics</th>
+                </tr>
+                <tr>
+                    <th scope="row" class="bg-light">How did they discover us?</th>
+                    <td id="street_address">
+                        {{ customer.get_pretty_how_hear }}
+                    </td>
+                </tr>
+                <!-- ############ end INTERNAL METRICS ############ -->
                 <!-- ############ SYSTEM ############ -->
                 <tr class="bg-primary text-white">
                     <th scope="row" colspan="2">System</th>
