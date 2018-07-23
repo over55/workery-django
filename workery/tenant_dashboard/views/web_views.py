@@ -71,6 +71,8 @@ class DashboardView(LoginRequiredMixin, GroupRequiredMixin, WorkeryTemplateView)
         one_week_before_today = get_todays_date_minus_days(7)
         modified_context['past_7_day_comments'] = WorkOrderComment.objects.filter(
             created_at__gte=one_week_before_today
+        ).order_by(
+            '-created_at'
         ).prefetch_related(
             'about',
             'comment'
