@@ -205,6 +205,8 @@ class CustomerListCreateSerializer(serializers.ModelSerializer):
             'how_hear',
             'type_of',
             'tags',
+            # 'how_hear',
+            # 'how_hear_other',
 
             # Misc (Read Only)
             # 'comments',
@@ -604,6 +606,8 @@ class CustomerRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
             'how_hear',
             'type_of',
             'tags',
+            # 'how_hear',
+            # 'how_hear_other',
 
             # Misc (Read Only)
             'extra_comment',

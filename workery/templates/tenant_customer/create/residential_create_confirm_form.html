@@ -119,6 +119,8 @@
                 'tags': localStorage.getObj("tmp_residential_customer_person_tag_ids"),
                 'description': localStorage.getItem("tmp_residential_customer_description"),
                 'extra_comment': localStorage.getItem("tmp_residential_customer_comment"),
+                'how_hear': localStorage.getItem("tmp_residential_customer_how_hear"),
+                'how_hear_other': localStorage.getItem("tmp_residential_customer_how_hear_other"),
                 'organization_name': null, // LEAVE ALONE AS IS.
                 'organization_type_of': null // LEAVE ALONE AS IS.
             },
@@ -149,6 +151,8 @@
                 localStorage.removeItem("tmp_residential_customer_person_tag_values")
                 localStorage.removeItem("tmp_residential_customer_description")
                 localStorage.removeItem("tmp_residential_customer_comment")
+                localStorage.removeItem("tmp_residential_customer_how_hear")
+                localStorage.removeItem("tmp_residential_customer_how_hear_other")
 
                 // REDIRECT TO SUCCESS PAGE.
                 window.location = redirect_url;

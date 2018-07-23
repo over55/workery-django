@@ -10,6 +10,16 @@
 	        maxDate: 'today'
         });
 
+        // PLUG IN EVENT LISTENER ON REASON DROPDOWN CHANGE.
+        $('#how_hear').on('change',function(){
+            if( $(this).val()==="1" || $(this).val()===1){
+                $("#how_hear_other_div").show();
+            }
+            else{
+                $("#how_hear_other_div").hide();
+            }
+        });
+
         // Populate our 'select2' chosen values.
         var tmp_person_tags = localStorage.getObj("tmp_residential_customer_person_tag_ids");
         $('#person_tags').val(tmp_person_tags);
@@ -38,6 +48,12 @@
         $('#password_repeat').val(localStorage.getItem("tmp_residential_customer_password_repeat"));
         $('#description').val(localStorage.getItem("tmp_residential_customer_description"));
         $('#comment').val(localStorage.getItem("tmp_residential_customer_comment"));
+        $('#how_hear').val(localStorage.getItem("tmp_residential_customer_how_hear"));
+        $('#how_hear_other').val(localStorage.getItem("tmp_residential_customer_how_hear_other"));
+
+        if ( $('#how_hear').val() == 1 ) {
+            $("#how_hear_other_div").show();
+        }
 
         // The following code continously checks to see if the current user
         // is assigned to the email.
@@ -291,6 +307,9 @@
         var description = $('#describe').val();
         var comment = $('#comment').val();
 
+        var how_hear = $('#how_hear').val();
+        var how_hear_other = $('#how_hear_other').val();
+
         //----------------------------------------------------------------//
         //             SAVE THE EXTRACTED DATA INTO LOCAL STORAGE         //
         //----------------------------------------------------------------//
@@ -315,6 +334,8 @@
         localStorage.setItem("tmp_residential_customer_password_repeat", password_repeat);
         localStorage.setItem("tmp_residential_customer_description", description);
         localStorage.setItem("tmp_residential_customer_comment", comment);
+        localStorage.setItem("tmp_residential_customer_how_hear", how_hear);
+        localStorage.setItem("tmp_residential_customer_how_hear_other", how_hear_other);
 
         // SAVE ARRAY OF IDS.
         localStorage.setObj("tmp_residential_customer_person_tag_ids", person_tags);
@@ -383,7 +404,9 @@
                 'description': localStorage.getItem("tmp_residential_customer_description"),
                 'extra_comment': localStorage.getItem("tmp_residential_customer_comment"),
                 'organization_name': null, // LEAVE ALONE AS IS.
-                'organization_type_of': null // LEAVE ALONE AS IS.
+                'organization_type_of': null, // LEAVE ALONE AS IS.
+                'how_hear': how_hear,
+                'how_hear_other': how_hear_other,
             },
             function(result_dict) { // Success
                 // FOR DEBUGGING PURPOSES ONLY.
@@ -592,6 +615,38 @@
             </div>
         </div>
         <!-- ############ end LOCATION ############ -->
+
+        <!-- ############ INTERNAL METRICS ############ -->
+        <p class="border-bottom mb-3 pb-1 text-secondary">Interal Metrics</p>
+        <div class="form-row"><!-- HOW HEAR -->
+            <div class="form-group col-md-12 mb-4">
+                <label for="how_hear">How did you hear about us? <sup>*</sup></label>
+                <select class="form-control form-control-lg border border-primary" id="how_hear" name="how_hear" required="">
+                    <option value="0" selected="selected">Please select an option...</option>
+                    <option value="2">A friend or family member</option>
+                    <option value="3">Google</option>
+                    <option value="5">An Over 55 Associate</option>
+                    <option value="6">Facebook</option>
+                    <option value="7">Twitter</option>
+                    <option value="8">Instagram</option>
+                    <option value="9">Magazine Ad</option>
+                    <option value="10">Event</option>
+                    <option value="1">Other</option>
+                </select>
+                <div id="how_hear-error" class="invalid-feedback"></div>
+            </div>
+            <!-- end HOW HEAR -->
+
+            <!-- HOW HEAR (OTHER) -->
+            <div class="form-group col-md-12 mb-4" id="how_hear_other_div" style="display: none;">
+                <label for="how_hear_other">How did you hear about us? (Other) <sup>*</sup></label>
+                <input type="text" class="form-control form-control-lg border border-primary" id="how_hear_other" name="how_hear_other" placeholder="Text" minlength="3" value="" required="">
+                <div id="how_hear_other-error" class="invalid-feedback"></div>
+            </div>
+            <!-- end HOW HEAR (OTHER) -->
+        </div>
+        <!-- ############ end INTERNAL METRICS ############ -->
+
         <!-- ############ SECURITY ############ -->
         <p class="border-bottom mb-3 pb-1 text-secondary">Account</p>
         <div class="form-row">

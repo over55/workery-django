@@ -151,6 +151,19 @@ class Customer(AbstractPerson):
         blank=True,
         null=True,
     )
+    # how_hear = models.PositiveSmallIntegerField(
+    #     _("Learned about us"),
+    #     help_text=_('How customer heared/learned about this Over 55 Inc.'),
+    #     blank=True,
+    #     null=True,
+    # )
+    # how_hear_other = models.CharField(
+    #     _("Learned about us (other)"),
+    #     max_length=2055,
+    #     help_text=_('How customer heared/learned about this Over 55 Inc.'),
+    #     blank=True,
+    #     null=True,
+    # )
     created_by = models.ForeignKey(
         SharedUser,
         help_text=_('The user whom created this object.'),
