@@ -34,12 +34,12 @@ from tenant_foundation.utils import *
 
 
 class Command(BaseCommand):
-    help = _('Command will run `hotfix_1`.')
+    help = _('Command will run `hotfix_5`.')
 
     def add_arguments(self, parser):
         """
         Run manually in console:
-        python manage.py hotfix_1 "london"
+        python manage.py hotfix_5 "london"
         """
         parser.add_argument('schema_name', nargs='+', type=str)
 

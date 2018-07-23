@@ -69,17 +69,6 @@ class Command(BaseCommand):
         for customer in customers.all():
             how_hear_text = customer.how_hear
             if how_hear_text:
-                print(customer.how_hear)
-                print(customer.how_hear_other)
-                print()
-
-
-        exit()
-
-        customers = Customer.objects.all()
-        for customer in customers.all():
-            how_hear_text = customer.how_hear
-            if how_hear_text:
 
                 how_hear = 1
                 how_hear_other = how_hear_text
