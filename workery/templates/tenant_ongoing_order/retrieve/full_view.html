@@ -123,7 +123,7 @@
                     <th scope="row" colspan="2" class="text-light">Summary Details</th>
                 </tr>
                 <tr>
-                    <th scope="row" class="bg-light">Ongoing Order #</th>
+                    <th scope="row" class="bg-light">Ongoing Job #</th>
                     <td id="selected_order_id">
                         {{ job.id|intcomma }}
                     </td>
@@ -174,7 +174,7 @@
                     <th scope="row" colspan="2">Current Work Order Details</th>
                 </tr>
                 <tr>
-                    <th scope="row" class="bg-light">Order #</th>
+                    <th scope="row" class="bg-light">Job #</th>
                     <td>
                         {% if job.open_order %}
                         <a href="{% url 'workery_tenant_job_retrieve' 'summary' job.open_order.id %}" target="_blank">
