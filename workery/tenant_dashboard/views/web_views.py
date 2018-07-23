@@ -1,10 +1,12 @@
 # -*- coding: utf-8 -*-
+from datetime import datetime, timedelta
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q, Prefetch
 from django.views.generic.edit import CreateView, FormView, UpdateView
 from django.views.generic import DetailView, ListView, TemplateView
 from django.utils.decorators import method_decorator
 from django.utils.translation import ugettext_lazy as _
+from django.utils import timezone
 from shared_foundation import constants
 from shared_foundation.mixins import (
     ExtraRequestProcessingMixin,
@@ -17,11 +19,18 @@ from tenant_api.filters.customer import CustomerFilter
 from tenant_foundation.models import (
     Associate,
     AwayLog,
+    Comment,
     Customer,
     WORK_ORDER_STATE,
     WorkOrder,
+    WorkOrderComment,
     TaskItem
 )
+
+
+def get_todays_date_minus_days(days=0):
+    """Returns the current date plus paramter number of days."""
+    return timezone.now() - timedelta(days=days)
 
 
 class DashboardView(LoginRequiredMixin, GroupRequiredMixin, WorkeryTemplateView):
@@ -57,6 +66,14 @@ class DashboardView(LoginRequiredMixin, GroupRequiredMixin, WorkeryTemplateView)
             was_deleted=False
         ).prefetch_related(
             'associate'
+        )
+
+        one_week_before_today = get_todays_date_minus_days(7)
+        modified_context['past_7_day_comments'] = WorkOrderComment.objects.filter(
+            created_at__gte=one_week_before_today
+        ).prefetch_related(
+            'about',
+            'comment'
         )
 
         # Return our modified context.
