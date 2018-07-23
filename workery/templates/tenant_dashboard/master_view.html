@@ -194,7 +194,7 @@
                         <a href="{% url 'workery_tenant_job_retrieve' 'summary' order_comment.about.id %}">{{ order_comment.about.id|intcomma }}</a>
                     </td>
                     <td>
-                        {{ order_comment.comment.text }}
+                        {{ order_comment.comment.text|truncatechars:150 }}{% if order_comment.comment.text|length > 150 %}...{% endif %}
                     </td>
                     <td>
                         <a href="{% url 'workery_tenant_job_comments_retrieve' 'summary' order_comment.about.id %}">
