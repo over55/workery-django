@@ -6,8 +6,10 @@ from django.http import Http404
 from django.utils.decorators import method_decorator
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
+from shared_foundation import constants
 from shared_foundation.mixins import (
     ExtraRequestProcessingMixin,
+    GroupRequiredMixin,
     WorkeryTemplateView,
     WorkeryListView,
     WorkeryDetailView
@@ -16,7 +18,7 @@ from tenant_api.filters.task_item import TaskItemFilter
 from tenant_foundation.models import ActivitySheetItem, Associate, AwayLog, Customer, TaskItem
 
 
-class PendingTaskListView(LoginRequiredMixin, WorkeryListView):
+class PendingTaskListView(LoginRequiredMixin, GroupRequiredMixin, WorkeryListView):
     context_object_name = 'task_list'
     queryset = TaskItem.objects.filter(
         is_closed=False
@@ -30,6 +32,11 @@ class PendingTaskListView(LoginRequiredMixin, WorkeryListView):
     template_name = 'tenant_task/pending/list_view.html'
     paginate_by = 100
     menu_id = "task"
+    group_required = [
+        constants.EXECUTIVE_GROUP_ID,
+        constants.MANAGEMENT_GROUP_ID,
+        constants.FRONTLINE_GROUP_ID
+    ]
 
     def get_context_data(self, **kwargs):
         modified_context = super().get_context_data(**kwargs)
@@ -43,7 +50,7 @@ class PendingTaskListView(LoginRequiredMixin, WorkeryListView):
         return modified_context
 
 
-class ClosedTaskListView(LoginRequiredMixin, WorkeryListView):
+class ClosedTaskListView(LoginRequiredMixin, GroupRequiredMixin, WorkeryListView):
     context_object_name = 'task_list'
     queryset = TaskItem.objects.filter(
         is_closed=True
@@ -57,6 +64,11 @@ class ClosedTaskListView(LoginRequiredMixin, WorkeryListView):
     template_name = 'tenant_task/closed/list_view.html'
     paginate_by = 100
     menu_id = "task"
+    group_required = [
+        constants.EXECUTIVE_GROUP_ID,
+        constants.MANAGEMENT_GROUP_ID,
+        constants.FRONTLINE_GROUP_ID
+    ]
 
     def get_context_data(self, **kwargs):
         modified_context = super().get_context_data(**kwargs)
@@ -70,11 +82,16 @@ class ClosedTaskListView(LoginRequiredMixin, WorkeryListView):
         return modified_context
 
 
-class PendingTaskRetrieveView(LoginRequiredMixin, WorkeryDetailView):
+class PendingTaskRetrieveView(LoginRequiredMixin, GroupRequiredMixin, WorkeryDetailView):
     context_object_name = 'task_item'
     model = TaskItem
     template_name = 'tenant_task/pending/retrieve_view.html'
     menu_id = "task"
+    group_required = [
+        constants.EXECUTIVE_GROUP_ID,
+        constants.MANAGEMENT_GROUP_ID,
+        constants.FRONTLINE_GROUP_ID
+    ]
 
     def get_context_data(self, **kwargs):
         # Get the context of this class based view.
@@ -90,11 +107,16 @@ class PendingTaskRetrieveView(LoginRequiredMixin, WorkeryDetailView):
         return modified_context
 
 
-class PendingTaskRetrieveForActivitySheetView(LoginRequiredMixin, WorkeryDetailView):
+class PendingTaskRetrieveForActivitySheetView(LoginRequiredMixin, GroupRequiredMixin, WorkeryDetailView):
     context_object_name = 'task_item'
     model = TaskItem
     template_name = 'tenant_task/component/assign/retrieve_view.html'
     menu_id = "task"
+    group_required = [
+        constants.EXECUTIVE_GROUP_ID,
+        constants.MANAGEMENT_GROUP_ID,
+        constants.FRONTLINE_GROUP_ID
+    ]
 
     def get_context_data(self, **kwargs):
         # Get the context of this class based view.
@@ -139,11 +161,16 @@ class PendingTaskRetrieveForActivitySheetView(LoginRequiredMixin, WorkeryDetailV
         return modified_context
 
 
-class PendingTaskRetrieveForActivitySheetAndAssignAssociateCreateView(LoginRequiredMixin, WorkeryDetailView):
+class PendingTaskRetrieveForActivitySheetAndAssignAssociateCreateView(LoginRequiredMixin, GroupRequiredMixin, WorkeryDetailView):
     context_object_name = 'task_item'
     model = TaskItem
     template_name = 'tenant_task/component/assign/create_view.html'
     menu_id = "task"
+    group_required = [
+        constants.EXECUTIVE_GROUP_ID,
+        constants.MANAGEMENT_GROUP_ID,
+        constants.FRONTLINE_GROUP_ID
+    ]
 
     def get_context_data(self, **kwargs):
         # Get the context of this class based view.
@@ -161,11 +188,16 @@ class PendingTaskRetrieveForActivitySheetAndAssignAssociateCreateView(LoginRequi
         return modified_context
 
 
-class PendingTaskRetrieveAndCompleteCreateView(LoginRequiredMixin, WorkeryDetailView):
+class PendingTaskRetrieveAndCompleteCreateView(LoginRequiredMixin, GroupRequiredMixin, WorkeryDetailView):
     context_object_name = 'task_item'
     model = TaskItem
     template_name = 'tenant_task/component/complete/create_view.html'
     menu_id = "task"
+    group_required = [
+        constants.EXECUTIVE_GROUP_ID,
+        constants.MANAGEMENT_GROUP_ID,
+        constants.FRONTLINE_GROUP_ID
+    ]
 
     def get_context_data(self, **kwargs):
         # Get the context of this class based view.
@@ -183,7 +215,7 @@ class PendingTaskRetrieveAndCompleteCreateView(LoginRequiredMixin, WorkeryDetail
         return modified_context
 
 
-class UnassignedTaskListView(LoginRequiredMixin, WorkeryListView):
+class UnassignedTaskListView(LoginRequiredMixin, GroupRequiredMixin, WorkeryListView):
     context_object_name = 'task_list'
     queryset = TaskItem.objects.filter(
         job__associate=None,
@@ -198,6 +230,11 @@ class UnassignedTaskListView(LoginRequiredMixin, WorkeryListView):
     template_name = 'tenant_task/unassigned/list_view.html'
     paginate_by = 100
     menu_id = "task"
+    group_required = [
+        constants.EXECUTIVE_GROUP_ID,
+        constants.MANAGEMENT_GROUP_ID,
+        constants.FRONTLINE_GROUP_ID
+    ]
 
     def get_context_data(self, **kwargs):
         modified_context = super().get_context_data(**kwargs)
@@ -211,25 +248,40 @@ class UnassignedTaskListView(LoginRequiredMixin, WorkeryListView):
         return modified_context
 
 
-class PendingTaskRetrieveForActivityFollowUpWithAssociateSheetView(LoginRequiredMixin, WorkeryDetailView):
+class PendingTaskRetrieveForActivityFollowUpWithAssociateSheetView(LoginRequiredMixin, GroupRequiredMixin, WorkeryDetailView):
     context_object_name = 'task_item'
     model = TaskItem
     template_name = 'tenant_task/component/pending_follow_up/create_view.html'
     menu_id = "task"
+    group_required = [
+        constants.EXECUTIVE_GROUP_ID,
+        constants.MANAGEMENT_GROUP_ID,
+        constants.FRONTLINE_GROUP_ID
+    ]
 
 
-class TaskSearchView(LoginRequiredMixin, WorkeryTemplateView):
+class TaskSearchView(LoginRequiredMixin, GroupRequiredMixin, WorkeryTemplateView):
     template_name = 'tenant_task/search/search_view.html'
     menu_id = "task"
+    group_required = [
+        constants.EXECUTIVE_GROUP_ID,
+        constants.MANAGEMENT_GROUP_ID,
+        constants.FRONTLINE_GROUP_ID
+    ]
 
 
-class TaskSearchResultView(LoginRequiredMixin, WorkeryListView):
+class TaskSearchResultView(LoginRequiredMixin, GroupRequiredMixin, WorkeryListView):
     context_object_name = 'task_list'
     queryset = TaskItem.objects.order_by('-created')
     template_name = 'tenant_task/search/result_view.html'
     paginate_by = 100
     menu_id = "task"
     skip_parameters_array = ['page']
+    group_required = [
+        constants.EXECUTIVE_GROUP_ID,
+        constants.MANAGEMENT_GROUP_ID,
+        constants.FRONTLINE_GROUP_ID
+    ]
 
     def get_queryset(self):
         """

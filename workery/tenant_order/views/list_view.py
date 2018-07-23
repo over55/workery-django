@@ -4,16 +4,19 @@ from django.db.models import Q, Prefetch
 from django.views.generic.edit import CreateView, FormView, UpdateView
 from django.utils.decorators import method_decorator
 from django.utils.translation import ugettext_lazy as _
+from shared_foundation import constants
 from shared_foundation.mixins import (
     ExtraRequestProcessingMixin,
+    GroupRequiredMixin,
     WorkeryTemplateView,
-    WorkeryListView
+    WorkeryListView,
+    WorkeryDetailView
 )
 from tenant_api.filters.order import WorkOrderFilter
 from tenant_foundation.models import WorkOrder, WORK_ORDER_STATE
 
 
-class JobSummaryView(LoginRequiredMixin, WorkeryListView):
+class JobSummaryView(LoginRequiredMixin, GroupRequiredMixin, WorkeryListView):
     context_object_name = 'job_list'
     queryset = WorkOrder.objects.filter(
         Q(state=WORK_ORDER_STATE.NEW) |
@@ -26,9 +29,14 @@ class JobSummaryView(LoginRequiredMixin, WorkeryListView):
     template_name = 'tenant_order/summary/view.html'
     paginate_by = 100
     menu_id = 'jobs'
+    group_required = [
+        constants.EXECUTIVE_GROUP_ID,
+        constants.MANAGEMENT_GROUP_ID,
+        constants.FRONTLINE_GROUP_ID
+    ]
 
 
-class JobListView(LoginRequiredMixin, WorkeryListView):
+class JobListView(LoginRequiredMixin, GroupRequiredMixin, WorkeryListView):
     context_object_name = 'job_list'
     queryset = WorkOrder.objects.exclude(
         state=WORK_ORDER_STATE.ARCHIVED
@@ -36,6 +44,11 @@ class JobListView(LoginRequiredMixin, WorkeryListView):
     template_name = 'tenant_order/list/view.html'
     paginate_by = 100
     menu_id = 'jobs'
+    group_required = [
+        constants.EXECUTIVE_GROUP_ID,
+        constants.MANAGEMENT_GROUP_ID,
+        constants.FRONTLINE_GROUP_ID
+    ]
 
     def get_queryset(self):
         queryset = super(JobListView, self).get_queryset() # Get the base.
@@ -50,7 +63,7 @@ class JobListView(LoginRequiredMixin, WorkeryListView):
         return queryset
 
 
-class ArchivedJobListView(LoginRequiredMixin, WorkeryListView):
+class ArchivedJobListView(LoginRequiredMixin, GroupRequiredMixin, WorkeryListView):
     context_object_name = 'job_list'
     queryset = WorkOrder.objects.filter(
         state=WORK_ORDER_STATE.ARCHIVED
@@ -62,3 +75,8 @@ class ArchivedJobListView(LoginRequiredMixin, WorkeryListView):
     paginate_by = 100
     menu_id = 'jobs'
     skip_parameters_array = ['page']
+    group_required = [
+        constants.EXECUTIVE_GROUP_ID,
+        constants.MANAGEMENT_GROUP_ID,
+        constants.FRONTLINE_GROUP_ID
+    ]

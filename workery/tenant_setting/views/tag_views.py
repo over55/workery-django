@@ -2,8 +2,10 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.utils.decorators import method_decorator
 from django.utils.translation import ugettext_lazy as _
+from shared_foundation import constants
 from shared_foundation.mixins import (
     ExtraRequestProcessingMixin,
+    GroupRequiredMixin,
     WorkeryTemplateView,
     WorkeryListView,
     WorkeryDetailView
@@ -15,11 +17,16 @@ from tenant_foundation.models import (
 )
 
 
-class TagListView(LoginRequiredMixin, WorkeryListView):
+class TagListView(LoginRequiredMixin, GroupRequiredMixin, WorkeryListView):
     context_object_name = 'tag_list'
     template_name = 'tenant_setting/tag/list_view.html'
     paginate_by = 100
     menu_id = "settings"
+    group_required = [
+        constants.EXECUTIVE_GROUP_ID,
+        constants.MANAGEMENT_GROUP_ID,
+        constants.FRONTLINE_GROUP_ID
+    ]
 
     def get_queryset(self):
         queryset = Tag.objects.all().order_by('text')
@@ -30,13 +37,23 @@ class TagListView(LoginRequiredMixin, WorkeryListView):
         return queryset
 
 
-class TagUpdateView(LoginRequiredMixin, WorkeryDetailView):
+class TagUpdateView(LoginRequiredMixin, GroupRequiredMixin, WorkeryDetailView):
     context_object_name = 'tag'
     model = Tag
     template_name = 'tenant_setting/tag/update_view.html'
     menu_id = "settings"
+    group_required = [
+        constants.EXECUTIVE_GROUP_ID,
+        constants.MANAGEMENT_GROUP_ID,
+        constants.FRONTLINE_GROUP_ID
+    ]
 
 
-class TagCreateView(LoginRequiredMixin, WorkeryTemplateView):
+class TagCreateView(LoginRequiredMixin, GroupRequiredMixin, WorkeryTemplateView):
     template_name = 'tenant_setting/tag/create_view.html'
     menu_id = "settings"
+    group_required = [
+        constants.EXECUTIVE_GROUP_ID,
+        constants.MANAGEMENT_GROUP_ID,
+        constants.FRONTLINE_GROUP_ID
+    ]

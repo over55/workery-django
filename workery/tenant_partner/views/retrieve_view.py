@@ -2,8 +2,10 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.utils.decorators import method_decorator
 from django.utils.translation import ugettext_lazy as _
+from shared_foundation import constants
 from shared_foundation.mixins import (
     ExtraRequestProcessingMixin,
+    GroupRequiredMixin,
     WorkeryTemplateView,
     WorkeryListView,
     WorkeryDetailView
@@ -12,11 +14,16 @@ from tenant_api.filters.partner import PartnerFilter
 from tenant_foundation.models import Partner
 
 
-class PartnerLiteRetrieveView(LoginRequiredMixin, WorkeryDetailView):
+class PartnerLiteRetrieveView(LoginRequiredMixin, GroupRequiredMixin, WorkeryDetailView):
     context_object_name = 'partner'
     model = Partner
     template_name = 'tenant_partner/retrieve/lite_view.html'
     menu_id = "partners"
+    group_required = [
+        constants.EXECUTIVE_GROUP_ID,
+        constants.MANAGEMENT_GROUP_ID,
+        constants.FRONTLINE_GROUP_ID
+    ]
 
     def get_context_data(self, **kwargs):
         # Get the context of this class based view.
@@ -33,11 +40,16 @@ class PartnerLiteRetrieveView(LoginRequiredMixin, WorkeryDetailView):
         return modified_context
 
 
-class PartnerFullRetrieveView(LoginRequiredMixin, WorkeryDetailView):
+class PartnerFullRetrieveView(LoginRequiredMixin, GroupRequiredMixin, WorkeryDetailView):
     context_object_name = 'partner'
     model = Partner
     template_name = 'tenant_partner/retrieve/full_view.html'
     menu_id = "partners"
+    group_required = [
+        constants.EXECUTIVE_GROUP_ID,
+        constants.MANAGEMENT_GROUP_ID,
+        constants.FRONTLINE_GROUP_ID
+    ]
 
     def get_object(self):
         partner = super().get_object()  # Call the superclass
@@ -58,11 +70,16 @@ class PartnerFullRetrieveView(LoginRequiredMixin, WorkeryDetailView):
         return modified_context
 
 
-class PartnerCommentsRetrieveView(LoginRequiredMixin, WorkeryDetailView):
+class PartnerCommentsRetrieveView(LoginRequiredMixin, GroupRequiredMixin, WorkeryDetailView):
     context_object_name = 'partner'
     model = Partner
     template_name = 'tenant_partner/retrieve/for/comments_view.html'
     menu_id = "partners"
+    group_required = [
+        constants.EXECUTIVE_GROUP_ID,
+        constants.MANAGEMENT_GROUP_ID,
+        constants.FRONTLINE_GROUP_ID
+    ]
 
     def get_object(self):
         partner = super().get_object()  # Call the superclass

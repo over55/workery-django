@@ -3,8 +3,10 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseBadRequest, HttpResponseRedirect
 from django.utils.decorators import method_decorator
 from django.utils.translation import ugettext_lazy as _
+from shared_foundation import constants
 from shared_foundation.mixins import (
     ExtraRequestProcessingMixin,
+    GroupRequiredMixin,
     WorkeryTemplateView,
     WorkeryListView,
     WorkeryDetailView
@@ -13,11 +15,16 @@ from tenant_api.filters.staff import StaffFilter
 from tenant_foundation.models import Staff
 
 
-class StaffLiteRetrieveView(LoginRequiredMixin, WorkeryDetailView):
+class StaffLiteRetrieveView(LoginRequiredMixin, GroupRequiredMixin, WorkeryDetailView):
     context_object_name = 'staff'
     model = Staff
     template_name = 'tenant_team/retrieve/lite_view.html'
     menu_id = "team"
+    group_required = [
+        constants.EXECUTIVE_GROUP_ID,
+        constants.MANAGEMENT_GROUP_ID,
+        constants.FRONTLINE_GROUP_ID
+    ]
 
     def get_context_data(self, **kwargs):
         # Get the context of this class based view.
@@ -34,11 +41,16 @@ class StaffLiteRetrieveView(LoginRequiredMixin, WorkeryDetailView):
         return modified_context
 
 
-class StaffFullRetrieveView(LoginRequiredMixin, WorkeryDetailView):
+class StaffFullRetrieveView(LoginRequiredMixin, GroupRequiredMixin, WorkeryDetailView):
     context_object_name = 'staff'
     model = Staff
     template_name = 'tenant_team/retrieve/full_view.html'
     menu_id = "team"
+    group_required = [
+        constants.EXECUTIVE_GROUP_ID,
+        constants.MANAGEMENT_GROUP_ID,
+        constants.FRONTLINE_GROUP_ID
+    ]
 
     def get_context_data(self, **kwargs):
         # Get the context of this class based view.
@@ -55,11 +67,16 @@ class StaffFullRetrieveView(LoginRequiredMixin, WorkeryDetailView):
         return modified_context
 
 
-class StaffRetrieveForCommentsListAndCreateView(LoginRequiredMixin, WorkeryDetailView):
+class StaffRetrieveForCommentsListAndCreateView(LoginRequiredMixin, GroupRequiredMixin, WorkeryDetailView):
     context_object_name = 'staff'
     model = Staff
     template_name = 'tenant_team/retrieve/for/comments_view.html'
     menu_id = "team"
+    group_required = [
+        constants.EXECUTIVE_GROUP_ID,
+        constants.MANAGEMENT_GROUP_ID,
+        constants.FRONTLINE_GROUP_ID
+    ]
 
     def get_context_data(self, **kwargs):
         # Get the context of this class based view.

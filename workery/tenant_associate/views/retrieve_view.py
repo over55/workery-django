@@ -3,8 +3,10 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.utils.decorators import method_decorator
 from django.utils.translation import ugettext_lazy as _
+from shared_foundation import constants
 from shared_foundation.mixins import (
     ExtraRequestProcessingMixin,
+    GroupRequiredMixin,
     WorkeryTemplateView,
     WorkeryListView,
     WorkeryDetailView
@@ -13,11 +15,16 @@ from tenant_api.filters.associate import AssociateFilter
 from tenant_foundation.models import ActivitySheetItem, Associate, WorkOrder
 
 
-class MemberLiteRetrieveView(LoginRequiredMixin, WorkeryDetailView):
+class MemberLiteRetrieveView(LoginRequiredMixin, GroupRequiredMixin, WorkeryDetailView):
     context_object_name = 'associate'
     model = Associate
     template_name = 'tenant_associate/retrieve/lite_view.html'
     menu_id = "associates"
+    group_required = [
+        constants.EXECUTIVE_GROUP_ID,
+        constants.MANAGEMENT_GROUP_ID,
+        constants.FRONTLINE_GROUP_ID
+    ]
 
     def get_context_data(self, **kwargs):
         # Get the context of this class based view.
@@ -37,11 +44,16 @@ class MemberLiteRetrieveView(LoginRequiredMixin, WorkeryDetailView):
         return modified_context
 
 
-class MemberFullRetrieveView(LoginRequiredMixin, WorkeryDetailView):
+class MemberFullRetrieveView(LoginRequiredMixin, GroupRequiredMixin, WorkeryDetailView):
     context_object_name = 'associate'
     model = Associate
     template_name = 'tenant_associate/retrieve/full_view.html'
     menu_id = "associates"
+    group_required = [
+        constants.EXECUTIVE_GROUP_ID,
+        constants.MANAGEMENT_GROUP_ID,
+        constants.FRONTLINE_GROUP_ID
+    ]
 
     def get_context_data(self, **kwargs):
         # Get the context of this class based view.
@@ -61,11 +73,16 @@ class MemberFullRetrieveView(LoginRequiredMixin, WorkeryDetailView):
         return modified_context
 
 
-class MemberRetrieveForCommentsListAndCreateView(LoginRequiredMixin, WorkeryDetailView):
+class MemberRetrieveForCommentsListAndCreateView(LoginRequiredMixin, GroupRequiredMixin, WorkeryDetailView):
     context_object_name = 'associate'
     model = Associate
     template_name = 'tenant_associate/retrieve/for/comments_view.html'
     menu_id = "associates"
+    group_required = [
+        constants.EXECUTIVE_GROUP_ID,
+        constants.MANAGEMENT_GROUP_ID,
+        constants.FRONTLINE_GROUP_ID
+    ]
 
     def get_object(self):
         associate = super().get_object()  # Call the superclass
@@ -86,11 +103,16 @@ class MemberRetrieveForCommentsListAndCreateView(LoginRequiredMixin, WorkeryDeta
         return modified_context
 
 
-class MemberRetrieveForActivitySheetListView(LoginRequiredMixin, WorkeryDetailView):
+class MemberRetrieveForActivitySheetListView(LoginRequiredMixin, GroupRequiredMixin, WorkeryDetailView):
     context_object_name = 'associate'
     model = Associate
     template_name = 'tenant_associate/retrieve/for/activity_sheet_view.html'
     menu_id = "associates"
+    group_required = [
+        constants.EXECUTIVE_GROUP_ID,
+        constants.MANAGEMENT_GROUP_ID,
+        constants.FRONTLINE_GROUP_ID
+    ]
 
     def get_object(self):
         associate = super().get_object()  # Call the superclass
@@ -125,11 +147,16 @@ class MemberRetrieveForActivitySheetListView(LoginRequiredMixin, WorkeryDetailVi
         return modified_context
 
 
-class MemberRetrieveForJobsListView(LoginRequiredMixin, WorkeryDetailView):
+class MemberRetrieveForJobsListView(LoginRequiredMixin, GroupRequiredMixin, WorkeryDetailView):
     context_object_name = 'associate'
     model = Associate
     template_name = 'tenant_associate/retrieve/for/jobs_view.html'
     menu_id = "associates"
+    group_required = [
+        constants.EXECUTIVE_GROUP_ID,
+        constants.MANAGEMENT_GROUP_ID,
+        constants.FRONTLINE_GROUP_ID
+    ]
 
     def get_object(self):
         associate = super().get_object()  # Call the superclass

@@ -3,8 +3,10 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.edit import CreateView, FormView, UpdateView
 from django.utils.decorators import method_decorator
 from django.utils.translation import ugettext_lazy as _
+from shared_foundation import constants
 from shared_foundation.mixins import (
     ExtraRequestProcessingMixin,
+    GroupRequiredMixin,
     WorkeryTemplateView,
     WorkeryListView,
     WorkeryDetailView
@@ -17,14 +19,24 @@ from tenant_foundation.models import (
 )
 
 
-class PickCustomerTypeInCreateView(LoginRequiredMixin, WorkeryTemplateView):
+class PickCustomerTypeInCreateView(LoginRequiredMixin, GroupRequiredMixin, WorkeryTemplateView):
     template_name = 'tenant_customer/create/pick_view.html'
     menu_id = "customers"
+    group_required = [
+        constants.EXECUTIVE_GROUP_ID,
+        constants.MANAGEMENT_GROUP_ID,
+        constants.FRONTLINE_GROUP_ID
+    ]
 
 
-class ResidentialCustomerCreateView(LoginRequiredMixin, WorkeryTemplateView):
+class ResidentialCustomerCreateView(LoginRequiredMixin, GroupRequiredMixin, WorkeryTemplateView):
     template_name = 'tenant_customer/create/residential_create_view.html'
     menu_id = "customers"
+    group_required = [
+        constants.EXECUTIVE_GROUP_ID,
+        constants.MANAGEMENT_GROUP_ID,
+        constants.FRONTLINE_GROUP_ID
+    ]
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -33,14 +45,24 @@ class ResidentialCustomerCreateView(LoginRequiredMixin, WorkeryTemplateView):
         return context
 
 
-class ResidentialCustomerConfirmCreateView(LoginRequiredMixin, WorkeryTemplateView):
+class ResidentialCustomerConfirmCreateView(LoginRequiredMixin, GroupRequiredMixin, WorkeryTemplateView):
     template_name = 'tenant_customer/create/residential_confirm_view.html'
     menu_id = "customers"
+    group_required = [
+        constants.EXECUTIVE_GROUP_ID,
+        constants.MANAGEMENT_GROUP_ID,
+        constants.FRONTLINE_GROUP_ID
+    ]
 
 
-class CommercialCustomerCreateView(LoginRequiredMixin, WorkeryTemplateView):
+class CommercialCustomerCreateView(LoginRequiredMixin, GroupRequiredMixin, WorkeryTemplateView):
     template_name = 'tenant_customer/create/commercial_create_view.html'
     menu_id = "customers"
+    group_required = [
+        constants.EXECUTIVE_GROUP_ID,
+        constants.MANAGEMENT_GROUP_ID,
+        constants.FRONTLINE_GROUP_ID
+    ]
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -49,6 +71,11 @@ class CommercialCustomerCreateView(LoginRequiredMixin, WorkeryTemplateView):
         return context
 
 
-class CommercialCustomerConfirmCreateView(LoginRequiredMixin, WorkeryTemplateView):
+class CommercialCustomerConfirmCreateView(LoginRequiredMixin, GroupRequiredMixin, WorkeryTemplateView):
     template_name = 'tenant_customer/create/commercial_confirm_view.html'
     menu_id = "customers"
+    group_required = [
+        constants.EXECUTIVE_GROUP_ID,
+        constants.MANAGEMENT_GROUP_ID,
+        constants.FRONTLINE_GROUP_ID
+    ]

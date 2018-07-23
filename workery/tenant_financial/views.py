@@ -6,10 +6,10 @@ from django.utils.translation import ugettext_lazy as _
 from shared_foundation import constants
 from shared_foundation.mixins import (
     ExtraRequestProcessingMixin,
+    GroupRequiredMixin,
     WorkeryTemplateView,
     WorkeryListView,
-    WorkeryDetailView,
-    GroupRequiredMixin
+    WorkeryDetailView
 )
 from tenant_api.filters.order import WorkOrderFilter
 from tenant_foundation.models import WORK_ORDER_STATE, WorkOrder, WorkOrderServiceFee

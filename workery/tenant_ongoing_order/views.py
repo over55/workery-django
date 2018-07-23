@@ -3,8 +3,10 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.utils.translation import ugettext_lazy as _
+from shared_foundation import constants
 from shared_foundation.mixins import (
     ExtraRequestProcessingMixin,
+    GroupRequiredMixin,
     WorkeryTemplateView,
     WorkeryListView,
     WorkeryDetailView
@@ -21,7 +23,7 @@ from tenant_foundation.models import (
 )
 
 
-class OngoingJobListView(LoginRequiredMixin, WorkeryListView):
+class OngoingJobListView(LoginRequiredMixin, GroupRequiredMixin, WorkeryListView):
     context_object_name = 'job_list'
     queryset = OngoingWorkOrder.objects.filter(
         state=ONGOING_WORK_ORDER_STATE.RUNNING
@@ -32,13 +34,23 @@ class OngoingJobListView(LoginRequiredMixin, WorkeryListView):
     template_name = 'tenant_ongoing_order/summary/view.html'
     paginate_by = 100
     menu_id = 'ongoing-jobs'
+    group_required = [
+        constants.EXECUTIVE_GROUP_ID,
+        constants.MANAGEMENT_GROUP_ID,
+        constants.FRONTLINE_GROUP_ID
+    ]
 
 
-class OngoingJobLiteRetrieveView(LoginRequiredMixin, WorkeryDetailView):
+class OngoingJobLiteRetrieveView(LoginRequiredMixin, GroupRequiredMixin, WorkeryDetailView):
     context_object_name = 'job'
     model = OngoingWorkOrder
     template_name = 'tenant_ongoing_order/retrieve/lite_view.html'
     menu_id = 'ongoing-jobs'
+    group_required = [
+        constants.EXECUTIVE_GROUP_ID,
+        constants.MANAGEMENT_GROUP_ID,
+        constants.FRONTLINE_GROUP_ID
+    ]
 
     def get_context_data(self, **kwargs):
         # Get the context of this class based view.
@@ -55,11 +67,16 @@ class OngoingJobLiteRetrieveView(LoginRequiredMixin, WorkeryDetailView):
         return modified_context
 
 
-class OngoingJobFullRetrieveView(LoginRequiredMixin, WorkeryDetailView):
+class OngoingJobFullRetrieveView(LoginRequiredMixin, GroupRequiredMixin, WorkeryDetailView):
     context_object_name = 'job'
     model = OngoingWorkOrder
     template_name = 'tenant_ongoing_order/retrieve/full_view.html'
     menu_id = 'ongoing-jobs'
+    group_required = [
+        constants.EXECUTIVE_GROUP_ID,
+        constants.MANAGEMENT_GROUP_ID,
+        constants.FRONTLINE_GROUP_ID
+    ]
 
     def get_context_data(self, **kwargs):
         # Get the context of this class based view.
@@ -80,11 +97,16 @@ class OngoingJobFullRetrieveView(LoginRequiredMixin, WorkeryDetailView):
         return modified_context
 
 
-class OngoingJobUpdateView(LoginRequiredMixin, WorkeryDetailView):
+class OngoingJobUpdateView(LoginRequiredMixin, GroupRequiredMixin, WorkeryDetailView):
     context_object_name = 'job'
     model = OngoingWorkOrder
     template_name = 'tenant_ongoing_order/update/view.html'
     menu_id = 'ongoing-jobs'
+    group_required = [
+        constants.EXECUTIVE_GROUP_ID,
+        constants.MANAGEMENT_GROUP_ID,
+        constants.FRONTLINE_GROUP_ID
+    ]
 
     def get_context_data(self, **kwargs):
         # Get the context of this class based view.

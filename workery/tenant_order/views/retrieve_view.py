@@ -4,8 +4,10 @@ from django.db.models import Q
 from django.views.generic.edit import CreateView, FormView, UpdateView
 from django.utils.decorators import method_decorator
 from django.utils.translation import ugettext_lazy as _
+from shared_foundation import constants
 from shared_foundation.mixins import (
     ExtraRequestProcessingMixin,
+    GroupRequiredMixin,
     WorkeryTemplateView,
     WorkeryListView,
     WorkeryDetailView
@@ -14,11 +16,16 @@ from tenant_api.filters.order import WorkOrderFilter
 from tenant_foundation.models import ActivitySheetItem, Associate, Customer, WorkOrder, SkillSet, TaskItem
 
 
-class JobLiteRetrieveView(LoginRequiredMixin, WorkeryDetailView):
+class JobLiteRetrieveView(LoginRequiredMixin, GroupRequiredMixin, WorkeryDetailView):
     context_object_name = 'job'
     model = WorkOrder
     template_name = 'tenant_order/retrieve/lite_view.html'
     menu_id = 'jobs'
+    group_required = [
+        constants.EXECUTIVE_GROUP_ID,
+        constants.MANAGEMENT_GROUP_ID,
+        constants.FRONTLINE_GROUP_ID
+    ]
 
     def get_context_data(self, **kwargs):
         # Get the context of this class based view.
@@ -35,11 +42,16 @@ class JobLiteRetrieveView(LoginRequiredMixin, WorkeryDetailView):
         return modified_context
 
 
-class JobFullRetrieveView(LoginRequiredMixin, WorkeryDetailView):
+class JobFullRetrieveView(LoginRequiredMixin, GroupRequiredMixin, WorkeryDetailView):
     context_object_name = 'job'
     model = WorkOrder
     template_name = 'tenant_order/retrieve/full_view.html'
     menu_id = 'jobs'
+    group_required = [
+        constants.EXECUTIVE_GROUP_ID,
+        constants.MANAGEMENT_GROUP_ID,
+        constants.FRONTLINE_GROUP_ID
+    ]
 
     def get_context_data(self, **kwargs):
         # Get the context of this class based view.
@@ -56,11 +68,16 @@ class JobFullRetrieveView(LoginRequiredMixin, WorkeryDetailView):
         return modified_context
 
 
-class JobRetrieveForActivitySheetListView(LoginRequiredMixin, WorkeryDetailView):
+class JobRetrieveForActivitySheetListView(LoginRequiredMixin, GroupRequiredMixin, WorkeryDetailView):
     context_object_name = 'job'
     model = WorkOrder
     template_name = 'tenant_order/retrieve/for/activity_sheet_list_view.html'
     menu_id = 'jobs'
+    group_required = [
+        constants.EXECUTIVE_GROUP_ID,
+        constants.MANAGEMENT_GROUP_ID,
+        constants.FRONTLINE_GROUP_ID
+    ]
 
     def get_context_data(self, **kwargs):
         # Get the context of this class based view.
@@ -82,11 +99,16 @@ class JobRetrieveForActivitySheetListView(LoginRequiredMixin, WorkeryDetailView)
         return modified_context
 
 
-class JobRetrieveForTasksListView(LoginRequiredMixin, WorkeryDetailView):
+class JobRetrieveForTasksListView(LoginRequiredMixin, GroupRequiredMixin, WorkeryDetailView):
     context_object_name = 'job'
     model = WorkOrder
     template_name = 'tenant_order/retrieve/for/task_list_view.html'
     menu_id = 'jobs'
+    group_required = [
+        constants.EXECUTIVE_GROUP_ID,
+        constants.MANAGEMENT_GROUP_ID,
+        constants.FRONTLINE_GROUP_ID
+    ]
 
     def get_context_data(self, **kwargs):
         # Get the context of this class based view.
@@ -108,11 +130,16 @@ class JobRetrieveForTasksListView(LoginRequiredMixin, WorkeryDetailView):
         return modified_context
 
 
-class JobRetrieveForCommentsListAndCreateView(LoginRequiredMixin, WorkeryDetailView):
+class JobRetrieveForCommentsListAndCreateView(LoginRequiredMixin, GroupRequiredMixin, WorkeryDetailView):
     context_object_name = 'job'
     model = WorkOrder
     template_name = 'tenant_order/retrieve/for/comments_view.html'
     menu_id = 'jobs'
+    group_required = [
+        constants.EXECUTIVE_GROUP_ID,
+        constants.MANAGEMENT_GROUP_ID,
+        constants.FRONTLINE_GROUP_ID
+    ]
 
     def get_context_data(self, **kwargs):
         # Get the context of this class based view.
@@ -129,11 +156,16 @@ class JobRetrieveForCommentsListAndCreateView(LoginRequiredMixin, WorkeryDetailV
         return modified_context
 
 
-class JobRetrieveForCloseCreateView(LoginRequiredMixin, WorkeryDetailView):
+class JobRetrieveForCloseCreateView(LoginRequiredMixin, GroupRequiredMixin, WorkeryDetailView):
     context_object_name = 'job'
     model = WorkOrder
     template_name = 'tenant_order/retrieve/for/close_view.html'
     menu_id = 'jobs'
+    group_required = [
+        constants.EXECUTIVE_GROUP_ID,
+        constants.MANAGEMENT_GROUP_ID,
+        constants.FRONTLINE_GROUP_ID
+    ]
 
     def get_context_data(self, **kwargs):
         # Get the context of this class based view.
@@ -150,11 +182,16 @@ class JobRetrieveForCloseCreateView(LoginRequiredMixin, WorkeryDetailView):
         return modified_context
 
 
-class JobRetrieveForPostponeCreateView(LoginRequiredMixin, WorkeryDetailView):
+class JobRetrieveForPostponeCreateView(LoginRequiredMixin, GroupRequiredMixin, WorkeryDetailView):
     context_object_name = 'job'
     model = WorkOrder
     template_name = 'tenant_order/retrieve/for/postpone_view.html'
     menu_id = 'jobs'
+    group_required = [
+        constants.EXECUTIVE_GROUP_ID,
+        constants.MANAGEMENT_GROUP_ID,
+        constants.FRONTLINE_GROUP_ID
+    ]
 
     def get_context_data(self, **kwargs):
         # Get the context of this class based view.
@@ -171,11 +208,16 @@ class JobRetrieveForPostponeCreateView(LoginRequiredMixin, WorkeryDetailView):
         return modified_context
 
 
-class JobRetrieveForUnassignCreateView(LoginRequiredMixin, WorkeryDetailView):
+class JobRetrieveForUnassignCreateView(LoginRequiredMixin, GroupRequiredMixin, WorkeryDetailView):
     context_object_name = 'job'
     model = WorkOrder
     template_name = 'tenant_order/retrieve/for/unassign_view.html'
     menu_id = 'jobs'
+    group_required = [
+        constants.EXECUTIVE_GROUP_ID,
+        constants.MANAGEMENT_GROUP_ID,
+        constants.FRONTLINE_GROUP_ID
+    ]
 
     def get_context_data(self, **kwargs):
         # Get the context of this class based view.
@@ -192,11 +234,16 @@ class JobRetrieveForUnassignCreateView(LoginRequiredMixin, WorkeryDetailView):
         return modified_context
 
 
-class JobRetrieveForReopeningCreateView(LoginRequiredMixin, WorkeryDetailView):
+class JobRetrieveForReopeningCreateView(LoginRequiredMixin, GroupRequiredMixin, WorkeryDetailView):
     context_object_name = 'job'
     model = WorkOrder
     template_name = 'tenant_order/retrieve/for/reopen_view.html'
     menu_id = 'jobs'
+    group_required = [
+        constants.EXECUTIVE_GROUP_ID,
+        constants.MANAGEMENT_GROUP_ID,
+        constants.FRONTLINE_GROUP_ID
+    ]
 
     def get_context_data(self, **kwargs):
         # Get the context of this class based view.
@@ -213,8 +260,13 @@ class JobRetrieveForReopeningCreateView(LoginRequiredMixin, WorkeryDetailView):
         return modified_context
 
 
-class ArchivedJobFullRetrieveView(LoginRequiredMixin, WorkeryDetailView):
+class ArchivedJobFullRetrieveView(LoginRequiredMixin, GroupRequiredMixin, WorkeryDetailView):
     context_object_name = 'job'
     model = WorkOrder
     template_name = 'tenant_order/retrieve/for/archive_view.html'
     menu_id = 'jobs'
+    group_required = [
+        constants.EXECUTIVE_GROUP_ID,
+        constants.MANAGEMENT_GROUP_ID,
+        constants.FRONTLINE_GROUP_ID
+    ]
