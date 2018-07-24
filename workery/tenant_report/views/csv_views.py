@@ -261,9 +261,19 @@ def report_09_streaming_csv_view(request):
     associates = Associate.objects.annotate(
         month=Extract('birthdate', 'month'),
         day=Extract('birthdate', 'day')
-    ).filter(
-        owner__is_active=True
-    ).order_by('month', 'day')
+    ).order_by(
+        'month',
+        'day'
+    ).prefetch_related(
+        'skill_sets',
+        'owner'
+    )
+
+    filter_type = request.GET.get('filter_type', 'all')
+    if filter_type == '1':
+        associates = associates.filter(owner__is_active=True)
+    elif filter_type == '0':
+        associates = associates.filter(owner__is_active=False)
 
     # Generate the CSV header row.
     rows = (["ID #", "Name", "Birthday", "Skill Set(s)"],)
