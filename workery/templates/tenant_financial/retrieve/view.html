@@ -157,6 +157,7 @@
                         {% endif %}
                     </td>
                 </tr>
+                {% if job_item.state == WORK_ORDER_STATE.COMPLETED_BUT_UNPAID %}
                 <tr>
                     <th scope="row" class="bg-light">Available Operations</th>
                     <td id="selected_operation">
@@ -178,18 +179,19 @@
                         <!-- end Cancel -->
 
                         <!-- Close -->
-                        {% if job_item.state == WORK_ORDER_STATE.COMPLETED_AND_PAID %}
+                        {% comment %}
                         <br />
                         <a href="{% url 'workery_tenant_completed_job_close_operation' job_item.id %}?return_id=financials-pending">
                             <button  id="id_submit_btn"	class="btn btn-danger btn-lg btn-fxw mt-4" type="button">
                                 <i class="fas fa-pencil-alt"></i>&nbsp;{% trans 'Close Job' %}
                             </button>
                         </a>
-                        {% endif %}
+                        {% endcomment %}
                         <!-- end Close -->
 
                     </td>
                 </tr>
+                {% endif %}
                 <!-- end Financial -->
             </tbody>
         </table>
