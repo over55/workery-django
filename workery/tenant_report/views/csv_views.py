@@ -47,10 +47,11 @@ def report_01_streaming_csv_view(request):
     to_dt = parser.parse(to_dt)
 
     jobs = WorkOrder.objects.filter(
-        Q(completion_date__isnull=False) &
-        Q(invoice_service_fee_amount=0) &
-        ~Q(state=WORK_ORDER_STATE.CANCELLED) &
-        Q(invoice_service_fee_payment_date__range=(from_dt,to_dt))
+        ~Q(associate=None) &
+        Q(state=WORK_ORDER_STATE.COMPLETED_BUT_UNPAID)
+    ).prefetch_related(
+        'customer',
+        'associate'
     )
 
     # Generate the CSV header row.
