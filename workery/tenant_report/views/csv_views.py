@@ -51,17 +51,30 @@ def report_01_streaming_csv_view(request):
         Q(state=WORK_ORDER_STATE.COMPLETED_BUT_UNPAID)
     ).prefetch_related(
         'customer',
-        'associate'
+        'associate',
+        'skill_sets'
     )
 
     # Generate the CSV header row.
-    rows = (["Associate ID #", "Associate Name", "Job Completion Date", "Job ID #", "Client ID #", "Client Name", "Job Type"],)
+    rows = (["Associate ID #", "Associate Name", "Job Completion Date", "Job ID #", "Client ID #", "Client Name", "Job Type", "Skill Set(s)"],)
 
     # Generate hte CSV data.
     for job in jobs.all():
         # Get the type of job from a "tuple" object.
         test = dict(JOB_TYPE_OF_CHOICES)
         job_type = test[job.type_of]
+
+        # Attach all the skill sets that are associated with each job.
+        skill_set_count = job.skill_sets.count() - 1
+        skill_set_string = ""
+        for i, skill_set in enumerate(job.skill_sets.all()):
+
+            skill_set_string += skill_set.sub_category
+
+            if i != skill_set_count:
+                skill_set_string += "|"
+            else:
+                pass # Skip last
 
         rows += ([
             job.associate.id,
@@ -70,7 +83,8 @@ def report_01_streaming_csv_view(request):
             job.id,
             job.customer.id,
             str(job.customer),
-            job_type
+            job_type,
+            skill_set_string
         ],)
 
     pseudo_buffer = Echo()
