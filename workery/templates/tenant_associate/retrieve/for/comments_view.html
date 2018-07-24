@@ -149,17 +149,6 @@ function click_add_button() {
     <!------------------------------------------------------------------------->
     <!-- end NOTIFICATION -->
 
-    <!-- BACK BUTTON -->
-    <!------------------------------------------------------------------------->
-    <div class="row">
-		<div class="col-sm-3 p-3 mb-2">
-			<a class="btn btn-primary btn-lg" href="{% if template == 'search' %}{% url 'workery_tenant_member_search' %}{% elif template == 'list' %}{% url 'workery_tenant_member_list' %}{% else %}{% url 'workery_tenant_member_summary' %}{% endif %}" role="button">
-                	<i class="fas fa-arrow-left"></i> &nbsp;{% if template == 'search' %}{% trans 'Back to Search' %}{% elif template == 'list' %}{% trans 'Back to Member\'s List' %}{% else %}{% trans 'Back to Member\'s Home' %}{% endif %}</a>
-		</div>
-	</div>
-    <!------------------------------------------------------------------------->
-    <!-- end BACK BUTTON -->
-
     <h1>{% trans 'View Associate Member' %}</h1>
 
     <!-- STEP NAVIGATION -->

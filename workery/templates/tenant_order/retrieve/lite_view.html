@@ -75,21 +75,6 @@
     <!------------------------------------------------------------------------->
     <!-- end NOTIFICATION -->
 
-    <!-- BACK BUTTON -->
-    <!------------------------------------------------------------------------->
-    <br/>
-	<!--
-	<div class="row">
-		<div class="col-sm-3 p-3 mb-2">
-			<a class="btn btn-primary btn-lg" href="{% if template == 'search' %}{% url 'workery_tenant_job_search' %}{% elif template == 'list' %}{% url 'workery_tenant_job_list' %}{% else %}{% url 'workery_tenant_job_summary' %}{% endif %}" role="button">
-               <i class="fas fa-arrow-left"></i> &nbsp;{% trans 'Back to Jobs Home' %}
-            </a>
-		</div>
-    </div>
--->
-    <!------------------------------------------------------------------------->
-    <!-- end BACK BUTTON -->
-
     <h1>{% trans 'View Job' %}</h1>
 
     <!-- STEP NAVIGATION -->
@@ -161,7 +146,7 @@
                 <tr>
                     <th scope="row" class="bg-light">Status</th>
                     <td id="selected_status">{{ job.get_pretty_status }}
-                        
+
                     </td>
                 </tr>
                 <tr>

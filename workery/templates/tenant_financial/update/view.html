@@ -286,18 +286,6 @@
     <!------------------------------------------------------------------------->
     <!-- end NOTIFICATION -->
 
-    <!-- BACK BUTTON -->
-    <!------------------------------------------------------------------------->
-    <div class="row">
-		<div class="col-sm-3 p-3 mb-2">
-			<a class="btn btn-primary btn-lg" href="{% if template == "unpaid-jobs" %}{% url 'workery_tenant_unpaid_jobs_list' %}{% elif template == "paid-jobs" %}{% url 'workery_tenant_paid_jobs_list' %}{% elif template == "all-jobs" %}{% url 'workery_tenant_all_jobs_list' %}{% endif %}" role="button">
-               <i class="fas fa-arrow-left"></i> &nbsp;{% trans 'Back to Job Home' %}
-            </a>
-		</div>
-    </div>
-    <!------------------------------------------------------------------------->
-    <!-- end BACK BUTTON -->
-
     <h1 id="id_page_title">{% trans 'View Job Financials' %}</h1>
 
     <!-- FORM -->
