@@ -61,6 +61,7 @@
         $('#selected_description').append(localStorage.getItem("tmp_associate_member_description"));
         $('#selected_comment').append(localStorage.getItem("tmp_associate_member_comment"));
         $('#selected_tax_id').append(localStorage.getItem("tmp_associate_member_tax_id"));
+        $('#selected_join_date').append(localStorage.getItem("tmp_associate_member_join_date"));
 
         // Set our `tags` field.
         var tmp_person_tag_values = localStorage.getObj("tmp_associate_member_person_tag_values");
@@ -272,6 +273,7 @@
                 'has_truck': localStorage.getItem("tmp_associate_member_has_truck"),
                 'how_hear': localStorage.getItem("tmp_associate_member_how_hear"),
                 'how_hear_other': localStorage.getItem("tmp_associate_member_how_hear_other"),
+                'join_date': localStorage.getItem("tmp_associate_member_join_date"),
             },
             function(result_dict) { // Success
                 // FOR DEBUGGING PURPOSES ONLY.
@@ -308,6 +310,7 @@
                 localStorage.removeItem("tmp_associate_member_is_active")
                 localStorage.removeItem("tmp_associate_member_insurance_requirement_ids")
                 localStorage.removeItem("tmp_associate_member_insurance_requirement_values")
+                localStorage.removeItem("tmp_associate_member_join_date")
 
                 // --- Associate Details ---
                 localStorage.removeItem("tmp_associate_member_hourly_salary_desired")
@@ -534,6 +537,12 @@
        <tbody>
          <tr class="bg-dark">
            <th scope="row" colspan="2" class="text-light">Associate Details</th>
+         </tr>
+         <tr>
+           <th scope="row" class="bg-light">Join date</th>
+           <td id="selected_join_date">
+               <!-- THIS IS WHERE THE JOIN DATE GOES -->
+           </td>
          </tr>
          <tr>
            <th scope="row" class="bg-light">Skill set(s)</th>

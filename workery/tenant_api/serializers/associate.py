@@ -70,6 +70,9 @@ class AssociateListCreateSerializer(serializers.ModelSerializer):
         required=True,
         allow_blank=False,
     )
+    join_date = serializers.DateField(
+        required=True,
+    )
 
     # We are overriding the `email` field to include unique email validation.
     email = serializers.EmailField(
@@ -312,7 +315,7 @@ class AssociateListCreateSerializer(serializers.ModelSerializer):
             last_name=validated_data['last_name'],
             middle_name=validated_data['middle_name'],
             birthdate=validated_data.get('birthdate', None),
-            join_date=validated_data.get('join_date', None),
+            join_date=validated_data.get('join_date', timezone.now()),
             gender=validated_data.get('gender', None),
             tax_id=validated_data.get('tax_id', None),
 
@@ -454,6 +457,10 @@ class AssociateRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
 
     is_active = serializers.BooleanField(
         write_only=True,
+        required=True,
+    )
+
+    join_date = serializers.DateField(
         required=True,
     )
 
@@ -627,6 +634,7 @@ class AssociateRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         instance.gender = validated_data.get('gender', instance.gender)
         instance.description = validated_data.get('description', instance.description)
         instance.tax_id = validated_data.get('tax_id', instance.tax_id)
+        instance.join_date = validated_data.get('join_date', instance.join_date)
 
         # Misc
         instance.is_ok_to_email=validated_data.get('is_ok_to_email', instance.is_ok_to_email)

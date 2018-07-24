@@ -154,7 +154,7 @@
                 <tr>
                     <th scope="row" class="bg-light">Date of Birth</th>
                     <td id="dob">
-                        {% if associate.birthdate %}{{ associate.birthdate }}{% else %}-{% endif %}
+                        {% if associate.birthdate %}{{ associate.birthdate|date:"Y-m-d" }}{% else %}-{% endif %}
                     </td>
                 </tr>
                 <tr>
@@ -240,13 +240,19 @@
                     <th scope="row" colspan="2">Details</th>
                 </tr>
                 <tr>
+                    <th scope="row" class="bg-light">Join date</th>
+                    <td id="dues_date">
+                        {% if associate.join_date %}{{ associate.join_date|date:"Y-m-d" }}{% else %}-{% endif %}
+                    </td>
+                </tr>
+                <tr>
                     <th scope="row" class="bg-light">Insurance Requirement(s)</th>
                     <td id="insurance_requirements">
                         {% for insurance_requirement in associate.insurance_requirements.all %}
-                                <span class="badge badge-info badge-lg">{{ insurance_requirement }}</span>
-                            {% empty %}
-                                -
-                            {% endfor %}
+                            <span class="badge badge-info badge-lg">{{ insurance_requirement }}</span>
+                        {% empty %}
+                            -
+                        {% endfor %}
                     </td>
                 </tr>
 		        <tr>
@@ -255,7 +261,7 @@
                         {% if associate.hourly_salary_desired %}{{ associate.hourly_salary_desired }}{% else %}-{% endif %}
                     </td>
                 </tr>
-		<tr>
+		        <tr>
                     <th scope="row" class="bg-light">Limit special</th>
                     <td id="limit_special">
                         {% if associate.limit_special %}{{ associate.limit_special }}{% else %}-{% endif %}
