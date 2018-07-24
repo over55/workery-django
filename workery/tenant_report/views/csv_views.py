@@ -65,16 +65,7 @@ def report_01_streaming_csv_view(request):
         job_type = test[job.type_of]
 
         # Attach all the skill sets that are associated with each job.
-        skill_set_count = job.skill_sets.count() - 1
-        skill_set_string = ""
-        for i, skill_set in enumerate(job.skill_sets.all()):
-
-            skill_set_string += skill_set.sub_category
-
-            if i != skill_set_count:
-                skill_set_string += "|"
-            else:
-                pass # Skip last
+        skill_set_string = job.get_skill_sets_string()
 
         rows += ([
             job.associate.id,
@@ -175,16 +166,7 @@ def report_06_streaming_csv_view(request):
             closing_reason = _("Weather")
 
         # Attach all the skill sets that are associated with each job.
-        skill_set_count = cancelled_job.skill_sets.count() - 1
-        skill_set_string = ""
-        for i, skill_set in enumerate(cancelled_job.skill_sets.all()):
-
-            skill_set_string += skill_set.sub_category
-
-            if i != skill_set_count:
-                skill_set_string += "|"
-            else:
-                pass # Skip last
+        skill_set_string = cancelled_job.get_skill_sets_string()
 
         # Minor defensive code.
         associate = cancelled_job.associate
@@ -284,14 +266,16 @@ def report_09_streaming_csv_view(request):
     ).order_by('month', 'day')
 
     # Generate the CSV header row.
-    rows = (["ID #", "Name", "Birthday"],)
+    rows = (["ID #", "Name", "Birthday", "Skill Set(s)"],)
 
     # Generate hte CSV data.
     for associate in associates.all():
+        skill_set_string = associate.get_skill_sets_string()
         rows += ([
             associate.id,
             str(associate),
-            "-" if associate.birthdate is None else associate.birthdate
+            "-" if associate.birthdate is None else associate.birthdate,
+            skill_set_string
         ],)
 
     pseudo_buffer = Echo()

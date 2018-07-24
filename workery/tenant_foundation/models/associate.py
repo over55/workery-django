@@ -354,6 +354,20 @@ class Associate(AbstractPerson):
         # Count only items within the past 30 days.
         return self.activity_sheet.filter(created__gte=today_minus_30_days).count()
 
+    def get_skill_sets_string(self):
+        # Attach all the skill sets that are associated with each job.
+        skill_set_count = self.skill_sets.count() - 1
+        skill_set_string = ""
+        for i, skill_set in enumerate(self.skill_sets.all()):
+
+            skill_set_string += skill_set.sub_category
+
+            if i != skill_set_count:
+                skill_set_string += "|"
+            else:
+                pass # Skip last
+        return skill_set_string
+
 
 # def validate_model(sender, **kwargs):
 #     if 'raw' in kwargs and not kwargs['raw']:

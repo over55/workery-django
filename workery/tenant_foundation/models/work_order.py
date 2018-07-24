@@ -436,6 +436,20 @@ class WorkOrder(models.Model):
     def __str__(self):
         return str(self.pk)
 
+    def get_skill_sets_string(self):
+        # Attach all the skill sets that are associated with each job.
+        skill_set_count = self.skill_sets.count() - 1
+        skill_set_string = ""
+        for i, skill_set in enumerate(self.skill_sets.all()):
+
+            skill_set_string += skill_set.sub_category
+
+            if i != skill_set_count:
+                skill_set_string += "|"
+            else:
+                pass # Skip last
+        return skill_set_string
+
     def get_pretty_status(self):
         """
         Function returns the job status in a more user-friendly format.
