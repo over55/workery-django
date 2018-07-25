@@ -56,7 +56,7 @@ def report_01_streaming_csv_view(request):
     )
 
     # Generate the CSV header row.
-    rows = (["Associate ID #", "Associate Name", "Job Completion Date", "Job ID #", "Client ID #", "Client Name", "Job Type", "Skill Set(s)"],)
+    rows = (["Associate No.", "Associate Name", "Job Completion Date", "Job No.", "Client No.", "Client Name", "Job Type", "Skill Set(s)"],)
 
     # Generate hte CSV data.
     for job in jobs.all():
@@ -146,10 +146,16 @@ def report_06_streaming_csv_view(request):
         Q(completion_date__range=(from_dt,to_dt)) &
         Q(state=WORK_ORDER_STATE.CANCELLED) &
         Q(associate__isnull=False)
-    ).order_by('-completion_date')
+    ).order_by(
+        '-completion_date'
+    ).prefetch_related(
+        'customer',
+        'associate',
+        'skill_sets'
+    )
 
     # Generate the CSV header row.
-    rows = (["Job ID #", "Date", "Reason", "Associate ID #", "Associate Name", "Skill Set(s)"],)
+    rows = (["Job No.", "Date", "Reason", "Associate No.", "Associate Name", "Skill Set(s)"],)
 
     # Generate hte CSV data.
     for cancelled_job in cancelled_jobs.all():
@@ -206,7 +212,7 @@ def report_07_streaming_csv_view(request):
     ).order_by('-commercial_insurance_expiry_date')
 
     # Generate the CSV header row.
-    rows = (["ID #", "Name", "Commerical Insurance Due Dates"],)
+    rows = (["Associate No.", "Name", "Commerical Insurance Due Dates"],)
 
     # Generate hte CSV data.
     for associate in associates.all():
@@ -235,7 +241,7 @@ def report_08_streaming_csv_view(request):
     ).order_by('-police_check')
 
     # Generate the CSV header row.
-    rows = (["ID #", "Name", "Commerical Insurance Due Dates"],)
+    rows = (["Associate No.", "Name", "Commerical Insurance Due Dates"],)
 
     # Generate hte CSV data.
     for associate in associates.all():
@@ -276,7 +282,7 @@ def report_09_streaming_csv_view(request):
         associates = associates.filter(owner__is_active=False)
 
     # Generate the CSV header row.
-    rows = (["ID #", "Name", "Birthday", "Skill Set(s)"],)
+    rows = (["Associate No.", "Name", "Birthday", "Skill Set(s)"],)
 
     # Generate hte CSV data.
     for associate in associates.all():
@@ -331,7 +337,7 @@ def report_12_streaming_csv_view(request):
 
     # Generate the CSV header row.
     rows = ([
-        "ID #",
+        "Customer No.",
         "Name",
         "Type",
         "Ok to email?",
@@ -403,21 +409,22 @@ def report_13_streaming_csv_view(request):
     jobs = WorkOrder.objects.filter(
         assignment_date__range=(from_dt,to_dt),
         # associate__isnull=False
-    ).order_by('-id')
+    ).order_by(
+       '-id'
+    ).prefetch_related(
+        'customer',
+        'associate',
+        'skill_sets'
+    )
 
     # Generate the CSV header row.
-    rows = (["Job ID #", "Associate", "Client", 'Skill Sets'],)
+    rows = (["Job No.", "Associate", "Client", 'Skill Sets'],)
 
     # Generate hte CSV data.
     for job in jobs.all():
 
         # Get our list of skill sets.
-        all_skill_sets = job.skill_sets.all()
-        skill_set_text = ""
-        for i, skill_set in enumerate(all_skill_sets):
-            skill_set_text += skill_set.sub_category
-            if i > all_skill_sets.count():
-                skill_set_text += " / "
+        skill_set_text = job.get_skill_sets_string()
 
         # Generate the reason.
         rows += ([
@@ -451,21 +458,22 @@ def report_14_streaming_csv_view(request):
         customer__type_of=COMMERCIAL_JOB_TYPE_OF_ID,
         customer__isnull=False,
         associate__isnull=False
-    ).order_by('-id')
+    ).order_by(
+       '-id'
+    ).prefetch_related(
+        'customer',
+        'associate',
+        'skill_sets'
+    )
 
     # Generate the CSV header row.
-    rows = (["Job ID #", "Completion date", "Associate", "Client", "WSIB Date", "Total Labour", "Invoice #", "Skill Sets"],)
+    rows = (["Job No.", "Completion date", "Associate", "Client", "WSIB Date", "Total Labour", "Invoice #", "Skill Sets"],)
 
     # Generate hte CSV data.
     for job in jobs.all():
 
         # Get our list of skill sets.
-        all_skill_sets = job.skill_sets.all()
-        skill_set_text = ""
-        for i, skill_set in enumerate(all_skill_sets):
-            skill_set_text += skill_set.sub_category
-            if i > all_skill_sets.count():
-                skill_set_text += " / "
+        skill_set_text = job.get_skill_sets_string()
 
         # Set the invoice ID.
         invoice_id = "-" if job.invoice_id is None else job.invoice_id
