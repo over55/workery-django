@@ -493,21 +493,21 @@
                     console.log(err);
 
                     // STEP 2: CLEAR EXISTING TEXT.
-                $('#all_error_result').html("");
-		$('#all_error_result').removeClass('error-block');
-                // STEP 3: PRINT OUR ERROR IN THE TOP ERROR PANEL.
-                for(var prop in err) {
-                    if(err.hasOwnProperty(prop)) {
-			var val = err[prop];
-			var fdname = humanize(prop);
-			// Errors box code
-                        $('#all_error_result').append("<div class='form-error'><b>"+fdname+":</b> "+val+" </div>");
-			$('#all_error_result').addClass('error-block');
-			// Inline fields errors code
-			$('#'+prop+'-error').html("<ul><li>"+val+"</li></ul>");
-			$('#add-client-form').addClass('was-validated');
+                    $('#all_error_result').html("");
+		            $('#all_error_result').removeClass('error-block');
+                    // STEP 3: PRINT OUR ERROR IN THE TOP ERROR PANEL.
+                    for(var prop in err) {
+                        if(err.hasOwnProperty(prop)) {
+    			            var val = err[prop];
+    			            var fdname = humanize(prop);
+    			            // Errors box code
+                            $('#all_error_result').append("<div class='form-error'><b>"+fdname+":</b> "+val+" </div>");
+    			            $('#all_error_result').addClass('error-block');
+    			            // Inline fields errors code
+    			            $('#'+prop+'-error').html("<ul><li>"+val+"</li></ul>");
+    			            $('#add-client-form').addClass('was-validated');
+                        }
                     }
-                }
 
                     // STEP 4: FOCUS TO WHERE THE ERROR IS OCCURING.
                     $('html, body').animate({ scrollTop: $('#id_page_title').offset().top }, 'slow');

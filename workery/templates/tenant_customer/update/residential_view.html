@@ -246,35 +246,6 @@
      *  (2)
      */
     function ajax_post_form_submission() {
-        // GET OUR FORM.
-        var form = document.getElementById('update-client-form');
-
-        // VALIDATE ALL OUR FORM FIELDS.
-        var has_error = false;
-        has_error |= valid_textfield_value('given_name', true, 2);
-        has_error |= valid_textfield_value('last_name', true, 2);
-        has_error |= valid_textfield_value('telephone', true, 10);
-        has_error |= valid_textfield_value('other_telephone', false, 10);
-        has_error |= valid_radiofields_seleciton('is_ok_to_email', true);
-        has_error |= valid_radiofields_seleciton('is_ok_to_text', true);
-        has_error |= valid_textfield_value('description', false, 2);
-        has_error |= valid_textfield_value('street_address', true, 3);
-        has_error |= valid_textfield_value('street_address_extra', false, 3)
-        has_error |= valid_textfield_value('address_locality', true, 3);
-        // has_error |= valid_textfield_value('address_region', true, 3);
-        // has_error |= valid_textfield_value('address_country', true, 3);
-        has_error |= valid_textfield_value('postal_code', true, 3);
-        has_error |= valid_textfield_value('post_office_box_number', false, 3);
-        has_error |= valid_textfield_value('password', false, 2);
-        has_error |= valid_textfield_value('password_repeat', false, 2);
-
-        // INTERRUPT THE FORM SUBMISSION IF ANY ERRORS EXISTED AND UPDATE THE
-        // GUI TO INDICATE THAT WE HAVE VALIDATED SOME FIELDS.
-        form.classList.add('was-validated');
-        if (has_error) {
-            return; // STOP THIS FUNCTION FROM GOING FORWARD UNTIL ERRORS FIXED.
-        }
-
         // EXTRACT OUR FIELD VALUES.
         var given_name = $('#given_name').val();
         var last_name = $('#last_name').val();
@@ -637,7 +608,7 @@
                   placeholder="{% trans 'Password' %}"
                         class="form-control form-control-lg border border-success"
                          type="password"
-			 pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#\$%\^&\*]).{8,}"
+			          pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#\$%\^&\*]).{8,}"
                autocapitalize="off"
                     minlength="2"
                     maxlength="30" required />
