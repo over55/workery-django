@@ -47,7 +47,7 @@ class AbstractPerson(AbstractThing, AbstractContactPoint, AbstractPostalAddress,
         blank=True,
         null=True
     )
-    join_date = models.DateTimeField(
+    join_date = models.DateField(
         _("Join Date"),
         help_text=_('The date the customer joined this organization.'),
         null=True,

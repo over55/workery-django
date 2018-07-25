@@ -76,7 +76,7 @@
                 dateFormat: 'yy-mm-dd',
                 maxDate: 'today'
             });
-            $( "#join_date" ).datepicker({
+            $( "#date_joined" ).datepicker({
                 dateFormat: 'yy-mm-dd',
                 maxDate: 'today'
             });
@@ -148,7 +148,7 @@
             $('#hourly_salary_desired').val(localStorage.getItem("tmp_associate_member_hourly_salary_desired"));
             $('#limit_special').val(localStorage.getItem("tmp_associate_member_limit_special"));
             $('#dues_date').val(localStorage.getItem("tmp_associate_member_dues_date"));
-            $('#join_date').val(localStorage.getItem("tmp_associate_member_join_date"));
+            $('#date_joined').val(localStorage.getItem("tmp_associate_member_date_joined"));
             $('#commercial_insurance_expiry_date').val(localStorage.getItem("tmp_associate_member_commercial_insurance_expiry_date"));
             $('#auto_insurance_expiry_date').val(localStorage.getItem("tmp_associate_member_auto_insurance_expiry_date"));
             $('#wsib_insurance_date').val(localStorage.getItem("tmp_associate_member_wsib_insurance_date"));
@@ -479,12 +479,12 @@
                 how_hear_other = null;
             }
 
-            var join_date = $('#join_date').val();
-            if (join_date !== undefined && join_date != null && join_date.length > 0) {
-                var mydate = new Date(join_date); // Convert "MM DD, YYYY" to JS DATE
-                join_date = mydate.toISOString().substring(0, 10); // Convert JS DATE to "YYYY-MM-DD"
+            var date_joined = $('#date_joined').val();
+            if (date_joined !== undefined && date_joined != null && date_joined.length > 0) {
+                var mydate = new Date(date_joined); // Convert "MM DD, YYYY" to JS DATE
+                date_joined = mydate.toISOString().substring(0, 10); // Convert JS DATE to "YYYY-MM-DD"
             } else {
-                join_date = '';
+                date_joined = '';
             }
 
             //----------------------------------------------------------------//
@@ -526,7 +526,7 @@
             localStorage.setItem("tmp_associate_member_how_hear", how_hear);
             localStorage.setItem("tmp_associate_member_how_hear_other", how_hear_other);
             localStorage.setItem("tmp_associate_member_tax_id", tax_id);
-            localStorage.setItem("tmp_associate_member_join_date", join_date);
+            localStorage.setItem("tmp_associate_member_date_joined", date_joined);
 
             // SAVE ARRAY OF IDS.
             localStorage.setObj("tmp_associate_member_person_tag_ids", person_tags);
@@ -635,7 +635,7 @@
                     'hourly_salary_desired': localStorage.getItem("tmp_associate_member_hourly_salary_desired"),
                     'limit_special': localStorage.getItem("tmp_associate_member_limit_special"),
                     'dues_date': localStorage.getItem("tmp_associate_member_dues_date"),
-                    'join_date': localStorage.getItem("tmp_associate_member_join_date"),
+                    'date_joined': localStorage.getItem("tmp_associate_member_date_joined"),
                     'commercial_insurance_expiry_date': localStorage.getItem("tmp_associate_member_commercial_insurance_expiry_date"),
                     'auto_insurance_expiry_date': localStorage.getItem("tmp_associate_member_auto_insurance_expiry_date"),
                     'wsib_insurance_date': localStorage.getItem("tmp_associate_member_wsib_insurance_date"),
@@ -862,13 +862,13 @@
             <p class="border-bottom mb-3 pb-1 text-secondary">Associate Details</p>
             <div class="form-row">
                 <div class="form-group col-md-7 mb-4">
-                    <label for="join_date">Join Date <sup>*</sup></label>
+                    <label for="date_joined">Join Date <sup>*</sup></label>
                     <div class="input-group input-group-lg">
-                        <input type="text" class="form-control form-control-lg border border-primary" id="join_date" name="join_date" placeholder="yyyy-mm-dd" required>
+                        <input type="text" class="form-control form-control-lg border border-primary" id="date_joined" name="date_joined" placeholder="yyyy-mm-dd" required>
                         <div class="input-group-append">
                             <span class="input-group-text c-icon-white bg-primary border-primary"><i class="far fa-calendar-alt"></i></span>
                         </div>
-                        <div id="join_date-error" class="invalid-feedback"></div>
+                        <div id="date_joined-error" class="invalid-feedback"></div>
                     </div>
                 </div>
                 <div class="form-group col-md-12 mb-4">

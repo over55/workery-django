@@ -61,7 +61,7 @@
         $('#selected_description').append(localStorage.getItem("tmp_associate_member_description"));
         $('#selected_comment').append(localStorage.getItem("tmp_associate_member_comment"));
         $('#selected_tax_id').append(localStorage.getItem("tmp_associate_member_tax_id"));
-        $('#selected_join_date').append(localStorage.getItem("tmp_associate_member_join_date"));
+        $('#selected_date_joined').append(localStorage.getItem("tmp_associate_member_date_joined"));
 
         // Set our `tags` field.
         var tmp_person_tag_values = localStorage.getObj("tmp_associate_member_person_tag_values");
@@ -273,7 +273,7 @@
                 'has_truck': localStorage.getItem("tmp_associate_member_has_truck"),
                 'how_hear': localStorage.getItem("tmp_associate_member_how_hear"),
                 'how_hear_other': localStorage.getItem("tmp_associate_member_how_hear_other"),
-                'join_date': localStorage.getItem("tmp_associate_member_join_date"),
+                'date_joined': localStorage.getItem("tmp_associate_member_date_joined"),
             },
             function(result_dict) { // Success
                 // FOR DEBUGGING PURPOSES ONLY.
@@ -310,7 +310,7 @@
                 localStorage.removeItem("tmp_associate_member_is_active")
                 localStorage.removeItem("tmp_associate_member_insurance_requirement_ids")
                 localStorage.removeItem("tmp_associate_member_insurance_requirement_values")
-                localStorage.removeItem("tmp_associate_member_join_date")
+                localStorage.removeItem("tmp_associate_member_date_joined")
 
                 // --- Associate Details ---
                 localStorage.removeItem("tmp_associate_member_hourly_salary_desired")
@@ -526,7 +526,7 @@
          </tr>
          <tr>
            <th scope="row" class="bg-light">Join date</th>
-           <td id="selected_join_date">
+           <td id="selected_date_joined">
                <!-- THIS IS WHERE THE JOIN DATE GOES -->
            </td>
          </tr>

@@ -634,7 +634,6 @@ class AssociateRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         instance.gender = validated_data.get('gender', instance.gender)
         instance.description = validated_data.get('description', instance.description)
         instance.tax_id = validated_data.get('tax_id', instance.tax_id)
-        instance.join_date = validated_data.get('join_date', instance.join_date)
 
         # Misc
         instance.is_ok_to_email=validated_data.get('is_ok_to_email', instance.is_ok_to_email)

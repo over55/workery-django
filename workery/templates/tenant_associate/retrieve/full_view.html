@@ -268,25 +268,25 @@
                         {% if associate.commercial_insurance_expiry_date %}{{ associate.commercial_insurance_expiry_date }}{% else %}-{% endif %}
                     </td>
                 </tr>
-		<tr>
+		        <tr>
                     <th scope="row" class="bg-light">Police check date</th>
                     <td>
                         {% if associate.police_check %}{{ associate.police_check }}{% else %}-{% endif %}
                     </td>
                 </tr>
-		<tr>
+		        <tr>
                     <th scope="row" class="bg-light">HST #</th>
                     <td id="tax_id">
                         {% if associate.tax_id %}{{ associate.tax_id }}{% else %}-{% endif %}
                     </td>
                 </tr>
-		<tr>
+		        <tr>
                     <th scope="row" class="bg-light">Drivers license class(es)</th>
                     <td>
                         {% if associate.drivers_license_class %}{{ associate.drivers_license_class }}{% else %}-{% endif %}
                     </td>
                 </tr>
-		<tr>
+		        <tr>
                     <th scope="row" class="bg-light">Vehicle(s)</th>
                     <td>
                          {% for vehicle_type in associate.vehicle_types.all %}
@@ -296,7 +296,7 @@
                             {% endfor %}
                     </td>
                 </tr>
-		<tr>
+		        <tr>
                     <th scope="row" class="bg-light">How did this associate hear about us?</th>
                     <td>
                         {% if associate.how_hear == 1 %}
@@ -329,10 +329,10 @@
                     <th scope="row" class="bg-light">Is active</th>
                     <td id="is_active">
                         {% if associate.owner %}
-                                {% if associate.owner.is_active == True %}Yes{% else %}No{% endif %}
-                            {% else %}
-                                No - No account exists because email not set.
-                            {% endif %}
+                            {% if associate.owner.is_active == True %}Yes{% else %}No{% endif %}
+                        {% else %}
+                            No - No account exists because email not set.
+                        {% endif %}
                     </td>
                 </tr>
                 <!-- ############ end ACCOUNT ############ -->
