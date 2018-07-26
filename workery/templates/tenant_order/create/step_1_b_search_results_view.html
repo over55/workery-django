@@ -72,8 +72,11 @@
 	</div>
 	<div class="col-sm-12 mx-auto mt-4">
 	<div class="card-columns">
+{% if customer_list %}
+		{% set cc = customer_list|length %}
+{% endif %}
     {% for customer in customer_list %}
-	{% def cc = customer_list|length %}
+	
        	    <div class="card bg-light {% if cc == 2 %}fcc-right{% endif %}">
    		    <div class="card-body">
    		       <h5 class="card-title"><a href="{% url 'workery_tenant_customer_lite_retrieve' 'list' customer.id %}">
