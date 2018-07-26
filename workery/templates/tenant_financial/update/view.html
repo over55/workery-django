@@ -330,35 +330,35 @@
                     <!-- Invoice ID -->
                     <div class="form-group col-md-12 mb-4">
                         <label for="invoice_id">Invoice ID #</label>
-                        <input type="number" class="form-control form-control-lg border border-success" id="invoice_id" name="invoice_id" placeholder="Invoice ID #" value="{{ job_item.invoice_id }}">
+                        <input type="number" class="form-control form-control-lg border border-success" min="0" id="invoice_id" name="invoice_id" placeholder="Invoice ID #" value="{{ job_item.invoice_id }}">
                         <div id="invoice_id-error" class="invalid-feedback"></div>
                     </div>
                     <!-- end Invoice ID -->
                     <!-- Invoice Quote -->
                     <div class="form-group col-md-7 mb-4">
                         <label for="invoice_quote_amount">Original Quote</label>
-                        <input type="number" class="form-control form-control-lg border border-success" id="invoice_quote_amount" name="invoice_quote_amount" placeholder="Invoice Quote" value="{{ job_item.invoice_quote_amount.amount }}">
+                        <input type="number" class="form-control form-control-lg border border-success" min="0" id="invoice_quote_amount" name="invoice_quote_amount" placeholder="Invoice Quote" value="{{ job_item.invoice_quote_amount.amount }}">
                         <div id="invoice_quote_amount-error" class="invalid-feedback"></div>
                     </div>
                     <!-- end Invoice Quote -->
                     <!-- Invoice Labour -->
                     <div class="form-group col-md-7 mb-4">
                         <label for="invoice_labour_amount">Total Labour</label>
-                        <input type="number" class="form-control form-control-lg border border-success" id="invoice_labour_amount" name="invoice_labour_amount" placeholder="Total Labour" value="{{ job_item.invoice_labour_amount.amount }}">
+                        <input type="number" class="form-control form-control-lg border border-success" min="0" id="invoice_labour_amount" name="invoice_labour_amount" placeholder="Total Labour" value="{{ job_item.invoice_labour_amount.amount }}">
                         <div id="invoice_labour_amount-error" class="invalid-feedback"></div>
                     </div>
                     <!-- end Invoice Labour -->
                     <!-- Invoice Material -->
                     <div class="form-group col-md-7 mb-4">
                         <label for="invoice_material_amount">Total Materials</label>
-                        <input type="number" class="form-control form-control-lg border border-success" id="invoice_material_amount" name="invoice_material_amount" placeholder="Total Material" value="{{ job_item.invoice_material_amount.amount }}">
+                        <input type="number" class="form-control form-control-lg border border-success" min="0" id="invoice_material_amount" name="invoice_material_amount" placeholder="Total Material" value="{{ job_item.invoice_material_amount.amount }}">
                         <div id="invoice_material_amount-error" class="invalid-feedback"></div>
                     </div>
                     <!-- end Invoice Material -->
                     <!-- Invoice Tax -->
                     <div class="form-group col-md-7 mb-4">
                         <label for="invoice_tax_amount">Total Tax</label>
-                        <input type="number" class="form-control form-control-lg border border-success" id="invoice_tax_amount" name="invoice_tax_amount" placeholder="Total Tax" value="{{ job_item.invoice_tax_amount.amount }}">
+                        <input type="number" class="form-control form-control-lg border border-success" min="0" id="invoice_tax_amount" name="invoice_tax_amount" placeholder="Total Tax" value="{{ job_item.invoice_tax_amount.amount }}">
                         <div id="invoice_tax_amount-error" class="invalid-feedback"></div>
                     </div>
                     <!-- end Invoice Material -->
