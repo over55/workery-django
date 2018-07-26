@@ -107,6 +107,12 @@ class WorkeryListView(ListView, ExtraRequestProcessingMixin):
         # Return our custom context based on our `workery` app.
         return base_context
 
+    def get_paginate_by(self, queryset):
+        """
+        Paginate by specified value in querystring, or use default class property value.
+        """
+        return self.request.GET.get('paginate_by', self.paginate_by)
+
 
 class WorkeryDetailView(DetailView, ExtraRequestProcessingMixin):
     """
