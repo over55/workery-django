@@ -12,7 +12,7 @@ from shared_foundation.mixins import (
     WorkeryDetailView
 )
 from tenant_api.filters.order import WorkOrderFilter
-from tenant_foundation.models import Customer, WorkOrder, SkillSet
+from tenant_foundation.models import Customer, WorkOrder, WorkOrderServiceFee, SkillSet
 
 
 class JobUpdateView(LoginRequiredMixin, GroupRequiredMixin, WorkeryDetailView):
@@ -39,6 +39,7 @@ class JobUpdateView(LoginRequiredMixin, GroupRequiredMixin, WorkeryDetailView):
 
         # Set our dependencies
         modified_context['skillsets'] = SkillSet.objects.all()
+        modified_context['servicefees'] = WorkOrderServiceFee.objects.all()
 
         # Return our modified context.
         return modified_context

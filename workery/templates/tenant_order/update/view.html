@@ -32,6 +32,13 @@
         // Initialize our datepicker jQuery code with our HTML view.
         $('#skill_sets').select2();
 
+        // Default service fee id
+        let o_service_fee = $('#order_service_fee');
+        o_service_fee.prop('selectedIndex', {{ job.service_fee.id }});
+        // Initialize our 'select2' element.
+        $('.js-example-basic-multiple').select2();
+        $('#order_service_fee').val(localStorage.getItem("tmp_order_service_fee_id"));
+
     }); // end Ready
 
     /**
@@ -72,6 +79,23 @@
         var invoice_service_fee_payment_date = $('#invoice_service_fee_payment_date').val();
         console.log("invoice_service_fee_payment_date:", completion_date);
 
+        var order_service_fee = $('#order_service_fee').val();
+        if (order_service_fee == undefined || order_service_fee == null || order_service_fee.length == 0) {
+            order_service_fee = '';
+        }
+        var order_service_fee_text = $( "#order_service_fee option:selected" ).text();
+        localStorage.setItem("tmp_order_service_fee_text", order_service_fee_text);
+        localStorage.setItem("tmp_order_service_fee_id", order_service_fee);
+
+        if (order_service_fee == '') {
+            // Errors box code
+            $('#all_error_result').append("<div class='form-error'><b>Service Fee:</b> This field may not be blank. </div>");
+            $('#all_error_result').addClass('error-block');
+            // Inline fields errors code
+            $('#order_service_fee-error').html("<ul><li>This field may not be blank.</li></ul>");
+            $('#residential-job').addClass('was-validated');
+        }
+
         // Attach "customer".
         {% if job.customer %}
         var customer_id = {{ job.customer.id }};
@@ -96,7 +120,7 @@
             'is_home_support_service': home_support,
             'completion_date': completion_date,
             'hours': hours,
-            'invoice_service_fee': {{ job.invoice_service_fee }},
+            'invoice_service_fee': $('#order_service_fee').val(),
             'invoice_service_fee_payment_date': invoice_service_fee_payment_date,
             'extra_comment': null
         };
@@ -108,26 +132,26 @@
                 console.log(json_results);
                 window.location = "{% url 'workery_tenant_job_full_retrieve' template job.id %}?was_modified=True";
             },
-	    function(xhr,status,error) { // Error
+	        function(xhr,status,error) { // Error
                 // STEP 1: Convert to JSON.
                 var err = JSON.parse(xhr.responseText);
                 // For debugging purposes only.
                 console.log(err);
                 // STEP 2: CLEAR EXISTING TEXT.
                 $('#all_error_result').html("");
-		$('#all_error_result').removeClass('error-block');
+		        $('#all_error_result').removeClass('error-block');
                 // STEP 3: PRINT OUR ERROR.
                 for(var prop in err) {
                     if(err.hasOwnProperty(prop)) {
                         var val = err[prop];
                         console.log(val);
                         var fdname = humanize(prop);
-			// Errors box code
+			            // Errors box code
                         $('#all_error_result').append("<div class='form-error'><b>"+fdname+":</b> "+val+" </div>");
-			$('#all_error_result').addClass('error-block');
-			// Inline fields errors code
-			$('#'+prop+'-error').html("<ul><li>"+val+"</li></ul>");
-			$('#update-job-form').addClass('was-validated');
+			            $('#all_error_result').addClass('error-block');
+			            // Inline fields errors code
+			            $('#'+prop+'-error').html("<ul><li>"+val+"</li></ul>");
+			            $('#update-job-form').addClass('was-validated');
                     }
                 }
                 // STEP 4: FOCUS TO WHERE THE ERROR IS OCCURING.
@@ -294,6 +318,17 @@
                 </div>
                 <div id="invoice_service_fee_payment_date-error" class="invalid-feedback"></div>
             </div>
+        </div>
+
+        <div class="form-group col-md-12 mb-4">
+            <label for="order_service_fee" class="font-b6">Service Fee</label>
+            <select class="custom-select form-control-lg border-success" id="order_service_fee" name="order_service_fee" required>
+                <option value="" {% if job.service_fee == None %}selected="true"{% endif %}>Service fee...</option>
+                {% for service_fee in servicefees.all %}
+                   <option value="{{ service_fee.id }}" {% if job.service_fee == service_fee %}selected="true"{% endif %}>{{ service_fee.title }}</option>
+                {% endfor %}
+            </select>
+            <div id="order_service_fee-error" class="invalid-feedback"></div>
         </div>
 
             <!-- end SUBMIT BUTTON -->
