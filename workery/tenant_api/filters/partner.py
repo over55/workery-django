@@ -13,6 +13,7 @@ class PartnerFilter(django_filters.FilterSet):
             'given_name',
             'middle_name',
             'last_name',
+            'street_address',
             # 'business',
             # 'birthdate',
             # 'join_date',
@@ -44,6 +45,12 @@ class PartnerFilter(django_filters.FilterSet):
                 },
             },
             models.CharField: { # last_name
+                'filter_class': django_filters.CharFilter,
+                'extra': lambda f: {
+                    'lookup_expr': 'icontains',
+                },
+            },
+            models.CharField: { # street_address
                 'filter_class': django_filters.CharFilter,
                 'extra': lambda f: {
                     'lookup_expr': 'icontains',

@@ -52,14 +52,15 @@ class CustomerSearchResultView(LoginRequiredMixin, GroupRequiredMixin, WorkeryLi
             queryset = queryset.order_by('last_name', 'given_name')
 
             # Remove special characters from the telephone
-            tel = self.request.GET.get('telephone')
-            tel = tel.replace('(', '')
-            tel = tel.replace(')', '')
-            tel = tel.replace('-', '')
-            tel = tel.replace('+', '')
-            tel = tel.replace(' ', '')
-            self.request.GET._mutable = True
-            self.request.GET['telephone'] = tel
+            tel = self.request.GET.get('telephone', None)
+            if tel:
+                tel = tel.replace('(', '')
+                tel = tel.replace(')', '')
+                tel = tel.replace('-', '')
+                tel = tel.replace('+', '')
+                tel = tel.replace(' ', '')
+                self.request.GET._mutable = True
+                self.request.GET['telephone'] = tel
 
             # The following code will use the 'django-filter' library.
             filter = CustomerFilter(self.request.GET, queryset=queryset)
