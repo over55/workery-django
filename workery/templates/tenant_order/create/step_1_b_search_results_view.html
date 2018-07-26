@@ -74,7 +74,7 @@
 	<div class="col-sm-12 mx-auto mt-4">
 	<div class="card-columns">
     {% for customer in customer_list %}
-	{{ forloop.counter }}
+	
        	    <div class="card bg-light" {% if forloop.counter == 2 %}style="float: right;"{% endif %}>
    		    <div class="card-body">
    		       <h5 class="card-title"><a href="{% url 'workery_tenant_customer_lite_retrieve' 'list' customer.id %}">
