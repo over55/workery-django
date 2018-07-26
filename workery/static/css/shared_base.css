@@ -603,3 +603,6 @@ table.custom-cell-w tr th{width:35% !important;}
 }
 .notif-icons-mobile .badge-1{top: 16px; left: 24px;}
 .notif-icons-mobile .badge-2{top: 16px; right: -3px;}
+.table tr td:last-child {
+    min-width: 6rem !important;
+}
