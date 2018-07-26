@@ -9,7 +9,7 @@
 {% endblock header_content %}
 
 {% block content %}
-
+{% cc = customer_list|length %}
 <script>
     function ajax_select(customer_id, customer_name, customer_type_of) {
         var previous_url = window.location.href;
@@ -67,15 +67,13 @@
     <!------------------------------------------------------------------------->
     <!-- end STEP NAVIGATION -->
 
-
 	<div class="col-sm-12 mx-auto mt-3 pt-3 mb-3 text-center">
 		<h5>{% if customer_list %}We found a match for this client:{% else %}We did not find any matches.{% endif %}</h5>
 	</div>
 	<div class="col-sm-12 mx-auto mt-4">
 	<div class="card-columns">
     {% for customer in customer_list %}
-	
-       	    <div class="card bg-light" {% if forloop.counter == 2 %}style="float: right;"{% endif %}>
+       	    <div class="card bg-light {% if cc == 2 %}fcc-right{% endif %}">
    		    <div class="card-body">
    		       <h5 class="card-title"><a href="{% url 'workery_tenant_customer_lite_retrieve' 'list' customer.id %}">
                    {% if customer.type_of == tenant_constants.RESIDENTIAL_CUSTOMER_TYPE_OF_ID %}
