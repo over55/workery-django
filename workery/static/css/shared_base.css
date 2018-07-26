@@ -606,3 +606,8 @@ table.custom-cell-w tr th{width:35% !important;}
 .table tr td:last-child {
     min-width: 6rem !important;
 }
+@media (min-width: 575.98px) {
+	.fcc-right {
+		float: right !important;
+	}
+}
