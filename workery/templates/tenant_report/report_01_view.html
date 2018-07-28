@@ -46,7 +46,14 @@
             alert("Please select a finish date");
             return
         }
-        window.location = "{% url 'workery_tenant_report_01_download_csv_file_api_endpoint' %}?from_dt="+from_dt+"&to_dt="+to_dt;
+
+        var job_state = $('#job_state').val();
+        if ( job_state == '' || job_state === undefined || job_state === null ) {
+            alert("Please select a job filter.");
+            return;
+        }
+
+        window.location = "{% url 'workery_tenant_report_01_download_csv_file_api_endpoint' %}?from_dt="+from_dt+"&to_dt="+to_dt+"&state="+job_state;
     }
 </script>
 
@@ -97,6 +104,18 @@
                     <div id="to_dt-error" class="invalid-feedback"></div>
                 </div>
             </div>
+
+            <!-- Associate Types -->
+            <div class="form-group col-md-7 mb-4">
+                <label for="job_state">What type of job status to filter by?</label>
+                <select class="custom-select form-control-lg border-success" id="job_state" name="job_state" required>
+                    <option value="" selected>Types...</option>
+                    <option value="{{ WORK_ORDER_STATE.COMPLETED_BUT_UNPAID }}">Completed but unpaid</option>
+                    <option value="{{ WORK_ORDER_STATE.COMPLETED_AND_PAID }}">Complated and paid</option>
+                </select>
+                <div id="job_state-error" class="invalid-feedback"></div>
+            </div>
+            <!-- end Associate Types -->
 
 
                 <!-- ############ end SECURITY ############ -->

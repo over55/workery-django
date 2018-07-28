@@ -42,13 +42,14 @@ class Echo:
 def report_01_streaming_csv_view(request):
     from_dt = request.GET.get('from_dt', None)
     to_dt = request.GET.get('to_dt', None)
+    state = request.GET.get('state', WORK_ORDER_STATE.COMPLETED_BUT_UNPAID)
 
     from_dt = parser.parse(from_dt)
     to_dt = parser.parse(to_dt)
 
     jobs = WorkOrder.objects.filter(
         ~Q(associate=None) &
-        Q(state=WORK_ORDER_STATE.COMPLETED_BUT_UNPAID) &
+        Q(state=state) &
         Q(assignment_date__range=(from_dt,to_dt))
     ).prefetch_related(
         'customer',
