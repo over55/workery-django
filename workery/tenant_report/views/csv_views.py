@@ -48,7 +48,8 @@ def report_01_streaming_csv_view(request):
 
     jobs = WorkOrder.objects.filter(
         ~Q(associate=None) &
-        Q(state=WORK_ORDER_STATE.COMPLETED_BUT_UNPAID)
+        Q(state=WORK_ORDER_STATE.COMPLETED_BUT_UNPAID) &
+        Q(assignment_date__range=(from_dt,to_dt))
     ).prefetch_related(
         'customer',
         'associate',
