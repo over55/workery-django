@@ -80,9 +80,10 @@ def report_01_streaming_csv_view(request):
         "Job No.",
         "Job Due Fee",
         "Job Labour",
+        "Job Type",
+        "Job Status",
         "Client No.",
         "Client Name",
-        "Job Type",
         "Skill Set(s)"],)
 
     # Generate hte CSV data.
@@ -101,9 +102,10 @@ def report_01_streaming_csv_view(request):
             job.id,
             str(job.invoice_service_fee_amount),
             str(job.invoice_labour_amount),
+            job_type,
+            job.get_pretty_status(),
             job.customer.id,
             str(job.customer),
-            job_type,
             skill_set_string
         ],)
 
