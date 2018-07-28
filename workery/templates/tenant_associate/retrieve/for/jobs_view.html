@@ -88,7 +88,7 @@
                 </a>
             </div>
             <div class="st-grey active">
-                <i class="fa fa-wrench"></i>&nbsp;<span class="">Jobs</span>
+                <i class="fa fa-wrench"></i>&nbsp;<span class="?job_state">Jobs</span>
             </div>
             <div class="st-grey">
                 <a href="{% url 'workery_tenant_member_retrieve_for_comment_list' template associate.id %}">
@@ -99,6 +99,75 @@
     </div>
     <!------------------------------------------------------------------------->
     <!-- end STEP NAVIGATION -->
+
+
+    <div class="row">
+        <div class="col-sm-3"></div>
+        <div class="col-sm-8">
+            {% if parameters.job_state == "all" %}
+                <strong>All</strong>
+            {% else %}
+                <a href="?job_state=all" class="text-center">All</a>
+            {% endif %}
+
+            &nbsp;|&nbsp;
+
+            {% if parameters.job_state == "declined" %}
+                <strong>Declined</strong>
+            {% else %}
+                <a href="?job_state=declined" class="text-center">Declined</a>
+            {% endif %}
+
+            &nbsp;|&nbsp;
+
+            {% if parameters.job_state == "pending" %}
+                <strong>Pending</strong>
+            {% else %}
+                <a href="?job_state=pending" class="text-center">Pending</a>
+            {% endif %}
+
+            &nbsp;|&nbsp;
+
+            {% if parameters.job_state == "cancelled" %}
+                <strong>Cancelled</strong>
+            {% else %}
+                <a href="?job_state=cancelled" class="text-center">Cancelled</a>
+            {% endif %}
+
+            &nbsp;|&nbsp;
+
+            {% if parameters.job_state == "ongoing" %}
+                <strong>Ongoing</strong>
+            {% else %}
+                <a href="?job_state=ongoing" class="text-center">Ongoing</a>
+            {% endif %}
+
+            &nbsp;|&nbsp;
+
+            {% if parameters.job_state == "in_progress" %}
+                <strong>In Progress</strong>
+            {% else %}
+                <a href="?job_state=in_progress" class="text-center">Is Progress</a>
+            {% endif %}
+
+            &nbsp;|&nbsp;
+
+            {% if parameters.job_state == "completed_and_unpaid" %}
+                <strong>Completed and Unpaid</strong>
+            {% else %}
+                <a href="?job_state=completed_and_unpaid" class="text-center">Completed and Unpaid</a>
+            {% endif %}
+
+            &nbsp;|&nbsp;
+
+            {% if parameters.job_state == "completed_and_paid" %}
+                <strong>Completed and Paid</strong>
+            {% else %}
+                <a href="?job_state=completed_and_paid" class="text-center">Completed and Paid</a>
+            {% endif %}
+
+        </div>
+    </div>
 
     <div class="row mt-4 pt-3 mb-4 pb-2">
 
@@ -179,8 +248,8 @@
         <div class="pagination">
             <span class="step-links">
                 {% if paginated_job_items.has_previous %}
-                    <a href="?page=1">&laquo; first</a>
-                    <a href="?page={{ paginated_job_items.previous_page_number }}">previous</a>
+                    <a href="?page=1&job_state={{ parameters.job_state }}">&laquo; first</a>
+                    <a href="?page={{ paginated_job_items.previous_page_number }}&job_state={{ parameters.job_state }}">previous</a>
                 {% endif %}
 
                 <span class="current">
@@ -188,8 +257,8 @@
                 </span>
 
                 {% if paginated_job_items.has_next %}
-                    <a href="?page={{ paginated_job_items.next_page_number }}">next</a>
-                    <a href="?page={{ paginated_job_items.paginator.num_pages }}">last &raquo;</a>
+                    <a href="?page={{ paginated_job_items.next_page_number }}&job_state={{ parameters.job_state }}">next</a>
+                    <a href="?page={{ paginated_job_items.paginator.num_pages }}&job_state={{ parameters.job_state }}">last &raquo;</a>
                 {% endif %}
             </span>
         </div>

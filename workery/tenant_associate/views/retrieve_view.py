@@ -181,6 +181,12 @@ class MemberRetrieveForJobsListView(LoginRequiredMixin, GroupRequiredMixin, Work
             'customer'
         ).order_by("-id")
 
+        # Added our job state filtering.
+        job_state = self.request.GET.get('job_state', 'all')
+        if job_state != "all":
+            jobs = jobs.filter(state=job_state)
+
+        # Add pagination.
         paginator = Paginator(jobs, 25) # Show 25 contacts per page
         page = self.request.GET.get('page', 1)
         jobs_items = paginator.get_page(page)
