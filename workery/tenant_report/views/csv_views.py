@@ -47,15 +47,30 @@ def report_01_streaming_csv_view(request):
     from_dt = parser.parse(from_dt)
     to_dt = parser.parse(to_dt)
 
-    jobs = WorkOrder.objects.filter(
-        ~Q(associate=None) &
-        Q(state=state) &
-        Q(assignment_date__range=(from_dt,to_dt))
-    ).prefetch_related(
-        'customer',
-        'associate',
-        'skill_sets'
-    )
+    jobs = None
+    if state == 'all':
+        jobs = WorkOrder.objects.filter(
+            ~Q(associate=None) &
+            Q(
+                Q(state=WORK_ORDER_STATE.COMPLETED_BUT_UNPAID) |
+                Q(state=WORK_ORDER_STATE.COMPLETED_AND_PAID)
+            ) &
+            Q(assignment_date__range=(from_dt,to_dt))
+        ).prefetch_related(
+            'customer',
+            'associate',
+            'skill_sets'
+        )
+    else:
+        jobs = WorkOrder.objects.filter(
+            ~Q(associate=None) &
+            Q(state=state) &
+            Q(assignment_date__range=(from_dt,to_dt))
+        ).prefetch_related(
+            'customer',
+            'associate',
+            'skill_sets'
+        )
 
     # Generate the CSV header row.
     rows = (["Associate No.", "Associate Name", "Job Completion Date", "Job No.", "Client No.", "Client Name", "Job Type", "Skill Set(s)"],)
