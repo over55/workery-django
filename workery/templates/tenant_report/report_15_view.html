@@ -1,0 +1,229 @@
+{% extends 'tenant_foundation/tenant_base.html' %}
+{% load staticfiles i18n shared_foundation_tags humanize %}
+
+{% block title %}
+{% trans 'Report #10 | Workery' %}
+{% endblock title %}
+
+{% block header_content %}
+{% endblock header_content %}
+
+{% block content %}
+
+<script>
+    /**
+     *  When page loads, the following code will be run first.
+     */
+    $(document).ready(function () {
+        // Initialize our datepicker jQuery code with our HTML view.
+
+        $( "#from_dt" ).datepicker({
+            dateFormat: 'yy-mm-dd',
+	        maxDate: 'today'
+        });
+
+        $( "#to_dt" ).datepicker({
+            dateFormat: 'yy-mm-dd',
+	        maxDate: 'today'
+        });
+
+        /*
+         * DOCUMENTATION
+         * https://select2.org/
+         */
+        $('#associate').select2({
+            // SETUP OUR STARTUP GUI.
+            placeholder: 'Please select an associate',
+            allowClear: true,
+	        width: '100%',
+
+            // OVERRIDE OUR GUI TO GET OUR DATA FROM REMOTE API WEB-SERVICE.
+            ajax: {
+                // THE URL OF OUR API WEB-SERVICE.
+                url: "{% url 'workery_associate_list_create_api_endpoint' %}",
+
+                // THE AUTH-CREDENTIALS OF OUR API WEB-SERVICE WHICH WE WILL
+                // ATTACH WITH THIS CALL.
+                headers: {
+                    "Authorization" : rest_api_token,
+                    "Content-Type" : "application/json",
+                },
+                dataType: 'json',
+
+                // OVERRIDE OUR QUERY TO WORK WITH OUR API WEB-SERVICE.
+                data: function (params) {
+                    var query = {
+                        search: params.term,
+                    }
+                    // Query parameters will be ?search=[term]
+                    return query;
+                },
+
+                // OVERRIDE HOW WE TAKE THE API WEB-SERVICE RESULTS AND FORMAT
+                // FOR THIS LIBRARY.
+                processResults: function (data) {
+                    // Tranforms the top-level key of the response object from 'items' to 'results'
+                    return {
+                        results: data['results']
+                    };
+                },
+            }, // end AJAX
+
+            // THE IS WHERE WE FORMAT OUR OUTPUT TO GUI.
+            templateResult: function formatState (state) {
+                /**
+                 *  Function used to take our JSON API results and create our own custom
+                 *  GUI elements per each returned customer.
+                 */
+                if (!state.id) {
+                     return  "Please enter 1 or more characters";
+                }
+                var $state = $(
+                    '<span id="' + state.id + '">' + state.given_name + " " + state.last_name + '</span>'
+                );
+                return $state;
+            },
+
+            templateSelection: function (data) {
+                if (data.id === '') { // adjust for custom placeholder values
+                    return 'Please select an associate';
+                }
+                return data.given_name + " " + data.last_name;
+            }
+        }); // end SELECT2
+    }); // end DOCUMENT
+
+    function click_cancel_button() {
+        window.location = "{% url 'workery_tenant_reports_list_master' %}";
+    }
+
+    function click_download_button() {
+        var associate = parseInt($('#associate').val());
+
+        if (isNaN(associate)) {
+            alert("Please select an associate.");
+            return;
+        }
+
+        var from_dt = $('#from_dt').val();
+        var to_dt = $('#to_dt').val();
+        if (from_dt === undefined || from_dt === null || from_dt === '') {
+            alert("Please select a start date");
+            return
+        }
+        if (to_dt === undefined || to_dt === null || to_dt === '') {
+            alert("Please select a finish date");
+            return
+        }
+
+        var job_state = $('#job_state').val();
+        if ( job_state == '' || job_state === undefined || job_state === null ) {
+            alert("Please select a job filter.");
+            return;
+        }
+
+        window.location = "{% url 'workery_tenant_report_15_download_csv_file_api_endpoint' %}?associate_id="+associate+"&from_dt="+from_dt+"&to_dt="+to_dt+"&state="+job_state;
+    }
+</script>
+
+<main id="main" role="main">
+
+    <!-- BREADCRUMB -->
+    <!------------------------------------------------------------------------->
+    <nav aria-label="breadcrumb">
+	  	<ol class="breadcrumb">
+	    	<li class="breadcrumb-item"><a href="{% url 'workery_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
+        	<li class="breadcrumb-item"><a href="{% url 'workery_tenant_reports_list_master' %}">{% trans 'Reports' %}</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{% trans 'Associate Jobs Report' %}</li>
+	  	</ol>
+	</nav>
+    <!------------------------------------------------------------------------->
+    <!-- end BREADCRUMB -->
+
+    <h1>Associate Jobs Report</h1>
+
+    <div class="col-sm-6 mx-auto mt-2">
+        <!-- Residential form -->
+        <div class="col-sm-12 fade show active" id="client-form" aria-labelledby="residential">
+
+            <p>&nbsp;</p>
+            <form id="add-client-form" method="post" class="needs-validation" action="" novalidate>
+            <!-- ############ PERSON ############ -->
+            <p class="border-bottom mb-3 pb-1 text-secondary">Report Details</p>
+            <p>Run this report to see the jobs of a particular Associate Member, exported to .csv format.</p>
+
+            <!-- ############ ASSOCIATE (REMOTE DATA) ############ -->
+            <div class="form-group col-md-12 mb-4 field-select2">
+                <label for="associate">Associate <sup>*</sup></label>
+                <select id="associate" name="associate" class="form-control form-control-lg border border-primary" required="" autofocus>
+                </select>
+            </div>
+            <!-- ############ end ASSOCIATE (REMOTE DATA) ############ -->
+
+            <div class="form-group p-0 col-md-7 mb-4">
+                <label for="from_dt">From Assignment Date</label>
+                <div class="input-group input-group-lg">
+                    <input type="text" class="form-control form-control-lg border border-success" id="from_dt" name="from_dt" placeholder="yyyy-mm-dd" required>
+                    <div class="input-group-append">
+                        <span class="input-group-text dob-icon bg-success border-success"><i class="far fa-calendar-alt"></i></span>
+                    </div>
+                    <div id="from_dt-error" class="invalid-feedback"></div>
+                </div>
+            </div>
+
+            <div class="form-group p-0 col-md-7 mb-4">
+                <label for="to_dt">To Assignment Date</label>
+                <div class="input-group input-group-lg">
+                    <input type="text" class="form-control form-control-lg border border-success" id="to_dt" name="to_dt" placeholder="yyyy-mm-dd" required>
+                    <div class="input-group-append">
+                        <span class="input-group-text dob-icon bg-success border-success"><i class="far fa-calendar-alt"></i></span>
+                    </div>
+                    <div id="to_dt-error" class="invalid-feedback"></div>
+                </div>
+            </div>
+
+            <!-- Job Status Filter By -->
+            <div class="form-group col-md-7 mb-4">
+                <label for="job_state">What type of job status to filter by?</label>
+                <select class="custom-select form-control-lg border-success" id="job_state" name="job_state" required>
+                    <option value="" selected>Types...</option>
+                    <option value="{{ WORK_ORDER_STATE.PENDING }}">Pending</option>
+                    <option value="{{ WORK_ORDER_STATE.CANCELLED }}">Cancelled</option>
+                    <option value="{{ WORK_ORDER_STATE.ONGOING }}">Ongoing</option>
+                    <option value="{{ WORK_ORDER_STATE.IN_PROGRESS }}">In progress</option>
+                    <option value="{{ WORK_ORDER_STATE.COMPLETED_BUT_UNPAID }}">Completed but unpaid</option>
+                    <option value="{{ WORK_ORDER_STATE.COMPLETED_AND_PAID }}">Complated and paid</option>
+                    <option value="all">All jobs</option>
+                </select>
+                <div id="job_state-error" class="invalid-feedback"></div>
+            </div>
+            <!-- end Job Status Filter By -->
+
+                <!-- ############ end SECURITY ############ -->
+                <!-- end SUBMIT BUTTON -->
+                <div class="form-group col-md-12 mb-3 p-0 mx-auto text-center">
+                    <button id="id_submit_btn"
+                         class="btn btn-success btn-lg mt-4 float-right pl-4 pr-4"
+                          type="button"
+                       onclick="click_download_button();">
+                         <i class="fa fa-download"></i>&nbsp;Download</button>
+                    <button id="id_cancel_btn"
+                         class="btn btn-orange btn-lg mt-4 float-left pl-4 pr-4"
+                          type="button"
+                       onclick="click_cancel_button();">
+                        <i class="fas fa-times"></i>&nbsp;Back
+                    </button>
+                </div>
+                <!-- end SUBMIT BUTTON -->
+
+
+            </div>
+        </div>
+    </div>
+
+
+    <!-- RETURN-TO-TOP -->
+    <a id="return-to-top" href="#" class="btn-info btn-lg back-to-top" role="button" title="Back to top"><i class="fas fa-angle-up fa-2x"></i></a>
+    <!-- end RETURN-TO-TOP -->
+</main>
+{% endblock content %}
