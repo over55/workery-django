@@ -8,6 +8,7 @@ from tenant_api.views.awaylog import AwayLogListCreateAPIView, AwayLogRetrieveUp
 # from tenant_api.views.comment import CommentListCreateAPIView, CommentRetrieveUpdateDestroyAPIView
 from tenant_api.views.customer import CustomerListCreateAPIView, CustomerRetrieveUpdateDestroyAPIView, CustomerCreateValidationAPIView
 from tenant_api.views.customer_comment import CustomerCommentListCreateAPIView
+from tenant_api.views.customer_operation import CustomerBlacklistOperationCreateAPIView
 from tenant_api.views.insurance_requirement import InsuranceRequirementListCreateAPIView, InsuranceRequirementRetrieveUpdateDestroyAPIView
 from tenant_api.views.order import WorkOrderListCreateAPIView, WorkOrderRetrieveUpdateDestroyAPIView
 from tenant_api.views.order_comment import WorkOrderCommentListCreateAPIView
@@ -49,6 +50,9 @@ urlpatterns = [
     url(r'^api/customers/validate$', CustomerCreateValidationAPIView.as_view(), name='workery_customer_create_validate_api_endpoint'),
     url(r'^api/customer/(?P<pk>[^/.]+)/$', CustomerRetrieveUpdateDestroyAPIView.as_view(), name='workery_customer_retrieve_update_destroy_api_endpoint'),
     url(r'^api/customer-comments$', CustomerCommentListCreateAPIView.as_view(), name='workery_customer_comment_list_create_api_endpoint'),
+
+    # Customers - Operations
+    url(r'^api/customers/operation/blacklist$', CustomerBlacklistOperationCreateAPIView.as_view(), name='workery_blacklist_customer_operation_create_api_endpoint'),
 
     # Insurance Requirements
     url(r'^api/insurance_requirements$', InsuranceRequirementListCreateAPIView.as_view(), name='workery_insurance_requirement_list_create_api_endpoint'),
