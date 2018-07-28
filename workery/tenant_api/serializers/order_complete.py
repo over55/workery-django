@@ -162,9 +162,9 @@ class WorkOrderCompleteCreateSerializer(serializers.Serializer):
             # STEP 5 - Create our new task for following up.
             next_task_item = TaskItem.objects.create(
                 type_of = FOLLOW_UP_CUSTOMER_SURVEY_TASK_ITEM_TYPE_OF_ID,
-                title = _('48 hour follow up'),
-                description = _('Please call up the client and confirm that the associate and client have agreed on scheduled meeting date in the future.'),
-                due_date = get_date_plus_days(timezone.now(), 2),
+                title = _('48 hour follow up - 24 hour check'),
+                description = _('It appears a previous 48 hour follow was not completed. This is a 24 hour follow up. Please call up the client and confirm that the associate and client have agreed on scheduled meeting date in the future.'),
+                due_date = get_date_plus_days(timezone.now(), 1), # 24 hour version instead of 48 hour version!
                 is_closed = False,
                 job = task_item.job,
                 created_by = self.context['user'],
