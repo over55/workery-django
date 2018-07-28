@@ -73,7 +73,17 @@ def report_01_streaming_csv_view(request):
         )
 
     # Generate the CSV header row.
-    rows = (["Associate No.", "Associate Name", "Job Completion Date", "Job No.", "Client No.", "Client Name", "Job Type", "Skill Set(s)"],)
+    rows = ([
+        "Associate No.",
+        "Associate Name",
+        "Job Completion Date",
+        "Job No.",
+        "Job Due Fee",
+        "Job Labour",
+        "Client No.",
+        "Client Name",
+        "Job Type",
+        "Skill Set(s)"],)
 
     # Generate hte CSV data.
     for job in jobs.all():
@@ -89,6 +99,8 @@ def report_01_streaming_csv_view(request):
             str(job.associate),
             job.completion_date,
             job.id,
+            str(job.invoice_service_fee_amount),
+            str(job.invoice_labour_amount),
             job.customer.id,
             str(job.customer),
             job_type,
