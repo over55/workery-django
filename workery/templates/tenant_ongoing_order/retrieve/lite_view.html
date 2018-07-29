@@ -154,6 +154,16 @@
                         {% endif %}
                     </td>
                 </tr>
+                <tr>
+                    <th scope="row" class="bg-light">Latest Pending Task</th>
+                    <td id="selected_task">
+                        {% if job.latest_pending_task %}
+                            <a href="{% url 'workery_tenant_pending_task_retrieve' job.latest_pending_task.id %}" target="_blank">{{ job.latest_pending_task.id }}&nbsp;<i class="fas fa-external-link-alt"></i></a>
+                        {% else %}
+                            -
+                        {% endif %}
+                    </td>
+                </tr>
                 <tr class="bg-primary text-white">
                     <th scope="row" colspan="2">Current Work Order Details</th>
                 </tr>

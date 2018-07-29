@@ -34,6 +34,7 @@ from tenant_foundation.models import (
     OngoingWorkOrder,
     WORK_ORDER_STATE,
     WorkOrderComment,
+    ONGOING_WORK_ORDER_STATE,
     OngoingWorkOrderComment,
     Organization,
     TaskItem
@@ -48,9 +49,16 @@ def get_todays_date_plus_days(days=0):
     return timezone.now() + timedelta(days=days)
 
 
+def get_end_of_month_date():
+    """Return last day of this month"""
+    import calendar
+    today = timezone.now()
+    last_day = calendar.mdays[today.month]
+    return today.replace(day=last_day)
+
 class ActivitySheetItemCreateSerializer(serializers.Serializer):
-    job = serializers.PrimaryKeyRelatedField(many=False, queryset=WorkOrder.objects.all(), required=False)
-    ongoing_job = serializers.PrimaryKeyRelatedField(many=False, queryset=OngoingWorkOrder.objects.all(), required=False)
+    job = serializers.PrimaryKeyRelatedField(many=False, queryset=WorkOrder.objects.all(), required=False, allow_null=True)
+    ongoing_job = serializers.PrimaryKeyRelatedField(many=False, queryset=OngoingWorkOrder.objects.all(), required=False, allow_null=True)
     associate = serializers.PrimaryKeyRelatedField(many=False, queryset=Associate.objects.all(), required=True)
     comment = serializers.CharField(required=True)
     state = serializers.CharField(
@@ -78,24 +86,15 @@ class ActivitySheetItemCreateSerializer(serializers.Serializer):
         # Confirm that we have an assignment task open.
         task_item = TaskItem.objects.filter(
             type_of=ASSIGNED_ASSOCIATE_TASK_ITEM_TYPE_OF_ID,
-            job=data['job'],
+            job=data.get('job', None),
+            ongoing_job=data.get('ongoing_job', None),
             is_closed=False
         ).order_by('due_date').first()
         if task_item is None:
             raise serializers.ValidationError(_("Task no longer exists, please go back to the list page."))
         return data
 
-    def create(self, validated_data):
-        """
-        Override the `create` function to add extra functinality.
-        """
-        # STEP 1 - Get validated POST data.
-        job = validated_data.get('job', None)
-        ongoing_job = validated_data.get('job', None)
-        associate = validated_data.get('associate', None)
-        comment = validated_data.get('comment', None)
-        state = validated_data.get('state', None)
-
+    def create_for_job(self, validated_data, job, associate, comment, state):
         # STEP 2 - Create our activity sheet item.
         obj = ActivitySheetItem.objects.create(
             job=job,
@@ -210,3 +209,140 @@ class ActivitySheetItemCreateSerializer(serializers.Serializer):
         # STEP 5 - Assign our new variables and return the validated data.
         validated_data['id'] = obj.id
         return validated_data
+
+    def create_for_ongoing_job(self, validated_data, ongoing_job, associate, comment, state):
+        # STEP 2 - Create our activity sheet item.
+        obj = ActivitySheetItem.objects.create(
+            job=None,
+            ongoing_job=ongoing_job,
+            associate=associate,
+            comment=comment,
+            state=state,
+            created_by=self.context['user'],
+        )
+
+        # For debugging purposes only.
+        logger.info("ActivitySheetItem was created.")
+
+        if state == ACTIVITY_SHEET_ITEM_STATE.ACCEPTED or state == ACTIVITY_SHEET_ITEM_STATE.PENDING:
+
+            # STEP 3 - Update our job.
+            obj.ongoing_job.associate = associate
+            obj.ongoing_job.assignment_date = get_todays_date_plus_days()
+            obj.ongoing_job.save()
+
+            # For debugging purposes only.
+            logger.info("Associate assigned to Job.")
+
+            # STEP 4 - Lookup the most recent task which has not been closed
+            #          for the particular job order.
+            task_item = TaskItem.objects.filter(
+                type_of=ASSIGNED_ASSOCIATE_TASK_ITEM_TYPE_OF_ID,
+                job=None,
+                ongoing_job=ongoing_job,
+                is_closed=False
+            ).order_by('due_date').first()
+
+            # For debugging purposes only.
+            logger.info("Found task #%(task_item)s" % {
+                'task_item': str(task_item.id)
+            })
+
+            # STEP 4 - Update our TaskItem if job was accepted.
+            task_item.is_closed = True
+            task_item.last_modified_by = self.context['user']
+            task_item.save()
+
+            # For debugging purposes only.
+            logger.info("Task #%(task_item)s was closed." % {
+                'task_item': str(task_item.id)
+            })
+
+            # Create the task message / time based on the `state`.
+            title = None
+            description = None
+            due_date = None
+            type_of = None
+            if state == ACTIVITY_SHEET_ITEM_STATE.ACCEPTED:
+                title = _('Ongoing Job Update')
+                description = _('Please review an ongoing job and fill in how many visits in previous month.')
+                due_date = get_end_of_month_date()
+                type_of = UPDATE_ONGOING_JOB_TASK_ITEM_TYPE_OF_ID
+            elif state == ACTIVITY_SHEET_ITEM_STATE.PENDING:
+                title = _('Pending')
+                description = _('Please contact the Associate to confirm if they want the job.')
+                due_date = get_todays_date_plus_days(1)
+                type_of = FOLLOW_UP_DID_ASSOCIATE_ACCEPT_JOB_TASK_ITEM_TYPE_OF_ID
+
+            # STEP 5 - Create our new task for following up.
+            next_task_item = TaskItem.objects.create(
+                type_of = type_of,
+                title = title,
+                description = description,
+                due_date = due_date,
+                is_closed = False,
+                job = task_item.job,
+                ongoing_job = task_item.ongoing_job,
+                created_by = self.context['user'],
+                last_modified_by = self.context['user']
+            )
+
+            # For debugging purposes only.
+            logger.info("Task #%(id)s was created." % {
+                'id': str(next_task_item.id)
+            })
+
+            # Attached our new TaskItem to the Job.
+            ongoing_job.latest_pending_task = next_task_item
+
+            # Change state
+            if state == ACTIVITY_SHEET_ITEM_STATE.ACCEPTED:
+                ongoing_job.state = ONGOING_WORK_ORDER_STATE.RUNNING
+            if state == ACTIVITY_SHEET_ITEM_STATE.PENDING:
+                ongoing_job.state = ONGOING_WORK_ORDER_STATE.IDLE
+
+            # Save our new task and job state updated.
+            ongoing_job.save()
+
+        else:
+            ongoing_job.associate = None
+            ongoing_job.state = ONGOING_WORK_ORDER_STATE.IDLE
+            ongoing_job.save()
+
+        comment_obj = Comment.objects.create(
+            created_by=self.context['user'],
+            last_modified_by=self.context['user'],
+            text=comment,
+            created_from = self.context['from'],
+            created_from_is_public = self.context['from_is_public']
+        )
+        OngoingWorkOrderComment.objects.create(
+            about=ongoing_job,
+            comment=comment_obj,
+        )
+
+        # For debugging purposes only.
+        logger.info("(Ongoing) Job comment created.")
+
+        # STEP 5 - Assign our new variables and return the validated data.
+        validated_data['id'] = obj.id
+        return validated_data
+
+    def create(self, validated_data):
+        """
+        Override the `create` function to add extra functinality.
+        """
+        # STEP 1 - Get validated POST data.
+        job = validated_data.get('job', None)
+        ongoing_job = validated_data.get('ongoing_job', None)
+        associate = validated_data.get('associate', None)
+        comment = validated_data.get('comment', None)
+        state = validated_data.get('state', None)
+
+        # CASE 1 OF 2: ONGOING JOBS
+        if ongoing_job:
+            return self.create_for_ongoing_job(validated_data, ongoing_job, associate, comment, state)
+
+        # CASE 2 OF 2: SINGLE TIME JOBS
+        else:
+            return self.create_for_job(validated_data, job, associate, comment, state)
