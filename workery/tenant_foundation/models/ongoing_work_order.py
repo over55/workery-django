@@ -55,8 +55,12 @@ def get_todays_date(days=0):
 
 class OngoingWorkOrder(models.Model):
     """
-    The model used to keep track and aggregate all `WorkOrder` objects which
-    are ongoing.
+    Class model to represent an ongoing job. This model is essentially a
+    modified `WorkOrder` model tailered to work as `master form` which will
+    (1) Keep track fo the job requirements
+    (2) Used to re-create work orders based on the details in this `master form`.
+    (3) Used to keep track of previous closed `WorkOrder` objects associated
+        with this `master form`.
     """
     class Meta:
         app_label = 'tenant_foundation'
@@ -81,7 +85,7 @@ class OngoingWorkOrder(models.Model):
     )
 
     #
-    #  FIELDS
+    #  WORK ORDER FIELDS
     #
 
     customer = models.ForeignKey(
@@ -98,6 +102,68 @@ class OngoingWorkOrder(models.Model):
         blank=True,
         null=True
     )
+    assignment_date = models.DateField(
+        _('Assignment Date'),
+        help_text=_('The date that an associate was assigned to the customer.'),
+        blank=True,
+        null=True
+    )
+    start_date = models.DateField(
+        _('Start Date'),
+        help_text=_('The date that this ongoing order will begin.'),
+        blank=True,
+        default=get_todays_date
+    )
+    completion_date = models.DateField(
+        _('Completion Date'),
+        help_text=_('The date that this ongoing order was completed.'),
+        blank=True,
+        null=True
+    )
+    description = models.TextField(
+        _("Description"),
+        help_text=_('A description of this ongoing order.'),
+        blank=True,
+        null=True,
+        default='',
+    )
+    tags = models.ManyToManyField(
+        "Tag",
+        help_text=_('The category tags that this order belongs to.'),
+        blank=True,
+        related_name="%(app_label)s_%(class)s_tags_related",
+    )
+    is_home_support_service = models.BooleanField(
+        _("Is Home Support Service"),
+        help_text=_('Track whether this order is a home support service request.'),
+        default=False,
+        blank=True
+    )
+    skill_sets = models.ManyToManyField(
+        "SkillSet",
+        help_text=_('The skill sets that belong to this order.'),
+        blank=True,
+        related_name="%(app_label)s_%(class)s_skill_sets_related",
+    )
+    type_of = models.PositiveSmallIntegerField(
+        _("Type Of"),
+        help_text=_('The type of job this is.'),
+        default=UNASSIGNED_JOB_TYPE_OF_ID,
+        choices=JOB_TYPE_OF_CHOICES,
+        blank=True,
+    )
+    comments = models.ManyToManyField(
+        "Comment",
+        help_text=_('The comments belonging to this ongoing order.'),
+        blank=True,
+        through='OngoingWorkOrderComment',
+        related_name="%(app_label)s_%(class)s_ongoing_order_comments_related"
+    )
+
+    #
+    # TASK FIELDS
+    #
+
     latest_pending_task = models.ForeignKey(
         "TaskItem",
         help_text=_('The latest pending task of our ongoing job order.'),
@@ -107,26 +173,19 @@ class OngoingWorkOrder(models.Model):
         null=True
     )
 
-    # DEPRECATE BELOW
-    # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    #
+    # AGGREGATION FIELDS
+    #
+
     closed_orders = models.ManyToManyField(
         "WorkOrder",
         help_text=_('The work orders associated with this ongoing work order.'),
         blank=True,
         related_name="%(app_label)s_%(class)s_closed_orders_related"
     )
-    open_order = models.ForeignKey(
-        "WorkOrder",
-        help_text=_('The work order which is currently running for this ongoing work order.'),
-        related_name="%(app_label)s_%(class)s_open_order_related",
-        on_delete=models.SET_NULL,
-        blank=True,
-        null=True
-    )
-    # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     #
-    # State
+    # STATE FIELDS
     #
 
     state = FSMField(
@@ -135,6 +194,53 @@ class OngoingWorkOrder(models.Model):
         default=ONGOING_WORK_ORDER_STATE.IDLE,
         blank=True,
         db_index=True,
+    )
+
+    #
+    #  SYSTEM FIELDS
+    #
+
+    created_at = models.DateTimeField(auto_now_add=True, db_index=True)
+    created_by = models.ForeignKey(
+        SharedUser,
+        help_text=_('The user whom created this ongoing order.'),
+        related_name="%(app_label)s_%(class)s_created_by_related",
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True
+    )
+    created_from = models.GenericIPAddressField(
+        _("Created from"),
+        help_text=_('The IP address of the creator.'),
+        blank=True,
+        null=True
+    )
+    created_from_is_public = models.BooleanField(
+        _("Is the IP "),
+        help_text=_('Is creator a public IP and is routable.'),
+        default=False,
+        blank=True
+    )
+    last_modified_at = models.DateTimeField(auto_now=True)
+    last_modified_by = models.ForeignKey(
+        SharedUser,
+        help_text=_('The user whom last modified this ongoing order.'),
+        related_name="%(app_label)s_%(class)s_last_modified_by_related",
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True
+    )
+    last_modified_from = models.GenericIPAddressField(
+        _("Last modified from"),
+        help_text=_('The IP address of the modifier.'),
+        blank=True,
+        null=True
+    )
+    last_modified_from_is_public = models.BooleanField(
+        _("Is the IP "),
+        help_text=_('Is modifier a public IP and is routable.'),
+        default=False,
+        blank=True
     )
 
     #

@@ -150,13 +150,14 @@ class PendingTaskRetrieveForActivitySheetView(LoginRequiredMixin, GroupRequiredM
         # Defensive Code - Prevent access to detail if already closed.
         task_item = modified_context['task_item']
         if task_item.is_closed:
-            print(task_item)
             raise Http404("Task was already closed!")
 
         # STEP 1 - Find all the items belonging to this job and get the `pk` values.
-        activity_sheet_associate_pks = ActivitySheetItem.objects.filter(
-           job=task_item.job
-        ).values_list('associate_id', flat=True)
+        activity_sheet_associate_pks = None
+        if task_item.ongoing_job:
+            activity_sheet_associate_pks =  ActivitySheetItem.objects.filter(ongoing_job=task_item.ongoing_job).values_list('associate_id', flat=True)
+        else:
+            activity_sheet_associate_pks =  ActivitySheetItem.objects.filter(job=task_item.job).values_list('associate_id', flat=True)
 
         # STEP 2 -
         # (a) Find all the unique associates that match the job skill criteria
@@ -166,7 +167,12 @@ class PendingTaskRetrieveForActivitySheetView(LoginRequiredMixin, GroupRequiredM
         # (c) FInd all unique associates which have active accounts.
         # (d) If an Associate has an active Announcement attached to them,
         #     they should be uneligible for a job.
-        skill_set_pks = task_item.job.skill_sets.values_list('pk', flat=True)
+        skill_set_pks = None
+        if task_item.ongoing_job:
+            skill_set_pks = task_item.ongoing_job.skill_sets.values_list('pk', flat=True)
+        else:
+            skill_set_pks = task_item.job.skill_sets.values_list('pk', flat=True)
+
         available_associates = Associate.objects.filter(
            Q(skill_sets__in=skill_set_pks) &
            ~Q(id__in=activity_sheet_associate_pks) &
@@ -176,9 +182,14 @@ class PendingTaskRetrieveForActivitySheetView(LoginRequiredMixin, GroupRequiredM
         modified_context['available_associates_list'] = available_associates
 
         # STEP 3 - Fetch all the activity sheets we already have
-        modified_context['existing_activity_sheet'] = ActivitySheetItem.objects.filter(
-           job=task_item.job
-        )
+        if task_item.ongoing_job:
+            modified_context['existing_activity_sheet'] = ActivitySheetItem.objects.filter(
+               ongoing_job=task_item.ongoing_job
+            )
+        else:
+            modified_context['existing_activity_sheet'] = ActivitySheetItem.objects.filter(
+               job=task_item.job
+            )
 
         # Return our modified context.
         return modified_context

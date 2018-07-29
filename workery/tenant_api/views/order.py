@@ -13,10 +13,8 @@ from tenant_api.permissions.order import (
    CanListCreateWorkOrderPermission,
    CanRetrieveUpdateDestroyWorkOrderPermission
 )
-from tenant_api.serializers.order import (
-    WorkOrderListCreateSerializer,
-    WorkOrderRetrieveUpdateDestroySerializer
-)
+from tenant_api.serializers.order_crud.order_list_create import WorkOrderListCreateSerializer
+from tenant_api.serializers.order_crud.order_retrieve_update_destroy import WorkOrderRetrieveUpdateDestroySerializer
 from tenant_foundation.models import WorkOrder
 
 

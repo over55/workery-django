@@ -157,7 +157,17 @@ class TaskItem(models.Model):
         "WorkOrder",
         help_text=_('The job order that this task is referencing.'),
         related_name="%(app_label)s_%(class)s_job_related",
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True
+    )
+    ongoing_job = models.ForeignKey(
+        "OngoingWorkOrder",
+        help_text=_('The (ongoing) job order that this task is referencing.'),
+        related_name="%(app_label)s_%(class)s_ongoing_job_related",
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True
     )
 
     #

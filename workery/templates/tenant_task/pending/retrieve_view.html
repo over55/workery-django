@@ -92,11 +92,17 @@
                     </td>
                 </tr>
                 <tr>
-                    <th scope="row" class="bg-light">Job #</th>
+                    <th scope="row" class="bg-light">{% if task_item.ongoing_job %}Ongoing{% endif %} Job #</th>
                     <td id="selected_skillsets_id">
-                        <a href="{% url 'workery_tenant_job_retrieve' 'summary' task_item.job.id %}" target="_blank">
-                        {{ task_item.job.id|intcomma }}&nbsp;<i class="fas fa-external-link-alt"></i>
-                        </a>
+                        {% if task_item.job %}
+                            <a href="{% url 'workery_tenant_job_retrieve' 'summary' task_item.job.id %}" target="_blank">
+                                {{ task_item.job.id|intcomma }}&nbsp;<i class="fas fa-external-link-alt"></i>
+                            </a>
+                        {% elif task_item.ongoing_job %}
+                            <a href="{% url 'workery_tenant_ongoing_job_lite_retrieve' 'summary' task_item.ongoing_job.id %}" target="_blank">
+                                {{ task_item.ongoing_job.id|intcomma }}&nbsp;<i class="fas fa-external-link-alt"></i>
+                            </a>
+                        {% endif %}
                     </td>
                 </tr>
                 <tr>
@@ -141,27 +147,47 @@
                 <tr>
                     <th scope="row" class="bg-light">Client Name</th>
                     <td id="client_name">
-                        <a href="{% url 'workery_tenant_customer_lite_retrieve' 'summary' task_item.job.customer.id %}" target="_blank">
-                            {{ task_item.job.customer }}&nbsp;<i class="fas fa-external-link-alt"></i>
-                        </a>
+                        {% if task_item.job %}
+                            <a href="{% url 'workery_tenant_customer_lite_retrieve' 'summary' task_item.job.customer.id %}" target="_blank">
+                                {{ task_item.job.customer }}&nbsp;<i class="fas fa-external-link-alt"></i>
+                            </a>
+                        {% elif task_item.ongoing_job %}
+                            <a href="{% url 'workery_tenant_customer_lite_retrieve' 'summary' task_item.ongoing_job.customer.id %}" target="_blank">
+                                {{ task_item.ongoing_job.customer }}&nbsp;<i class="fas fa-external-link-alt"></i>
+                            </a>
+                        {% endif %}
                     </td>
                 </tr>
                 <tr>
                     <th scope="row" class="bg-light">Client Phone Number</th>
                     <td id="client_phone_number">
-                        {% if task_item.job.customer.telephone %}<a href="tel:{{ task_item.job.customer.telephone }}">{{ task_item.job.customer.telephone|pretty_formatted_phonenumber }}</a>{% else %}-{% endif %}
+                        {% if task_item.job %}
+                            {% if task_item.job.customer.telephone %}<a href="tel:{{ task_item.job.customer.telephone }}">{{ task_item.job.customer.telephone|pretty_formatted_phonenumber }}</a>{% else %}-{% endif %}
+                        {% elif task_item.ongoing_job %}
+                            {% if task_item.ongoing_job.customer.telephone %}<a href="tel:{{ task_item.ongoing_job.customer.telephone }}">{{ task_item.ongoing_job.customer.telephone|pretty_formatted_phonenumber }}</a>{% else %}-{% endif %}
+                        {% endif %}
                     </td>
                 </tr>
                 {% if task_item.type_of != 1 %}
                 <tr>
                     <th scope="row" class="bg-light">Associate Name</th>
                     <td id="associate_name">
-                        {% if task_item.job.associate %}
-                            <a href="{% url 'workery_tenant_member_lite_retrieve' 'summary' task_item.job.associate.id %}" target="_blank">
-                                {{ task_item.job.associate }}&nbsp;<i class="fas fa-external-link-alt"></i>
-                            </a>
-                        {% else %}
-                            {% trans 'Unassigned' %}
+                        {% if task_item.job %}
+                            {% if task_item.job.associate %}
+                                <a href="{% url 'workery_tenant_member_lite_retrieve' 'summary' task_item.job.associate.id %}" target="_blank">
+                                    {{ task_item.job.associate }}&nbsp;<i class="fas fa-external-link-alt"></i>
+                                </a>
+                            {% else %}
+                                {% trans 'Unassigned' %}
+                            {% endif %}
+                        {% elif task_item.ongoing_job %}
+                            {% if task_item.ongoing_job.associate %}
+                                <a href="{% url 'workery_tenant_member_lite_retrieve' 'summary' task_item.ongoing_job.associate.id %}" target="_blank">
+                                    {{ task_item.ongoing_job.associate }}&nbsp;<i class="fas fa-external-link-alt"></i>
+                                </a>
+                            {% else %}
+                                {% trans 'Unassigned' %}
+                            {% endif %}
                         {% endif %}
                     </td>
                 </tr>
@@ -170,27 +196,47 @@
                 <tr>
                     <th scope="row" class="bg-light">Job Description</th>
                     <td>
-                        {% if task_item.job.description %}
-                            {{ task_item.job.description }}
-                        {% else %}
-                            -
+                        {% if task_item.job %}
+                            {% if task_item.job.description %}
+                                {{ task_item.job.description }}
+                            {% else %}
+                                -
+                            {% endif %}
+                        {% elif task_item.ongoing_job %}
+                            {% if task_item.ongoing_job.description %}
+                                {{ task_item.ongoing_job.description }}
+                            {% else %}
+                                -
+                            {% endif %}
                         {% endif %}
                     </td>
                 </tr>
                 <tr>
                     <th scope="row" class="bg-light">Skill Set(s)</th>
                     <td id="skill_sets">
-                        {% for skill_set in task_item.job.skill_sets.all %}
-                            <span class="badge badge-info badge-lg">{{ skill_set.sub_category }}</span>
-                        {% empty %}
-                            -
-                        {% endfor %}
+                        {% if task_item.job %}
+                            {% for skill_set in task_item.job.skill_sets.all %}
+                                <span class="badge badge-info badge-lg">{{ skill_set.sub_category }}</span>
+                            {% empty %}
+                                -
+                            {% endfor %}
+                        {% elif task_item.ongoing_job %}
+                            {% for skill_set in task_item.ongoing_job.skill_sets.all %}
+                                <span class="badge badge-info badge-lg">{{ skill_set.sub_category }}</span>
+                            {% empty %}
+                                -
+                            {% endfor %}
+                        {% endif %}
                     </td>
                 </tr>
                 <tr>
                     <th scope="row" class="bg-light">Comment(s)</th>
                     <td id="comments">
-                        <a href="{% url 'workery_tenant_job_comments_retrieve' 'summary' task_item.job.id  %}" target="_blank">{% trans 'View comments' %}&nbsp;({{ task_item.job.comments.count }})&nbsp;<i class="fas fa-external-link-alt"></i></a>
+                        {% if task_item.job %}
+                            <a href="{% url 'workery_tenant_job_comments_retrieve' 'summary' task_item.job.id  %}" target="_blank">{% trans 'View comments' %}&nbsp;({{ task_item.job.comments.count }})&nbsp;<i class="fas fa-external-link-alt"></i></a>
+                        {% elif task_item.ongoing_job %}
+                            TODO
+                        {% endif %}
                     </td>
                 </tr>
                 <tr>
@@ -218,6 +264,7 @@
                         </div>
                         {% elif task_item.type_of == 3 %}
                         <div class="col-sm-4">
+
                             <a href="{% url 'workery_tenant_job_retrieve_for_close_create' 'task' task_item.job.id %}?task_id={{ task_item.id }}">
                             <button  id="id_submit_btn"
                                 class="btn btn-success btn-lg btn-fxw mt-4"
@@ -225,6 +272,7 @@
                             <i class="fas fa-arrow-right"></i>&nbsp;{% trans 'Begin' %}
                             </button>
                             </a>
+
                         </div>
                         {% elif task_item.type_of == 4 %}
                         <div class="col-sm-4">
@@ -238,11 +286,13 @@
                         </div>
                         {% endif %}
                     </td>
+
                 </tr>
             </tbody>
         </table>
     </div>
     <div class="form-group col-md-10 mb-3 mx-auto text-center">
+        {% comment %}
         <div class="row">
             <!-- UNASSIGN BUTTON -->
             {% if task_item.type_of != 1 %}
@@ -282,6 +332,7 @@
             </div>
             <!-- end POSTPONE BUTTON -->
         </div>
+        {% endcomment %}
     </div>
     <!-- RETURN-TO-TOP -->
     <a id="return-to-top" href="#" class="btn-info btn-lg back-to-top" role="button" title="Back to top"><i class="fas fa-angle-up fa-2x"></i></a>

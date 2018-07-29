@@ -50,6 +50,7 @@ from tenant_foundation.models.awaylog import AwayLog
 from tenant_foundation.models.associate_comment import AssociateComment
 from tenant_foundation.models.customer_comment import CustomerComment
 from tenant_foundation.models.work_order_comment import WorkOrderComment
+from tenant_foundation.models.ongoing_work_order_comment import OngoingWorkOrderComment
 from tenant_foundation.models.staff_comment import StaffComment
 from tenant_foundation.models.partner_comment import PartnerComment
 from tenant_foundation.models.activity_sheet_item import ACTIVITY_SHEET_ITEM_STATE

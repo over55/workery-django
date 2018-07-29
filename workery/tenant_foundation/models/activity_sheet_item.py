@@ -75,6 +75,16 @@ class ActivitySheetItem(models.Model):
         help_text=_('The job associated with thie activity sheet item.'),
         related_name="%(app_label)s_%(class)s_work_order_related",
         on_delete=models.CASCADE,
+        blank=True,
+        null=True,
+    )
+    ongoing_job = models.ForeignKey(
+        "OngoingWorkOrder",
+        help_text=_('The ongoing job associated with thie activity sheet item.'),
+        related_name="%(app_label)s_%(class)s_ongoing_work_order_related",
+        on_delete=models.CASCADE,
+        blank=True,
+        null=True
     )
     associate = models.ForeignKey(
         "Associate",

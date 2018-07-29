@@ -52,21 +52,21 @@
     });
 
     function close_and_redirect(success_result) {
-        ///////////////////////////////////
-        // Delete all our selected data. //
-        ///////////////////////////////////
-        // --- JOB ---
-        localStorage.removeItem("tmp_customer_id");
-        localStorage.removeItem("tmp_customer_name");
-        localStorage.removeItem("tmp_job_type");
-        localStorage.removeItem("tmp_home_support");
-        localStorage.removeItem("tmp_describe");
-        localStorage.removeItem("tmp_skillsets");
-        localStorage.removeItem("tmp_skillset_ids");
-        localStorage.removeItem("tmp_skillset_values");
-        localStorage.removeItem("tmp_comment");
-        localStorage.removeItem("tmp_start_date");
-        localStorage.removeItem("tmp_follow_up_days_number");
+        // ///////////////////////////////////
+        // // Delete all our selected data. //
+        // ///////////////////////////////////
+        // // --- JOB ---
+        // localStorage.removeItem("tmp_customer_id");
+        // localStorage.removeItem("tmp_customer_name");
+        // localStorage.removeItem("tmp_job_type");
+        // localStorage.removeItem("tmp_home_support");
+        // localStorage.removeItem("tmp_describe");
+        // localStorage.removeItem("tmp_skillsets");
+        // localStorage.removeItem("tmp_skillset_ids");
+        // localStorage.removeItem("tmp_skillset_values");
+        // localStorage.removeItem("tmp_comment");
+        // localStorage.removeItem("tmp_start_date");
+        // localStorage.removeItem("tmp_follow_up_days_number");
 
         /////////////////////////////////////
         // Get our pending task unique ID. //
@@ -79,17 +79,12 @@
         ////////////////////////////////////////////
         var temp_url = "{% url 'workery_tenant_pending_task_retrieve' 0 %}?was_created=True";
         var temp_url = temp_url.replace(0, latest_pending_task_id);
+        alert(temp_url);
         window.location = temp_url;
     }
 
-    /**
-     *  Function will either (1) create a customer with job or (2) only create
-     *  a job and then clear the session.
-     */
-    function ajax_submit() {
-
+    function submit_single_job() {
         var customer_id = localStorage.getItem("tmp_customer_id");
-
 
         var tmp_job_type = localStorage.getItem("tmp_job_type");
         var is_ongoing = tmp_job_type == "Ongoing" ? true : false;
@@ -144,6 +139,81 @@
                 setTimeout(enable_btn(), 5000);
             } // end FINISH
         ); // end CREATE API
+    }
+
+    function submit_ongoing_job() {
+
+        var customer_id = localStorage.getItem("tmp_customer_id");
+
+        var tmp_job_type = localStorage.getItem("tmp_job_type");
+        var is_ongoing = tmp_job_type == "Ongoing" ? true : false;
+        var tmp_home_support = localStorage.getItem("tmp_home_support");
+        var is_home_support_service = tmp_home_support == "Yes" ? true : false;
+        var start_date = localStorage.getItem("start_date");
+
+        disable_btn(); // Disable button clicked.
+
+        create_ongoing_job_api(
+            {
+                'customer': customer_id,
+                'associate': null,
+                'skill_sets': localStorage.getObj("tmp_skillset_ids"),
+                'is_ongoing': is_ongoing,
+                'is_home_support_service': is_home_support_service,
+                'description': localStorage.getItem("tmp_describe"),
+                'extra_comment': localStorage.getItem("tmp_comment"),
+                'start_date': start_date,
+                'follow_up_days_number': localStorage.getItem("tmp_follow_up_days_number0")
+            },
+            function(success_result) {
+                // Attach our success indicator
+                close_and_redirect(success_result);
+            },
+            function(error_result) {
+
+                // STEP 1: Convert to JSON.
+                var err = JSON.parse(xhr.responseText);
+
+                // For debugging purposes only.
+                console.log(err);
+
+                // STEP 2: CLEAR EXISTING TEXT.
+                $('#all_error_result').html();
+
+                // STEP 3: PRINT OUR ERROR.
+                for(var prop in err) {
+                    if(err.hasOwnProperty(prop)) {
+                        var val = err[prop];
+                        console.log(val);
+                        $('#all_error_result').append("<p><b>"+prop+"</b>"+val+"</p><br />");
+                    }
+                }
+
+                // STEP 4: FOCUS TO WHERE THE ERROR IS OCCURING.
+                $('html, body').animate({ scrollTop: $('#id_page_title').offset().top }, 'slow');
+
+            }, // end ERROR
+            function(xhr,status) {
+                // Wait for a 5 seconds before enabling buttons again.
+                setTimeout(enable_btn(), 5000);
+            } // end FINISH
+        ); // end CREATE API
+
+    }
+
+    /**
+     *  Function will either (1) create an ongoing job or (2) only create
+     *  a job. and then clear the session.
+     */
+    function ajax_submit() {
+
+        var tmp_job_type = localStorage.getItem("tmp_job_type");
+        var is_ongoing = tmp_job_type == "Ongoing" ? true : false;
+        if (is_ongoing == true) {
+            submit_ongoing_job();
+        } else {
+            submit_single_job();
+        }
 
     } // end FUNC.
 
