@@ -3,6 +3,7 @@ from django.urls import path
 from django.views.generic.base import RedirectView
 from tenant_setting.views import (
     awaylog_views,
+    blacklisted_views,
     insurance_requirement_views,
     launchpad_views,
     order_service_fee_views,
@@ -19,6 +20,9 @@ urlpatterns = (
     path('settings/awaylogs/', awaylog_views.AwayLogListView.as_view(), name='workery_tenant_settings_away_log_list'),
     path('settings/awaylog/create/', awaylog_views.AwayLogCreateView.as_view(), name='workery_tenant_settings_away_log_create'),
     path('settings/awaylog/<int:pk>/', awaylog_views.AwayLogUpdateView.as_view(), name='workery_tenant_settings_away_log_update'),
+
+    # Away log.
+    path('settings/blacklisted/clients', blacklisted_views.BlacklistedCustomerListView.as_view(), name='workery_tenant_settings_blacklisted_clients_list'),
 
     # Tag
     path('settings/tags/', tag_views.TagListView.as_view(), name='workery_tenant_settings_tags_list'),

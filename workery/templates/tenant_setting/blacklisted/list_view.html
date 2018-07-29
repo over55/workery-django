@@ -1,0 +1,107 @@
+{% extends 'tenant_foundation/tenant_base.html' %}
+{% load staticfiles i18n shared_foundation_tags humanize %}
+
+{% block title %}
+{% trans 'Announcements | Workery' %}
+{% endblock title %}
+
+{% block header_content %}
+{% endblock header_content %}
+
+{% block content %}
+
+<script>
+    function ajax_delete(obj_id) {
+        delete_away_log_api(
+            parseInt(obj_id),
+            function(away_log) {
+                console.log(away_log);
+                window.location = "{% url 'workery_tenant_settings_away_log_list' %}?was_deleted=True";
+            },
+            function(json_results) {
+                console.log(json_results);
+            },
+            function(xhr, status) {
+                console.log(xhr, status);
+            }
+        );
+    }
+
+    function set_id(skill_set_id) {
+        $('#id_hidden_id').val(skill_set_id);
+    }
+
+    function ajax_delete_from_hidden_input_id() {
+        var id = $('#id_hidden_id').val();
+        ajax_delete(id);
+    }
+</script>
+<input type="hidden" id="id_hidden_id" value="0" />
+<main id="main" role="main">
+
+    <!-- BREADCRUMB -->
+    <!------------------------------------------------------------------------->
+    <nav aria-label="breadcrumb">
+	  	<ol class="breadcrumb">
+	    	<li class="breadcrumb-item"><a href="{% url 'workery_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'workery_tenant_settings_launchpad' %}">{% trans 'Settings' %}</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{% trans 'Clients' %}</li>
+	  	</ol>
+	</nav>
+    <!------------------------------------------------------------------------->
+    <!-- end BREADCRUMB -->
+
+    <h1>Blacklisted Clients</h1>
+
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>{% trans 'Name' %}</th>
+                    <th>{% trans 'Created' %}
+                    <th>{% trans 'Last Modified' %}
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for customer in customer_log_list %}
+                <tr>
+                    <td>
+                        {{ customer }}
+                    </td>
+                    <td>
+                        {{ customer.created }}
+                    </td>
+                    <td>
+                        {{ customer.last_modified }}
+                    </td>
+                    <td>
+                        <a href="{% url 'workery_tenant_customer_lite_retrieve' 'list' customer.id %}?page={{ page_obj.number }}">{% trans 'View' %}&nbsp;<i class="fas fa-chevron-right"></i></a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div class="pagination">
+        <span class="step-links">
+        {% if page_obj.has_previous %}
+            <a href="?page=1">&laquo; first</a>
+            <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+        {% endif %}
+        <span class="current">
+        Page {{ page_obj.number }} of {{ paginator.num_pages }}.
+        </span>
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}">next</a>
+            <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
+        </span>
+    </div>
+
+    <!-- RETURN-TO-TOP -->
+    <a id="return-to-top" href="#" class="btn-info btn-lg back-to-top" role="button" title="Back to top"><i class="fas fa-angle-up fa-2x"></i></a>
+    <!-- end RETURN-TO-TOP -->
+</main>
+
+{% endblock content %}
