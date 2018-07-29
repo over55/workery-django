@@ -239,6 +239,10 @@
     	return frags.join(' ');
     }
 
+    function click_cancel_button() {
+        window.location = "{% url 'workery_tenant_customer_full_retrieve' template customer.id %}";
+    }
+
     /**
      *  Function will attempt to submit the form to the API server. This
      *  funciton will:
@@ -643,10 +647,16 @@
             <!-- end SUBMIT BUTTON -->
             <div class="form-group col-md-12 mb-3 mx-auto text-center">
                 <button id="id_submit_btn"
-                     class="btn btn-primary btn-lg btn-fxw mt-4"
-                   onclick="ajax_post_form_submission();"
-                      type="button">
-                <i class="fas fa-check"></i>&nbsp;{% trans 'Update Client' %}
+                     class="btn btn-success btn-lg mt-4 float-right pl-4 pr-4"
+                      type="button"
+                   onclick="ajax_post_form_submission();">
+                    <i class="fas fa-check"></i>&nbsp;{% trans 'Save' %}
+                </button>
+                <button id="id_cancel_btn"
+                     class="btn btn-orange btn-lg mt-4 float-left pl-4 pr-4"
+                      type="button"
+                   onclick="click_cancel_button();">
+                    <i class="fas fa-times"></i>&nbsp;Back
                 </button>
             </div>
             <!-- end SUBMIT BUTTON -->

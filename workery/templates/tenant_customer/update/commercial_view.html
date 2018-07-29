@@ -329,8 +329,8 @@
             return false;
         }
 
-        function ajax_cancel(redirect_url) {
-            window.location = redirect_url;
+        function click_cancel_button() {
+            window.location = "{% url 'workery_tenant_customer_full_retrieve' template customer.id %}";
         }
 
         function ajax_post_form_submission(redirect_url) {
@@ -768,7 +768,8 @@
                      class="btn btn-success btn-lg mt-4 float-right pl-4 pr-4"
                       type="button"
                    onclick="save_submission();">
-                    Next <i class="fas fa-arrow-right"></i></button>
+                    <i class="fas fa-check"></i>&nbsp;{% trans 'Save' %}
+                </button>
                 <button id="id_cancel_btn"
                      class="btn btn-orange btn-lg mt-4 float-left pl-4 pr-4"
                       type="button"

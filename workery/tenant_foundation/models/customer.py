@@ -217,6 +217,13 @@ class Customer(AbstractPerson):
         blank=True,
         db_index=True
     )
+    is_blacklisted = models.BooleanField(
+        _("Is Blacklisted"),
+        help_text=_('Indicates whether customer was blacklisted by the organization.'),
+        default=False,
+        blank=True,
+        db_index=True
+    )
     avatar_image = models.ForeignKey(
         "PublicImageUpload",
         help_text=_('The avatar image of this customer.'),

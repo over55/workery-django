@@ -30,5 +30,7 @@ urlpatterns = (
 
     # Update
     path('clients/<str:template>/residential-detail/<int:pk>/edit/', update_view.ResidentialCustomerUpdateView.as_view(), name='workery_tenant_residential_customer_update'),
+    path('clients/<str:template>/residential-detail/<int:pk>/blacklist/', update_view.BlacklistCustomerUpdateView.as_view(), name='workery_tenant_residential_blacklist_customer_update'),
     path('clients/<str:template>/commercial-detail/<int:pk>/edit/', update_view.CommercialCustomerUpdateView.as_view(), name='workery_tenant_commercial_customer_update'),
+    path('clients/<str:template>/commercial-detail/<int:pk>/blacklist/', update_view.BlacklistCustomerUpdateView.as_view(), name='workery_tenant_commercial_blacklist_customer_update'),
 )
