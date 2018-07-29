@@ -83,7 +83,9 @@ class Customer(AbstractPerson):
        primary_key=True,
        default = increment_customer_id_number,
        editable=False,
-       db_index=True
+       db_index=True,
+       null=False,
+       blank=False
     )
 
     #
@@ -219,10 +221,11 @@ class Customer(AbstractPerson):
     )
     is_blacklisted = models.BooleanField(
         _("Is Blacklisted"),
-        help_text=_('Indicates whether customer was blacklisted by the organization.'),
+        help_text=_('Indicates whether customer was blacklisted or not.'),
         default=False,
         blank=True,
-        db_index=True
+        db_index=True,
+        null=False
     )
     avatar_image = models.ForeignKey(
         "PublicImageUpload",
