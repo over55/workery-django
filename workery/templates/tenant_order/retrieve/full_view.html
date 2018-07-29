@@ -127,7 +127,15 @@
 			<tr>
 			    <th scope="row" class="bg-light">Client</th>
 			    <td id="customer">
-				    {% if job.customer %}<a href="{% url 'workery_tenant_customer_lite_retrieve' template job.customer.id %}" target="_blank">{{ job.customer }}&nbsp;<i class="fas fa-external-link-alt"></i></a>{% else %}-{% endif %}
+				    {% if job.customer %}
+                       <a href="{% url 'workery_tenant_customer_lite_retrieve' template job.customer.id %}" target="_blank">
+                           {{ job.customer }}
+                           {% if job.customer.is_blacklisted %}
+                               &nbsp;<strong>(<i class="fa fa-frown fa-lg"></i>&nbsp;Blacklisted)</strong>
+                           {% endif %}
+                           &nbsp;<i class="fas fa-external-link-alt"></i>
+                       </a>
+                          {% else %}-{% endif %}
 			    </td>
 			</tr>
 			<tr>

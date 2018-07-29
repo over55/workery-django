@@ -78,12 +78,16 @@
                 {% for customer in customer_list %}
                 <tr>
                     <td>
-                        {% if customer.type_of == tenant_constants.RESIDENTIAL_CUSTOMER_TYPE_OF_ID %}
-                            <i class="fa fa-home fa-lg"></i>
-                        {% elif customer.type_of == tenant_constants.COMMERCIAL_CUSTOMER_TYPE_OF_ID %}
-                            <i class="fa fa-briefcase fa-lg"></i>
+                        {% if customer.is_blacklisted %}
+                            <i class="fa fa-frown fa-lg"></i>
                         {% else %}
-                            <i class="fa fa-question fa-lg"></i>
+                            {% if customer.type_of == tenant_constants.RESIDENTIAL_CUSTOMER_TYPE_OF_ID %}
+                                <i class="fa fa-home fa-lg"></i>
+                            {% elif customer.type_of == tenant_constants.COMMERCIAL_CUSTOMER_TYPE_OF_ID %}
+                                <i class="fa fa-briefcase fa-lg"></i>
+                            {% else %}
+                                <i class="fa fa-question fa-lg"></i>
+                            {% endif %}
                         {% endif %}
                     </td>
                     <td>{{ customer.id|intcomma }}</td>

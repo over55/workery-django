@@ -19,51 +19,52 @@
     });
 
     function click_cancel_button() {
-
+        window.location = "{% url 'workery_tenant_customer_full_retrieve' template customer.pk %}";
     }
 
     //
     function click_submit_button() {
-        // // Submit to our API web-service.
-        // create_order_reopen_api(
-        //     {
-        //         'job': {{ job.id }},
-        //         'reason': $('#comment').val(),
-        //     },
-        //     function(result_dict) { // Success
-        //         // FOR DEBUGGING PURPOSES ONLY.
-        //         console.log(result_dict);
-        //
-        //         // REDIRECT TO SUCCESS PAGE.
-        //
-        //     },
-        //     function(xhr,status,error) { // Error
-        //         // STEP 1: Convert to JSON.
-        //         var err = JSON.parse(xhr.responseText);
-        //
-        //         // For debugging purposes only.
-        //         console.log(err);
-        //
-        //         // STEP 2: CLEAR EXISTING TEXT.
-        //         $('#all_error_result').html("");
-        //
-        //         // STEP 3: PRINT OUR ERROR.
-        //         for(var prop in err) {
-        //             if(err.hasOwnProperty(prop)) {
-        //                 var val = err[prop];
-        //                 console.log(val);
-        //                 $('#all_error_result').append("<p><b>"+prop+"</b> "+val+"</p><br />");
-        //             }
-        //         }
-        //
-        //         // STEP 4: FOCUS TO WHERE THE ERROR IS OCCURING.
-        //         $('html, body').animate({ scrollTop: $('#id_page_title').offset().top }, 'slow');
-        //     },
-        //     function() { // Finally
-        //         // UNLOCK THE "SUBMIT" BUTTON TO BE AVAILABLE FOR USAGE.
-        //         // enable_btn();
-        //     }
-        // );
+        // Submit to our API web-service.
+        blacklist_customer_api(
+            {
+                'customer': {{ customer.id }},
+                'is_blacklisted': {% if customer.is_blacklisted %}false{% else %}true{% endif %},
+                'reason': $('#comment').val(),
+            },
+            function(result_dict) { // Success
+                // FOR DEBUGGING PURPOSES ONLY.
+                console.log(result_dict);
+
+                // REDIRECT TO SUCCESS PAGE.
+                window.location = "{% url 'workery_tenant_customer_full_retrieve' template customer.pk %}?was_modified=True";
+            },
+            function(xhr,status,error) { // Error
+                // STEP 1: Convert to JSON.
+                var err = JSON.parse(xhr.responseText);
+
+                // For debugging purposes only.
+                console.log(err);
+
+                // STEP 2: CLEAR EXISTING TEXT.
+                $('#all_error_result').html("");
+
+                // STEP 3: PRINT OUR ERROR.
+                for(var prop in err) {
+                    if(err.hasOwnProperty(prop)) {
+                        var val = err[prop];
+                        console.log(val);
+                        $('#all_error_result').append("<p><b>"+prop+"</b> "+val+"</p><br />");
+                    }
+                }
+
+                // STEP 4: FOCUS TO WHERE THE ERROR IS OCCURING.
+                $('html, body').animate({ scrollTop: $('#id_page_title').offset().top }, 'slow');
+            },
+            function() { // Finally
+                // UNLOCK THE "SUBMIT" BUTTON TO BE AVAILABLE FOR USAGE.
+                // enable_btn();
+            }
+        );
     }
 </script>
 
@@ -113,6 +114,11 @@
 
     <div class="container">
         <div class="row align-items-start">
+            {% if customer.is_blacklisted %}
+                <p>You are about to <strong>remove the client from the blacklist</strong>. While this is great, please explain why this customer is being removed from the blacklist.</p>
+            {% else %}
+                <p>You are about to <strong>add the client to the blacklist</strong>. This is unfortunate, please write the reason so when staff lookup this customer they will see the reasoning.</p>
+            {% endif %}
 
             <!-- FORM -->
             <!------------------------------------------------------------------------->
@@ -133,7 +139,7 @@
 
                                 <!-- COMMENTS -->
                                 <div class="form-group col-md-12 mb-4">
-                                    <label for="comment">Please write the reason why you are re-opening this job:&nbsp;<sup>*</sup></label>
+                                    <label for="comment">Please write the reason:&nbsp;<sup>*</sup></label>
                                     <textarea class="form-control form-control-lg border border-primary" id="comment" name="comment" placeholder="Write your reason here..." rows="4" required></textarea>
                                     <div id="comment-error" class="invalid-feedback"></div>
                                 </div>
@@ -148,7 +154,7 @@
 
                         <!-- ADD -->
                         <button id="id_submit_btn"
-                             class="btn btn-primary btn-lg mt-4 float-right pl-4 pr-4"
+                             class="btn btn-success btn-lg mt-4 float-right pl-4 pr-4"
                               type="button"
                            onclick="click_submit_button();">
                             <i class="fas fa-check-circle"></i> &nbsp;Save</button>

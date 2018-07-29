@@ -28,6 +28,7 @@ from tenant_foundation.constants import *
 from tenant_foundation.models import (
     Comment,
     Customer,
+    CustomerComment,
     ActivitySheetItem,
     Associate,
     WorkOrder,
@@ -65,66 +66,32 @@ class CustomerBlacklistOperationCreateSerializer(serializers.Serializer):
         is_blacklisted = validated_data.get('is_blacklisted', True)
         reason = validated_data.get('reason', None)
 
-        # #---------------------------#
-        # # Close all previous tasks. #
-        # #---------------------------#
-        # if job.latest_pending_task:
-        #     job.latest_pending_task.is_closed = True
-        #     job.latest_pending_task.closing_reason = 0
-        #     job.latest_pending_task.closing_reason_other = _('Closed because re-opending job.')
-        #     job.latest_pending_task.last_modified_by = self.context['user']
-        #     job.latest_pending_task.last_modified_by = self.context['user']
-        #     job.latest_pending_task.save()
-        #
-        # #---------------------------------------------#
-        # # Create a new task based on a new start date #
-        # #---------------------------------------------#
-        # task_item = TaskItem.objects.create(
-        #     created_by=self.context['user'],
-        #     last_modified_by=self.context['user'],
-        #     type_of = ASSIGNED_ASSOCIATE_TASK_ITEM_TYPE_OF_ID,
-        #     due_date = job.start_date,
-        #     is_closed = False,
-        #     job = job,
-        #     title = _('Assign an Associate'),
-        #     description = _('Please assign an associate to this job.')
-        # )
-        #
-        # # For debugging purposes only.
-        # logger.info("Assignment Task #%(id)s was created b/c of unassignment." % {
-        #     'id': str(task_item.id)
-        # })
-        #
-        # #------------------------------------------#
-        # # Create any additional optional comments. #
-        # #------------------------------------------#
-        # if reason:
-        #     comment_obj = Comment.objects.create(
-        #         created_by=self.context['user'],
-        #         last_modified_by=self.context['user'],
-        #         text=reason,
-        #         created_from = self.context['from'],
-        #         created_from_is_public = self.context['from_is_public']
-        #     )
-        #     WorkOrderComment.objects.create(
-        #         about=job,
-        #         comment=comment_obj,
-        #     )
-        #
-        #     # For debugging purposes only.
-        #     logger.info("Job comment created.")
-        #
-        # #--------------------------#
-        # # Update the `job` status. #
-        # #--------------------------#
-        # # Update our job to be in a `declined` state.
-        # job.associate = None
-        # job.state = WORK_ORDER_STATE.NEW
-        # job.latest_pending_task = task_item
-        # job.save()
-        #
-        # # For debugging purposes only.
-        # logger.info("Re-opened job.")
+        #------------------------------------------#
+        # Create any comments explaining decision. #
+        #------------------------------------------#
+        comment_obj = Comment.objects.create(
+            created_by=self.context['user'],
+            last_modified_by=self.context['user'],
+            text=reason,
+            created_from = self.context['from'],
+            created_from_is_public = self.context['from_is_public']
+        )
+        CustomerComment.objects.create(
+            about=customer,
+            comment=comment_obj,
+        )
+
+        #-------------------------#
+        # Update customer object. #
+        #-------------------------#
+        customer.is_blacklisted = is_blacklisted
+        customer.last_modified_by = self.context['user']
+        customer.last_modified_from = self.context['from']
+        customer.last_modified_from_is_public = self.context['from_is_public']
+        customer.save()
+
+        # For debugging purposes only.
+        logger.info("Customer comment created.")
 
         # Return the validated results.
         return validated_data

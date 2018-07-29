@@ -61,19 +61,28 @@
                 {% for job in job_list %}
                 <tr>
                     <td>
-                        {% if job.customer.type_of == tenant_constants.RESIDENTIAL_CUSTOMER_TYPE_OF_ID %}
-                            <i class="fa fa-home fa-lg"></i>
-                        {% elif job.customer.type_of == tenant_constants.COMMERCIAL_CUSTOMER_TYPE_OF_ID %}
-                            <i class="fa fa-briefcase fa-lg"></i>
+                        {% if job.customer.is_blacklisted %}
+                            <i class="fa fa-frown fa-lg"></i>
                         {% else %}
-                            <i class="fa fa-question fa-lg"></i>
+                            {% if job.customer.type_of == tenant_constants.RESIDENTIAL_CUSTOMER_TYPE_OF_ID %}
+                                <i class="fa fa-home fa-lg"></i>
+                            {% elif job.customer.type_of == tenant_constants.COMMERCIAL_CUSTOMER_TYPE_OF_ID %}
+                                <i class="fa fa-briefcase fa-lg"></i>
+                            {% else %}
+                                <i class="fa fa-question fa-lg"></i>
+                            {% endif %}
                         {% endif %}
                         {% if job.is_ongoing %}<i class="fa fa-redo fa-lg"></i>{% endif %}
                     </td>
                     <td>{{ job.id|intcomma }}</td>
                     <td>
                         {% if job.customer %}
-                            <a href="{% url 'workery_tenant_customer_lite_retrieve' 'summary' job.customer.id %}" target="_blank">{{ job.customer }}</a>
+                            <a href="{% url 'workery_tenant_customer_lite_retrieve' 'summary' job.customer.id %}" target="_blank">
+                                {{ job.customer }}
+                                {% if job.customer.is_blacklisted %}
+                                    <strong>(Blacklisted)</strong>
+                                {% endif %}
+                            </a>
                         {% else %}-{% endif %}
                     </td>
                     <td>

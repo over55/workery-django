@@ -30,7 +30,7 @@ class CustomerBlacklistOperationCreateAPIView(generics.CreateAPIView):
         Create
         """
         client_ip, is_routable = get_client_ip(self.request)
-        serializer = CustomerBlacklistOperationSerializer(data=request.data, context={
+        serializer = CustomerBlacklistOperationCreateSerializer(data=request.data, context={
             'user': request.user,
             'from': client_ip,
             'from_is_public': is_routable,

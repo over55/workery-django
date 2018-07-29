@@ -137,6 +137,20 @@
     <!------------------------------------------------------------------------->
     <!-- end STEP NAVIGATION -->
 
+    <!-- Blacklist notification -->
+    {% if customer.is_blacklisted %}
+    <div class="jumbotron">
+        <h1 class="display-4">Blacklisted!</h1>
+        <p class="lead">It appears this customer has been abusive with our organization and has become blacklisted.</p>
+        <hr class="my-4">
+        <p>Blacklisted customers can be removed from the blacklist by clicking bellow...</p>
+        <p class="lead">
+           <a class="btn btn-primary btn-lg" href="{% if customer.type_of == tenant_constants.RESIDENTIAL_CUSTOMER_TYPE_OF_ID %}{% url 'workery_tenant_residential_blacklist_customer_update' template customer.id %}{% elif customer.type_of == tenant_constants.COMMERCIAL_CUSTOMER_TYPE_OF_ID %}{% url 'workery_tenant_commercial_blacklist_customer_update' template customer.id %}{% endif %}" role="button">Remove from blacklist</a>
+        </p>
+    </div>
+    {% endif %}
+    <!-- end Blacklist notification -->
+
     <div class="row py-2">
 
         <!-- MASTER FORM -->
@@ -173,7 +187,7 @@
                 </div>
 
                 <div class="col-sm-8 p-2">
-                    <h3>{{ customer.given_name }}&nbsp;{{ customer.last_name }}</h3>
+                    <h3>{{ customer.given_name }}&nbsp;{{ customer.last_name }}{% if customer.is_blacklisted %}&nbsp;(<i class="fas fa-frown"></i>&nbsp;Blacklisted){% endif %}</h3>
                     <p class="text-muted mb-2">
                         <a href="{{ customer.get_google_maps_url }}" target="_blank">
                             {{ customer.get_postal_address_without_postal_code }}&nbsp;<i class="fas fa-map-marker-alt"></i>
