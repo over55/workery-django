@@ -15,20 +15,12 @@ from shared_foundation.mixins import (
     WorkeryDetailView
 )
 from tenant_api.filters.task_item import TaskItemFilter
+from tenant_foundation.constants import *
 from tenant_foundation.models import ActivitySheetItem, Associate, AwayLog, Customer, TaskItem
 
 
 class PendingTaskListView(LoginRequiredMixin, GroupRequiredMixin, WorkeryListView):
     context_object_name = 'task_list'
-    queryset = TaskItem.objects.filter(
-        is_closed=False
-    ).prefetch_related(
-        'job',
-        'job__associate',
-        'job__customer',
-        'created_by',
-        'last_modified_by'
-    )
     template_name = 'tenant_task/pending/list_view.html'
     paginate_by = 100
     menu_id = "task"
@@ -37,6 +29,26 @@ class PendingTaskListView(LoginRequiredMixin, GroupRequiredMixin, WorkeryListVie
         constants.MANAGEMENT_GROUP_ID,
         constants.FRONTLINE_GROUP_ID
     ]
+
+    def get_queryset(self):
+        """
+        Override the `get_queryset` function to include context based filtering.
+        """
+        queryset = TaskItem.objects.filter(
+            is_closed=False
+        ).prefetch_related(
+            'job',
+            'job__associate',
+            'job__customer',
+            'created_by',
+            'last_modified_by'
+        )
+
+        # Filter out management staff restricted tasks from being loaded.
+        if not self.request.user.is_executive() and not self.request.user.is_management_staff():
+            queryset = queryset.exclude(type_of=UPDATE_ONGOING_JOB_TASK_ITEM_TYPE_OF_ID)
+
+        return queryset
 
     def get_context_data(self, **kwargs):
         modified_context = super().get_context_data(**kwargs)
@@ -52,15 +64,6 @@ class PendingTaskListView(LoginRequiredMixin, GroupRequiredMixin, WorkeryListVie
 
 class ClosedTaskListView(LoginRequiredMixin, GroupRequiredMixin, WorkeryListView):
     context_object_name = 'task_list'
-    queryset = TaskItem.objects.filter(
-        is_closed=True
-    ).prefetch_related(
-        'job',
-        'job__associate',
-        'job__customer',
-        'created_by',
-        'last_modified_by'
-    )
     template_name = 'tenant_task/closed/list_view.html'
     paginate_by = 100
     menu_id = "task"
@@ -69,6 +72,26 @@ class ClosedTaskListView(LoginRequiredMixin, GroupRequiredMixin, WorkeryListView
         constants.MANAGEMENT_GROUP_ID,
         constants.FRONTLINE_GROUP_ID
     ]
+
+    def get_queryset(self):
+        """
+        Override the `get_queryset` function to include context based filtering.
+        """
+        queryset = TaskItem.objects.filter(
+            is_closed=True
+        ).prefetch_related(
+            'job',
+            'job__associate',
+            'job__customer',
+            'created_by',
+            'last_modified_by'
+        )
+
+        # Filter out management staff restricted tasks from being loaded.
+        if not self.request.user.is_executive() and not self.request.user.is_management_staff():
+            queryset = queryset.exclude(type_of=UPDATE_ONGOING_JOB_TASK_ITEM_TYPE_OF_ID)
+
+        return queryset
 
     def get_context_data(self, **kwargs):
         modified_context = super().get_context_data(**kwargs)

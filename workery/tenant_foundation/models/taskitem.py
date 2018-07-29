@@ -3,7 +3,7 @@ import csv
 import pytz
 from datetime import date, datetime, timedelta
 from django.conf import settings
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 from django.contrib.postgres.search import SearchVector, SearchVectorField
 from django.db import models
 from django.db import transaction

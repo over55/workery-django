@@ -33,112 +33,64 @@ class Command(BaseCommand):
     """
     python manage.py update_ongoing_orders
     """
-    help = _('ETL will iterate through all ongoing jobs in all tenants and create the specific work orders for this month.')
+    help = _('ETL will iterate through all ongoing jobs in all tenants to create an associated pending task to review by staff.')
 
     def handle(self, *args, **options):
-        # franchises = SharedFranchise.objects.filter(
-        #     ~Q(schema_name="public") &
-        #     ~Q(schema_name="test")
-        # )
-        # for franchise in franchises.all():
-        #     # Connection needs first to be at the public schema, as this is where
-        #     # the database needs to be set before creating a new tenant. If this is
-        #     # not done then django-tenants will raise a "Can't create tenant outside
-        #     # the public schema." error.
-        #     connection.set_schema_to_public() # Switch to Public.
-        #
-        #     # Connection will set it back to our tenant.
-        #     connection.set_schema(franchise.schema_name, True) # Switch to Tenant.
-        #
-        #     # Run the command which exists in the franchise.
-        #     self.run_update_ongoing_jobs_for_franchise(franchise)
+        franchises = SharedFranchise.objects.filter(
+            ~Q(schema_name="public") &
+            ~Q(schema_name="test")
+        )
+        for franchise in franchises.all():
+            # Connection needs first to be at the public schema, as this is where
+            # the database needs to be set before creating a new tenant. If this is
+            # not done then django-tenants will raise a "Can't create tenant outside
+            # the public schema." error.
+            connection.set_schema_to_public() # Switch to Public.
+
+            # Connection will set it back to our tenant.
+            connection.set_schema(franchise.schema_name, True) # Switch to Tenant.
+
+            # Run the command which exists in the franchise.
+            self.run_update_ongoing_jobs_for_franchise(franchise)
 
         self.stdout.write(
             self.style.SUCCESS(_('Successfully updated all ongoing job orders.'))
         )
 
-    # def run_update_ongoing_jobs_for_franchise(self, franchise):
-    #     """
-    #     Function will iterate through all the `running` ongoing work orders and
-    #     perform the necessary operations.
-    #     """
-    #     ongoing_jobs = OngoingWorkOrder.objects.filter(state=ONGOING_WORK_ORDER_STATE.RUNNING, open_order=None)
-    #     for ongoing_job in ongoing_jobs.all():
-    #         self.open_new_work_order(ongoing_job)
-    #
-    # def open_new_work_order(self, ongoing_job):
-    #     # Fetch our most recent closed job.
-    #     previous_order = ongoing_job.closed_orders.order_by('-id').first()
-    #
-    #     # Create a new job based on the previously closed job data
-    #     new_order = WorkOrder.objects.create(
-    #         customer = previous_order.customer,
-    #         associate = previous_order.associate,
-    #         description = previous_order.description,
-    #         assignment_date = previous_order.assignment_date,
-    #         # tags = previous_order.tags,
-    #         is_ongoing = previous_order.is_ongoing,
-    #         is_home_support_service = previous_order.is_home_support_service,
-    #         start_date = previous_order.start_date,
-    #         completion_date = previous_order.completion_date,
-    #         hours = previous_order.hours,
-    #         # skill_sets = previous_order.skill_sets,
-    #         type_of = previous_order.type_of,
-    #         indexed_text = previous_order.indexed_text,
-    #         # comments = previous_order.comments,
-    #         follow_up_days_number = previous_order.follow_up_days_number,
-    #         closing_reason = previous_order.closing_reason,
-    #         closing_reason_other = previous_order.closing_reason_other,
-    #         latest_pending_task = None, # Create new one!
-    #         # activity_sheet = previous_order.activity_sheet,
-    #         state = previous_order.state,
-    #         was_job_satisfactory = previous_order.was_job_satisfactory,
-    #         was_job_finished_on_time_and_on_budget = previous_order.was_job_finished_on_time_and_on_budget,
-    #         was_associate_punctual = previous_order.was_associate_punctual,
-    #         was_associate_professional = previous_order.was_associate_professional,
-    #         would_customer_refer_our_organization = previous_order.would_customer_refer_our_organization,
-    #         score = previous_order.score,
-    #         invoice_date = previous_order.invoice_date,
-    #         invoice_id = previous_order.invoice_id,
-    #         invoice_quote_amount = previous_order.invoice_quote_amount,
-    #         invoice_labour_amount = previous_order.invoice_labour_amount,
-    #         invoice_material_amount = previous_order.invoice_material_amount,
-    #         invoice_tax_amount = previous_order.invoice_tax_amount,
-    #         invoice_total_amount = previous_order.invoice_total_amount,
-    #         invoice_service_fee_amount = previous_order.invoice_service_fee_amount,
-    #         invoice_service_fee = previous_order.invoice_service_fee,
-    #         invoice_service_fee_payment_date = previous_order.invoice_service_fee_payment_date,
-    #         ongoing_work_order = ongoing_job,
-    #     )
-    #
-    #     # Update sets.
-    #     new_order.tags.set(previous_order.tags.all())
-    #     new_order.skill_sets.set(previous_order.skill_sets.all())
-    #     # new_order.comments.set(previous_order.comments.all())
-    #     # new_order.activity_sheet.set(previous_order.activity_sheet.all())
-    #
-    #     # Create our activity sheet.
-    #     if previous_order.associate:  # ... but only if an associate was assigned!
-    #         new_activity_sheet = ActivitySheetItem.objects.create(
-    #             job = new_order,
-    #             associate = previous_order.associate,
-    #             state = ACTIVITY_SHEET_ITEM_STATE.ACCEPTED
-    #         )
-    #
-    #     # Create our new task for following up.
-    #     next_task_item = TaskItem.objects.create(
-    #         type_of = FOLLOW_UP_CUSTOMER_SURVEY_TASK_ITEM_TYPE_OF_ID,
-    #         title = _('Completion Survey'),
-    #         description = _('Please call up the client and perform the satisfaction survey.'),
-    #         due_date = get_todays_date_plus_days(7),
-    #         is_closed = False,
-    #         job = new_order
-    #     )
-    #
-    #     # Attach our follow up task to the newly created task.
-    #     new_order.latest_pending_task = next_task_item
-    #     new_order.save()
-    #
-    #     # Update our ongoing job.
-    #     ongoing_job.open_order = new_order
-    #     ongoing_job.save()
+    def run_update_ongoing_jobs_for_franchise(self, franchise):
+        """
+        Function will iterate through all the `running` ongoing work orders and
+        perform the necessary operations.
+        """
+        ongoing_jobs = OngoingWorkOrder.objects.filter(state=ONGOING_WORK_ORDER_STATE.RUNNING).order_by('-id')
+        for ongoing_job in ongoing_jobs.all():
+            self.process_ongoing_work_order(ongoing_job)
+
+    def process_ongoing_work_order(self, ongoing_job):
+        """
+        Function will:
+        (1) Fetch the last job in from the ongoing job master form and create a
+            new pending task.
+        """
+        latest_order = WorkOrder.objects.filter(ongoing_work_order=ongoing_job).order_by('-id').first()
+        if latest_order:
+            self.create_pending_task(latest_order, ongoing_job)
+
+    def create_pending_task(self, latest_job, ongoing_job):
+        # Create our new task for following up.
+        next_task_item = TaskItem.objects.create(
+            type_of = UPDATE_ONGOING_JOB_TASK_ITEM_TYPE_OF_ID,
+            title = _('Ongoing Job Update'),
+            description = _('Please review an ongoing job and process it.'),
+            due_date = get_todays_date_plus_days(0),
+            is_closed = False,
+            job = latest_job
+        )
+
+        # Attach our pending task to our latest job
+        latest_job.latest_pending_task = next_task_item
+        latest_job.save()
+
+        # Attach our pending task to our ongoing job master form.
+        ongoing_job.latest_pending_task = next_task_item
+        ongoing_job.save()

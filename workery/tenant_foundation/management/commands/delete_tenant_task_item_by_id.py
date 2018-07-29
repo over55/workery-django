@@ -15,26 +15,17 @@ from shared_foundation.models import (
     SharedFranchise,
     SharedUser
 )
-from tenant_foundation.models import (
-    Associate,
-    # Comment,
-    Customer,
-    Organization,
-    WorkOrder,
-    # WorkOrderComment,
-    Staff,
-    Tag
-)
+from tenant_foundation.models import TaskItem
 from tenant_foundation.utils import *
 
 
 class Command(BaseCommand):
-    help = _('Command will create an executive account in our application.')
+    help = _('Command will delete a task by inputted tenant name and task ID.')
 
     def add_arguments(self, parser):
         """
         Run manually in console:
-        python manage.py delete_tenant_work_order "london" 24315
+        python manage.py delete_tenant_task_item_by_id "london" 1254
         """
         parser.add_argument('schema_name', nargs='+', type=str)
         parser.add_argument('id', nargs='+', type=int)
@@ -42,7 +33,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         # Get the user inputs.
         schema_name = options['schema_name'][0]
-        order_id = int_or_none(options['id'][0])
+        task_id = int_or_none(options['id'][0])
 
         try:
             franchise = SharedFranchise.objects.get(schema_name=schema_name)
@@ -53,15 +44,14 @@ class Command(BaseCommand):
         connection.set_schema(schema_name, True) # Switch to Tenant.
 
         # Defensive Code: Prevent continuing if the ID# does not exist.
-        if not WorkOrder.objects.filter(id=order_id).exists():
+        if not TaskItem.objects.filter(id=task_id).exists():
             raise CommandError(_('ID # does not exists, please pick another ID #.'))
 
         # Create the user.
-        work_order = WorkOrder.objects.get(id=order_id)
-        work_order.delete()
-        self.stdout.write(self.style.SUCCESS(_('Deleted "WorkOrder" object.')))
+        task = TaskItem.objects.get(id=task_id)
+        task.delete()
 
         # For debugging purposes.
         self.stdout.write(
-            self.style.SUCCESS(_('Successfully deleted a tenant account.'))
+            self.style.SUCCESS(_('Successfully deleted a task.'))
         )

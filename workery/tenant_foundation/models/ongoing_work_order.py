@@ -98,6 +98,17 @@ class OngoingWorkOrder(models.Model):
         blank=True,
         null=True
     )
+    latest_pending_task = models.ForeignKey(
+        "TaskItem",
+        help_text=_('The latest pending task of our ongoing job order.'),
+        related_name="%(app_label)s_%(class)s_latest_pending_task_task_related",
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True
+    )
+
+    # DEPRECATE BELOW
+    # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     closed_orders = models.ManyToManyField(
         "WorkOrder",
         help_text=_('The work orders associated with this ongoing work order.'),
@@ -112,6 +123,7 @@ class OngoingWorkOrder(models.Model):
         blank=True,
         null=True
     )
+    # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     #
     # State

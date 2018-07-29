@@ -13,7 +13,7 @@ def run_update_ongoing_orders_func():
 
 class SharedEtlConfig(AppConfig):
     """
-    Class initializes our extract transform and load (ETL) scripts on django
+    Class initializes our extract transform and load (ETL) scripts on django the
     runtime of the application. The ETLs are managed by the `rq-scheduler
     code which will load into `redis` background task to process.
     """
