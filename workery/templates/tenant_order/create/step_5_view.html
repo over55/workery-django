@@ -79,7 +79,6 @@
         ////////////////////////////////////////////
         var temp_url = "{% url 'workery_tenant_pending_task_retrieve' 0 %}?was_created=True";
         var temp_url = temp_url.replace(0, latest_pending_task_id);
-        alert(temp_url);
         window.location = temp_url;
     }
 

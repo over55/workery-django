@@ -31,8 +31,10 @@ from tenant_foundation.models import (
     ActivitySheetItem,
     Associate,
     WorkOrder,
+    OngoingWorkOrder,
     WORK_ORDER_STATE,
     WorkOrderComment,
+    OngoingWorkOrderComment,
     Organization,
     TaskItem
 )
@@ -47,7 +49,8 @@ def get_todays_date_plus_days(days=0):
 
 
 class ActivitySheetItemCreateSerializer(serializers.Serializer):
-    job = serializers.PrimaryKeyRelatedField(many=False, queryset=WorkOrder.objects.all(), required=True)
+    job = serializers.PrimaryKeyRelatedField(many=False, queryset=WorkOrder.objects.all(), required=False)
+    ongoing_job = serializers.PrimaryKeyRelatedField(many=False, queryset=OngoingWorkOrder.objects.all(), required=False)
     associate = serializers.PrimaryKeyRelatedField(many=False, queryset=Associate.objects.all(), required=True)
     comment = serializers.CharField(required=True)
     state = serializers.CharField(
@@ -61,6 +64,7 @@ class ActivitySheetItemCreateSerializer(serializers.Serializer):
     class Meta:
         fields = (
             'job',
+            'ongoing_job',
             'associate',
             'comment',
             'state',
@@ -87,6 +91,7 @@ class ActivitySheetItemCreateSerializer(serializers.Serializer):
         """
         # STEP 1 - Get validated POST data.
         job = validated_data.get('job', None)
+        ongoing_job = validated_data.get('job', None)
         associate = validated_data.get('associate', None)
         comment = validated_data.get('comment', None)
         state = validated_data.get('state', None)
@@ -94,6 +99,7 @@ class ActivitySheetItemCreateSerializer(serializers.Serializer):
         # STEP 2 - Create our activity sheet item.
         obj = ActivitySheetItem.objects.create(
             job=job,
+            ongoing_job=ongoing_job,
             associate=associate,
             comment=comment,
             state=state,

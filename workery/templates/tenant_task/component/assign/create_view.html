@@ -29,6 +29,7 @@ function click_add_button() {
     create_activity_sheet_item_api(
         {
             'job': {{ task_item.job.id }},
+            'ongoing_job': {{ task_item.ongoing_job.id }},
             'associate': {{ parameters.associate_id }},
             'comment': $('#comment').val(),
             'state': state,
