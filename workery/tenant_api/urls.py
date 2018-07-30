@@ -77,7 +77,6 @@ urlpatterns = [
     url(r'^api/orders/operation/closed-job/close$', CompletedWorkOrderCloseOperationCreateAPIView.as_view(), name='workery_completed_order_close_operation_create_api_endpoint'),
 
     # WorkOrders - Update
-    url(r'^api/orders/activity-sheet-item/assign$', AssignAssociateTaskOperationAPIView.as_view(), name='workery_order_activity_sheet_item_create_api_endpoint'),
     url(r'^api/orders/activity-sheet-item/unassign$', WorkOrderUnassignCreateAPIView.as_view(), name='workery_order_order_unassign_create_api_endpoint'),
     url(r'^api/orders/complete$', WorkOrderCompleteCreateAPIView.as_view(), name='workery_order_order_complete_create_api_endpoint'),
     url(r'^api/orders/close$', WorkOrderCloseCreateAPIView.as_view(), name='workery_order_order_close_create_api_endpoint'),
@@ -93,7 +92,7 @@ urlpatterns = [
     url(r'^api/ongoing-order/(?P<pk>[^/.]+)/$', OngoingWorkOrderRetrieveUpdateDestroyAPIView.as_view(), name='workery_ongoing_order_retrieve_update_destroy_api_endpoint'),
 
     # Tasks - Operation
-    # TODO: Assign
+    url(r'^api/task/operation/assign-associate$', AssignAssociateTaskOperationAPIView.as_view(), name='workery_order_task_operation_assign_associate_api_endpoint'),
     # TODO: 48 hour follow up
     url(r'^api/task/operation/follow-up-pending$', FollowUpPendingTaskOperationAPIView.as_view(), name='workery_order_task_operation_follow_up_pending_api_endpoint'),
     # TODO: Completion survey

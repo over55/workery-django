@@ -46,7 +46,7 @@ function click_add_button() {
     var state = get_selected_radio_value('state');
 
     //
-    create_pending_activity_sheet_item_api(
+    post_follow_up_pending_task_operation_api(
         {
             'task_item': {{ task_item.id }},
             'comment': $('#comment').val(),

@@ -26,7 +26,7 @@ function click_add_button() {
     var state = get_selected_radio_value('state');
 
     //
-    create_activity_sheet_item_api(
+    post_assign_associate_task_operation_api(
         {
             'task_item': {{ task_item.id }},
             'associate': {{ parameters.associate_id }},
