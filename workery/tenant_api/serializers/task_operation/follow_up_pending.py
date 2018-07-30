@@ -136,16 +136,16 @@ class FollowUpPendingTaskOperationSerializer(serializers.Serializer):
             })
 
             # Attached our new TaskItem to the Job.
-            job.latest_pending_task = next_task_item
+            task_item.job.latest_pending_task = next_task_item
 
             # Change state
             if state == ACTIVITY_SHEET_ITEM_STATE.ACCEPTED:
-                job.state = WORK_ORDER_STATE.IN_PROGRESS
+                task_item.job.state = WORK_ORDER_STATE.IN_PROGRESS
             if state == ACTIVITY_SHEET_ITEM_STATE.PENDING:
-                job.state = WORK_ORDER_STATE.PENDING
+                task_item.job.state = WORK_ORDER_STATE.PENDING
 
             # Save our new task and job state updated.
-            job.save()
+            task_item.job.save()
 
         else:
             '''
@@ -159,9 +159,9 @@ class FollowUpPendingTaskOperationSerializer(serializers.Serializer):
                 created_by=self.context['user'],
                 last_modified_by=self.context['user'],
                 type_of = ASSIGNED_ASSOCIATE_TASK_ITEM_TYPE_OF_ID,
-                due_date = job.start_date,
+                due_date = task_item.job.start_date,
                 is_closed = False,
-                job = job,
+                job = task_item.job,
                 title = _('Assign an Associate'),
                 description = _('Please assign an associate to this job.')
             )
@@ -172,10 +172,10 @@ class FollowUpPendingTaskOperationSerializer(serializers.Serializer):
             })
 
             # Attach our next job.
-            job.associate = None
-            job.state = WORK_ORDER_STATE.DECLINED
-            job.latest_pending_task = next_task_item
-            job.save()
+            task_item.job.associate = None
+            task_item.job.state = WORK_ORDER_STATE.DECLINED
+            task_item.job.latest_pending_task = next_task_item
+            task_item.job.save()
 
         # STEP 5 - Assign our new variables and return the validated data.
         validated_data['id'] = current_activity_sheet_item.id
