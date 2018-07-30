@@ -22,6 +22,9 @@ urlpatterns = (
     # Complete
     path('pending-tasks/<int:pk>/complete/', views.PendingTaskRetrieveAndCompleteCreateView.as_view(), name='workery_tenant_pending_task_retrieve_and_complete_create'),
 
+    # Update Ongoing
+    path('pending-tasks/<int:pk>/update-ongoing/', views.PendingTaskRetrieveForUpdateOngoingJobView.as_view(), name='workery_tenant_pending_task_retrieve_and_ongoing_update_create'),
+
     # Search
     path('tasks/<str:template>/search/', views.TaskSearchView.as_view(), name='workery_tenant_task_search'),
     path('tasks/<str:template>/search/results/', views.TaskSearchResultView.as_view(), name='workery_tenant_task_search_results'),

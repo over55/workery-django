@@ -62,3 +62,23 @@ def get_jwt_token_and_orig_iat(authenticated_user):
 
     # Return both the token and original date.
     return token, orig_iat
+
+
+def get_end_of_date_for_this_month():
+    """Utility funciton will return last day of this month."""
+    import calendar
+    today = timezone.now()
+    last_day = calendar.mdays[today.month]
+    return today.replace(day=last_day)
+
+
+def get_first_date_for_this_month():
+    """Utility funciton will return last day of this month."""
+    import calendar
+    today = timezone.now()
+    return datetime(today.year, today.month, 1)
+
+
+def get_date_plus_days(dt, days=0):
+    """Returns the current date plus paramter number of days."""
+    return dt + timedelta(days=days)

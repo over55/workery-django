@@ -242,49 +242,68 @@
                 <tr>
                     <th scope="row" class="bg-light">Required Action</th>
                     <td id="selected_comment_id">
-                        {% if task_item.type_of == 1 %}
-                        <div class="col-sm-4">
-                            <a href="{% url 'workery_tenant_pending_task_retrieve_for_activity_sheet_retrieve' task_item.id %}">
-                            <button  id="id_submit_btn"
-                                class="btn btn-success btn-lg btn-fxw mt-4"
-                                type="button">
-                            <i class="fas fa-arrow-right"></i>&nbsp;{% trans 'Begin' %}
-                            </button>
-                            </a>
-                        </div>
-                        {% elif task_item.type_of == 2 %}
-                        <div class="col-sm-4">
-                            <a href="{% url 'workery_tenant_pending_task_retrieve_and_complete_create' task_item.id %}">
-                            <button  id="id_submit_btn"
-                                class="btn btn-success btn-lg btn-fxw mt-4"
-                                type="button">
-                            <i class="fas fa-arrow-right"></i>&nbsp;{% trans 'Begin' %}
-                            </button>
-                            </a>
-                        </div>
-                        {% elif task_item.type_of == 3 %}
-                        <div class="col-sm-4">
+                        <ul>
+                        {% if task_item.ongoing_job %}
 
-                            <a href="{% url 'workery_tenant_job_retrieve_for_close_create' 'task' task_item.job.id %}?task_id={{ task_item.id }}">
-                            <button  id="id_submit_btn"
-                                class="btn btn-success btn-lg btn-fxw mt-4"
-                                type="button">
-                            <i class="fas fa-arrow-right"></i>&nbsp;{% trans 'Begin' %}
-                            </button>
-                            </a>
+                            {% if task_item.type_of == 5 %}
+                                <li>
+                                    <a href="{% url 'workery_tenant_pending_task_retrieve_and_ongoing_update_create' task_item.id %}">
+                                        Update Ongoing Job
+                                    </a>
+                                </li>
+                            {% endif %}
 
-                        </div>
-                        {% elif task_item.type_of == 4 %}
-                        <div class="col-sm-4">
-                            <a href="{% url 'workery_tenant_pending_task_retrieve_for_activity_sheet_follow_up_with_associate_retrieve' task_item.id %}">
-                            <button  id="id_submit_btn"
-                                class="btn btn-success btn-lg btn-fxw mt-4"
-                                type="button">
-                            <i class="fas fa-arrow-right"></i>&nbsp;{% trans 'Begin' %}
-                            </button>
-                            </a>
-                        </div>
+                        {% elif task_item.job %}
+
+                            {% if task_item.type_of == 1 %}
+                            <div class="col-sm-4">
+                                <a href="{% url 'workery_tenant_pending_task_retrieve_for_activity_sheet_retrieve' task_item.id %}">
+                                <button  id="id_submit_btn"
+                                    class="btn btn-success btn-lg btn-fxw mt-4"
+                                    type="button">
+                                <i class="fas fa-arrow-right"></i>&nbsp;{% trans 'Begin' %}
+                                </button>
+                                </a>
+                            </div>
+                            {% elif task_item.type_of == 2 %}
+                            <div class="col-sm-4">
+                                <a href="{% url 'workery_tenant_pending_task_retrieve_and_complete_create' task_item.id %}">
+                                <button  id="id_submit_btn"
+                                    class="btn btn-success btn-lg btn-fxw mt-4"
+                                    type="button">
+                                <i class="fas fa-arrow-right"></i>&nbsp;{% trans 'Begin' %}
+                                </button>
+                                </a>
+                            </div>
+                            {% elif task_item.type_of == 3 %}
+                            <div class="col-sm-4">
+
+                                <a href="{% url 'workery_tenant_job_retrieve_for_close_create' 'task' task_item.job.id %}?task_id={{ task_item.id }}">
+                                <button  id="id_submit_btn"
+                                    class="btn btn-success btn-lg btn-fxw mt-4"
+                                    type="button">
+                                <i class="fas fa-arrow-right"></i>&nbsp;{% trans 'Begin' %}
+                                </button>
+                                </a>
+
+                            </div>
+                            {% elif task_item.type_of == 4 %}
+                            <div class="col-sm-4">
+                                <a href="{% url 'workery_tenant_pending_task_retrieve_for_activity_sheet_follow_up_with_associate_retrieve' task_item.id %}">
+                                <button  id="id_submit_btn"
+                                    class="btn btn-success btn-lg btn-fxw mt-4"
+                                    type="button">
+                                <i class="fas fa-arrow-right"></i>&nbsp;{% trans 'Begin' %}
+                                </button>
+                                </a>
+                            </div>
+                            {% endif %}
+
+
                         {% endif %}
+                        </ul>
+
+
                     </td>
 
                 </tr>

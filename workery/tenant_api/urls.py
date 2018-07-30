@@ -31,7 +31,7 @@ from tenant_api.views.order_service_fee import WorkOrderServiceFeeListCreateAPIV
 from tenant_api.views.ongoing_order import OngoingWorkOrderListCreateAPIView, OngoingWorkOrderRetrieveUpdateDestroyAPIView
 from tenant_api.views.order_operation import CompletedWorkOrderUnassignOperationCreateAPIView
 from tenant_api.views.order_operation import CompletedWorkOrderCloseOperationCreateAPIView
-
+from tenant_api.views.task_operation.update_ongoing import UpdateOngoingJobOperationTaskAPIView
 
 
 urlpatterns = [
@@ -86,6 +86,12 @@ urlpatterns = [
     # Ongoing Work Order
     url(r'^api/ongoing-orders$', OngoingWorkOrderListCreateAPIView.as_view(), name='workery_ongoing_order_list_create_api_endpoint'),
     url(r'^api/ongoing-order/(?P<pk>[^/.]+)/$', OngoingWorkOrderRetrieveUpdateDestroyAPIView.as_view(), name='workery_ongoing_order_retrieve_update_destroy_api_endpoint'),
+
+    # Tasks - Operation
+    # TODO: Assign
+    # TODO: 48 hour follow up
+    # TODO: Completion survey
+    url(r'^api/task/operation/update-ongoing$', UpdateOngoingJobOperationTaskAPIView.as_view(), name='workery_task_operation_update_job_api_endpoint'),
 
     # Partners
     url(r'^api/partners$', PartnerListCreateAPIView.as_view(), name='workery_partner_list_create_api_endpoint'),

@@ -79,7 +79,7 @@ class ClosedTaskListView(LoginRequiredMixin, GroupRequiredMixin, WorkeryListView
         """
         queryset = TaskItem.objects.filter(
             is_closed=True
-        ).prefetch_related(
+        ).order_by('-id').prefetch_related(
             'job',
             'job__associate',
             'job__customer',
@@ -364,3 +364,14 @@ class TaskSearchResultView(LoginRequiredMixin, GroupRequiredMixin, WorkeryListVi
 
         # Return our modified context.
         return modified_context
+
+
+class PendingTaskRetrieveForUpdateOngoingJobView(LoginRequiredMixin, GroupRequiredMixin, WorkeryDetailView):
+    context_object_name = 'task_item'
+    model = TaskItem
+    template_name = 'tenant_task/component/update_ongoing/create_view.html'
+    menu_id = "task"
+    group_required = [
+        constants.EXECUTIVE_GROUP_ID,
+        constants.MANAGEMENT_GROUP_ID,
+    ]

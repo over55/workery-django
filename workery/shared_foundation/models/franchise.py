@@ -47,7 +47,7 @@ class SharedFranchise(TenantMixin, AbstractSharedThing, AbstractSharedContactPoi
         _("Currency"),
         max_length=3,
         help_text=_('The currency used by this franchise formatted in <a href="https://en.wikipedia.org/wiki/ISO_4217">ISO 4217</a> formatting.'),
-        default="CAN",
+        default="CAD",
         blank=True,
     )
     timezone_name = models.CharField(
