@@ -40,6 +40,9 @@ class PendingTaskListView(LoginRequiredMixin, GroupRequiredMixin, WorkeryListVie
             'job',
             'job__associate',
             'job__customer',
+            'ongoing_job',
+            'ongoing_job__associate',
+            'ongoing_job__customer',
             'created_by',
             'last_modified_by'
         )
@@ -54,7 +57,7 @@ class PendingTaskListView(LoginRequiredMixin, GroupRequiredMixin, WorkeryListVie
         modified_context = super().get_context_data(**kwargs)
 
         # Get count of total tasks.
-        modified_context['unassigned_count'] = TaskItem.objects.filter(job__associate=None, is_closed=False).count()
+        modified_context['unassigned_count'] = TaskItem.objects.filter(type_of=ASSIGNED_ASSOCIATE_TASK_ITEM_TYPE_OF_ID, is_closed=False).count()
         modified_context['pending_count'] = TaskItem.objects.filter(is_closed=False).count()
         modified_context['closed_count'] = TaskItem.objects.filter(is_closed=True).count()
 
@@ -83,6 +86,9 @@ class ClosedTaskListView(LoginRequiredMixin, GroupRequiredMixin, WorkeryListView
             'job',
             'job__associate',
             'job__customer',
+            'ongoing_job',
+            'ongoing_job__associate',
+            'ongoing_job__customer',
             'created_by',
             'last_modified_by'
         )
@@ -97,7 +103,7 @@ class ClosedTaskListView(LoginRequiredMixin, GroupRequiredMixin, WorkeryListView
         modified_context = super().get_context_data(**kwargs)
 
         # Get count of total tasks.
-        modified_context['unassigned_count'] = TaskItem.objects.filter(job__associate=None, is_closed=False).count()
+        modified_context['unassigned_count'] = TaskItem.objects.filter(type_of=ASSIGNED_ASSOCIATE_TASK_ITEM_TYPE_OF_ID, is_closed=False).count()
         modified_context['pending_count'] = TaskItem.objects.filter(is_closed=False).count()
         modified_context['closed_count'] = TaskItem.objects.filter(is_closed=True).count()
 
@@ -252,12 +258,15 @@ class PendingTaskRetrieveAndCompleteCreateView(LoginRequiredMixin, GroupRequired
 class UnassignedTaskListView(LoginRequiredMixin, GroupRequiredMixin, WorkeryListView):
     context_object_name = 'task_list'
     queryset = TaskItem.objects.filter(
-        job__associate=None,
+        type_of=ASSIGNED_ASSOCIATE_TASK_ITEM_TYPE_OF_ID,
         is_closed=False
     ).prefetch_related(
         'job',
         'job__associate',
         'job__customer',
+        'ongoing_job',
+        'ongoing_job__associate',
+        'ongoing_job__customer',
         'created_by',
         'last_modified_by'
     )
@@ -274,7 +283,7 @@ class UnassignedTaskListView(LoginRequiredMixin, GroupRequiredMixin, WorkeryList
         modified_context = super().get_context_data(**kwargs)
 
         # Get count of total tasks.
-        modified_context['unassigned_count'] = TaskItem.objects.filter(job__associate=None, is_closed=False).count()
+        modified_context['unassigned_count'] = TaskItem.objects.filter(type_of=ASSIGNED_ASSOCIATE_TASK_ITEM_TYPE_OF_ID, is_closed=False).count()
         modified_context['pending_count'] = TaskItem.objects.filter(is_closed=False).count()
         modified_context['closed_count'] = TaskItem.objects.filter(is_closed=True).count()
 

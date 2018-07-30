@@ -63,6 +63,10 @@
             <div id="step-2" class="st-grey">
                 <span class="num">2.</span><span class="">Follow Up</span>
             </div>
+            {% elif task_item.type_of == 5 %}
+            <div id="step-2" class="st-grey">
+                <span class="num">2.</span><span class="">Ongoing Update</span>
+            </div>
             {% endif %}
         </div>
     </div>
@@ -317,47 +321,99 @@
         </table>
     </div>
     <div class="form-group col-md-10 mb-3 mx-auto text-center">
-        {% comment %}
-        <div class="row">
-            <!-- UNASSIGN BUTTON -->
-            {% if task_item.type_of != 1 %}
-            <div class="col-sm-4">
-                <a href="{% url 'workery_tenant_job_retrieve_for_unassign_create' 'task' task_item.job.id %}?task_id={{ task_item.id }}">
-                <button  id="id_submit_btn"
-                    class="btn btn-warning btn-lg btn-fxw mt-4"
-                    type="button">
-                <i class="fas fa-window-close"></i>&nbsp;{% trans 'Unassign Associate from Job' %}
-                </button>
-                </a>
+        {% if task_item.ongoing_job %}
+
+            <p>TODO: Unassign Associate</p>
+            <p>TODO: Close Job</p>
+            <p>TODO: Postpone Job</p>
+
+            {% comment %}
+            <p>TODO</p>
+            <div class="row">
+                <!-- UNASSIGN BUTTON -->
+                {% if task_item.type_of != 1 %}
+                <div class="col-sm-4">
+                    <a href="{% url 'workery_tenant_job_retrieve_for_unassign_create' 'task' task_item.ongoing_job.id %}?task_id={{ task_item.id }}">
+                    <button  id="id_submit_btn"
+                        class="btn btn-warning btn-lg btn-fxw mt-4"
+                        type="button">
+                    <i class="fas fa-window-close"></i>&nbsp;{% trans 'Unassign Associate from Job' %}
+                    </button>
+                    </a>
+                </div>
+                {% endif %}
+                <!-- end UNASSIGN BUTTON -->
+                <!-- CLOSE JOB BUTTON -->
+                {% if task_item.type_of != 3 %}
+                <div class="col-sm-4">
+                    <a href="{% url 'workery_tenant_job_retrieve_for_close_create' 'task' task_item.ongoing_job.id %}?task_id={{ task_item.id }}&task_type={{ task_item.type_of }}">
+                    <button  id="id_submit_btn"
+                        class="btn btn-danger btn-lg btn-fxw mt-4"
+                        type="button">
+                    <i class="far fa-minus-square"></i>&nbsp;{% trans 'Close Job' %}
+                    </button>
+                    </a>
+                </div>
+                {% endif %}
+                <!-- end CLOSE JOB BUTTON -->
+                <!-- end POSTPONE BUTTON -->
+                <div class="col-sm-4">
+                    <a href="{% url 'workery_tenant_job_retrieve_for_postpone_create' 'task' task_item.job.id %}?task_id={{ task_item.id }}">
+                    <button  id="id_submit_btn"
+                        class="btn btn-orange btn-lg btn-fxw mt-4"
+                        type="button">
+                    <i class="fas fa-clock"></i>&nbsp;{% trans 'Postpone Job' %}
+                    </button>
+                    </a>
+                </div>
+                <!-- end POSTPONE BUTTON -->
             </div>
-            {% endif %}
-            <!-- end UNASSIGN BUTTON -->
-            <!-- CLOSE JOB BUTTON -->
-            {% if task_item.type_of != 3 %}
-            <div class="col-sm-4">
-                <a href="{% url 'workery_tenant_job_retrieve_for_close_create' 'task' task_item.job.id %}?task_id={{ task_item.id }}&task_type={{ task_item.type_of }}">
-                <button  id="id_submit_btn"
-                    class="btn btn-danger btn-lg btn-fxw mt-4"
-                    type="button">
-                <i class="far fa-minus-square"></i>&nbsp;{% trans 'Close Job' %}
-                </button>
-                </a>
+            {% endcomment %}
+
+        {% elif task_item.job %}
+
+            <div class="row">
+                <!-- UNASSIGN BUTTON -->
+                {% if task_item.type_of != 1 %}
+                <div class="col-sm-4">
+                    <a href="{% url 'workery_tenant_job_retrieve_for_unassign_create' 'task' task_item.job.id %}?task_id={{ task_item.id }}">
+                    <button  id="id_submit_btn"
+                        class="btn btn-warning btn-lg btn-fxw mt-4"
+                        type="button">
+                    <i class="fas fa-window-close"></i>&nbsp;{% trans 'Unassign Associate from Job' %}
+                    </button>
+                    </a>
+                </div>
+                {% endif %}
+                <!-- end UNASSIGN BUTTON -->
+                <!-- CLOSE JOB BUTTON -->
+                {% if task_item.type_of != 3 %}
+                <div class="col-sm-4">
+                    <a href="{% url 'workery_tenant_job_retrieve_for_close_create' 'task' task_item.job.id %}?task_id={{ task_item.id }}&task_type={{ task_item.type_of }}">
+                    <button  id="id_submit_btn"
+                        class="btn btn-danger btn-lg btn-fxw mt-4"
+                        type="button">
+                    <i class="far fa-minus-square"></i>&nbsp;{% trans 'Close Job' %}
+                    </button>
+                    </a>
+                </div>
+                {% endif %}
+                <!-- end CLOSE JOB BUTTON -->
+                <!-- end POSTPONE BUTTON -->
+                <div class="col-sm-4">
+                    <a href="{% url 'workery_tenant_job_retrieve_for_postpone_create' 'task' task_item.job.id %}?task_id={{ task_item.id }}">
+                    <button  id="id_submit_btn"
+                        class="btn btn-orange btn-lg btn-fxw mt-4"
+                        type="button">
+                    <i class="fas fa-clock"></i>&nbsp;{% trans 'Postpone Job' %}
+                    </button>
+                    </a>
+                </div>
+                <!-- end POSTPONE BUTTON -->
             </div>
-            {% endif %}
-            <!-- end CLOSE JOB BUTTON -->
-            <!-- end POSTPONE BUTTON -->
-            <div class="col-sm-4">
-                <a href="{% url 'workery_tenant_job_retrieve_for_postpone_create' 'task' task_item.job.id %}?task_id={{ task_item.id }}">
-                <button  id="id_submit_btn"
-                    class="btn btn-orange btn-lg btn-fxw mt-4"
-                    type="button">
-                <i class="fas fa-clock"></i>&nbsp;{% trans 'Postpone Job' %}
-                </button>
-                </a>
-            </div>
-            <!-- end POSTPONE BUTTON -->
-        </div>
-        {% endcomment %}
+
+        {% endif %}
+
     </div>
     <!-- RETURN-TO-TOP -->
     <a id="return-to-top" href="#" class="btn-info btn-lg back-to-top" role="button" title="Back to top"><i class="fas fa-angle-up fa-2x"></i></a>

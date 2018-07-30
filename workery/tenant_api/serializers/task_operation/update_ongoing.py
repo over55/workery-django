@@ -83,6 +83,7 @@ class UpdateOngoingTaskOperationSerializer(serializers.Serializer):
             is_ongoing = True,
             closing_reason=0,
             closing_reason_other=None,
+            start_date = first_date_dt,
             completion_date=first_date_dt,
             hours=0,
             # last_modified_by = context['user'],
@@ -94,13 +95,13 @@ class UpdateOngoingTaskOperationSerializer(serializers.Serializer):
             invoice_service_fee_amount=default_amount,
             type_of = ongoing_job.type_of,
             state = WORK_ORDER_STATE.COMPLETED_BUT_UNPAID,
-            was_job_satisfactory=True,
-            was_job_finished_on_time_and_on_budget=True,
-            was_associate_punctual=True,
-            was_associate_professional=True,
-            would_customer_refer_our_organization=True,
-            score=True,
-            invoice_id=0
+            was_job_satisfactory = True,
+            was_job_finished_on_time_and_on_budget = True,
+            was_associate_punctual = True,
+            was_associate_professional = True,
+            would_customer_refer_our_organization = True,
+            score = True,
+            invoice_id = 0,
         )
 
         # Update our ongoing job to have our closed tasks.
