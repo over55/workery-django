@@ -96,7 +96,7 @@
     }
 
     function create_pending_activity_sheet_item_api(data_dict, func_callback, func_error_callback, complete_callback) {
-        var url = "{% url 'workery_order_pending_activity_sheet_item_create_api_endpoint' %}?format=json";
+        var url = "{% url 'workery_order_task_operation_follow_up_pending_api_endpoint' %}?format=json";
         jQuery.ajax({
             url: url,
             headers: {

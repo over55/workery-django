@@ -25,7 +25,6 @@ from tenant_api.views.staff_comment import StaffCommentListCreateAPIView
 from tenant_api.views.tag import TagListCreateAPIView, TagRetrieveUpdateDestroyAPIView
 from tenant_api.views.utility import FindCustomerMatchingAPIView
 from tenant_api.views.order_activite_sheet_item import ActivitySheetItemCreateAPIView
-from tenant_api.views.order_pending_follow_up import PendingActivitySheetItemCreateAPIView
 from tenant_api.views.public_image_upload import PublicImageUploadListCreateAPIView
 from tenant_api.views.order_complete import WorkOrderCompleteCreateAPIView
 from tenant_api.views.order_close import WorkOrderCloseCreateAPIView
@@ -36,7 +35,8 @@ from tenant_api.views.order_service_fee import WorkOrderServiceFeeListCreateAPIV
 from tenant_api.views.order_operation import CompletedWorkOrderUnassignOperationCreateAPIView
 from tenant_api.views.order_operation import CompletedWorkOrderCloseOperationCreateAPIView
 from tenant_api.views.task_operation import (
-    UpdateOngoingJobOperationTaskAPIView
+    UpdateOngoingJobOperationTaskAPIView,
+    FollowUpPendingTaskOperationAPIView
 )
 
 
@@ -78,11 +78,10 @@ urlpatterns = [
 
     # WorkOrders - Update
     url(r'^api/orders/activity-sheet-item/assign$', ActivitySheetItemCreateAPIView.as_view(), name='workery_order_activity_sheet_item_create_api_endpoint'),
-    url(r'^api/orders/activity-sheet-item/pending$', PendingActivitySheetItemCreateAPIView.as_view(), name='workery_order_pending_activity_sheet_item_create_api_endpoint'),
+    url(r'^api/orders/activity-sheet-item/unassign$', WorkOrderUnassignCreateAPIView.as_view(), name='workery_order_order_unassign_create_api_endpoint'),
     url(r'^api/orders/complete$', WorkOrderCompleteCreateAPIView.as_view(), name='workery_order_order_complete_create_api_endpoint'),
     url(r'^api/orders/close$', WorkOrderCloseCreateAPIView.as_view(), name='workery_order_order_close_create_api_endpoint'),
     url(r'^api/orders/postpone$', WorkOrderPostponeCreateAPIView.as_view(), name='workery_order_order_postpone_create_api_endpoint'),
-    url(r'^api/orders/activity-sheet-item/unassign$', WorkOrderUnassignCreateAPIView.as_view(), name='workery_order_order_unassign_create_api_endpoint'),
     url(r'^api/orders/reopen$', WorkOrderReopenCreateAPIView.as_view(), name='workery_order_order_reopen_create_api_endpoint'),
 
     # Work Order Service Fees
@@ -96,6 +95,7 @@ urlpatterns = [
     # Tasks - Operation
     # TODO: Assign
     # TODO: 48 hour follow up
+    url(r'^api/task/operation/follow-up-pending$', FollowUpPendingTaskOperationAPIView.as_view(), name='workery_order_task_operation_follow_up_pending_api_endpoint'),
     # TODO: Completion survey
     url(r'^api/task/operation/update-ongoing$', UpdateOngoingJobOperationTaskAPIView.as_view(), name='workery_task_operation_update_job_api_endpoint'),
 

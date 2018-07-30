@@ -18,9 +18,11 @@ $(document).ready(function () {
     // DEFENSIVE CODE:
     // If there is no associate assigned then we need to automatically load
     // up the pending list, this page cannot exist.
+    {% if task_item.job %}
     if ("{{ task_item.job.associate_id }}" == "None") {
         window.location = "{% url 'workery_tenant_task_list' %}";
     }
+    {% endif %}
 
     // DEFENSIVE CODE:
     // If this task has already been closed then please redirect to the
@@ -46,8 +48,7 @@ function click_add_button() {
     //
     create_pending_activity_sheet_item_api(
         {
-            'job': {{ task_item.job.id }},
-            'associate': parseInt("{{ task_item.job.associate_id }}"),
+            'task_item': {{ task_item.id }},
             'comment': $('#comment').val(),
             'state': state,
         },
@@ -151,64 +152,107 @@ function get_selected_radio_value(radiofields_name) {
                     <tr>
 					    <th scope="row" class="bg-light">Job #</th>
 					    <td id="order">
-                            <a href="{% url 'workery_tenant_job_retrieve' 'summary' task_item.job.id %}" target="_blank">
-                                {{ task_item.job.id|intcomma }}&nbsp;<i class="fas fa-external-link-alt"></i>
-                            </a>
+                            {% if task_item.ongoing_job %}
+                                <a href="{% url 'workery_tenant_job_retrieve' 'summary' task_item.ongoing_job.id %}" target="_blank">
+                                    {{ task_item.ongoing_job.id|intcomma }}&nbsp;<i class="fas fa-external-link-alt"></i>
+                                </a>
+                            {% elif task_item.job %}
+                                <a href="{% url 'workery_tenant_job_retrieve' 'summary' task_item.job.id %}" target="_blank">
+                                    {{ task_item.job.id|intcomma }}&nbsp;<i class="fas fa-external-link-alt"></i>
+                                </a>
+                            {% endif %}
 					    </td>
 					</tr>
 					<tr>
 					    <th scope="row" class="bg-light">Client Name</th>
 					    <td id="customer">
-                            {% if task_item.job.customer %}
-                                <a href="{% url 'workery_tenant_customer_lite_retrieve' 'summary' task_item.job.customer.id %}" target="_blank">
-                                    {{ task_item.job.customer }}&nbsp;<i class="fas fa-external-link-alt"></i>
-                                </a>
-                            {% else %}
-                                {% trans 'Unassigned' %}
+                            {% if task_item.ongoing_job %}
+                                {% if task_item.ongoing_job.customer %}
+                                    <a href="{% url 'workery_tenant_customer_lite_retrieve' 'summary' task_item.ongoing_job.customer.id %}" target="_blank">
+                                        {{ task_item.ongoing_job.customer }}&nbsp;<i class="fas fa-external-link-alt"></i>
+                                    </a>
+                                {% else %}
+                                    {% trans 'Unassigned' %}
+                                {% endif %}
+                            {% elif task_item.job %}
+                                {% if task_item.job.customer %}
+                                    <a href="{% url 'workery_tenant_customer_lite_retrieve' 'summary' task_item.job.customer.id %}" target="_blank">
+                                        {{ task_item.job.customer }}&nbsp;<i class="fas fa-external-link-alt"></i>
+                                    </a>
+                                {% else %}
+                                    {% trans 'Unassigned' %}
+                                {% endif %}
                             {% endif %}
 					    </td>
 					</tr>
 					<tr>
 					    <th scope="row" class="bg-light">Associate Name</th>
 					    <td id="associate">
-                            {% if task_item.job.associate %}
-                                <a href="{% url 'workery_tenant_member_lite_retrieve' 'summary' task_item.job.associate.id %}" target="_blank">
-                                    {{ task_item.job.associate }}&nbsp;<i class="fas fa-external-link-alt"></i>
-                                </a>
-                            {% else %}
-                                {% trans 'Unassigned' %}
+                            {% if task_item.ongoing_job %}
+                                {% if task_item.ongoing_job.associate %}
+                                    <a href="{% url 'workery_tenant_member_lite_retrieve' 'summary' task_item.ongoing_job.associate.id %}" target="_blank">
+                                        {{ task_item.ongoing_job.associate }}&nbsp;<i class="fas fa-external-link-alt"></i>
+                                    </a>
+                                {% else %}
+                                    {% trans 'Unassigned' %}
+                                {% endif %}
+                            {% elif task_item.job %}
+                                {% if task_item.job.associate %}
+                                    <a href="{% url 'workery_tenant_member_lite_retrieve' 'summary' task_item.job.associate.id %}" target="_blank">
+                                        {{ task_item.job.associate }}&nbsp;<i class="fas fa-external-link-alt"></i>
+                                    </a>
+                                {% else %}
+                                    {% trans 'Unassigned' %}
+                                {% endif %}
                             {% endif %}
 					    </td>
 					</tr>
                     <tr>
                         <th scope="row" class="bg-light">Associate Primary Phone</th>
                         <td id="phonenumber">
-                            {% if task_item.job.associate.telephone %}<a href="tel:{{ task_item.job.associate.telephone }}">{{ task_item.job.associate.telephone|pretty_formatted_phonenumber }}</a>{% else %}-{% endif %}
+                            {% if task_item.ongoing_job %}
+                                {% if task_item.ongoing_job.associate.telephone %}<a href="tel:{{ task_item.ongoing_job.associate.telephone }}">{{ task_item.ongoing_job.associate.telephone|pretty_formatted_phonenumber }}</a>{% else %}-{% endif %}
+                            {% elif task_item.job %}
+                                {% if task_item.job.associate.telephone %}<a href="tel:{{ task_item.job.associate.telephone }}">{{ task_item.job.associate.telephone|pretty_formatted_phonenumber }}</a>{% else %}-{% endif %}
+                            {% endif %}
                         </td>
                     </tr>
                     <tr>
                         <th scope="row" class="bg-light">Associate Secondary Mobile</th>
                         <td id="mobile">
-                            {% if task_item.job.associate.other_telephone %}<a href="tel:{{ task_item.job.associate.other_telephone }}">{{ task_item.job.associate.other_telephone|pretty_formatted_phonenumber }}</a>{% else %}-{% endif %}
+                            {% if task_item.ongoing_job %}
+                                {% if task_item.ongoing_job.associate.other_telephone %}<a href="tel:{{ task_item.ongoing_job.associate.other_telephone }}">{{ task_item.ongoing_job.associate.other_telephone|pretty_formatted_phonenumber }}</a>{% else %}-{% endif %}
+                            {% elif task_item.job %}
+                                {% if task_item.job.associate.other_telephone %}<a href="tel:{{ task_item.job.associate.other_telephone }}">{{ task_item.job.associate.other_telephone|pretty_formatted_phonenumber }}</a>{% else %}-{% endif %}
+                            {% endif %}
                         </td>
                     </tr>
                     <tr>
                         <th scope="row" class="bg-light">Associate E-Mail</th>
                         <td id="email">
-                            {% if task_item.job.associate.owner.email %}<a href="mailto:{{ task_item.job.associate.owner.email }}">{{ task_item.job.associate.owner.email }}</a>{% else %}-{% endif %}
+                            {% if task_item.ongoing_job %}
+                                {% if task_item.ongoing_job.associate.owner.email %}<a href="mailto:{{ task_item.ongoing_job.associate.owner.email }}">{{ task_item.ongoing_job.associate.owner.email }}</a>{% else %}-{% endif %}
+                            {% elif task_item.job %}
+                                {% if task_item.job.associate.owner.email %}<a href="mailto:{{ task_item.job.associate.owner.email }}">{{ task_item.job.associate.owner.email }}</a>{% else %}-{% endif %}
+                            {% endif %}
                         </td>
                     </tr>
     		        <tr>
 					<tr>
 					    <th scope="row" class="bg-light">Job Description</th>
 					    <td id="description">
-						    {{ task_item.description }}
+                            {{ task_item.description }}
+                            {% elif task_item.job %}
 					    </td>
 					</tr>
                     <tr>
 					    <th scope="row" class="bg-light">Job Comments</th>
 					    <td id="job_comments">
-						    <a href="{% url 'workery_tenant_job_comments_retrieve' 'summary' task_item.job.id  %}" target="_blank">{% trans 'View comments' %}&nbsp;({{ task_item.job.comments.count }})&nbsp;<i class="fas fa-external-link-alt"></i></a>
+                            {% if task_item.ongoing_job %}
+						        <a href="{% url 'workery_tenant_job_comments_retrieve' 'summary' task_item.job.id  %}" target="_blank">{% trans 'View comments' %}&nbsp;({{ task_item.job.comments.count }})&nbsp;<i class="fas fa-external-link-alt"></i></a>
+                            {% elif task_item.job %}
+                            TODO: ONGOING JOB COMMENTS
+                            {% endif %}
 					    </td>
 					</tr>
 				    </tbody>
