@@ -71,9 +71,9 @@ class UpdateOngoingTaskOperationSerializer(serializers.Serializer):
     #         raise serializers.ValidationError(_("Task no longer exists, please go back to the list page."))
     #     return data
 
-    def create_work_order_from_ongoing_job(self, ongoing_job, context):
+    def create_work_order_from_ongoing_job(self, ongoing_job):
         first_date_dt = get_first_date_for_this_month()
-        franchise = context['franchise']
+        franchise =self.context['franchise']
         default_amount = Money(0, franchise.currency)
 
         order = WorkOrder.objects.create(
@@ -86,10 +86,10 @@ class UpdateOngoingTaskOperationSerializer(serializers.Serializer):
             start_date = first_date_dt,
             completion_date=first_date_dt,
             hours=0,
-            # last_modified_by = context['user'],
-            created_by = context['user'],
-            created_from = context['from'],
-            created_from_is_public = context['from_is_public'],
+            # last_modified_by =self.context['user'],
+            created_by =self.context['user'],
+            created_from =self.context['from'],
+            created_from_is_public =self.context['from_is_public'],
             invoice_service_fee_payment_date=first_date_dt,
             invoice_service_fee=None,
             invoice_service_fee_amount=default_amount,
@@ -118,15 +118,15 @@ class UpdateOngoingTaskOperationSerializer(serializers.Serializer):
 
         # Go through the number of visits and create a new WorkOrder per visit.
         for visit in range(0, number_of_visits):
-            self.create_work_order_from_ongoing_job(task_item.ongoing_job, self.context)
+            self.create_work_order_from_ongoing_job(task_item.ongoing_job)
 
         # Update the `OngoingWorkOrder` to have the user whom edited it plus
         # remove our `TaskItem` instance from it.
-        task_item.ongoing.latest_pending_task = None
-        task_item.ongoing_job.last_modified_by = context['user']
-        task_item.ongoing_job.last_modified_from = context['from']
-        task_item.ongoing_job.last_modified_from_is_public = context['from_is_public']
-        ongoing_job.save()
+        task_item.ongoing_job.latest_pending_task = None
+        task_item.ongoing_job.last_modified_by =self.context['user']
+        task_item.ongoing_job.last_modified_from =self.context['from']
+        task_item.ongoing_job.last_modified_from_is_public =self.context['from_is_public']
+        task_item.ongoing_job.save()
 
         # Update the task to be completed.
         task_item.is_closed = True
