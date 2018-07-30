@@ -56,9 +56,9 @@ def get_end_of_month_date():
     last_day = calendar.mdays[today.month]
     return today.replace(day=last_day)
 
-class ActivitySheetItemCreateSerializer(serializers.Serializer):
-    job = serializers.PrimaryKeyRelatedField(many=False, queryset=WorkOrder.objects.all(), required=False, allow_null=True)
-    ongoing_job = serializers.PrimaryKeyRelatedField(many=False, queryset=OngoingWorkOrder.objects.all(), required=False, allow_null=True)
+
+class AssignAssociateTaskOperationSerializer(serializers.Serializer):
+    task_item = serializers.PrimaryKeyRelatedField(many=False, queryset=TaskItem.objects.all(), required=True)
     associate = serializers.PrimaryKeyRelatedField(many=False, queryset=Associate.objects.all(), required=True)
     comment = serializers.CharField(required=True)
     state = serializers.CharField(
@@ -71,8 +71,7 @@ class ActivitySheetItemCreateSerializer(serializers.Serializer):
     # Meta Information.
     class Meta:
         fields = (
-            'job',
-            'ongoing_job',
+            'task_item',
             'associate',
             'comment',
             'state',
@@ -84,21 +83,15 @@ class ActivitySheetItemCreateSerializer(serializers.Serializer):
         validation error will be populated in the "non_field_errors" field.
         """
         # Confirm that we have an assignment task open.
-        task_item = TaskItem.objects.filter(
-            type_of=ASSIGNED_ASSOCIATE_TASK_ITEM_TYPE_OF_ID,
-            job=data.get('job', None),
-            ongoing_job=data.get('ongoing_job', None),
-            is_closed=False
-        ).order_by('due_date').first()
+        task_item = data['task_item']
         if task_item is None:
             raise serializers.ValidationError(_("Task no longer exists, please go back to the list page."))
         return data
 
-    def create_for_job(self, validated_data, job, associate, comment, state):
+    def create_for_job(self, validated_data, task_item, associate, comment, state):
         # STEP 2 - Create our activity sheet item.
         obj = ActivitySheetItem.objects.create(
-            job=job,
-            ongoing_job=ongoing_job,
+            job=task_item.job,
             associate=associate,
             comment=comment,
             state=state,
@@ -117,14 +110,6 @@ class ActivitySheetItemCreateSerializer(serializers.Serializer):
 
             # For debugging purposes only.
             logger.info("Associate assigned to Job.")
-
-            # STEP 4 - Lookup the most recent task which has not been closed
-            #          for the particular job order.
-            task_item = TaskItem.objects.filter(
-                type_of=ASSIGNED_ASSOCIATE_TASK_ITEM_TYPE_OF_ID,
-                job=job,
-                is_closed=False
-            ).order_by('due_date').first()
 
             # For debugging purposes only.
             logger.info("Found task #%(task_item)s" % {
@@ -175,21 +160,21 @@ class ActivitySheetItemCreateSerializer(serializers.Serializer):
             })
 
             # Attached our new TaskItem to the Job.
-            job.latest_pending_task = next_task_item
+            task_item.job.latest_pending_task = next_task_item
 
             # Change state
             if state == ACTIVITY_SHEET_ITEM_STATE.ACCEPTED:
-                job.state = WORK_ORDER_STATE.IN_PROGRESS
+                task_item.job.state = WORK_ORDER_STATE.IN_PROGRESS
             if state == ACTIVITY_SHEET_ITEM_STATE.PENDING:
-                job.state = WORK_ORDER_STATE.PENDING
+                task_item.job.state = WORK_ORDER_STATE.PENDING
 
             # Save our new task and job state updated.
-            job.save()
+            task_item.job.save()
 
         else:
-            job.associate = None
-            job.state = WORK_ORDER_STATE.DECLINED
-            job.save()
+            task_item.job.associate = None
+            task_item.job.state = WORK_ORDER_STATE.DECLINED
+            task_item.job.save()
 
         comment_obj = Comment.objects.create(
             created_by=self.context['user'],
@@ -199,7 +184,7 @@ class ActivitySheetItemCreateSerializer(serializers.Serializer):
             created_from_is_public = self.context['from_is_public']
         )
         WorkOrderComment.objects.create(
-            about=job,
+            about=task_item.job,
             comment=comment_obj,
         )
 
@@ -210,11 +195,11 @@ class ActivitySheetItemCreateSerializer(serializers.Serializer):
         validated_data['id'] = obj.id
         return validated_data
 
-    def create_for_ongoing_job(self, validated_data, ongoing_job, associate, comment, state):
+    def create_for_ongoing_job(self, validated_data, task_item, associate, comment, state):
         # STEP 2 - Create our activity sheet item.
         obj = ActivitySheetItem.objects.create(
             job=None,
-            ongoing_job=ongoing_job,
+            ongoing_job=task_item.ongoing_job,
             associate=associate,
             comment=comment,
             state=state,
@@ -233,15 +218,6 @@ class ActivitySheetItemCreateSerializer(serializers.Serializer):
 
             # For debugging purposes only.
             logger.info("Associate assigned to Job.")
-
-            # STEP 4 - Lookup the most recent task which has not been closed
-            #          for the particular job order.
-            task_item = TaskItem.objects.filter(
-                type_of=ASSIGNED_ASSOCIATE_TASK_ITEM_TYPE_OF_ID,
-                job=None,
-                ongoing_job=ongoing_job,
-                is_closed=False
-            ).order_by('due_date').first()
 
             # For debugging purposes only.
             logger.info("Found task #%(task_item)s" % {
@@ -293,21 +269,21 @@ class ActivitySheetItemCreateSerializer(serializers.Serializer):
             })
 
             # Attached our new TaskItem to the Job.
-            ongoing_job.latest_pending_task = next_task_item
+            task_item.ongoing_job.latest_pending_task = next_task_item
 
             # Change state
             if state == ACTIVITY_SHEET_ITEM_STATE.ACCEPTED:
-                ongoing_job.state = ONGOING_WORK_ORDER_STATE.RUNNING
+                task_item.ongoing_job.state = ONGOING_WORK_ORDER_STATE.RUNNING
             if state == ACTIVITY_SHEET_ITEM_STATE.PENDING:
-                ongoing_job.state = ONGOING_WORK_ORDER_STATE.IDLE
+                task_item.ongoing_job.state = ONGOING_WORK_ORDER_STATE.IDLE
 
             # Save our new task and job state updated.
-            ongoing_job.save()
+            task_item.ongoing_job.save()
 
         else:
-            ongoing_job.associate = None
-            ongoing_job.state = ONGOING_WORK_ORDER_STATE.IDLE
-            ongoing_job.save()
+            task_item.ongoing_job.associate = None
+            task_item.ongoing_job.state = ONGOING_WORK_ORDER_STATE.IDLE
+            task_item.ongoing_job.save()
 
         comment_obj = Comment.objects.create(
             created_by=self.context['user'],
@@ -317,7 +293,7 @@ class ActivitySheetItemCreateSerializer(serializers.Serializer):
             created_from_is_public = self.context['from_is_public']
         )
         OngoingWorkOrderComment.objects.create(
-            about=ongoing_job,
+            about=task_item.ongoing_job,
             comment=comment_obj,
         )
 
@@ -333,16 +309,15 @@ class ActivitySheetItemCreateSerializer(serializers.Serializer):
         Override the `create` function to add extra functinality.
         """
         # STEP 1 - Get validated POST data.
-        job = validated_data.get('job', None)
-        ongoing_job = validated_data.get('ongoing_job', None)
+        task_item = validated_data.get('task_item', None)
         associate = validated_data.get('associate', None)
         comment = validated_data.get('comment', None)
         state = validated_data.get('state', None)
 
         # CASE 1 OF 2: ONGOING JOBS
-        if ongoing_job:
-            return self.create_for_ongoing_job(validated_data, ongoing_job, associate, comment, state)
+        if task_item.ongoing_job:
+            return self.create_for_ongoing_job(validated_data, task_item, associate, comment, state)
 
         # CASE 2 OF 2: SINGLE TIME JOBS
         else:
-            return self.create_for_job(validated_data, job, associate, comment, state)
+            return self.create_for_job(validated_data, task_item, associate, comment, state)

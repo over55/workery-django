@@ -13,14 +13,12 @@ from tenant_api.permissions.order import (
    CanListCreateWorkOrderPermission,
    CanRetrieveUpdateDestroyWorkOrderPermission
 )
-from tenant_api.serializers.order_activity_sheet_item import (
-    ActivitySheetItemCreateSerializer,
-)
+from tenant_api.serializers.task_operation.assign_associate import AssignAssociateTaskOperationSerializer
 from tenant_foundation.models import ActivitySheetItem
 
 
-class ActivitySheetItemCreateAPIView(generics.CreateAPIView):
-    serializer_class = ActivitySheetItemCreateSerializer
+class AssignAssociateTaskOperationAPIView(generics.CreateAPIView):
+    serializer_class = AssignAssociateTaskOperationSerializer
     permission_classes = (
         permissions.IsAuthenticated,
         IsAuthenticatedAndIsActivePermission,
@@ -32,7 +30,7 @@ class ActivitySheetItemCreateAPIView(generics.CreateAPIView):
         Create
         """
         client_ip, is_routable = get_client_ip(self.request)
-        serializer = ActivitySheetItemCreateSerializer(data=request.data, context={
+        serializer = AssignAssociateTaskOperationSerializer(data=request.data, context={
             'user': request.user,
             'from': client_ip,
             'from_is_public': is_routable,
