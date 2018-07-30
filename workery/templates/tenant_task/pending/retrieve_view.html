@@ -242,15 +242,24 @@
                 <tr>
                     <th scope="row" class="bg-light">Required Action</th>
                     <td id="selected_comment_id">
-                        <ul>
                         {% if task_item.ongoing_job %}
 
-                            {% if task_item.type_of == 5 %}
-                                <li>
-                                    <a href="{% url 'workery_tenant_pending_task_retrieve_and_ongoing_update_create' task_item.id %}">
-                                        Update Ongoing Job
-                                    </a>
-                                </li>
+                            {% if task_item.type_of == 1 %}
+                                <a href="{% url 'workery_tenant_pending_task_retrieve_for_activity_sheet_retrieve' task_item.id %}">
+                                    <button  id="id_submit_btn"
+                                        class="btn btn-success btn-lg btn-fxw mt-4"
+                                        type="button">
+                                        <i class="fas fa-arrow-right"></i>&nbsp;{% trans 'Begin' %}
+                                    </button>
+                                </a>
+                            {% elif task_item.type_of == 5 %}
+                                <a href="{% url 'workery_tenant_pending_task_retrieve_and_ongoing_update_create' task_item.id %}">
+                                    <button  id="id_submit_btn"
+                                        class="btn btn-success btn-lg btn-fxw mt-4"
+                                        type="button">
+                                        <i class="fas fa-arrow-right"></i>&nbsp;{% trans 'Begin' %}
+                                    </button>
+                                </a>
                             {% endif %}
 
                         {% elif task_item.job %}
@@ -299,10 +308,7 @@
                             </div>
                             {% endif %}
 
-
                         {% endif %}
-                        </ul>
-
 
                     </td>
 

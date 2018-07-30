@@ -1,0 +1,9 @@
+# -*- coding: utf-8 -*-
+from tenant_api.views.order_crud.order import (
+   WorkOrderListCreateAPIView,
+   WorkOrderRetrieveUpdateDestroyAPIView
+)
+from tenant_api.views.order_crud.ongoing_order import (
+    OngoingWorkOrderListCreateAPIView,
+    OngoingWorkOrderRetrieveUpdateDestroyAPIView
+)

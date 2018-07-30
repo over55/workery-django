@@ -164,21 +164,6 @@
                         {% endif %}
                     </td>
                 </tr>
-                <tr class="bg-primary text-white">
-                    <th scope="row" colspan="2">Current Work Order Details</th>
-                </tr>
-                <tr>
-                    <th scope="row" class="bg-light">Job #</th>
-                    <td>
-                        {% if job.open_order %}
-                        <a href="{% url 'workery_tenant_job_retrieve' 'summary' job.open_order.id %}" target="_blank">
-                            {{ job.open_order.id }}&nbsp;<i class="fas fa-external-link-alt"></i>
-                        </a>
-                        {% else %}
-                           -
-                        {% endif %}
-                    </td>
-                </tr>
             </tbody>
         </table>
     </div>

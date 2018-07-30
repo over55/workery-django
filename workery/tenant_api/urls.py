@@ -10,8 +10,13 @@ from tenant_api.views.customer import CustomerListCreateAPIView, CustomerRetriev
 from tenant_api.views.customer_comment import CustomerCommentListCreateAPIView
 from tenant_api.views.customer_operation import CustomerBlacklistOperationCreateAPIView
 from tenant_api.views.insurance_requirement import InsuranceRequirementListCreateAPIView, InsuranceRequirementRetrieveUpdateDestroyAPIView
-from tenant_api.views.order import WorkOrderListCreateAPIView, WorkOrderRetrieveUpdateDestroyAPIView
-from tenant_api.views.order_comment import WorkOrderCommentListCreateAPIView
+from tenant_api.views.order_crud import (
+   WorkOrderListCreateAPIView,
+   WorkOrderRetrieveUpdateDestroyAPIView,
+   OngoingWorkOrderListCreateAPIView,
+   OngoingWorkOrderRetrieveUpdateDestroyAPIView,
+   WorkOrderCommentListCreateAPIView
+)
 from tenant_api.views.partner import PartnerListCreateAPIView, PartnerRetrieveUpdateDestroyAPIView, PartnerCreateValidationAPIView
 from tenant_api.views.partner_comment import PartnerCommentListCreateAPIView
 from tenant_api.views.skill_set import SkillSetListCreateAPIView, SkillSetRetrieveUpdateDestroyAPIView
@@ -28,10 +33,11 @@ from tenant_api.views.order_postpone import WorkOrderPostponeCreateAPIView
 from tenant_api.views.order_unassign import WorkOrderUnassignCreateAPIView
 from tenant_api.views.order_reopen import WorkOrderReopenCreateAPIView
 from tenant_api.views.order_service_fee import WorkOrderServiceFeeListCreateAPIView, WorkOrderServiceFeeRetrieveUpdateDestroyAPIView
-from tenant_api.views.ongoing_order import OngoingWorkOrderListCreateAPIView, OngoingWorkOrderRetrieveUpdateDestroyAPIView
 from tenant_api.views.order_operation import CompletedWorkOrderUnassignOperationCreateAPIView
 from tenant_api.views.order_operation import CompletedWorkOrderCloseOperationCreateAPIView
-from tenant_api.views.task_operation.update_ongoing import UpdateOngoingJobOperationTaskAPIView
+from tenant_api.views.task_operation import (
+    UpdateOngoingJobOperationTaskAPIView
+)
 
 
 urlpatterns = [
