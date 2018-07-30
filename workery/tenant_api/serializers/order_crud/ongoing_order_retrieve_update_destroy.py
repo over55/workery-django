@@ -43,7 +43,6 @@ class OngoingWorkOrderRetrieveUpdateDestroySerializer(serializers.ModelSerialize
             'customer',
             'associate',
             'closed_orders',
-            'open_order',
             'state'
         )
 
@@ -53,7 +52,6 @@ class OngoingWorkOrderRetrieveUpdateDestroySerializer(serializers.ModelSerialize
             'customer',
             'associate',
             'closed_orders',
-            'open_order'
         )
         return queryset
 
@@ -64,7 +62,6 @@ class OngoingWorkOrderRetrieveUpdateDestroySerializer(serializers.ModelSerialize
         instance.customer = validated_data.get('customer', instance.customer)
         instance.associate = validated_data.get('associate', instance.associate)
         # instance.closed_orders = validated_data.get('closed_orders', instance.closed_orders)
-        instance.open_order = validated_data.get('open_order', instance.open_order)
         instance.state = validated_data.get('state', instance.state)
 
         # Save the model.
