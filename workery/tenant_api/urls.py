@@ -36,7 +36,8 @@ from tenant_api.views.task_operation import (
     AssignAssociateTaskOperationAPIView,
     UpdateOngoingJobOperationTaskAPIView,
     FollowUpTaskOperationAPIView,
-    FollowUpPendingTaskOperationAPIView
+    FollowUpPendingTaskOperationAPIView,
+    CloseTaskOperationAPIView
 )
 
 
@@ -75,12 +76,16 @@ urlpatterns = [
     # WorkOrder - Operations
     url(r'^api/orders/operation/closed-job/unassign$', CompletedWorkOrderUnassignOperationCreateAPIView.as_view(), name='workery_completed_order_unassign_operation_create_api_endpoint'),
     url(r'^api/orders/operation/closed-job/close$', CompletedWorkOrderCloseOperationCreateAPIView.as_view(), name='workery_completed_order_close_operation_create_api_endpoint'),
+    #TODO: Close
+    #TODO: Postpone
+    #TODO: Reopen
+    #TODO: Unassign
 
     # WorkOrders - Update
-    url(r'^api/orders/activity-sheet-item/unassign$', WorkOrderUnassignCreateAPIView.as_view(), name='workery_order_order_unassign_create_api_endpoint'),
-    url(r'^api/orders/close$', WorkOrderCloseCreateAPIView.as_view(), name='workery_order_order_close_create_api_endpoint'),
-    url(r'^api/orders/postpone$', WorkOrderPostponeCreateAPIView.as_view(), name='workery_order_order_postpone_create_api_endpoint'),
-    url(r'^api/orders/reopen$', WorkOrderReopenCreateAPIView.as_view(), name='workery_order_order_reopen_create_api_endpoint'),
+    url(r'^api/orders/activity-sheet-item/unassign$', WorkOrderUnassignCreateAPIView.as_view(), name='workery_order_order_unassign_create_api_endpoint'), #TODO: DELETE
+    url(r'^api/orders/close$', WorkOrderCloseCreateAPIView.as_view(), name='workery_order_order_close_create_api_endpoint'),                              #TODO: DELETE
+    url(r'^api/orders/postpone$', WorkOrderPostponeCreateAPIView.as_view(), name='workery_order_order_postpone_create_api_endpoint'),                     #TODO: DELETE
+    url(r'^api/orders/reopen$', WorkOrderReopenCreateAPIView.as_view(), name='workery_order_order_reopen_create_api_endpoint'),                           #TODO: DELETE
 
     # Work Order Service Fees
     url(r'^api/order_service_fees$', WorkOrderServiceFeeListCreateAPIView.as_view(), name='workery_order_service_fee_list_create_api_endpoint'),
@@ -94,8 +99,8 @@ urlpatterns = [
     url(r'^api/task/operation/assign-associate$', AssignAssociateTaskOperationAPIView.as_view(), name='workery_order_task_operation_assign_associate_api_endpoint'),
     url(r'^api/orders/complete$', FollowUpTaskOperationAPIView.as_view(), name='workery_order_order_complete_create_api_endpoint'),
     url(r'^api/task/operation/follow-up-pending$', FollowUpPendingTaskOperationAPIView.as_view(), name='workery_order_task_operation_follow_up_pending_api_endpoint'),
-    # TODO: Completion survey
     url(r'^api/task/operation/update-ongoing$', UpdateOngoingJobOperationTaskAPIView.as_view(), name='workery_task_operation_update_job_api_endpoint'),
+    url(r'^api/task/operation/close$', CloseTaskOperationAPIView.as_view(), name='workery_task_operation_close_api_endpoint'), #TODO: Integrate `CloseTaskOperationAPIView` with current close out view.
 
     # Partners
     url(r'^api/partners$', PartnerListCreateAPIView.as_view(), name='workery_partner_list_create_api_endpoint'),
