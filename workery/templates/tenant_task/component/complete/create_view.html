@@ -56,9 +56,9 @@ function click_add_button() {
     }
 
     // Submit to the API endpoint.
-    create_order_complete_api(
+    post_follow_up_task_operation_api(
         {
-            'job': {{ task_item.job.id }},
+            'task_item': {{ task_item.id }},
             'comment': $('#comment').val(),
             'has_agreed_to_meet': has_agreed_to_meet,
             'meeting_date': meeting_date

@@ -13,12 +13,12 @@ from tenant_api.permissions.order import (
    CanListCreateWorkOrderPermission,
    CanRetrieveUpdateDestroyWorkOrderPermission
 )
-from tenant_api.serializers.order_complete import WorkOrderCompleteCreateSerializer
+from tenant_api.serializers.task_operation.follow_up import FollowUpTaskOperationSerializer
 from tenant_foundation.models import ActivitySheetItem
 
 
-class WorkOrderCompleteCreateAPIView(generics.CreateAPIView):
-    serializer_class = WorkOrderCompleteCreateSerializer
+class FollowUpTaskOperationAPIView(generics.CreateAPIView):
+    serializer_class = FollowUpTaskOperationSerializer
     permission_classes = (
         permissions.IsAuthenticated,
         IsAuthenticatedAndIsActivePermission,
@@ -30,7 +30,7 @@ class WorkOrderCompleteCreateAPIView(generics.CreateAPIView):
         Create
         """
         client_ip, is_routable = get_client_ip(self.request)
-        serializer = WorkOrderCompleteCreateSerializer(data=request.data, context={
+        serializer = FollowUpTaskOperationSerializer(data=request.data, context={
             'user': request.user,
             'from': client_ip,
             'from_is_public': is_routable,

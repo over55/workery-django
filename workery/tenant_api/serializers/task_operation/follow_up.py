@@ -45,8 +45,8 @@ def get_date_plus_days(dt, days=0):
     return dt + timedelta(days=days)
 
 
-class WorkOrderCompleteCreateSerializer(serializers.Serializer):
-    job = serializers.PrimaryKeyRelatedField(many=False, queryset=WorkOrder.objects.all(), required=True)
+class FollowUpTaskOperationSerializer(serializers.Serializer):
+    task_item = serializers.PrimaryKeyRelatedField(many=False, queryset=TaskItem.objects.all(), required=True)
     comment = serializers.CharField(required=False)
     has_agreed_to_meet = serializers.BooleanField(required=True)
     meeting_date = serializers.DateField(required=False)
@@ -54,33 +54,33 @@ class WorkOrderCompleteCreateSerializer(serializers.Serializer):
     # Meta Information.
     class Meta:
         fields = (
-            'job',
+            'task_item',
             'comment',
             'has_agreed_to_meet',
             'meeting_date'
         )
 
-    def validate(self, data):
-        """
-        Override the final validation to include additional extras. Any
-        validation error will be populated in the "non_field_errors" field.
-        """
-        # Confirm that we have an assignment task open.
-        task_item = TaskItem.objects.filter(
-            type_of=FOLLOW_UP_IS_JOB_COMPLETE_TASK_ITEM_TYPE_OF_ID,
-            job=data['job'],
-            is_closed=False
-        ).order_by('due_date').first()
-        if task_item is None:
-            raise serializers.ValidationError(_("Task no longer exists, please go back to the list page."))
-        return data
+    # def validate(self, data):
+    #     """
+    #     Override the final validation to include additional extras. Any
+    #     validation error will be populated in the "non_field_errors" field.
+    #     """
+    #     # Confirm that we have an assignment task open.
+    #     task_item = TaskItem.objects.filter(
+    #         type_of=FOLLOW_UP_IS_JOB_COMPLETE_TASK_ITEM_TYPE_OF_ID,
+    #         job=data['job'],
+    #         is_closed=False
+    #     ).order_by('due_date').first()
+    #     if task_item is None:
+    #         raise serializers.ValidationError(_("Task no longer exists, please go back to the list page."))
+    #     return data
 
     def create(self, validated_data):
         """
         Override the `create` function to add extra functinality.
         """
         # STEP 1 - Get validated POST data.
-        job = validated_data.get('job', None)
+        task_item = validated_data.get('task_item', None)
         comment_text = validated_data.get('comment', None)
         has_agreed_to_meet = validated_data.get('has_agreed_to_meet', None)
         meeting_date = validated_data.get('meeting_date', timezone.now())
@@ -96,22 +96,9 @@ class WorkOrderCompleteCreateSerializer(serializers.Serializer):
                 created_from_is_public = self.context['from_is_public']
             )
             WorkOrderComment.objects.create(
-                about=job,
-                comment=comment_obj,
+                about = task_item.job,
+                comment = comment_obj,
             )
-
-        # STEP 3 - Lookup the most recent task which has not been closed
-        #          for the particular job order.
-        task_item = TaskItem.objects.filter(
-            type_of=FOLLOW_UP_IS_JOB_COMPLETE_TASK_ITEM_TYPE_OF_ID,
-            job=job,
-            is_closed=False
-        ).order_by('due_date').first()
-
-        # For debugging purposes only.
-        logger.info("Found task #%(id)s was closed" % {
-            'id': str(task_item.id)
-        })
 
         # STEP 4 - Update our TaskItem if job was accepted.
         task_item.is_closed = True
@@ -145,17 +132,17 @@ class WorkOrderCompleteCreateSerializer(serializers.Serializer):
             })
 
             # Attach our next job.
-            job.latest_pending_task = next_task_item
+            task_item.job.latest_pending_task = next_task_item
 
             # Change state.
-            job.state = WORK_ORDER_STATE.COMPLETED_BUT_UNPAID
+            task_item.job.state = WORK_ORDER_STATE.COMPLETED_BUT_UNPAID
 
             # Updated the start date to either right now or the agreed upon
             # date between associate and client.
-            job.start_date = meeting_date
+            task_item.job.start_date = meeting_date
 
             # Save our changes.
-            job.save()
+            task_item.job.save()
 
         else:
 
@@ -179,9 +166,9 @@ class WorkOrderCompleteCreateSerializer(serializers.Serializer):
             })
 
             # Attach our next job.
-            job.latest_pending_task = next_task_item
-            job.state = WORK_ORDER_STATE.IN_PROGRESS
-            job.save()
+            task_item.job.latest_pending_task = next_task_item
+            task_item.job.state = WORK_ORDER_STATE.IN_PROGRESS
+            task_item.job.save()
 
         # # STEP 6 - Assign our new variables and return the validated data.
         # validated_data['id'] = obj.id
