@@ -60,20 +60,16 @@ class FollowUpTaskOperationSerializer(serializers.Serializer):
             'meeting_date'
         )
 
-    # def validate(self, data):
-    #     """
-    #     Override the final validation to include additional extras. Any
-    #     validation error will be populated in the "non_field_errors" field.
-    #     """
-    #     # Confirm that we have an assignment task open.
-    #     task_item = TaskItem.objects.filter(
-    #         type_of=FOLLOW_UP_IS_JOB_COMPLETE_TASK_ITEM_TYPE_OF_ID,
-    #         job=data['job'],
-    #         is_closed=False
-    #     ).order_by('due_date').first()
-    #     if task_item is None:
-    #         raise serializers.ValidationError(_("Task no longer exists, please go back to the list page."))
-    #     return data
+    def validate(self, data):
+        """
+        Override the final validation to include additional extras. Any
+        validation error will be populated in the "non_field_errors" field.
+        """
+        # Confirm that we have an assignment task open.
+        task_item = data['task_item']
+        if task_item is None:
+            raise serializers.ValidationError(_("Task no longer exists, please go back to the list page."))
+        return data
 
     def create(self, validated_data):
         """
@@ -148,7 +144,7 @@ class FollowUpTaskOperationSerializer(serializers.Serializer):
 
             # STEP 5 - Create our new task for following up.
             next_task_item = TaskItem.objects.create(
-                type_of = FOLLOW_UP_CUSTOMER_SURVEY_TASK_ITEM_TYPE_OF_ID,
+                type_of = FOLLOW_UP_IS_JOB_COMPLETE_TASK_ITEM_TYPE_OF_ID,
                 title = _('48 hour follow up - 24 hour check'),
                 description = _('It appears a previous 48 hour follow was not completed. This is a 24 hour follow up. Please call up the client and confirm that the associate and client have agreed on scheduled meeting date in the future.'),
                 due_date = get_date_plus_days(timezone.now(), 1), # 24 hour version instead of 48 hour version!

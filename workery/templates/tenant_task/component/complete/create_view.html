@@ -2,7 +2,7 @@
 {% load staticfiles i18n humanize shared_foundation_tags %}
 
 {% block title %}
-{% trans 'Tasks | Workery' %}
+{% trans 'Task #' %}{{ task_item.id|intcomma }} {% trans '| Workery' %}
 {% endblock title %}
 
 {% block header_content %}
