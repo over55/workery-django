@@ -114,6 +114,14 @@ class WorkOrderRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         )
         return queryset
 
+    def validate_invoice_service_fee_payment_date(self, value):
+        """
+        Include validation on no-blanks
+        """
+        if value is None:
+            raise serializers.ValidationError("This field may not be blank.")
+        return value
+
     def update(self, instance, validated_data):
         """
         Override this function to include extra functionality.
