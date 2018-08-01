@@ -29,7 +29,6 @@
             'customer': {% if job.customer %}{{ job.customer.id }}{% else %}null{% endif %},
             'associate': {% if job.associate %}{{ job.associate.id }}{% else %}null{% endif %},
             'state': state,
-            'open_order': {% if job.open_order %}{{ job.open_order.id }}{% else %}null{% endif %}
         };
 
         update_ongoing_job_api(

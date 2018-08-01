@@ -290,7 +290,6 @@ class CloseTaskOperationSerializer(serializers.Serializer):
         # Update our `OngoingWorkOrder`. #
         #--------------------------------#
         if task_item.job.ongoing_work_order:
-            task_item.job.ongoing_work_order.open_order = None
             task_item.job.ongoing_work_order.save()
             task_item.job.ongoing_work_order.closed_orders.add(task_item.job)
 

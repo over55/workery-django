@@ -78,7 +78,6 @@ class Command(BaseCommand):
             work_order.ongoing_work_order = OngoingWorkOrder.objects.create(
                 customer=work_order.customer,
                 associate=work_order.associate,
-                open_order=work_order,
                 state=ONGOING_WORK_ORDER_STATE.RUNNING
             )
             work_order.save()
