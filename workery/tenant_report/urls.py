@@ -4,13 +4,14 @@ from tenant_report.views.csv.report_01_view import report_01_streaming_csv_view
 from tenant_report.views.csv.report_02_view import report_02_streaming_csv_view
 from tenant_report.views.csv.report_03_view import report_03_streaming_csv_view
 from tenant_report.views.csv.report_04_view import report_04_streaming_csv_view
+from tenant_report.views.csv.report_05_view import report_05_streaming_csv_view
 from tenant_report.views.web_views import (
     ReportListView,
     Report01DetailView,
     Report02DetailView,
     Report03DetailView,
     Report04DetailView,
-    Report07DetailView,
+    Report05DetailView,
     Report08DetailView,
     Report09DetailView,
     Report10DetailView,
@@ -19,7 +20,6 @@ from tenant_report.views.web_views import (
     Report14DetailView,
 )
 from tenant_report.views.csv_views import (
-    report_07_streaming_csv_view,
     report_08_streaming_csv_view,
     report_09_streaming_csv_view,
     report_10_streaming_csv_view,
@@ -34,7 +34,7 @@ urlpatterns = (
     url(r'^report/2/$', Report02DetailView.as_view(), name='workery_tenant_report_02_detail_master'),
     url(r'^report/3/$', Report03DetailView.as_view(), name='workery_tenant_report_03_detail_master'),
     url(r'^report/4/$', Report04DetailView.as_view(), name='workery_tenant_report_04_detail_master'),
-    url(r'^report/7/$', Report07DetailView.as_view(), name='workery_tenant_report_07_detail_master'),
+    url(r'^report/5/$', Report05DetailView.as_view(), name='workery_tenant_report_05_detail_master'),
     url(r'^report/8/$', Report08DetailView.as_view(), name='workery_tenant_report_08_detail_master'),
     url(r'^report/9/$', Report09DetailView.as_view(), name='workery_tenant_report_09_detail_master'),
     url(r'^report/10/$', Report10DetailView.as_view(), name='workery_tenant_report_10_detail_master'),
@@ -46,7 +46,7 @@ urlpatterns = (
     url(r'^report/2/csv-download$', report_02_streaming_csv_view, name='workery_tenant_report_02_download_csv_file_api_endpoint'),
     url(r'^report/3/csv-download$', report_03_streaming_csv_view, name='workery_tenant_report_03_download_csv_file_api_endpoint'),
     url(r'^report/4/csv-download$', report_04_streaming_csv_view, name='workery_tenant_report_04_download_csv_file_api_endpoint'),
-    url(r'^report/7/csv-download$', report_07_streaming_csv_view, name='workery_tenant_report_07_download_csv_file_api_endpoint'),
+    url(r'^report/5/csv-download$', report_05_streaming_csv_view, name='workery_tenant_report_05_download_csv_file_api_endpoint'),
     url(r'^report/8/csv-download$', report_08_streaming_csv_view, name='workery_tenant_report_08_download_csv_file_api_endpoint'),
     url(r'^report/9/csv-download$', report_09_streaming_csv_view, name='workery_tenant_report_09_download_csv_file_api_endpoint'),
     url(r'^report/10/csv-download$', report_10_streaming_csv_view, name='workery_tenant_report_10_download_csv_file_api_endpoint'),
