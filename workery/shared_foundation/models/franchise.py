@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import csv
+import pytz
 from datetime import date, datetime, timedelta
 from django.conf import settings
 from django.db import models
@@ -85,6 +86,17 @@ class SharedFranchise(TenantMixin, AbstractSharedThing, AbstractSharedContactPoi
         public or a tenant.
         """
         return self.schema_name == "public" or self.schema_name == "test"
+
+    def to_tenant_dt(self, aware_dt):
+        """
+        Function will convert the inputted timezone aware datetime object
+        into the timezone specific to this tenant.
+        """
+        try:
+            return aware_dt.astimezone(pytz.timezone(self.timezone_name))
+        except Exception as e:
+            return aware_dt
+
 
 class SharedFranchiseDomain(DomainMixin):
     class Meta:

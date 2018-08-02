@@ -75,8 +75,15 @@ def report_01_streaming_csv_view(request):
             'skill_sets'
         )
 
-    rows = (["Service Fees Due Report","","","","","","","","","",""],)
+    # Convert our aware datetimes to the specific timezone of the tenant.
     today = timezone.now()
+    today = request.tenant.to_tenant_dt(today)
+    from_dt = request.tenant.to_tenant_dt(from_dt)
+    from_dt = from_dt.date()
+    to_dt = request.tenant.to_tenant_dt(to_dt)
+    to_dt = to_dt.date()
+
+    rows = (["Service Fees Due Report","","","","","","","","","",""],)
     rows += (["Report Date:", pretty_dt_string(today),"","","","","","","","",""],)
     rows += (["From Assignment Date:", pretty_dt_string(from_dt),"","","","","","","","",""],)
     rows += (["To Assignment Date:", pretty_dt_string(to_dt),"","","","","","","","",""],)
