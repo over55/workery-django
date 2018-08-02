@@ -42,7 +42,7 @@ class Echo:
         return value
 
 
-def report_14_streaming_csv_view(request):
+def report_11_streaming_csv_view(request):
     from_dt = request.GET.get('from_dt', None)
     to_dt = request.GET.get('to_dt', None)
 
@@ -51,7 +51,7 @@ def report_14_streaming_csv_view(request):
 
     jobs = WorkOrder.objects.filter(
         completion_date__range=(from_dt,to_dt),
-        customer__type_of=COMMERCIAL_JOB_TYPE_OF_ID,
+        type_of=COMMERCIAL_JOB_TYPE_OF_ID,
         customer__isnull=False,
         associate__isnull=False
     ).order_by(
@@ -62,8 +62,24 @@ def report_14_streaming_csv_view(request):
         'skill_sets'
     )
 
+    # Convert our aware datetimes to the specific timezone of the tenant.
+    today = timezone.now()
+    tenant_today = request.tenant.to_tenant_dt(today)
+    tenant_from_dt = request.tenant.to_tenant_dt(from_dt)
+    tenant_from_dt = tenant_from_dt.date()
+    tenant_to_dt = request.tenant.to_tenant_dt(to_dt)
+    tenant_to_dt = tenant_to_dt.date()
+
+    # Generate our new header.
+    rows = (["Commercial Jobs Report","","",],)
+    rows += (["Report Date:", pretty_dt_string(tenant_today),"",],)
+    rows += (["From Assignment Date:", pretty_dt_string(tenant_from_dt),"",],)
+    rows += (["To Assignment Date:", pretty_dt_string(tenant_to_dt),"",],)
+    rows += (["", "","",],)
+    rows += (["", "","",],)
+
     # Generate the CSV header row.
-    rows = (["Job No.", "Completion date", "Associate", "Client", "WSIB Date", "Total Labour", "Invoice #", "Skill Sets"],)
+    rows += (["Job No.", "Assignment", "Completion", "Associate", "Client", "WSIB Date", "Total Labour", "Invoice #", "Skill Sets"],)
 
     # Generate hte CSV data.
     for job in jobs.all():
@@ -75,16 +91,16 @@ def report_14_streaming_csv_view(request):
         invoice_id = "-" if job.invoice_id is None else job.invoice_id
         invoice_id = "-" if job.invoice_id <= 0 else job.invoice_id
         wsib_insurance_date = "-" if job.associate.wsib_insurance_date is None else job.associate.wsib_insurance_date
-        hours = "-" if job.hours <= 0 else job.hours
 
         # Generate the reason.
         rows += ([
             str(job.id),
-            str(job.completion_date),
+            pretty_dt_string(job.assignment_date),
+            pretty_dt_string(job.completion_date),
             str(job.associate),
             str(job.customer),
             str(wsib_insurance_date),
-            str(hours),
+            str(job.invoice_labour_amount),
             str(invoice_id),
             skill_set_text,
         ],)
