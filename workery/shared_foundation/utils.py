@@ -82,3 +82,13 @@ def get_first_date_for_this_month():
 def get_date_plus_days(dt, days=0):
     """Returns the current date plus paramter number of days."""
     return dt + timedelta(days=days)
+
+
+def pretty_dt_string(dt):
+    try:
+        dt = dt.replace(microsecond=0)
+        dt = dt.replace(second=0)
+    except Exception as e:
+        pass
+    dt_string = dt.strftime("%m/%d/%y %H:%M:%S")
+    return dt_string

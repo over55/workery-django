@@ -8,8 +8,11 @@ from django.db.models import Q
 from django.views.generic import DetailView, ListView, TemplateView
 from django.utils.decorators import method_decorator
 from django.utils.translation import ugettext_lazy as _
+from django.utils import timezone
+
 from shared_foundation.constants import *
 from shared_foundation.mixins import ExtraRequestProcessingMixin
+from shared_foundation.utils import *
 from tenant_api.filters.customer import CustomerFilter
 from tenant_foundation.constants import *
 from tenant_foundation.models import (
@@ -37,86 +40,6 @@ class Echo:
     def write(self, value):
         """Write the value by returning it, instead of storing in a buffer."""
         return value
-
-
-def report_01_streaming_csv_view(request):
-    from_dt = request.GET.get('from_dt', None)
-    to_dt = request.GET.get('to_dt', None)
-    state = request.GET.get('state', WORK_ORDER_STATE.COMPLETED_BUT_UNPAID)
-
-    from_dt = parser.parse(from_dt)
-    to_dt = parser.parse(to_dt)
-
-    jobs = None
-    if state == 'all':
-        jobs = WorkOrder.objects.filter(
-            ~Q(associate=None) &
-            Q(
-                Q(state=WORK_ORDER_STATE.COMPLETED_BUT_UNPAID) |
-                Q(state=WORK_ORDER_STATE.COMPLETED_AND_PAID)
-            ) &
-            Q(assignment_date__range=(from_dt,to_dt))
-        ).prefetch_related(
-            'customer',
-            'associate',
-            'skill_sets'
-        )
-    else:
-        jobs = WorkOrder.objects.filter(
-            ~Q(associate=None) &
-            Q(state=state) &
-            Q(assignment_date__range=(from_dt,to_dt))
-        ).prefetch_related(
-            'customer',
-            'associate',
-            'skill_sets'
-        )
-
-    # Generate the CSV header row.
-    rows = ([
-        "Associate No.",
-        "Associate Name",
-        "Job Completion Date",
-        "Job No.",
-        "Job Due Fee",
-        "Job Labour",
-        "Job Type",
-        "Job Status",
-        "Client No.",
-        "Client Name",
-        "Skill Set(s)"],)
-
-    # Generate hte CSV data.
-    for job in jobs.all():
-        # Get the type of job from a "tuple" object.
-        test = dict(JOB_TYPE_OF_CHOICES)
-        job_type = test[job.type_of]
-
-        # Attach all the skill sets that are associated with each job.
-        skill_set_string = job.get_skill_sets_string()
-
-        rows += ([
-            job.associate.id,
-            str(job.associate),
-            job.completion_date,
-            job.id,
-            str(job.invoice_service_fee_amount),
-            str(job.invoice_labour_amount),
-            job_type,
-            job.get_pretty_status(),
-            job.customer.id,
-            str(job.customer),
-            skill_set_string
-        ],)
-
-    pseudo_buffer = Echo()
-    writer = csv.writer(pseudo_buffer)
-    response = StreamingHttpResponse(
-        (writer.writerow(row) for row in rows),
-        content_type="text/csv"
-    )
-    response['Content-Disposition'] = 'attachment; filename="due_service_fees.csv"'
-    return response
 
 
 def report_05_streaming_csv_view(request):

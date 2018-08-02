@@ -1,5 +1,6 @@
 from django.conf.urls import include, url
 from django.views.generic.base import RedirectView
+from tenant_report.views.csv.report_01_view import report_01_streaming_csv_view
 from tenant_report.views.web_views import (
     ReportListView,
     Report01DetailView,
@@ -15,7 +16,6 @@ from tenant_report.views.web_views import (
     Report15DetailView
 )
 from tenant_report.views.csv_views import (
-    report_01_streaming_csv_view,
     report_05_streaming_csv_view,
     report_06_streaming_csv_view,
     report_07_streaming_csv_view,
