@@ -110,7 +110,7 @@ def report_01_streaming_csv_view(request):
             job.associate.id,
             pretty_dt_string(job.assignment_date),
             str(job.associate),
-            job.completion_date,
+            pretty_dt_string(job.completion_date),
             job.id,
             str(job.invoice_service_fee_amount),
             str(job.invoice_labour_amount),
