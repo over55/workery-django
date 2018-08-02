@@ -42,10 +42,12 @@ class Echo:
         return value
 
 
-def report_01_streaming_csv_view(request):
+def report_02_streaming_csv_view(request):
     from_dt = request.GET.get('from_dt', None)
     to_dt = request.GET.get('to_dt', None)
-    state = request.GET.get('state', WORK_ORDER_STATE.COMPLETED_BUT_UNPAID)
+    state = request.GET.get('state', 'all')
+    associate_id = request.GET.get('associate_id', None)
+    associate = Associate.objects.filter(id=associate_id).first()
 
     from_dt = parser.parse(from_dt)
     to_dt = parser.parse(to_dt)
@@ -53,12 +55,10 @@ def report_01_streaming_csv_view(request):
     jobs = None
     if state == 'all':
         jobs = WorkOrder.objects.filter(
-            ~Q(associate=None) &
-            Q(
-                Q(state=WORK_ORDER_STATE.COMPLETED_BUT_UNPAID) |
-                Q(state=WORK_ORDER_STATE.COMPLETED_AND_PAID)
-            ) &
+            Q(associate=associate) &
             Q(assignment_date__range=(from_dt,to_dt))
+        ).order_by(
+            '-id'
         ).prefetch_related(
             'customer',
             'associate',
@@ -66,9 +66,11 @@ def report_01_streaming_csv_view(request):
         )
     else:
         jobs = WorkOrder.objects.filter(
-            ~Q(associate=None) &
+            Q(associate=associate) &
             Q(state=state) &
             Q(assignment_date__range=(from_dt,to_dt))
+        ).order_by(
+            '-id'
         ).prefetch_related(
             'customer',
             'associate',
@@ -84,19 +86,19 @@ def report_01_streaming_csv_view(request):
     to_dt = to_dt.date()
 
     # Generate our new header.
-    rows = (["Service Fees Due Report","","","","","","","","","",""],)
-    rows += (["Report Date:", pretty_dt_string(today),"","","","","","","","",""],)
-    rows += (["From Assignment Date:", pretty_dt_string(from_dt),"","","","","","","","",""],)
-    rows += (["To Assignment Date:", pretty_dt_string(to_dt),"","","","","","","","",""],)
-    rows += (["","","","","","","","","","",""],)
+    rows = (["Associate Jobs Report","","","","","","","","","",],)
+    rows += (["Report Date:", pretty_dt_string(today),"","","","","","","","",],)
+    rows += (["From Assignment Date:", pretty_dt_string(from_dt),"","","","","","","","",],)
+    rows += (["To Assignment Date:", pretty_dt_string(to_dt),"","","","","","","","",],)
+    rows += (["Associate Name:", str(associate),"","","","","","","","",],)
+    rows += (["Associate No.:", str(associate.id),"","","","","","","","",],)
+    rows += (["","","","","","","","","","",],)
 
     # Generate the CSV header row.
     rows += ([
-        "Associate No.",
-        "Assignment Date",
-        "Associate Name",
-        "Job Completion Date",
         "Job No.",
+        "Assignment Date",
+        "Job Completion Date",
         "Service Fee",
         "Job Labour",
         "Job Type",
@@ -115,11 +117,9 @@ def report_01_streaming_csv_view(request):
         skill_set_string = job.get_skill_sets_string()
 
         rows += ([
-            job.associate.id,
-            pretty_dt_string(job.assignment_date),
-            str(job.associate),
-            pretty_dt_string(job.completion_date),
             job.id,
+            pretty_dt_string(job.assignment_date),
+            pretty_dt_string(job.completion_date),
             str(job.invoice_service_fee_amount),
             str(job.invoice_labour_amount),
             job_type,
@@ -135,5 +135,5 @@ def report_01_streaming_csv_view(request):
         (writer.writerow(row) for row in rows),
         content_type="text/csv"
     )
-    response['Content-Disposition'] = 'attachment; filename="due_service_fees.csv"'
+    response['Content-Disposition'] = 'attachment; filename="associate_jobs.csv"'
     return response

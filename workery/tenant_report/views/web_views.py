@@ -40,6 +40,16 @@ class Report01DetailView(LoginRequiredMixin, GroupRequiredMixin, WorkeryTemplate
     ]
 
 
+
+class Report02DetailView(LoginRequiredMixin, GroupRequiredMixin, WorkeryTemplateView):
+    template_name = 'tenant_report/report_02_view.html'
+    menu_id = "reports"
+    group_required = [
+        constants.EXECUTIVE_GROUP_ID,
+        constants.MANAGEMENT_GROUP_ID,
+        constants.FRONTLINE_GROUP_ID
+    ]
+
 class Report05DetailView(LoginRequiredMixin, GroupRequiredMixin, WorkeryTemplateView):
     template_name = 'tenant_report/report_05_view.html'
     menu_id = "reports"
@@ -122,16 +132,6 @@ class Report13DetailView(LoginRequiredMixin, GroupRequiredMixin, WorkeryTemplate
 
 class Report14DetailView(LoginRequiredMixin, GroupRequiredMixin, WorkeryTemplateView):
     template_name = 'tenant_report/report_14_view.html'
-    menu_id = "reports"
-    group_required = [
-        constants.EXECUTIVE_GROUP_ID,
-        constants.MANAGEMENT_GROUP_ID,
-        constants.FRONTLINE_GROUP_ID
-    ]
-
-
-class Report15DetailView(LoginRequiredMixin, GroupRequiredMixin, WorkeryTemplateView):
-    template_name = 'tenant_report/report_15_view.html'
     menu_id = "reports"
     group_required = [
         constants.EXECUTIVE_GROUP_ID,
