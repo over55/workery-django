@@ -2,7 +2,7 @@
 {% load staticfiles i18n shared_foundation_tags humanize %}
 
 {% block title %}
-{% trans 'Report #8 | Workery' %}
+{% trans 'Report #6 | Workery' %}
 {% endblock title %}
 
 {% block header_content %}
@@ -24,7 +24,7 @@
     }
 
     function click_download_button() {
-        window.location = "{% url 'workery_tenant_report_08_download_csv_file_api_endpoint' %}";
+        window.location = "{% url 'workery_tenant_report_06_download_csv_file_api_endpoint' %}";
     }
 </script>
 

@@ -42,32 +42,32 @@ class Echo:
         return value
 
 
-def report_05_streaming_csv_view(request):
+def report_06_streaming_csv_view(request):
     today = timezone.now()
     associates = Associate.objects.filter(
         Q(owner__is_active=True) &
-        ~Q(commercial_insurance_expiry_date=None) &
-        Q(commercial_insurance_expiry_date__gte=today)
-    ).order_by('-commercial_insurance_expiry_date')
+        ~Q(police_check=None) &
+        Q(police_check__gte=today)
+    ).order_by('-police_check')
 
     # Convert our aware datetimes to the specific timezone of the tenant.
     tenant_today = request.tenant.to_tenant_dt(today)
 
     # Generate our new header.
-    rows = (["Associate Insurance Due Dates","","",],)
+    rows = (["Associate Police Check Due Dates","","",],)
     rows += (["Report Date:", pretty_dt_string(tenant_today),"",],)
     rows += (["", "","",],)
     rows += (["", "","",],)
 
     # Generate the CSV header row.
-    rows += (["Associate No.", "Name", "Commerical Insurance Due Dates"],)
+    rows += (["Associate No.", "Name", "Police Check Due Dates"],)
 
     # Generate hte CSV data.
     for associate in associates.all():
         rows += ([
             associate.id,
             str(associate),
-            "-" if associate.commercial_insurance_expiry_date is None else pretty_dt_string(associate.commercial_insurance_expiry_date)
+            "-" if associate.police_check is None else pretty_dt_string(associate.police_check)
         ],)
 
     pseudo_buffer = Echo()
@@ -76,5 +76,5 @@ def report_05_streaming_csv_view(request):
         (writer.writerow(row) for row in rows),
         content_type="text/csv"
     )
-    response['Content-Disposition'] = 'attachment; filename="associate_commercial_insurance_due_dates.csv"'
+    response['Content-Disposition'] = 'attachment; filename="associate_policy_check_due_dates.csv"'
     return response
