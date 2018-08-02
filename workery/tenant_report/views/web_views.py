@@ -50,8 +50,8 @@ class Report02DetailView(LoginRequiredMixin, GroupRequiredMixin, WorkeryTemplate
         constants.FRONTLINE_GROUP_ID
     ]
 
-class Report05DetailView(LoginRequiredMixin, GroupRequiredMixin, WorkeryTemplateView):
-    template_name = 'tenant_report/report_05_view.html'
+class Report03DetailView(LoginRequiredMixin, GroupRequiredMixin, WorkeryTemplateView):
+    template_name = 'tenant_report/report_03_view.html'
     menu_id = "reports"
     group_required = [
         constants.EXECUTIVE_GROUP_ID,

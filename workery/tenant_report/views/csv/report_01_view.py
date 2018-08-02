@@ -89,6 +89,7 @@ def report_01_streaming_csv_view(request):
     rows += (["From Assignment Date:", pretty_dt_string(from_dt),"","","","","","","","",""],)
     rows += (["To Assignment Date:", pretty_dt_string(to_dt),"","","","","","","","",""],)
     rows += (["","","","","","","","","","",""],)
+    rows += (["","","","","","","","","","",""],)
 
     # Generate the CSV header row.
     rows += ([

@@ -93,6 +93,7 @@ def report_02_streaming_csv_view(request):
     rows += (["Associate Name:", str(associate),"","","","","","","","",],)
     rows += (["Associate No.:", str(associate.id),"","","","","","","","",],)
     rows += (["","","","","","","","","","",],)
+    rows += (["","","","","","","","","","",],)
 
     # Generate the CSV header row.
     rows += ([
