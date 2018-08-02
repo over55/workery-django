@@ -87,15 +87,7 @@ def report_04_streaming_csv_view(request):
     for cancelled_job in cancelled_jobs.all():
 
         # Generate the closing reason.
-        closing_reason = cancelled_job.closing_reason_other
-        if cancelled_job.closing_reason == 0:
-            closing_reason = "-"
-        elif cancelled_job.closing_reason == 2:
-            closing_reason = _("Client needs more time")
-        elif cancelled_job.closing_reason == 3:
-            closing_reason = _("Associate needs more time")
-        elif cancelled_job.closing_reason == 4:
-            closing_reason = _("Weather")
+        closing_reason = cancelled_job.pretty_closing_reason()
 
         # Attach all the skill sets that are associated with each job.
         skill_set_string = cancelled_job.get_skill_sets_string()

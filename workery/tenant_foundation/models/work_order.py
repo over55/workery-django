@@ -486,7 +486,7 @@ class WorkOrder(models.Model):
             elif self.closing_reason == 16:
                 return "Cancelled - Client billing issue"
             else:
-                return "Cancelled - Other: "+self.closing_reason_other
+                return "Cancelled - Other: "+str(self.closing_reason_other)
         elif self.state == WORK_ORDER_STATE.ONGOING:
             return 'Ongoing'
         elif self.state == WORK_ORDER_STATE.IN_PROGRESS:
@@ -505,6 +505,38 @@ class WorkOrder(models.Model):
             return self.state
 
         return None
+
+    def pretty_closing_reason(self):
+        if self.closing_reason == 2:
+            return "Quote was too high"
+        elif self.closing_reason == 3:
+            return "Job completed by someone else"
+        elif self.closing_reason == 5:
+            return "Work no longer needed"
+        elif self.closing_reason == 6:
+            return "Client not satisfied with Associate"
+        elif self.closing_reason == 7:
+            return "Client did work themselves"
+        elif self.closing_reason == 8:
+            return "No Associate available"
+        elif self.closing_reason == 9:
+            return "Work environment unsuitable"
+        elif self.closing_reason == 10:
+            return "Client did not return call"
+        elif self.closing_reason == 11:
+            return "Associate did not have necessary equipment"
+        elif self.closing_reason == 12:
+            return "Repair not possible"
+        elif self.closing_reason == 13:
+            return "Could not meet deadline"
+        elif self.closing_reason == 14:
+            return "Associate did not call client"
+        elif self.closing_reason == 15:
+            return "Member issue"
+        elif self.closing_reason == 16:
+            return "Client billing issue"
+        else:
+            return "Other: "+str(self.closing_reason_other)
 
     """
     Override the `save` function to support save cached searchable terms.
