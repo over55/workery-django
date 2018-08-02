@@ -76,15 +76,19 @@
        	    <div class="card bg-light {% if customer_list|length == 2 and forloop.counter == 2 %}fcc-right{% endif %}">
    		    <div class="card-body">
    		       <h5 class="card-title"><a href="{% url 'workery_tenant_customer_lite_retrieve' 'list' customer.id %}">
-                   {% if customer.type_of == tenant_constants.RESIDENTIAL_CUSTOMER_TYPE_OF_ID %}
-                       <i class="fa fa-home fa-lg"></i>
-                   {% elif customer.type_of == tenant_constants.COMMERCIAL_CUSTOMER_TYPE_OF_ID %}
-                       <i class="fa fa-briefcase fa-lg"></i>
-                   {% else %}
-                       <i class="fa fa-question fa-lg"></i>
-                   {% endif %}
-                   <strong>{{ customer }}</strong></a>
-               		</h5>
+                    {% if customer.is_blacklisted %}
+                        <i class="fa fa-frown fa-lg"></i>
+                    {% else %}
+                        {% if customer.type_of == tenant_constants.RESIDENTIAL_CUSTOMER_TYPE_OF_ID %}
+                            <i class="fa fa-home fa-lg"></i>
+                        {% elif customer.type_of == tenant_constants.COMMERCIAL_CUSTOMER_TYPE_OF_ID %}
+                            <i class="fa fa-briefcase fa-lg"></i>
+                        {% else %}
+                            <i class="fa fa-question fa-lg"></i>
+                        {% endif %}
+                    {% endif %}
+                    <strong>{{ customer }}{% if customer.is_blacklisted %}&nbsp;(Blacklisted){% endif %}</strong></a>
+               	</h5>
    		    	<p class="card-text">
                     {{ customer.street_address }}<br>
                     {% if customer.street_address_extra %}{{ customer.street_address_extra }}<br>{% endif %}
@@ -92,7 +96,7 @@
                     {% if customer.telephone %}<a href="tel:{{ customer.telephone }}">{{ customer.telephone|pretty_formatted_phonenumber }}</a>{% else %}-{% endif %}
                     {% if customer.email %}<a href="tel:{{ customer.email }}">{{ customer.email }}</a>{% endif %}
    			    </p>
-			    <button  id="select-btn-{{ customer.id }}" type="button" class="btn btn-primary btn-lg btn-block" onclick='ajax_select({{ customer.id }}, "{{ customer }}", {{ customer.type_of }});'>Select</button>
+			    <button  id="select-btn-{{ customer.id }}" type="button" class="btn btn-primary btn-lg btn-block" onclick='ajax_select({{ customer.id }}, "{{ customer }}", {{ customer.type_of }});' {% if customer.is_blacklisted %}disabled{% endif %}>Select</button>
    		    </div>
    	  </div>
     {% endfor %}
