@@ -2,7 +2,7 @@
 {% load staticfiles i18n shared_foundation_tags humanize %}
 
 {% block title %}
-{% trans 'Report #10 | Workery' %}
+{% trans 'Report #8 | Workery' %}
 {% endblock title %}
 
 {% block header_content %}
@@ -93,7 +93,7 @@
             alert("Please select an associate.");
             return;
         }
-        window.location = "{% url 'workery_tenant_report_10_download_csv_file_api_endpoint' %}?associate_id="+associate;
+        window.location = "{% url 'workery_tenant_report_08_download_csv_file_api_endpoint' %}?associate_id="+associate;
     }
 </script>
 

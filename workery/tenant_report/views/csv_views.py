@@ -42,33 +42,6 @@ class Echo:
         return value
 
 
-
-def report_10_streaming_csv_view(request):
-    associate_id = request.GET.get('associate_id', None)
-
-    associate = Associate.objects.filter(id=associate_id).first()
-
-    # Generate the CSV header row.
-    rows = (["Skill Set"],)
-
-    # Generate hte CSV data.
-    if associate:
-        if associate.skill_sets.count() > 0:
-            for skill_set in associate.skill_sets.all():
-                rows += ([
-                    str(skill_set)
-                ],)
-
-    pseudo_buffer = Echo()
-    writer = csv.writer(pseudo_buffer)
-    response = StreamingHttpResponse(
-        (writer.writerow(row) for row in rows),
-        content_type="text/csv"
-    )
-    response['Content-Disposition'] = 'attachment; filename="associate_skill_sets.csv"'
-    return response
-
-
 def report_12_streaming_csv_view(request):
     # DEVELOPERS NOTE:
     # - We will sort by the month and day of the associate's birthdate.
