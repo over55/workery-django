@@ -258,6 +258,18 @@ class Customer(AbstractPerson):
         else:
             return str(self.given_name)+" "+str(self.last_name)
 
+    def get_pretty_status(self):
+        if self.is_blacklisted:
+            return _('Blacklisted')
+        else:
+            if self.owner:
+                if self.owner.is_active:
+                    return _('Active')
+                else:
+                    return _('Suspended')
+            else:
+                return _('Inactive')
+
     def get_pretty_how_hear(self):
         """
         Return a user-friendly `how_hear` pretty formatted output.
