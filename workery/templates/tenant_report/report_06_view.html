@@ -58,13 +58,13 @@
 	  	<ol class="breadcrumb">
 	    	<li class="breadcrumb-item"><a href="{% url 'workery_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
         	<li class="breadcrumb-item"><a href="{% url 'workery_tenant_reports_list_master' %}">{% trans 'Reports' %}</a></li>
-            <li class="breadcrumb-item active" aria-current="page">{% trans 'Job Cancellation Reasons Report' %}</li>
+            <li class="breadcrumb-item active" aria-current="page">{% trans 'Cancelled Jobs Report' %}</li>
 	  	</ol>
 	</nav>
     <!------------------------------------------------------------------------->
     <!-- end BREADCRUMB -->
 
-    <h1>Job Cancellation Reasons Report</h1>
+    <h1>Cancelled Jobs Report</h1>
 
     <div class="col-sm-6 mx-auto mt-2">
         <!-- Residential form -->
@@ -77,7 +77,7 @@
             <p>Run this report to see a list of cancelled jobs, exported in .csv format.</p>
 
             <div class="form-group p-0 col-md-7 mb-4">
-                <label for="from_dt">From Date</label>
+                <label for="from_dt">From Assignment Date</label>
                 <div class="input-group input-group-lg">
                     <input type="text" class="form-control form-control-lg border border-success" id="from_dt" name="from_dt" placeholder="yyyy-mm-dd" required>
                     <div class="input-group-append">
@@ -88,7 +88,7 @@
             </div>
 
             <div class="form-group p-0 col-md-7 mb-4">
-                <label for="to_dt">To Date</label>
+                <label for="to_dt">To Assignment Date</label>
                 <div class="input-group input-group-lg">
                     <input type="text" class="form-control form-control-lg border border-success" id="to_dt" name="to_dt" placeholder="yyyy-mm-dd" required>
                     <div class="input-group-append">
