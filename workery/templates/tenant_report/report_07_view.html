@@ -24,16 +24,12 @@
     }
 
     function click_download_button() {
-        window.location = "{% url 'workery_tenant_report_09_download_csv_file_api_endpoint' %}";
-    }
-
-    function click_download_button() {
         var associate_type = $('#associate_type').val();
         if (associate_type == '') {
             alert("Please select a choice.");
             return;
         }
-        var temp_url = "{% url 'workery_tenant_report_09_download_csv_file_api_endpoint' %}?filter_type=xxx";
+        var temp_url = "{% url 'workery_tenant_report_07_download_csv_file_api_endpoint' %}?filter_type=xxx";
         temp_url = temp_url.replace('xxx', associate_type);
 
         // Redirect will cause download.
