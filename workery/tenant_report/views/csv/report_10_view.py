@@ -42,7 +42,7 @@ class Echo:
         return value
 
 
-def report_14_streaming_csv_view(request):
+def report_10_streaming_csv_view(request):
     from_dt = request.GET.get('from_dt', None)
     to_dt = request.GET.get('to_dt', None)
 
@@ -50,20 +50,34 @@ def report_14_streaming_csv_view(request):
     to_dt = parser.parse(to_dt)
 
     jobs = WorkOrder.objects.filter(
-        completion_date__range=(from_dt,to_dt),
-        customer__type_of=COMMERCIAL_JOB_TYPE_OF_ID,
-        customer__isnull=False,
-        associate__isnull=False
+        assignment_date__range=(from_dt,to_dt),
+        # associate__isnull=False
     ).order_by(
-       '-id'
+       '-assignment_date'
     ).prefetch_related(
         'customer',
         'associate',
         'skill_sets'
     )
 
+    # Convert our aware datetimes to the specific timezone of the tenant.
+    today = timezone.now()
+    tenant_today = request.tenant.to_tenant_dt(today)
+    tenant_from_dt = request.tenant.to_tenant_dt(from_dt)
+    tenant_from_dt = tenant_from_dt.date()
+    tenant_to_dt = request.tenant.to_tenant_dt(to_dt)
+    tenant_to_dt = tenant_to_dt.date()
+
+    # Generate our new header.
+    rows = (["Jobs Report","","",],)
+    rows += (["Report Date:", pretty_dt_string(tenant_today),"",],)
+    rows += (["From Assignment Date:", pretty_dt_string(tenant_from_dt),"",],)
+    rows += (["To Assignment Date:", pretty_dt_string(tenant_to_dt),"",],)
+    rows += (["", "","",],)
+    rows += (["", "","",],)
+
     # Generate the CSV header row.
-    rows = (["Job No.", "Completion date", "Associate", "Client", "WSIB Date", "Total Labour", "Invoice #", "Skill Sets"],)
+    rows += (["Job No.", "Assignment Date", "Associate", "Client", 'Skill Sets'],)
 
     # Generate hte CSV data.
     for job in jobs.all():
@@ -71,21 +85,12 @@ def report_14_streaming_csv_view(request):
         # Get our list of skill sets.
         skill_set_text = job.get_skill_sets_string()
 
-        # Set the invoice ID.
-        invoice_id = "-" if job.invoice_id is None else job.invoice_id
-        invoice_id = "-" if job.invoice_id <= 0 else job.invoice_id
-        wsib_insurance_date = "-" if job.associate.wsib_insurance_date is None else job.associate.wsib_insurance_date
-        hours = "-" if job.hours <= 0 else job.hours
-
         # Generate the reason.
         rows += ([
             str(job.id),
-            str(job.completion_date),
+            pretty_dt_string(job.assignment_date),
             str(job.associate),
             str(job.customer),
-            str(wsib_insurance_date),
-            str(hours),
-            str(invoice_id),
             skill_set_text,
         ],)
 
@@ -97,5 +102,5 @@ def report_14_streaming_csv_view(request):
         (writer.writerow(row) for row in rows),
         content_type="text/csv"
     )
-    response['Content-Disposition'] = 'attachment; filename="commercial_jobs.csv"'
+    response['Content-Disposition'] = 'attachment; filename="jobs.csv"'
     return response
