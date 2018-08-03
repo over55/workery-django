@@ -368,6 +368,19 @@ class Associate(AbstractPerson):
                 pass # Skip last
         return skill_set_string
 
+    def get_insurance_requirements(self):
+        # Attach all the skill sets that are associated with each job.
+        insurance_requirements_count = self.insurance_requirements.count() - 1
+        insurance_requirements_string = ""
+        for i, insurance_requirements in enumerate(self.insurance_requirements.all()):
+            insurance_requirements_string += insurance_requirements.text
+
+            if i != insurance_requirements_count:
+                insurance_requirements_string += "|"
+            else:
+                pass # Skip last
+        return insurance_requirements_string
+
 
 # def validate_model(sender, **kwargs):
 #     if 'raw' in kwargs and not kwargs['raw']:

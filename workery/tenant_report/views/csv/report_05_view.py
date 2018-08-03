@@ -45,29 +45,30 @@ class Echo:
 def report_05_streaming_csv_view(request):
     today = timezone.now()
     associates = Associate.objects.filter(
-        Q(owner__is_active=True) &
-        ~Q(commercial_insurance_expiry_date=None) &
-        Q(commercial_insurance_expiry_date__gte=today)
+        Q(owner__is_active=True)
     ).order_by('-commercial_insurance_expiry_date')
 
     # Convert our aware datetimes to the specific timezone of the tenant.
     tenant_today = request.tenant.to_tenant_dt(today)
 
     # Generate our new header.
-    rows = (["Associate Insurance Due Dates","","",],)
-    rows += (["Report Date:", pretty_dt_string(tenant_today),"",],)
-    rows += (["", "","",],)
-    rows += (["", "","",],)
+    rows = (["Associate Insurance Due Dates","","","","", ""],)
+    rows += (["Report Date:", pretty_dt_string(tenant_today),"", "", "", ""],)
+    rows += (["", "", "", "", "", ""],)
+    rows += (["", "", "", "", "", ""],)
 
     # Generate the CSV header row.
-    rows += (["Associate No.", "Name", "Commerical Insurance Due Dates"],)
+    rows += (["Associate No.", "Name", "Commerical Insurance Due Dates", "Auto Insurance Expiry Date","WSIB Insurance Date","Insurance Requirement(s)"],)
 
     # Generate hte CSV data.
     for associate in associates.all():
         rows += ([
             associate.id,
             str(associate),
-            "-" if associate.commercial_insurance_expiry_date is None else pretty_dt_string(associate.commercial_insurance_expiry_date)
+            "-" if associate.commercial_insurance_expiry_date is None else pretty_dt_string(associate.commercial_insurance_expiry_date),
+            "-" if associate.auto_insurance_expiry_date is None else pretty_dt_string(associate.auto_insurance_expiry_date),
+            "-" if associate.wsib_insurance_date is None else pretty_dt_string(associate.wsib_insurance_date),
+            associate.get_insurance_requirements()
         ],)
 
     pseudo_buffer = Echo()
