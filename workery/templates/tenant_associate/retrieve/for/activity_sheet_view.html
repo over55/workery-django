@@ -127,7 +127,7 @@
                             <td>{{ activity_sheet_item.id|intcomma }}</td>
                             <td>
                                 {% if activity_sheet_item.ongoing_job %}
-                                    <a href="{% url 'workery_tenant_job_retrieve' template activity_sheet_item.ongoing_job.id %}" target="_blank">{{ activity_sheet_item.ongoing_job.id|intcomma }}</a>
+                                    <a href="{% url 'workery_tenant_ongoing_job_lite_retrieve' template activity_sheet_item.ongoing_job.id %}" target="_blank">{{ activity_sheet_item.ongoing_job.id|intcomma }}</a>
                                 {% else %}
                                     <a href="{% url 'workery_tenant_job_retrieve' template activity_sheet_item.job.id %}" target="_blank">{{ activity_sheet_item.job.id|intcomma }}</a>
                                 {% endif %}
