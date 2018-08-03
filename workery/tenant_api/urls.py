@@ -39,6 +39,7 @@ from tenant_api.views.task_operation import (
     FollowUpPendingTaskOperationAPIView,
     CloseTaskOperationAPIView
 )
+from tenant_api.views.vehicle_type import VehicleTypeListCreateAPIView, VehicleTypeRetrieveUpdateDestroyAPIView
 
 
 urlpatterns = [
@@ -121,6 +122,10 @@ urlpatterns = [
     # Tags
     url(r'^api/tags$', TagListCreateAPIView.as_view(), name='workery_tag_list_create_api_endpoint'),
     url(r'^api/tag/(?P<pk>[^/.]+)/$', TagRetrieveUpdateDestroyAPIView.as_view(), name='workery_tag_retrieve_update_destroy_api_endpoint'),
+
+    # Vehicle Type
+    url(r'^api/vehicle_types$', VehicleTypeListCreateAPIView.as_view(), name='workery_vehicle_type_list_create_api_endpoint'),
+    url(r'^api/vehicle_type/(?P<pk>[^/.]+)/$', VehicleTypeRetrieveUpdateDestroyAPIView.as_view(), name='workery_vehicle_type_retrieve_update_destroy_api_endpoint'),
 
     # Utility
     url(r'^api/utility/find-customer-matching$', FindCustomerMatchingAPIView.as_view(), name='workery_find_customer_matching_api_endpoint'),

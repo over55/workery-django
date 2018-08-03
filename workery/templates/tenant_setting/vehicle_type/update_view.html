@@ -1,0 +1,104 @@
+{% extends 'tenant_foundation/tenant_base.html' %}
+{% load staticfiles i18n shared_foundation_tags humanize %}
+
+{% block title %}
+{% trans 'Vehicle Type | Workery' %}
+{% endblock title %}
+
+{% block header_content %}
+{% endblock header_content %}
+
+{% block content %}
+
+<script>
+    function click_cancel_button() {
+        window.location = "{% url 'workery_tenant_settings_vehicle_types_list' %}";
+    }
+
+    function click_submit_button() {
+        update_vehicle_type_api(
+            {{ vehicle_type.pk }},
+            {
+                'text': $('#vehicle_type_text').val(),
+                'description': $('#vehicle_type_desc').val()
+            },
+            function(vehicle_type) {
+                console.log(vehicle_type);
+                window.location = "{% url 'workery_tenant_settings_vehicle_types_list' %}?was_modified=True";
+            },
+            function(json_result) {
+
+            },
+            function(x, y) {
+
+            }
+        );
+    }
+
+</script>
+
+<main id="main" role="main">
+
+    <!-- BREADCRUMB -->
+    <!------------------------------------------------------------------------->
+    <nav aria-label="breadcrumb">
+	  	<ol class="breadcrumb">
+	    	<li class="breadcrumb-item"><a href="{% url 'workery_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'workery_tenant_settings_launchpad' %}">{% trans 'Settings' %}</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'workery_tenant_settings_vehicle_types_list' %}">{% trans 'Vehicle Types' %}</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{% trans 'Vehicle Type' %}</li>
+	  	</ol>
+	</nav>
+    <!------------------------------------------------------------------------->
+    <!-- end BREADCRUMB -->
+
+    <h1>Vehicle Type</h1>
+
+    <!-- FORM -->
+    <!------------------------------------------------------------------------->
+    <div class="col-sm-5 mx-auto mt-2">
+        <!-- Residential form -->
+        <div class="col-sm-12 fade show active" id="client-form" aria-labelledby="commercial">
+            <h3 class="pt-4 pb-2 text-center">Edit Vehicle Type</h3>
+            <p>Please change the text of the vehicle_type.</p>
+
+            <form id="add-client-form" method="post" class="needs-validation" action="" novalidate>
+                <div class="form-row">
+                    <div class="form-group col-md-12 mb-4">
+                        <label for="vehicle_type_text">Text</label>
+                        <input type="text" class="form-control form-control-lg border border-primary" id="vehicle_type_text" name="vehicle_type_text" placeholder="Text" minlength="3" required="" autofocus value="{{ vehicle_type.text }}">
+                        <div id="vehicle_type_text-error" class="invalid-feedback"></div>
+                    </div>
+                    <div class="form-group col-md-12 mb-4">
+                        <label for="vehicle_type_text">Description</label>
+                        <input type="text" class="form-control form-control-lg border border-primary" id="vehicle_type_desc" name="vehicle_type_desc" placeholder="Description" minlength="3" required="" value="{{ vehicle_type.description }}">
+                        <div id="vehicle_type_text-error" class="invalid-feedback"></div>
+                    </div>
+                </div>
+            </form>
+
+            <!-- end SUBMIT BUTTON -->
+            <div class="form-group col-md-12 mb-3 p-0 mx-auto text-center">
+                <button id="id_submit_btn"
+                     class="btn btn-primary btn-lg mt-4 float-right pl-4 pr-4"
+                      type="button"
+                   onclick="click_submit_button();">
+                    <i class="fas fa-check"></i> Update</button>
+                <button id="id_cancel_btn"
+                     class="btn btn-orange btn-lg mt-4 float-left pl-4 pr-4"
+                      type="button"
+                   onclick="click_cancel_button();">
+                    <i class="fas fa-times"></i>&nbsp;Cancel
+                </button>
+            </div>
+            <!-- end SUBMIT BUTTON -->
+
+        </div>
+    </div>
+
+
+    <!-- RETURN-TO-TOP -->
+    <a id="return-to-top" href="#" class="btn-info btn-lg back-to-top" role="button" title="Back to top"><i class="fas fa-angle-up fa-2x"></i></a>
+    <!-- end RETURN-TO-TOP -->
+</main>
+{% endblock content %}

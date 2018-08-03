@@ -8,7 +8,8 @@ from tenant_setting.views import (
     launchpad_views,
     order_service_fee_views,
     skill_set_views,
-    tag_views
+    tag_views,
+    vehicle_type_views
 )
 
 
@@ -28,6 +29,11 @@ urlpatterns = (
     path('settings/tags/', tag_views.TagListView.as_view(), name='workery_tenant_settings_tags_list'),
     path('settings/tag/create/', tag_views.TagCreateView.as_view(), name='workery_tenant_settings_tag_create'),
     path('settings/tag/<int:pk>/', tag_views.TagUpdateView.as_view(), name='workery_tenant_settings_tags_update'),
+
+    # Vehicle Types
+    path('settings/vehicle_types/', vehicle_type_views.VehicleTypeListView.as_view(), name='workery_tenant_settings_vehicle_types_list'),
+    path('settings/vehicle_type/create/', vehicle_type_views.VehicleTypeCreateView.as_view(), name='workery_tenant_settings_vehicle_type_create'),
+    path('settings/vehicle_type/<int:pk>/', vehicle_type_views.VehicleTypeUpdateView.as_view(), name='workery_tenant_settings_vehicle_types_update'),
 
     # WorkOrder Service Fee
     path('settings/order_service_fees/', order_service_fee_views.WorkOrderServiceFeeListView.as_view(), name='workery_tenant_settings_order_service_fees_list'),
