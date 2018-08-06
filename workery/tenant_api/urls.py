@@ -34,7 +34,8 @@ from tenant_api.views.order_service_fee import WorkOrderServiceFeeListCreateAPIV
 from tenant_api.views.order_operation import (
     CompletedWorkOrderUnassignOperationCreateAPIView,
     CompletedWorkOrderCloseOperationCreateAPIView,
-    OngoingWorkOrderUnassignOperationAPIView
+    OngoingWorkOrderUnassignOperationAPIView,
+    OngoingWorkOrderCloseOperationAPIView
 )
 # from tenant_api.views.order_operation import CompletedWorkOrderCloseOperationCreateAPIView
 from tenant_api.views.task_operation import (
@@ -103,6 +104,7 @@ urlpatterns = [
     url(r'^api/ongoing-order-comments$', OngoingWorkOrderCommentListCreateAPIView.as_view(), name='workery_ongoing_job_comment_list_create_api_endpoint'),
 
     # Ongoing Work Order - Operations
+    url(r'^api/ongoing-orders/operation/close$', OngoingWorkOrderCloseOperationAPIView.as_view(), name='workery_ongoing_order_close_operation_api_endpoint'),
     url(r'^api/ongoing-orders/operation/unassign$', OngoingWorkOrderUnassignOperationAPIView.as_view(), name='workery_ongoing_order_unassign_operation_api_endpoint'),
 
     # Tasks - Operation

@@ -218,15 +218,19 @@
 
     <!-- FORM -->
     <!------------------------------------------------------------------------->
-    <div class="form-group col-md-12 mb-3 mx-auto text-center">
-        <a href="{% url 'workery_tenant_ongoing_job_update' template job.id %}">
-            <button  id="id_submit_btn"	class="btn btn-warning btn-lg btn-fxw mt-4" type="button">
-                <i class="fas fa-edit"></i>&nbsp;{% trans 'Edit Job' %}
-            </button>
-        </a>
-    </div>
+    {% if job.state != ONGOING_WORK_ORDER_STATE.TERMINATED %}
+        <div class="form-group col-md-12 mb-3 mx-auto text-center">
+            <a href="{% url 'workery_tenant_ongoing_job_update' template job.id %}">
+                <button  id="id_submit_btn"	class="btn btn-warning btn-lg btn-fxw mt-4" type="button">
+                    <i class="fas fa-edit"></i>&nbsp;{% trans 'Edit Job' %}
+                </button>
+            </a>
+        </div>
+    {% endif %}
     <!------------------------------------------------------------------------->
     <!-- end FORM -->
+
+    
     <!-- RETURN-TO-TOP -->
     <a id="return-to-top" href="#" class="btn-info btn-lg back-to-top" role="button" title="Back to top"><i class="fas fa-angle-up fa-2x"></i></a>
     <!-- end RETURN-TO-TOP -->

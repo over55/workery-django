@@ -181,42 +181,31 @@
     <div class="form-group col-md-10 mb-3 mx-auto text-center">
         <div class="row">
             <!-- UNASSIGN BUTTON -->
-            <div class="col-sm-4">
-                {% if job.associate %}
+            {% if job.associate and job.state != ONGOING_WORK_ORDER_STATE.TERMINATED%}
+                <div class="col-sm-4">
                     <a href="{% url 'workery_tenant_ongoing_job_unassign_operation' job.id %}?return_id=lite-retrieve">
-                    <button  id="id_submit_btn"
-                        class="btn btn-warning btn-lg btn-fxw mt-4"
+                        <button id="id_submit_btn"
+                            class="btn btn-warning btn-lg btn-fxw mt-4"
+                            type="button">
+                        <i class="fas fa-window-close"></i>&nbsp;{% trans 'Unassign Associate' %}
+                        </button>
+                    </a>
+                </div>
+            {% endif %}
+            {% if job.state != ONGOING_WORK_ORDER_STATE.TERMINATED %}
+                <div class="col-sm-4">
+                    <a href="{% url 'workery_tenant_ongoing_job_close_operation' job.id %}?return_id=lite-retrieve">
+                    <button id="id_submit_btn"
+                        class="btn btn-orange btn-lg btn-fxw mt-4"
                         type="button">
-                    <i class="fas fa-window-close"></i>&nbsp;{% trans 'Unassign Associate' %}
+                    <i class="far fa-minus-square"></i>&nbsp;{% trans 'Close Job' %}
                     </button>
                     </a>
-                {% endif %}
-            </div>
+                </div>
+            {% endif %}
 
         </div>
     </div>
-
-
-    <p>TODO: Close Job</p>
-    {% comment %}
-    {% if job.latest_pending_task %}
-    <div class="form-group col-md-10 mb-3 mx-auto text-center">
-        <div class="row">
-            <!-- CLOSE JOB BUTTON -->
-            <div class="col-sm-4">
-                <a href="{% url 'workery_tenant_job_retrieve_for_close_create' template job.id %}">
-                <button  id="id_submit_btn"
-                    class="btn btn-orange btn-lg btn-fxw mt-4"
-                    type="button">
-                <i class="far fa-minus-square"></i>&nbsp;{% trans 'Close Job' %}
-                </button>
-                </a>
-            </div>
-            <!-- end CLOSE JOB BUTTON -->
-        </div>
-    </div>
-    {% endif %}
-    {% endcomment %}
     <!------------------------------------------------------------------------->
     <!-- end FORM -->
     <!-- RETURN-TO-TOP -->

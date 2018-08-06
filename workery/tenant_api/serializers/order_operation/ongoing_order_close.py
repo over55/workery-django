@@ -51,7 +51,7 @@ def cannot_be_zero_or_negative(value):
     return value
 
 
-class OngoingWorkOrderUnassignCreateSerializer(serializers.Serializer):
+class OngoingWorkOrderCloseOperationSerializer(serializers.Serializer):
     job = serializers.PrimaryKeyRelatedField(many=False, queryset=OngoingWorkOrder.objects.all(), required=True)
     reason = serializers.CharField(required=True, allow_blank=False)
 
@@ -129,13 +129,11 @@ class OngoingWorkOrderUnassignCreateSerializer(serializers.Serializer):
         #-------------------------#
         # Update the ongoing job. #
         #-------------------------#
-        # Update our job to be in a `idle` state.
-        job.associate = None
-        job.state = ONGOING_WORK_ORDER_STATE.IDLE
+        job.state = ONGOING_WORK_ORDER_STATE.TERMINATED
         job.save()
 
         # For debugging purposes only.
-        logger.info("Update ongoing job.")
+        logger.info("Updated ongoing job.")
 
         # #---------------------------------------------#
         # # Create a new task based on a new start date #

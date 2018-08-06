@@ -7,4 +7,5 @@ from tenant_ongoing_order_operation import views
 
 urlpatterns = (
     path('ongoing-jobs/detail/<int:pk>/operation/unassign', views.OngoingWorkOrderUnassignOperationView.as_view(), name='workery_tenant_ongoing_job_unassign_operation'),
+    path('ongoing-jobs/detail/<int:pk>/operation/close', views.OngoingWorkOrderCloseOperationView.as_view(), name='workery_tenant_ongoing_job_close_operation')
 )
