@@ -11,6 +11,7 @@ urlpatterns = (
     # Retrieve
     path('ongoing-jobs/<str:template>/detail/<int:pk>/lite/', views.OngoingJobLiteRetrieveView.as_view(), name='workery_tenant_ongoing_job_lite_retrieve'),
     path('ongoing-jobs/<str:template>/detail/<int:pk>/full/', views.OngoingJobFullRetrieveView.as_view(), name='workery_tenant_ongoing_job_full_retrieve'),
+    path('ongoing-jobs/<str:template>/detail/<int:pk>/comments/', views.OngoingJobRetrieveForCommentsListAndCreateView.as_view(), name='workery_tenant_ongoing_job_retrieve_for_comments'),
 
     # Update
     path('ongoing-jobs/<str:template>/detail/<int:pk>/edit/', views.OngoingJobUpdateView.as_view(), name='workery_tenant_ongoing_job_update'),

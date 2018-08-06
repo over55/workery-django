@@ -13,9 +13,10 @@ from tenant_api.views.insurance_requirement import InsuranceRequirementListCreat
 from tenant_api.views.order_crud import (
    WorkOrderListCreateAPIView,
    WorkOrderRetrieveUpdateDestroyAPIView,
+   WorkOrderCommentListCreateAPIView,
    OngoingWorkOrderListCreateAPIView,
    OngoingWorkOrderRetrieveUpdateDestroyAPIView,
-   WorkOrderCommentListCreateAPIView
+   OngoingWorkOrderCommentListCreateAPIView
 )
 from tenant_api.views.partner import PartnerListCreateAPIView, PartnerRetrieveUpdateDestroyAPIView, PartnerCreateValidationAPIView
 from tenant_api.views.partner_comment import PartnerCommentListCreateAPIView
@@ -95,6 +96,7 @@ urlpatterns = [
     # Ongoing Work Order
     url(r'^api/ongoing-orders$', OngoingWorkOrderListCreateAPIView.as_view(), name='workery_ongoing_order_list_create_api_endpoint'),
     url(r'^api/ongoing-order/(?P<pk>[^/.]+)/$', OngoingWorkOrderRetrieveUpdateDestroyAPIView.as_view(), name='workery_ongoing_order_retrieve_update_destroy_api_endpoint'),
+    url(r'^api/ongoing-order-comments$', OngoingWorkOrderCommentListCreateAPIView.as_view(), name='workery_ongoing_job_comment_list_create_api_endpoint'),
 
     # Tasks - Operation
     url(r'^api/task/operation/assign-associate$', AssignAssociateTaskOperationAPIView.as_view(), name='workery_order_task_operation_assign_associate_api_endpoint'),
