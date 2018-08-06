@@ -89,6 +89,7 @@ urlpatterns += i18n_patterns(
     url(r'^', include('tenant_report.urls')),
     url(r'^', include('tenant_financial.urls')),
     url(r'^', include('tenant_ongoing_order.urls')),
+    url(r'^', include('tenant_ongoing_order_operation.urls')),
 )
 
 

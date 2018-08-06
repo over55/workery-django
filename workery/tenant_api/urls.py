@@ -31,8 +31,12 @@ from tenant_api.views.order_postpone import WorkOrderPostponeCreateAPIView
 from tenant_api.views.order_unassign import WorkOrderUnassignCreateAPIView
 from tenant_api.views.order_reopen import WorkOrderReopenCreateAPIView
 from tenant_api.views.order_service_fee import WorkOrderServiceFeeListCreateAPIView, WorkOrderServiceFeeRetrieveUpdateDestroyAPIView
-from tenant_api.views.order_operation import CompletedWorkOrderUnassignOperationCreateAPIView
-from tenant_api.views.order_operation import CompletedWorkOrderCloseOperationCreateAPIView
+from tenant_api.views.order_operation import (
+    CompletedWorkOrderUnassignOperationCreateAPIView,
+    CompletedWorkOrderCloseOperationCreateAPIView,
+    OngoingWorkOrderUnassignOperationAPIView
+)
+# from tenant_api.views.order_operation import CompletedWorkOrderCloseOperationCreateAPIView
 from tenant_api.views.task_operation import (
     AssignAssociateTaskOperationAPIView,
     UpdateOngoingJobOperationTaskAPIView,
@@ -97,6 +101,9 @@ urlpatterns = [
     url(r'^api/ongoing-orders$', OngoingWorkOrderListCreateAPIView.as_view(), name='workery_ongoing_order_list_create_api_endpoint'),
     url(r'^api/ongoing-order/(?P<pk>[^/.]+)/$', OngoingWorkOrderRetrieveUpdateDestroyAPIView.as_view(), name='workery_ongoing_order_retrieve_update_destroy_api_endpoint'),
     url(r'^api/ongoing-order-comments$', OngoingWorkOrderCommentListCreateAPIView.as_view(), name='workery_ongoing_job_comment_list_create_api_endpoint'),
+
+    # Ongoing Work Order - Operations
+    url(r'^api/ongoing-orders/operation/unassign$', OngoingWorkOrderUnassignOperationAPIView.as_view(), name='workery_ongoing_order_unassign_operation_api_endpoint'),
 
     # Tasks - Operation
     url(r'^api/task/operation/assign-associate$', AssignAssociateTaskOperationAPIView.as_view(), name='workery_order_task_operation_assign_associate_api_endpoint'),

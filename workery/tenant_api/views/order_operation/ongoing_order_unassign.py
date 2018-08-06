@@ -13,13 +13,12 @@ from tenant_api.permissions.order import (
    CanListCreateWorkOrderPermission,
    CanRetrieveUpdateDestroyWorkOrderPermission
 )
-from tenant_api.serializers.order_operation.unassign_for_completed import CompletedWorkOrderUnassignOperationSerializer
-from tenant_api.serializers.order_operation.close_for_completed import CompletedWorkOrderCloseOperationSerializer
+from tenant_api.serializers.order_operation.ongoing_order_unassign import OngoingWorkOrderUnassignCreateSerializer
 from tenant_foundation.models import ActivitySheetItem
 
 
-class CompletedWorkOrderUnassignOperationCreateAPIView(generics.CreateAPIView):
-    serializer_class = CompletedWorkOrderUnassignOperationSerializer
+class OngoingWorkOrderUnassignOperationAPIView(generics.CreateAPIView):
+    serializer_class = OngoingWorkOrderUnassignCreateSerializer
     permission_classes = (
         permissions.IsAuthenticated,
         IsAuthenticatedAndIsActivePermission,
@@ -31,31 +30,7 @@ class CompletedWorkOrderUnassignOperationCreateAPIView(generics.CreateAPIView):
         Create
         """
         client_ip, is_routable = get_client_ip(self.request)
-        serializer = CompletedWorkOrderUnassignOperationSerializer(data=request.data, context={
-            'user': request.user,
-            'from': client_ip,
-            'from_is_public': is_routable,
-            'franchise': request.tenant
-        })
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
-
-
-class CompletedWorkOrderCloseOperationCreateAPIView(generics.CreateAPIView):
-    serializer_class = CompletedWorkOrderUnassignOperationSerializer
-    permission_classes = (
-        permissions.IsAuthenticated,
-        IsAuthenticatedAndIsActivePermission,
-        CanListCreateWorkOrderPermission
-    )
-
-    def post(self, request, format=None):
-        """
-        Create
-        """
-        client_ip, is_routable = get_client_ip(self.request)
-        serializer = CompletedWorkOrderUnassignOperationSerializer(data=request.data, context={
+        serializer = OngoingWorkOrderUnassignCreateSerializer(data=request.data, context={
             'user': request.user,
             'from': client_ip,
             'from_is_public': is_routable,
