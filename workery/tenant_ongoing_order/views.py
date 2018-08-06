@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
+from django.db.models import Q, Prefetch
 from django.utils.decorators import method_decorator
 from django.utils.translation import ugettext_lazy as _
 from shared_foundation import constants
@@ -23,15 +24,16 @@ from tenant_foundation.models import (
 )
 
 
-class OngoingJobListView(LoginRequiredMixin, GroupRequiredMixin, WorkeryListView):
+class RunningOrInactiveOngoingJobListView(LoginRequiredMixin, GroupRequiredMixin, WorkeryListView):
     context_object_name = 'job_list'
     queryset = OngoingWorkOrder.objects.filter(
-        state=ONGOING_WORK_ORDER_STATE.RUNNING
+        Q(state=ONGOING_WORK_ORDER_STATE.RUNNING) |
+        Q(state=ONGOING_WORK_ORDER_STATE.IDLE)
     ).order_by('-id').prefetch_related(
         'customer',
         'associate'
     )
-    template_name = 'tenant_ongoing_order/summary/view.html'
+    template_name = 'tenant_ongoing_order/list/running_or_inactive_view.html'
     paginate_by = 100
     menu_id = 'ongoing-jobs'
     group_required = [
@@ -39,6 +41,53 @@ class OngoingJobListView(LoginRequiredMixin, GroupRequiredMixin, WorkeryListView
         constants.MANAGEMENT_GROUP_ID,
         constants.FRONTLINE_GROUP_ID
     ]
+
+    def get_context_data(self, **kwargs):
+        # Get the context of this class based view.
+        modified_context = super().get_context_data(**kwargs)
+
+        modified_context['running_or_inactivate_jobs_count'] = OngoingWorkOrder.objects.filter(
+            Q(state=ONGOING_WORK_ORDER_STATE.RUNNING) |
+            Q(state=ONGOING_WORK_ORDER_STATE.IDLE)
+        ).count()
+        modified_context['terminated_jobs_count'] = OngoingWorkOrder.objects.filter(
+            state=ONGOING_WORK_ORDER_STATE.TERMINATED
+        ).count()
+
+        # Return our modified context.
+        return modified_context
+
+class TerminatedOngoingJobListView(LoginRequiredMixin, GroupRequiredMixin, WorkeryListView):
+    context_object_name = 'job_list'
+    queryset = OngoingWorkOrder.objects.filter(
+        state=ONGOING_WORK_ORDER_STATE.TERMINATED
+    ).order_by('-id').prefetch_related(
+        'customer',
+        'associate'
+    )
+    template_name = 'tenant_ongoing_order/list/terminated_view.html'
+    paginate_by = 100
+    menu_id = 'ongoing-jobs'
+    group_required = [
+        constants.EXECUTIVE_GROUP_ID,
+        constants.MANAGEMENT_GROUP_ID,
+        constants.FRONTLINE_GROUP_ID
+    ]
+
+    def get_context_data(self, **kwargs):
+        # Get the context of this class based view.
+        modified_context = super().get_context_data(**kwargs)
+
+        modified_context['running_or_inactivate_jobs_count'] = OngoingWorkOrder.objects.filter(
+            Q(state=ONGOING_WORK_ORDER_STATE.RUNNING) |
+            Q(state=ONGOING_WORK_ORDER_STATE.IDLE)
+        ).count()
+        modified_context['terminated_jobs_count'] = OngoingWorkOrder.objects.filter(
+            state=ONGOING_WORK_ORDER_STATE.TERMINATED
+        ).count()
+
+        # Return our modified context.
+        return modified_context
 
 
 class OngoingJobLiteRetrieveView(LoginRequiredMixin, GroupRequiredMixin, WorkeryDetailView):

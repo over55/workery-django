@@ -14,34 +14,52 @@
 
     <!-- BREADCRUMB -->
     <!------------------------------------------------------------------------->
-    {% if filter_parameters %}
-    <nav aria-label="breadcrumb">
-	  	<ol class="breadcrumb">
-            <li class="breadcrumb-item">
-                <a href="{% url 'workery_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a>
-            </li>
-            <li class="breadcrumb-item">
-                <a href="{% url 'workery_tenant_job_summary' %}">{% trans 'Jobs' %}</a>
-            </li>
-            <li class="breadcrumb-item">
-                <a href="{% url 'workery_tenant_job_search' %}">{% trans 'Search' %}</a>
-            </li>
-            <li class="breadcrumb-item active" aria-current="page">{% trans 'Search Results' %}</li>
-	  	</ol>
-	</nav>
-    {% else %}
     <nav aria-label="breadcrumb">
 	  	<ol class="breadcrumb">
 	    		<li class="breadcrumb-item"><a href="{% url 'workery_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
-                <li class="breadcrumb-item"><a href="{% url 'workery_tenant_job_summary' %}">{% trans 'Jobs' %}</a></li>
-	    		<li class="breadcrumb-item active" aria-current="page">{% trans 'List' %}</li>
+                <li class="breadcrumb-item active" aria-current="page">{% trans 'Ongoing Jobs' %}</li>
 	  	</ol>
 	</nav>
-    {% endif %}
     <!------------------------------------------------------------------------->
     <!-- end BREADCRUMB -->
 
-    <h1>{% trans 'Jobs List' %}</h1>
+    <!-- NOTIFICATION -->
+    <!------------------------------------------------------------------------->
+    {% if parameters.was_created == 'True' %}
+        <div class="alert bg-success text-white alert-dismissible fade show" role="alert">
+		    Job <strong>Successfully</strong> created.
+		    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+		        <span aria-hidden="true">×</span>
+		    </button>
+		</div>
+    {% endif %}
+    <!------------------------------------------------------------------------->
+    <!-- end NOTIFICATION -->
+
+    <h1>{% trans 'Ongoing Jobs' %}</h1>
+
+    <!-- STEP NAVIGATION -->
+    <!------------------------------------------------------------------------->
+    <div class="row">
+        <div class="step-navigation">
+
+            <div id="step-2" class="st-grey active">
+                <i class="fas fa-clock"></i>
+                <span class="">Running Jobs ({{ running_or_inactivate_jobs_count|intcomma }})</span>
+            </div>
+            <div id="step-3" class="st-grey">
+                <a href="{% url 'workery_tenant_ongoing_job_terminated_list' %}">
+                    <i class="fas fa-check-circle"></i>
+                    <span class="">Terminated Job ({{ terminated_jobs_count|intcomma }})</span>
+                </a>
+            </div>
+        </div>
+    </div>
+    <!------------------------------------------------------------------------->
+    <!-- end STEP NAVIGATION -->
+
+
+    <h2>List</h2>
     <div class="table-responsive">
         <table class="table table-striped">
             <thead>
@@ -50,9 +68,6 @@
                     <th>{% trans 'Job #' %}</th>
                     <th>{% trans 'Client' %}&nbsp;<i class="fas fa-external-link-alt"></i></th>
                     <th>{% trans 'Associate' %}&nbsp;<i class="fas fa-external-link-alt"></i></th>
-                    <th>{% trans 'Assigned Date' %}</th>
-                    <th>{% trans 'Start Date' %}</th>
-                    <th>{% trans 'Completion Date' %}</th>
                     <th>{% trans 'Status' %}</th>
                     <th></th>
                 </tr>
@@ -80,34 +95,19 @@
                             <a href="{% url 'workery_tenant_member_lite_retrieve' 'summary' job.associate.id %}" target="_blank">{{ job.associate }}</a>
                         {% else %}-{% endif %}
                     </td>
-                    <td>{% if job.assignment_date %}{{ job.assignment_date }}{% else %}-{% endif %}</td>
-                    <td>{% if job.start_date %}{{ job.start_date }}{% else %}-{% endif %}</td>
-                    <td>{% if job.completion_date %}{{ job.completion_date }}{% else %}-{% endif %}</td>
                     <td>
-                        {% if job.state == WORK_ORDER_STATE.PENDING %}
-                            {% trans 'Pending' %}
-                        {% elif job.state == WORK_ORDER_STATE.CANCELLED %}
-                            {% trans 'Cancelled' %}
-                        {% elif job.state == WORK_ORDER_STATE.ONGOING %}
-                            {% trans 'Ongoing' %}
-                        {% elif job.state == WORK_ORDER_STATE.IN_PROGRESS %}
-                            {% trans 'In Progress' %}
-                        {% elif job.state == WORK_ORDER_STATE.COMPLETED_BUT_UNPAID %}
-                            {% trans 'Completed but unpaid' %}
-                        {% elif job.state == WORK_ORDER_STATE.COMPLETED_AND_PAID %}
-                            {% trans 'Completed and paid' %}
-                        {% elif job.state == WORK_ORDER_STATE.ARCHIVED %}
-                            {% trans 'Archived' %}
-                        {% elif job.state == WORK_ORDER_STATE.DECLINED %}
-                            {% trans 'Declined' %}
-                        {% elif job.state == WORK_ORDER_STATE.NEW %}
-                            {% trans 'New' %}
+                        {% if job.state == ONGOING_WORK_ORDER_STATE.IDLE %}
+                            {% trans 'Idle' %}
+                        {% elif job.state == ONGOING_WORK_ORDER_STATE.RUNNING %}
+                            {% trans 'Running' %}
+                        {% elif job.state == ONGOING_WORK_ORDER_STATE.TERMINATED %}
+                            {% trans 'Terminated' %}
                         {% else %}
                             {{ job.state }}
                         {% endif %}
                     </td>
                     <td>
-                        <a href="{% url 'workery_tenant_ongoing_job_lite_retrieve' 'running' job.id %}?page={{ page_obj.number }}">{% trans 'View' %}&nbsp;<i class="fas fa-chevron-right"></i></a>
+                        <a href="{% url 'workery_tenant_ongoing_job_lite_retrieve' 'summary' job.id %}?page={{ page_obj.number }}">{% trans 'View' %}&nbsp;<i class="fas fa-chevron-right"></i></a>
                     </td>
                 </tr>
                 {% empty %}
