@@ -79,6 +79,23 @@ class FollowUpPendingTaskOperationSerializer(serializers.Serializer):
         return data
 
     def create_for_job(self, validated_data, task_item, comment, state):
+
+        # Attached our comment.
+        comment_obj = Comment.objects.create(
+            created_by=self.context['user'],
+            last_modified_by=self.context['user'],
+            text=comment,
+            created_from = self.context['from'],
+            created_from_is_public = self.context['from_is_public']
+        )
+        WorkOrderComment.objects.create(
+            about = task_item.job,
+            comment = comment_obj,
+        )
+
+        # For debugging purposes only.
+        logger.info("Attached comment to Job.")
+
         # STEP 4 - Lookup our current activity sheet and set the status of
         #          the activity sheet based on the users decision.
         current_activity_sheet_item = ActivitySheetItem.objects.filter(
@@ -182,6 +199,23 @@ class FollowUpPendingTaskOperationSerializer(serializers.Serializer):
         return validated_data
 
     def create_for_ongoing_job(self, validated_data, task_item, comment, state):
+
+        # Attached our comment.
+        comment_obj = Comment.objects.create(
+            created_by=self.context['user'],
+            last_modified_by=self.context['user'],
+            text=comment,
+            created_from = self.context['from'],
+            created_from_is_public = self.context['from_is_public']
+        )
+        OngoingWorkOrderComment.objects.create(
+            about = task_item.ongoing_job,
+            comment = comment_obj,
+        )
+
+        # For debugging purposes only.
+        logger.info("Attached comment to Ongoing-Job.")
+
         # STEP 4 - Lookup our current activity sheet and set the status of
         #          the activity sheet based on the users decision.
         current_activity_sheet_item = ActivitySheetItem.objects.filter(
