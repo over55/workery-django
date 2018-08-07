@@ -208,32 +208,6 @@ class JobRetrieveForPostponeCreateView(LoginRequiredMixin, GroupRequiredMixin, W
         return modified_context
 
 
-class JobRetrieveForUnassignCreateView(LoginRequiredMixin, GroupRequiredMixin, WorkeryDetailView):
-    context_object_name = 'job'
-    model = WorkOrder
-    template_name = 'tenant_order/retrieve/for/unassign_view.html'
-    menu_id = 'jobs'
-    group_required = [
-        constants.EXECUTIVE_GROUP_ID,
-        constants.MANAGEMENT_GROUP_ID,
-        constants.FRONTLINE_GROUP_ID
-    ]
-
-    def get_context_data(self, **kwargs):
-        # Get the context of this class based view.
-        modified_context = super().get_context_data(**kwargs)
-
-        # Validate the template selected.
-        template = self.kwargs['template']
-        if template not in ['search', 'summary', 'list', 'task']:
-            from django.core.exceptions import PermissionDenied
-            raise PermissionDenied(_('You entered wrong format.'))
-        modified_context['template'] = template
-
-        # Return our modified context.
-        return modified_context
-
-
 class JobRetrieveForReopeningCreateView(LoginRequiredMixin, GroupRequiredMixin, WorkeryDetailView):
     context_object_name = 'job'
     model = WorkOrder

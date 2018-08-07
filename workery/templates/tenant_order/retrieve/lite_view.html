@@ -16,14 +16,14 @@
 <script>
     function ajax_previous() {
         {% if template == 'search' %}
-        window.location = "{% url 'workery_tenant_job_search' %}";
+            window.location = "{% url 'workery_tenant_job_search' %}";
         {% elif template == 'task' %}
-        alert("TODO");
-        //window.location = "{% url 'workery_tenant_pending_task_retrieve' parameters.task_id %}";
+            alert("TODO");
+            //window.location = "{% url 'workery_tenant_pending_task_retrieve' parameters.task_id %}";
         {% elif template == 'list' %}
-        window.location = "{% url 'workery_tenant_job_list' %}";
+            window.location = "{% url 'workery_tenant_job_list' %}";
         {% else %}
-        window.location = "{% url 'workery_tenant_job_summary' %}";
+            window.location = "{% url 'workery_tenant_job_summary' %}";
         {% endif %}
     }
 </script>
@@ -213,7 +213,7 @@
             <!-- UNASSIGN BUTTON -->
             <div class="col-sm-4">
                 {% if job.associate %}
-                <a href="{% url 'workery_tenant_job_retrieve_for_unassign_create' template job.id %}">
+                <a href="{% url 'workery_tenant_job_retrieve_for_unassign_create' job.id %}?return_id=lite-retrieve&template={{ template }}">
                 <button  id="id_submit_btn"
                     class="btn btn-warning btn-lg btn-fxw mt-4"
                     type="button">
