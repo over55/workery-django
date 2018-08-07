@@ -63,9 +63,9 @@
 
                 // REDIRECT TO SUCCESS PAGE.
                 {% if template == 'task' %}
-                window.location = "{% url 'workery_tenant_task_list' %}?was_closed=True";
+                    window.location = "{% url 'workery_tenant_task_list' %}?was_unassigned=True";
                 {% else %}
-                window.location = "{% url 'workery_tenant_job_retrieve' template job.id %}?was_closed=True";
+                    window.location = "{% url 'workery_tenant_job_retrieve' template job.id %}?was_unassigned=True";
                 {% endif %}
             },
             function(xhr,status,error) { // Error

@@ -21,6 +21,8 @@
     function click_cancel_button() {
         {% if return_id == 'lite-retrieve' %}
             window.location = "{% url 'workery_tenant_ongoing_job_lite_retrieve' 'summary' job.id %}";
+        {% elif return_id == 'pending-task' %}
+            window.location = "{% url 'workery_tenant_pending_task_retrieve' parameters.task_item %}";
         {% else %}
             alert("Does not exist!");
         {% endif %}
@@ -48,12 +50,15 @@
                 ////////////////////////////////////////////
                 {% if return_id == 'lite-retrieve' %}
                     var temp_url = "{% url 'workery_tenant_ongoing_job_lite_retrieve' 'summary' 0 %}?was_modified=True";
+                    var temp_url = temp_url.replace(0, job_id);
+                    window.location = temp_url;
+                {% elif return_id == 'pending-task' %}
+                    window.location = "{% url 'workery_tenant_task_list' %}?was_unassigned=True";
                 {% else %}
                     var temp_url = "";
                 {% endif %}
 
-                var temp_url = temp_url.replace(0, job_id);
-                window.location = temp_url;
+
             },
             function(xhr,status,error) { // Error
                 // STEP 1: Convert to JSON.
@@ -95,6 +100,15 @@
                 <li class="breadcrumb-item"><a href="{% url 'workery_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
                 <li class="breadcrumb-item"><a href="{% url 'workery_tenant_ongoing_job_list' %}">{% trans 'Ongoing Jobs' %}</a></li>
                 <li class="breadcrumb-item"><a href="{% url 'workery_tenant_ongoing_job_lite_retrieve' 'summary' job.id %}">{% trans 'Job #' %}{{ job.id|intcomma }}</a></li>
+                <li class="breadcrumb-item active" aria-current="page">{% trans 'Unassign' %}</li>
+            {% elif return_id == 'pending-task' %}
+                <li class="breadcrumb-item"><a href="{% url 'workery_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'workery_tenant_task_list' %}">{% trans 'Pending Tasks' %}</a></li>
+                <li class="breadcrumb-item">
+                    <a href="{% url 'workery_tenant_pending_task_retrieve' parameters.task_item %}">
+                        {% trans 'Task #' %}{{ parameters.task_item }}
+                    </a>
+                </li>
                 <li class="breadcrumb-item active" aria-current="page">{% trans 'Unassign' %}</li>
             {% else %}
                 ---TODO---

@@ -26,7 +26,7 @@ class OngoingWorkOrderUnassignOperationView(LoginRequiredMixin, GroupRequiredMix
         constants.MANAGEMENT_GROUP_ID,
         constants.FRONTLINE_GROUP_ID
     ]
-    return_id_required = ['lite-retrieve']
+    return_id_required = ['lite-retrieve', 'pending-task']
 
 
 class OngoingWorkOrderCloseOperationView(LoginRequiredMixin, GroupRequiredMixin, ReturnIDParameterRequiredMixin, WorkeryDetailView):
