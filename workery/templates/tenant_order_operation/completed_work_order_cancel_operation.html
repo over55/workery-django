@@ -61,7 +61,7 @@
         console.log("reason", reason);
         console.log("additional_comment", $('#comment').val());
         // Submit to our API web-service.
-        create_order_close_api(
+        post_incompleted_order_close_operation_api(
             {
                 'job': {{ job.id }},
                 'reason': reason,

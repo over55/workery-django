@@ -31,7 +31,7 @@
     //
     function click_submit_button() {
         // Submit to our API web-service.
-        create_completed_order_unassign_operation_api(
+        post_completed_order_unassign_operation_api(
             {
                 'job': {{ job.id }},
                 'reason': $('#reason').val(),

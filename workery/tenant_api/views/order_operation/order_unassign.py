@@ -18,7 +18,7 @@ from tenant_api.serializers.order_operation.close_for_completed import Completed
 from tenant_foundation.models import ActivitySheetItem
 
 
-class CompletedWorkOrderUnassignOperationCreateAPIView(generics.CreateAPIView):
+class WorkOrderUnassignOperationCreateAPIView(generics.CreateAPIView):
     serializer_class = CompletedWorkOrderUnassignOperationSerializer
     permission_classes = (
         permissions.IsAuthenticated,

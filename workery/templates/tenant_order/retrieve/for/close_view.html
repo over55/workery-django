@@ -253,7 +253,7 @@
         console.log("invoice_service_fee_amount", invoice_service_fee_amount);
 
         // Submit to our API web-service.
-        create_order_close_api(
+        post_incompleted_order_close_operation_api(
             {
                 'job': {{ job.id }},
                 'reason': reason,

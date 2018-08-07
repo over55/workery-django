@@ -26,14 +26,13 @@ from tenant_api.views.staff_comment import StaffCommentListCreateAPIView
 from tenant_api.views.tag import TagListCreateAPIView, TagRetrieveUpdateDestroyAPIView
 from tenant_api.views.utility import FindCustomerMatchingAPIView
 from tenant_api.views.public_image_upload import PublicImageUploadListCreateAPIView
-from tenant_api.views.order_close import WorkOrderCloseCreateAPIView
-from tenant_api.views.order_postpone import WorkOrderPostponeCreateAPIView
-from tenant_api.views.order_unassign import WorkOrderUnassignCreateAPIView
-from tenant_api.views.order_reopen import WorkOrderReopenCreateAPIView
 from tenant_api.views.order_service_fee import WorkOrderServiceFeeListCreateAPIView, WorkOrderServiceFeeRetrieveUpdateDestroyAPIView
 from tenant_api.views.order_operation import (
-    CompletedWorkOrderUnassignOperationCreateAPIView,
+    WorkOrderUnassignOperationCreateAPIView,
     CompletedWorkOrderCloseOperationCreateAPIView,
+    IncompleteWorkOrderCloseOperationCreateAPIView,
+    WorkOrderPostponeOperationCreateAPIView,
+    WorkOrderReopenOperationCreateAPIView,
     OngoingWorkOrderUnassignOperationAPIView,
     OngoingWorkOrderCloseOperationAPIView
 )
@@ -81,20 +80,11 @@ urlpatterns = [
     url(r'^api/order-comments$', WorkOrderCommentListCreateAPIView.as_view(), name='workery_job_comment_list_create_api_endpoint'),
 
     # WorkOrder - Operations
-    url(r'^api/orders/operation/closed-job/unassign$', CompletedWorkOrderUnassignOperationCreateAPIView.as_view(), name='workery_completed_order_unassign_operation_create_api_endpoint'),
-    url(r'^api/orders/operation/closed-job/close$', CompletedWorkOrderCloseOperationCreateAPIView.as_view(), name='workery_completed_order_close_operation_create_api_endpoint'),
-    #TODO: Close
-    #TODO: Postpone
-    #TODO: Reopen
-    #TODO: Unassign
-
-    # WorkOrders - Update (DELETE & RECODE TO `OPERATIONS`.)
-    # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    url(r'^api/orders/activity-sheet-item/unassign$', WorkOrderUnassignCreateAPIView.as_view(), name='workery_order_order_unassign_create_api_endpoint'), #TODO: DELETE
-    url(r'^api/orders/close$', WorkOrderCloseCreateAPIView.as_view(), name='workery_order_order_close_create_api_endpoint'),                              #TODO: DELETE
-    url(r'^api/orders/postpone$', WorkOrderPostponeCreateAPIView.as_view(), name='workery_order_order_postpone_create_api_endpoint'),                     #TODO: DELETE
-    url(r'^api/orders/reopen$', WorkOrderReopenCreateAPIView.as_view(), name='workery_order_order_reopen_create_api_endpoint'),                           #TODO: DELETE
-    # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    url(r'^api/orders/operation/unassign$', WorkOrderUnassignOperationCreateAPIView.as_view(), name='workery_order_unassign_operation_api_endpoint'),
+    url(r'^api/orders/operation/closed-job/close$', CompletedWorkOrderCloseOperationCreateAPIView.as_view(), name='workery_completed_order_close_operation_api_endpoint'),
+    url(r'^api/orders/operation/open-jobs/close$', IncompleteWorkOrderCloseOperationCreateAPIView.as_view(), name='workery_incomplete_order_close_operation_api_endpoint'),
+    url(r'^api/orders/operation/postpone$', WorkOrderPostponeOperationCreateAPIView.as_view(), name='workery_order_postpone_operation_api_endpoint'),
+    url(r'^api/orders/operation/reopen$', WorkOrderReopenOperationCreateAPIView.as_view(), name='workery_order_reopen_operation_api_endpoint'),                           #TODO: DELETE
 
     # Work Order Service Fees
     url(r'^api/order_service_fees$', WorkOrderServiceFeeListCreateAPIView.as_view(), name='workery_order_service_fee_list_create_api_endpoint'),

@@ -15,6 +15,7 @@ from tenant_api.permissions.order import (
 )
 from tenant_api.serializers.order_operation.unassign_for_completed import CompletedWorkOrderUnassignOperationSerializer
 from tenant_api.serializers.order_operation.close_for_completed import CompletedWorkOrderCloseOperationSerializer
+from tenant_api.serializers.order_close import WorkOrderCloseCreateSerializer
 from tenant_foundation.models import ActivitySheetItem
 
 
@@ -32,6 +33,30 @@ class CompletedWorkOrderCloseOperationCreateAPIView(generics.CreateAPIView):
         """
         client_ip, is_routable = get_client_ip(self.request)
         serializer = CompletedWorkOrderUnassignOperationSerializer(data=request.data, context={
+            'user': request.user,
+            'from': client_ip,
+            'from_is_public': is_routable,
+            'franchise': request.tenant
+        })
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+
+class IncompleteWorkOrderCloseOperationCreateAPIView(generics.CreateAPIView):
+    serializer_class = WorkOrderCloseCreateSerializer
+    permission_classes = (
+        permissions.IsAuthenticated,
+        IsAuthenticatedAndIsActivePermission,
+        CanListCreateWorkOrderPermission
+    )
+
+    def post(self, request, format=None):
+        """
+        Create
+        """
+        client_ip, is_routable = get_client_ip(self.request)
+        serializer = WorkOrderCloseCreateSerializer(data=request.data, context={
             'user': request.user,
             'from': client_ip,
             'from_is_public': is_routable,

@@ -17,7 +17,7 @@ from tenant_api.serializers.order_reopen import WorkOrderReopenCreateSerializer
 from tenant_foundation.models import ActivitySheetItem
 
 
-class WorkOrderReopenCreateAPIView(generics.CreateAPIView):
+class WorkOrderReopenOperationCreateAPIView(generics.CreateAPIView):
     serializer_class = WorkOrderReopenCreateSerializer
     permission_classes = (
         permissions.IsAuthenticated,
