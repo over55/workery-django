@@ -88,11 +88,13 @@ urlpatterns = [
     #TODO: Reopen
     #TODO: Unassign
 
-    # WorkOrders - Update
+    # WorkOrders - Update (DELETE & RECODE TO `OPERATIONS`.)
+    # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     url(r'^api/orders/activity-sheet-item/unassign$', WorkOrderUnassignCreateAPIView.as_view(), name='workery_order_order_unassign_create_api_endpoint'), #TODO: DELETE
     url(r'^api/orders/close$', WorkOrderCloseCreateAPIView.as_view(), name='workery_order_order_close_create_api_endpoint'),                              #TODO: DELETE
     url(r'^api/orders/postpone$', WorkOrderPostponeCreateAPIView.as_view(), name='workery_order_order_postpone_create_api_endpoint'),                     #TODO: DELETE
     url(r'^api/orders/reopen$', WorkOrderReopenCreateAPIView.as_view(), name='workery_order_order_reopen_create_api_endpoint'),                           #TODO: DELETE
+    # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     # Work Order Service Fees
     url(r'^api/order_service_fees$', WorkOrderServiceFeeListCreateAPIView.as_view(), name='workery_order_service_fee_list_create_api_endpoint'),
