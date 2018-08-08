@@ -159,6 +159,7 @@ class StaffListCreateSerializer(serializers.ModelSerializer):
             'available_language',
             'contact_type',
             'email',
+            'personal_email',
             'fax_number',
             # 'hours_available', #TODO: FIX
             'telephone',
@@ -243,6 +244,7 @@ class StaffListCreateSerializer(serializers.ModelSerializer):
 
         # Extract our "email" field.
         email = validated_data.get('email', None)
+        personal_email = validated_data.get('personal_email', None)
 
         #-------------------
         # Create our user.
@@ -296,6 +298,7 @@ class StaffListCreateSerializer(serializers.ModelSerializer):
             available_language=validated_data.get('available_language', None),
             contact_type=validated_data.get('contact_type', None),
             email=email,
+            personal_email=personal_email,
             fax_number=fax_number,
             # 'hours_available', #TODO: IMPLEMENT.
             telephone=telephone,
@@ -464,6 +467,7 @@ class StaffRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
             'available_language',
             'contact_type',
             'email',
+            'personal_email',
             'fax_number',
             # 'hours_available', #TODO: FIX
             'telephone',
@@ -517,6 +521,7 @@ class StaffRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
 
         # Get our inputs.
         email = validated_data.get('email', instance.email)
+        personal_email = validated_data.get('personal_email', None)
 
         #-------------------------------------
         # Bugfix: Created `SharedUser` object.
@@ -594,6 +599,7 @@ class StaffRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         instance.available_language=validated_data.get('available_language', None)
         instance.contact_type=validated_data.get('contact_type', None)
         instance.email=email
+        instance.personal_email=personal_email
         instance.fax_number=validated_data.get('fax_number', None)
         # 'hours_available', #TODO: IMPLEMENT.
         instance.telephone=validated_data.get('telephone', None)

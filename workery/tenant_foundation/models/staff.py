@@ -6,6 +6,7 @@ from datetime import date, datetime, timedelta
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.contrib.postgres.search import SearchVector, SearchVectorField
+from django.core.validators import EmailValidator
 from django.db import models
 from django.db import transaction
 from django.utils import timezone
@@ -26,6 +27,10 @@ from tenant_foundation.utils import *
 # def get_expiry_date(days=2):
 #     """Returns the current date plus paramter number of days."""
 #     return timezone.now() + timedelta(days=days)
+
+
+# Override the validator to have our custom message.
+email_validator = EmailValidator(message=_("Invalid email"))
 
 
 class StaffManager(models.Manager):
@@ -185,7 +190,15 @@ class Staff(AbstractPerson):
         blank=True,
         null=True,
     )
-
+    personal_email = models.EmailField(
+        _("Personal E-mail"),
+        help_text=_('The personal e-mail address of the staff member.'),
+        null=True,
+        blank=True,
+        validators=[email_validator],
+        db_index=True,
+        unique=True
+    )
 
     #
     #  FUNCTIONS

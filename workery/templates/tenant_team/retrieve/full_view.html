@@ -165,9 +165,15 @@
 		    </td>
                 </tr>
                 <tr>
-                    <th scope="row" class="bg-light">E-Mail</th>
+                    <th scope="row" class="bg-light">Work E-Mail</th>
                     <td id="email">
                         {% if staff.email %}<a href="mailto:{{ staff.email }}">{{ staff.email }}</a>{% else %}-{% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row" class="bg-light">Personal E-Mail</th>
+                    <td id="personal_email">
+                        {% if staff.personal_email %}<a href="mailto:{{ staff.personal_email }}">{{ staff.personal_email }}</a>{% else %}-{% endif %}
                     </td>
                 </tr>
 		        <tr>

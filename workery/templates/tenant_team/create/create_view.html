@@ -76,6 +76,7 @@
             $('#postal_code').val(localStorage.getItem("tmp_team_member_postal_code"));
             $('#post_office_box_number').val(localStorage.getItem("tmp_team_member_post_office_box_number"));
             $('#email').val(localStorage.getItem("tmp_team_member_email"));
+            $('#personal_email').val(localStorage.getItem("tmp_team_member_personal_email"));
             $('#telephone').val(localStorage.getItem("tmp_team_member_telephone"));
             $('#account_type').val(localStorage.getItem("tmp_team_member_account_type"));
             $('#password').val(localStorage.getItem("tmp_team_member_password"));
@@ -310,6 +311,7 @@
             var postal_code = $('#postal_code').val();
             var post_office_box_number = $('#post_office_box_number').val();
             var email = $('#email').val();
+            var personal_email = $('#personal_email').val();
             // var area_served = $('#id_area_served').val();
             var telephone = $('#telephone').val();
             // var telephone_extension = $('#id_telephone_extension').val();
@@ -339,6 +341,7 @@
             localStorage.setItem("tmp_team_member_postal_code", postal_code);
             localStorage.setItem("tmp_team_member_post_office_box_number", post_office_box_number);
             localStorage.setItem("tmp_team_member_email", email);
+            localStorage.setItem("tmp_team_member_personal_email", personal_email);
             localStorage.setItem("tmp_team_member_telephone", telephone);
             localStorage.setItem("tmp_team_member_other_telephone", other_telephone);
             localStorage.setItem("tmp_team_member_account_type", account_type);
@@ -397,6 +400,7 @@
                     'postal_code': localStorage.getItem("tmp_team_member_postal_code"),
                     'post_office_box_number': localStorage.getItem("tmp_team_member_post_office_box_number"),
                     'email': localStorage.getItem("tmp_team_member_email"),
+                    'personal_email': localStorage.getItem("tmp_team_member_personal_email"),
                     // 'area_served': area_served,
                     'fax_number': null,
                     'telephone': localStorage.getItem("tmp_team_member_telephone"),
@@ -430,19 +434,19 @@
 
                     // STEP 2: CLEAR EXISTING TEXT.
                     $('#all_error_result').html("");
-		    $('#all_error_result').removeClass('error-block');
+		            $('#all_error_result').removeClass('error-block');
 
                     // STEP 3: PRINT OUR ERROR IN THE TOP ERROR PANEL.
                     for(var prop in err) {
                         if(err.hasOwnProperty(prop)) {
-				var val = err[prop];
+				            var val = err[prop];
 	                        var fdname = humanize(prop);
 
                         	$('#all_error_result').append("<div class='form-error'><b>"+fdname+":</b> "+val+" </div>");
-				$('#all_error_result').addClass('error-block');
-				// Inline fields errors code
-				$('#'+prop+'-error').html("<ul><li>"+val+"</li></ul>");
-				$('#add-member-form').addClass('was-validated');
+				            $('#all_error_result').addClass('error-block');
+				            // Inline fields errors code
+				            $('#'+prop+'-error').html("<ul><li>"+val+"</li></ul>");
+				            $('#add-member-form').addClass('was-validated');
                         }
                     }
 
@@ -551,9 +555,14 @@
                     <div id="other_telephone-error" class="invalid-feedback"></div>
                 </div>
                 <div class="form-group col-md-12 mb-4">
-                    <label for="email">E-Mail <sup>*</sup></label>
+                    <label for="email">Work E-Mail <sup>*</sup></label>
                     <input type="email" class="form-control form-control-lg border border-primary" id="email" name="email" placeholder="Email Address" maxlength="254" required>
                     <div id="email-error" class="invalid-feedback"></div>
+                </div>
+                <div class="form-group col-md-12 mb-4">
+                    <label for="personal_email">Personal E-Mail <sup>*</sup></label>
+                    <input type="personal_email" class="form-control form-control-lg border border-primary" id="personal_email" name="personal_email" placeholder="Email Address" maxlength="254" required>
+                    <div id="personal_email-error" class="invalid-feedback"></div>
                 </div>
             </div>
             <!-- ############ end CONTACT POINT ############ -->

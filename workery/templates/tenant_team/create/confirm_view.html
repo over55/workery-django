@@ -40,6 +40,7 @@
         $('#selected_postal_code').append(localStorage.getItem("tmp_team_member_postal_code"));
         $('#selected_post_office_box_number').append(localStorage.getItem("tmp_team_member_post_office_box_number"));
         $('#selected_email').append(localStorage.getItem("tmp_team_member_email"));
+        $('#selected_personal_email').append(localStorage.getItem("tmp_team_member_personal_email"));
         $('#selected_telephone').append(localStorage.getItem("tmp_team_member_telephone"));
         $('#selected_description').append(localStorage.getItem("tmp_team_member_description"));
         $('#selected_comment').append(localStorage.getItem("tmp_team_member_comment"));
@@ -129,6 +130,7 @@
                 'postal_code': localStorage.getItem("tmp_team_member_postal_code"),
                 'post_office_box_number': localStorage.getItem("tmp_team_member_post_office_box_number"),
                 'email': localStorage.getItem("tmp_team_member_email"),
+                'personal_email': localStorage.getItem("tmp_team_member_personal_email"),
                 // 'area_served': area_served,
                 'fax_number': null,
                 'telephone': localStorage.getItem("tmp_team_member_telephone"),
@@ -162,6 +164,7 @@
                 localStorage.removeItem("tmp_team_member_postal_code");
                 localStorage.removeItem("tmp_team_member_post_office_box_number");
                 localStorage.removeItem("tmp_team_member_email");
+                localStorage.removeItem("tmp_team_member_personal_email");
                 localStorage.removeItem("tmp_team_member_telephone");
                 localStorage.removeItem("tmp_team_member_other_telephone");
                 localStorage.removeItem("tmp_team_member_account_type");
@@ -224,7 +227,7 @@
 	</nav>
     <!------------------------------------------------------------------------->
     <!-- end BREADCRUMB -->
-    
+
     <h1 id="id_page_title">{% trans 'Add Staff Member' %}</h1>
 
     <!-- FORM HTML -->
@@ -249,8 +252,14 @@
            </td>
          </tr>
          <tr>
-           <th scope="row" class="bg-light">Email</th>
+           <th scope="row" class="bg-light">Work E-mail</th>
            <td id="selected_email">
+               <!-- POPULATE THROUGH JS. -->
+           </td>
+         </tr>
+         <tr>
+           <th scope="row" class="bg-light">Personal E-mail</th>
+           <td id="selected_personal_email">
                <!-- POPULATE THROUGH JS. -->
            </td>
          </tr>
