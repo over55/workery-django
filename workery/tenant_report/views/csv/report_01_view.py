@@ -59,6 +59,8 @@ def report_01_streaming_csv_view(request):
                 Q(state=WORK_ORDER_STATE.COMPLETED_AND_PAID)
             ) &
             Q(assignment_date__range=(from_dt,to_dt))
+        ).order_by(
+            '-assignment_date'
         ).prefetch_related(
             'customer',
             'associate',
@@ -69,6 +71,8 @@ def report_01_streaming_csv_view(request):
             ~Q(associate=None) &
             Q(state=state) &
             Q(assignment_date__range=(from_dt,to_dt))
+        ).order_by(
+            '-assignment_date'
         ).prefetch_related(
             'customer',
             'associate',
