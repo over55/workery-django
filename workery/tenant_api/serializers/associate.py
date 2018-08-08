@@ -326,6 +326,8 @@ class AssociateListCreateSerializer(serializers.ModelSerializer):
             limit_special=validated_data.get('limit_special', None),
             dues_date=validated_data.get('dues_date', None),
             commercial_insurance_expiry_date=validated_data.get('commercial_insurance_expiry_date', None),
+            auto_insurance_expiry_date = validated_data.get('auto_insurance_expiry_date', None),
+            wsib_insurance_date = validated_data.get('wsib_insurance_date', None),
             police_check=validated_data.get('police_check', None),
             drivers_license_class=validated_data.get('drivers_license_class', None),
             how_hear=validated_data.get('how_hear', None),
@@ -642,6 +644,8 @@ class AssociateRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         instance.limit_special=validated_data.get('limit_special', instance.limit_special)
         instance.dues_date=validated_data.get('dues_date', instance.dues_date)
         instance.commercial_insurance_expiry_date=validated_data.get('commercial_insurance_expiry_date', instance.commercial_insurance_expiry_date)
+        instance.auto_insurance_expiry_date = validated_data.get('auto_insurance_expiry_date', instance.auto_insurance_expiry_date)
+        instance.wsib_insurance_date = validated_data.get('wsib_insurance_date', instance.wsib_insurance_date)
         instance.police_check=validated_data.get('police_check', instance.police_check)
         instance.drivers_license_class=validated_data.get('drivers_license_class', instance.drivers_license_class)
         instance.how_hear=validated_data.get('how_hear', instance.how_hear)
