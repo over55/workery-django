@@ -55,7 +55,10 @@ class DashboardView(LoginRequiredMixin, GroupRequiredMixin, WorkeryTemplateView)
         modified_context['customers_count'] = Customer.objects.all().count()
 
         modified_context['jobs_count'] = WorkOrder.objects.filter(
-            state=WORK_ORDER_STATE.IN_PROGRESS
+            Q(state=WORK_ORDER_STATE.NEW) |
+            Q(state=WORK_ORDER_STATE.PENDING) |
+            Q(state=WORK_ORDER_STATE.ONGOING) |
+            Q(state=WORK_ORDER_STATE.IN_PROGRESS)
         ).count()
 
         modified_context['tasks_count'] = TaskItem.objects.filter(
