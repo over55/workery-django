@@ -105,53 +105,52 @@
         <div class="col-sm-5 mx-auto text-center">
 		<div class="btn-group">
 		  <button class="btn btn-info btn-lg dropdown-toggle btn-block" style="min-width: 240px" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-		    Filter By
+		    Filter By &nbsp;&nbsp;&nbsp;
 		  </button>
 		  <div class="dropdown-menu">
 	{% if parameters.job_state == "all" %}
-                <strong>All</strong>
+                <strong class="px-4 py-2">All</strong>
         {% else %}
                 <a class="dropdown-item" href="?job_state=all" class="text-center">All</a>
         {% endif %}
 	
 	{% if parameters.job_state == "declined" %}
-                <strong>Declined</strong>
+                <strong class="px-4 py-2">Declined</strong>
         {% else %}
                 <a class="dropdown-item" href="?job_state=declined" class="text-center">Declined</a>
         {% endif %}
 	{% if parameters.job_state == "pending" %}
-                <strong>Pending</strong>
+                <strong class="px-4 py-2">Pending</strong>
         {% else %}
                 <a class="dropdown-item" href="?job_state=pending" class="text-center">Pending</a>
         {% endif %}
 	{% if parameters.job_state == "cancelled" %}
-                <strong>Cancelled</strong>
+                <strong class="px-4 py-2">Cancelled</strong>
         {% else %}
                 <a class="dropdown-item" href="?job_state=cancelled" class="text-center">Cancelled</a>
         {% endif %}
 	{% if parameters.job_state == "ongoing" %}
-                <strong>Ongoing</strong>
+                <strong class="px-4 py-2">Ongoing</strong>
             {% else %}
                 <a class="dropdown-item" href="?job_state=ongoing" class="text-center">Ongoing</a>
             {% endif %}
 	 {% if parameters.job_state == "in_progress" %}
-                <strong>In Progress</strong>
+                <strong class="px-4 py-2">In Progress</strong>
             {% else %}
                 <a class="dropdown-item" href="?job_state=in_progress" class="text-center">Is Progress</a>
             {% endif %}
 {% if parameters.job_state == "completed_and_unpaid" %}
-                <strong>Completed and Unpaid</strong>
+                <strong class="px-4 py-2">Completed and Unpaid</strong>
             {% else %}
                 <a class="dropdown-item" href="?job_state=completed_and_unpaid" class="text-center">Completed and Unpaid</a>
             {% endif %}
 {% if parameters.job_state == "completed_and_paid" %}
-                <strong>Completed and Paid</strong>
+                <strong class="px-4 py-2">Completed and Paid</strong>
             {% else %}
                 <a class="dropdown-item" href="?job_state=completed_and_paid" class="text-center">Completed and Paid</a>
             {% endif %}	    	
 		  </div>
 		</div>
-          
         </div>
     </div>
 
