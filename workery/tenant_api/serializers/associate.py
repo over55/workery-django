@@ -315,7 +315,7 @@ class AssociateListCreateSerializer(serializers.ModelSerializer):
             last_name=validated_data['last_name'],
             middle_name=validated_data['middle_name'],
             birthdate=validated_data.get('birthdate', None),
-            join_date=validated_data.get('join_date', datetime.date.today()),
+            join_date=validated_data.get('join_date', None),
             gender=validated_data.get('gender', None),
             tax_id=validated_data.get('tax_id', None),
 
