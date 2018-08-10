@@ -69,7 +69,7 @@ class Command(BaseCommand):
         # Delete this bad tasks.
         TaskItem.objects.filter(id__in=[
             1369, 1351, 1370, 1362, 1349, 1367, 1363, 1360, 1359, 1355, 1353,
-            1352, 1348, 1361, 1364, 1365, 1368, 1354, 1366, 1356, 1350
+            1352, 1348, 1361, 1364, 1365, 1368, 1354, 1366, 1356, 1350, 1586
         ]).delete()
 
         # For debugging purposes.
