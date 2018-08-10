@@ -55,7 +55,8 @@ class WorkOrderRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
 
     assigned_skill_sets = SkillSetListCreateSerializer(many=True, read_only=True)
 
-    invoice_service_fee_payment_date = serializers.DateField(required=True, allow_null=True)
+    invoice_service_fee_payment_date = serializers.DateField(required=False, allow_null=True)
+    invoice_date = serializers.DateField(required=False, allow_null=True)
     invoice_id = serializers.IntegerField(required=False, allow_null=True)
 
     class Meta:
@@ -115,6 +116,14 @@ class WorkOrderRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         return queryset
 
     def validate_invoice_service_fee_payment_date(self, value):
+        """
+        Include validation on no-blanks
+        """
+        if value is None:
+            raise serializers.ValidationError("This field may not be blank.")
+        return value
+
+    def validate_invoice_date(self, value):
         """
         Include validation on no-blanks
         """

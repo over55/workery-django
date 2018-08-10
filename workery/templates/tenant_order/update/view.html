@@ -25,9 +25,6 @@
         $( "#completion_date" ).datepicker({
             dateFormat: 'yy-mm-dd'  // https://stackoverflow.com/a/7500097
         });
-        $( "#invoice_service_fee_payment_date" ).datepicker({
-            dateFormat: 'yy-mm-dd'  // https://stackoverflow.com/a/7500097
-        });
 
         // Initialize our datepicker jQuery code with our HTML view.
         $('#skill_sets').select2();
@@ -72,9 +69,6 @@
         var hours = $('#hours').val();
         console.log("hours:", hours);
 
-        var invoice_service_fee_payment_date = $('#invoice_service_fee_payment_date').val();
-        console.log("invoice_service_fee_payment_date:", completion_date);
-
         var order_service_fee = $('#order_service_fee').val();
         if (order_service_fee == undefined || order_service_fee == null || order_service_fee.length == 0) {
             order_service_fee = '';
@@ -116,7 +110,6 @@
             'completion_date': completion_date,
             'hours': hours,
             'invoice_service_fee': $('#order_service_fee').val(),
-            'invoice_service_fee_payment_date': invoice_service_fee_payment_date,
             'extra_comment': null
         };
 
@@ -286,18 +279,6 @@
             <div class="input-group input-group-lg">
                 <input type="text" class="form-control form-control-lg border border-success" id="hours" name="hours" placeholder="Hours" minlength="3" maxlength="127" required value="{{ job.hours }}">
                 <div id="hours-error" class="invalid-feedback"></div>
-            </div>
-        </div>
-
-
-        <div class="form-group p-0 col-md-7 mb-4">
-            <label for="invoice_service_fee_payment_date">Invoice Service Fee Payment Date</label>
-            <div class="input-group input-group-lg">
-                <input type="text" class="form-control form-control-lg border border-success" id="invoice_service_fee_payment_date" name="invoice_service_fee_payment_date" placeholder="yyyy-mm-dd" value="{% if job.invoice_service_fee_payment_date %}{{ job.invoice_service_fee_payment_date|date:"Y-m-d" }}{% endif %}" required>
-                <div class="input-group-append">
-                    <span class="input-group-text c-icon-white bg-success border-success"><i class="far fa-calendar-alt"></i></span>
-                </div>
-                <div id="invoice_service_fee_payment_date-error" class="invalid-feedback"></div>
             </div>
         </div>
 
