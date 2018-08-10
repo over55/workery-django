@@ -866,7 +866,7 @@
 	  $('#address_country').change(function(){
 	    loadState($(this).find(':selected').val())
 	  });
-	  {% if associate.address_country %}loadState('{{associate.address_country}}');{% else %}loadState('CA');{% endif %}
+	  {% if associate.address_country == 'Canada' %}loadState('CA');{% else %}loadState('{{associate.address_country}}');{% endif %}
     	});
 	let c_dropdown = $('#address_country');
 	c_dropdown.empty();
@@ -895,10 +895,11 @@
 		    }
 		  })
 		});
-		{% if associate.address_region %}p_dropdown.val('{{associate.address_region}}');{% else %}p_dropdown.prop('selectedIndex', 1);{% endif %}
+		
+		{% if associate.address_region == 'Ontario' %}p_dropdown.prop('selectedIndex', 1);{% else %}p_dropdown.val('{{associate.address_region}}');{% endif %}
 
     	}
-
+												 
 	/**
 	 *  Password Strength Check Validation.
 	 */
