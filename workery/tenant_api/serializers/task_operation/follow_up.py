@@ -75,11 +75,14 @@ class FollowUpTaskOperationSerializer(serializers.Serializer):
         """
         Override the `create` function to add extra functinality.
         """
+        # Defensive Code - If no date was specified then we assume 7 days from today.
+        today_plus_seven = get_date_plus_days(timezone.now(), 7)
+
         # STEP 1 - Get validated POST data.
         task_item = validated_data.get('task_item', None)
         comment_text = validated_data.get('comment', None)
         has_agreed_to_meet = validated_data.get('has_agreed_to_meet', None)
-        meeting_date = validated_data.get('meeting_date', timezone.now())
+        meeting_date = validated_data.get('meeting_date', today_plus_seven)
 
         # STEP 2 - If the user has submitted an optional comment for the job
         #          then we will include it.
@@ -108,12 +111,15 @@ class FollowUpTaskOperationSerializer(serializers.Serializer):
 
         if has_agreed_to_meet:
 
+            # Rational: We want to ask the customer 24 hours AFTER the client meeting data.
+            meeting_date = get_date_plus_days(meeting_date, 1)
+
             # STEP 5 - Create our new task for following up.
             next_task_item = TaskItem.objects.create(
                 type_of = FOLLOW_UP_CUSTOMER_SURVEY_TASK_ITEM_TYPE_OF_ID,
                 title = _('Completion Survey'),
                 description = _('Please call up the client and perform the satisfaction survey.'),
-                due_date = get_date_plus_days(meeting_date, 7),
+                due_date = meeting_date,
                 is_closed = False,
                 job = task_item.job,
                 created_by = self.context['user'],
