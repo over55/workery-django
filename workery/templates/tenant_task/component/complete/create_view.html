@@ -284,7 +284,7 @@ function get_selected_radio_value(radiofields_name) {
             <div class="form-group p-0 col-md-7 mb-4" id="meeting_date_div" style="display: none;">
                 <label for="meeting_date" class="font-b6">Client meeting date</label>
                 <div class="input-group input-group-lg">
-                    <input type="text" class="form-control form-control-lg border border-success" id="meeting_date" name="meeting_date" placeholder="yyyy-mm-dd" required>
+                    <input type="text" class="form-control form-control-lg border border-success" id="meeting_date" name="meeting_date" placeholder="yyyy-mm-dd" value="{% if task_item.job %}{{ task_item.job.start_date }}{% elif task_item.ongoing_job %}{{ task_item.ongoing_job.start_date }}{% endif %}" required>
                     <div class="input-group-append">
                         <span class="input-group-text dob-icon bg-success border-success"><i class="far fa-calendar-alt"></i></span>
                     </div>

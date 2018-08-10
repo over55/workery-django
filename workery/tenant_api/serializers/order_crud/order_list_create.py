@@ -189,7 +189,7 @@ class WorkOrderListCreateSerializer(serializers.ModelSerializer):
             created_by=self.context['created_by'],
             last_modified_by=self.context['created_by'],
             type_of = ASSIGNED_ASSOCIATE_TASK_ITEM_TYPE_OF_ID,
-            due_date = order.start_date,
+            due_date = timezone.now(),
             is_closed = False,
             job = order,
             ongoing_job = None,
