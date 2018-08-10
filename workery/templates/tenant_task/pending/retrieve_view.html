@@ -110,20 +110,12 @@
                     </td>
                 </tr>
                 <tr>
-                    <th scope="row" class="bg-light">Created At</th>
-                    <td id="selected_job_type_id">
-                        {{ task_item.created_at|timezone:request.tenant.timezone_name }}
-                    </td>
-                </tr>
-                <tr>
-                    <th scope="row" class="bg-light">Created by</th>
-                    <td id="selected_home_support_id">
-                        {% if task_item.created_by %}
-                            <a href="{% url 'workery_tenant_team_retrieve_from_user_id_redirect' 'summary' task_item.created_by.id %}" target="_blank">
-                                {{ task_item.created_by.get_full_name }}&nbsp;<i class="fas fa-external-link-alt"></i>
-                            </a>
-                        {% else %}
-                            -
+                    <th scope="row" class="bg-light">Job Start Date</th>
+                    <td id="selected_job_start_date">
+                        {% if task_item.job %}
+                            {{ task_item.job.start_date }}
+                        {% elif task_item.ongoing_job %}
+                            {{ task_item.ongoing_job.start_date }}
                         {% endif %}
                     </td>
                 </tr>
@@ -329,6 +321,14 @@
                 </tr>
             </tbody>
         </table>
+        <p style="text-align: right; color: grey; font-size: 15px;">
+        Created at {{ task_item.created_at|timezone:request.tenant.timezone_name }} by
+            {% if task_item.created_by %}
+                {{ task_item.created_by.get_full_name }}
+            {% else %}
+                -
+            {% endif %}
+        </p>
     </div>
     <div class="form-group col-md-10 mb-3 mx-auto text-center">
         {% if task_item.ongoing_job %}
