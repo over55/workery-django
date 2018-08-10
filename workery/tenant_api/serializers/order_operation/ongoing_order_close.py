@@ -104,28 +104,6 @@ class OngoingWorkOrderCloseOperationSerializer(serializers.Serializer):
         # For debugging purposes only.
         logger.info("Job comment created.")
 
-
-        # #----------------------------------------#
-        # # Lookup our Task(s) and close them all. #
-        # #----------------------------------------#
-        # task_items = TaskItem.objects.filter(
-        #     job=job,
-        #     is_closed=False
-        # )
-        # for task_item in task_items.all():
-        #     logger.info("Found task #%(id)s." % {
-        #         'id': str(task_item.id)
-        #     })
-        #     task_item.reason = reason
-        #     task_item.reason_other = reason_other
-        #     task_item.is_closed = True
-        #     task_item.last_modified_by = self.context['user']
-        #     task_item.save()
-        #     logger.info("Closed task #%(id)s." % {
-        #         'id': str(task_item.id)
-        #     })
-        #
-
         #-------------------------#
         # Update the ongoing job. #
         #-------------------------#
@@ -135,29 +113,17 @@ class OngoingWorkOrderCloseOperationSerializer(serializers.Serializer):
         # For debugging purposes only.
         logger.info("Updated ongoing job.")
 
-        # #---------------------------------------------#
-        # # Create a new task based on a new start date #
-        # #---------------------------------------------#
-        # next_task_item = TaskItem.objects.create(
-        #     created_by=self.context['user'],
-        #     last_modified_by=self.context['user'],
-        #     type_of = ASSIGNED_ASSOCIATE_TASK_ITEM_TYPE_OF_ID,
-        #     due_date = job.start_date,
-        #     is_closed = False,
-        #     job = job,
-        #     title = _('Assign an Associate'),
-        #     description = _('Please assign an associate to this job.')
-        # )
-        #
-        # # For debugging purposes only.
-        # logger.info("Assignment Task #%(id)s was created b/c of unassignment." % {
-        #     'id': str(next_task_item.id)
-        # })
-        #
-        # # Attach our next job.
-        # job.latest_pending_task = next_task_item
-        # job.save()
-        #
-        # # Assign our new variables and return the validated data.
-        # validated_data['id'] = next_task_item.id
+        #---------------------------------#
+        # Close all the TaskItem objects. #
+        #---------------------------------#
+        for task_item in TaskItem.objects.filter(ongoing_job=job, is_closed=True):
+            task_item.last_modified_by = self.context['user']
+            task_item.last_modified_from = self.context['from']
+            task_item.last_modified_from_is_public = self.context['from_is_public']
+            task_item.is_closed = True
+            task_item.closing_reason = 1  # (Other - choice.)
+            task_item.closing_reason_other = 'Closed because master job was closed.'
+            task_item.save()
+
+        # Return our processed values.
         return validated_data

@@ -64,6 +64,16 @@ class OngoingWorkOrderRetrieveUpdateDestroySerializer(serializers.ModelSerialize
         # instance.closed_orders = validated_data.get('closed_orders', instance.closed_orders)
         instance.state = validated_data.get('state', instance.state)
 
+        if instance.state == ONGOING_WORK_ORDER_STATE.TERMINATED:
+            for task_item in TaskItem.objects.filter(ongoing_job=instance, is_closed=True):
+                task_item.last_modified_by = self.context['last_modified_by']
+                task_item.last_modified_from = self.context['last_modified_from']
+                task_item.last_modified_from_is_public = self.context['last_modified_from_is_public']
+                task_item.is_closed = True
+                task_item.closing_reason = 1  # (Other - choice.)
+                task_item.closing_reason_other = 'Closed because master job was closed.'
+                task_item.save()
+
         # Save the model.
         instance.save()
         logger.info("Updated ongoing order object.")
