@@ -116,7 +116,7 @@ class OngoingWorkOrderCloseOperationSerializer(serializers.Serializer):
         #---------------------------------#
         # Close all the TaskItem objects. #
         #---------------------------------#
-        for task_item in TaskItem.objects.filter(ongoing_job=job, is_closed=True):
+        for task_item in TaskItem.objects.filter(ongoing_job=job, is_closed=False):
             task_item.last_modified_by = self.context['user']
             task_item.last_modified_from = self.context['from']
             task_item.last_modified_from_is_public = self.context['from_is_public']

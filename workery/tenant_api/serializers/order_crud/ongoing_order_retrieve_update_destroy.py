@@ -65,7 +65,7 @@ class OngoingWorkOrderRetrieveUpdateDestroySerializer(serializers.ModelSerialize
         instance.state = validated_data.get('state', instance.state)
 
         if instance.state == ONGOING_WORK_ORDER_STATE.TERMINATED:
-            for task_item in TaskItem.objects.filter(ongoing_job=instance, is_closed=True):
+            for task_item in TaskItem.objects.filter(ongoing_job=instance, is_closed=False):
                 task_item.last_modified_by = self.context['last_modified_by']
                 task_item.last_modified_from = self.context['last_modified_from']
                 task_item.last_modified_from_is_public = self.context['last_modified_from_is_public']
