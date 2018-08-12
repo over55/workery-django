@@ -12,12 +12,12 @@
 <input id="id_show_customer_survey" name="show_customer_survey" value="" />
 <script>
     function show_success_panel() {
-        $("#customer_satisfaction_survey_div").show();
+        $("#customer_completion_form_div").show();
         $("#id_show_customer_survey").val(true);
     }
 
     function hide_success_panel() {
-        $("#customer_satisfaction_survey_div").hide();
+        $("#customer_completion_form_div").hide();
         $("#id_show_customer_survey").val(false);
     }
 
@@ -62,18 +62,29 @@
             }
         });
 
+        $('input[type=radio][name=was_survey_conducted]').change(function() {
+            if (this.value == 'yes') {
+                // Load up the GUI for the customer survey for a successful job.
+                $("#customer_satisfaction_survey_div").show();
+            }
+            else if (this.value == 'no') {
+                // Load up the GUI for the reason why the job was not accomplished.
+                $("#customer_satisfaction_survey_div").hide();
+            }
+        });
+
         // PLUG IN EVENT LISTENER ON REASON DROPDOWN CHANGE.
         $('#reason').on('change',function(){
             if( $(this).val()==="other" || $(this).val()===1){
-                $("#customer_satisfaction_survey_div").hide();
+                $("#customer_completion_form_div").hide();
                 $("#reason_other_div").show();
             }
             else if( $(this).val()==="4" || $(this).val()===4){
-                $("#customer_satisfaction_survey_div").show();
+                $("#customer_completion_form_div").show();
                 $("#reason_other_div").hide();
             }
             else{
-                $("#customer_satisfaction_survey_div").hide();
+                $("#customer_completion_form_div").hide();
                 $("#reason_other_div").hide();
             }
         });
@@ -192,6 +203,7 @@
         }
 
         // Get our "Client Survey".
+        var was_survey_conducted = get_selected_radio_value('was_survey_conducted');
         var was_job_satisfactory = get_selected_radio_value('was_job_satisfactory');
         var was_job_finished_on_time_and_on_budget = get_selected_radio_value('was_job_finished_on_time_and_on_budget');
         var was_associate_punctual = get_selected_radio_value('was_associate_punctual');
@@ -219,6 +231,7 @@
         // 400 validation errors.
         if (reason !== 4) {
             console.log("Setting default values.");
+            was_survey_conducted = false;
             was_job_satisfactory = false;
             was_job_finished_on_time_and_on_budget = false;
             was_associate_punctual = false;
@@ -238,6 +251,7 @@
         console.log("job", "{{ job.id }}");
         console.log("reason", reason);
         console.log("additional_comment", $('#comment').val());
+        console.log("was_survey_conducted", was_survey_conducted);
         console.log("was_job_satisfactory", was_job_satisfactory);
         console.log("was_job_finished_on_time_and_on_budget", was_job_finished_on_time_and_on_budget);
         console.log("was_associate_punctual", was_associate_punctual);
@@ -259,6 +273,7 @@
                 'reason': reason,
                 'reason_other': $('#reason_other').val(),
                 'additional_comment': $('#comment').val(),
+                'was_survey_conducted': was_survey_conducted,
                 'was_job_satisfactory': was_job_satisfactory,
                 'was_job_finished_on_time_and_on_budget': was_job_finished_on_time_and_on_budget,
                 'was_associate_punctual': was_associate_punctual,
@@ -300,12 +315,12 @@
                     if(err.hasOwnProperty(prop)) {
                         var val = err[prop];
                         var fdname = humanize(prop);
-   		        // Errors box code
-			$('#all_error_result').append("<div class='form-error'><b>"+fdname+":</b> "+val+" </div>");
-			$('#all_error_result').addClass('error-block');
-			// Inline fields errors code
-			$('#'+prop+'-error').html("<ul><li>"+val+"</li></ul>");
-			$('#add-client-form').addClass('was-validated');
+   		                // Errors box code
+                        $('#all_error_result').append("<div class='form-error'><b>"+fdname+":</b> "+val+" </div>");
+            			$('#all_error_result').addClass('error-block');
+            			// Inline fields errors code
+            			$('#'+prop+'-error').html("<ul><li>"+val+"</li></ul>");
+            			$('#add-client-form').addClass('was-validated');
                     }
                 }
 
@@ -466,9 +481,9 @@
 
 
                                 <!--------------------------------------------->
-                                <!--             CUSTOMER SUVERY             -->
+                                <!--          CUSTOMER COMPLETION FORM       -->
                                 <!--------------------------------------------->
-                                <div id="customer_satisfaction_survey_div" style="display: none;">
+                                <div id="customer_completion_form_div" style="display: none;">
                                     <!-- Invoice Date -->
                                     <div class="form-group col-md-12 mb-4">
                                         <label for="invoice_date">Completion Date</label>
@@ -538,80 +553,107 @@
                                     </div>
                                     <!-- end Invoice Total -->
 
-                                    <!-- was_job_satisfactory -->
+                                    <!--------------------------------------------->
+                                    <!--              YES/NO CHOICE              -->
+                                    <!--------------------------------------------->
                                     <div class="form-group col-md-12 mb-4">
-                                        <p class="mb-1">Was the quality of the work satisfactory?</p>
+                                        <p class="mb-1">Was there a survey conducted?&nbsp;<sup>*</sup></p>
                                         <div class="form-radio custom-control custom-radio mb-2">
-                                            <input type="radio" id="was_job_satisfactory" name="was_job_satisfactory" value="yes" class="custom-control-input form-check-input" required>
-                                            <label class="custom-control-label form-check-label" for="was_job_satisfactory">Yes</label>
+                                            <input type="radio" id="was_survey_conducted" name="was_survey_conducted" value="yes" class="custom-control-input form-check-input" required>
+                                            <label class="custom-control-label form-check-label" for="was_survey_conducted">Yes</label>
                                         </div>
                                         <div class="form-radio custom-control custom-radio">
-                                            <input type="radio" id="was_job_satisfactory2" name="was_job_satisfactory" value="no" class="custom-control-input form-check-input" required>
-                                            <label class="custom-control-label form-check-label" for="was_job_satisfactory2">No</label>
-                                            <div id="was_job_satisfactory-error" class="invalid-feedback"></div>
+                                            <input type="radio" id="was_survey_conducted2" name="was_survey_conducted" value="no" class="custom-control-input form-check-input" required>
+                                            <label class="custom-control-label form-check-label" for="was_survey_conducted2">No</label>
+                        		            <small class="form-text text-muted">Selecting "yes" will close this job as success.</small>
+                        		            <div id="was_survey_conducted-error" class="invalid-feedback"></div>
                                         </div>
                                     </div>
-                                    <!-- end was_job_satisfactory -->
+                                    <!--------------------------------------------->
+                                    <!--            end YES/NO CHOICE            -->
+                                    <!--------------------------------------------->
 
-                                    <!-- was_job_finished_on_time_and_on_budget -->
-                                    <div class="form-group col-md-12 mb-4">
-                                        <p class="mb-1">Was the work completed on time and on budget?</p>
-                                        <div class="form-radio custom-control custom-radio mb-2">
-                                            <input type="radio" id="was_job_finished_on_time_and_on_budget" name="was_job_finished_on_time_and_on_budget" value="yes" class="custom-control-input form-check-input" required>
-                                            <label class="custom-control-label form-check-label" for="was_job_finished_on_time_and_on_budget">Yes</label>
-                                        </div>
-                                        <div class="form-radio custom-control custom-radio">
-                                            <input type="radio" id="was_job_finished_on_time_and_on_budget2" name="was_job_finished_on_time_and_on_budget" value="no" class="custom-control-input form-check-input" required>
-                                            <label class="custom-control-label form-check-label" for="was_job_finished_on_time_and_on_budget2">No</label>
-                                            <div id="was_job_finished_on_time_and_on_budget-error" class="invalid-feedback"></div>
-                                        </div>
-                                    </div>
-                                    <!-- end was_job_finished_on_time_and_on_budget -->
+                                    <!--------------------------------------------->
+                                    <!--       CUSTOMER SATISFACTION SURVEY      -->
+                                    <!--------------------------------------------->
+                                    <div id="customer_satisfaction_survey_div" style="display: none;">
 
-                                    <!-- was_associate_punctual -->
-                                    <div class="form-group col-md-12 mb-4">
-                                        <p class="mb-1">Was the Associate Member punctual?</p>
-                                        <div class="form-radio custom-control custom-radio mb-2">
-                                            <input type="radio" id="was_associate_punctual" name="was_associate_punctual" value="yes" class="custom-control-input form-check-input" required>
-                                            <label class="custom-control-label form-check-label" for="was_associate_punctual">Yes</label>
+                                        <!-- was_job_satisfactory -->
+                                        <div class="form-group col-md-12 mb-4">
+                                            <p class="mb-1">Was the quality of the work satisfactory?</p>
+                                            <div class="form-radio custom-control custom-radio mb-2">
+                                                <input type="radio" id="was_job_satisfactory" name="was_job_satisfactory" value="yes" class="custom-control-input form-check-input" required>
+                                                <label class="custom-control-label form-check-label" for="was_job_satisfactory">Yes</label>
+                                            </div>
+                                            <div class="form-radio custom-control custom-radio">
+                                                <input type="radio" id="was_job_satisfactory2" name="was_job_satisfactory" value="no" class="custom-control-input form-check-input" required>
+                                                <label class="custom-control-label form-check-label" for="was_job_satisfactory2">No</label>
+                                                <div id="was_job_satisfactory-error" class="invalid-feedback"></div>
+                                            </div>
                                         </div>
-                                        <div class="form-radio custom-control custom-radio">
-                                            <input type="radio" id="was_associate_punctual2" name="was_associate_punctual" value="no" class="custom-control-input form-check-input" required>
-                                            <label class="custom-control-label form-check-label" for="was_associate_punctual2">No</label>
-                                            <div id="was_associate_punctual-error" class="invalid-feedback"></div>
-                                        </div>
-                                    </div>
-                                    <!-- end was_associate_punctual -->
+                                        <!-- end was_job_satisfactory -->
 
-                                    <!-- was_associate_professional -->
-                                    <div class="form-group col-md-12 mb-4">
-                                        <p class="mb-1">Was the Associate Member professional?</p>
-                                        <div class="form-radio custom-control custom-radio mb-2">
-                                            <input type="radio" id="was_associate_professional" name="was_associate_professional" value="yes" class="custom-control-input form-check-input" required>
-                                            <label class="custom-control-label form-check-label" for="was_associate_professional">Yes</label>
+                                        <!-- was_job_finished_on_time_and_on_budget -->
+                                        <div class="form-group col-md-12 mb-4">
+                                            <p class="mb-1">Was the work completed on time and on budget?</p>
+                                            <div class="form-radio custom-control custom-radio mb-2">
+                                                <input type="radio" id="was_job_finished_on_time_and_on_budget" name="was_job_finished_on_time_and_on_budget" value="yes" class="custom-control-input form-check-input" required>
+                                                <label class="custom-control-label form-check-label" for="was_job_finished_on_time_and_on_budget">Yes</label>
+                                            </div>
+                                            <div class="form-radio custom-control custom-radio">
+                                                <input type="radio" id="was_job_finished_on_time_and_on_budget2" name="was_job_finished_on_time_and_on_budget" value="no" class="custom-control-input form-check-input" required>
+                                                <label class="custom-control-label form-check-label" for="was_job_finished_on_time_and_on_budget2">No</label>
+                                                <div id="was_job_finished_on_time_and_on_budget-error" class="invalid-feedback"></div>
+                                            </div>
                                         </div>
-                                        <div class="form-radio custom-control custom-radio">
-                                            <input type="radio" id="was_associate_professional2" name="was_associate_professional" value="no" class="custom-control-input form-check-input" required>
-                                            <label class="custom-control-label form-check-label" for="was_associate_professional2">No</label>
-                                            <div id="was_associate_professional-error" class="invalid-feedback"></div>
-                                        </div>
-                                    </div>
-                                    <!-- end was_associate_professional -->
+                                        <!-- end was_job_finished_on_time_and_on_budget -->
 
-                                    <!-- would_customer_refer_our_organization -->
-                                    <div class="form-group col-md-12 mb-4">
-                                        <p class="mb-1">Would you refer Over55 to a friend of family member?</p>
-                                        <div class="form-radio custom-control custom-radio mb-2">
-                                            <input type="radio" id="would_customer_refer_our_organization" name="would_customer_refer_our_organization" value="yes" class="custom-control-input form-check-input" required>
-                                            <label class="custom-control-label form-check-label" for="would_customer_refer_our_organization">Yes</label>
+                                        <!-- was_associate_punctual -->
+                                        <div class="form-group col-md-12 mb-4">
+                                            <p class="mb-1">Was the Associate Member punctual?</p>
+                                            <div class="form-radio custom-control custom-radio mb-2">
+                                                <input type="radio" id="was_associate_punctual" name="was_associate_punctual" value="yes" class="custom-control-input form-check-input" required>
+                                                <label class="custom-control-label form-check-label" for="was_associate_punctual">Yes</label>
+                                            </div>
+                                            <div class="form-radio custom-control custom-radio">
+                                                <input type="radio" id="was_associate_punctual2" name="was_associate_punctual" value="no" class="custom-control-input form-check-input" required>
+                                                <label class="custom-control-label form-check-label" for="was_associate_punctual2">No</label>
+                                                <div id="was_associate_punctual-error" class="invalid-feedback"></div>
+                                            </div>
                                         </div>
-                                        <div class="form-radio custom-control custom-radio">
-                                            <input type="radio" id="would_customer_refer_our_organization2" name="would_customer_refer_our_organization" value="no" class="custom-control-input form-check-input" required>
-                                            <label class="custom-control-label form-check-label" for="would_customer_refer_our_organization2">No</label>
-                                            <div id="would_customer_refer_our_organization-error" class="invalid-feedback"></div>
+                                        <!-- end was_associate_punctual -->
+
+                                        <!-- was_associate_professional -->
+                                        <div class="form-group col-md-12 mb-4">
+                                            <p class="mb-1">Was the Associate Member professional?</p>
+                                            <div class="form-radio custom-control custom-radio mb-2">
+                                                <input type="radio" id="was_associate_professional" name="was_associate_professional" value="yes" class="custom-control-input form-check-input" required>
+                                                <label class="custom-control-label form-check-label" for="was_associate_professional">Yes</label>
+                                            </div>
+                                            <div class="form-radio custom-control custom-radio">
+                                                <input type="radio" id="was_associate_professional2" name="was_associate_professional" value="no" class="custom-control-input form-check-input" required>
+                                                <label class="custom-control-label form-check-label" for="was_associate_professional2">No</label>
+                                                <div id="was_associate_professional-error" class="invalid-feedback"></div>
+                                            </div>
                                         </div>
+                                        <!-- end was_associate_professional -->
+
+                                        <!-- would_customer_refer_our_organization -->
+                                        <div class="form-group col-md-12 mb-4">
+                                            <p class="mb-1">Would you refer Over55 to a friend of family member?</p>
+                                            <div class="form-radio custom-control custom-radio mb-2">
+                                                <input type="radio" id="would_customer_refer_our_organization" name="would_customer_refer_our_organization" value="yes" class="custom-control-input form-check-input" required>
+                                                <label class="custom-control-label form-check-label" for="would_customer_refer_our_organization">Yes</label>
+                                            </div>
+                                            <div class="form-radio custom-control custom-radio">
+                                                <input type="radio" id="would_customer_refer_our_organization2" name="would_customer_refer_our_organization" value="no" class="custom-control-input form-check-input" required>
+                                                <label class="custom-control-label form-check-label" for="would_customer_refer_our_organization2">No</label>
+                                                <div id="would_customer_refer_our_organization-error" class="invalid-feedback"></div>
+                                            </div>
+                                        </div>
+                                        <!-- end would_customer_refer_our_organization -->
+
                                     </div>
-                                    <!-- end would_customer_refer_our_organization -->
 
                                 </div>
                                 <!--------------------------------------------->

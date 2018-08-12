@@ -64,6 +64,7 @@ class WorkOrderCloseCreateSerializer(serializers.Serializer):
     reason = serializers.IntegerField(required=False, validators=[cannot_be_zero_or_negative,])
     reason_other = serializers.CharField(required=False, allow_blank=True)
     additional_comment = serializers.CharField(required=False, allow_blank=True)
+    was_survey_conducted = serializers.BooleanField(required=False)
     was_job_satisfactory = serializers.BooleanField(required=False)
     was_job_finished_on_time_and_on_budget = serializers.BooleanField(required=False)
     was_associate_punctual = serializers.BooleanField(required=False)
@@ -85,6 +86,7 @@ class WorkOrderCloseCreateSerializer(serializers.Serializer):
             'reason',
             'reason_other',
             'additional_comment',
+            'was_survey_conducted',
             'was_job_satisfactory',
             'was_job_finished_on_time_and_on_budget',
             'was_associate_punctual',
@@ -132,6 +134,7 @@ class WorkOrderCloseCreateSerializer(serializers.Serializer):
         reason = validated_data.get('reason', None)
         reason_other = validated_data.get('reason_other', None)
         additional_comment_text = validated_data.get('additional_comment', None)
+        was_survey_conducted = validated_data.get('was_survey_conducted', False)
         was_job_satisfactory = validated_data.get('was_job_satisfactory', False)
         was_job_finished_on_time_and_on_budget = validated_data.get('was_job_finished_on_time_and_on_budget', False)
         was_associate_punctual = validated_data.get('was_associate_punctual', False)
@@ -240,22 +243,26 @@ class WorkOrderCloseCreateSerializer(serializers.Serializer):
             job.latest_pending_task = None
 
             # STEP 2 - Save the results.
-            job.was_job_satisfactory = was_job_satisfactory
-            job.was_job_finished_on_time_and_on_budget = was_job_finished_on_time_and_on_budget
-            job.was_associate_punctual = was_associate_punctual
-            job.was_associate_professional = was_associate_professional
-            job.would_customer_refer_our_organization = would_customer_refer_our_organization
+            if was_survey_conducted:
+                job.was_survey_conducted = was_survey_conducted
+                job.was_job_satisfactory = was_job_satisfactory
+                job.was_job_finished_on_time_and_on_budget = was_job_finished_on_time_and_on_budget
+                job.was_associate_punctual = was_associate_punctual
+                job.was_associate_professional = was_associate_professional
+                job.would_customer_refer_our_organization = would_customer_refer_our_organization
 
-            #-------------------------#
-            # Compute associate score #
-            #-------------------------#
-            # STEP 3 - Compute the score.
-            job.score = 0
-            job.score += int(was_job_satisfactory)
-            job.score += int(was_job_finished_on_time_and_on_budget)
-            job.score += int(was_associate_punctual)
-            job.score += int(was_associate_professional)
-            job.score += int(would_customer_refer_our_organization)
+                #-------------------------#
+                # Compute associate score #
+                #-------------------------#
+                # STEP 3 - Compute the score.
+                job.score = 0
+                job.score += int(was_job_satisfactory)
+                job.score += int(was_job_finished_on_time_and_on_budget)
+                job.score += int(was_associate_punctual)
+                job.score += int(was_associate_professional)
+                job.score += int(would_customer_refer_our_organization)
+
+            # STEP 4 - Save all our changes.
             job.save()
 
             # For debugging purposes only.

@@ -245,6 +245,12 @@ class WorkOrder(models.Model):
     #  Satisfaction Survey & Score Fields
     #
 
+    was_survey_conducted = models.BooleanField(
+        _("Was Survey Conducted"),
+        help_text=_('Track whether survey was conducted post completion (if completed).'),
+        default=False,
+        blank=True
+    )
     was_job_satisfactory = models.BooleanField(
         _("Was job satisfactory?"),
         help_text=_('Customer Survey Q1: Was the quality of the work satisfactory?'),
