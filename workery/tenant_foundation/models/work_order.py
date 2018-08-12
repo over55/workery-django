@@ -292,6 +292,12 @@ class WorkOrder(models.Model):
     #  Financial Fields
     #
 
+    was_there_financials_inputted = models.BooleanField(
+        _("Was there financials inputted?"),
+        help_text=_('Track whether financials where inputted.'),
+        default=True,
+        blank=True
+    )
     invoice_date = models.DateField(
         _('Invoice Date'),
         help_text=_('The date that this order was completed.'),

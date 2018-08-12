@@ -65,6 +65,7 @@ class WorkOrderCloseCreateSerializer(serializers.Serializer):
     reason_other = serializers.CharField(required=False, allow_blank=True)
     additional_comment = serializers.CharField(required=False, allow_blank=True)
     was_survey_conducted = serializers.BooleanField(required=False)
+    was_there_financials_inputted = serializers.BooleanField(required=False)
     was_job_satisfactory = serializers.BooleanField(required=False)
     was_job_finished_on_time_and_on_budget = serializers.BooleanField(required=False)
     was_associate_punctual = serializers.BooleanField(required=False)
@@ -87,6 +88,7 @@ class WorkOrderCloseCreateSerializer(serializers.Serializer):
             'reason_other',
             'additional_comment',
             'was_survey_conducted',
+            'was_there_financials_inputted',
             'was_job_satisfactory',
             'was_job_finished_on_time_and_on_budget',
             'was_associate_punctual',
@@ -135,6 +137,7 @@ class WorkOrderCloseCreateSerializer(serializers.Serializer):
         reason_other = validated_data.get('reason_other', None)
         additional_comment_text = validated_data.get('additional_comment', None)
         was_survey_conducted = validated_data.get('was_survey_conducted', False)
+        was_there_financials = validated_data.get('was_there_financials', False)
         was_job_satisfactory = validated_data.get('was_job_satisfactory', False)
         was_job_finished_on_time_and_on_budget = validated_data.get('was_job_finished_on_time_and_on_budget', False)
         was_associate_punctual = validated_data.get('was_associate_punctual', False)
@@ -157,13 +160,18 @@ class WorkOrderCloseCreateSerializer(serializers.Serializer):
         else:
             job.state = WORK_ORDER_STATE.CANCELLED
         job.invoice_date = invoice_date
-        job.invoice_id = invoice_id
-        job.invoice_quote_amount = Money(invoice_quote_amount, WORKERY_APP_DEFAULT_MONEY_CURRENCY)
-        job.invoice_labour_amount = Money(invoice_labour_amount, WORKERY_APP_DEFAULT_MONEY_CURRENCY)
-        job.invoice_material_amount = Money(invoice_material_amount, WORKERY_APP_DEFAULT_MONEY_CURRENCY)
-        job.invoice_tax_amount = Money(invoice_tax_amount, WORKERY_APP_DEFAULT_MONEY_CURRENCY)
-        job.invoice_total_amount = Money(invoice_total_amount, WORKERY_APP_DEFAULT_MONEY_CURRENCY)
-        job.invoice_service_fee_amount = Money(invoice_service_fee_amount, WORKERY_APP_DEFAULT_MONEY_CURRENCY)
+
+        # Attach financials.
+        if job.was_there_financials_inputted:
+            job.invoice_id = invoice_id
+            job.invoice_quote_amount = Money(invoice_quote_amount, WORKERY_APP_DEFAULT_MONEY_CURRENCY)
+            job.invoice_labour_amount = Money(invoice_labour_amount, WORKERY_APP_DEFAULT_MONEY_CURRENCY)
+            job.invoice_material_amount = Money(invoice_material_amount, WORKERY_APP_DEFAULT_MONEY_CURRENCY)
+            job.invoice_tax_amount = Money(invoice_tax_amount, WORKERY_APP_DEFAULT_MONEY_CURRENCY)
+            job.invoice_total_amount = Money(invoice_total_amount, WORKERY_APP_DEFAULT_MONEY_CURRENCY)
+            job.invoice_service_fee_amount = Money(invoice_service_fee_amount, WORKERY_APP_DEFAULT_MONEY_CURRENCY)
+
+        # Attach object associations.
         job.last_modified_by = self.context['user']
         job.last_modified_from = self.context['from']
         job.last_modified_from_is_public = self.context['from_is_public']

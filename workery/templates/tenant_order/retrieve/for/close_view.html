@@ -73,6 +73,17 @@
             }
         });
 
+        $('input[type=radio][name=was_there_financials_inputted]').change(function() {
+            if (this.value == 'yes') {
+                // Load up the GUI for the customer survey for a successful job.
+                $("#was_there_financials_inputted_div").show();
+            }
+            else if (this.value == 'no') {
+                // Load up the GUI for the reason why the job was not accomplished.
+                $("#was_there_financials_inputted_div").hide();
+            }
+        });
+
         // PLUG IN EVENT LISTENER ON REASON DROPDOWN CHANGE.
         $('#reason').on('change',function(){
             if( $(this).val()==="other" || $(this).val()===1){
@@ -204,6 +215,7 @@
 
         // Get our "Client Survey".
         var was_survey_conducted = get_selected_radio_value('was_survey_conducted');
+        var was_there_financials_inputted = get_selected_radio_value('was_there_financials_inputted');
         var was_job_satisfactory = get_selected_radio_value('was_job_satisfactory');
         var was_job_finished_on_time_and_on_budget = get_selected_radio_value('was_job_finished_on_time_and_on_budget');
         var was_associate_punctual = get_selected_radio_value('was_associate_punctual');
@@ -232,6 +244,7 @@
         if (reason !== 4) {
             console.log("Setting default values.");
             was_survey_conducted = false;
+            was_there_financials_inputted = false;
             was_job_satisfactory = false;
             was_job_finished_on_time_and_on_budget = false;
             was_associate_punctual = false;
@@ -252,6 +265,7 @@
         console.log("reason", reason);
         console.log("additional_comment", $('#comment').val());
         console.log("was_survey_conducted", was_survey_conducted);
+        console.log("was_there_financials_inputted", was_there_financials_inputted);
         console.log("was_job_satisfactory", was_job_satisfactory);
         console.log("was_job_finished_on_time_and_on_budget", was_job_finished_on_time_and_on_budget);
         console.log("was_associate_punctual", was_associate_punctual);
@@ -274,6 +288,7 @@
                 'reason_other': $('#reason_other').val(),
                 'additional_comment': $('#comment').val(),
                 'was_survey_conducted': was_survey_conducted,
+                'was_there_financials_inputted': was_there_financials_inputted,
                 'was_job_satisfactory': was_job_satisfactory,
                 'was_job_finished_on_time_and_on_budget': was_job_finished_on_time_and_on_budget,
                 'was_associate_punctual': was_associate_punctual,
@@ -497,61 +512,91 @@
                                     </div>
                                     <!-- end Invoice Date -->
 
-                                    <!-- Invoice ID -->
+                                    <!--------------------------------------------->
+                                    <!--              YES/NO CHOICE              -->
+                                    <!--------------------------------------------->
                                     <div class="form-group col-md-12 mb-4">
-                                        <label for="invoice_id">Invoice ID #</label>
-                                        <input type="number" class="form-control form-control-lg border border-success" id="invoice_id" name="invoice_id" placeholder="Invoice ID #" required="">
-                                        <div id="invoice_id-error" class="invalid-feedback"></div>
+                                        <p class="mb-1">Was there financials inputted?&nbsp;<sup>*</sup></p>
+                                        <div class="form-radio custom-control custom-radio mb-2">
+                                            <input type="radio" id="was_there_financials_inputted" name="was_there_financials_inputted" value="yes" class="custom-control-input form-check-input" required>
+                                            <label class="custom-control-label form-check-label" for="was_there_financials_inputted">Yes</label>
+                                        </div>
+                                        <div class="form-radio custom-control custom-radio">
+                                            <input type="radio" id="was_there_financials_inputted2" name="was_there_financials_inputted" value="no" class="custom-control-input form-check-input" required>
+                                            <label class="custom-control-label form-check-label" for="was_there_financials_inputted2">No</label>
+                        		            <small class="form-text text-muted">Selecting "yes" will close this job as success.</small>
+                        		            <div id="was_there_financials_inputted-error" class="invalid-feedback"></div>
+                                        </div>
                                     </div>
-                                    <!-- end Invoice ID -->
+                                    <!--------------------------------------------->
+                                    <!--            end YES/NO CHOICE            -->
+                                    <!--------------------------------------------->
 
-                                    <!-- Invoice Quote -->
-                                    <div class="form-group col-md-12 mb-4">
-                                        <label for="invoice_quote_amount">Original Quote</label>
-                                        <input type="number" class="form-control form-control-lg border border-success" id="invoice_quote_amount" name="invoice_quote_amount" placeholder="Invoice Quote" required="">
-                                        <div id="invoice_quote_amount-error" class="invalid-feedback"></div>
-                                    </div>
-                                    <!-- end Invoice Quote -->
+                                    <!--------------------------------------------->
+                                    <!--              FINANCIAL DATA             -->
+                                    <!--------------------------------------------->
+                                    <div id="was_there_financials_inputted_div" style="display: none;">
 
-                                    <!-- Invoice Labour -->
-                                    <div class="form-group col-md-12 mb-4">
-                                        <label for="invoice_labour_amount">Total Labour</label>
-                                        <input type="number" class="form-control form-control-lg border border-success" id="invoice_labour_amount" name="invoice_labour_amount" placeholder="Total Labour" required="">
-                                        <div id="invoice_labour_amount-error" class="invalid-feedback"></div>
-                                    </div>
-                                    <!-- end Invoice Labour -->
+                                        <!-- Invoice ID -->
+                                        <div class="form-group col-md-12 mb-4">
+                                            <label for="invoice_id">Invoice ID #</label>
+                                            <input type="number" class="form-control form-control-lg border border-success" id="invoice_id" name="invoice_id" placeholder="Invoice ID #" required="">
+                                            <div id="invoice_id-error" class="invalid-feedback"></div>
+                                        </div>
+                                        <!-- end Invoice ID -->
 
-                                    <!-- Invoice Material -->
-                                    <div class="form-group col-md-12 mb-4">
-                                        <label for="invoice_material_amount">Total Materials</label>
-                                        <input type="number" class="form-control form-control-lg border border-success" id="invoice_material_amount" name="invoice_material_amount" placeholder="Total Material" required="">
-                                        <div id="invoice_material_amount-error" class="invalid-feedback"></div>
-                                    </div>
-                                    <!-- end Invoice Material -->
+                                        <!-- Invoice Quote -->
+                                        <div class="form-group col-md-12 mb-4">
+                                            <label for="invoice_quote_amount">Original Quote</label>
+                                            <input type="number" class="form-control form-control-lg border border-success" id="invoice_quote_amount" name="invoice_quote_amount" placeholder="Invoice Quote" required="">
+                                            <div id="invoice_quote_amount-error" class="invalid-feedback"></div>
+                                        </div>
+                                        <!-- end Invoice Quote -->
 
-                                    <!-- Invoice Tax -->
-                                    <div class="form-group col-md-12 mb-4">
-                                        <label for="invoice_tax_amount">Total Tax</label>
-                                        <input type="number" class="form-control form-control-lg border border-success" id="invoice_tax_amount" name="invoice_tax_amount" placeholder="Total Tax" required="">
-                                        <div id="invoice_tax_amount-error" class="invalid-feedback"></div>
-                                    </div>
-                                    <!-- end Invoice Material -->
+                                        <!-- Invoice Labour -->
+                                        <div class="form-group col-md-12 mb-4">
+                                            <label for="invoice_labour_amount">Total Labour</label>
+                                            <input type="number" class="form-control form-control-lg border border-success" id="invoice_labour_amount" name="invoice_labour_amount" placeholder="Total Labour" required="">
+                                            <div id="invoice_labour_amount-error" class="invalid-feedback"></div>
+                                        </div>
+                                        <!-- end Invoice Labour -->
 
-                                    <!-- Invoice Total -->
-                                    <div class="form-group col-md-12 mb-4">
-                                        <label for="invoice_total_amount">Total</label>
-                                        <input type="number" class="form-control form-control-lg border border-success" id="invoice_total_amount" name="invoice_total_amount" required="" placeholder="Total" readonly>
-                                        <div id="invoice_total_amount-error" class="invalid-feedback"></div>
-                                    </div>
-                                    <!-- end Invoice Total -->
+                                        <!-- Invoice Material -->
+                                        <div class="form-group col-md-12 mb-4">
+                                            <label for="invoice_material_amount">Total Materials</label>
+                                            <input type="number" class="form-control form-control-lg border border-success" id="invoice_material_amount" name="invoice_material_amount" placeholder="Total Material" required="">
+                                            <div id="invoice_material_amount-error" class="invalid-feedback"></div>
+                                        </div>
+                                        <!-- end Invoice Material -->
 
-                                    <!-- Invoice Service Fee -->
-                                    <div class="form-group col-md-12 mb-4">
-                                        <label for="invoice_service_fee_amount">Service Fee</label>
-                                        <input type="number" class="form-control form-control-lg border border-success" id="invoice_service_fee_amount" name="invoice_service_fee_amount" required="" placeholder="Service Fee" readonly>
-                                        <div id="invoice_service_fee_amount-error" class="invalid-feedback"></div>
+                                        <!-- Invoice Tax -->
+                                        <div class="form-group col-md-12 mb-4">
+                                            <label for="invoice_tax_amount">Total Tax</label>
+                                            <input type="number" class="form-control form-control-lg border border-success" id="invoice_tax_amount" name="invoice_tax_amount" placeholder="Total Tax" required="">
+                                            <div id="invoice_tax_amount-error" class="invalid-feedback"></div>
+                                        </div>
+                                        <!-- end Invoice Material -->
+
+                                        <!-- Invoice Total -->
+                                        <div class="form-group col-md-12 mb-4">
+                                            <label for="invoice_total_amount">Total</label>
+                                            <input type="number" class="form-control form-control-lg border border-success" id="invoice_total_amount" name="invoice_total_amount" required="" placeholder="Total" readonly>
+                                            <div id="invoice_total_amount-error" class="invalid-feedback"></div>
+                                        </div>
+                                        <!-- end Invoice Total -->
+
+                                        <!-- Invoice Service Fee -->
+                                        <div class="form-group col-md-12 mb-4">
+                                            <label for="invoice_service_fee_amount">Service Fee</label>
+                                            <input type="number" class="form-control form-control-lg border border-success" id="invoice_service_fee_amount" name="invoice_service_fee_amount" required="" placeholder="Service Fee" readonly>
+                                            <div id="invoice_service_fee_amount-error" class="invalid-feedback"></div>
+                                        </div>
+                                        <!-- end Invoice Total -->
+
                                     </div>
-                                    <!-- end Invoice Total -->
+                                    <!--------------------------------------------->
+                                    <!--           end FINANCIAL DATA            -->
+                                    <!--------------------------------------------->
 
                                     <!--------------------------------------------->
                                     <!--              YES/NO CHOICE              -->
