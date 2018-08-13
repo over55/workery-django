@@ -77,6 +77,7 @@ urlpatterns += i18n_patterns(
     url(r'^', include('tenant_account.urls')),
     url(r'^', include('tenant_associate.urls')),
     url(r'^', include('tenant_customer.urls')),
+    url(r'^', include('tenant_customer_operation.urls')),
     url(r'^', include('tenant_dashboard.urls')),
     url(r'^', include('tenant_order.urls')),
     url(r'^', include('tenant_order_operation.urls')),

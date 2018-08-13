@@ -14,6 +14,7 @@ from tenant_api.permissions.order import (
    CanRetrieveUpdateDestroyWorkOrderPermission
 )
 from tenant_api.serializers.customer_operation.customer_blacklist import CustomerBlacklistOperationCreateSerializer
+from tenant_api.serializers.customer_operation.residential_customer_upgrade import ResidentialCustomerUpgradeOperationCreateSerializer
 from tenant_foundation.models import ActivitySheetItem
 
 
@@ -26,11 +27,29 @@ class CustomerBlacklistOperationCreateAPIView(generics.CreateAPIView):
     )
 
     def post(self, request, format=None):
-        """
-        Create
-        """
         client_ip, is_routable = get_client_ip(self.request)
         serializer = CustomerBlacklistOperationCreateSerializer(data=request.data, context={
+            'user': request.user,
+            'from': client_ip,
+            'from_is_public': is_routable,
+            'franchise': request.tenant
+        })
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+
+class ResidentialCustomerUpgradeOperationCreateAPIView(generics.CreateAPIView):
+    serializer_class = ResidentialCustomerUpgradeOperationCreateSerializer
+    permission_classes = (
+        permissions.IsAuthenticated,
+        IsAuthenticatedAndIsActivePermission,
+        CanListCreateWorkOrderPermission
+    )
+
+    def post(self, request, format=None):
+        client_ip, is_routable = get_client_ip(self.request)
+        serializer = ResidentialCustomerUpgradeOperationCreateSerializer(data=request.data, context={
             'user': request.user,
             'from': client_ip,
             'from_is_public': is_routable,

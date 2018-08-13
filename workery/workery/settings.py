@@ -117,6 +117,7 @@ TENANT_APPS = (
     'tenant_account',
     'tenant_associate',
     'tenant_customer',
+    'tenant_customer_operation',
     'tenant_dashboard',
     'tenant_foundation',
     'tenant_historic_etl',

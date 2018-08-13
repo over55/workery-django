@@ -1,0 +1,1 @@
+default_app_config = 'tenant_customer_operation.apps.TenantCustomerOperationConfig'

@@ -117,6 +117,20 @@
         <!--------------------------------------------------------------------->
         <!-- end BLACKLIST BUTTON -->
 
+        <!-- RESIDENTIAL UPGRADE BUTTON -->
+        <!--------------------------------------------------------------------->
+        {% if customer.type_of == tenant_constants.RESIDENTIAL_CUSTOMER_TYPE_OF_ID %}
+        <div class="form-group col-md-12 mb-3 mx-auto text-center">
+            <a href="{% if customer.type_of == tenant_constants.RESIDENTIAL_CUSTOMER_TYPE_OF_ID %}{% url 'workery_tenant_residential_customer_upgrade_operation' template customer.id %}{% elif customer.type_of == tenant_constants.COMMERCIAL_CUSTOMER_TYPE_OF_ID %}{% endif %}">
+                <button id="id_submit_btn" class="btn btn-warning btn-lg btn-fxw mt-4" type="button">
+                    <i class="fas fa-bolt"></i>&nbsp;{% trans 'Upgrade Client' %}
+                </button>
+            </a>
+        </div>
+        {% endif %}
+        <!--------------------------------------------------------------------->
+        <!-- end RESIDENTIAL UPGRADE BUTTON -->
+
         <!-- UPDATE BUTTON -->
         <!--------------------------------------------------------------------->
         <div class="form-group col-md-12 mb-3 mx-auto text-center">
