@@ -51,7 +51,7 @@ class ResidentialCustomerUpgradeOperationCreateSerializer(serializers.Serializer
 
     organization_name = serializers.CharField(
         write_only=True,
-        required=False,
+        required=True,
         allow_blank=False,
         allow_null=False,
         max_length=63,
@@ -69,19 +69,19 @@ class ResidentialCustomerUpgradeOperationCreateSerializer(serializers.Serializer
     )
     organization_address_country = serializers.CharField(
         write_only=True,
-        required=False,
+        required=True,
         allow_blank=True,
         max_length=127,
     )
     organization_address_locality = serializers.CharField(
         write_only=True,
-        required=False,
+        required=True,
         allow_blank=True,
         max_length=127,
     )
     organization_address_region = serializers.CharField(
         write_only=True,
-        required=False,
+        required=True,
         allow_blank=True,
         max_length=127,
     )
@@ -99,7 +99,7 @@ class ResidentialCustomerUpgradeOperationCreateSerializer(serializers.Serializer
     )
     organization_street_address = serializers.CharField(
         write_only=True,
-        required=False,
+        required=True,
         allow_blank=True,
         max_length=255,
     )
