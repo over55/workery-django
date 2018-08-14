@@ -231,7 +231,7 @@
                         {% if task_item.job %}
                             <a href="{% url 'workery_tenant_job_comments_retrieve' 'summary' task_item.job.id  %}" target="_blank">{% trans 'View comments' %}&nbsp;({{ task_item.job.comments.count }})&nbsp;<i class="fas fa-external-link-alt"></i></a>
                         {% elif task_item.ongoing_job %}
-                            <a href="{% url 'workery_tenant_ongoing_job_unassign_operation' task_item.ongoing_job.id  %}?return_id=pending-task&task_item={{ task_item.id }}" target="_blank">{% trans 'View comments' %}&nbsp;({{ task_item.ongoing_job.comments.count }})&nbsp;<i class="fas fa-external-link-alt"></i></a>
+                            <a href="{% url 'workery_tenant_ongoing_job_retrieve_for_comments' 'summary' task_item.ongoing_job.id  %}" target="_blank">{% trans 'View comments' %}&nbsp;({{ task_item.ongoing_job.comments.count }})&nbsp;<i class="fas fa-external-link-alt"></i></a>
                         {% endif %}
                     </td>
                 </tr>

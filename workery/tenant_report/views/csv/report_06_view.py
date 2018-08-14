@@ -48,8 +48,6 @@ def report_06_streaming_csv_view(request):
         Q(owner__is_active=True)
     ).order_by('-police_check')
 
-    print(associates.count())
-
     # Convert our aware datetimes to the specific timezone of the tenant.
     tenant_today = request.tenant.to_tenant_dt(today)
 
