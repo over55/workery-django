@@ -147,9 +147,9 @@
 					    <th scope="row" class="bg-light">Job Comments</th>
 					    <td id="job_comments">
                             {% if task_item.job %}
-						    <a href="{% url 'workery_tenant_job_comments_retrieve' 'summary' task_item.job.id  %}" target="_blank">{% trans 'View comments' %}&nbsp;({{ task_item.job.comments.count }})&nbsp;<i class="fas fa-external-link-alt"></i></a>
+						        <a href="{% url 'workery_tenant_job_comments_retrieve' 'summary' task_item.job.id  %}" target="_blank">{% trans 'View comments' %}&nbsp;({{ task_item.job.comments.count }})&nbsp;<i class="fas fa-external-link-alt"></i></a>
                             {% elif task_item.ongoing_job %}
-                            TODO
+                                <a href="{% url 'workery_tenant_ongoing_job_retrieve_for_comments' 'summary' task_item.ongoing_job.id  %}" target="_blank">{% trans 'View comments' %}&nbsp;({{ task_item.ongoing_job.comments.count }})&nbsp;<i class="fas fa-external-link-alt"></i></a>
                             {% endif %}
 					    </td>
 					</tr>
