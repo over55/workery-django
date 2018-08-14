@@ -1,0 +1,168 @@
+{% extends 'tenant_foundation/tenant_base.html' %}
+{% load staticfiles i18n humanize shared_foundation_tags %}
+
+{% block title %}
+    {% trans 'Creation Wizard' %}
+{% endblock title %}
+
+{% block header_content %}
+{% endblock header_content %}
+
+{% block content %}
+
+<script>
+/**
+ *  When page loads, the following code will be run first.
+ */
+$(document).ready(function () {
+
+});
+
+function click_back_button() {
+    {% if return_id == 'lite-retrieve' %}
+        window.location = "{% url 'workery_tenant_ongoing_job_lite_retrieve' 'summary' ongoing_job.id %}";
+    {% else %}
+        alert("Does not exist!");
+    {% endif %}
+}
+
+/**
+ *  Function will attempt to submit the form to the API server. This
+ *  funciton will:
+ *  (1) Lock / Unlock the submit button.
+ *  (2)
+ */
+function click_add_button() {
+    var number_of_visits = $('#number_of_visits').val();
+    if (number_of_visits == '') {
+        alert("Please enter something");
+    }
+
+    post_ongoing_order_creation_wizard_operation_api(
+        {
+            'ongoing_job': {{ ongoing_job.id }},
+            'number_of_visits': number_of_visits
+        },
+        function(result_dict) { // Success
+            // FOR DEBUGGING PURPOSES ONLY.
+            console.log(result_dict);
+
+            // REDIRECT TO SUCCESS PAGE.
+            {% if return_id == 'lite-retrieve' %}
+                window.location = "{% url 'workery_tenant_ongoing_job_lite_retrieve' 'summary' ongoing_job.id %}?was_modified=True";
+            {% else %}
+                alert("Does not exist!");
+            {% endif %}
+        },
+        function(xhr,status,error) { // Error
+            // STEP 1: Convert to JSON.
+            var err = JSON.parse(xhr.responseText);
+
+            // For debugging purposes only.
+            console.log(err);
+
+            // STEP 2: CLEAR EXISTING TEXT.
+            $('#all_error_result').html("");
+
+            // STEP 3: PRINT OUR ERROR.
+            for(var prop in err) {
+                if(err.hasOwnProperty(prop)) {
+                    var val = err[prop];
+                    console.log(val);
+                    $('#all_error_result').append("<p><b>"+prop+"</b>"+val+"</p><br />");
+                }
+            }
+
+            // STEP 4: FOCUS TO WHERE THE ERROR IS OCCURING.
+            $('html, body').animate({ scrollTop: $('#id_step_navigation').offset().top }, 'slow');
+        },
+        function() { // Finally
+            // UNLOCK THE "SUBMIT" BUTTON TO BE AVAILABLE FOR USAGE.
+            // enable_btn();
+        }
+    );
+}
+
+function get_selected_radio_value(radiofields_name) {
+    var radios = document.getElementsByName(radiofields_name);
+    for (var i = 0, length = radios.length; i < length; i++) {
+        if (radios[i].checked) {
+            // only one radio can be logically checked, don't check the rest
+            return radios[i].value;
+        }
+    }
+    return null;
+}
+</script>
+
+<main id="main" role="main">
+
+    <!-- BREADCRUMB -->
+    <!------------------------------------------------------------------------->
+    <nav aria-label="breadcrumb">
+	  	<ol class="breadcrumb">
+            {% if return_id == 'lite-retrieve' %}
+                <li class="breadcrumb-item"><a href="{% url 'workery_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'workery_tenant_ongoing_job_list' %}">{% trans 'Ongoing Jobs' %}</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'workery_tenant_ongoing_job_lite_retrieve' 'summary' ongoing_job.id %}">{% trans 'Ongoing Job #' %}{{ job.id|intcomma }}</a></li>
+                <li class="breadcrumb-item active" aria-current="page">{% trans 'Creation Wizard' %}</li>
+            {% else %}
+                ---TODO---
+            {% endif %}
+	  	</ol>
+	  	</ol>
+	</nav>
+    <!------------------------------------------------------------------------->
+    <!-- end BREADCRUMB -->
+
+    <h1 id="id_page_title">{% trans 'Creation Wizard' %}</h1>
+
+    <!-- Error Output -->
+    <div id="all_error_result" name="all_error_result"></div>
+    <!-- end Error Output -->
+
+
+    <!-- FORM -->
+    <!------------------------------------------------------------------------->
+    <div class="col-sm-5 mx-auto mt-2">
+        <!-- Associate form -->
+        <div class="col-sm-12 fade show active" id="member-form" aria-labelledby="associate">
+
+
+
+            <p><span class="text-secondary font-italic"><sup>*</sup>&nbsp;-&nbsp;Indicates required field to fill out.</span></p>
+
+            <form id="add-member-form" method="post" class="needs-validation" action="" novalidate>
+            <!-- ############ PERSON ############ -->
+
+            <div class="form-group col-md-12 mb-4 p-0">
+                <label for="number_of_visits" class="font-b6">How many visits in this month?&nbsp;<sup>*</sup></label>
+                <input type="number" class="form-control form-control-lg border border-primary" id="number_of_visits" name="number_of_visits" placeholder="" required>
+                <div id="number_of_visits-error" class="invalid-feedback"></div>
+                <small class="form-text text-muted">Please note for every number you input, it will create that many jobs to fill out.</small>
+            </div>
+
+            <button id="id_submit_btn"
+                 class="btn btn-primary btn-lg mt-4 float-left pl-4 pr-4"
+                  type="button"
+               onclick="click_back_button();">
+                <i class="fas fa-arrow-left"></i>&nbsp;Back</button>
+            <button id="id_submit_btn"
+                 class="btn btn-success btn-lg mt-4 float-right pl-4 pr-4"
+                  type="button"
+               onclick="click_add_button();">
+                <i class="fas fa-check-circle"></i> &nbsp;Save</button>
+
+        </div>
+    </div>
+    <!------------------------------------------------------------------------->
+    <!-- end FORM -->
+
+
+    <!-- RETURN-TO-TOP -->
+    <a id="return-to-top" href="#" class="btn-info btn-lg back-to-top" role="button" title="Back to top"><i class="fas fa-angle-up fa-2x"></i></a>
+    <!-- end RETURN-TO-TOP -->
+
+</main>
+
+{% endblock content %}

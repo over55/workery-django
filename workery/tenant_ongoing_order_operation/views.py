@@ -40,3 +40,16 @@ class OngoingWorkOrderCloseOperationView(LoginRequiredMixin, GroupRequiredMixin,
         constants.FRONTLINE_GROUP_ID
     ]
     return_id_required = ['lite-retrieve', 'pending-task']
+
+
+class OngoingWorkOrderCreationWizardOperationView(LoginRequiredMixin, GroupRequiredMixin, ReturnIDParameterRequiredMixin, WorkeryDetailView):
+    context_object_name = 'ongoing_job'
+    model = OngoingWorkOrder
+    template_name = 'tenant_ongoing_order_operation/creation_wizard.html'
+    menu_id = 'jobs'
+    group_required = [
+        constants.EXECUTIVE_GROUP_ID,
+        constants.MANAGEMENT_GROUP_ID,
+        constants.FRONTLINE_GROUP_ID
+    ]
+    return_id_required = ['lite-retrieve',]

@@ -202,6 +202,15 @@
                     </button>
                     </a>
                 </div>
+                <div class="col-sm-4">
+                    <a href="{% url 'workery_tenant_ongoing_job_creation_wizard_operation' job.id %}?return_id=lite-retrieve">
+                    <button id="id_submit_btn"
+                        class="btn btn-success btn-lg btn-fxw mt-4"
+                        type="button">
+                    <i class="fas fa-magic"></i>&nbsp;{% trans 'Creation Wizard' %}
+                    </button>
+                    </a>
+                </div>
             {% endif %}
 
         </div>

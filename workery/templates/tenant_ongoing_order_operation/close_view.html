@@ -97,7 +97,7 @@
             {% if return_id == 'lite-retrieve' %}
                 <li class="breadcrumb-item"><a href="{% url 'workery_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
                 <li class="breadcrumb-item"><a href="{% url 'workery_tenant_ongoing_job_list' %}">{% trans 'Ongoing Jobs' %}</a></li>
-                <li class="breadcrumb-item"><a href="{% url 'workery_tenant_ongoing_job_lite_retrieve' 'summary' job.id %}">{% trans 'Job #' %}{{ job.id|intcomma }}</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'workery_tenant_ongoing_job_lite_retrieve' 'summary' job.id %}">{% trans 'Ongoing Job #' %}{{ job.id|intcomma }}</a></li>
                 <li class="breadcrumb-item active" aria-current="page">{% trans 'Close' %}</li>
             {% elif return_id == 'pending-task' %}
                 <li class="breadcrumb-item"><a href="{% url 'workery_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
