@@ -240,8 +240,10 @@ class StaffListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
             'is_ok_to_email': True,
             'is_ok_to_text': True,
             'tags': [],
+            'account_type': constants.FRONTLINE_GROUP_ID
         }), content_type='application/json')
         self.assertIsNotNone(response)
+        # print(response.data)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertIn("Bart", str(response.data))
         self.assertIn("Mika", str(response.data))
@@ -305,6 +307,7 @@ class StaffListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
             'is_ok_to_email': True,
             'is_ok_to_text': True,
             'tags': [],
+            'account_type': constants.FRONTLINE_GROUP_ID
         }), content_type='application/json')
         self.assertIsNotNone(response)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -353,6 +356,7 @@ class StaffListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
             'is_ok_to_email': True,
             'is_ok_to_text': True,
             'tags': [],
+            'account_type': constants.FRONTLINE_GROUP_ID
         }), content_type='application/json')
         self.assertIsNotNone(response)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -390,6 +394,7 @@ class StaffListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
             'is_ok_to_email': True,
             'is_ok_to_text': True,
             'tags': [],
+            'account_type': constants.FRONTLINE_GROUP_ID
         }), content_type='application/json')
         self.assertIsNotNone(response)
         self.assertEqual(response.status_code, status.HTTP_200_OK)

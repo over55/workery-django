@@ -382,7 +382,7 @@ class WorkOrderListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
         # Executive
         response = self.exec_client.put(url, data=data, content_type='application/json')
         self.assertIsNotNone(response)
-        print(response.content)
+        # print(response.content)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertIn("2019-01-25", str(response.data))
         self.assertIn("2018-01-30", str(response.data))

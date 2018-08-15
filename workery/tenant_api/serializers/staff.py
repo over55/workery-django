@@ -554,8 +554,9 @@ class StaffRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
             logger.info("Updated the password.")
 
         # Update the account.
-        instance.owner.email = email
-        instance.owner.username = get_unique_username_from_email(email)
+        if email:
+            instance.owner.email = email
+            instance.owner.username = get_unique_username_from_email(email)
         instance.owner.first_name = validated_data.get('given_name', instance.owner.first_name)
         instance.owner.last_name = validated_data.get('last_name', instance.owner.last_name)
         instance.owner.is_active = validated_data.get('is_active', instance.owner.is_active)
