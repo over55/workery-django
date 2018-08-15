@@ -34,6 +34,7 @@ class TestCreateFranchiseTenantManagementCommand(TenantTestCase):
             "N6H 1B4",
             "78 Riverside Drive",
             "", # Extra line.
+            "American/Toronto",
             verbosity=0
         )
 
@@ -52,6 +53,7 @@ class TestCreateFranchiseTenantManagementCommand(TenantTestCase):
                 "N6H 1B4",
                 "78 Riverside Drive",
                 "", # Extra line.
+                "American/Toronto",
                 verbosity=0
             )
         except Exception as e:
