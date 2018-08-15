@@ -243,7 +243,8 @@ class AssociateListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
             'tags': [],
             'hourly_salary_desired': 666,
             'how_hear': 1,
-            'insurance_requirements': []
+            'insurance_requirements': [],
+            'join_date': '2040-01-01'
         }), content_type='application/json')
         self.assertIsNotNone(response)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
@@ -322,9 +323,11 @@ class AssociateListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
             'email': 'bart@workery.ca',
             'hourly_salary_desired': 666,
             'how_hear': 1,
-            'insurance_requirements': []
+            'insurance_requirements': [],
+            'join_date': '2040-01-01'
         }), content_type='application/json')
         self.assertIsNotNone(response)
+        # print(response.data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertIn("Bartlomiej", str(response.data))
         self.assertIn("Mika", str(response.data))
@@ -387,7 +390,8 @@ class AssociateListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
             'tags': [],
             'email': 'bart@workery.ca',
             'hourly_salary_desired': 666,
-            'insurance_requirements': []
+            'insurance_requirements': [],
+            'join_date': '2040-01-01'
         }), content_type='application/json')
         self.assertIsNotNone(response)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
