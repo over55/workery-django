@@ -304,6 +304,7 @@ class CustomerListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
             'organization_type_of': 1
         }), content_type='application/json')
         self.assertIsNotNone(response)
+        # print(response.data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertIn("Bartlomiej", str(response.data))
         self.assertIn("Mika", str(response.data))
@@ -353,6 +354,7 @@ class CustomerListCreateAPIViewWithTenantTestCase(APITestCase, TenantTestCase):
             'organization_type_of': 1
         }), content_type='application/json')
         self.assertIsNotNone(response)
+        # print(response.data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertIn("Bartlomiej", str(response.data))
         self.assertIn("Mika", str(response.data))

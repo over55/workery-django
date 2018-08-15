@@ -676,7 +676,7 @@ class CustomerRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         1. If 'type_of' == Commercial then make sure 'email' was inputted.
         """
         # CASE 1 - Other reason
-        if data['type_of'] == COMMERCIAL_CUSTOMER_TYPE_OF_ID:
+        if data.get('type_of', None) == COMMERCIAL_CUSTOMER_TYPE_OF_ID:
             email = data.get('email', None)
             if email is None:
                 raise serializers.ValidationError(_("Please provide an email if client is commercial."))
