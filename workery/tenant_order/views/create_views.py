@@ -79,7 +79,7 @@ class Step3View(LoginRequiredMixin, GroupRequiredMixin, WorkeryTemplateView):
     def get_context_data(self, **kwargs):
         modified_context = super().get_context_data(**kwargs)
         modified_context['menu_id'] = "jobs"
-        modified_context['skillsets'] = SkillSet.objects.all()
+        modified_context['skillsets'] = SkillSet.objects.all().order_by('sub_category')
         modified_context['servicefees'] = WorkOrderServiceFee.objects.all()
         return modified_context
 

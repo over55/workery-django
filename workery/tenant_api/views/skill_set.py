@@ -36,7 +36,7 @@ class SkillSetListCreateAPIView(generics.ListCreateAPIView):
         """
         List
         """
-        queryset = SkillSet.objects.all().order_by('category', 'sub_category')
+        queryset = SkillSet.objects.all().order_by('sub_category')
         return queryset
 
     @transaction.atomic
