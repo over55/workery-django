@@ -38,7 +38,7 @@ class JobUpdateView(LoginRequiredMixin, GroupRequiredMixin, WorkeryDetailView):
         modified_context['template'] = template
 
         # Set our dependencies
-        modified_context['skillsets'] = SkillSet.objects.all()
+        modified_context['skillsets'] = SkillSet.objects.all().order_by('sub_category')
         modified_context['servicefees'] = WorkOrderServiceFee.objects.all()
 
         # Return our modified context.

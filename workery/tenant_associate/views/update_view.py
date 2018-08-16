@@ -44,7 +44,7 @@ class MemberUpdateView(LoginRequiredMixin, GroupRequiredMixin, WorkeryDetailView
         # Extra
         modified_context['insurance_requirements'] = InsuranceRequirement.objects.all()
         modified_context['tags'] = Tag.objects.all()
-        modified_context['skill_sets'] = SkillSet.objects.all()
+        modified_context['skill_sets'] = SkillSet.objects.all().order_by('sub_category')
 
         # Return our modified context.
         return modified_context
