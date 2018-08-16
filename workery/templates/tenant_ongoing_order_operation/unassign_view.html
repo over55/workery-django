@@ -20,7 +20,7 @@
 
     function click_cancel_button() {
         {% if return_id == 'lite-retrieve' %}
-            window.location = "{% url 'workery_tenant_ongoing_job_lite_retrieve' 'summary' job.id %}";
+            window.location = "{% url 'workery_tenant_ongoing_job_lite_retrieve' 'summary' ongoing_job.id %}";
         {% elif return_id == 'pending-task' %}
             window.location = "{% url 'workery_tenant_pending_task_retrieve' parameters.task_item %}";
         {% else %}
@@ -32,31 +32,24 @@
         // Submit to our API web-service.
         create_ongoing_order_unassign_operation_api(
             {
-                'job': {{ job.id }},
+                'ongoing_job': {{ ongoing_job.id }},
                 'reason': $('#reason').val(),
             },
-            function(result_dict) { // Success
+            function(success_result) { // Success
                 // FOR DEBUGGING PURPOSES ONLY.
-                console.log(result_dict);
 
                 /////////////////////////////////////
                 // Get our pending task unique ID. //
                 /////////////////////////////////////
-                console.log(result_dict);
-                var job_id = parseInt({{ job.id }});
+                console.log(success_result);
+                var latest_pending_task_id = parseInt(success_result['latest_pending_task']);
 
                 ////////////////////////////////////////////
                 // Redirect to the next page in the form. //
                 ////////////////////////////////////////////
-                {% if return_id == 'lite-retrieve' %}
-                    var temp_url = "{% url 'workery_tenant_ongoing_job_lite_retrieve' 'summary' 0 %}?was_modified=True";
-                    var temp_url = temp_url.replace(0, job_id);
-                    window.location = temp_url;
-                {% elif return_id == 'pending-task' %}
-                    window.location = "{% url 'workery_tenant_task_list' %}?was_unassigned=True";
-                {% else %}
-                    var temp_url = "";
-                {% endif %}
+                var temp_url = "{% url 'workery_tenant_pending_task_retrieve' 0 %}?was_created=True";
+                var temp_url = temp_url.replace(0, latest_pending_task_id);
+                window.location = temp_url;
             },
             function(xhr,status,error) { // Error
                 // STEP 1: Convert to JSON.
@@ -97,7 +90,7 @@
             {% if return_id == 'lite-retrieve' %}
                 <li class="breadcrumb-item"><a href="{% url 'workery_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
                 <li class="breadcrumb-item"><a href="{% url 'workery_tenant_ongoing_job_list' %}">{% trans 'Ongoing Jobs' %}</a></li>
-                <li class="breadcrumb-item"><a href="{% url 'workery_tenant_ongoing_job_lite_retrieve' 'summary' job.id %}">{% trans 'Job #' %}{{ job.id|intcomma }}</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'workery_tenant_ongoing_job_lite_retrieve' 'summary' ongoing_job.id %}">{% trans 'Job #' %}{{ ongoing_job.id|intcomma }}</a></li>
                 <li class="breadcrumb-item active" aria-current="page">{% trans 'Unassign' %}</li>
             {% elif return_id == 'pending-task' %}
                 <li class="breadcrumb-item"><a href="{% url 'workery_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
@@ -128,7 +121,7 @@
                 <!-- Residential form -->
                 <div class="col-sm-12 fade show active" id="client-form" aria-labelledby="commercial">
 
-                    <p>You are about to set the <strong>job</strong> to a unassigned state.</p>
+                    <p>You are about to set the <strong>ongoing job</strong> to a unassigned state.</p>
 
                     <p>
                         <span class="text-secondary font-italic"><sup>*</sup>&nbsp;-&nbsp;Indicates required field to fill out.</span>
@@ -144,7 +137,7 @@
 
                                 <!-- COMMENTS -->
                                 <div class="form-group col-md-12 mb-4">
-                                    <label for="reason">Please write the reason why you are unassigning this <strong>job</strong>:&nbsp;<sup>*</sup></label>
+                                    <label for="reason">Please write the reason why you are unassigning this <strong>ongoing job</strong>:&nbsp;<sup>*</sup></label>
                                     <textarea class="form-control form-control-lg border border-primary" id="reason" name="reason" placeholder="Write your reason here..." rows="4" required></textarea>
                                     <div id="reason-error" class="invalid-feedback"></div>
                                 </div>

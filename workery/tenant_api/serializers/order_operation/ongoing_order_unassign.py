@@ -52,14 +52,16 @@ def cannot_be_zero_or_negative(value):
 
 
 class OngoingWorkOrderUnassignCreateSerializer(serializers.Serializer):
-    job = serializers.PrimaryKeyRelatedField(many=False, queryset=OngoingWorkOrder.objects.all(), required=True)
+    ongoing_job = serializers.PrimaryKeyRelatedField(many=False, queryset=OngoingWorkOrder.objects.all(), required=True)
     reason = serializers.CharField(required=True, allow_blank=False)
+    latest_pending_task = serializers.ReadOnlyField()
 
     # Meta Information.
     class Meta:
         fields = (
-            'job',
+            'ongoing_job',
             'reason',
+            'latest_pending_task'
         )
 
     # def validate(self, data):
@@ -83,83 +85,82 @@ class OngoingWorkOrderUnassignCreateSerializer(serializers.Serializer):
         #-------------------------#
         # Get validated POST data #
         #-------------------------#
-        job = validated_data.get('job', None)
+        ongoing_job = validated_data.get('ongoing_job', None)
         reason = validated_data.get('reason', None)
 
         #------------------------------------------#
         # Create any additional optional comments. #
         #------------------------------------------#
         comment_obj = Comment.objects.create(
-            created_by=self.context['user'],
-            last_modified_by=self.context['user'],
             text=reason,
             created_from = self.context['from'],
+            created_by=self.context['user'],
             created_from_is_public = self.context['from_is_public']
         )
         OngoingWorkOrderComment.objects.create(
-            about=job,
+            about=ongoing_job,
             comment=comment_obj,
         )
 
         # For debugging purposes only.
         logger.info("Job comment created.")
 
+        #----------------------------------------#
+        # Lookup our Task(s) and close them all. #
+        #----------------------------------------#
+        task_items = TaskItem.objects.filter(
+            ongoing_job=ongoing_job,
+            is_closed=False
+        )
+        for task_item in task_items.all():
+            logger.info("Found task #%(id)s." % {
+                'id': str(task_item.id)
+            })
+            task_item.reason = 1
+            task_item.reason_other = _('Because associate was unassigned.')
+            task_item.is_closed = True
+            task_item.last_modified_by = self.context['user']
+            task_item.last_modified_from = self.context['from']
+            task_item.last_modified_from_is_public = self.context['from_is_public']
+            task_item.save()
+            logger.info("Closed task #%(id)s." % {
+                'id': str(task_item.id)
+            })
 
-        # #----------------------------------------#
-        # # Lookup our Task(s) and close them all. #
-        # #----------------------------------------#
-        # task_items = TaskItem.objects.filter(
-        #     job=job,
-        #     is_closed=False
-        # )
-        # for task_item in task_items.all():
-        #     logger.info("Found task #%(id)s." % {
-        #         'id': str(task_item.id)
-        #     })
-        #     task_item.reason = reason
-        #     task_item.reason_other = reason_other
-        #     task_item.is_closed = True
-        #     task_item.last_modified_by = self.context['user']
-        #     task_item.save()
-        #     logger.info("Closed task #%(id)s." % {
-        #         'id': str(task_item.id)
-        #     })
-        #
 
         #-------------------------#
         # Update the ongoing job. #
         #-------------------------#
         # Update our job to be in a `idle` state.
-        job.associate = None
-        job.state = ONGOING_WORK_ORDER_STATE.IDLE
-        job.save()
+        ongoing_job.associate = None
+        ongoing_job.state = ONGOING_WORK_ORDER_STATE.IDLE
+        ongoing_job.save()
 
         # For debugging purposes only.
         logger.info("Update ongoing job.")
 
-        # #---------------------------------------------#
-        # # Create a new task based on a new start date #
-        # #---------------------------------------------#
-        # next_task_item = TaskItem.objects.create(
-        #     created_by=self.context['user'],
-        #     last_modified_by=self.context['user'],
-        #     type_of = ASSIGNED_ASSOCIATE_TASK_ITEM_TYPE_OF_ID,
-        #     due_date = job.start_date,
-        #     is_closed = False,
-        #     job = job,
-        #     title = _('Assign an Associate'),
-        #     description = _('Please assign an associate to this job.')
-        # )
-        #
-        # # For debugging purposes only.
-        # logger.info("Assignment Task #%(id)s was created b/c of unassignment." % {
-        #     'id': str(next_task_item.id)
-        # })
-        #
-        # # Attach our next job.
-        # job.latest_pending_task = next_task_item
-        # job.save()
-        #
-        # # Assign our new variables and return the validated data.
-        # validated_data['id'] = next_task_item.id
+        #---------------------------------------------#
+        # Create a new task based on a new start date #
+        #---------------------------------------------#
+        next_task_item = TaskItem.objects.create(
+            created_by=self.context['user'],
+            type_of = ASSIGNED_ASSOCIATE_TASK_ITEM_TYPE_OF_ID,
+            due_date = ongoing_job.start_date,
+            is_closed = False,
+            ongoing_job = ongoing_job,
+            title = _('Assign an Associate'),
+            description = _('Please assign an associate to this ongoing job.')
+        )
+
+        # For debugging purposes only.
+        logger.info("Assignment Task #%(id)s was created b/c of unassignment." % {
+            'id': str(next_task_item.id)
+        })
+
+        # Attach our next job.
+        ongoing_job.latest_pending_task = next_task_item
+        ongoing_job.save()
+
+        # Assign our new variables and return the validated data.
+        validated_data['latest_pending_task'] = next_task_item.id
         return validated_data

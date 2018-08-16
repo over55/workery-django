@@ -17,7 +17,7 @@ from tenant_foundation.models import OngoingWorkOrder
 
 
 class OngoingWorkOrderUnassignOperationView(LoginRequiredMixin, GroupRequiredMixin, ReturnIDParameterRequiredMixin, WorkeryDetailView):
-    context_object_name = 'job'
+    context_object_name = 'ongoing_job'
     model = OngoingWorkOrder
     template_name = 'tenant_ongoing_order_operation/unassign_view.html'
     menu_id = 'jobs'
