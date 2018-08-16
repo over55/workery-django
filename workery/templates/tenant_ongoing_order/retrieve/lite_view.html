@@ -181,7 +181,7 @@
     <div class="form-group col-md-10 mb-3 mx-auto text-center">
         <div class="row">
             <!-- UNASSIGN BUTTON -->
-            {% if job.associate and job.state != ONGOING_WORK_ORDER_STATE.TERMINATED%}
+            {% if job.associate and job.state != ONGOING_WORK_ORDER_STATE.TERMINATED %}
                 <div class="col-sm-4">
                     <a href="{% url 'workery_tenant_ongoing_job_unassign_operation' job.id %}?return_id=lite-retrieve">
                         <button id="id_submit_btn"
@@ -202,6 +202,17 @@
                     </button>
                     </a>
                 </div>
+                {% if job.associate == None %}
+                <div class="col-sm-4">
+                    <a href="{% url 'workery_tenant_ongoing_job_assign_operation' job.id %}?return_id=lite-retrieve">
+                    <button id="id_submit_btn"
+                        class="btn btn-warning btn-lg btn-fxw mt-4"
+                        type="button">
+                    <i class="fas fa-handshake"></i>&nbsp;{% trans 'Assign Associate' %}
+                    </button>
+                    </a>
+                </div>
+                {% endif %}
                 <div class="col-sm-4">
                     <a href="{% url 'workery_tenant_ongoing_job_creation_wizard_operation' job.id %}?return_id=lite-retrieve">
                     <button id="id_submit_btn"

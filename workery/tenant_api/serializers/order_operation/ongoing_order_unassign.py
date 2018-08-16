@@ -26,6 +26,8 @@ from shared_foundation.constants import CUSTOMER_GROUP_ID
 from shared_foundation.models import SharedUser
 from tenant_foundation.constants import *
 from tenant_foundation.models import (
+    ActivitySheetItem,
+    ACTIVITY_SHEET_ITEM_STATE,
     Comment,
     Associate,
     WorkOrder,
@@ -87,6 +89,14 @@ class OngoingWorkOrderUnassignCreateSerializer(serializers.Serializer):
         #-------------------------#
         ongoing_job = validated_data.get('ongoing_job', None)
         reason = validated_data.get('reason', None)
+
+        activity_sheets = ActivitySheetItem.objects.filter(
+            ongoing_job=ongoing_job,
+            associate=ongoing_job.associate
+        )
+        for activity_sheet in activity_sheets.all():
+            activity_sheet.state = ACTIVITY_SHEET_ITEM_STATE.DECLINED
+            activity_sheet.save()
 
         #------------------------------------------#
         # Create any additional optional comments. #
