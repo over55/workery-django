@@ -129,10 +129,10 @@
 <nav aria-label="Page navigation example">
   <ul class="pagination pagination-lg">
     <li class="page-item">
-	<button type="button" class="btn btn-link btn-lg" data-container="body" data-toggle="popover" title="Jump to page" data-placement="bottom" data-content='<form method="get"><input type="text" name="page" class="form-control" placeholder="page" aria-label="page" aria-describedby="button-addon2">
-  <div class="input-group-append">
-    <button class="btn btn-info btn-lg" type="button" id="button-addon2">Go</button>
-  </div></form>'>
+	<button type="button" class="btn btn-link btn-lg" data-container="body" data-toggle="popover" title="Jump to page" data-placement="bottom" data-content="<form method='get'><input type='text' name='page' class='form-control' placeholder='page' aria-label='page' aria-describedby='button-addon2'>
+  <div class='input-group-append'>
+    <button class='btn btn-info btn-lg' type='button' id='button-addon2'>Go</button>
+  </div></form>" >
 	  Page {{ page_obj.number }} of {{ paginator.num_pages }} <i class="fas fa-sort-down"></i>
 	</button>
     </li>
