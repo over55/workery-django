@@ -126,16 +126,14 @@
             </tbody>
         </table>
     </div>
-<nav aria-label="Page navigation example">
-  <ul class="pagination pagination-lg">
-    <li class="page-item">
-	<button type="button" class="btn btn-link btn-lg" data-container="body" data-toggle="popover" title="Jump to page" data-placement="bottom" data-html="true" data-content="<form action='/echo/html/' method='get'><div class='input-group mb-3'><input type='text' name='page' class='form-control form-control-lg' placeholder='page' aria-label='page' aria-describedby='button-addon2'>
-  <div class='input-group-append'>
-    <button class='btn btn-info btn-lg' type='button' id='button-addon2'>Go</button>
-  </div></div></form>" >
-	  Page {{ page_obj.number }} of {{ paginator.num_pages }} <i class="fas fa-sort-down"></i>
+<nav aria-label="Page navigation">
+	<button type="button" class="btn btn-link btn-lg" data-container="body" data-toggle="popover" title="Jump to page" data-placement="bottom" data-html="true" data-content="<form action method='get'><div class='input-group mb-3'><input type='text' name='page' class='form-control form-control-lg' placeholder='page' aria-label='page' aria-describedby='button-addon2'>
+	  <div class='input-group-append'>
+	    <button class='btn btn-info btn-lg' type='submit' id='button-addon2'>Go</button>
+	  </div></div></form>" >
+		  Page {{ page_obj.number }} of {{ paginator.num_pages }} <i class="fas fa-sort-down"></i>
 	</button>
-    </li>
+  <ul class="pagination pagination-lg">
     <li class="page-item">
 	 {% if page_obj.has_previous %}
             
