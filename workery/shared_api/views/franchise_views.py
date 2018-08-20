@@ -1,6 +1,4 @@
 # -*- coding: utf-8 -*-
-import django_filters
-from django_filters import rest_framework as filters
 from django.conf.urls import url, include
 from rest_framework import generics
 from rest_framework import authentication, viewsets, permissions, status
