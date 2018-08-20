@@ -516,7 +516,7 @@ REST_FRAMEWORK = {
     'DEFAULT_RENDERER_CLASSES': [
         'rest_framework.renderers.JSONRenderer',
         'rest_framework_msgpack.renderers.MessagePackRenderer',  # Third-party library.
-        'rest_framework.renderers.BrowsableAPIRenderer'
+        # 'rest_framework.renderers.BrowsableAPIRenderer'  # Not to be used in prod.
     ],
     'DEFAULT_PARSER_CLASSES': (
         'rest_framework.parsers.JSONParser',
