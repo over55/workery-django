@@ -1,5 +1,5 @@
 {% extends 'tenant_foundation/tenant_base.html' %}
-{% load staticfiles i18n humanize shared_foundation_tags %}
+{% load staticfiles i18n humanize tz shared_foundation_tags %}
 {% block title %}
 {% trans 'Job Details | Workery' %}
 {% endblock title %}
@@ -111,60 +111,159 @@
         <!-- CURRENT TABLE -->
         <!--------------------------------------------------------------------->
         <table class="table table-bordered custom-cell-w">
-            <tbody>
-                <tr class="bg-dark">
-                    <th scope="row" colspan="2" class="text-light">Summary Details</th>
+    <tbody>
+    <tr class="bg-dark text-white">
+        <th scope="row" colspan="2">Job Details</th>
+    </tr>
+    <tr>
+        <th scope="row" class="bg-light">Job #</th>
+        <td id="selected_order_id">
+            {{ job.id|intcomma }}
+        </td>
+    </tr>
+    <tr>
+        <th scope="row" class="bg-light">Client</th>
+        <td id="customer">
+            {% if job.customer %}
+               <a href="{% url 'workery_tenant_customer_lite_retrieve' template job.customer.id %}" target="_blank">
+                   {{ job.customer }}
+                   {% if job.customer.is_blacklisted %}
+                       &nbsp;<strong>(<i class="fa fa-frown fa-lg"></i>&nbsp;Blacklisted)</strong>
+                   {% endif %}
+                   &nbsp;<i class="fas fa-external-link-alt"></i>
+               </a>
+                  {% else %}-{% endif %}
+        </td>
+    </tr>
+    <tr>
+        <th scope="row" class="bg-light">Phone Number {% if job.customer.telephone %}({% if job.customer.telephone_type_of == 1 %}Landline{% elif job.customer.telephone_type_of == 2 %}Mobile{% elif job.customer.telephone_type_of == 3 %}Work{% endif %}){% endif %}</th>
+        <td id="phone">
+            {% if job.customer.telephone %}<a href="tel:{{ customer.telephone }}">{{ job.customer.telephone|pretty_formatted_phonenumber }}</a>{% else %}-{% endif %}
+        </td>
+    </tr>
+    <tr>
+        <th scope="row" class="bg-light">Description</th>
+        <td id="description">
+            {% if job.description %}{{ job.description }}{% else %}-{% endif %}
+        </td>
+    </tr>
+    <tr>
+        <th scope="row" class="bg-light">Skill Sets</th>
+        <td id="skill_sets">
+            {% for skill_set in job.skill_sets.all %}
+                <span class="badge badge-info badge-lg">{{ skill_set.sub_category }}</span>
+            {% empty %}
+                -
+            {% endfor %}
+        </td>
+    </tr>
+    <tr>
+        <th scope="row" class="bg-light">Assigned Associate</th>
+        <td id="associate">
+        {% if job.associate %}<a href="{% url 'workery_tenant_member_lite_retrieve' template job.associate.id %}" target="_blank">{{ job.associate }}&nbsp;<i class="fas fa-external-link-alt"></i></a>{% else %}-{% endif %}
+        </td>
+    </tr>
+    <tr>
+        <th scope="row" class="bg-light">Assignment Date</th>
+        <td id="assignment_date">
+           {% if job.assignment_date %}{{ job.assignment_date }}{% else %}-{% endif %}
+        </td>
+    </tr>
+    <tr>
+        <th scope="row" class="bg-light">Is Home Support Service</th>
+        <td id="is_home_support_service">
+           {{ job.is_home_support_service }}
+        </td>
+    </tr>
+    <tr>
+        <th scope="row" class="bg-light">Is ongoing?</th>
+        <td id="is_ongoing">
+            {{ job.is_ongoing }}
+        </td>
+    </tr>
+    <tr>
+        <th scope="row" class="bg-light">Status</th>
+        <td id="selected_status">
+            {{ job.get_pretty_status }}
+        </td>
+    </tr>
+    <tr>
+        <th scope="row" class="bg-light">Start date</th>
+        <td id="completion_date">
+            {% if job.start_date %}{{ job.start_date }}{% else %}<i>{% trans 'No specified' %}</i>{% endif %}
+        </td>
+    </tr>
+    <tr>
+        <th scope="row" class="bg-light">Completion date</th>
+        <td id="completion_date">
+        {% if job.completion_date %}{{ job.completion_date }}{% else %}-{% endif %}
+        </td>
+    </tr>
+    <tr>
+        <th scope="row" class="bg-light">Hours</th>
+        <td id="hours">
+        {{ job.hours }}
+        </td>
+    </tr>
+    {% if job.latest_pending_task %}
+        <tr>
+            <th scope="row" class="bg-light">Required Task</th>
+            <td id="latest_pending_task">
+            <a href="{% url 'workery_tenant_pending_task_retrieve' job.latest_pending_task.id %}" target="_blank">
+                {{ job.latest_pending_task.title }}&nbsp;<i class="fas fa-external-link-alt"></i>
+            </a>
+            </td>
+        </tr>
+    {% endif %}
+    <!-- ######################## end JOB DETAILS ######################### -->
+
+                <!-- ############ SYSTEM ############ -->
+                <tr class="bg-dark text-white">
+                    <th scope="row" colspan="2">System</th>
                 </tr>
                 <tr>
-                    <th scope="row" class="bg-light">Ongoing Job #</th>
-                    <td id="selected_order_id">
-                        {{ job.id|intcomma }}
+                    <th scope="row" class="bg-light">Created at</th>
+                    <td>
+                        {% if job.created_at %}{{ job.created_at|timezone:request.tenant.timezone_name }}{% else %}-{% endif %}
                     </td>
                 </tr>
                 <tr>
-                    <th scope="row" class="bg-light">Client Name</th>
-                    <td id="selected_customer_name">
-                        {% if job.customer %}
-                            <a href="{% url 'workery_tenant_customer_lite_retrieve' template job.customer.id %}" target="_blank">
-                                {{ job.customer }}&nbsp;<i class="fas fa-external-link-alt"></i>
-                            </a>
+                    <th scope="row" class="bg-light">Created by</th>
+                    <td>
+                        {% if job.created_by %}{{ job.created_by }}{% else %}-{% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row" class="bg-light">Created from</th>
+                    <td>
+                        {% if job.created_from %}
+                            <a href="https://whatismyipaddress.com/ip/{{ job.created_from }}" target="_blank">{{ job.created_from }}&nbsp;<i class="fas fa-external-link-alt"></i></a>
                         {% else %}-{% endif %}
                     </td>
                 </tr>
                 <tr>
-                    <th scope="row" class="bg-light">Associate Name</th>
-                    <td id="selected_associate_name">
-                        {% if job.associate %}<a href="{% url 'workery_tenant_member_lite_retrieve' template job.associate.id %}" target="_blank">{{ job.associate }}&nbsp;<i class="fas fa-external-link-alt"></i></a>{% else %}-{% endif %}
+                    <th scope="row" class="bg-light">Modified at</th>
+                    <td>
+                        {% if job.last_modified_at %}{{ job.last_modified_at|timezone:request.tenant.timezone_name }}{% else %}-{% endif %}
                     </td>
                 </tr>
                 <tr>
-                    <th scope="row" class="bg-light">Job Type</th>
-                    <td id="selected_job_type_id">
-                        {% if job.customer.type_of == tenant_constants.RESIDENTIAL_CUSTOMER_TYPE_OF_ID %}
-                            {% trans 'Residential Job' %}
-                        {% elif job.customer.type_of == tenant_constants.COMMERCIAL_CUSTOMER_TYPE_OF_ID %}
-                            {% trans 'Commercial Job' %}
-                        {% else %}
-                            {% trans 'Unassigned Job' %}
-                        {% endif %}
+                    <th scope="row" class="bg-light">Modified by</th>
+                    <td>
+                        {% if job.last_modified_by %}{{ job.last_modified_by }}{% else %}-{% endif %}
                     </td>
                 </tr>
                 <tr>
-                    <th scope="row" class="bg-light">Status</th>
-                    <td id="selected_status">
-                        {% if job.state == ONGOING_WORK_ORDER_STATE.IDLE %}
-                            {% trans 'Idle' %}
-                        {% elif job.state == ONGOING_WORK_ORDER_STATE.RUNNING %}
-                            {% trans 'Running' %}
-                        {% elif job.state == ONGOING_WORK_ORDER_STATE.TERMINATED %}
-                            {% trans 'Terminated' %}
-                        {% else %}
-                            {{ job.state }}
-                        {% endif %}
+                    <th scope="row" class="bg-light">Modified from</th>
+                    <td>
+                        {% if job.last_modified_from %}
+                            <a href="https://whatismyipaddress.com/ip/{{ job.last_modified_from }}" target="_blank">{{ job.last_modified_from }}&nbsp;<i class="fas fa-external-link-alt"></i></a>
+                        {% else %}-{% endif %}
                     </td>
                 </tr>
-            </tbody>
-        </table>
+                <!-- ############ end SYSTEM ############ -->
+        </tbody>
+    </table>
         <!--------------------------------------------------------------------->
         <!-- end CURRENT TABLE -->
 
@@ -230,7 +329,7 @@
     <!------------------------------------------------------------------------->
     <!-- end FORM -->
 
-    
+
     <!-- RETURN-TO-TOP -->
     <a id="return-to-top" href="#" class="btn-info btn-lg back-to-top" role="button" title="Back to top"><i class="fas fa-angle-up fa-2x"></i></a>
     <!-- end RETURN-TO-TOP -->
