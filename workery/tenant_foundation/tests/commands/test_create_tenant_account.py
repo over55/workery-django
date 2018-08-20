@@ -6,6 +6,7 @@ from starterkit.utils import (
 )
 from django_tenants.test.cases import TenantTestCase
 from django_tenants.test.client import TenantClient
+from django.db import connection # Used for django tenants.
 from django.urls import reverse
 from shared_foundation import constants
 from shared_foundation.models import SharedUser
@@ -50,6 +51,7 @@ class TestCreateManagementAccountManagementCommand(TenantTestCase):
             "N6H 1B4",
             "78 Riverside Drive",
             "", # Extra line.
+            "America/Toronto",
             verbosity=0
         )
         call_command(
@@ -73,14 +75,17 @@ class TestCreateManagementAccountManagementCommand(TenantTestCase):
            verbosity=0
         )
 
+        # Connection needs to be the public schema as the user is in the shared database.
+        connection.set_schema_to_public() # Switch to Public.
+
         # Verify the account works.
         from django.contrib.auth.hashers import check_password
-        from django.contrib.auth import get_user_model
-        user = SharedUser.objects.filter(email__iexact=TEST_USER_EMAIL)[0]
+        user = SharedUser.objects.filter(email__iexact=TEST_USER_EMAIL).first()
+        self.assertIsNotNone(user)
         is_authenticated = check_password(TEST_USER_PASSWORD, user.password)
         self.assertTrue(is_authenticated)
 
-        # Delete all the users we've created in this unit test.
+        # # Delete all the users we've created in this unit test.
         # SharedUser.objects.all().delete()
 
     def test_command_with_duplicate_email_error(self):
@@ -97,14 +102,20 @@ class TestCreateManagementAccountManagementCommand(TenantTestCase):
             "N6H 1B4",
             "78 Riverside Drive",
             "", # Extra line.
+            "America/Toronto",
             verbosity=0
         )
+
+        # Connection needs to be the public schema as the user is in the shared database.
+        connection.set_schema_to_public() # Switch to Public.
+
         user = SharedUser.objects.create(
             first_name="Bart",
             last_name="Mika",
             email=TEST_USER_EMAIL,
             is_active=True,
         )
+
         try:
             call_command(
                 'create_tenant_account',
@@ -170,6 +181,7 @@ class TestCreateManagementAccountManagementCommand(TenantTestCase):
             "N6H 1B4",
             "78 Riverside Drive",
             "", # Extra line.
+            "America/Toronto",
             verbosity=0
         )
         call_command(
@@ -213,10 +225,13 @@ class TestCreateManagementAccountManagementCommand(TenantTestCase):
            verbosity=0
         )
 
+        # Connection needs to be the public schema as the user is in the shared database.
+        connection.set_schema_to_public() # Switch to Public.
+
         # Verify the account works.
         from django.contrib.auth.hashers import check_password
-        from django.contrib.auth import get_user_model
-        user = SharedUser.objects.filter(email__iexact=TEST_USER_EMAIL)[0]
+        user = SharedUser.objects.filter(email__iexact=TEST_USER_EMAIL).first()
+        self.assertIsNotNone(user)
         is_authenticated = check_password(TEST_USER_PASSWORD, user.password)
         self.assertTrue(is_authenticated)
 
