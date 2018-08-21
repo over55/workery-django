@@ -373,6 +373,10 @@ class StaffRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         validators=[UniqueValidator(queryset=Staff.objects.all())],
         required=False
     )
+    personal_email = serializers.EmailField(
+        validators=[UniqueValidator(queryset=Staff.objects.all())],
+        required=False
+    )
 
     # Add password adding.
     password = serializers.CharField(
@@ -510,6 +514,14 @@ class StaffRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         """
         if int_or_none(value) is None:
             raise serializers.ValidationError("Please select a valid choice.")
+        return value
+
+    def validate_personal_email(self, value):
+        """
+        Include validation for valid choices.
+        """
+        if value is None or value == '':
+            raise serializers.ValidationError("This field may not be blank.")
         return value
 
     def update(self, instance, validated_data):
