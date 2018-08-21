@@ -83,9 +83,9 @@ class AwayLogListCreateSerializer(serializers.ModelSerializer):
         #-----------------------------
         associate = validated_data.get('associate', None)
         reason = validated_data.get('reason', None)
+        reason_other = validated_data.get('reason_other', None)
         until_further_notice = validated_data.get('until_further_notice', False)
         until_date = validated_data.get('until_date', None)
-        logger.info("Input data:", str(validated_data))
 
         #-----------------------------
         # Create our `AwayLog` object.
@@ -94,6 +94,7 @@ class AwayLogListCreateSerializer(serializers.ModelSerializer):
         log = AwayLog.objects.create(
             associate=associate,
             reason=reason,
+            reason_other=reason_other,
             until_further_notice=until_further_notice,
             until_date=until_date,
             created_by=self.context['created_by'],
