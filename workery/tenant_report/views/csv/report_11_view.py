@@ -92,6 +92,10 @@ def report_11_streaming_csv_view(request):
         invoice_id = "-" if job.invoice_id <= 0 else job.invoice_id
         wsib_insurance_date = "-" if job.associate.wsib_insurance_date is None else job.associate.wsib_insurance_date
 
+        # Format labour amount
+        invoice_labour_amount = str(job.invoice_labour_amount)
+        invoice_labour_amount = invoice_labour_amount.replace('C', '')
+
         # Generate the reason.
         rows += ([
             str(job.id),
@@ -100,7 +104,7 @@ def report_11_streaming_csv_view(request):
             str(job.associate),
             str(job.customer),
             str(wsib_insurance_date),
-            str(job.invoice_labour_amount),
+            invoice_labour_amount,
             str(invoice_id),
             skill_set_text,
         ],)

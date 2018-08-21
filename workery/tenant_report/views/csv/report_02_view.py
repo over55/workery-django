@@ -117,12 +117,21 @@ def report_02_streaming_csv_view(request):
         # Attach all the skill sets that are associated with each job.
         skill_set_string = job.get_skill_sets_string()
 
+        # Format labour amount
+        invoice_labour_amount = str(job.invoice_labour_amount)
+        invoice_labour_amount = invoice_labour_amount.replace('C', '')
+
+        # Format service fee.
+        invoice_service_fee_amount = str(job.invoice_service_fee_amount)
+        invoice_service_fee_amount = invoice_service_fee_amount.replace('C', '')
+
+        # Generate the row.
         rows += ([
             job.id,
             pretty_dt_string(job.assignment_date),
             pretty_dt_string(job.completion_date),
-            str(job.invoice_service_fee_amount),
-            str(job.invoice_labour_amount),
+            invoice_service_fee_amount,
+            invoice_labour_amount,
             job_type,
             job.get_pretty_status(),
             job.customer.id,
