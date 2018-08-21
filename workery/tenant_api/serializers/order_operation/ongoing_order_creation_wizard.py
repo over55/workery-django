@@ -97,10 +97,15 @@ class OngoingWorkOrderCreationWizardOperationSerializer(serializers.Serializer):
             would_customer_refer_our_organization = True,
             score = True,
             invoice_id = 0,
+            description = ongoing_job.description,
         )
 
         # Update our ongoing job to have our closed tasks.
         ongoing_job.closed_orders.add(order)
+
+        # Add skill sets.
+        for skill_set in ongoing_job.skill_sets.all():
+            order.skill_sets.add(skill_set)
 
     def create(self, validated_data):
         """
