@@ -133,6 +133,24 @@ def report_02_streaming_csv_view(request):
         invoice_service_fee_amount = str(job.invoice_service_fee_amount)
         invoice_service_fee_amount = invoice_service_fee_amount.replace('C', '')
 
+        #
+        was_survey_conducted = '-'
+        was_job_satisfactory = '-'
+        was_job_finished_on_time_and_on_budget = '-'
+        was_associate_punctual = '-'
+        was_associate_professional = '-'
+        would_customer_refer_our_organization = '-'
+        score = '-'
+
+        if job.state == WORK_ORDER_STATE.COMPLETED_AND_PAID or job.state == WORK_ORDER_STATE.COMPLETED_BUT_UNPAID:
+            was_survey_conducted = 1 if job.was_survey_conducted else 0
+            was_job_satisfactory = 1 if job.was_job_satisfactory else 0
+            was_job_finished_on_time_and_on_budget = 1 if job.was_job_finished_on_time_and_on_budget else 0
+            was_associate_punctual = 1 if job.was_associate_punctual else 0
+            was_associate_professional = 1 if job.was_associate_professional else 0
+            would_customer_refer_our_organization = 1 if job.would_customer_refer_our_organization else 0
+            score = job.score
+
         # Generate the row.
         rows += ([
             job.id,
@@ -145,13 +163,13 @@ def report_02_streaming_csv_view(request):
             job.customer.id,
             str(job.customer),
             skill_set_string,
-            1 if job.was_survey_conducted else 0,
-            1 if job.was_job_satisfactory else 0,
-            1 if job.was_job_finished_on_time_and_on_budget else 0,
-            1 if job.was_associate_punctual else 0,
-            1 if job.was_associate_professional else 0,
-            1 if job.would_customer_refer_our_organization else 0,
-            job.score
+            was_survey_conducted,
+            was_job_satisfactory,
+            was_job_finished_on_time_and_on_budget,
+            was_associate_punctual,
+            was_associate_professional,
+            would_customer_refer_our_organization,
+            score
         ],)
 
     pseudo_buffer = Echo()
