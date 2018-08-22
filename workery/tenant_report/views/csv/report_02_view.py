@@ -106,7 +106,15 @@ def report_02_streaming_csv_view(request):
         "Job Status",
         "Client No.",
         "Client Name",
-        "Skill Set(s)"],)
+        "Skill Set(s)",
+        "Was survey conducted",
+        "Was job_ satisfactory",
+        "Was job finished on time and on budget",
+        "Was associate punctual",
+        "Was associate professional",
+        "Would customer refer our organization",
+        "Score"
+    ],)
 
     # Generate hte CSV data.
     for job in jobs.all():
@@ -136,7 +144,14 @@ def report_02_streaming_csv_view(request):
             job.get_pretty_status(),
             job.customer.id,
             str(job.customer),
-            skill_set_string
+            skill_set_string,
+            1 if job.was_survey_conducted else 0,
+            1 if job.was_job_satisfactory else 0,
+            1 if job.was_job_finished_on_time_and_on_budget else 0,
+            1 if job.was_associate_punctual else 0,
+            1 if job.was_associate_professional else 0,
+            1 if job.would_customer_refer_our_organization else 0,
+            job.score
         ],)
 
     pseudo_buffer = Echo()
