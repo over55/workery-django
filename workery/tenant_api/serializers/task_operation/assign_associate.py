@@ -240,10 +240,14 @@ class AssignAssociateTaskOperationSerializer(serializers.Serializer):
             due_date = None
             type_of = None
             if state == ACTIVITY_SHEET_ITEM_STATE.ACCEPTED:
-                title = _('Ongoing Job Update')
-                description = _('Please review an ongoing job and fill in how many visits in previous month.')
-                due_date = get_end_of_month_date()
-                type_of = UPDATE_ONGOING_JOB_TASK_ITEM_TYPE_OF_ID
+                title = _('48 hour follow up')
+                description =  _('Please call up the client and confirm that the associate and client have agreed on scheduled meeting date in the future.')
+                due_date = get_todays_date_plus_days(2)
+                type_of = FOLLOW_UP_IS_JOB_COMPLETE_TASK_ITEM_TYPE_OF_ID
+                # title = _('Ongoing Job Update')
+                # description = _('Please review an ongoing job and fill in how many visits in previous month.')
+                # due_date = get_end_of_month_date()
+                # type_of = UPDATE_ONGOING_JOB_TASK_ITEM_TYPE_OF_ID
             elif state == ACTIVITY_SHEET_ITEM_STATE.PENDING:
                 title = _('Pending')
                 description = _('Please contact the Associate to confirm if they want the job.')

@@ -24,5 +24,9 @@ urlpatterns = (
 
     path('ongoing-jobs/detail/<int:pk>/operation/creation-wizard',
     views.OngoingWorkOrderCreationWizardOperationView.as_view(),
-    name='workery_tenant_ongoing_job_creation_wizard_operation')
+    name='workery_tenant_ongoing_job_creation_wizard_operation'),
+
+    path('ongoing-jobs/detail/<int:pk>/operation/follow-up',
+    views.OngoingWorkOrderFollowUpOperationView.as_view(),
+    name='workery_tenant_ongoing_job_follow_up_operation')
 )
