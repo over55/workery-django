@@ -1,0 +1,768 @@
+{% extends 'tenant_foundation/tenant_base.html' %}
+{% load staticfiles i18n humanize shared_foundation_tags %}
+
+{% block title %}
+{% trans 'Client Details | Workery' %}
+{% endblock title %}
+
+{% block header_content %}
+{% endblock header_content %}
+
+{% block content %}
+<input id="id_show_customer_survey" name="show_customer_survey" value="" />
+<script>
+    function show_success_panel() {
+        $("#customer_completion_form_div").show();
+        $("#id_show_customer_survey").val(true);
+    }
+
+    function hide_success_panel() {
+        $("#customer_completion_form_div").hide();
+        $("#id_show_customer_survey").val(false);
+    }
+
+    function show_failure_panel() {
+        $("#failure_reason_survey_div").show();
+        $("#id_show_customer_survey").val(false);
+    }
+
+    function hide_failure_panel() {
+        $("#failure_reason_survey_div").hide();
+        $("#id_show_customer_survey").val(true);
+    }
+
+    /**
+     *  When page loads, the following code will be run first.
+     */
+    $(document).ready(function () {
+        //------------------------------//
+        //  DATEPICKER INITIALIZATION   //
+        //------------------------------//
+
+        // Initialize our datepicker jQuery code with our HTML view.
+        $( "#invoice_date" ).datepicker({
+            dateFormat: 'yy-mm-dd',
+            maxDate: 'today'
+        });
+
+        //------------------------------//
+        // EVENT HANDLER INITIALIZATION //
+        //------------------------------//
+
+        $('input[type=radio][name=was_successfully_finished]').change(function() {
+            if (this.value == 'yes') {
+                // Load up the GUI for the customer survey for a successful ongoing_job.
+                show_success_panel();
+                hide_failure_panel();
+            }
+            else if (this.value == 'no') {
+                // Load up the GUI for the reason why the ongoing_job was not accomplished.
+                show_failure_panel();
+                hide_success_panel();
+            }
+        });
+
+        $('input[type=radio][name=was_survey_conducted]').change(function() {
+            if (this.value == 'yes') {
+                // Load up the GUI for the customer survey for a successful ongoing_job.
+                $("#customer_satisfaction_survey_div").show();
+            }
+            else if (this.value == 'no') {
+                // Load up the GUI for the reason why the ongoing_job was not accomplished.
+                $("#customer_satisfaction_survey_div").hide();
+            }
+        });
+
+        $('input[type=radio][name=was_there_financials_inputted]').change(function() {
+            if (this.value == 'yes') {
+                // Load up the GUI for the customer survey for a successful ongoing_job.
+                $("#was_there_financials_inputted_div").show();
+            }
+            else if (this.value == 'no') {
+                // Load up the GUI for the reason why the ongoing_job was not accomplished.
+                $("#was_there_financials_inputted_div").hide();
+            }
+        });
+
+        // PLUG IN EVENT LISTENER ON REASON DROPDOWN CHANGE.
+        $('#reason').on('change',function(){
+            if( $(this).val()==="other" || $(this).val()===1){
+                $("#customer_completion_form_div").hide();
+                $("#reason_other_div").show();
+            }
+            else if( $(this).val()==="4" || $(this).val()===4){
+                $("#customer_completion_form_div").show();
+                $("#reason_other_div").hide();
+            }
+            else{
+                $("#customer_completion_form_div").hide();
+                $("#reason_other_div").hide();
+            }
+        });
+
+        $('#invoice_labour_amount').on('change',function(){
+            calculate_total_and_service_fee();
+        });
+
+        $('#invoice_material_amount').on('change',function(){
+            calculate_total_and_service_fee();
+        });
+
+        $('#invoice_tax_amount').on('change',function(){
+            calculate_total_and_service_fee();
+        });
+
+    }); // end DOCUMENT START
+
+    function calculate_total_and_service_fee() {
+        // Get our input fields.
+        var invoice_labour_amount = $('#invoice_labour_amount').val();
+        var invoice_material_amount = $('#invoice_material_amount').val();
+        var invoice_tax_amount = $('#invoice_tax_amount').val();
+
+        // Convert to float
+        invoice_labour_amount = parseFloat(invoice_labour_amount).toFixed(2);
+        invoice_material_amount = parseFloat(invoice_material_amount).toFixed(2);
+        invoice_tax_amount = parseFloat(invoice_tax_amount).toFixed(2);
+
+        // Replace NaN with zero.
+        invoice_labour_amount = ( isNaN(invoice_labour_amount) ? 0 : invoice_labour_amount );
+        invoice_material_amount = ( isNaN(invoice_material_amount) ? 0 : invoice_material_amount );
+        invoice_tax_amount = ( isNaN(invoice_tax_amount) ? 0 : invoice_tax_amount );
+
+        // For debugging purposes only.
+        console.log("invoice_labour_amount", invoice_labour_amount);
+        console.log("invoice_material_amount", invoice_material_amount);
+        console.log("invoice_tax_amount", invoice_tax_amount);
+
+        // Constants
+        var service_fee = parseFloat("{{ ongoing_job.invoice_service_fee.percentage }}").toFixed(2);
+
+        // Calculate
+        var total_amount = 0;
+        total_amount = invoice_labour_amount + invoice_material_amount + invoice_tax_amount;
+        service_fee = service_fee / 100.0;
+        service_fee = service_fee * invoice_labour_amount;
+
+        // For debugging purposes only.
+        console.log("total_amount", total_amount);
+        console.log("service_fee", service_fee);
+
+        // Update the GUI.
+        $('#invoice_total_amount').val(String(total_amount));
+        $('#invoice_service_fee_amount').val(service_fee.toFixed(2));
+    }
+
+    function click_cancel_button() {
+
+    }
+
+    function get_selected_radio_value(radiofields_name) {
+        var radios = document.getElementsByName(radiofields_name);
+        for (var i = 0, length = radios.length; i < length; i++) {
+            if (radios[i].checked) {
+
+                // only one radio can be logically checked, don't check the rest
+                var value = radios[i].value;
+                if (value == "yes" ) {
+                    return true;
+                } else {
+                    return false;
+                }
+
+            }
+        }
+        return null;
+    }
+
+    /**
+     *  Function to make text readable removing underscore and capitalizing
+     */
+    function humanize(str) {
+	var frags = str.split('_');
+	for (i=0; i<frags.length; i++) {
+			frags[i] = frags[i].charAt(0).toUpperCase() + frags[i].slice(1);
+	}
+	return frags.join(' ');
+    }
+
+    //
+    function click_submit_button() {
+        // If there was another reason, track it down.
+        var reason = $('#reason').val();
+
+        // IF THE USER INDICATED THE JOB WAS SUCCESSFULL THEN SIMPLY RETURN
+        // A SUCCESS REASON.
+        if (  $('#id_show_customer_survey').val() == 'true'  ) {
+            reason = 4; // SUCCESS JOB.
+
+        // ELSE USER INDICATED JOB WAS NOT SUCCESSFULL SO WE NEED TO EXTRACT
+        // THE REASON FOR THE FAILURE.
+        } else if (  $('#id_show_customer_survey').val() == 'false'  ) {
+            if ( reason == 'other' ) {
+                reason = 1;
+            }
+            reason = parseInt(reason);
+        }
+
+        // Get our "Client Survey".
+        var was_survey_conducted = get_selected_radio_value('was_survey_conducted');
+        var was_there_financials_inputted = get_selected_radio_value('was_there_financials_inputted');
+        var was_job_satisfactory = get_selected_radio_value('was_job_satisfactory');
+        var was_job_finished_on_time_and_on_budget = get_selected_radio_value('was_job_finished_on_time_and_on_budget');
+        var was_associate_punctual = get_selected_radio_value('was_associate_punctual');
+        var was_associate_professional = get_selected_radio_value('was_associate_professional');
+        var would_customer_refer_our_organization = get_selected_radio_value('would_customer_refer_our_organization');
+        var invoice_date = $('#invoice_date').val();
+        var invoice_id = $('#invoice_id').val();
+        var invoice_quote_amount = $('#invoice_quote_amount').val();
+        var invoice_labour_amount = $('#invoice_labour_amount').val();
+        var invoice_material_amount = $('#invoice_material_amount').val();
+        var invoice_tax_amount = $('#invoice_tax_amount').val();
+        var invoice_total_amount = $('#invoice_total_amount').val();
+        var invoice_service_fee_amount = $('#invoice_service_fee_amount').val();
+
+        var invoice_date = $('#invoice_date').val();
+        if (invoice_date !== undefined && invoice_date != null && invoice_date.length > 0) {
+            var mydate = new Date(invoice_date); // Convert "MM DD, YYYY" to JS DATE
+            invoice_date = mydate.toISOString().substring(0, 10); // Convert JS DATE to "YYYY-MM-DD"
+        } else {
+            invoice_date = '';
+        }
+
+        // If the user did not select the job was completed reason then we will
+        // set these values as false so our API web-service does not return any
+        // 400 validation errors.
+        if (reason !== 4) {
+            console.log("Setting default values.");
+            was_survey_conducted = false;
+            was_there_financials_inputted = false;
+            was_job_satisfactory = false;
+            was_job_finished_on_time_and_on_budget = false;
+            was_associate_punctual = false;
+            was_associate_professional = false;
+            would_customer_refer_our_organization = false;
+            invoice_date = '1900-01-01';
+            invoice_id = null;
+            invoice_quote_amount = 0;
+            invoice_labour_amount = 0;
+            invoice_material_amount = 0;
+            invoice_tax_amount = 0;
+            invoice_total_amount = 0;
+            invoice_service_fee_amount = 0;
+        }
+
+        // For debugging purposes only.
+        console.log("ongoing_job", "{{ ongoing_job.id }}");
+        console.log("reason", reason);
+        console.log("additional_comment", $('#comment').val());
+        console.log("was_survey_conducted", was_survey_conducted);
+        console.log("was_there_financials_inputted", was_there_financials_inputted);
+        console.log("was_job_satisfactory", was_job_satisfactory);
+        console.log("was_job_finished_on_time_and_on_budget", was_job_finished_on_time_and_on_budget);
+        console.log("was_associate_punctual", was_associate_punctual);
+        console.log("was_associate_professional", was_associate_professional);
+        console.log("would_customer_refer_our_organization", would_customer_refer_our_organization);
+        console.log("invoice_date", invoice_date);
+        console.log("invoice_id", invoice_id);
+        console.log("invoice_quote_amount", invoice_quote_amount);
+        console.log("invoice_labour_amount", invoice_labour_amount);
+        console.log("invoice_material_amount", invoice_material_amount);
+        console.log("invoice_tax_amount", invoice_tax_amount);
+        console.log("invoice_total_amount", invoice_total_amount);
+        console.log("invoice_service_fee_amount", invoice_service_fee_amount);
+
+        // Submit to our API web-service.
+        post_ongoing_order_completion_survey_operation_api(
+            {
+                'ongoing_job': {{ ongoing_job.id }},
+                'reason': reason,
+                'reason_other': $('#reason_other').val(),
+                'additional_comment': $('#comment').val(),
+                'was_survey_conducted': was_survey_conducted,
+                'was_there_financials_inputted': was_there_financials_inputted,
+                'was_job_satisfactory': was_job_satisfactory,
+                'was_job_finished_on_time_and_on_budget': was_job_finished_on_time_and_on_budget,
+                'was_associate_punctual': was_associate_punctual,
+                'was_associate_professional': was_associate_professional,
+                'would_customer_refer_our_organization': would_customer_refer_our_organization,
+                'invoice_date': invoice_date,
+                'invoice_id': invoice_id,
+                'invoice_quote_amount': invoice_quote_amount,
+                'invoice_labour_amount': invoice_labour_amount,
+                'invoice_material_amount': invoice_material_amount,
+                'invoice_tax_amount': invoice_tax_amount,
+                'invoice_total_amount': invoice_total_amount,
+                'invoice_service_fee_amount': invoice_service_fee_amount
+            },
+            function(result_dict) { // Success
+                // FOR DEBUGGING PURPOSES ONLY.
+                console.log(result_dict);
+
+                // REDIRECT TO SUCCESS PAGE.
+                window.location = "{% url 'workery_tenant_ongoing_job_list' %}?was_modified=True";
+            },
+            function(xhr,status,error) { // Error
+                // STEP 1: Convert to JSON.
+                var err = JSON.parse(xhr.responseText);
+
+                // For debugging purposes only.
+                console.log(err);
+
+                // STEP 2: CLEAR EXISTING TEXT.
+                $('#all_error_result').html("");
+		        $('#all_error_result').removeClass('error-block');
+
+                // STEP 3: PRINT OUR ERROR.
+                for(var prop in err) {
+                    if(err.hasOwnProperty(prop)) {
+                        var val = err[prop];
+                        var fdname = humanize(prop);
+   		                // Errors box code
+                        $('#all_error_result').append("<div class='form-error'><b>"+fdname+":</b> "+val+" </div>");
+            			$('#all_error_result').addClass('error-block');
+            			// Inline fields errors code
+            			$('#'+prop+'-error').html("<ul><li>"+val+"</li></ul>");
+            			$('#add-client-form').addClass('was-validated');
+                    }
+                }
+
+                // STEP 4: FOCUS TO WHERE THE ERROR IS OCCURING.
+                $('html, body').animate({ scrollTop: $('#id_page_title').offset().top }, 'slow');
+            },
+            function() { // Finally
+                // UNLOCK THE "SUBMIT" BUTTON TO BE AVAILABLE FOR USAGE.
+                // enable_btn();
+            }
+        );
+    }
+</script>
+
+<main id="main" role="main">
+
+    <!-- BREADCRUMB -->
+    <!------------------------------------------------------------------------->
+    <nav aria-label="breadcrumb">
+	  <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'workery_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'workery_tenant_job_summary' %}">{% trans 'Jobs' %}</a></li>
+        <li class="breadcrumb-item"><a href="">{% trans 'Job #' %}{{ object.id|intcomma }}</a></li>
+        <li class="breadcrumb-item active" aria-current="page">{% trans 'Close Job' %}</li>
+	  </ol>
+    </nav>
+    <!------------------------------------------------------------------------->
+    <!-- end BREADCRUMB -->
+    <!-- NOTIFICATION -->
+    <!------------------------------------------------------------------------->
+    {% if parameters.was_modified == 'True' %}
+    <div class="alert bg-success text-white alert-dismissible fade show" role="alert">
+        Client <strong>Successfully</strong> updated.
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">×</span>
+        </button>
+    </div>
+    {% endif %}
+    <!------------------------------------------------------------------------->
+    <!-- end NOTIFICATION -->
+
+    <h1 id="id_page_title">{% trans 'Close Job' %}</h1>
+
+    <div class="container">
+        <div class="row align-items-start">
+		<div class="col-md-10 mx-auto py-3">
+			<!-- ######################## Task Summary Table ######################## -->
+				<table class="table table-bordered custom-cell-w">
+				    <tbody>
+					<tr class="bg-primary text-white">
+					    <th scope="row" colspan="2" id="Task">Completion Survey</th>
+					</tr>
+					<tr>
+					    <th scope="row" class="bg-light">Client Name</th>
+					    <td id="customer">
+                            {% if ongoing_job.customer %}
+                                <a href="{% url 'workery_tenant_customer_lite_retrieve' 'summary' ongoing_job.customer.id %}" target="_blank">
+                                    {{ ongoing_job.customer }}&nbsp;<i class="fas fa-external-link-alt"></i>
+                                </a>
+                            {% else %}
+                                {% trans 'Unassigned' %}
+                            {% endif %}
+					    </td>
+					</tr>
+					<tr>
+					    <th scope="row" class="bg-light">Associate Name</th>
+					    <td id="associate">
+                            {% if ongoing_job.associate %}
+                                <a href="{% url 'workery_tenant_member_lite_retrieve' 'summary' ongoing_job.associate.id %}" target="_blank">
+                                    {{ ongoing_job.associate }}&nbsp;<i class="fas fa-external-link-alt"></i>
+                                </a>
+                            {% else %}
+                                {% trans 'Unassigned' %}
+                            {% endif %}
+					    </td>
+					</tr>
+                    <tr>
+					    <th scope="row" class="bg-light">Job Comments</th>
+					    <td id="job_comments">
+						    <a href="" target="_blank">{% trans 'View comments' %}&nbsp;({{ ongoing_job.comments.count }})&nbsp;<i class="fas fa-external-link-alt"></i></a>
+					    </td>
+					</tr>
+				    </tbody>
+				</table>
+		</div>
+            <!-- FORM -->
+            <!------------------------------------------------------------------------->
+            <div class="col-sm-6 mx-auto mt-2">
+                <!-- Residential form -->
+                <div class="col-sm-12 fade show active" id="client-form" aria-labelledby="commercial">
+                    <p>
+                        <span class="text-secondary font-italic"><sup>*</sup>&nbsp;-&nbsp;Indicates required field to fill out.</span>
+                    </p>
+
+		            <!-- Error Output -->
+            	    <div id="all_error_result" name="all_error_result" class="alert alert-error fade show" role="alert">
+		            </div>
+		            <!-- end Error Output -->
+
+                    <form id="add-client-form" method="post" class="needs-validation" action="" novalidate>
+                        <div class="form-row">
+                            <div class="form-row">
+
+                                <!--------------------------------------------->
+                                <!--              YES/NO CHOICE              -->
+                                <!--------------------------------------------->
+                                <div class="form-group col-md-12 mb-4">
+                                    <p class="mb-1">Was this job successfully completed by the Associate?&nbsp;<sup>*</sup></p>
+                                    <div class="form-radio custom-control custom-radio mb-2">
+                                        <input type="radio" id="was_successfully_finished" name="was_successfully_finished" value="yes" class="custom-control-input form-check-input" required>
+                                        <label class="custom-control-label form-check-label" for="was_successfully_finished">Yes</label>
+                                    </div>
+                                    <div class="form-radio custom-control custom-radio">
+                                        <input type="radio" id="was_successfully_finished2" name="was_successfully_finished" value="no" class="custom-control-input form-check-input" required>
+                                        <label class="custom-control-label form-check-label" for="was_successfully_finished2">No</label>
+                    		            <small class="form-text text-muted">Selecting "yes" will close this job as success.</small>
+                    		            <div id="was_successfully_finished-error" class="invalid-feedback"></div>
+                                    </div>
+                                </div>
+                                <!--------------------------------------------->
+                                <!--            end YES/NO CHOICE            -->
+                                <!--------------------------------------------->
+
+
+
+                                <!--------------------------------------------->
+                                <!--          CUSTOMER COMPLETION FORM       -->
+                                <!--------------------------------------------->
+                                <div id="customer_completion_form_div" style="display: none;">
+                                    <!-- Invoice Date -->
+                                    <div class="form-group col-md-12 mb-4">
+                                        <label for="invoice_date">Completion Date</label>
+                                        <div class="input-group input-group-lg">
+                                            <input type="text" class="form-control form-control-lg border border-primary" id="invoice_date" name="invoice_date" placeholder="yyyy-mm-dd" required="">
+                                            <div class="input-group-append">
+                                                <span class="input-group-text dob-icon bg-success border-success"><i class="far fa-calendar-alt"></i></span>
+                                            </div>
+                                            <div id="invoice_date-error" class="invalid-feedback"></div>
+                                        </div>
+                                    </div>
+                                    <!-- end Invoice Date -->
+
+                                    <!--------------------------------------------->
+                                    <!--              YES/NO CHOICE              -->
+                                    <!--------------------------------------------->
+                                    <div class="form-group col-md-12 mb-4">
+                                        <p class="mb-1">Was there financials inputted?&nbsp;<sup>*</sup></p>
+                                        <div class="form-radio custom-control custom-radio mb-2">
+                                            <input type="radio" id="was_there_financials_inputted" name="was_there_financials_inputted" value="yes" class="custom-control-input form-check-input" required>
+                                            <label class="custom-control-label form-check-label" for="was_there_financials_inputted">Yes</label>
+                                        </div>
+                                        <div class="form-radio custom-control custom-radio">
+                                            <input type="radio" id="was_there_financials_inputted2" name="was_there_financials_inputted" value="no" class="custom-control-input form-check-input" required>
+                                            <label class="custom-control-label form-check-label" for="was_there_financials_inputted2">No</label>
+                        		            <small class="form-text text-muted">Selecting "yes" will close this job as success.</small>
+                        		            <div id="was_there_financials_inputted-error" class="invalid-feedback"></div>
+                                        </div>
+                                    </div>
+                                    <!--------------------------------------------->
+                                    <!--            end YES/NO CHOICE            -->
+                                    <!--------------------------------------------->
+
+                                    <!--------------------------------------------->
+                                    <!--              FINANCIAL DATA             -->
+                                    <!--------------------------------------------->
+                                    <div id="was_there_financials_inputted_div" style="display: none;">
+
+                                        <!-- Invoice ID -->
+                                        <div class="form-group col-md-12 mb-4">
+                                            <label for="invoice_id">Invoice ID #</label>
+                                            <input type="number" class="form-control form-control-lg border border-success" id="invoice_id" name="invoice_id" placeholder="Invoice ID #" required="">
+                                            <div id="invoice_id-error" class="invalid-feedback"></div>
+                                        </div>
+                                        <!-- end Invoice ID -->
+
+                                        <!-- Invoice Quote -->
+                                        <div class="form-group col-md-12 mb-4">
+                                            <label for="invoice_quote_amount">Original Quote</label>
+                                            <input type="number" class="form-control form-control-lg border border-success" id="invoice_quote_amount" name="invoice_quote_amount" placeholder="Invoice Quote" required="">
+                                            <div id="invoice_quote_amount-error" class="invalid-feedback"></div>
+                                        </div>
+                                        <!-- end Invoice Quote -->
+
+                                        <!-- Invoice Labour -->
+                                        <div class="form-group col-md-12 mb-4">
+                                            <label for="invoice_labour_amount">Total Labour</label>
+                                            <input type="number" class="form-control form-control-lg border border-success" id="invoice_labour_amount" name="invoice_labour_amount" placeholder="Total Labour" required="">
+                                            <div id="invoice_labour_amount-error" class="invalid-feedback"></div>
+                                        </div>
+                                        <!-- end Invoice Labour -->
+
+                                        <!-- Invoice Material -->
+                                        <div class="form-group col-md-12 mb-4">
+                                            <label for="invoice_material_amount">Total Materials</label>
+                                            <input type="number" class="form-control form-control-lg border border-success" id="invoice_material_amount" name="invoice_material_amount" placeholder="Total Material" required="">
+                                            <div id="invoice_material_amount-error" class="invalid-feedback"></div>
+                                        </div>
+                                        <!-- end Invoice Material -->
+
+                                        <!-- Invoice Tax -->
+                                        <div class="form-group col-md-12 mb-4">
+                                            <label for="invoice_tax_amount">Total Tax</label>
+                                            <input type="number" class="form-control form-control-lg border border-success" id="invoice_tax_amount" name="invoice_tax_amount" placeholder="Total Tax" required="">
+                                            <div id="invoice_tax_amount-error" class="invalid-feedback"></div>
+                                        </div>
+                                        <!-- end Invoice Material -->
+
+                                        <!-- Invoice Total -->
+                                        <div class="form-group col-md-12 mb-4">
+                                            <label for="invoice_total_amount">Total</label>
+                                            <input type="number" class="form-control form-control-lg border border-success" id="invoice_total_amount" name="invoice_total_amount" required="" placeholder="Total" readonly>
+                                            <div id="invoice_total_amount-error" class="invalid-feedback"></div>
+                                        </div>
+                                        <!-- end Invoice Total -->
+
+                                        <!-- Invoice Service Fee -->
+                                        <div class="form-group col-md-12 mb-4">
+                                            <label for="invoice_service_fee_amount">Service Fee</label>
+                                            <input type="number" class="form-control form-control-lg border border-success" id="invoice_service_fee_amount" name="invoice_service_fee_amount" required="" placeholder="Service Fee" readonly>
+                                            <div id="invoice_service_fee_amount-error" class="invalid-feedback"></div>
+                                        </div>
+                                        <!-- end Invoice Total -->
+
+                                    </div>
+                                    <!--------------------------------------------->
+                                    <!--           end FINANCIAL DATA            -->
+                                    <!--------------------------------------------->
+
+                                    <!--------------------------------------------->
+                                    <!--              YES/NO CHOICE              -->
+                                    <!--------------------------------------------->
+                                    <div class="form-group col-md-12 mb-4">
+                                        <p class="mb-1">Was there a survey conducted?&nbsp;<sup>*</sup></p>
+                                        <div class="form-radio custom-control custom-radio mb-2">
+                                            <input type="radio" id="was_survey_conducted" name="was_survey_conducted" value="yes" class="custom-control-input form-check-input" required>
+                                            <label class="custom-control-label form-check-label" for="was_survey_conducted">Yes</label>
+                                        </div>
+                                        <div class="form-radio custom-control custom-radio">
+                                            <input type="radio" id="was_survey_conducted2" name="was_survey_conducted" value="no" class="custom-control-input form-check-input" required>
+                                            <label class="custom-control-label form-check-label" for="was_survey_conducted2">No</label>
+                        		            <small class="form-text text-muted">Selecting "yes" will close this job as success.</small>
+                        		            <div id="was_survey_conducted-error" class="invalid-feedback"></div>
+                                        </div>
+                                    </div>
+                                    <!--------------------------------------------->
+                                    <!--            end YES/NO CHOICE            -->
+                                    <!--------------------------------------------->
+
+                                    <!--------------------------------------------->
+                                    <!--       CUSTOMER SATISFACTION SURVEY      -->
+                                    <!--------------------------------------------->
+                                    <div id="customer_satisfaction_survey_div" style="display: none;">
+
+                                        <!-- was_job_satisfactory -->
+                                        <div class="form-group col-md-12 mb-4">
+                                            <p class="mb-1">Was the quality of the work satisfactory?</p>
+                                            <div class="form-radio custom-control custom-radio mb-2">
+                                                <input type="radio" id="was_job_satisfactory" name="was_job_satisfactory" value="yes" class="custom-control-input form-check-input" required>
+                                                <label class="custom-control-label form-check-label" for="was_job_satisfactory">Yes</label>
+                                            </div>
+                                            <div class="form-radio custom-control custom-radio">
+                                                <input type="radio" id="was_job_satisfactory2" name="was_job_satisfactory" value="no" class="custom-control-input form-check-input" required>
+                                                <label class="custom-control-label form-check-label" for="was_job_satisfactory2">No</label>
+                                                <div id="was_job_satisfactory-error" class="invalid-feedback"></div>
+                                            </div>
+                                        </div>
+                                        <!-- end was_job_satisfactory -->
+
+                                        <!-- was_job_finished_on_time_and_on_budget -->
+                                        <div class="form-group col-md-12 mb-4">
+                                            <p class="mb-1">Was the work completed on time and on budget?</p>
+                                            <div class="form-radio custom-control custom-radio mb-2">
+                                                <input type="radio" id="was_job_finished_on_time_and_on_budget" name="was_job_finished_on_time_and_on_budget" value="yes" class="custom-control-input form-check-input" required>
+                                                <label class="custom-control-label form-check-label" for="was_job_finished_on_time_and_on_budget">Yes</label>
+                                            </div>
+                                            <div class="form-radio custom-control custom-radio">
+                                                <input type="radio" id="was_job_finished_on_time_and_on_budget2" name="was_job_finished_on_time_and_on_budget" value="no" class="custom-control-input form-check-input" required>
+                                                <label class="custom-control-label form-check-label" for="was_job_finished_on_time_and_on_budget2">No</label>
+                                                <div id="was_job_finished_on_time_and_on_budget-error" class="invalid-feedback"></div>
+                                            </div>
+                                        </div>
+                                        <!-- end was_job_finished_on_time_and_on_budget -->
+
+                                        <!-- was_associate_punctual -->
+                                        <div class="form-group col-md-12 mb-4">
+                                            <p class="mb-1">Was the Associate Member punctual?</p>
+                                            <div class="form-radio custom-control custom-radio mb-2">
+                                                <input type="radio" id="was_associate_punctual" name="was_associate_punctual" value="yes" class="custom-control-input form-check-input" required>
+                                                <label class="custom-control-label form-check-label" for="was_associate_punctual">Yes</label>
+                                            </div>
+                                            <div class="form-radio custom-control custom-radio">
+                                                <input type="radio" id="was_associate_punctual2" name="was_associate_punctual" value="no" class="custom-control-input form-check-input" required>
+                                                <label class="custom-control-label form-check-label" for="was_associate_punctual2">No</label>
+                                                <div id="was_associate_punctual-error" class="invalid-feedback"></div>
+                                            </div>
+                                        </div>
+                                        <!-- end was_associate_punctual -->
+
+                                        <!-- was_associate_professional -->
+                                        <div class="form-group col-md-12 mb-4">
+                                            <p class="mb-1">Was the Associate Member professional?</p>
+                                            <div class="form-radio custom-control custom-radio mb-2">
+                                                <input type="radio" id="was_associate_professional" name="was_associate_professional" value="yes" class="custom-control-input form-check-input" required>
+                                                <label class="custom-control-label form-check-label" for="was_associate_professional">Yes</label>
+                                            </div>
+                                            <div class="form-radio custom-control custom-radio">
+                                                <input type="radio" id="was_associate_professional2" name="was_associate_professional" value="no" class="custom-control-input form-check-input" required>
+                                                <label class="custom-control-label form-check-label" for="was_associate_professional2">No</label>
+                                                <div id="was_associate_professional-error" class="invalid-feedback"></div>
+                                            </div>
+                                        </div>
+                                        <!-- end was_associate_professional -->
+
+                                        <!-- would_customer_refer_our_organization -->
+                                        <div class="form-group col-md-12 mb-4">
+                                            <p class="mb-1">Would you refer Over55 to a friend of family member?</p>
+                                            <div class="form-radio custom-control custom-radio mb-2">
+                                                <input type="radio" id="would_customer_refer_our_organization" name="would_customer_refer_our_organization" value="yes" class="custom-control-input form-check-input" required>
+                                                <label class="custom-control-label form-check-label" for="would_customer_refer_our_organization">Yes</label>
+                                            </div>
+                                            <div class="form-radio custom-control custom-radio">
+                                                <input type="radio" id="would_customer_refer_our_organization2" name="would_customer_refer_our_organization" value="no" class="custom-control-input form-check-input" required>
+                                                <label class="custom-control-label form-check-label" for="would_customer_refer_our_organization2">No</label>
+                                                <div id="would_customer_refer_our_organization-error" class="invalid-feedback"></div>
+                                            </div>
+                                        </div>
+                                        <!-- end would_customer_refer_our_organization -->
+
+                                    </div>
+
+                                </div>
+                                <!--------------------------------------------->
+                                <!--           end CUSTOMER SUVERY           -->
+                                <!--------------------------------------------->
+
+
+                                <!--------------------------------------------->
+                                <!--          FAILURE REASON SUVERY          -->
+                                <!--------------------------------------------->
+                                <div id="failure_reason_survey_div" style="display: none;">
+
+                                    <!-- REASON -->
+                                    <div class="form-group col-md-12 mb-4">
+                                        <label for="reason">Reason <sup>*</sup></label>
+                                        <select class="form-control form-control-lg border border-primary" id="reason" name="reason" required="">
+                                            <option value="0" selected="selected">Please select reason</option>
+                                            {% comment %}
+                                                <!-- Only grant this option if an associate was selected -->
+                                                <option value="4">Job completed by Associate</option>
+                                            {% endcomment %}
+                                            <option value="2">Quote was too high</option>
+                                            <option value="3">Job completed by someone else</option>
+                                            <option value="5">Work no longer needed</option>
+                                            <option value="6">Client not satisfied with Associate</option>
+                                            <option value="7">Client did work themselves</option>
+                                            <option value="8">No Associate available</option>
+                                            <option value="9">Work environment unsuitable</option>
+                                            <option value="10">Client did not return call</option>
+                                            <option value="11">Associate did not have necessary equipment</option>
+                                            <option value="12">Repair not possible</option>
+                                            <option value="13">Could not meet deadline</option>
+                                            <option value="14">Associate did not call client</option>
+                                            <option value="15">Member issue</option>
+                                            <option value="16">Client billing issue</option>
+                                            <option value="other">Other</option>
+                                        </select>
+                                        <div id="reason-error" class="invalid-feedback"></div>
+                                    </div>
+                                    <!-- end REASON -->
+
+                                    <!-- REASON (OTHER) -->
+                                    <div class="form-group col-md-12 mb-4" id="reason_other_div" style="display: none;">
+                                        <label for="reason_other">Reason (Other) <sup>*</sup></label>
+                                        <input type="text" class="form-control form-control-lg border border-primary" id="reason_other" name="reason_other" placeholder="Text" minlength="3" value="" required="">
+                                        <div id="reason_other-error" class="invalid-feedback"></div>
+                                    </div>
+                                    <!-- end REASON (OTHER) -->
+
+                                </div>
+                                <!--------------------------------------------->
+                                <!--        end FAILURE REASON SUVERY        -->
+                                <!--------------------------------------------->
+
+
+
+                                <!--------------------------------------------->
+                                <!--           ADDITIONAL COMMENTS           -->
+                                <!--------------------------------------------->
+                                <div class="form-group col-md-12 mb-4">
+                                    <label for="comment">Additional Comments:</label>
+                                    <textarea class="form-control form-control-lg border border-success" id="comment" name="comment" placeholder="Write a note here..." rows="4" required></textarea>
+                                    <div id="comment-error" class="invalid-feedback"></div>
+                                </div>
+                                <!--------------------------------------------->
+                                <!--         end ADDITIONAL COMMENTS         -->
+                                <!--------------------------------------------->
+
+
+
+                                <!-- BUTTONS -->
+                                <div class="form-group col-md-12 mb-3 p-0 mx-auto text-center">
+
+                                    <!-- ADD -->
+                                    <button id="id_submit_btn"
+                                         class="btn btn-success btn-lg mt-4 float-right pl-4 pr-4"
+                                          type="button"
+                                       onclick="click_submit_button();">
+                                        <i class="fas fa-check-circle"></i> &nbsp;Save</button>
+                                    <!-- end ADD -->
+
+                                    <!-- CANCEL -->
+                                    <button id="id_cancel_btn"
+                                         class="btn btn-orange btn-lg mt-4 float-left pl-4 pr-4"
+                                          type="button"
+                                       onclick="click_cancel_button();">
+                                        <i class="fas fa-times"></i>&nbsp;Cancel
+                                    </button>
+                                    <!-- end CANCEL -->
+
+                                </div>
+                                <!-- end BUTTONS -->
+
+
+
+                            </div>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+            <!------------------------------------------------------------------------->
+            <!-- end FORM -->
+        </div>
+    </div>
+
+    <!-- RETURN-TO-TOP -->
+    <a id="return-to-top" href="#" class="btn-info btn-lg back-to-top" role="button" title="Back to top"><i class="fas fa-angle-up fa-2x"></i></a>
+    <!-- end RETURN-TO-TOP -->
+
+</main>
+
+{% endblock content %}

@@ -37,7 +37,8 @@ from tenant_api.views.order_operation import (
     OngoingWorkCreationWizardOperationAPIView,
     OngoingWorkOrderUnassignOperationAPIView,
     OngoingWorkOrderCloseOperationAPIView,
-    OngoingWorkOrderFollowUpOperationAPIView
+    OngoingWorkOrderFollowUpOperationAPIView,
+    OngoingWorkOrderCompletionSurveyOperationAPIView
 )
 # from tenant_api.views.order_operation import CompletedWorkOrderCloseOperationCreateAPIView
 from tenant_api.views.task_operation import (
@@ -105,6 +106,7 @@ urlpatterns = [
     url(r'^api/ongoing-orders/operation/close$', OngoingWorkOrderCloseOperationAPIView.as_view(), name='workery_ongoing_order_close_operation_api_endpoint'),
     url(r'^api/ongoing-orders/operation/unassign$', OngoingWorkOrderUnassignOperationAPIView.as_view(), name='workery_ongoing_order_unassign_operation_api_endpoint'),
     url(r'^api/ongoing-orders/operation/follow-up$', OngoingWorkOrderFollowUpOperationAPIView.as_view(), name='workery_ongoing_order_operation_follow_up_pending_api_endpoint'),
+    url(r'^api/ongoing-orders/operation/completion-survey$', OngoingWorkOrderCompletionSurveyOperationAPIView.as_view(), name='workery_ongoing_order_operation_completion_survey_api_endpoint'),
 
     # Tasks - Operation
     url(r'^api/task/operation/assign-associate$', AssignAssociateTaskOperationAPIView.as_view(), name='workery_order_task_operation_assign_associate_api_endpoint'),
