@@ -107,20 +107,20 @@ class OngoingWorkOrderCreationWizardOperationSerializer(serializers.Serializer):
         for skill_set in ongoing_job.skill_sets.all():
             order.skill_sets.add(skill_set)
 
-        next_task_item = TaskItem.objects.create(
-            type_of = FOLLOW_UP_IS_JOB_COMPLETE_TASK_ITEM_TYPE_OF_ID,
-            title = _('48 hour follow up'),
-            description =  _('Please call up the client and confirm that the associate and client have agreed on scheduled meeting date in the future.'),
-            due_date = get_todays_date_plus_days(2),
-            is_closed = False,
-            job = order,
-            created_by = self.context['user'],
-            created_from_is_public = self.context['from_is_public'],
-            created_from = self.context['from']
-        )
-
-        order.latest_pending_task = next_task_item
-        order.save()
+        # next_task_item = TaskItem.objects.create(
+        #     type_of = FOLLOW_UP_IS_JOB_COMPLETE_TASK_ITEM_TYPE_OF_ID,
+        #     title = _('48 hour follow up'),
+        #     description =  _('Please call up the client and confirm that the associate and client have agreed on scheduled meeting date in the future.'),
+        #     due_date = get_todays_date_plus_days(2),
+        #     is_closed = False,
+        #     job = order,
+        #     created_by = self.context['user'],
+        #     created_from_is_public = self.context['from_is_public'],
+        #     created_from = self.context['from']
+        # )
+        #
+        # order.latest_pending_task = next_task_item
+        # order.save()
 
     def create(self, validated_data):
         """
