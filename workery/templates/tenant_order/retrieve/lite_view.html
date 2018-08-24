@@ -188,6 +188,16 @@
                         {% endfor %}
                     </td>
                 </tr>
+                {% if job.state == WORK_ORDER_STATE.COMPLETED_AND_PAID or job.state == WORK_ORDER_STATE.COMPLETED_BUT_UNPAID %}
+                    {% if job.was_survey_conducted %}
+                    <tr>
+        			    <th scope="row" class="bg-light">Rating</th>
+        			    <td id="rating">
+                            {{ job.score }} / 5
+        			    </td>
+        			</tr>
+                    {% endif %}
+                {% endif %}
                 {% if job.latest_pending_task %}
                 <tr>
                     <th scope="row" class="bg-light">Required Task</th>

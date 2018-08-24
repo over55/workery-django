@@ -69,23 +69,31 @@ class Command(BaseCommand):
         for job in WorkOrder.objects.all():
             score = 0
             if job.was_survey_conducted:
-                score += 1
-            if job.was_job_satisfactory:
-                score += 1
-            if job.was_job_finished_on_time_and_on_budget:
-                score += 1
-            if job.was_associate_punctual:
-                score += 1
-            if job.was_associate_professional:
-                score += 1
-            if job.would_customer_refer_our_organization:
-                score += 1
-            job.score = score
-            job.save()
-            
-            self.stdout.write(
-                self.style.SUCCESS(_('Updated job # %(id)s.') % { 'id': str(job.id) })
-            )
+
+                if job.was_job_satisfactory:
+                    score += 1
+                if job.was_job_finished_on_time_and_on_budget:
+                    score += 1
+                if job.was_associate_punctual:
+                    score += 1
+                if job.was_associate_professional:
+                    score += 1
+                if job.would_customer_refer_our_organization:
+                    score += 1
+                job.score = score
+                job.save()
+
+                self.stdout.write(
+                    self.style.SUCCESS(_('Updated job # %(id)s.') % { 'id': str(job.id) })
+                )
+            else:
+                job.was_job_satisfactory = False
+                job.was_job_finished_on_time_and_on_budget = False
+                job.was_associate_punctual = False
+                job.was_associate_professional = False
+                job.would_customer_refer_our_organization = False
+                job.score = 0
+                job.save()
 
         # For debugging purposes.
         self.stdout.write(
