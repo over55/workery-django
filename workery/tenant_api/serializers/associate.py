@@ -374,24 +374,27 @@ class AssociateListCreateSerializer(serializers.ModelSerializer):
         #-----------------------------
         skill_sets = validated_data.get('skill_sets', None)
         if skill_sets is not None:
-            associate.skill_sets.set(skill_sets)
-            logger.info("Set associate skill sets.")
+            if len(skill_sets) > 0:
+                associate.skill_sets.set(skill_sets)
+                logger.info("Set associate skill sets.")
 
         #-------------------------------
         # Set our `VehicleType` objects.
         #-------------------------------
         vehicle_types = validated_data.get('vehicle_types', None)
         if vehicle_types is not None:
-            associate.vehicle_types.set(vehicle_types)
-            logger.info("Set associate vehicle types.")
+            if len(vehicle_types) > 0:
+                associate.vehicle_types.set(vehicle_types)
+                logger.info("Set associate vehicle types.")
 
         #------------------------
         # Set our `Tag` objects.
         #------------------------
         tags = validated_data.get('tags', None)
         if tags is not None:
-            associate.tags.set(tags)
-            logger.info("Set associate tags.")
+            if len(tags) > 0:
+                associate.tags.set(tags)
+                logger.info("Set associate tags.")
 
         #-----------------------------
         # Create our `Comment` object.
@@ -416,8 +419,9 @@ class AssociateListCreateSerializer(serializers.ModelSerializer):
         #----------------------------------------
         insurance_requirements = validated_data.get('insurance_requirements', None)
         if insurance_requirements is not None:
-            associate.insurance_requirements.set(insurance_requirements)
-            logger.info("Set associate insurance requirements.")
+            if len(insurance_requirements) > 0:
+                associate.insurance_requirements.set(insurance_requirements)
+                logger.info("Set associate insurance requirements.")
 
         # Update validation data.
         # validated_data['comments'] = AssociateComment.objects.filter(associate=associate)
@@ -695,23 +699,26 @@ class AssociateRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         # Set our `SkillSet` objects.
         #-----------------------------
         if skill_sets is not None:
-            instance.skill_sets.set(skill_sets)
-            logger.info("Set associate skill sets.")
+            if len(skill_sets) > 0:
+                instance.skill_sets.set(skill_sets)
+                logger.info("Set associate skill sets.")
 
         #-------------------------------
         # Set our `VehicleType` objects.
         #-------------------------------
         if vehicle_types is not None:
-            instance.vehicle_types.set(vehicle_types)
-            logger.info("Set associate vehicle types.")
+            if len(vehicle_types) > 0:
+                instance.vehicle_types.set(vehicle_types)
+                logger.info("Set associate vehicle types.")
 
         #------------------------
         # Set our `Tag` objects.
         #------------------------
         tags = validated_data.get('tags', None)
         if tags is not None:
-            instance.tags.set(tags)
-            logger.info("Set associate tags.")
+            if len(tags) > 0:
+                instance.tags.set(tags)
+                logger.info("Set associate tags.")
 
         #---------------------------
         # Attach our comment.
@@ -735,8 +742,9 @@ class AssociateRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         # Set our `InsuranceRequirement` objects.
         #----------------------------------------
         if insurance_requirements is not None:
-            instance.insurance_requirements.set(insurance_requirements)
-            logger.info("Set associate insurance requirements.")
+            if len(insurance_requirements) > 0:
+                instance.insurance_requirements.set(insurance_requirements)
+                logger.info("Set associate insurance requirements.")
 
         #---------------------------
         # Update validation data.

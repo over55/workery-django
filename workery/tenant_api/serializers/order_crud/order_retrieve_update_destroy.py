@@ -146,7 +146,6 @@ class WorkOrderRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         instance.last_modified_from_is_public = self.context['last_modified_from_is_public']
         instance.description = validated_data.get('description', instance.description)
         skill_sets = validated_data.get('skill_sets', instance.skill_sets)
-        instance.skill_sets.set(skill_sets)
         instance.start_date = validated_data.get('start_date', instance.start_date)
         instance.follow_up_days_number = validated_data.get('follow_up_days_number', instance.follow_up_days_number)
         instance.state = validated_data.get('state', instance.state)
@@ -172,16 +171,17 @@ class WorkOrderRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         #-----------------------------
         tags = validated_data.get('tags', None)
         if tags is not None:
-            instance.tags.set(tags)
-            logger.info("Set tags with order.")
+            if len(tags) > 0:
+                instance.tags.set(tags)
+                logger.info("Set tags with order.")
 
         #-----------------------------
         # Set our `SkillSet` objects.
         #-----------------------------
-        skill_sets = validated_data.get('skill_sets', None)
         if skill_sets is not None:
-            instance.skill_sets.set(skill_sets)
-            logger.info("Set skill set with order.")
+            if len(skill_sets) > 0:
+                instance.skill_sets.set(skill_sets)
+                logger.info("Set skill set with order.")
 
         #-----------------------------
         # Create our `Comment` object.

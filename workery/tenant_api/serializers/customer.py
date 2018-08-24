@@ -435,7 +435,8 @@ class CustomerListCreateSerializer(serializers.ModelSerializer):
         #------------------------
         tags = validated_data.get('tags', None)
         if tags is not None:
-            customer.tags.set(tags)
+            if len(tags) > 0:
+                customer.tags.set(tags)
 
         #-----------------------------
         # Create our `Comment` object.
@@ -805,7 +806,8 @@ class CustomerRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         #------------------------
         tags = validated_data.get('tags', instance.tags)
         if tags is not None:
-            instance.tags.set(tags)
+            if len(tags) > 0:
+                instance.tags.set(tags)
 
         #---------------------------
         # Attach our comment.

@@ -336,7 +336,8 @@ class StaffListCreateSerializer(serializers.ModelSerializer):
         #------------------------
         tags = validated_data.get('tags', None)
         if tags is not None:
-            staff.tags.set(tags)
+            if len(tags) > 0:
+                staff.tags.set(tags)
 
         #-----------------------------
         # Create our `Comment` object.
@@ -646,7 +647,8 @@ class StaffRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         #------------------------
         tags = validated_data.get('tags', None)
         if tags is not None:
-            instance.tags.set(tags)
+            if len(tags) > 0:
+                instance.tags.set(tags)
 
         #---------------------------
         # Attach our comment.

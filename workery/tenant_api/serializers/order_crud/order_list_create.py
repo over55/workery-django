@@ -153,16 +153,18 @@ class WorkOrderListCreateSerializer(serializers.ModelSerializer):
         #-----------------------------
         tags = validated_data.get('tags', None)
         if tags is not None:
-            order.tags.set(tags)
-            logger.info("Attached tags to order.")
+            if len(tags) > 0:
+                order.tags.set(tags)
+                logger.info("Attached tags to order.")
 
         #-----------------------------
         # Set our `SkillSet` objects.
         #-----------------------------
         skill_sets = validated_data.get('skill_sets', None)
         if skill_sets is not None:
-            order.skill_sets.set(skill_sets)
-            logger.info("Attached skill sets to order.")
+            if len(skill_sets) > 0:
+                order.skill_sets.set(skill_sets)
+                logger.info("Attached skill sets to order.")
 
         #-----------------------------
         # Create our `Comment` object.

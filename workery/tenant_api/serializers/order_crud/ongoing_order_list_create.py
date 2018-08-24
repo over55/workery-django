@@ -127,16 +127,18 @@ class OngoingWorkOrderCreateSerializer(serializers.ModelSerializer):
         #-----------------------------
         tags = validated_data.get('tags', None)
         if tags is not None:
-            ongoing_order.tags.set(tags)
-            logger.info("Attached tags to (ongoing) order.")
+            if len(tags) > 0:
+                ongoing_order.tags.set(tags)
+                logger.info("Attached tags to (ongoing) order.")
 
         #-----------------------------
         # Set our `SkillSet` objects.
         #-----------------------------
         skill_sets = validated_data.get('skill_sets', None)
         if skill_sets is not None:
-            ongoing_order.skill_sets.set(skill_sets)
-            logger.info("Attached skill sets to (ongoing) order.")
+            if len(skill_sets) > 0:
+                ongoing_order.skill_sets.set(skill_sets)
+                logger.info("Attached skill sets to (ongoing) order.")
 
         #-----------------------------
         # Create our `Comment` object.
