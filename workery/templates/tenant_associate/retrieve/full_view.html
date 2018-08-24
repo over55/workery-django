@@ -275,6 +275,12 @@
                     </td>
                 </tr>
                 <tr>
+                    <th scope="row" class="bg-light">WSIB #</th>
+                    <td id="wsib_number">
+                        {% if associate.wsib_number %}{{ associate.wsib_number }}{% else %}-{% endif %}
+                    </td>
+                </tr>
+                <tr>
                     <th scope="row" class="bg-light">WSIB Insurance Date</th>
                     <td id="commercial_insurance">
                         {% if associate.wsib_insurance_date %}{{ associate.wsib_insurance_date }}{% else %}-{% endif %}

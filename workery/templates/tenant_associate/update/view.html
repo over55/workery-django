@@ -186,6 +186,7 @@
         var dues_date = $('#dues_date').val();
         var commercial_insurance_expiry_date = $('#commercial_insurance_expiry_date').val();
         var auto_insurance_expiry_date = $('#auto_insurance_expiry_date').val();
+        var wsib_number = $('#wsib_number').val();
         var wsib_insurance_date = $('#wsib_insurance_date').val();
         var police_check = $('#police_check').val();
         var drivers_license_class = $('#drivers_license_class').val();
@@ -255,6 +256,7 @@
                 'dues_date': dues_date,
                 'commercial_insurance_expiry_date': commercial_insurance_expiry_date,
                 'auto_insurance_expiry_date': auto_insurance_expiry_date,
+                'wsib_number': wsib_number,
                 'wsib_insurance_date': wsib_insurance_date,
                 'police_check': police_check,
                 'drivers_license_class': drivers_license_class,
@@ -586,6 +588,11 @@
                         <div id="auto_insurance_expiry_date-error" class="invalid-feedback"></div>
                     </div>
                 </div>
+                <div class="form-group col-md-12 mb-4">
+                    <label for="wsib_number">WSIB #</label>
+                    <input type="text" class="form-control form-control-lg border border-success" id="wsib_number" name="wsib_number" placeholder="Please write WSIB #" minlength="3" maxlength="255" value="{% if associate.wsib_number %}{{ associate.wsib_number }}{% endif %}">
+                    <div id="wsib_number-error" class="invalid-feedback"></div>
+                </div>
                 <div class="form-group col-md-7 mb-4">
                     <label for="wsib_insurance_date">WSIB Insurance Date</label>
                     <div class="input-group input-group-lg">
@@ -895,11 +902,11 @@
 		    }
 		  })
 		});
-		
+
 		{% if associate.address_region == 'Ontario' %}p_dropdown.prop('selectedIndex', 1);{% else %}p_dropdown.val('{{associate.address_region}}');{% endif %}
 
     	}
-												 
+
 	/**
 	 *  Password Strength Check Validation.
 	 */

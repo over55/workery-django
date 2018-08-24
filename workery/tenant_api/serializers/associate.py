@@ -160,6 +160,7 @@ class AssociateListCreateSerializer(serializers.ModelSerializer):
             'dues_date',
             'commercial_insurance_expiry_date',
             'auto_insurance_expiry_date',
+            'wsib_number',
             'wsib_insurance_date',
             'police_check',
             'drivers_license_class',
@@ -327,6 +328,7 @@ class AssociateListCreateSerializer(serializers.ModelSerializer):
             dues_date=validated_data.get('dues_date', None),
             commercial_insurance_expiry_date=validated_data.get('commercial_insurance_expiry_date', None),
             auto_insurance_expiry_date = validated_data.get('auto_insurance_expiry_date', None),
+            wsib_number = validated_data.get('wsib_number', None),
             wsib_insurance_date = validated_data.get('wsib_insurance_date', None),
             police_check=validated_data.get('police_check', None),
             drivers_license_class=validated_data.get('drivers_license_class', None),
@@ -494,6 +496,7 @@ class AssociateRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
             'dues_date',
             'commercial_insurance_expiry_date',
             'auto_insurance_expiry_date',
+            'wsib_number',
             'wsib_insurance_date',
             'police_check',
             'drivers_license_class',
@@ -646,6 +649,7 @@ class AssociateRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         instance.commercial_insurance_expiry_date=validated_data.get('commercial_insurance_expiry_date', instance.commercial_insurance_expiry_date)
         instance.auto_insurance_expiry_date = validated_data.get('auto_insurance_expiry_date', instance.auto_insurance_expiry_date)
         instance.wsib_insurance_date = validated_data.get('wsib_insurance_date', instance.wsib_insurance_date)
+        instance.wsib_number = validated_data.get('wsib_number', instance.wsib_number)
         instance.police_check=validated_data.get('police_check', instance.police_check)
         instance.drivers_license_class=validated_data.get('drivers_license_class', instance.drivers_license_class)
         instance.how_hear=validated_data.get('how_hear', instance.how_hear)

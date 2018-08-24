@@ -162,6 +162,13 @@ class Associate(AbstractPerson):
         null=True,
         blank=True,
     )
+    wsib_number = models.CharField(
+        _("WSIB #"),
+        max_length=127,
+        help_text=_('Assigned WSIB number to this associate.'),
+        blank=True,
+        null=True,
+    )
     wsib_insurance_date = models.DateField(
         _("WSIB Insurance Date"),
         help_text=_('-'),
