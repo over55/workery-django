@@ -29,7 +29,7 @@ TEST_USER_CELL_NUM = "123 123-1234"
 class APILoginWithPublicSchemaTestCase(APITestCase, TenantTestCase):
     """
     Console:
-    python manage.py test shared_api.tests.test_login_views
+    python manage.py test shared_api.tests.views.test_login_views
     """
 
     @transaction.atomic

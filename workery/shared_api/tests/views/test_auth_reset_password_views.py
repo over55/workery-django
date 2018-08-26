@@ -29,7 +29,7 @@ TEST_USER_CELL_NUM = "123 123-1234"
 class APIAuthResetPasswordViewslWithSchemaTestCase(APITestCase, TenantTestCase):
     """
     Console:
-    python manage.py test shared_api.tests.test_auth_reset_password_views
+    python manage.py test shared_api.tests.views.test_auth_reset_password_views
     """
 
     @transaction.atomic
