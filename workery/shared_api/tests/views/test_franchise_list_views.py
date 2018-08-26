@@ -78,8 +78,7 @@ class SharedFranchiseListAPIViewWithPublicSchemaTestCase(APITestCase, TenantTest
 
     @transaction.atomic
     def tearDown(self):
-        for user in SharedUser.objects.all():
-            user.delete()
+        SharedUser.objects.delete_all()
         del self.anon_client
         del self.authorized_client
         super(SharedFranchiseListAPIViewWithPublicSchemaTestCase, self).tearDown()

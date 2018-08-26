@@ -62,9 +62,7 @@ class APILoginWithPublicSchemaTestCase(APITestCase, TenantTestCase):
 
     @transaction.atomic
     def tearDown(self):
-        # users = SharedUser.objects.all() #TODO: WHY ERROR WHEN USING THIS?
-        # for user in users.all():
-        #     user.delete()
+        SharedUser.objects.delete_all()
         del self.c
         super(APILoginWithPublicSchemaTestCase, self).tearDown()
 

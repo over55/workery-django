@@ -43,9 +43,13 @@ class SharedFranchiseListCreateSerializerWithPublicSchemaTestCase(APITestCase, T
         self.c = TenantClient(self.tenant)
         call_command('init_app', verbosity=0)
 
+        # BUGFIX: In case a user was not deleted previously.
+        SharedUser.objects.delete_all()
+
     @transaction.atomic
     def tearDown(self):
         del self.c
+        SharedUser.objects.delete_all()
         super(SharedFranchiseListCreateSerializerWithPublicSchemaTestCase, self).tearDown()
 
     @transaction.atomic

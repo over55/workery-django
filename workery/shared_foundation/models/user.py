@@ -47,6 +47,10 @@ class SharedUserManager(BaseUserManager):
 
         return self._create_user(email, password, **extra_fields)
 
+    def delete_all(self):
+        for user in SharedUser.objects.iterator(chunk_size=500):
+            user.delete()
+
 
 class SharedUser(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(_('email address'), unique=True)

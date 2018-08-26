@@ -49,9 +49,7 @@ class APIAuthResetPasswordViewslWithSchemaTestCase(APITestCase, TenantTestCase):
 
     @transaction.atomic
     def tearDown(self):
-        users = SharedUser.objects.all()
-        for user in users.all():
-            user.delete()
+        SharedUser.objects.delete_all()
         del self.c
         super(APIAuthResetPasswordViewslWithSchemaTestCase, self).tearDown()
 
