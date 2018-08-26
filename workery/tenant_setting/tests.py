@@ -13,7 +13,7 @@ from shared_foundation.models import SharedFranchise
 from shared_foundation.models import SharedUser
 from shared_foundation.utils import get_jwt_token_and_orig_iat
 from tenant_foundation.constants import *
-from tenant_foundation.models import Associate, AwayLog, Staff, TaskItem, Tag, VehicleType
+from tenant_foundation.models import Associate, AwayLog, InsuranceRequirement, Staff, SkillSet, TaskItem, Tag, VehicleType, WorkOrderServiceFee
 
 
 TEST_SCHEMA_NAME = "london"
@@ -221,21 +221,74 @@ class TestTenantTeamViews(TenantTestCase):
         self.assertIn('Vehicle Type', str(response.content))
         self.assertIn('This is a test.', str(response.content))
 
-    '''
-    TODO: IMPLEMENT.
+    def test_settings_order_service_fees_list_page(self):
+        response = self.auth_c.get(self.tenant.reverse('workery_tenant_settings_order_service_fees_list'))
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertIn('Order Service Fees', str(response.content))
 
-    # WorkOrder Service Fee
-    path('settings/order_service_fees/', order_service_fee_views.WorkOrderServiceFeeListView.as_view(), name='workery_tenant_settings_order_service_fees_list'),
-    path('settings/order_service_fee/create/', order_service_fee_views.WorkOrderServiceFeeCreateView.as_view(), name='workery_tenant_settings_order_service_fee_create'),
-    path('settings/order_service_fee/<int:pk>/', order_service_fee_views.WorkOrderServiceFeeUpdateView.as_view(), name='workery_tenant_settings_order_service_fees_update'),
+    def test_settings_order_service_fees_create_page(self):
+        response = self.auth_c.get(self.tenant.reverse('workery_tenant_settings_order_service_fee_create'))
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertIn('Order Service Fees', str(response.content))
 
-    # Skill set
-    path('settings/skill_sets/', skill_set_views.SkillSetListView.as_view(), name='workery_tenant_settings_skill_set_list'),
-    path('settings/skill_set/create/', skill_set_views.SkillSetCreateView.as_view(), name='workery_tenant_settings_skill_set_create'),
-    path('settings/skill_set/<int:pk>/', skill_set_views.SkillSetUpdateView.as_view(), name='workery_tenant_settings_skill_set_update'),
+    def test_settings_order_service_fees_update_page(self):
+        obj, created = WorkOrderServiceFee.objects.update_or_create(
+            id=1,
+            defaults={
+                'id': 1,
+                'title': 'This is a test.',
+                'description': '-',
+                'percentage': 0
+            }
+        )
+        response = self.auth_c.get(self.tenant.reverse('workery_tenant_settings_order_service_fees_update', [obj.id]))
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertIn('Order Service Fees', str(response.content))
+        self.assertIn('This is a test.', str(response.content))
 
-    # Insurance Requirement
-    path('settings/insurance_requirements/', insurance_requirement_views.TagListView.as_view(), name='workery_tenant_settings_insurance_requirements_list'),
-    path('settings/insurance_requirement/create/', insurance_requirement_views.TagCreateView.as_view(), name='workery_tenant_settings_insurance_requirement_create'),
-    path('settings/insurance_requirement/<int:pk>/', insurance_requirement_views.TagUpdateView.as_view(), name='workery_tenant_settings_insurance_requirement_update'),
-    '''
+    def test_settings_skill_set_list_page(self):
+        response = self.auth_c.get(self.tenant.reverse('workery_tenant_settings_skill_set_list'))
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertIn('Skill Sets', str(response.content))
+
+    def test_settings_skill_set_create_page(self):
+        response = self.auth_c.get(self.tenant.reverse('workery_tenant_settings_skill_set_create'))
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertIn('Add Skill Set', str(response.content))
+
+    def test_settings_skill_set_update_page(self):
+        obj, created = SkillSet.objects.update_or_create(
+            id=1,
+            defaults={
+                'id': 1,
+                'category': 'This is a test.',
+                'sub_category': '-'
+            }
+        )
+        response = self.auth_c.get(self.tenant.reverse('workery_tenant_settings_skill_set_update', [obj.id]))
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertIn('Skill Set', str(response.content))
+        self.assertIn('This is a test.', str(response.content))
+
+    def test_settings_skill_set_list_page(self):
+        response = self.auth_c.get(self.tenant.reverse('workery_tenant_settings_insurance_requirements_list'))
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertIn('Insurance Requirements', str(response.content))
+
+    def test_settings_skill_set_create_page(self):
+        response = self.auth_c.get(self.tenant.reverse('workery_tenant_settings_insurance_requirement_create'))
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertIn('Insurance Requirement', str(response.content))
+
+    def test_settings_skill_set_update_page(self):
+        obj, created = InsuranceRequirement.objects.update_or_create(
+            id=1,
+            defaults={
+                'id': 1,
+                'text': 'This is a test.'
+            }
+        )
+        response = self.auth_c.get(self.tenant.reverse('workery_tenant_settings_insurance_requirement_update', [obj.id]))
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertIn('Insurance Requirement', str(response.content))
+        self.assertIn('This is a test.', str(response.content))
