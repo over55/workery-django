@@ -26,7 +26,7 @@ def user_login_master_page(request):
 
 
 @public_only_or_redirect
-def user_login_redirector_master_page(request):
+def user_login_redirector_master_page(request): #TODO: UNIT TEST
     if request.user.is_authenticated:
         logger.info("User is authenticated.")
 
@@ -48,7 +48,7 @@ def user_login_redirector_master_page(request):
 
 
 @public_only_or_redirect
-def send_reset_password_email_master_page(request):
+def send_reset_password_email_master_page(request): #TODO: UNIT TEST
     return render(request, 'shared_auth/send_reset_password_email/master_view.html',{
         'has_pr_code_expired': request.GET.get('has_pr_code_expired', False),
         'has_wrong_pr_access_code': request.GET.get('has_wrong_pr_access_code', False)
@@ -56,12 +56,12 @@ def send_reset_password_email_master_page(request):
 
 
 @public_only_or_redirect
-def send_reset_password_email_submitted_page(request):
+def send_reset_password_email_submitted_page(request): #TODO: UNIT TEST
     return render(request, 'shared_auth/send_reset_password_email/detail_view.html',{})
 
 
 @public_only_or_redirect
-def rest_password_master_page(request, pr_access_code):
+def rest_password_master_page(request, pr_access_code): #TODO: UNIT TEST
     try:
         me = SharedUser.objects.get(pr_access_code=pr_access_code)
         if me.has_pr_code_expired():
@@ -79,12 +79,12 @@ def rest_password_master_page(request, pr_access_code):
 
 
 @public_only_or_redirect
-def rest_password_detail_page(request, pr_access_code): #TEST
+def rest_password_detail_page(request, pr_access_code): #TODO: UNIT TEST
     return render(request, 'shared_auth/reset_password/detail_view.html',{})
 
 
 @public_only_or_redirect
-def user_activation_detail_page(request, pr_access_code=None):
+def user_activation_detail_page(request, pr_access_code=None): #TODO: UNIT TEST
     try:
         me = SharedUser.objects.get(pr_access_code=pr_access_code)
         if not me.has_pr_code_expired():
@@ -103,7 +103,7 @@ def user_activation_detail_page(request, pr_access_code=None):
 
 
 @public_only_or_redirect
-def user_logout_redirector_master_page(request):
+def user_logout_redirector_master_page(request): #TODO: UNIT TEST
     if request.user.is_authenticated:
         # Step 1: Delete the "auth_token" so our RESTFul API won't have a key.
         Token.objects.filter(user=request.user).delete()

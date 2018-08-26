@@ -24,7 +24,7 @@ def me(request):
         private_api_key = request.session.get('me_token', None)
         private_api_key_orig_iat = request.session.get('me_token_orig_iat', None)
         if private_api_key and private_api_key_orig_iat:
-            request.session.pop('me_token')
+            request.session.pop('me_token') #TODO: UNIT TEST
             request.session.pop('me_token_orig_iat')
 
         return {
@@ -37,7 +37,7 @@ def me(request):
             'logged_in_user_id': request.session.get('me_user_id', None),
         }
     else:
-        return {
+        return {  #TODO: UNIT TEST
             # ONE-TIME STORAGE
             'private_api_key': None,
             'private_api_key_orig_iat': None,

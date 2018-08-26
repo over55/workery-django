@@ -87,7 +87,7 @@ class SharedFranchise(TenantMixin, AbstractSharedThing, AbstractSharedContactPoi
         """
         return self.schema_name == "public" or self.schema_name == "test"
 
-    def to_tenant_dt(self, aware_dt):
+    def to_tenant_dt(self, aware_dt):  #TODO: UNIT TEST
         """
         Function will convert the inputted timezone aware datetime object
         into the timezone specific to this tenant.

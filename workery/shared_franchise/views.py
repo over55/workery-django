@@ -10,6 +10,9 @@ from shared_foundation.mixins import ExtraRequestProcessingMixin
 from shared_foundation.models import SharedFranchise
 
 
+#TODO: UNIT TEST
+
+
 @method_decorator(login_required, name='dispatch')
 class FranchiseListView(ListView):
     context_object_name = 'franchise_list'

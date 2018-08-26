@@ -5,6 +5,9 @@ from django.utils.translation import ugettext_lazy as _
 from django.views.generic import DetailView, ListView, TemplateView
 
 
+ #TODO: UNIT TEST
+
+
 class GroupRequiredMixin(object):
     """
     Mixin used to restrict authenticated user access to the required group

@@ -19,7 +19,7 @@ def page_not_found(request, exception, template_name='shared_home/http_404.html'
     return response
 
 
-def server_error(request, template_name='shared_home/http_500.html'):
+def server_error(request, template_name='shared_home/http_500.html'):  #TODO: UNIT TEST
     response = render(request, 'shared_home/http_500.html',{})
     response.status_code = 500
     return response

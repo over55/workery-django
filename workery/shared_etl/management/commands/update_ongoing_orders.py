@@ -29,7 +29,7 @@ def get_todays_date_plus_days(days=0):
     return timezone.now() + timedelta(days=days)
 
 
-class Command(BaseCommand):
+class Command(BaseCommand): #TODO: UNIT TEST
     """
     python manage.py update_ongoing_orders
     """

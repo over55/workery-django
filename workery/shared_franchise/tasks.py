@@ -9,7 +9,7 @@ logger = logging.getLogger(__name__)
 
 
 @job
-def create_franchise_func(validated_data):
+def create_franchise_func(validated_data):  #TODO: UNIT TEST
     alternate_name = validated_data.get('alternate_name', None)
     name = validated_data.get('name', None)
     description = validated_data.get('description', False)

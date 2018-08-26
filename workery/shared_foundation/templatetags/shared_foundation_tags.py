@@ -29,14 +29,14 @@ def pretty_formatted_phonenumber(phone):
     Template tag converts the "PhoneNumber" object into a "NATIONAL" format.
     See: https://github.com/daviddrysdale/python-phonenumbers
     """
-    if phone:
+    if phone:  #TODO: UNIT TEST
         return phonenumbers.format_number(phone, phonenumbers.PhoneNumberFormat.NATIONAL)
     else:
         return "-"
 
 
 @register.simple_tag
-def tenant_url(schema_name, view_name):
+def tenant_url(schema_name, view_name):  #TODO: UNIT TEST
     if schema_name:
         return settings.WORKERY_APP_HTTP_PROTOCOL + schema_name + '.%s' % settings.WORKERY_APP_HTTP_DOMAIN + reverse(view_name)
     else:

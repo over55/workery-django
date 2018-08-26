@@ -20,6 +20,9 @@ from tenant_foundation.models import (
 logger = logging.getLogger(__name__)
 
 
+#TODO: UNIT TEST
+
+
 class Command(BaseCommand):
     help = _('Command takes the data in the database and modifies it for local developers machine configuration setting.')
 

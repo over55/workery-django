@@ -23,7 +23,7 @@ def get_expiry_date(days=2):
 class SharedUserManager(BaseUserManager):
     use_in_migrations = True
 
-    def _create_user(self, email, password, **extra_fields):
+    def _create_user(self, email, password, **extra_fields):  #TODO: UNIT TEST
         """
         Creates and saves a User with the given email and password.
         """
@@ -35,11 +35,11 @@ class SharedUserManager(BaseUserManager):
         user.save(using=self._db)
         return user
 
-    def create_user(self, email, password=None, **extra_fields):
+    def create_user(self, email, password=None, **extra_fields):  #TODO: UNIT TEST
         extra_fields.setdefault('is_superuser', False)
         return self._create_user(email, password, **extra_fields)
 
-    def create_superuser(self, email, password, **extra_fields):
+    def create_superuser(self, email, password, **extra_fields):  #TODO: UNIT TEST
         extra_fields.setdefault('is_superuser', True)
 
         if extra_fields.get('is_superuser') is not True:
@@ -125,7 +125,7 @@ class SharedUser(AbstractBaseUser, PermissionsMixin):
         '''
         Returns the short name for the user.
         '''
-        return self.first_name
+        return self.first_name  #TODO: UNIT TEST
 
     def __str__(self):
         return self.get_full_name()
@@ -134,7 +134,7 @@ class SharedUser(AbstractBaseUser, PermissionsMixin):
         '''
         Sends an email to this SharedUser.
         '''
-        send_mail(subject, message, from_email, [self.email], **kwargs)
+        send_mail(subject, message, from_email, [self.email], **kwargs)  #TODO: UNIT TEST
 
     def generate_pr_code(self):
         """
@@ -165,11 +165,11 @@ class SharedUser(AbstractBaseUser, PermissionsMixin):
         Function will return True or False depending on whether this user
         belongs to the management group or not.
         """
-        return self.groups.filter(id=constants.MANAGEMENT_GROUP_ID).exists()
+        return self.groups.filter(id=constants.MANAGEMENT_GROUP_ID).exists()  #TODO: UNIT TEST
 
     def is_frontline_staff(self):
         """
         Function will return True or False depending on whether this user
         belongs to the frontline staff group or not.
         """
-        return self.groups.filter(id=constants.FRONTLINE_GROUP_ID).exists()
+        return self.groups.filter(id=constants.FRONTLINE_GROUP_ID).exists()  #TODO: UNIT TEST
