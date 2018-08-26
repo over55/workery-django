@@ -115,28 +115,11 @@ class SharedFranchiseListCreateSerializer(serializers.ModelSerializer):
         timezone_name = validated_data.get('timezone_name', None)
         logger.info("Input data:", str(validated_data))
 
-        # #-----------------------------
-        # # Create our `AwayLog` object.
-        # #-----------------------------
+        #-----------------------------
+        # Create our `Tenant` object.
+        #-----------------------------
         from shared_franchise.tasks import create_franchise_func
         django_rq.enqueue(create_franchise_func, validated_data)
 
-        # # Create our log.
-        # log = AwayLog.objects.create(
-        #     associate=associate,
-        #     reason=reason,
-        #     until_further_notice=until_further_notice,
-        #     until_date=until_date,
-        #     created_by=self.context['created_by'],
-        #     last_modified_by=self.context['created_by'],
-        # )
-        # logger.info("Created AwayLog")
-        #
-        # # Save our away information to the associate.
-        # associate.away_log = log
-        # associate.save()
-        # logger.info("Assigned AwayLog to associate.")
-        #
-        # # Return our validated data.
-        # validated_data['id'] = log.id
+        # Return our output
         return validated_data
