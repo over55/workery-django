@@ -41,9 +41,6 @@ class APICountryAndProvinceViewslWithSchemaTestCase(APITestCase, TenantTestCase)
 
     @transaction.atomic
     def tearDown(self):
-        users = SharedUser.objects.all()
-        for user in users.all():
-            user.delete()
         del self.c
         super(APICountryAndProvinceViewslWithSchemaTestCase, self).tearDown()
 

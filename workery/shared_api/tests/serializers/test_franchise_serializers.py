@@ -45,9 +45,6 @@ class SharedFranchiseListCreateSerializerWithPublicSchemaTestCase(APITestCase, T
 
     @transaction.atomic
     def tearDown(self):
-        users = SharedUser.objects.all()
-        for user in users.all():
-            user.delete()
         del self.c
         super(SharedFranchiseListCreateSerializerWithPublicSchemaTestCase, self).tearDown()
 
