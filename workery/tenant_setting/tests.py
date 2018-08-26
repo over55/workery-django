@@ -13,7 +13,7 @@ from shared_foundation.models import SharedFranchise
 from shared_foundation.models import SharedUser
 from shared_foundation.utils import get_jwt_token_and_orig_iat
 from tenant_foundation.constants import *
-from tenant_foundation.models import Associate, AwayLog, Staff, TaskItem
+from tenant_foundation.models import Associate, AwayLog, Staff, TaskItem, Tag
 
 
 TEST_SCHEMA_NAME = "london"
@@ -170,16 +170,37 @@ class TestTenantTeamViews(TenantTestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertIn('Edit Away Announcement', str(response.content))
 
+    def test_settings_away_log_page(self):
+        response = self.auth_c.get(self.tenant.reverse('workery_tenant_settings_blacklisted_clients_list'))
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertIn('Blacklisted Clients', str(response.content))
+
+    def test_settings_tags_list_page(self):
+        response = self.auth_c.get(self.tenant.reverse('workery_tenant_settings_tags_list'))
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertIn('Tag', str(response.content))
+
+    def test_settings_tags_create_page(self):
+        response = self.auth_c.get(self.tenant.reverse('workery_tenant_settings_tag_create'))
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertIn('Tag', str(response.content))
+
+    def test_settings_tags_update_page(self):
+        tag, created = Tag.objects.update_or_create(
+            id=1,
+            defaults={
+                'id': 1,
+                'text': 'This is a test.'
+            }
+        )
+        response = self.auth_c.get(self.tenant.reverse('workery_tenant_settings_tags_update', [tag.id]))
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertIn('Tag', str(response.content))
+        self.assertIn('This is a test.', str(response.content))
+
+
     '''
     TODO: IMPLEMENT.
-    
-    # Backlist.
-    path('settings/blacklisted/clients', blacklisted_views.BlacklistedCustomerListView.as_view(), name='workery_tenant_settings_blacklisted_clients_list'),
-
-    # Tag
-    path('settings/tags/', tag_views.TagListView.as_view(), name='workery_tenant_settings_tags_list'),
-    path('settings/tag/create/', tag_views.TagCreateView.as_view(), name='workery_tenant_settings_tag_create'),
-    path('settings/tag/<int:pk>/', tag_views.TagUpdateView.as_view(), name='workery_tenant_settings_tags_update'),
 
     # Vehicle Types
     path('settings/vehicle_types/', vehicle_type_views.VehicleTypeListView.as_view(), name='workery_tenant_settings_vehicle_types_list'),
