@@ -38,9 +38,8 @@ class TaskItemManager(models.Manager):
         ).filter(search=keyword)
 
     def delete_all(self):
-        items = TaskItem.objects.all()
-        for item in items.all():
-            item.delete()
+        for obj in TaskItem.objects.iterator(chunk_size=500):
+            obj.delete()
 
 
 @transaction.atomic
