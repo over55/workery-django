@@ -13,7 +13,7 @@ from shared_foundation.models import SharedFranchise
 from shared_foundation.models import SharedUser
 from shared_foundation.utils import get_jwt_token_and_orig_iat
 from tenant_foundation.constants import *
-from tenant_foundation.models import Associate, AwayLog, Staff, TaskItem, Tag
+from tenant_foundation.models import Associate, AwayLog, Staff, TaskItem, Tag, VehicleType
 
 
 TEST_SCHEMA_NAME = "london"
@@ -198,14 +198,31 @@ class TestTenantTeamViews(TenantTestCase):
         self.assertIn('Tag', str(response.content))
         self.assertIn('This is a test.', str(response.content))
 
+    def test_settings_vehicle_types_list_page(self):
+        response = self.auth_c.get(self.tenant.reverse('workery_tenant_settings_vehicle_types_list'))
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertIn('Tag', str(response.content))
+
+    def test_settings_vehicle_types_create_page(self):
+        response = self.auth_c.get(self.tenant.reverse('workery_tenant_settings_vehicle_type_create'))
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertIn('Tag', str(response.content))
+
+    def test_settings_vehicle_types_update_page(self):
+        obj, created = VehicleType.objects.update_or_create(
+            id=1,
+            defaults={
+                'id': 1,
+                'text': 'This is a test.'
+            }
+        )
+        response = self.auth_c.get(self.tenant.reverse('workery_tenant_settings_vehicle_types_update', [obj.id]))
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertIn('Vehicle Type', str(response.content))
+        self.assertIn('This is a test.', str(response.content))
 
     '''
     TODO: IMPLEMENT.
-
-    # Vehicle Types
-    path('settings/vehicle_types/', vehicle_type_views.VehicleTypeListView.as_view(), name='workery_tenant_settings_vehicle_types_list'),
-    path('settings/vehicle_type/create/', vehicle_type_views.VehicleTypeCreateView.as_view(), name='workery_tenant_settings_vehicle_type_create'),
-    path('settings/vehicle_type/<int:pk>/', vehicle_type_views.VehicleTypeUpdateView.as_view(), name='workery_tenant_settings_vehicle_types_update'),
 
     # WorkOrder Service Fee
     path('settings/order_service_fees/', order_service_fee_views.WorkOrderServiceFeeListView.as_view(), name='workery_tenant_settings_order_service_fees_list'),
