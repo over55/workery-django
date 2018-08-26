@@ -147,9 +147,31 @@ class SharedFranchiseListAPIViewWithPublicSchemaTestCase(APITestCase, TenantTest
         })
         response = self.authorized_client.post(url, data=post_data, content_type='application/json')
         get_worker().work(burst=True) # Processes all BACKGROUND jobs in FOREGROUND then stop. (Note: https://stackoverflow.com/a/12273705)
-        print(response.content)
-        print(response.data)
         self.assertIsNotNone(response)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        # self.assertIn("London", str(response.data))
+        # self.assertIn("Ontario", str(response.data))
+
+    @transaction.atomic
+    def test_validation_post_with_201(self):
+        url = reverse('workery_franchise_pre_create_validation_api_endpoint')
+        post_data = json.dumps({
+            "schema_name": "mikasoftware",
+            "postal_code": "n6j4x4",
+            "name": "Mika Software Corporation",
+            "alternate_name": "Mika Software",
+            "description": "An open source software company.",
+            "url": "https://mikasoftware.com",
+            "timezone_name": "America/Toronto",
+            "address_country": "Canada",
+            "address_locality": "London",
+            "address_region": "Ontario",
+            "postal_code": "N6J4X4",
+            "street_address": "120 Centre Street",
+            "street_address_extra": "Unit 102"
+        })
+        response = self.authorized_client.post(url, data=post_data, content_type='application/json')
+        self.assertIsNotNone(response)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
         # self.assertIn("London", str(response.data))
         # self.assertIn("Ontario", str(response.data))
