@@ -201,12 +201,12 @@ class TestTenantTeamViews(TenantTestCase):
     def test_settings_vehicle_types_list_page(self):
         response = self.auth_c.get(self.tenant.reverse('workery_tenant_settings_vehicle_types_list'))
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertIn('Tag', str(response.content))
+        self.assertIn('Vehicle Type', str(response.content))
 
     def test_settings_vehicle_types_create_page(self):
         response = self.auth_c.get(self.tenant.reverse('workery_tenant_settings_vehicle_type_create'))
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertIn('Tag', str(response.content))
+        self.assertIn('Vehicle Type', str(response.content))
 
     def test_settings_vehicle_types_update_page(self):
         obj, created = VehicleType.objects.update_or_create(
