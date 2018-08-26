@@ -22,7 +22,7 @@ urlpatterns = (
     path('settings/awaylog/create/', awaylog_views.AwayLogCreateView.as_view(), name='workery_tenant_settings_away_log_create'),
     path('settings/awaylog/<int:pk>/', awaylog_views.AwayLogUpdateView.as_view(), name='workery_tenant_settings_away_log_update'),
 
-    # Away log.
+    # Backlist.
     path('settings/blacklisted/clients', blacklisted_views.BlacklistedCustomerListView.as_view(), name='workery_tenant_settings_blacklisted_clients_list'),
 
     # Tag
