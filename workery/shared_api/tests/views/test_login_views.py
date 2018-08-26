@@ -35,7 +35,7 @@ class APILoginWithPublicSchemaTestCase(APITestCase, TenantTestCase):
     @transaction.atomic
     def setUp(self):
         translation.activate('en')  # Set English
-        super(APILoginWithPublicSchemaTestCase, self).setUp()
+
         self.c = TenantClient(self.tenant)
         call_command('init_app', verbosity=0)
         # Create the account.
@@ -59,10 +59,11 @@ class APILoginWithPublicSchemaTestCase(APITestCase, TenantTestCase):
            "", # Extra line.
            verbosity=0
         )
+        super(APILoginWithPublicSchemaTestCase, self).setUp()
 
     @transaction.atomic
     def tearDown(self):
-        SharedUser.objects.delete_all()
+        # SharedUser.objects.delete_all() # Is this an error?
         del self.c
         super(APILoginWithPublicSchemaTestCase, self).tearDown()
 

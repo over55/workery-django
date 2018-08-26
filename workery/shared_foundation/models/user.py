@@ -48,8 +48,11 @@ class SharedUserManager(BaseUserManager):
         return self._create_user(email, password, **extra_fields)
 
     def delete_all(self):
-        for user in SharedUser.objects.iterator(chunk_size=500):
-            user.delete()
+        try:
+            for user in SharedUser.objects.iterator(chunk_size=500):
+                user.delete()
+        except Exception as e:
+            print(e)
 
 
 class SharedUser(AbstractBaseUser, PermissionsMixin):
