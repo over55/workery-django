@@ -6,6 +6,7 @@ from django.core.management import call_command
 from django.core.management.base import BaseCommand, CommandError
 from django.db import connection # Used for django tenants.
 from django.utils.translation import ugettext_lazy as _
+from django_rq import get_queue, get_worker
 from starterkit.utils import (
     get_random_string,
     get_unique_username_from_email
@@ -102,6 +103,8 @@ class Command(BaseCommand):
         )
         tenant.save()
 
+        get_worker().work(burst=True) # Processes all BACKGROUND jobs in FOREGROUND then stop. (Note: https://stackoverflow.com/a/12273705
+
         # Add one or more domains for the tenant
         domain = SharedFranchiseDomain()
         domain.domain = settings.WORKERY_APP_HTTP_DOMAIN
@@ -109,6 +112,8 @@ class Command(BaseCommand):
         domain.tenant = tenant
         domain.is_primary = False
         domain.save()
+
+        get_worker().work(burst=True) # Processes all BACKGROUND jobs in FOREGROUND then stop. (Note: https://stackoverflow.com/a/12273705
 
         # Populate our new organization tenant with post-creation data.
         call_command('populate_tenant_content', schema_name, verbosity=0)

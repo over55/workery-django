@@ -23,7 +23,6 @@ def create_franchise_func(validated_data):  #TODO: UNIT TEST
     schema_name = validated_data.get('schema_name', None)
     until_date = validated_data.get('until_date', None)
     timezone_name = validated_data.get('timezone_name', None)
-    logger.info("Input data:", str(validated_data))
     call_command(
         'create_franchise',
         schema_name,
