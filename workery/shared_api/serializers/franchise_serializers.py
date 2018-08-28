@@ -98,24 +98,6 @@ class SharedFranchiseListCreateSerializer(serializers.ModelSerializer):
         Override the `create` function to add extra functinality.
         """
         #-----------------------------
-        # Get our inputs.
-        #-----------------------------
-        alternate_name = validated_data.get('alternate_name', None)
-        name = validated_data.get('name', None)
-        description = validated_data.get('description', False)
-        address_country = validated_data.get('address_country', None)
-        address_locality = validated_data.get('address_locality', None)
-        address_region = validated_data.get('address_region', None)
-        post_office_box_number = validated_data.get('post_office_box_number', None)
-        postal_code = validated_data.get('postal_code', None)
-        street_address = validated_data.get('street_address', None)
-        street_address_extra = validated_data.get('street_address_extra', None)
-        schema_name = validated_data.get('schema_name', None)
-        until_date = validated_data.get('until_date', None)
-        timezone_name = validated_data.get('timezone_name', None)
-        logger.info("Input data:", str(validated_data))
-
-        #-----------------------------
         # Create our `Tenant` object.
         #-----------------------------
         from shared_franchise.tasks import create_franchise_func

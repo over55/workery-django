@@ -21,6 +21,7 @@ def create_franchise_func(validated_data):  #TODO: UNIT TEST
     street_address = validated_data.get('street_address', None)
     street_address_extra = validated_data.get('street_address_extra', None)
     schema_name = validated_data.get('schema_name', None)
+    until_date = validated_data.get('until_date', None)
     timezone_name = validated_data.get('timezone_name', None)
     logger.info("Input data:", str(validated_data))
     call_command(
