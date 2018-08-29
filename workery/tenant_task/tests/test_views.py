@@ -27,7 +27,7 @@ TEST_USER_CELL_NUM = "123 123-1234"
 class TestTenantTeamViews(TenantTestCase):
     """
     Console:
-    python manage.py test tenant_task.tests
+    python manage.py test tenant_task.tests.test_views
     """
 
     #------------------#
