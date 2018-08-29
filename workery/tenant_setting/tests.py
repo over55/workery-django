@@ -170,7 +170,7 @@ class TestTenantTeamViews(TenantTestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertIn('Edit Away Announcement', str(response.content))
 
-    def test_settings_away_log_page(self):
+    def test_settings_blacklisted_clients_page(self):
         response = self.auth_c.get(self.tenant.reverse('workery_tenant_settings_blacklisted_clients_list'))
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertIn('Blacklisted Clients', str(response.content))
@@ -270,17 +270,17 @@ class TestTenantTeamViews(TenantTestCase):
         self.assertIn('Skill Set', str(response.content))
         self.assertIn('This is a test.', str(response.content))
 
-    def test_settings_skill_set_list_page(self):
+    def test_settings_insurance_requirements_list_page(self):
         response = self.auth_c.get(self.tenant.reverse('workery_tenant_settings_insurance_requirements_list'))
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertIn('Insurance Requirements', str(response.content))
 
-    def test_settings_skill_set_create_page(self):
+    def test_settings_insurance_requirements_create_page(self):
         response = self.auth_c.get(self.tenant.reverse('workery_tenant_settings_insurance_requirement_create'))
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertIn('Insurance Requirement', str(response.content))
 
-    def test_settings_skill_set_update_page(self):
+    def test_settings_insurance_requirements_update_page(self):
         obj, created = InsuranceRequirement.objects.update_or_create(
             id=1,
             defaults={
