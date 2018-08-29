@@ -148,13 +148,16 @@ class TestTenantCSVReportViews(TenantTestCase):
         response = self.auth_c.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
-    def test_report_2_csv_page_v1(self):
-        url_parameter = "?associate_id=6140&from_dt=2000-08-01&to_dt=2018-08-28&state=all"
-        url = self.tenant.reverse('workery_tenant_report_02_download_csv_file_api_endpoint')
-        url += url_parameter
-        response = self.auth_c.get(url)
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-
+    # def test_report_2_csv_page_v1(self):
+    #     """
+    #     TODO: Implement.
+    #     """
+    #     url_parameter = "?associate_id=6140&from_dt=2000-08-01&to_dt=2018-08-28&state=all"
+    #     url = self.tenant.reverse('workery_tenant_report_02_download_csv_file_api_endpoint')
+    #     url += url_parameter
+    #     response = self.auth_c.get(url)
+    #     self.assertEqual(response.status_code, status.HTTP_200_OK)
+    # 
     # def test_report_2_csv_page_v2(self):
     #     """
     #     TODO: Implement.
@@ -165,12 +168,13 @@ class TestTenantCSVReportViews(TenantTestCase):
     #     response = self.auth_c.get(url)
     #     self.assertEqual(response.status_code, status.HTTP_200_OK)
 
-    # def test_report_3_csv_page(self):
-    #     response = self.auth_c.get(self.tenant.reverse('workery_tenant_report_03_download_csv_file_api_endpoint'))
-    #     self.assertEqual(response.status_code, status.HTTP_200_OK)
-    #     self.assertIn('Reports', str(response.content))
-    #     self.assertIn('Service Fees by Skill Set Report', str(response.content))
-    #
+    def test_report_3_csv_page(self):
+        url_parameter = "?from_dt=2018-08-01&to_dt=2018-08-28"
+        url = self.tenant.reverse('workery_tenant_report_03_download_csv_file_api_endpoint')
+        url += url_parameter
+        response = self.auth_c.get(url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
     # def test_report_4_csv_page(self):
     #     response = self.auth_c.get(self.tenant.reverse('workery_tenant_report_04_download_csv_file_api_endpoint'))
     #     self.assertEqual(response.status_code, status.HTTP_200_OK)
