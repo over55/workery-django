@@ -4,7 +4,6 @@ default_app_config = 'tenant_setting.apps.TenantSettingConfig'
 #TODO: UNIT TEST
 tenant_setting/__init__.py                                                           2      0   100%
 tenant_setting/apps.py                                                               3      0   100%
-tenant_setting/tests.py                                                            147     14    90%   255-257, 260-271
 tenant_setting/urls.py                                                               5      0   100%
 tenant_setting/views/__init__.py                                                     0      0   100%
 tenant_setting/views/awaylog_views.py                                               26      0   100%

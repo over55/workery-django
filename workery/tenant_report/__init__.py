@@ -2,8 +2,7 @@ default_app_config = 'tenant_report.apps.TenantReportConfig'
 
 '''
 #TODO: UNIT TEST
-tenant_report/__init__.py                                                            1      0   100%
-tenant_report/admin.py                                                               1      1     0%   1
+tenant_report/__init__.py                                                            2      0   100%
 tenant_report/apps.py                                                                3      0   100%
 tenant_report/tests.py                                                               1      0   100%
 tenant_report/urls.py                                                               15      0   100%
@@ -20,6 +19,4 @@ tenant_report/views/csv/report_08_view.py                                       
 tenant_report/views/csv/report_09_view.py                                           42     21    50%   42, 48-125
 tenant_report/views/csv/report_10_view.py                                           48     27    44%   42, 46-106
 tenant_report/views/csv/report_11_view.py                                           53     32    40%   42, 46-121
-tenant_report/views/web_views.py                                                    55      0   100%
-
 '''
