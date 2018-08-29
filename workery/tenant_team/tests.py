@@ -158,7 +158,7 @@ class TestTenantTeamViews(TenantTestCase):
         self.assertIn('Staff', str(response.content))
         self.assertIn(TEST_USER_EMAIL, str(response.content))
 
-    def test_full_retrieve_page(self):
+    def test_comments_retrieve_page(self):
         staff = Staff.objects.get()
         a_url = self.tenant.reverse(reverse_id='workery_tenant_team_retrieve_for_comment_list_and_create', reverse_args=['summary', int(staff.id)])
         response = self.auth_c.get(a_url)
@@ -166,7 +166,7 @@ class TestTenantTeamViews(TenantTestCase):
         self.assertIn('Staff', str(response.content))
         self.assertIn('Add Comment/Note', str(response.content))
 
-    def test_full_retrieve_page(self):
+    def test_uodate_page(self):
         staff = Staff.objects.get()
         a_url = self.tenant.reverse(reverse_id='workery_tenant_team_update', reverse_args=['summary', int(staff.id)])
         response = self.auth_c.get(a_url)
