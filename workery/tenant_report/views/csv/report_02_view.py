@@ -49,6 +49,16 @@ def report_02_streaming_csv_view(request):
     associate_id = request.GET.get('associate_id', None)
     associate = Associate.objects.filter(id=associate_id).first()
 
+    # Defensive Code: If nothing is found then return nothing.
+    if associate_id is None:
+        pseudo_buffer = Echo()
+        writer = csv.writer(pseudo_buffer)
+        response = StreamingHttpResponse(
+            content_type="text/csv"
+        )
+        response['Content-Disposition'] = 'attachment; filename="associate_jobs.csv"'
+        return response
+
     from_dt = parser.parse(from_dt)
     to_dt = parser.parse(to_dt)
 
