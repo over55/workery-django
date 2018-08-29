@@ -23,7 +23,8 @@ from tenant_foundation.models import (
     WorkOrder,
     WorkOrderComment,
     Staff,
-    Tag
+    Tag,
+    Partner
 )
 from tenant_foundation.utils import *
 
@@ -143,6 +144,18 @@ class Command(BaseCommand):
             was_email_activated=True,
             group_id=constants.CUSTOMER_GROUP_ID
         )
+        user6 = self.create_user(
+            franchise=franchise,
+            first_name="Gendo",
+            last_name="Ikari",
+            email="gikari@workery.ca",
+            is_active=True,
+            is_superuser=True,
+            is_staff=True,
+            password=TEST_SAMPLE_USER_PASSWORD,
+            was_email_activated=True,
+            group_id=constants.CUSTOMER_GROUP_ID
+        )
 
         # Connection will set it back to our tenant.
         connection.set_schema(franchise.schema_name, True) # Switch to Tenant.
@@ -207,6 +220,20 @@ class Command(BaseCommand):
             telephone="1112223330",
             telephone_extension="",
             other_telephone="1112223330",
+            address_country="Canada",
+            address_locality="London",
+            address_region="Ontario",
+            post_office_box_number="",
+            postal_code="E1E1E1",
+            street_address="101 Cheep Street",
+            street_address_extra="",
+        )
+
+        Partner.objects.create(
+            owner=user6,
+            telephone="9112223330",
+            telephone_extension="",
+            other_telephone="9112223330",
             address_country="Canada",
             address_locality="London",
             address_region="Ontario",
