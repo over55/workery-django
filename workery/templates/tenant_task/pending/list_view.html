@@ -39,6 +39,13 @@
                 <span aria-hidden="true">×</span>
             </button>
         </div>
+    {% elif parameters.was_postponed == 'True' %}
+        <div class="alert bg-success text-white alert-dismissible fade show" role="alert">
+            Job was <strong>successfully</strong> postponed.
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">×</span>
+            </button>
+        </div>
     {% endif %}
     <!------------------------------------------------------------------------->
     <!-- end NOTIFICATION -->
@@ -183,7 +190,7 @@
 	</button>
     </li>
     <li class="page-item">
-	 {% if page_obj.has_previous %}        
+	 {% if page_obj.has_previous %}
             <a class="page-link rounded-left" href="?page={{ page_obj.previous_page_number }}" aria-label="Previous">
 	    	<span aria-hidden="true">&laquo;</span>
         	<span class="sr-only">Previous</span>

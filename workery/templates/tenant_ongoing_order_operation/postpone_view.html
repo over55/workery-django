@@ -35,14 +35,8 @@
     });
 
     function click_cancel_button() {
-        {% if template == 'search' %}
-        window.location = "{% url 'workery_tenant_job_retrieve' template job.id %}";
-        {% elif template == 'task' %}
-        window.location = "{% url 'workery_tenant_pending_task_retrieve' parameters.task_id %}";
-        {% elif template == 'list' %}
-        window.location = "{% url 'workery_tenant_job_retrieve' template job.id %}";
-        {% else %}
-        window.location = "{% url 'workery_tenant_job_retrieve' template job.id %}";
+        {% if parameters.return_id == 'pending-task' %}
+            window.location = "{% url 'workery_tenant_pending_task_retrieve' parameters.task_item %}";
         {% endif %}
     }
 
@@ -55,9 +49,9 @@
         }
 
         // Submit to our API web-service.
-        post_order_postpone_operation_api(
+        post_ongoing_order_postpone_operation_api(
             {
-                'job': {{ job.id }},
+                'ongoing_job': {{ ongoing_job.id }},
                 'reason': reason,
                 'reason_other': $('#reason_other').val(),
                 'start_date': $('#start_date').val(),
@@ -67,12 +61,10 @@
                 // FOR DEBUGGING PURPOSES ONLY.
                 console.log(result_dict);
 
-                // REDIRECT TO SUCCESS PAGE.
-                {% if template == 'task' %}
-                window.location = "{% url 'workery_tenant_task_list' %}?was_postponed=True";
-                {% else %}
-                window.location = "{% url 'workery_tenant_job_retrieve' template job.id %}?was_closed=True";
+                {% if parameters.return_id == 'pending-task' %}
+                    window.location = "{% url 'workery_tenant_task_list' %}?was_postponed=True";
                 {% endif %}
+
             },
             function(xhr,status,error) { // Error
                 // STEP 1: Convert to JSON.
@@ -109,48 +101,14 @@
     <!-- BREADCRUMB -->
     <!------------------------------------------------------------------------->
     <nav aria-label="breadcrumb">
-	  	<ol class="breadcrumb">
-            {% if template == 'search' %}
-
-            <li class="breadcrumb-item">
-                <a href="{% url 'workery_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a>
-            </li>
-            <li class="breadcrumb-item">
-                <a href="{% url 'workery_tenant_job_summary' %}">{% trans 'Jobs' %}</a>
-            </li>
-            <li class="breadcrumb-item">
-                <a href="{% url 'workery_tenant_job_search' %}">{% trans 'Search' %}</a>
-            </li>
-            <li class="breadcrumb-item">{% trans 'Search Results' %}</li>
-            <li class="breadcrumb-item"><a href="{% url 'workery_tenant_job_retrieve' template job.id %}">{% trans 'Job #' %}{{ object.id|intcomma }}</a></li>
-            <li class="breadcrumb-item active" aria-current="page">{% trans 'Postpone Job' %}</li>
-
-            {% elif template == 'task' %}
-
-            <li class="breadcrumb-item"><a href="{% url 'workery_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
-            <li class="breadcrumb-item"><a href="{% url 'workery_tenant_task_list' %}">{% trans 'Pending Tasks' %}</a></li>
-            <li class="breadcrumb-item"><a href="{% url 'workery_tenant_pending_task_retrieve' parameters.task_id %}">{% trans 'Task #' %}{{ parameters.task_id|intcomma }}</a></li>
-            <li class="breadcrumb-item active" aria-current="page">{% trans 'Postpone Job' %}</li>
-
-            {% elif template == 'list' %}
-
-            <li class="breadcrumb-item"><a href="{% url 'workery_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
-            <li class="breadcrumb-item"><a href="{% url 'workery_tenant_job_summary' %}">{% trans 'Jobs' %}</a></li>
-            <li class="breadcrumb-item"><a href="{% url 'workery_tenant_job_list' %}">{% trans 'List' %}</a></li>
-            <li class="breadcrumb-item"><a href="{% url 'workery_tenant_job_retrieve' template job.id %}">{% trans 'Job #' %}{{ object.id|intcomma }}</a></li>
-            <li class="breadcrumb-item active" aria-current="page">{% trans 'Postpone Job' %}</li>
-
-            {% else %}
-
-            <li class="breadcrumb-item"><a href="{% url 'workery_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
-            <li class="breadcrumb-item"><a href="{% url 'workery_tenant_job_summary' %}">{% trans 'Jobs' %}</a></li>
-            <li class="breadcrumb-item"><a href="{% url 'workery_tenant_job_retrieve' template job.id %}">{% trans 'Job #' %}{{ object.id|intcomma }}</a></li>
-            <li class="breadcrumb-item active" aria-current="page">{% trans 'Postpone Job' %}</li>
-
-            {% endif %}
-	  	</ol>
-	  	</ol>
-	</nav>
+        {% if parameters.return_id == 'pending-task' %}
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'workery_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'workery_tenant_task_list' %}">{% trans 'Pending Tasks' %}</a></li>
+                <li class="breadcrumb-item active" aria-current="page">{% trans 'Task #' %}{{ parameters.task_item|intcomma }}</li>
+            </ol>
+        {% endif %}
+    </nav>
     <!------------------------------------------------------------------------->
     <!-- end BREADCRUMB -->
 

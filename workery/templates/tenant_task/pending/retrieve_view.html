@@ -382,6 +382,20 @@
             {% endif %}
             <!-- end CLOSE JOB BUTTON -->
 
+            <!-- end POSTPONE BUTTON -->
+            {% if task_item.type_of != 3 %}
+            <div class="col-sm-4">
+                <a href="{% url 'workery_tenant_ongoing_job_postpone_operation' task_item.ongoing_job.id %}?return_id=pending-task&task_item={{ task_item.id }}">
+                <button  id="id_submit_btn"
+                    class="btn btn-orange btn-lg btn-fxw mt-4"
+                    type="button">
+                <i class="fas fa-clock"></i>&nbsp;{% trans 'Postpone Job' %}
+                </button>
+                </a>
+            </div>
+            {% endif %}
+            <!-- end POSTPONE BUTTON -->
+
         </div>
 
             <div class="row">

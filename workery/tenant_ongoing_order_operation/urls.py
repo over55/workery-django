@@ -32,5 +32,9 @@ urlpatterns = (
 
     path('ongoing-jobs/detail/<int:pk>/operation/completion-survey',
     views.OngoingWorkOrderCompletionSurveyOperationView.as_view(),
-    name='workery_tenant_ongoing_job_completion_survey_operation')
+    name='workery_tenant_ongoing_job_completion_survey_operation'),
+
+    path('ongoing-jobs/detail/<int:pk>/operation/postpone',
+    views.OngoingWorkPostponeOperationView.as_view(),
+    name='workery_tenant_ongoing_job_postpone_operation')
 )
