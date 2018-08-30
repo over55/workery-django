@@ -369,7 +369,6 @@
             <!-- end UNASSIGN BUTTON -->
 
             <!-- CLOSE JOB BUTTON -->
-            {% if task_item.type_of != 3 %}
             <div class="col-sm-4">
                 <a href="{% url 'workery_tenant_ongoing_job_close_operation' task_item.ongoing_job.id %}?return_id=pending-task&task_item={{ task_item.id }}">
                 <button  id="id_submit_btn"
@@ -379,11 +378,10 @@
                 </button>
                 </a>
             </div>
-            {% endif %}
             <!-- end CLOSE JOB BUTTON -->
 
             <!-- end POSTPONE BUTTON -->
-            {% if task_item.type_of != 3 %}
+            {% if task_item.type_of != 1 %}
             <div class="col-sm-4">
                 <a href="{% url 'workery_tenant_ongoing_job_postpone_operation' task_item.ongoing_job.id %}?return_id=pending-task&task_item={{ task_item.id }}">
                 <button  id="id_submit_btn"
