@@ -116,7 +116,7 @@
                         <tr>
                             <th scope="row" class="bg-light">Staff</th>
                             <td id="selected_staff_name">
-                                {% if task_item.created_by %}<a href="{% url 'workery_tenant_team_retrieve_from_user_id_redirect' template task_item.created_by.id %}" target="_blank">{{ task_item.created_by.get_full_name }}&nbsp;<i class="fas fa-external-link-alt"></i></a>{% else %}-{% endif %}
+                                {% if task_item.created_by %}{{ task_item.created_by.get_full_name }}{% else %}-{% endif %}
                             </td>
                         </tr>
                         <tr>
