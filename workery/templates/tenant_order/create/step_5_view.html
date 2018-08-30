@@ -67,6 +67,7 @@
         localStorage.removeItem("tmp_comment");
         localStorage.removeItem("tmp_start_date");
         localStorage.removeItem("tmp_follow_up_days_number");
+        localStorage.removeItem("tmp_frequency");
 
         /////////////////////////////////////
         // Get our pending task unique ID. //
@@ -103,7 +104,7 @@
                 'description': localStorage.getItem("tmp_describe"),
                 'extra_comment': localStorage.getItem("tmp_comment"),
                 'start_date': start_date,
-                'follow_up_days_number': localStorage.getItem("tmp_follow_up_days_number0")
+                'follow_up_days_number': localStorage.getItem("tmp_follow_up_days_number")
             },
             function(success_result) {
                 // Attach our success indicator
@@ -149,6 +150,7 @@
         var tmp_home_support = localStorage.getItem("tmp_home_support");
         var is_home_support_service = tmp_home_support == "Yes" ? true : false;
         var start_date = localStorage.getItem("start_date");
+        var frequency = localStorage.getItem("tmp_frequency");
 
         disable_btn(); // Disable button clicked.
 
@@ -162,7 +164,8 @@
                 'description': localStorage.getItem("tmp_describe"),
                 'extra_comment': localStorage.getItem("tmp_comment"),
                 'start_date': start_date,
-                'follow_up_days_number': localStorage.getItem("tmp_follow_up_days_number0")
+                'follow_up_days_number': localStorage.getItem("tmp_follow_up_days_number"),
+                'frequency': frequency
             },
             function(success_result) {
                 // Attach our success indicator

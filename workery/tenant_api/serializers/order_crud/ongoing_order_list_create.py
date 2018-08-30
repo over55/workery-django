@@ -65,6 +65,7 @@ class OngoingWorkOrderCreateSerializer(serializers.ModelSerializer):
             'skill_sets',
             'description',
             'start_date',
+            'frequency',
         )
 
     def setup_eager_loading(cls, queryset):
@@ -92,6 +93,7 @@ class OngoingWorkOrderCreateSerializer(serializers.ModelSerializer):
         start_date = validated_data.get('start_date', timezone.now())
         follow_up_days_number = validated_data.get('follow_up_days_number', 0)
         state = validated_data.get('state', ONGOING_WORK_ORDER_STATE.RUNNING)
+        frequency = validated_data.get('frequency', None)
 
         #---------------------------------------
         # Create our `OngoingWorkOrder` objects.
@@ -118,7 +120,8 @@ class OngoingWorkOrderCreateSerializer(serializers.ModelSerializer):
             start_date=start_date,
             created_from = self.context['created_from'],
             created_from_is_public = self.context['created_from_is_public'],
-            state=ONGOING_WORK_ORDER_STATE.RUNNING
+            state=ONGOING_WORK_ORDER_STATE.RUNNING,
+            frequency=frequency
         )
         logger.info("Created (ongoing) order object.")
 

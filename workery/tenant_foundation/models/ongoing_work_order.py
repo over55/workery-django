@@ -114,6 +114,13 @@ class OngoingWorkOrder(models.Model):
         blank=True,
         default=get_todays_date
     )
+    frequency = models.CharField(
+        _("Frequency"),
+        help_text=_('The frequency of the ongoing job.'),
+        max_length=31,
+        blank=True,
+        null=True,
+    )
     completion_date = models.DateField(
         _('Completion Date'),
         help_text=_('The date that this ongoing order was completed.'),

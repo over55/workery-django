@@ -178,7 +178,7 @@
     <tr>
         <th scope="row" class="bg-light">Is ongoing?</th>
         <td id="is_ongoing">
-            {{ job.is_ongoing }}
+            True
         </td>
     </tr>
     <tr>
@@ -187,6 +187,26 @@
             {{ job.get_pretty_status }}
         </td>
     </tr>
+    {% if job.frequency %}
+    <tr>
+        <th scope="row" class="bg-light">Frequency</th>
+        <td id="frequency">
+            {% if job.frequency == 'daily' %}
+                Daily
+            {% elif job.frequency == 'weekly' %}
+                Weekly
+            {% elif job.frequency == 'bi_weekly' %}
+                Bi-weekly
+            {% elif job.frequency == 'monthly' %}
+                Monthly
+            {% elif job.frequency == 'quarterly' %}
+                Quarterly
+            {% elif job.frequency == 'annually' %}
+                Annually
+            {% endif %}
+        </td>
+    </tr>
+    {% endif %}
     <tr>
         <th scope="row" class="bg-light">Start date</th>
         <td id="completion_date">

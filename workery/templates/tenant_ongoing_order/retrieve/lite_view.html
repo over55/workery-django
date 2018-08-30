@@ -159,6 +159,26 @@
                         {% endif %}
                     </td>
                 </tr>
+                {% if job.frequency %}
+                <tr>
+    			    <th scope="row" class="bg-light">Frequency</th>
+    			    <td id="frequency">
+    				    {% if job.frequency == 'daily' %}
+                            Daily
+                        {% elif job.frequency == 'weekly' %}
+                            Weekly
+                        {% elif job.frequency == 'bi_weekly' %}
+                            Bi-weekly
+                        {% elif job.frequency == 'monthly' %}
+                            Monthly
+                        {% elif job.frequency == 'quarterly' %}
+                            Quarterly
+                        {% elif job.frequency == 'annually' %}
+                            Annually
+                        {% endif %}
+    			    </td>
+    			</tr>
+                {% endif %}
                 <tr>
                     <th scope="row" class="bg-light">Latest Pending Task</th>
                     <td id="selected_task">
