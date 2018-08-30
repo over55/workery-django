@@ -117,6 +117,7 @@ def report_02_streaming_csv_view(request):
         "Client No.",
         "Client Name",
         "Skill Set(s)",
+        "Was survey conducted",
         "Was job satisfactory",
         "Was job finished on time and on budget",
         "Was associate punctual",
