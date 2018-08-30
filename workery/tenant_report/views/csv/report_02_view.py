@@ -117,7 +117,7 @@ def report_02_streaming_csv_view(request):
         "Client No.",
         "Client Name",
         "Skill Set(s)",
-        "Was job_ satisfactory",
+        "Was job satisfactory",
         "Was job finished on time and on budget",
         "Was associate punctual",
         "Was associate professional",
@@ -143,6 +143,7 @@ def report_02_streaming_csv_view(request):
         invoice_service_fee_amount = invoice_service_fee_amount.replace('C', '')
 
         # Set to empty.
+        was_survey_conducted = 0
         was_job_satisfactory = '-'
         was_job_finished_on_time_and_on_budget = '-'
         was_associate_punctual = '-'
@@ -151,6 +152,7 @@ def report_02_streaming_csv_view(request):
         score = '-'
 
         if job.state == WORK_ORDER_STATE.COMPLETED_AND_PAID or job.state == WORK_ORDER_STATE.COMPLETED_BUT_UNPAID:
+            was_survey_conducted = 1 if job.was_survey_conducted else 0
             was_job_satisfactory = 1 if job.was_job_satisfactory else 0
             was_job_finished_on_time_and_on_budget = 1 if job.was_job_finished_on_time_and_on_budget else 0
             was_associate_punctual = 1 if job.was_associate_punctual else 0
@@ -170,6 +172,7 @@ def report_02_streaming_csv_view(request):
             job.customer.id,
             str(job.customer),
             skill_set_string,
+            was_survey_conducted,
             was_job_satisfactory,
             was_job_finished_on_time_and_on_budget,
             was_associate_punctual,
