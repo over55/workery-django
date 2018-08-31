@@ -24,6 +24,7 @@ from tenant_report.views.web_views import (
     Report09DetailView,
     Report10DetailView,
     Report11DetailView,
+    Report12DetailView
 )
 
 urlpatterns = (
@@ -39,6 +40,7 @@ urlpatterns = (
     url(r'^report/9/$', Report09DetailView.as_view(), name='workery_tenant_report_09_detail_master'),
     url(r'^report/10/$', Report10DetailView.as_view(), name='workery_tenant_report_10_detail_master'),
     url(r'^report/11/$', Report11DetailView.as_view(), name='workery_tenant_report_11_detail_master'),
+    url(r'^report/12/$', Report12DetailView.as_view(), name='workery_tenant_report_12_detail_master'),
 
     url(r'^report/1/csv-download$', report_01_streaming_csv_view, name='workery_tenant_report_01_download_csv_file_api_endpoint'),
     url(r'^report/2/csv-download$', report_02_streaming_csv_view, name='workery_tenant_report_02_download_csv_file_api_endpoint'),

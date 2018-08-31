@@ -61,14 +61,15 @@ def report_08_streaming_csv_view(request):
     rows += (["", "",],)
 
     # Generate the CSV header row.
-    rows += (["Skill Set"],)
+    rows += (["Category", "Sub-Category",],)
 
     # Generate hte CSV data.
     if associate:
         if associate.skill_sets.count() > 0:
             for skill_set in associate.skill_sets.all():
                 rows += ([
-                    str(skill_set)
+                    str(skill_set.category),
+                    str(skill_set.sub_category),
                 ],)
 
     pseudo_buffer = Echo()

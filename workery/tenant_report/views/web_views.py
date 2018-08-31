@@ -138,3 +138,13 @@ class Report11DetailView(LoginRequiredMixin, GroupRequiredMixin, WorkeryTemplate
         constants.MANAGEMENT_GROUP_ID,
         constants.FRONTLINE_GROUP_ID
     ]
+
+
+class Report12DetailView(LoginRequiredMixin, GroupRequiredMixin, WorkeryTemplateView):
+    template_name = 'tenant_report/report_12_view.html'
+    menu_id = "reports"
+    group_required = [
+        constants.EXECUTIVE_GROUP_ID,
+        constants.MANAGEMENT_GROUP_ID,
+        constants.FRONTLINE_GROUP_ID
+    ]
