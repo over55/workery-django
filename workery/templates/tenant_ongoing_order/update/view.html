@@ -59,19 +59,19 @@
             'skill_sets': skill_sets,
             'assignment_date': assignment_date,
             'frequency': frequency,
-            'customer': {% if job.customer %}{{ job.customer.id }}{% else %}null{% endif %},
-            'associate': {% if job.associate %}{{ job.associate.id }}{% else %}null{% endif %},
+            'customer': {% if ongoing_job.customer %}{{ ongoing_job.customer.id }}{% else %}null{% endif %},
+            'associate': {% if ongoing_job.associate %}{{ ongoing_job.associate.id }}{% else %}null{% endif %},
             'state': state,
             'completion_date': completion_date,
             'hours': hours
         };
 
         update_ongoing_job_api(
-            {{ job.id }},
+            {{ ongoing_job.id }},
             data_dict,
             function(json_results) {
                 console.log(json_results);
-                window.location = "{% url 'workery_tenant_ongoing_job_full_retrieve' template job.id %}?was_modified=True";
+                window.location = "{% url 'workery_tenant_ongoing_job_full_retrieve' template ongoing_job.id %}?was_modified=True";
             },
 	        function(xhr,status,error) { // Error
                 // STEP 1: Convert to JSON.
@@ -128,7 +128,7 @@
 
 	        <li class="breadcrumb-item"><a href="{% url 'workery_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
             <li class="breadcrumb-item"><a href="{% url 'workery_tenant_ongoing_job_list' %}">{% trans 'Ongoing Jobs' %}</a></li>
-            <li class="breadcrumb-item"><a href="{% url 'workery_tenant_ongoing_job_full_retrieve' template job.id %}">{% trans 'Ongoing Job #' %}{{ job.id|intcomma }}</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'workery_tenant_ongoing_job_full_retrieve' template ongoing_job.id %}">{% trans 'Ongoing Job #' %}{{ ongoing_job.id|intcomma }}</a></li>
             <li class="breadcrumb-item active" aria-current="page">{% trans 'Edit' %}</li>
 
             {% endif %}
@@ -159,7 +159,7 @@
                 <p class="border-bottom mb-3 pb-1 text-secondary">Describe the Job:</p>
                 <div class="form-row">
                     <div class="form-group col-md-12 mb-4">
-                            <textarea class="form-control form-control-lg border border-primary" id="description" name="description" placeholder="Describe here..." rows="4" minlength="10" required>{{ job.description }}</textarea>
+                            <textarea class="form-control form-control-lg border border-primary" id="description" name="description" placeholder="Describe here..." rows="4" minlength="10" required>{{ ongoing_job.description }}</textarea>
                         <div id="description-error" class="invalid-feedback"></div>
                     </div>
                 </div>
@@ -170,7 +170,7 @@
                         <label for="skill_sets" class="font-b6"></label>
                         <select id="skill_sets" name="states[]" multiple="multiple" class="form-control form-control-lg border border-primary">
                             {% for skillset in skillsets %}
-                                <option value="{{ skillset.id }}" id="option_id_{{ skillset.id }}" {% if skillset in job.skill_sets.all %}selected="selected"{% endif %}>{{ skillset.sub_category }}</option>
+                                <option value="{{ skillset.id }}" id="option_id_{{ skillset.id }}" {% if skillset in ongoing_job.skill_sets.all %}selected="selected"{% endif %}>{{ skillset.sub_category }}</option>
                             {% endfor %}
                         </select>
                         <div id="skill_sets-error" class="invalid-feedback"></div>
@@ -181,7 +181,7 @@
                 <div class="form-group p-0 col-md-7 mb-4">
                     <label for="assignment_date">Assignment Date</label>
                     <div class="input-group input-group-lg">
-                        <input type="text" class="form-control form-control-lg border border-success" id="assignment_date" name="assignment_date" placeholder="yyyy-mm-dd" value="{% if job.assignment_date %}{{ job.assignment_date|date:"Y-m-d" }}{% endif %}" required>
+                        <input type="text" class="form-control form-control-lg border border-success" id="assignment_date" name="assignment_date" placeholder="yyyy-mm-dd" value="{% if ongoing_job.assignment_date %}{{ ongoing_job.assignment_date|date:"Y-m-d" }}{% endif %}" required>
                         <div class="input-group-append">
                             <span class="input-group-text c-icon-white bg-success border-success"><i class="far fa-calendar-alt"></i></span>
                         </div>
@@ -195,12 +195,12 @@
                     <label for="frequency">Frequency</label>
                     <select class="custom-select form-control-lg border-success" id="frequency" name="frequency" required>
                         <option value="" selected>Please select...</option>
-                        <option value="daily">Daily</option>
-                        <option value="weekly">Weekly</option>
-                        <option value="bi_weekly">Bi-weekly</option>
-                        <option value="monthly">Monthly</option>
-                        <option value="quarterly">Quarterly</option>
-                        <option value="annually">Annually</option>
+                        <option value="daily" {% if ongoing_job.frequency == 'daily' %}selected="true"{% endif %}>Daily</option>
+                        <option value="weekly" {% if ongoing_job.frequency == 'weekly' %}selected="true"{% endif %}>Weekly</option>
+                        <option value="bi_weekly" {% if ongoing_job.frequency == 'bi_weekly' %}selected="true"{% endif %}>Bi-weekly</option>
+                        <option value="monthly" {% if ongoing_job.frequency == 'monthly' %}selected="true"{% endif %}>Monthly</option>
+                        <option value="quarterly" {% if ongoing_job.frequency == 'quarterly' %}selected="true"{% endif %}>Quarterly</option>
+                        <option value="annually" {% if ongoing_job.frequency == 'annually' %}selected="true"{% endif %}>Annually</option>
                     </select>
                     <div id="frequency-error" class="invalid-feedback"></div>
                 </div>
@@ -210,9 +210,9 @@
                     <label for="state">Status&nbsp;<sup>*</sup></label>
                     <select class="custom-select form-control-lg border-primary" id="state" name="state" required>
                         <option value="">Status...</option>
-                        <option value="{{ ONGOING_WORK_ORDER_STATE.IDLE }}" {% if job.state == ONGOING_WORK_ORDER_STATE.IDLE %}selected="true"{% endif %}>{% trans 'Idle' %}</option>
-                        <option value="{{ ONGOING_WORK_ORDER_STATE.RUNNING }}" {% if job.state == ONGOING_WORK_ORDER_STATE.RUNNING %}selected="true"{% endif %}>{% trans 'Running' %}</option>
-                        <option value="{{ ONGOING_WORK_ORDER_STATE.TERMINATED }}" {% if job.state == ONGOING_WORK_ORDER_STATE.TERMINATED %}selected="true"{% endif %}>{% trans 'Terminate' %}</option>
+                        <option value="{{ ONGOING_WORK_ORDER_STATE.IDLE }}" {% if ongoing_job.state == ONGOING_WORK_ORDER_STATE.IDLE %}selected="true"{% endif %}>{% trans 'Idle' %}</option>
+                        <option value="{{ ONGOING_WORK_ORDER_STATE.RUNNING }}" {% if ongoing_job.state == ONGOING_WORK_ORDER_STATE.RUNNING %}selected="true"{% endif %}>{% trans 'Running' %}</option>
+                        <option value="{{ ONGOING_WORK_ORDER_STATE.TERMINATED }}" {% if ongoing_job.state == ONGOING_WORK_ORDER_STATE.TERMINATED %}selected="true"{% endif %}>{% trans 'Terminate' %}</option>
                     </select>
                     <div id="state-error" class="invalid-feedback"></div>
                 </div>
@@ -220,7 +220,7 @@
                 <div class="form-group p-0 col-md-7 mb-4">
                     <label for="completion_date">Completion Date</label>
                     <div class="input-group input-group-lg">
-                        <input type="text" class="form-control form-control-lg border border-success" id="completion_date" name="completion_date" placeholder="yyyy-mm-dd" value="{% if job.completion_date %}{{ job.completion_date|date:"Y-m-d" }}{% endif %}" required>
+                        <input type="text" class="form-control form-control-lg border border-success" id="completion_date" name="completion_date" placeholder="yyyy-mm-dd" value="{% if ongoing_job.completion_date %}{{ ongoing_job.completion_date|date:"Y-m-d" }}{% endif %}" required>
                         <div class="input-group-append">
                             <span class="input-group-text c-icon-white bg-success border-success"><i class="far fa-calendar-alt"></i></span>
                         </div>
@@ -232,7 +232,7 @@
                 <div class="form-group p-0 col-md-7 mb-4">
                     <label for="hours">Hours</label>
                     <div class="input-group input-group-lg">
-                        <input type="text" class="form-control form-control-lg border border-success" id="hours" name="hours" placeholder="Hours" minlength="3" maxlength="127" required value="{{ job.hours }}">
+                        <input type="text" class="form-control form-control-lg border border-success" id="hours" name="hours" placeholder="Hours" minlength="3" maxlength="127" required value="{{ ongoing_job.hours }}">
                         <div id="hours-error" class="invalid-feedback"></div>
                     </div>
                 </div>

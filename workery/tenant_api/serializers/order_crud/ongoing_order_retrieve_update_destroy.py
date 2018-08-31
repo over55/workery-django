@@ -43,7 +43,13 @@ class OngoingWorkOrderRetrieveUpdateDestroySerializer(serializers.ModelSerialize
             'customer',
             'associate',
             'closed_orders',
-            'state'
+            'description',
+            'assignment_date',
+            'frequency',
+            'state',
+            'skill_sets',
+            'completion_date',
+            # 'hours',
         )
 
     def setup_eager_loading(cls, queryset):
@@ -63,7 +69,24 @@ class OngoingWorkOrderRetrieveUpdateDestroySerializer(serializers.ModelSerialize
         instance.associate = validated_data.get('associate', instance.associate)
         # instance.closed_orders = validated_data.get('closed_orders', instance.closed_orders)
         instance.state = validated_data.get('state', instance.state)
+        instance.description = validated_data.get('description', instance.description)
+        instance.assignment_date = validated_data.get('assignment_date', instance.assignment_date)
+        instance.frequency = validated_data.get('frequency', instance.frequency)
+        instance.state = validated_data.get('state', instance.state)
+        instance.completion_date = validated_data.get('completion_date', instance.completion_date)
+        # hours = validated_data.get('hours', instance.hours)
+        # print("---", hours)
 
+        #-----------------------------
+        # Set our `SkillSet` objects.
+        #-----------------------------
+        skill_sets = validated_data.get('skill_sets', instance.skill_sets)
+        if skill_sets is not None:
+            if len(skill_sets) > 0:
+                instance.skill_sets.set(skill_sets)
+                logger.info("Set skill set with order.")
+
+        # Update task.
         if instance.state == ONGOING_WORK_ORDER_STATE.TERMINATED:
             for task_item in TaskItem.objects.filter(ongoing_job=instance, is_closed=False):
                 task_item.last_modified_by = self.context['last_modified_by']

@@ -176,7 +176,7 @@ class OngoingJobRetrieveForCommentsListAndCreateView(LoginRequiredMixin, GroupRe
 
 
 class OngoingJobUpdateView(LoginRequiredMixin, GroupRequiredMixin, WorkeryDetailView):
-    context_object_name = 'job'
+    context_object_name = 'ongoing_job'
     model = OngoingWorkOrder
     template_name = 'tenant_ongoing_order/update/view.html'
     menu_id = 'ongoing-jobs'
