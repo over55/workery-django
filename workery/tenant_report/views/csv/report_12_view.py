@@ -54,7 +54,7 @@ def report_12_streaming_csv_view(request):
     rows += (["", "","",],)
 
     # Generate the CSV header row.
-    rows += (["Skill set", "Service Fees Paid", "# of Jobs Completed"],)
+    rows += (["Category", "Sub-Category", "Service Fees Paid", "# of Jobs Completed"],)
 
     # Fetch all the skill-sets we have in the system.
     skill_sets = SkillSet.objects.all().order_by('category', 'sub_category')
@@ -75,7 +75,8 @@ def report_12_streaming_csv_view(request):
 
         # Generate the reason.
         rows += ([
-            str(skill_set),
+            str(skill_set.category),
+            str(skill_set.sub_category),
             str(total_paid_float),
             str(total_count),
         ],)
