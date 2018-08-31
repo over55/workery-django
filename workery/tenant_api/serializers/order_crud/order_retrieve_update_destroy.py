@@ -84,6 +84,7 @@ class WorkOrderRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
             'is_home_support_service',
             # 'created_by',
             # 'last_modified_by',
+            'frequency',
             'skill_sets',
             'description',
             'start_date',
@@ -135,6 +136,7 @@ class WorkOrderRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         """
         Override this function to include extra functionality.
         """
+        instance.frequency = validated_data.get('frequency', instance.frequency)
         instance.assignment_date = validated_data.get('assignment_date', instance.assignment_date)
         instance.associate = validated_data.get('associate', instance.associate)
         instance.completion_date = validated_data.get('completion_date', instance.completion_date)
@@ -145,7 +147,6 @@ class WorkOrderRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         instance.last_modified_from = self.context['last_modified_from']
         instance.last_modified_from_is_public = self.context['last_modified_from_is_public']
         instance.description = validated_data.get('description', instance.description)
-        skill_sets = validated_data.get('skill_sets', instance.skill_sets)
         instance.start_date = validated_data.get('start_date', instance.start_date)
         instance.follow_up_days_number = validated_data.get('follow_up_days_number', instance.follow_up_days_number)
         instance.state = validated_data.get('state', instance.state)
@@ -178,6 +179,7 @@ class WorkOrderRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         #-----------------------------
         # Set our `SkillSet` objects.
         #-----------------------------
+        skill_sets = validated_data.get('skill_sets', instance.skill_sets)
         if skill_sets is not None:
             if len(skill_sets) > 0:
                 instance.skill_sets.set(skill_sets)

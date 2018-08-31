@@ -20,7 +20,8 @@ from tenant_foundation.models import (
     ResourceCategory,
     ResourceItem,
     ONGOING_WORK_ORDER_STATE,
-    OngoingWorkOrder
+    OngoingWorkOrder,
+    WorkOrderServiceFee
 )
 
 
@@ -195,6 +196,10 @@ class OngoingJobUpdateView(LoginRequiredMixin, GroupRequiredMixin, WorkeryDetail
             from django.core.exceptions import PermissionDenied
             raise PermissionDenied(_('You entered wrong format.'))
         modified_context['template'] = template
+
+        # Set our dependencies
+        modified_context['skillsets'] = SkillSet.objects.all().order_by('sub_category')
+        modified_context['servicefees'] = WorkOrderServiceFee.objects.all()
 
         # Return our modified context.
         return modified_context
