@@ -152,14 +152,15 @@ def report_02_streaming_csv_view(request):
         would_customer_refer_our_organization = '-'
         score = '-'
 
-        if job.state == WORK_ORDER_STATE.COMPLETED_AND_PAID or job.state == WORK_ORDER_STATE.COMPLETED_BUT_UNPAID:
-            was_survey_conducted = 1 if job.was_survey_conducted else 0
-            was_job_satisfactory = 1 if job.was_job_satisfactory else 0
-            was_job_finished_on_time_and_on_budget = 1 if job.was_job_finished_on_time_and_on_budget else 0
-            was_associate_punctual = 1 if job.was_associate_punctual else 0
-            was_associate_professional = 1 if job.was_associate_professional else 0
-            would_customer_refer_our_organization = 1 if job.would_customer_refer_our_organization else 0
-            score = job.score
+        if job.was_survey_conducted:
+            if job.state == WORK_ORDER_STATE.COMPLETED_AND_PAID or job.state == WORK_ORDER_STATE.COMPLETED_BUT_UNPAID:
+                was_survey_conducted = 1 if job.was_survey_conducted else 0
+                was_job_satisfactory = 1 if job.was_job_satisfactory else 0
+                was_job_finished_on_time_and_on_budget = 1 if job.was_job_finished_on_time_and_on_budget else 0
+                was_associate_punctual = 1 if job.was_associate_punctual else 0
+                was_associate_professional = 1 if job.was_associate_professional else 0
+                would_customer_refer_our_organization = 1 if job.would_customer_refer_our_organization else 0
+                score = job.score
 
         # Generate the row.
         rows += ([
