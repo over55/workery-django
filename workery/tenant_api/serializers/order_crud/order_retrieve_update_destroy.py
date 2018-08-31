@@ -88,7 +88,6 @@ class WorkOrderRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
             'skill_sets',
             'description',
             'start_date',
-            'follow_up_days_number',
             'invoice_service_fee',
             'invoice_service_fee_payment_date',
             'invoice_date',
@@ -148,7 +147,6 @@ class WorkOrderRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         instance.last_modified_from_is_public = self.context['last_modified_from_is_public']
         instance.description = validated_data.get('description', instance.description)
         instance.start_date = validated_data.get('start_date', instance.start_date)
-        instance.follow_up_days_number = validated_data.get('follow_up_days_number', instance.follow_up_days_number)
         instance.state = validated_data.get('state', instance.state)
 
         # Financial information.

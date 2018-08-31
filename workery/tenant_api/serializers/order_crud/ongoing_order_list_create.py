@@ -91,7 +91,6 @@ class OngoingWorkOrderCreateSerializer(serializers.ModelSerializer):
         created_by = self.context['created_by']
         description = validated_data.get('description', None)
         start_date = validated_data.get('start_date', timezone.now())
-        follow_up_days_number = validated_data.get('follow_up_days_number', 0)
         state = validated_data.get('state', ONGOING_WORK_ORDER_STATE.RUNNING)
         frequency = validated_data.get('frequency', None)
 

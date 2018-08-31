@@ -17,10 +17,8 @@
         // STEP 1 - Fetch the values we've saved in localStorage.
         var tmp_job_type = localStorage.getItem("tmp_job_type");
         var tmp_home_support = localStorage.getItem("tmp_home_support");
-        var tmp_follow_up_days_number = localStorage.getItem("tmp_follow_up_days_number");
         console.log(tmp_job_type);
         console.log(tmp_home_support);
-        console.log(tmp_follow_up_days_number);
 
         // STEP 2 - Update the GUI with our saved values.
         $("input[name=job-type][value=" + tmp_job_type + "]").prop('checked', true);
@@ -29,10 +27,9 @@
         // STEP 3 - Show or hide the follow up days depending on previous seleciton
         //          made by the user.
         if (tmp_job_type == 'Ongoing') {
-            $('#id_follow_up_div').show();
-            $('#start_date').val(tmp_follow_up_days_number);
+            // $('#').show();
         } else {
-            $('#id_follow_up_div').hide();
+            // $('#').hide();
         }
 
         // STEP 4 - Attach event handlers to update the GUI on whether an
@@ -56,7 +53,6 @@
 
         // STEP 6 -
         $('#start_date').val(localStorage.getItem("tmp_start_date"));
-        $('#follow_up_days_number').val(localStorage.getItem("tmp_follow_up_days_number"));
 
 
     }); // end START DOCUMENT
@@ -66,19 +62,16 @@
         var tmp_job_type = $('input[name=job-type]:checked').val();
         var tmp_home_support = $('input[name=home-support]:checked').val();
         var tmp_start_date = $('#start_date').val();
-        var tmp_follow_up_days_number = $('#follow_up_days_number').val();
 
         // For debugging purposes only.
         console.log(tmp_job_type);
         console.log(tmp_home_support);
         console.log(tmp_start_date);
-        console.log(tmp_follow_up_days_number);
 
         // Save to local storage.
         localStorage.setItem("tmp_job_type", tmp_job_type);
         localStorage.setItem("tmp_home_support", tmp_home_support);
         localStorage.setItem("tmp_start_date", tmp_start_date);
-        localStorage.setItem("tmp_follow_up_days_number", tmp_follow_up_days_number);
 
 	    // STEP 2: CLEAR EXISTING ERROR TEXT.
         $('#all_error_result').html("");
@@ -86,31 +79,26 @@
 
         // Redirect to the next page in the form.
         if (tmp_job_type !== undefined && tmp_home_support !== undefined) {
-	    if (tmp_job_type == 'Ongoing' && tmp_follow_up_days_number == undefined) {
-        $('#all_error_result').append("<div class='form-error'><b>Follow Up: </b> This field may not be blank.</div>");
-		$('#all_error_result').addClass('error-block');
-		$('#follow_up_days_number-error').html("<ul><li>This field may not be blank.</li></ul>");
-		$('#residential-job').addClass('was-validated');
-           } else {
-           	 window.location = "{% url 'workery_tenant_job_step_3_create' %}";
-           }
+	        if (tmp_job_type == 'Ongoing') {
+          	    window.location = "{% url 'workery_tenant_job_step_3_create' %}";
+            }
         } else {
-		if (tmp_job_type == undefined) {
-			// Errors box code
-			$('#all_error_result').append("<div class='form-error'><b>Job Type:</b> Please pick one choice. </div>");
-			$('#all_error_result').addClass('error-block');
-			// Inline fields errors code
-			$('#job-type-error').html("<ul><li>Please pick one choice.</li></ul>");
-			$('#residential-job').addClass('was-validated');
-		}
-		if (tmp_home_support == undefined) {
-			// Errors box code
-			$('#all_error_result').append("<div class='form-error'><b>Is Home Support:</b> Please pick either 'Yes' or 'No' choice. </div>");
-			$('#all_error_result').addClass('error-block');
-			// Inline fields errors code
-			$('#home-support-error').html("<ul><li>Please pick either 'Yes' or 'No' choice.</li></ul>");
-			$('#residential-job').addClass('was-validated');
-		}
+            if (tmp_job_type == undefined) {
+    			// Errors box code
+    			$('#all_error_result').append("<div class='form-error'><b>Job Type:</b> Please pick one choice. </div>");
+    			$('#all_error_result').addClass('error-block');
+    			// Inline fields errors code
+    			$('#job-type-error').html("<ul><li>Please pick one choice.</li></ul>");
+    			$('#residential-job').addClass('was-validated');
+    		}
+    		if (tmp_home_support == undefined) {
+    			// Errors box code
+    			$('#all_error_result').append("<div class='form-error'><b>Is Home Support:</b> Please pick either 'Yes' or 'No' choice. </div>");
+    			$('#all_error_result').addClass('error-block');
+    			// Inline fields errors code
+    			$('#home-support-error').html("<ul><li>Please pick either 'Yes' or 'No' choice.</li></ul>");
+    			$('#residential-job').addClass('was-validated');
+    		}
             // alert("Please select all the options!");
         }
     } // end FUNC.
@@ -206,19 +194,6 @@
                 </div>
             </div>
             <!-- end IS ONGOING OR NOT -->
-
-            <!-- FOLLOW UP -->
-            <div class="form-group col-md-8 mb-4 p-0" id="id_follow_up_div">
-                <label for="follow_up_days_number">Follow Up</label>
-                <select class="custom-select form-control-lg border-success" id="follow_up_days_number" name="follow_up_days_number" required>
-                    <option value="" selected>Follow up in...</option>
-                    <option value="7">1 Week</option>
-                    <option value="14">2 Weeks</option>
-                    <option value="prefer not to say">3 Weeks</option>
-                </select>
-                <div id="follow_up_days_number-error" class="invalid-feedback"></div>
-            </div>
-            <!-- end FOLLOW UP -->
 
             <div class="form-group my-3 pt-2">
                 <p class="mb-1 font-b6">Is this job a home support service?</p>
