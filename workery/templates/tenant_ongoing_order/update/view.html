@@ -196,9 +196,6 @@
                     <select class="custom-select form-control-lg border-success" id="frequency" name="frequency" required>
                         <option value="" selected>Please select...</option>
                         <option value="never" {% if ongoing_job.frequency == 'never' %}selected="true"{% endif %}>Never</option>
-                        <option value="daily" {% if ongoing_job.frequency == 'daily' %}selected="true"{% endif %}>Daily</option>
-                        <option value="weekly" {% if ongoing_job.frequency == 'weekly' %}selected="true"{% endif %}>Weekly</option>
-                        <option value="bi_weekly" {% if ongoing_job.frequency == 'bi_weekly' %}selected="true"{% endif %}>Bi-weekly</option>
                         <option value="monthly" {% if ongoing_job.frequency == 'monthly' %}selected="true"{% endif %}>Monthly</option>
                         <option value="quarterly" {% if ongoing_job.frequency == 'quarterly' %}selected="true"{% endif %}>Quarterly</option>
                         <option value="annually" {% if ongoing_job.frequency == 'annually' %}selected="true"{% endif %}>Annually</option>
