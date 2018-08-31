@@ -84,7 +84,6 @@ class WorkOrderRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
             'is_home_support_service',
             # 'created_by',
             # 'last_modified_by',
-            'frequency',
             'skill_sets',
             'description',
             'start_date',
@@ -135,7 +134,6 @@ class WorkOrderRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         """
         Override this function to include extra functionality.
         """
-        instance.frequency = validated_data.get('frequency', instance.frequency)
         instance.assignment_date = validated_data.get('assignment_date', instance.assignment_date)
         instance.associate = validated_data.get('associate', instance.associate)
         instance.completion_date = validated_data.get('completion_date', instance.completion_date)

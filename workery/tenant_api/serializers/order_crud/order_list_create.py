@@ -84,7 +84,7 @@ class WorkOrderListCreateSerializer(serializers.ModelSerializer):
             # 'last_modified_by',
             'skill_sets',
             'description',
-            'start_date',
+            'start_date'
         )
 
     def setup_eager_loading(cls, queryset):
