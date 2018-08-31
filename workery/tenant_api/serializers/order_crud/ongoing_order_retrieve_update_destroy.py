@@ -49,7 +49,7 @@ class OngoingWorkOrderRetrieveUpdateDestroySerializer(serializers.ModelSerialize
             'state',
             'skill_sets',
             'completion_date',
-            # 'hours',
+            'hours',
         )
 
     def setup_eager_loading(cls, queryset):
@@ -74,8 +74,7 @@ class OngoingWorkOrderRetrieveUpdateDestroySerializer(serializers.ModelSerialize
         instance.frequency = validated_data.get('frequency', instance.frequency)
         instance.state = validated_data.get('state', instance.state)
         instance.completion_date = validated_data.get('completion_date', instance.completion_date)
-        # hours = validated_data.get('hours', instance.hours)
-        # print("---", hours)
+        instance.hours = validated_data.get('hours', instance.hours)
 
         #-----------------------------
         # Set our `SkillSet` objects.

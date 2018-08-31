@@ -127,6 +127,15 @@ class OngoingWorkOrder(models.Model):
         blank=True,
         null=True
     )
+    hours = models.DecimalField(
+        _("Hours"),
+        help_text=_('The total amount of hours worked on for this ongoing order by the associate.'),
+        default=0,
+        max_digits=7,
+        decimal_places=1,
+        blank=True,
+        null=True
+    )
     description = models.TextField(
         _("Description"),
         help_text=_('A description of this ongoing order.'),
