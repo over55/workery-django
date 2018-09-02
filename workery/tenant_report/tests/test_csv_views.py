@@ -181,31 +181,33 @@ class TestTenantCSVReportViews(TenantTestCase):
         url += url_parameter
         response = self.auth_c.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-    #
-    # def test_report_5_csv_page(self):
-    #     response = self.auth_c.get(self.tenant.reverse('workery_tenant_report_05_download_csv_file_api_endpoint'))
-    #     self.assertEqual(response.status_code, status.HTTP_200_OK)
-    #     self.assertIn('Reports', str(response.content))
-    #     self.assertIn('Associate Insurance Report', str(response.content))
-    #
-    # def test_report_6_csv_page(self):
-    #     response = self.auth_c.get(self.tenant.reverse('workery_tenant_report_06_download_csv_file_api_endpoint'))
-    #     self.assertEqual(response.status_code, status.HTTP_200_OK)
-    #     self.assertIn('Reports', str(response.content))
-    #     self.assertIn('Associate Police Check Due Date Report', str(response.content))
-    #
-    # def test_report_7_csv_page(self):
-    #     response = self.auth_c.get(self.tenant.reverse('workery_tenant_report_07_download_csv_file_api_endpoint'))
-    #     self.assertEqual(response.status_code, status.HTTP_200_OK)
-    #     self.assertIn('Reports', str(response.content))
-    #     self.assertIn('Associate Birthdays Report', str(response.content))
-    #
-    # def test_report_8_csv_page(self):
-    #     response = self.auth_c.get(self.tenant.reverse('workery_tenant_report_08_download_csv_file_api_endpoint'))
-    #     self.assertEqual(response.status_code, status.HTTP_200_OK)
-    #     self.assertIn('Reports', str(response.content))
-    #     self.assertIn('Associate Skill Sets Report', str(response.content))
-    #
+
+    def test_report_5_csv_page(self):
+        url = self.tenant.reverse('workery_tenant_report_05_download_csv_file_api_endpoint')
+        response = self.auth_c.get(url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_report_6_csv_page(self):
+        url = self.tenant.reverse('workery_tenant_report_06_download_csv_file_api_endpoint')
+        response = self.auth_c.get(url)
+        response = self.auth_c.get(url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_report_7_csv_page(self):
+        url_parameter = "?filter_type=all"
+        url = self.tenant.reverse('workery_tenant_report_07_download_csv_file_api_endpoint')
+        url += url_parameter
+        response = self.auth_c.get(url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_report_8_csv_page(self):
+        asssociate = Associate.objects.get()
+        url_parameter = "?associate_id="+str(asssociate.id)
+        url = self.tenant.reverse('workery_tenant_report_08_download_csv_file_api_endpoint')
+        url += url_parameter
+        response = self.auth_c.get(url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
     # def test_report_9_csv_page(self):
     #     response = self.auth_c.get(self.tenant.reverse('workery_tenant_report_09_download_csv_file_api_endpoint'))
     #     self.assertEqual(response.status_code, status.HTTP_200_OK)
