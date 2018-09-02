@@ -93,9 +93,18 @@ def report_09_streaming_csv_view(request):
         telephone_type_of = tele_type_of_choices[customer.telephone_type_of]
         other_telephone_type_of = tele_type_of_choices[customer.other_telephone_type_of]
 
+        # Create our full_name.
+        full_name = ""
+        if customer.last_name and customer.given_name is None:
+            full_name = customer.last_name
+        elif customer.last_name and customer.given_name:
+            full_name = customer.last_name+", "+customer.given_name
+        elif customer.last_name is None and customer.given_name:
+            full_name = customer.given_name
+
         rows += ([
             customer.id,
-            customer.last_name+", "+customer.given_name,
+            full_name,
             customer_type_of,
             customer.get_pretty_status(),
             customer.is_ok_to_email,
