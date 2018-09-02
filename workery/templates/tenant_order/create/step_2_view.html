@@ -89,7 +89,7 @@
 
         // Redirect to the next page in the form.
         if (tmp_job_type !== undefined && tmp_home_support !== undefined) {
-            if (tmp_job_type == 'Ongoing') {
+            if (tmp_job_type == 'Ongoing' || tmp_job_type == 'One-time') {
                 window.location = "{% url 'workery_tenant_job_step_3_create' %}";
             }
         } else {
