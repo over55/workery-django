@@ -161,7 +161,7 @@ class Command(BaseCommand):
         connection.set_schema(franchise.schema_name, True) # Switch to Tenant.
 
         # # Create `Manager` or `Frontline Staff`.
-        Staff.objects.create(
+        staff_1 = Staff.objects.create(
             owner=user1,
             telephone="1234567890",
             telephone_extension="",
@@ -174,7 +174,7 @@ class Command(BaseCommand):
             street_address="100 Big Walk Way Street",
             street_address_extra="",
         )
-        Staff.objects.create(
+        staff_2 = Staff.objects.create(
             owner=user2,
             telephone="1112223333",
             telephone_extension="",
@@ -187,7 +187,7 @@ class Command(BaseCommand):
             street_address="1 Long Peace Street Street",
             street_address_extra="",
         )
-        Staff.objects.create(
+        staff_3 = Staff.objects.create(
             owner=user3,
             telephone="1002003000",
             telephone_extension="",
@@ -201,7 +201,7 @@ class Command(BaseCommand):
             street_address_extra="",
         )
 
-        Associate.objects.create(
+        associate_1 = Associate.objects.create(
             owner=user4,
             telephone="1102203300",
             telephone_extension="",
@@ -215,7 +215,7 @@ class Command(BaseCommand):
             street_address_extra="",
         )
 
-        Customer.objects.create(
+        customer_1 = Customer.objects.create(
             owner=user5,
             telephone="1112223330",
             telephone_extension="",
@@ -229,7 +229,7 @@ class Command(BaseCommand):
             street_address_extra="",
         )
 
-        Partner.objects.create(
+        partner_1 = Partner.objects.create(
             owner=user6,
             telephone="9112223330",
             telephone_extension="",
@@ -242,3 +242,11 @@ class Command(BaseCommand):
             street_address="101 Cheep Street",
             street_address_extra="",
         )
+        worker_1 = WorkOrder.objects.create(
+            customer=customer_1,
+            associate=associate_1,
+            assignment_date=timezone.now(),
+            created_by=user2,
+            last_modified_by=None
+        )
+        # self.order.tags.set([self.tag])
