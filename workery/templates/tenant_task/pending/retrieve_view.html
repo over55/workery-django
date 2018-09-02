@@ -130,9 +130,7 @@
                     <th scope="row" class="bg-light">Last Modified By</th>
                     <td id="selected_comment_id" target="_blank">
                         {% if task_item.last_modified_by %}
-                            <a href="{% url 'workery_tenant_team_retrieve_from_user_id_redirect' 'summary' task_item.last_modified_by.id %}">
-                                {{ task_item.last_modified_by.get_full_name }}&nbsp;<i class="fas fa-external-link-alt"></i>
-                            </a>
+                            {{ task_item.last_modified_by.get_full_name }}
                         {% else %}
                             -
                         {% endif %}

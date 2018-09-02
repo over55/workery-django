@@ -91,12 +91,3 @@ class StaffRetrieveForCommentsListAndCreateView(LoginRequiredMixin, GroupRequire
 
         # Return our modified context.
         return modified_context
-
-
-def staff_redirect_from_user_id_to_staff_id(request, template, pk):
-    from django.urls import reverse
-    staff = Staff.objects.filter(owner__id=pk).first()
-    if staff:
-        return HttpResponseRedirect(reverse('workery_tenant_team_retrieve', args=[template, pk]))
-    else:
-        return HttpResponseBadRequest(_('Cannot find user id.'))
