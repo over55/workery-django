@@ -20,6 +20,7 @@ from tenant_foundation.models import (
     Comment,
     Customer,
     Organization,
+    OngoingWorkOrder,
     WorkOrder,
     WorkOrderComment,
     Staff,
@@ -250,3 +251,10 @@ class Command(BaseCommand):
             last_modified_by=None
         )
         # self.order.tags.set([self.tag])
+        ongoing_worker_1 = OngoingWorkOrder.objects.create(
+            customer=customer_1,
+            associate=associate_1,
+            assignment_date=timezone.now(),
+            created_by=user2,
+            last_modified_by=None
+        )

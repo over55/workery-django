@@ -1,0 +1,1 @@
+default_app_config = 'tenant_ongoing_order_operation.apps.TenantOngoingOrderOperationConfig'
