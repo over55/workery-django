@@ -32,30 +32,3 @@ class HelpCategoryListView(LoginRequiredMixin, GroupRequiredMixin, WorkeryListVi
         constants.MANAGEMENT_GROUP_ID,
         constants.FRONTLINE_GROUP_ID
     ]
-
-
-class HelpCategoryRetrieveView(LoginRequiredMixin, GroupRequiredMixin, WorkeryDetailView):
-    context_object_name = 'resource_category'
-    model = ResourceCategory
-    template_name = 'tenant_help/category_retrieve.html'
-    menu_id = "resource"
-    group_required = [
-        constants.EXECUTIVE_GROUP_ID,
-        constants.MANAGEMENT_GROUP_ID,
-        constants.FRONTLINE_GROUP_ID
-    ]
-
-
-class HelpItemRetrieveView(LoginRequiredMixin, GroupRequiredMixin, WorkeryDetailView):
-    context_object_name = 'resource_item'
-    model = ResourceItem
-    template_name = 'tenant_help/item_retrieve.html'
-    menu_id = "resource"
-    group_required = [
-        constants.EXECUTIVE_GROUP_ID,
-        constants.MANAGEMENT_GROUP_ID,
-        constants.FRONTLINE_GROUP_ID
-    ]
-
-    def query_pk_and_slug(self, pk, slug):
-        return "3"
