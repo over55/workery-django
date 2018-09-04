@@ -138,3 +138,52 @@ class TestTenantOngoingOrderOperationViews(TenantTestCase):
         a_url += "?return_id=lite-retrieve"
         response = self.auth_c.get(a_url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_ongoing_job_creation_wizard_operation_page(self):
+        ongoing_work = OngoingWorkOrder.objects.get()
+        a_url = self.tenant.reverse(
+            reverse_id='workery_tenant_ongoing_job_creation_wizard_operation',
+            reverse_args=[
+                int(ongoing_work.id)
+            ]
+        )
+        a_url += "?return_id=lite-retrieve"
+        response = self.auth_c.get(a_url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_ongoing_job_follow_up_operation_page(self):
+        ongoing_work = OngoingWorkOrder.objects.get()
+        a_url = self.tenant.reverse(
+            reverse_id='workery_tenant_ongoing_job_follow_up_operation',
+            reverse_args=[
+                int(ongoing_work.id)
+            ]
+        )
+        a_url += "?return_id=lite-retrieve"
+        response = self.auth_c.get(a_url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_ongoing_job_completion_survey_operation_page(self):
+        ongoing_work = OngoingWorkOrder.objects.get()
+        a_url = self.tenant.reverse(
+            reverse_id='workery_tenant_ongoing_job_completion_survey_operation',
+            reverse_args=[
+                int(ongoing_work.id)
+            ]
+        )
+        a_url += "?return_id=lite-retrieve"
+        response = self.auth_c.get(a_url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+
+    def test_ongoing_job_postpone_operation_page(self):
+        ongoing_work = OngoingWorkOrder.objects.get()
+        a_url = self.tenant.reverse(
+            reverse_id='workery_tenant_ongoing_job_postpone_operation',
+            reverse_args=[
+                int(ongoing_work.id)
+            ]
+        )
+        a_url += "?return_id=lite-retrieve"
+        response = self.auth_c.get(a_url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
