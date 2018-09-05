@@ -96,80 +96,80 @@ class TestSharedAuthWebViews(TenantTestCase):
         )
         self.assertEqual(response.status_code, status.HTTP_302_FOUND)
 
-    # def test_send_reset_password_email_master_page(self):
-    #     response = self.anon_c.get(reverse('workery_send_reset_password_email_master'))
-    #     self.assertEqual(response.status_code, status.HTTP_200_OK)
-    #
-    # def test_send_reset_password_email_submitted_page(self):
-    #     response = self.anon_c.get(reverse('workery_send_reset_password_email_submitted'))
-    #     self.assertEqual(response.status_code, status.HTTP_200_OK)
-    #
-    # def test_rest_password_master_page_with_success(self):
-    #     me = SharedUser.objects.get(email=TEST_USER_EMAIL)
-    #     url = reverse('workery_reset_password_master', args=[me.pr_access_code])
-    #     response = self.anon_c.get(url)
-    #     self.assertEqual(response.status_code, status.HTTP_200_OK)
-    #
-    # def test_rest_password_master_page_with_bad_pr_access_code(self):
-    #     me = SharedUser.objects.get(email=TEST_USER_EMAIL)
-    #     url = reverse('workery_reset_password_master', args=['some-bad-pr-access-code'])
-    #     response = self.anon_c.get(url)
-    #     self.assertEqual(response.status_code, status.HTTP_302_FOUND)
-    #
-    # def test_rest_password_master_page_with_expired_pr_access_code(self):
-    #     # Get the user profile.
-    #     me = SharedUser.objects.get(email=TEST_USER_EMAIL)
-    #
-    #     # Set the expiry date to be old!
-    #     today = timezone.now()
-    #     today_minus_1_year = today - timedelta(minutes=1)
-    #     me.pr_expiry_date = today_minus_1_year
-    #     me.save()
-    #
-    #     # Run our test...
-    #     url = reverse('workery_reset_password_master', args=[me.pr_access_code])
-    #     response = self.anon_c.get(url)
-    #
-    #     # Verify the results.
-    #     self.assertEqual(response.status_code, status.HTTP_302_FOUND)
-    #
-    # def test_user_activation_detail_page_with_success(self):
-    #     me = SharedUser.objects.get(email=TEST_USER_EMAIL)
-    #     url = reverse('workery_user_activation_detail', args=[me.pr_access_code])
-    #     response = self.anon_c.get(url)
-    #     self.assertEqual(response.status_code, status.HTTP_200_OK)
-    #
-    # def test_rest_user_activation_detail_page_with_bad_pr_access_code(self):
-    #     me = SharedUser.objects.get(email=TEST_USER_EMAIL)
-    #     url = reverse('workery_user_activation_detail', args=['some-bad-pr-access-code'])
-    #     response = self.anon_c.get(url)
-    #     self.assertNotEqual(response.status_code, status.HTTP_200_OK)
-    #
-    # def test_rest_user_activation_detail_page_with_expired_pr_access_code(self):
-    #     # Get the user profile.
-    #     me = SharedUser.objects.get(email=TEST_USER_EMAIL)
-    #
-    #     # Set the expiry date to be old!
-    #     today = timezone.now()
-    #     today_minus_1_year = today - timedelta(minutes=1)
-    #     me.pr_expiry_date = today_minus_1_year
-    #     me.save()
-    #
-    #     # Run our test...
-    #     url = reverse('workery_user_activation_detail', args=[me.pr_access_code])
-    #     response = self.anon_c.get(url)
-    #
-    #     # Verify the results.
-    #     self.assertNotEqual(response.status_code, status.HTTP_200_OK)
-    #
-    # def test_user_logout_redirector_master_page_with_redirect(self):
-    #     me = SharedUser.objects.get(email=TEST_USER_EMAIL)
-    #     url = reverse('workery_logout_redirector')
-    #     response = self.anon_c.get(url)
-    #     self.assertEqual(response.status_code, 302)
-    #
-    # def test_user_logout_redirector_master_page_with_success(self):
-    #     me = SharedUser.objects.get(email=TEST_USER_EMAIL)
-    #     url = reverse('workery_logout_redirector')
-    #     response = self.auth_c.get(url)
-    #     self.assertEqual(response.status_code, 302)
+    def test_send_reset_password_email_master_page(self):
+        response = self.anon_c.get(reverse('workery_send_reset_password_email_master'))
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_send_reset_password_email_submitted_page(self):
+        response = self.anon_c.get(reverse('workery_send_reset_password_email_submitted'))
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_rest_password_master_page_with_success(self):
+        me = SharedUser.objects.get(email=TEST_USER_EMAIL)
+        url = reverse('workery_reset_password_master', args=[me.pr_access_code])
+        response = self.anon_c.get(url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_rest_password_master_page_with_bad_pr_access_code(self):
+        me = SharedUser.objects.get(email=TEST_USER_EMAIL)
+        url = reverse('workery_reset_password_master', args=['some-bad-pr-access-code'])
+        response = self.anon_c.get(url)
+        self.assertEqual(response.status_code, status.HTTP_302_FOUND)
+
+    def test_rest_password_master_page_with_expired_pr_access_code(self):
+        # Get the user profile.
+        me = SharedUser.objects.get(email=TEST_USER_EMAIL)
+
+        # Set the expiry date to be old!
+        today = timezone.now()
+        today_minus_1_year = today - timedelta(minutes=1)
+        me.pr_expiry_date = today_minus_1_year
+        me.save()
+
+        # Run our test...
+        url = reverse('workery_reset_password_master', args=[me.pr_access_code])
+        response = self.anon_c.get(url)
+
+        # Verify the results.
+        self.assertEqual(response.status_code, status.HTTP_302_FOUND)
+
+    def test_user_activation_detail_page_with_success(self):
+        me = SharedUser.objects.get(email=TEST_USER_EMAIL)
+        url = reverse('workery_user_activation_detail', args=[me.pr_access_code])
+        response = self.anon_c.get(url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_rest_user_activation_detail_page_with_bad_pr_access_code(self):
+        me = SharedUser.objects.get(email=TEST_USER_EMAIL)
+        url = reverse('workery_user_activation_detail', args=['some-bad-pr-access-code'])
+        response = self.anon_c.get(url)
+        self.assertNotEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_rest_user_activation_detail_page_with_expired_pr_access_code(self):
+        # Get the user profile.
+        me = SharedUser.objects.get(email=TEST_USER_EMAIL)
+
+        # Set the expiry date to be old!
+        today = timezone.now()
+        today_minus_1_year = today - timedelta(minutes=1)
+        me.pr_expiry_date = today_minus_1_year
+        me.save()
+
+        # Run our test...
+        url = reverse('workery_user_activation_detail', args=[me.pr_access_code])
+        response = self.anon_c.get(url)
+
+        # Verify the results.
+        self.assertNotEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_user_logout_redirector_master_page_with_redirect(self):
+        me = SharedUser.objects.get(email=TEST_USER_EMAIL)
+        url = reverse('workery_logout_redirector')
+        response = self.anon_c.get(url)
+        self.assertEqual(response.status_code, 302)
+
+    def test_user_logout_redirector_master_page_with_success(self):
+        me = SharedUser.objects.get(email=TEST_USER_EMAIL)
+        url = reverse('workery_logout_redirector')
+        response = self.auth_c.get(url)
+        self.assertEqual(response.status_code, 302)
