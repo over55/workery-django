@@ -142,7 +142,7 @@ class TestTenantTeamViews(TenantTestCase):
         self.assertIn('Staff Search', str(response.content))
         self.assertIn(TEST_USER_EMAIL, str(response.content))
 
-    def test_lite_retrieve_page(self):
+    def test_lite_retrieve_page_with_200(self):
         staff = Staff.objects.get()
         a_url = self.tenant.reverse(reverse_id='workery_tenant_team_lite_retrieve', reverse_args=['summary', int(staff.id)])
         response = self.auth_c.get(a_url)
@@ -150,7 +150,13 @@ class TestTenantTeamViews(TenantTestCase):
         self.assertIn('Staff', str(response.content))
         self.assertIn(TEST_USER_EMAIL, str(response.content))
 
-    def test_full_retrieve_page(self):
+    def test_lite_retrieve_page_with_400(self):
+        staff = Staff.objects.get()
+        a_url = self.tenant.reverse(reverse_id='workery_tenant_team_lite_retrieve', reverse_args=['la-la-la-la-la', int(staff.id)])
+        response = self.auth_c.get(a_url)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_full_retrieve_page_with_200(self):
         staff = Staff.objects.get()
         a_url = self.tenant.reverse(reverse_id='workery_tenant_team_full_retrieve', reverse_args=['summary', int(staff.id)])
         response = self.auth_c.get(a_url)
@@ -158,7 +164,13 @@ class TestTenantTeamViews(TenantTestCase):
         self.assertIn('Staff', str(response.content))
         self.assertIn(TEST_USER_EMAIL, str(response.content))
 
-    def test_comments_retrieve_page(self):
+    def test_full_retrieve_page_with_400(self):
+        staff = Staff.objects.get()
+        a_url = self.tenant.reverse(reverse_id='workery_tenant_team_full_retrieve', reverse_args=['la-la-la-la-la', int(staff.id)])
+        response = self.auth_c.get(a_url)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_comments_retrieve_page_with_200(self):
         staff = Staff.objects.get()
         a_url = self.tenant.reverse(reverse_id='workery_tenant_team_retrieve_for_comment_list_and_create', reverse_args=['summary', int(staff.id)])
         response = self.auth_c.get(a_url)
@@ -166,10 +178,22 @@ class TestTenantTeamViews(TenantTestCase):
         self.assertIn('Staff', str(response.content))
         self.assertIn('Add Comment/Note', str(response.content))
 
-    def test_uodate_page(self):
+    def test_comment_list_and_create_page_with_400(self):
+        staff = Staff.objects.get()
+        a_url = self.tenant.reverse(reverse_id='workery_tenant_team_retrieve_for_comment_list_and_create', reverse_args=['la-la-la-la-la', int(staff.id)])
+        response = self.auth_c.get(a_url)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_uodate_page_with_200(self):
         staff = Staff.objects.get()
         a_url = self.tenant.reverse(reverse_id='workery_tenant_team_update', reverse_args=['summary', int(staff.id)])
         response = self.auth_c.get(a_url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertIn('Staff', str(response.content))
         self.assertIn('Edit Staff Member', str(response.content))
+
+    def test_update_page_with_400(self):
+        staff = Staff.objects.get()
+        a_url = self.tenant.reverse(reverse_id='workery_tenant_team_update', reverse_args=['la-la-la-la-la', int(staff.id)])
+        response = self.auth_c.get(a_url)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)

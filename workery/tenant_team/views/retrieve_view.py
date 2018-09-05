@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.exceptions import PermissionDenied
 from django.http import HttpResponseBadRequest, HttpResponseRedirect
 from django.utils.decorators import method_decorator
 from django.utils.translation import ugettext_lazy as _
@@ -33,7 +34,6 @@ class StaffLiteRetrieveView(LoginRequiredMixin, GroupRequiredMixin, WorkeryDetai
         # Validate the template selected.
         template = self.kwargs['template']
         if template not in ['search', 'summary', 'list']:
-            from django.core.exceptions import PermissionDenied
             raise PermissionDenied(_('You entered wrong format.'))
         modified_context['template'] = template
 
@@ -59,7 +59,6 @@ class StaffFullRetrieveView(LoginRequiredMixin, GroupRequiredMixin, WorkeryDetai
         # Validate the template selected.
         template = self.kwargs['template']
         if template not in ['search', 'summary', 'list']:
-            from django.core.exceptions import PermissionDenied
             raise PermissionDenied(_('You entered wrong format.'))
         modified_context['template'] = template
 
@@ -85,7 +84,6 @@ class StaffRetrieveForCommentsListAndCreateView(LoginRequiredMixin, GroupRequire
         # Validate the template selected.
         template = self.kwargs['template']
         if template not in ['search', 'summary', 'list']:
-            from django.core.exceptions import PermissionDenied
             raise PermissionDenied(_('You entered wrong format.'))
         modified_context['template'] = template
 
