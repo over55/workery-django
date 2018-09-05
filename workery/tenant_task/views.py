@@ -174,17 +174,20 @@ class PendingTaskRetrieveForActivitySheetView(LoginRequiredMixin, GroupRequiredM
         # (d) If an Associate has an active Announcement attached to them,
         #     they should be uneligible for a job.
         skill_set_pks = None
-        if task_item.ongoing_job:
-            skill_set_pks = task_item.ongoing_job.skill_sets.values_list('pk', flat=True)
-        else:
-            skill_set_pks = task_item.job.skill_sets.values_list('pk', flat=True)
+        try:
+            if task_item.ongoing_job:
+                skill_set_pks = task_item.ongoing_job.skill_sets.values_list('pk', flat=True)
+            else:
+                skill_set_pks = task_item.job.skill_sets.values_list('pk', flat=True)
 
-        available_associates = Associate.objects.filter(
-           Q(skill_sets__in=skill_set_pks) &
-           ~Q(id__in=activity_sheet_associate_pks) &
-           Q(owner__is_active=True) &
-           Q(away_log__isnull=True)
-        ).distinct()
+            available_associates = Associate.objects.filter(
+               Q(skill_sets__in=skill_set_pks) &
+               ~Q(id__in=activity_sheet_associate_pks) &
+               Q(owner__is_active=True) &
+               Q(away_log__isnull=True)
+            ).distinct()
+        except Exception as e:
+            available_associates = None
         modified_context['available_associates_list'] = available_associates
 
         # STEP 3 - Fetch all the activity sheets we already have

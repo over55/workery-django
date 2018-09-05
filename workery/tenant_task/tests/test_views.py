@@ -154,15 +154,12 @@ class TestTenantTeamViews(TenantTestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertIn('Task', str(response.content))
 
-    # def test_pending_task_retrieve_2_page(self):
-    #     """
-    #     TODO: UNIT TEST - FIX
-    #     """
-    #     obj = TaskItem.objects.get()
-    #     a_url = self.tenant.reverse(reverse_id='workery_tenant_pending_task_retrieve_for_activity_sheet_retrieve', reverse_args=[int(obj.id)])
-    #     response = self.auth_c.get(a_url)
-    #     self.assertEqual(response.status_code, status.HTTP_200_OK)
-    #     self.assertIn('Task', str(response.content))
+    def test_pending_task_retrieve_2_page(self):
+        obj = TaskItem.objects.get()
+        a_url = self.tenant.reverse(reverse_id='workery_tenant_pending_task_retrieve_for_activity_sheet_retrieve', reverse_args=[int(obj.id)])
+        response = self.auth_c.get(a_url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertIn('Task', str(response.content))
 
     def test_pending_task_retrieve_3_page(self):
         obj = TaskItem.objects.get()
