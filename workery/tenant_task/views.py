@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from datetime import date, datetime, timedelta
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.exceptions import PermissionDenied
 from django.db.models import Q
 from django.http import Http404
 from django.utils.decorators import method_decorator
@@ -129,7 +130,6 @@ class PendingTaskRetrieveView(LoginRequiredMixin, GroupRequiredMixin, WorkeryDet
         # Defensive Code - Prevent access to detail if already closed.
         task_item = modified_context['task_item']
         if task_item.is_closed:
-            print(task_item)
             raise Http404("Task was already closed!")
 
         # Return our modified context.
@@ -224,7 +224,6 @@ class PendingTaskRetrieveForActivitySheetAndAssignAssociateCreateView(LoginRequi
         # Defensive Code - Prevent access to detail if already closed.
         task_item = modified_context['task_item']
         if task_item.is_closed:
-            print(task_item)
             raise Http404("Task was already closed!")
 
         # Return our modified context.
@@ -251,7 +250,6 @@ class PendingTaskRetrieveAndCompleteCreateView(LoginRequiredMixin, GroupRequired
         # Defensive Code - Prevent access to detail if already closed.
         task_item = modified_context['task_item']
         if task_item.is_closed:
-            print(task_item)
             raise Http404("Task was already closed!")
 
         # Return our modified context.
@@ -370,7 +368,6 @@ class TaskSearchResultView(LoginRequiredMixin, GroupRequiredMixin, WorkeryListVi
         # Validate the template selected.
         template = self.kwargs['template']
         if template not in ['pending',]:
-            from django.core.exceptions import PermissionDenied
             raise PermissionDenied(_('You entered wrong format.'))
         modified_context['template'] = template
 

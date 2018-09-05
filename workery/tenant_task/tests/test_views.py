@@ -64,39 +64,26 @@ class TestTenantTeamViews(TenantTestCase):
         # Setup our app and account.
         call_command('init_app', verbosity=0)
         call_command('populate_tenant_content', TEST_SCHEMA_NAME, verbosity=0)
-
-        # Create the account.
-        call_command(
-           'create_tenant_account',
-           TEST_SCHEMA_NAME,
-           MANAGEMENT_GROUP_ID,
-           TEST_USER_EMAIL,
-           TEST_USER_PASSWORD,
-           "Bart",
-           "Mika",
-           TEST_USER_TEL_NUM,
-           TEST_USER_TEL_EX_NUM,
-           TEST_USER_CELL_NUM,
-           "CA",
-           "London",
-           "Ontario",
-           "", # Post Offic #
-           "N6H 1B4",
-           "78 Riverside Drive",
-           "", # Extra line.
-           verbosity=0
-        )
+        call_command('populate_tenant_sample_db', TEST_SCHEMA_NAME, verbosity=0)
 
         # Get user and credentials.
-        user = SharedUser.objects.get()
+        user = SharedUser.objects.get(email="bart+executive@workery.ca")
+        user2 = SharedUser.objects.get(email="fherbert@workery.ca")
         token, orig_iat = get_jwt_token_and_orig_iat(user)
+        token2, orig_iat2 = get_jwt_token_and_orig_iat(user2)
 
         # Setup our clients.
         self.anon_c = TenantClient(self.tenant)
-        self.auth_c = TenantClient(self.tenant, HTTP_AUTHORIZATION='JWT {0}'.format(token))
-        self.auth_c.login(
-            username=TEST_USER_USERNAME,
-            password=TEST_USER_PASSWORD
+        self.exec_auth_c = TenantClient(self.tenant, HTTP_AUTHORIZATION='JWT {0}'.format(token))
+        self.exec_auth_c.login(
+            username = "bart+executive@workery.ca",
+            password = "123P@$$w0rd"
+        )
+
+        self.frontline_auth_c = TenantClient(self.tenant, HTTP_AUTHORIZATION='JWT {0}'.format(token2))
+        self.frontline_auth_c.login(
+            username = "fherbert@workery.ca",
+            password = "123P@$$w0rd"
         )
 
         TaskItem.objects.update_or_create(
@@ -127,74 +114,123 @@ class TestTenantTeamViews(TenantTestCase):
 
         # Delete our clients.
         del self.anon_c
-        del self.auth_c
+        del self.exec_auth_c
+        del self.frontline_auth_c
 
         # Finish teardown.
         super(TestTenantTeamViews, self).tearDown()
 
-    def test_unassigned_task_list_page(self):
-        response = self.auth_c.get(self.tenant.reverse('workery_tenant_unassigned_task_list'))
+    def test_unassigned_task_list_page_with_executive_staff(self):
+        response = self.exec_auth_c.get(self.tenant.reverse('workery_tenant_unassigned_task_list'))
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertIn('Unassigned Tasks', str(response.content))
 
-    def test_pending_task_list_page(self):
-        response = self.auth_c.get(self.tenant.reverse('workery_tenant_task_list'))
+    def test_unassigned_task_list_page_with_frontline_staff(self):
+        response = self.frontline_auth_c.get(self.tenant.reverse('workery_tenant_unassigned_task_list'))
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_pending_task_list_page_with_executive_staff(self):
+        response = self.exec_auth_c.get(self.tenant.reverse('workery_tenant_task_list'))
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertIn('Pending Tasks', str(response.content))
 
-    def test_closed_task_list_page(self):
-        response = self.auth_c.get(self.tenant.reverse('workery_tenant_closed_task_list'))
+    def test_pending_task_list_page_with_frontline_staff(self):
+        response = self.frontline_auth_c.get(self.tenant.reverse('workery_tenant_task_list'))
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_closed_task_list_page_with_executive_staff(self):
+        response = self.exec_auth_c.get(self.tenant.reverse('workery_tenant_closed_task_list'))
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertIn('Closed Tasks', str(response.content))
 
-    def test_pending_task_retrieve_page(self):
+    def test_closed_task_list_page_with_frontline_staff(self):
+        response = self.frontline_auth_c.get(self.tenant.reverse('workery_tenant_closed_task_list'))
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_pending_task_retrieve_page_with_open_task(self):
         obj = TaskItem.objects.get()
         a_url = self.tenant.reverse(reverse_id='workery_tenant_pending_task_retrieve', reverse_args=[int(obj.id)])
-        response = self.auth_c.get(a_url)
+        response = self.exec_auth_c.get(a_url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertIn('Task', str(response.content))
+
+    def test_pending_task_retrieve_page_with_closed_task(self):
+        obj = TaskItem.objects.get()
+        obj.is_closed = True
+        obj.save()
+        a_url = self.tenant.reverse(reverse_id='workery_tenant_pending_task_retrieve', reverse_args=[int(obj.id)])
+        response = self.exec_auth_c.get(a_url)
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
     def test_pending_task_retrieve_2_page(self):
         obj = TaskItem.objects.get()
         a_url = self.tenant.reverse(reverse_id='workery_tenant_pending_task_retrieve_for_activity_sheet_retrieve', reverse_args=[int(obj.id)])
-        response = self.auth_c.get(a_url)
+        response = self.exec_auth_c.get(a_url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertIn('Task', str(response.content))
+
+    def test_pending_task_retrieve_2_page_with_closed_task(self):
+        obj = TaskItem.objects.get()
+        obj.is_closed = True
+        obj.save()
+        a_url = self.tenant.reverse(reverse_id='workery_tenant_pending_task_retrieve_for_activity_sheet_retrieve', reverse_args=[int(obj.id)])
+        response = self.exec_auth_c.get(a_url)
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
     def test_pending_task_retrieve_3_page(self):
         obj = TaskItem.objects.get()
         a_url = self.tenant.reverse(reverse_id='workery_tenant_pending_task_retrieve_for_activity_sheet_retrieve_and_create', reverse_args=[int(obj.id)])
-        response = self.auth_c.get(a_url)
+        response = self.exec_auth_c.get(a_url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertIn('Task', str(response.content))
+
+    def test_pending_task_retrieve_3_page_with_closed_task(self):
+        obj = TaskItem.objects.get()
+        obj.is_closed = True
+        obj.save()
+        a_url = self.tenant.reverse(reverse_id='workery_tenant_pending_task_retrieve_for_activity_sheet_retrieve_and_create', reverse_args=[int(obj.id)])
+        response = self.exec_auth_c.get(a_url)
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
     def test_pending_task_retrieve_4_page(self):
         obj = TaskItem.objects.get()
         a_url = self.tenant.reverse(reverse_id='workery_tenant_pending_task_retrieve_for_activity_sheet_follow_up_with_associate_retrieve', reverse_args=[int(obj.id)])
-        response = self.auth_c.get(a_url)
+        response = self.exec_auth_c.get(a_url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertIn('Task', str(response.content))
 
     def test_pending_task_retrieve_and_complete_page(self):
         obj = TaskItem.objects.get()
         a_url = self.tenant.reverse(reverse_id='workery_tenant_pending_task_retrieve_and_complete_create', reverse_args=[int(obj.id)])
-        response = self.auth_c.get(a_url)
+        response = self.exec_auth_c.get(a_url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertIn('Task', str(response.content))
+
+    def test_pending_task_retrieve_and_complete_page_with_closed_task(self):
+        obj = TaskItem.objects.get()
+        obj.is_closed = True
+        obj.save()
+        a_url = self.tenant.reverse(reverse_id='workery_tenant_pending_task_retrieve_and_complete_create', reverse_args=[int(obj.id)])
+        response = self.exec_auth_c.get(a_url)
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
     def test_pending_task_retrieve_and_ongoing_update_page(self):
         obj = TaskItem.objects.get()
         a_url = self.tenant.reverse(reverse_id='workery_tenant_pending_task_retrieve_and_ongoing_update_create', reverse_args=[int(obj.id)])
-        response = self.auth_c.get(a_url)
+        response = self.exec_auth_c.get(a_url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertIn('Task', str(response.content))
 
     def test_search_page(self):
-        response = self.auth_c.get(self.tenant.reverse('workery_tenant_task_search', ['pending']))
+        response = self.exec_auth_c.get(self.tenant.reverse('workery_tenant_task_search', ['pending']))
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertIn('Search', str(response.content))
 
     def test_search_confirmation_page(self):
-        response = self.auth_c.get(self.tenant.reverse('workery_tenant_task_search_results', ['pending'])+'?keyword='+TEST_USER_EMAIL)
+        response = self.exec_auth_c.get(self.tenant.reverse('workery_tenant_task_search_results', ['pending'])+'?keyword='+TEST_USER_EMAIL)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertIn('Search', str(response.content))
+
+    def test_search_confirmation_page_with_wrong_template(self):
+        response = self.exec_auth_c.get(self.tenant.reverse('workery_tenant_task_search_results', ['la-la-la-la-la'])+'?keyword='+TEST_USER_EMAIL)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
