@@ -98,6 +98,7 @@ class OngoingWorkOrderCreationWizardOperationSerializer(serializers.Serializer):
             score = True,
             invoice_id = 0,
             description = ongoing_job.description,
+            ongoing_work_order = ongoing_job
         )
 
         # Update our ongoing job to have our closed tasks.

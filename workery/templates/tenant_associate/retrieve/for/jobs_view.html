@@ -113,7 +113,7 @@
         {% else %}
                 <a class="dropdown-item" href="?job_state=all" class="text-center">All</a>
         {% endif %}
-	
+
 	{% if parameters.job_state == "declined" %}
                 <strong class="px-4 py-2">Declined</strong>
         {% else %}
@@ -148,7 +148,7 @@
                 <strong class="px-4 py-2">Completed and Paid</strong>
             {% else %}
                 <a class="dropdown-item" href="?job_state=completed_and_paid" class="text-center">Completed and Paid</a>
-            {% endif %}	    	
+            {% endif %}
 		  </div>
 		</div>
         </div>
@@ -168,6 +168,7 @@
                         <tr>
                             <th></th>
                             <th>{% trans 'ID #' %}</th>
+                            <th>{% trans 'Ongoing ID #' %}&nbsp;<i class="fas fa-external-link-alt"></i></th>
                             <th>{% trans 'Client' %}&nbsp;<i class="fas fa-external-link-alt"></i></th>
                             <th>{% trans 'Assigned Date' %}</th>
                             <th>{% trans 'Completion Date' %}</th>
@@ -186,8 +187,18 @@
                                 {% else %}
                                     <i class="fa fa-question fa-lg"></i>
                                 {% endif %}
+                                {% if job.is_ongoing %}<i class="fa fa-redo fa-lg"></i>{% endif %}
                             </td>
-                            <td>{{ job.id|intcomma }}</td>
+                            <td>
+                                {{ job.id|intcomma }}
+                            </td>
+                            <td>
+                                {% if job.ongoing_work_order %}
+                                    <a href="{% url 'workery_tenant_ongoing_job_lite_retrieve' 'summary' job.ongoing_work_order.id %}" target="_blank">{{ job.ongoing_work_order }}</a>
+                                {% else %}
+                                    -
+                                {% endif %}
+                            </td>
                             <td>
                                 {% if job.customer %}
                                     <a href="{% url 'workery_tenant_customer_lite_retrieve' 'summary' job.customer.id %}" target="_blank">{{ job.customer }}</a>
