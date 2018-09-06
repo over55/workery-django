@@ -142,11 +142,7 @@ class CompletedWorkOrderCancelOperationSerializer(serializers.Serializer):
         #----------------------------------------#
         # Lookup our Task(s) and close them all. #
         #----------------------------------------#
-        task_items = TaskItem.objects.filter(
-            job=job,
-            is_closed=False
-        )
-        for task_item in task_items.all():
+        for task_item in TaskItem.objects.filter(job=job,is_closed=False):
             logger.info("Found task # #%(id)s ." % {
                 'id': str(task_item.id)
             })

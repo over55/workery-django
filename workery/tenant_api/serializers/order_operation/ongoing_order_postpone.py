@@ -119,39 +119,44 @@ class OngoingWorkOrderPostponeOperationSerializer(serializers.Serializer):
         #------------------------#
         # Close the current task #
         #------------------------#
-        task_item = TaskItem.objects.filter(
-            ongoing_job=ongoing_job,
-            is_closed=False
-        ).order_by('due_date').first()
+        title_text_copy = None
+        description_text_copy = None
 
-        # For debugging purposes only.
-        logger.info("Found task #%(id)s." % {
-            'id': str(task_item.id)
-        })
+        # Lookup `task_item`.
+        for task_item in TaskItem.objects.filter(ongoing_job=ongoing_job, is_closed=False).order_by('due_date'):
+            # For debugging purposes only.
+            logger.info("Found task #%(id)s." % {
+                'id': str(task_item.id)
+            })
 
-        # Update our TaskItem.
-        task_item.is_closed = True
-        task_item.was_postponed = True
-        task_item.closing_reason = reason
-        task_item.closing_reason_other = reason_other
-        task_item.last_modified_by = self.context['user']
-        task_item.created_from = self.context['from']
-        task_item.created_from_is_public = self.context['from_is_public']
-        task_item.last_modified_by = self.context['user']
-        task_item.save()
+            if title_text_copy is None:
+                title_text_copy = task_item.title
+            if description_text_copy is None:
+                description_text_copy = task_item.description
 
-        # For debugging purposes only.
-        logger.info("Task #%(id)s was closed b/c of postponement." % {
-            'id': str(task_item.id)
-        })
+            # Update our TaskItem.
+            task_item.is_closed = True
+            task_item.was_postponed = True
+            task_item.closing_reason = reason
+            task_item.closing_reason_other = reason_other
+            task_item.last_modified_by = self.context['user']
+            task_item.created_from = self.context['from']
+            task_item.created_from_is_public = self.context['from_is_public']
+            task_item.last_modified_by = self.context['user']
+            task_item.save()
+
+            # For debugging purposes only.
+            logger.info("Task #%(id)s was closed b/c of postponement." % {
+                'id': str(task_item.id)
+            })
 
         #---------------------------------------------#
         # Create a new task based on a new start date #
         #---------------------------------------------#
         next_task_item = TaskItem.objects.create(
             type_of = task_item.type_of,
-            title = task_item.title,
-            description = task_item.description,
+            title = title_text_copy,
+            description = description_text_copy,
             due_date = start_date,
             is_closed = False,
             was_postponed = False,

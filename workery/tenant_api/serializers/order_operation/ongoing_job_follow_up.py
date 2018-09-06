@@ -101,6 +101,22 @@ class OngoingWorkerOrderFollowUpOperationSerializer(serializers.Serializer):
                 comment = comment_obj,
             )
 
+        #---------------------------#
+        # Close all previous tasks. #
+        #---------------------------#
+        for task_item in TaskItem.objects.filter(ongoing_job=ongoing_job, is_closed=False):
+            logger.info("Found task # #%(id)s ." % {
+                'id': str(task_item.id)
+            })
+            task_item.is_closed = True
+            task_item.closing_reason = 0
+            task_item.closing_reason_other = _('Closed because follow up was completed.')
+            task_item.last_modified_by = self.context['user']
+            task_item.save()
+
+        #------------------------#
+        # Update the ongoing job #
+        #------------------------#
         if has_agreed_to_meet:
 
             # Rational: We want to ask the customer 24 hours AFTER the client meeting data.

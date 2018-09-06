@@ -89,13 +89,13 @@ class CompletedWorkOrderUnassignOperationSerializer(serializers.Serializer):
         #---------------------------#
         # Close all previous tasks. #
         #---------------------------#
-        if job.latest_pending_task:
-            job.latest_pending_task.is_closed = True
-            job.latest_pending_task.closing_reason = 0
-            job.latest_pending_task.closing_reason_other = _('Closed because job was unassigned.')
-            job.latest_pending_task.created_by = self.context['user']
-            job.latest_pending_task.last_modified_by = self.context['user']
-            job.latest_pending_task.save()
+        for task_item in TaskItem.objects.filter(job=job, is_closed=False):
+            task_item.is_closed = True
+            task_item.closing_reason = 0
+            task_item.closing_reason_other = _('Closed because job was unassigned.')
+            task_item.created_by = self.context['user']
+            task_item.last_modified_by = self.context['user']
+            task_item.save()
 
         #---------------------------------------------#
         # Create a new task based on a new start date #
