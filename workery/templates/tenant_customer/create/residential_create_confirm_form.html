@@ -154,8 +154,18 @@
                 localStorage.removeItem("tmp_residential_customer_how_hear")
                 localStorage.removeItem("tmp_residential_customer_how_hear_other")
 
-                // REDIRECT TO SUCCESS PAGE.
-                window.location = redirect_url;
+                /////////////////////////////////////
+                // Get our pending task unique ID. //
+                /////////////////////////////////////
+                console.log(result_dict);
+                var customer_id = parseInt(result_dict['id']);
+
+                ////////////////////////////////////////////
+                // Redirect to the next page in the form. //
+                ////////////////////////////////////////////
+                var temp_url = "{% url 'workery_tenant_customer_lite_retrieve' 'summary' 0 %}?was_created=True";
+                var temp_url = temp_url.replace(0, customer_id);
+                window.location = temp_url;
             },
             function(xhr,status,error) { // Error
                 // STEP 1: Convert to JSON.
