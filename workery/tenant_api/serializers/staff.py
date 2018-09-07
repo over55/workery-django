@@ -360,7 +360,8 @@ class StaffListCreateSerializer(serializers.ModelSerializer):
         # validated_data['comments'] = StaffComment.objects.filter(staff=staff)
         validated_data['created_by'] = self.context['created_by']
         validated_data['last_modified_by'] = self.context['created_by']
-        # validated_data['extra_comment'] = None
+        validated_data['extra_comment'] = None
+        validated_data['id'] = staff.id
 
         # Return our validated data.
         return validated_data
