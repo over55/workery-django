@@ -474,6 +474,7 @@ class PartnerListCreateSerializer(serializers.ModelSerializer):
         validated_data['created_by'] = self.context['created_by']
         validated_data['last_modified_by'] = self.context['created_by']
         # validated_data['extra_comment'] = None
+        validated_data['id'] = partner.id
 
         # Return our validated data.
         return validated_data
