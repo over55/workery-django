@@ -428,6 +428,7 @@ class AssociateListCreateSerializer(serializers.ModelSerializer):
         validated_data['created_by'] = self.context['created_by']
         validated_data['last_modified_by'] = self.context['created_by']
         validated_data['extra_comment'] = None
+        validated_data['id'] = associate.id
         # validated_data['assigned_skill_sets'] = associate.skill_sets.all()
 
         # Return our validated data.
