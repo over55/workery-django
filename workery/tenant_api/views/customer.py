@@ -29,7 +29,7 @@ class CustomerListCreateAPIView(generics.ListCreateAPIView):
         CanListCreateCustomerPermission
     )
     filter_backends = (filters.SearchFilter, DjangoFilterBackend)
-    search_fields = ('@given_name', '@middle_name', '@last_name', '@email', 'telephone',)
+    # search_fields = ('@given_name', '@middle_name', '@last_name', '@email', 'telephone',)
 
     def get_queryset(self):
         """

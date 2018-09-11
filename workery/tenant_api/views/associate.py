@@ -31,7 +31,7 @@ class AssociateListCreateAPIView(generics.ListCreateAPIView):
         CanListCreateAssociatePermission
     )
     filter_backends = (filters.SearchFilter, DjangoFilterBackend)
-    search_fields = ('@given_name', '@middle_name', '@last_name', '@email', 'telephone', '@wsib_number')
+    # search_fields = ('@given_name', '@middle_name', '@last_name', '@email', 'telephone', '@wsib_number')
 
     @transaction.atomic
     def get_queryset(self):

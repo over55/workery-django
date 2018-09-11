@@ -6,6 +6,11 @@ from django.db import models
 
 
 class SkillSetFilter(django_filters.FilterSet):
+    def keyword_filtering(self, queryset, name, value):
+        return SkillSet.objects.partial_text_search(value)
+
+    search = django_filters.CharFilter(method='keyword_filtering')
+
     id = django_filters.AllValuesMultipleFilter(
         name="id",
         label="ID",)
@@ -21,6 +26,7 @@ class SkillSetFilter(django_filters.FilterSet):
     class Meta:
         model = SkillSet
         fields = [
+            'search',
             'id',
             'category',
             'sub_category',

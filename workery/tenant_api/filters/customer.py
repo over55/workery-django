@@ -6,10 +6,17 @@ from django.db import models
 
 
 class CustomerFilter(django_filters.FilterSet):
+
+    def keyword_filtering(self, queryset, name, value):
+        return Customer.objects.partial_text_search(value)
+
+    search = django_filters.CharFilter(method='keyword_filtering')
+
     class Meta:
         model = Customer
         fields = [
             # 'organizations',
+            'search',
             'given_name',
             'middle_name',
             'last_name',
@@ -32,6 +39,12 @@ class CustomerFilter(django_filters.FilterSet):
             'telephone'
         ]
         filter_overrides = {
+            models.CharField: { # given_name
+                'filter_class': django_filters.CharFilter,
+                'extra': lambda f: {
+                    'lookup_expr': 'icontains',
+                },
+            },
             models.CharField: { # given_name
                 'filter_class': django_filters.CharFilter,
                 'extra': lambda f: {
