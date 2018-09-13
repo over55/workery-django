@@ -97,6 +97,7 @@ class WorkOrderRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
             'invoice_tax_amount',
             'invoice_total_amount',
             'invoice_service_fee_amount',
+            'invoice_actual_service_fee_amount_paid',
             'state'
         )
 
@@ -158,6 +159,7 @@ class WorkOrderRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         instance.invoice_tax_amount = validated_data.get('invoice_tax_amount', instance.invoice_tax_amount)
         instance.invoice_total_amount = validated_data.get('invoice_total_amount', instance.invoice_total_amount)
         instance.invoice_service_fee_amount = validated_data.get('invoice_service_fee_amount', instance.invoice_service_fee_amount)
+        instance.invoice_actual_service_fee_amount_paid = validated_data.get('invoice_actual_service_fee_amount_paid', instance.invoice_actual_service_fee_amount_paid)
 
         # Save the model.
         instance.save()

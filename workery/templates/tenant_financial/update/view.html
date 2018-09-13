@@ -127,6 +127,7 @@
         var invoice_tax_amount = $('#invoice_tax_amount').val();
         var invoice_total_amount = $('#invoice_total_amount').val();
         var invoice_service_fee_amount = $('#invoice_service_fee_amount').val();
+        var invoice_actual_service_fee_amount_paid = $('#invoice_actual_service_fee_amount_paid').val();
         var invoice_service_fee_payment_date = $('#invoice_service_fee_payment_date').val();
 
         // Get our service fee id.
@@ -157,6 +158,7 @@
         console.log("invoice_tax_amount", invoice_tax_amount);
         console.log("invoice_total_amount", invoice_total_amount);
         console.log("invoice_service_fee_amount", invoice_service_fee_amount);
+        console.log("invoice_actual_service_fee_amount_paid", invoice_actual_service_fee_amount_paid);
         console.log("invoice_service_fee_payment_date", invoice_service_fee_payment_date);
 
         // Attach customer
@@ -192,6 +194,7 @@
                 'invoice_total_amount': invoice_total_amount,
                 'invoice_service_fee_amount': invoice_service_fee_amount,
                 'invoice_service_fee': invoice_service_fee_id,
+                'invoice_actual_service_fee_amount_paid': invoice_actual_service_fee_amount_paid,
                 'invoice_service_fee_payment_date': invoice_service_fee_payment_date,
                 'state': payment_job_status
             },
@@ -384,7 +387,16 @@
                     <div class="form-group col-md-12 mb-4">
                         <label for="invoice_service_fee_amount">Service Fee</label>
                         <input type="number" class="form-control form-control-lg border border-success" id="invoice_service_fee_amount" name="invoice_service_fee_amount" placeholder="Service Fee" readonly value="{{ job_item.invoice_service_fee_amount.amount }}">
+                        <small class="form-text text-muted">The service fee amount owed by the associate.</small>
                         <div id="invoice_service_fee_amount-error" class="invalid-feedback"></div>
+                    </div>
+                    <!-- end Invoice Total -->
+                    <!-- Actual Service Fee Paid -->
+                    <div class="form-group col-md-12 mb-4">
+                        <label for="invoice_actual_service_fee_amount_paid">Actual Service Fee Paid</label>
+                        <input type="number" class="form-control form-control-lg border border-success" id="invoice_actual_service_fee_amount_paid" name="invoice_actual_service_fee_amount_paid" placeholder="Service Fee" value="{{ job_item.invoice_actual_service_fee_amount_paid.amount }}">
+                        <small class="form-text text-muted">Please fill in the actual service fee amount paid by the associate and received by your organization.</small>
+                        <div id="invoice_actual_service_fee_amount_paid-error" class="invalid-feedback"></div>
                     </div>
                     <!-- end Invoice Total -->
                     <!-- Service Fee Payment Date -->

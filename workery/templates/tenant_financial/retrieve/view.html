@@ -157,6 +157,12 @@
                         {% endif %}
                     </td>
                 </tr>
+                <tr>
+                    <th scope="row" class="bg-light">Actual Service Fee Paid</th>
+                    <td id="selected_invoice_actual_service_fee_amount_paid">
+                        {{ job_item.invoice_actual_service_fee_amount_paid }}
+                    </td>
+                </tr>
                 {% if job_item.state == WORK_ORDER_STATE.COMPLETED_BUT_UNPAID %}
                 <tr>
                     <th scope="row" class="bg-light">Available Operations</th>
