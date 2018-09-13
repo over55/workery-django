@@ -68,13 +68,13 @@ class SkillSet(models.Model):
 
     category = models.CharField(
         _("Category"),
-        max_length=31,
+        max_length=127,
         help_text=_('The category text of this skill set.'),
         db_index=True,
     )
     sub_category = models.CharField(
         _("Sub-Category"),
-        max_length=31,
+        max_length=127,
         help_text=_('The sub-category text of this skill set.'),
         db_index=True,
     )
