@@ -35,7 +35,10 @@ class MemberSummaryView(LoginRequiredMixin, GroupRequiredMixin, WorkeryListView)
             owner__is_active=True
         ).prefetch_related(
             'owner'
-        ).order_by('-id')
+        ).order_by(
+            'last_name',
+            'given_name',
+        )
         return queryset
 
 
@@ -57,7 +60,7 @@ class MemberListView(LoginRequiredMixin, GroupRequiredMixin, WorkeryListView):
 
     def get_queryset(self):
         queryset = Associate.objects.order_by(
+            'last_name',
             'given_name',
-            'last_name'
         ).prefetch_related('owner')
         return queryset

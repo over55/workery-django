@@ -28,7 +28,10 @@ class CustomerSummaryView(LoginRequiredMixin, GroupRequiredMixin, WorkeryListVie
     def get_queryset(self):
         queryset = Customer.objects.all().prefetch_related(
             'owner'
-        ).order_by('-id')
+        ).order_by(
+            'last_name',
+            'given_name',
+        )
         return queryset
 
 
@@ -47,8 +50,8 @@ class CustomerListView(LoginRequiredMixin, GroupRequiredMixin, WorkeryListView):
         queryset = Customer.objects.all().prefetch_related(
             'owner'
         ).order_by(
+            'last_name',
             'given_name',
-            'last_name'
         )
 
         # The following code will use the 'django-filter'

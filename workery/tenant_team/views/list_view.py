@@ -31,7 +31,12 @@ class TeamSummaryView(LoginRequiredMixin, GroupRequiredMixin, WorkeryListView):
     ]
 
     def get_queryset(self):
-        queryset = Staff.objects.filter(owner__is_active=True).order_by('-id').prefetch_related(
+        queryset = Staff.objects.filter(
+            owner__is_active=True
+        ).order_by(
+            'last_name',
+            'given_name',
+        ).prefetch_related(
             'owner',
         )
         return queryset
@@ -54,7 +59,10 @@ class TeamListView(LoginRequiredMixin, GroupRequiredMixin, WorkeryListView):
     ]
 
     def get_queryset(self):
-        queryset = Staff.objects.all().order_by('given_name', 'last_name')
+        queryset = Staff.objects.all().order_by(
+            'last_name',
+            'given_name',
+        )
 
         # The following code will use the 'django-filter'
         filter = StaffFilter(self.request.GET, queryset=queryset)

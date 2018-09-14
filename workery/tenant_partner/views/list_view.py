@@ -31,7 +31,12 @@ class PartnerSummaryView(LoginRequiredMixin, GroupRequiredMixin, WorkeryListView
     ]
 
     def get_queryset(self):
-        queryset = Partner.objects.filter(owner__is_active=True).order_by('-id').prefetch_related(
+        queryset = Partner.objects.filter(
+            owner__is_active=True
+        ).order_by(
+            'last_name',
+            'given_name',
+        ).prefetch_related(
             'owner',
         )
         return queryset
@@ -54,7 +59,10 @@ class PartnerListView(LoginRequiredMixin, GroupRequiredMixin, WorkeryListView):
     ]
 
     def get_queryset(self):
-        queryset = Partner.objects.order_by('given_name', 'last_name').prefetch_related(
+        queryset = Partner.objects.order_by(
+            'last_name',
+            'given_name',
+        ).prefetch_related(
             'owner',
         )
         return queryset
