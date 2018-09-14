@@ -103,9 +103,11 @@ def report_01_streaming_csv_view(request):
         "Job Completion Date",
         "Job No.",
         "Service Fee",
+        "Actual Service Fee Paid",
         "Job Labour",
         "Job Type",
         "Job Status",
+        "Service Fee Date Paid",
         "Client No.",
         "Client Name",
         "Skill Set(s)"],)
@@ -126,6 +128,8 @@ def report_01_streaming_csv_view(request):
         # Format service fee.
         invoice_service_fee_amount = str(job.invoice_service_fee_amount)
         invoice_service_fee_amount = invoice_service_fee_amount.replace('C', '')
+        invoice_actual_service_fee_amount_paid = str(job.invoice_actual_service_fee_amount_paid)
+        invoice_actual_service_fee_amount_paid = invoice_actual_service_fee_amount_paid.replace('C', '')
 
         # Generate the row.
         rows += ([
@@ -135,9 +139,11 @@ def report_01_streaming_csv_view(request):
             pretty_dt_string(job.completion_date),
             job.id,
             invoice_service_fee_amount,
+            invoice_actual_service_fee_amount_paid,
             invoice_labour_amount,
             job_type,
             job.get_pretty_status(),
+            job.invoice_service_fee_payment_date,
             job.customer.id,
             str(job.customer),
             skill_set_string
