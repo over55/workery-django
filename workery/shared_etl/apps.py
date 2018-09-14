@@ -11,6 +11,10 @@ def run_update_ongoing_orders_func():
     call_command('update_ongoing_orders', verbosity=0)
 
 
+def run_update_away_logs_func():
+    call_command('update_away_logs', verbosity=0)
+
+
 class SharedEtlConfig(AppConfig):
     """
     Class initializes our extract transform and load (ETL) scripts on django the
@@ -38,6 +42,12 @@ class SharedEtlConfig(AppConfig):
         scheduler.cron(
             "0 0 1 * *",                             # A cron string - Run every 12:00AM on the first of every month
             func=run_update_ongoing_orders_func,     # Function to be queued
+            repeat=None,                             # Repeat this number of times (None means repeat forever)
+            timeout=timeout.seconds                  # Automatically terminate process if exceeds this time.
+        )
+        scheduler.cron(
+            "1 0 * * *",                             # A cron string - Run every 12:00AM every day.
+            func=run_update_away_logs_func,          # Function to be queued
             repeat=None,                             # Repeat this number of times (None means repeat forever)
             timeout=timeout.seconds                  # Automatically terminate process if exceeds this time.
         )

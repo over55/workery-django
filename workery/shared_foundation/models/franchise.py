@@ -97,6 +97,12 @@ class SharedFranchise(TenantMixin, AbstractSharedThing, AbstractSharedContactPoi
         except Exception as e:
             return aware_dt
 
+    def get_todays_date_plus_days(self, days=0):
+        """Returns the current date plus paramter number of days."""
+        utc_today = timezone.now()
+        utc_todays_date = utc_today + timedelta(days=days)
+        return self.to_tenant_dt(utc_todays_date)
+
 
 class SharedFranchiseDomain(DomainMixin):
     class Meta:
