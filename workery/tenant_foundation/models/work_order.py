@@ -383,6 +383,15 @@ class WorkOrder(models.Model):
         null=True,
         db_index=True
     )
+    invoice_balance_owing_amount = MoneyField(
+        _("Invoice Balance Owing Amount"),
+        help_text=_('The amount remaining to be paid by the associate for service fee for this job.'),
+        max_digits=10,
+        decimal_places=2,
+        default_currency=WORKERY_APP_DEFAULT_MONEY_CURRENCY,
+        default=Money(0,WORKERY_APP_DEFAULT_MONEY_CURRENCY),
+        blank=True,
+    )
 
     #
     #  ONGOING WORK ORDER

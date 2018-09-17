@@ -3,6 +3,8 @@ import csv
 import phonenumbers
 import pytz
 from datetime import date, datetime, timedelta
+from djmoney.money import Money
+from djmoney.models.fields import MoneyField
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.contrib.postgres.search import SearchVector, SearchVectorField
@@ -24,6 +26,7 @@ from starterkit.utils import (
     int_or_none,
     float_or_none
 )
+
 from shared_foundation.constants import *
 from shared_foundation.models import SharedUser
 from tenant_foundation.models import AbstractPerson
@@ -307,6 +310,15 @@ class Associate(AbstractPerson):
         on_delete=models.SET_NULL,
         blank=True,
         null=True,
+    )
+    balance_owing_amount = MoneyField(
+        _("Balance Owing Amount"),
+        help_text=_('The amount remaining to be paid by the associate for service fee for this job.'),
+        max_digits=10,
+        decimal_places=2,
+        default_currency=WORKERY_APP_DEFAULT_MONEY_CURRENCY,
+        default=Money(0,WORKERY_APP_DEFAULT_MONEY_CURRENCY),
+        blank=True,
     )
 
     #
