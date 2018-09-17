@@ -213,5 +213,15 @@ class WorkOrderRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         validated_data['extra_comment'] = None
         validated_data['assigned_skill_sets'] = instance.skill_sets.all()
 
+        #---------------------------------------------------------------------
+        # Update the `Associate` object for the `balance_owing_amount` field.
+        #---------------------------------------------------------------------
+        import django_rq
+        from shared_etl.tasks import update_balance_owing_amount_for_associates_func
+        django_rq.enqueue(update_balance_owing_amount_for_associates_func, {
+            'franchise_schema_name': self.context['franchise'].schema_name,
+            'associate_id': instance.id
+        })
+
         # Return our validated data.
         return validated_data
