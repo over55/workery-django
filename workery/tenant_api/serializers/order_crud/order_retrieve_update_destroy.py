@@ -216,12 +216,13 @@ class WorkOrderRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         #---------------------------------------------------------------------
         # Update the `Associate` object for the `balance_owing_amount` field.
         #---------------------------------------------------------------------
-        import django_rq
-        from shared_etl.tasks import update_balance_owing_amount_for_associates_func
-        django_rq.enqueue(update_balance_owing_amount_for_associates_func, {
-            'franchise_schema_name': self.context['franchise'].schema_name,
-            'associate_id': instance.id
-        })
+        if instance.associate:
+            import django_rq
+            from shared_etl.tasks import update_balance_owing_amount_for_associate_func
+            django_rq.enqueue(update_balance_owing_amount_for_associate_func, {
+                'franchise_schema_name': self.context['franchise'].schema_name,
+                'associate_id': instance.associate.id
+            })
 
         # Return our validated data.
         return validated_data

@@ -9,21 +9,12 @@ logger = logging.getLogger(__name__)
 
 
 @job
-def update_balance_owing_amount_for_associates_func(params):  #TODO: UNIT TEST
-    # alternate_name = validated_data.get('alternate_name', None) #TODO: Params
-
-    """
-    EXAMPLE:
-
-    params = {
-        'franchise_schema_name': 'comicscantina',
-        'associate_id': 123
-    }
-    """
-
+def update_balance_owing_amount_for_associate_func(params):  #TODO: UNIT TEST
+    franchise_schema_name = params.get('franchise_schema_name', None)
+    associate_id = params.get('associate_id', None)
     call_command(
-        'update_balance_owing_amount_for_associates',
-        # schema_name,
-        # name,
+        'update_balance_owing_amount_for_associate',
+        franchise_schema_name,
+        associate_id,
         verbosity=0
     )
