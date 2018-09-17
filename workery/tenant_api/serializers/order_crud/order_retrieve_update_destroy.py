@@ -161,11 +161,13 @@ class WorkOrderRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         instance.invoice_total_amount = validated_data.get('invoice_total_amount', instance.invoice_total_amount)
         instance.invoice_service_fee_amount = validated_data.get('invoice_service_fee_amount', instance.invoice_service_fee_amount)
         instance.invoice_actual_service_fee_amount_paid = validated_data.get('invoice_actual_service_fee_amount_paid', instance.invoice_actual_service_fee_amount_paid)
-        instance.invoice_balance_owing_amount = validated_data.get('invoice_balance_owing_amount', instance.invoice_balance_owing_amount)
-        
+        instance.invoice_balance_owing_amount = instance.invoice_service_fee_amount.amount - instance.invoice_actual_service_fee_amount_paid.amount
+
         # Save the model.
         instance.save()
         logger.info("Updated order object.")
+
+        #TODO: IMPLEMENT ASSOCIATE GLOBAL BALANCE OWING AMOUNT.
 
         #-----------------------------
         # Set our `Tags` objects.
