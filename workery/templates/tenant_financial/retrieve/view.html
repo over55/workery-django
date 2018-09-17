@@ -163,6 +163,12 @@
                         {{ job_item.invoice_actual_service_fee_amount_paid }}
                     </td>
                 </tr>
+                <tr>
+                    <th scope="row" class="bg-light">Account Balance</th>
+                    <td id="selected_invoice_actual_service_fee_amount_paid">
+                        {{ job_item.invoice_balance_owing_amount }}
+                    </td>
+                </tr>
                 {% if job_item.state == WORK_ORDER_STATE.COMPLETED_BUT_UNPAID %}
                 <tr>
                     <th scope="row" class="bg-light">Available Operations</th>
