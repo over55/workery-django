@@ -80,7 +80,12 @@
                     <th>{% trans 'Assignment Date' %}</th>
                     <th>{% trans 'Start Date' %}</th>
                     <th>{% trans 'Status' %}</th>
+                    {% if user_is_in_management %}
                     <th></th>
+                    <th></th>
+                    {% else %}
+                    <th></th>
+                    {% endif %}
                 </tr>
             </thead>
             <tbody>
@@ -148,9 +153,18 @@
                             {{ job.state }}
                         {% endif %}
                     </td>
+                    {% if user_is_in_management %}
+                    <td>
+                        <a href="{% url 'workery_tenant_job_retrieve' 'summary' job.id %}?page={{ page_obj.number }}"><i class="fa fa-id-card"></i></a>
+                    </td>
+                    <td>
+                        <a href="{% url 'workery_tenant_financlial_job_retrieve' 'all-jobs' job.id %}?page={{ page_obj.number }}"><i class="fa fa-dollar-sign"></i></a>
+                    </td>
+                    {% else %}
                     <td>
                         <a href="{% url 'workery_tenant_job_retrieve' 'summary' job.id %}?page={{ page_obj.number }}">{% trans 'View' %}&nbsp;<i class="fas fa-chevron-right"></i></a>
                     </td>
+                    {% endif %}
                 </tr>
                 {% empty %}
                 No jobs yet.

@@ -35,6 +35,17 @@ class JobSummaryView(LoginRequiredMixin, GroupRequiredMixin, WorkeryListView):
         constants.FRONTLINE_GROUP_ID
     ]
 
+    def get_context_data(self, **kwargs):
+        modified_context = super().get_context_data(**kwargs)
+
+        # Check user role permission.
+        modified_context['user_is_in_management'] = False
+        if self.request.user.is_executive() or self.request.user.is_management_staff():
+            modified_context['user_is_in_management'] = True
+
+        # Return our modified context.
+        return modified_context
+
 
 class JobListView(LoginRequiredMixin, GroupRequiredMixin, WorkeryListView):
     context_object_name = 'job_list'
@@ -61,6 +72,18 @@ class JobListView(LoginRequiredMixin, GroupRequiredMixin, WorkeryListView):
         )
         queryset = queryset.prefetch_related('customer', 'associate')
         return queryset
+
+
+    def get_context_data(self, **kwargs):
+        modified_context = super().get_context_data(**kwargs)
+
+        # Check user role permission.
+        modified_context['user_is_in_management'] = False
+        if self.request.user.is_executive() or self.request.user.is_management_staff():
+            modified_context['user_is_in_management'] = True
+
+        # Return our modified context.
+        return modified_context
 
 
 class ArchivedJobListView(LoginRequiredMixin, GroupRequiredMixin, WorkeryListView):
