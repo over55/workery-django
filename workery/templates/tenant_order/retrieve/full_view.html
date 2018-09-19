@@ -166,6 +166,12 @@
 				{% if job.associate %}<a href="{% url 'workery_tenant_member_lite_retrieve' template job.associate.id %}" target="_blank">{{ job.associate }}&nbsp;<i class="fas fa-external-link-alt"></i></a>{% else %}-{% endif %}
 			    </td>
 			</tr>
+            <tr>
+                <th scope="row" class="bg-light">Associate Phone Number {% if job.associate.telephone %}({% if job.associate.telephone_type_of == 1 %}Landline{% elif job.associate.telephone_type_of == 2 %}Mobile{% elif job.associate.telephone_type_of == 3 %}Work{% endif %}){% endif %}</th>
+                <td id="phone">
+                    {% if job.associate.telephone %}<a href="tel:{{ associate.telephone }}">{{ job.associate.telephone|pretty_formatted_phonenumber }}</a>{% else %}-{% endif %}
+                </td>
+            </tr>
 			<tr>
 			    <th scope="row" class="bg-light">Assignment Date</th>
 			    <td id="assignment_date">
