@@ -17,7 +17,7 @@ from shared_foundation.mixins import (
 )
 from tenant_api.filters.task_item import TaskItemFilter
 from tenant_foundation.constants import *
-from tenant_foundation.models import ActivitySheetItem, Associate, AwayLog, Customer, TaskItem
+from tenant_foundation.models import ActivitySheetItem, Associate, AwayLog, Customer, TaskItem, WORK_ORDER_STATE
 
 
 class PendingTaskListView(LoginRequiredMixin, GroupRequiredMixin, WorkeryListView):
@@ -51,6 +51,8 @@ class PendingTaskListView(LoginRequiredMixin, GroupRequiredMixin, WorkeryListVie
         # Filter out management staff restricted tasks from being loaded.
         if not self.request.user.is_executive() and not self.request.user.is_management_staff():
             queryset = queryset.exclude(type_of=UPDATE_ONGOING_JOB_TASK_ITEM_TYPE_OF_ID)
+            queryset = queryset.exclude(job__state=WORK_ORDER_STATE.COMPLETED_BUT_UNPAID)
+            queryset = queryset.exclude(job__state=WORK_ORDER_STATE.COMPLETED_AND_PAID)
 
         return queryset
 
