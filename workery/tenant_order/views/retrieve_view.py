@@ -55,22 +55,6 @@ class JobLiteRetrieveView(LoginRequiredMixin, GroupRequiredMixin, WorkeryDetailV
         # Return our modified context.
         return modified_context
 
-    def get(self, request, *args, **kwargs):
-        """
-        Function will redirect the page if the job was completed, or else
-        render the page as is if the job is not completed.
-        """
-        template = self.kwargs['template']
-        self.object = self.get_object()
-
-        if self.object.state == WORK_ORDER_STATE.COMPLETED_BUT_UNPAID:
-            return HttpResponseRedirect(reverse('workery_tenant_financlial_job_retrieve', args=['unpaid-jobs', self.object.id]))
-        if self.object.state == WORK_ORDER_STATE.COMPLETED_AND_PAID:
-            return HttpResponseRedirect(reverse('workery_tenant_financlial_job_retrieve', args=['paid-jobs', self.object.id]))
-
-        context = self.get_context_data(object=self.object)
-        return self.render_to_response(context)
-
 
 class JobFullRetrieveView(LoginRequiredMixin, GroupRequiredMixin, WorkeryDetailView):
     context_object_name = 'job'
@@ -96,22 +80,6 @@ class JobFullRetrieveView(LoginRequiredMixin, GroupRequiredMixin, WorkeryDetailV
 
         # Return our modified context.
         return modified_context
-
-    def get(self, request, *args, **kwargs):
-        """
-        Function will redirect the page if the job was completed, or else
-        render the page as is if the job is not completed.
-        """
-        template = self.kwargs['template']
-        self.object = self.get_object()
-
-        if self.object.state == WORK_ORDER_STATE.COMPLETED_BUT_UNPAID:
-            return HttpResponseRedirect(reverse('workery_tenant_financlial_job_retrieve', args=['unpaid-jobs', self.object.id]))
-        if self.object.state == WORK_ORDER_STATE.COMPLETED_AND_PAID:
-            return HttpResponseRedirect(reverse('workery_tenant_financlial_job_retrieve', args=['paid-jobs', self.object.id]))
-
-        context = self.get_context_data(object=self.object)
-        return self.render_to_response(context)
 
 
 class JobRetrieveForActivitySheetListView(LoginRequiredMixin, GroupRequiredMixin, WorkeryDetailView):
@@ -143,22 +111,6 @@ class JobRetrieveForActivitySheetListView(LoginRequiredMixin, GroupRequiredMixin
 
         # Return our modified context.
         return modified_context
-
-    def get(self, request, *args, **kwargs):
-        """
-        Function will redirect the page if the job was completed, or else
-        render the page as is if the job is not completed.
-        """
-        template = self.kwargs['template']
-        self.object = self.get_object()
-
-        if self.object.state == WORK_ORDER_STATE.COMPLETED_BUT_UNPAID:
-            return HttpResponseRedirect(reverse('workery_tenant_financlial_job_retrieve', args=['unpaid-jobs', self.object.id]))
-        if self.object.state == WORK_ORDER_STATE.COMPLETED_AND_PAID:
-            return HttpResponseRedirect(reverse('workery_tenant_financlial_job_retrieve', args=['paid-jobs', self.object.id]))
-
-        context = self.get_context_data(object=self.object)
-        return self.render_to_response(context)
 
 
 class JobRetrieveForTasksListView(LoginRequiredMixin, GroupRequiredMixin, WorkeryDetailView):
@@ -192,23 +144,6 @@ class JobRetrieveForTasksListView(LoginRequiredMixin, GroupRequiredMixin, Worker
         return modified_context
 
 
-    def get(self, request, *args, **kwargs):
-        """
-        Function will redirect the page if the job was completed, or else
-        render the page as is if the job is not completed.
-        """
-        template = self.kwargs['template']
-        self.object = self.get_object()
-
-        if self.object.state == WORK_ORDER_STATE.COMPLETED_BUT_UNPAID:
-            return HttpResponseRedirect(reverse('workery_tenant_financlial_job_retrieve', args=['unpaid-jobs', self.object.id]))
-        if self.object.state == WORK_ORDER_STATE.COMPLETED_AND_PAID:
-            return HttpResponseRedirect(reverse('workery_tenant_financlial_job_retrieve', args=['paid-jobs', self.object.id]))
-
-        context = self.get_context_data(object=self.object)
-        return self.render_to_response(context)
-
-
 class JobRetrieveForCommentsListAndCreateView(LoginRequiredMixin, GroupRequiredMixin, WorkeryDetailView):
     context_object_name = 'job'
     model = WorkOrder
@@ -233,22 +168,6 @@ class JobRetrieveForCommentsListAndCreateView(LoginRequiredMixin, GroupRequiredM
 
         # Return our modified context.
         return modified_context
-
-    def get(self, request, *args, **kwargs):
-        """
-        Function will redirect the page if the job was completed, or else
-        render the page as is if the job is not completed.
-        """
-        template = self.kwargs['template']
-        self.object = self.get_object()
-
-        if self.object.state == WORK_ORDER_STATE.COMPLETED_BUT_UNPAID:
-            return HttpResponseRedirect(reverse('workery_tenant_financlial_job_retrieve', args=['unpaid-jobs', self.object.id]))
-        if self.object.state == WORK_ORDER_STATE.COMPLETED_AND_PAID:
-            return HttpResponseRedirect(reverse('workery_tenant_financlial_job_retrieve', args=['paid-jobs', self.object.id]))
-
-        context = self.get_context_data(object=self.object)
-        return self.render_to_response(context)
 
 
 class JobRetrieveForCloseCreateView(LoginRequiredMixin, GroupRequiredMixin, WorkeryDetailView):
@@ -276,22 +195,6 @@ class JobRetrieveForCloseCreateView(LoginRequiredMixin, GroupRequiredMixin, Work
         # Return our modified context.
         return modified_context
 
-    def get(self, request, *args, **kwargs):
-        """
-        Function will redirect the page if the job was completed, or else
-        render the page as is if the job is not completed.
-        """
-        template = self.kwargs['template']
-        self.object = self.get_object()
-
-        if self.object.state == WORK_ORDER_STATE.COMPLETED_BUT_UNPAID:
-            return HttpResponseRedirect(reverse('workery_tenant_financlial_job_retrieve', args=['unpaid-jobs', self.object.id]))
-        if self.object.state == WORK_ORDER_STATE.COMPLETED_AND_PAID:
-            return HttpResponseRedirect(reverse('workery_tenant_financlial_job_retrieve', args=['paid-jobs', self.object.id]))
-
-        context = self.get_context_data(object=self.object)
-        return self.render_to_response(context)
-
 
 class JobRetrieveForPostponeCreateView(LoginRequiredMixin, GroupRequiredMixin, WorkeryDetailView):
     context_object_name = 'job'
@@ -317,22 +220,6 @@ class JobRetrieveForPostponeCreateView(LoginRequiredMixin, GroupRequiredMixin, W
 
         # Return our modified context.
         return modified_context
-
-    def get(self, request, *args, **kwargs):
-        """
-        Function will redirect the page if the job was completed, or else
-        render the page as is if the job is not completed.
-        """
-        template = self.kwargs['template']
-        self.object = self.get_object()
-
-        if self.object.state == WORK_ORDER_STATE.COMPLETED_BUT_UNPAID:
-            return HttpResponseRedirect(reverse('workery_tenant_financlial_job_retrieve', args=['unpaid-jobs', self.object.id]))
-        if self.object.state == WORK_ORDER_STATE.COMPLETED_AND_PAID:
-            return HttpResponseRedirect(reverse('workery_tenant_financlial_job_retrieve', args=['paid-jobs', self.object.id]))
-
-        context = self.get_context_data(object=self.object)
-        return self.render_to_response(context)
 
 
 class JobRetrieveForReopeningCreateView(LoginRequiredMixin, GroupRequiredMixin, WorkeryDetailView):
@@ -360,22 +247,6 @@ class JobRetrieveForReopeningCreateView(LoginRequiredMixin, GroupRequiredMixin, 
         # Return our modified context.
         return modified_context
 
-    def get(self, request, *args, **kwargs):
-        """
-        Function will redirect the page if the job was completed, or else
-        render the page as is if the job is not completed.
-        """
-        template = self.kwargs['template']
-        self.object = self.get_object()
-
-        if self.object.state == WORK_ORDER_STATE.COMPLETED_BUT_UNPAID:
-            return HttpResponseRedirect(reverse('workery_tenant_financlial_job_retrieve', args=['unpaid-jobs', self.object.id]))
-        if self.object.state == WORK_ORDER_STATE.COMPLETED_AND_PAID:
-            return HttpResponseRedirect(reverse('workery_tenant_financlial_job_retrieve', args=['paid-jobs', self.object.id]))
-
-        context = self.get_context_data(object=self.object)
-        return self.render_to_response(context)
-
 
 class ArchivedJobFullRetrieveView(LoginRequiredMixin, GroupRequiredMixin, WorkeryDetailView):
     context_object_name = 'job'
@@ -387,19 +258,3 @@ class ArchivedJobFullRetrieveView(LoginRequiredMixin, GroupRequiredMixin, Worker
         constants.MANAGEMENT_GROUP_ID,
         constants.FRONTLINE_GROUP_ID
     ]
-
-    def get(self, request, *args, **kwargs):
-        """
-        Function will redirect the page if the job was completed, or else
-        render the page as is if the job is not completed.
-        """
-        template = self.kwargs['template']
-        self.object = self.get_object()
-
-        if self.object.state == WORK_ORDER_STATE.COMPLETED_BUT_UNPAID:
-            return HttpResponseRedirect(reverse('workery_tenant_financlial_job_retrieve', args=['unpaid-jobs', self.object.id]))
-        if self.object.state == WORK_ORDER_STATE.COMPLETED_AND_PAID:
-            return HttpResponseRedirect(reverse('workery_tenant_financlial_job_retrieve', args=['paid-jobs', self.object.id]))
-
-        context = self.get_context_data(object=self.object)
-        return self.render_to_response(context)
