@@ -93,6 +93,7 @@
                     <th>{% trans 'Last Name' %}</th>
                     <th>{% trans 'Phone' %}</th>
                     <th>{% trans 'E-Mail' %}</th>
+                    <th>{% trans 'Role' %}</th>
                     <th></th>
                 </tr>
             </thead>
@@ -105,6 +106,13 @@
                         {% if staff.telephone %}<a href="tel:{{ staff.telephone }}">{{ staff.telephone|pretty_formatted_phonenumber }}</a>{% else %}-{% endif %}
                     </td>
                     <td>{% if staff.email %}<a href="mailto:{{ staff.email }}">{{ staff.email }}</a>{% else %}-{% endif %}</td>
+                    <td>
+                        {% if staff.owner %}
+                            {% for group in staff.owner.groups.all %}
+                                {{ group }}
+                            {% endfor %}
+                        {% else %}-{% endif %}
+                    </td>
                     <td>
                         <a href="{% url 'workery_tenant_team_lite_retrieve' 'summary' staff.id %}?page={{ page_obj.number }}">{% trans 'View' %}&nbsp;<i class="fas fa-chevron-right"></i></a>
                     </td>
