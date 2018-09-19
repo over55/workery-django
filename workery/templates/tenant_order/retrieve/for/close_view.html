@@ -738,11 +738,13 @@
                                             <option value="8">No Associate available</option>
                                             <option value="9">Work environment unsuitable</option>
                                             <option value="10">Client did not return call</option>
+                                            {% if job.associate %}
                                             <option value="11">Associate did not have necessary equipment</option>
                                             <option value="12">Repair not possible</option>
                                             <option value="13">Could not meet deadline</option>
                                             <option value="14">Associate did not call client</option>
                                             <option value="15">Member issue</option>
+                                            {% endif %}
                                             <option value="16">Client billing issue</option>
                                             <option value="other">Other</option>
                                         </select>
