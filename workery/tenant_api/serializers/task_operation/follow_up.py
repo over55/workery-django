@@ -137,7 +137,7 @@ class FollowUpTaskOperationSerializer(serializers.Serializer):
             task_item.job.latest_pending_task = next_task_item
 
             # Change state.
-            task_item.job.state = WORK_ORDER_STATE.COMPLETED_BUT_UNPAID
+            task_item.job.state = WORK_ORDER_STATE.IN_PROGRESS
 
             # Updated the start date to either right now or the agreed upon
             # date between associate and client.
