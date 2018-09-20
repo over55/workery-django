@@ -114,6 +114,9 @@ class CustomerRetrieveForJobsListView(LoginRequiredMixin, GroupRequiredMixin, Wo
             raise PermissionDenied(_('You entered wrong format.'))
         modified_context['template'] = template
 
+        # Added boolean to view based on whether user is in management.
+        modified_context['user_is_management_or_executive_staff'] = self.request.user.is_management_or_executive_staff()
+
         # Required for navigation
         modified_context['jobs'] = WorkOrder.objects.filter(
             customer = modified_context['customer']

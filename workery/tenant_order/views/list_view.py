@@ -38,10 +38,8 @@ class JobSummaryView(LoginRequiredMixin, GroupRequiredMixin, WorkeryListView):
     def get_context_data(self, **kwargs):
         modified_context = super().get_context_data(**kwargs)
 
-        # Check user role permission.
-        modified_context['user_is_in_management'] = False
-        if self.request.user.is_executive() or self.request.user.is_management_staff():
-            modified_context['user_is_in_management'] = True
+        # Added boolean to view based on whether user is in management.
+        modified_context['user_is_management_or_executive_staff'] = self.request.user.is_management_or_executive_staff()
 
         # Return our modified context.
         return modified_context
@@ -77,10 +75,8 @@ class JobListView(LoginRequiredMixin, GroupRequiredMixin, WorkeryListView):
     def get_context_data(self, **kwargs):
         modified_context = super().get_context_data(**kwargs)
 
-        # Check user role permission.
-        modified_context['user_is_in_management'] = False
-        if self.request.user.is_executive() or self.request.user.is_management_staff():
-            modified_context['user_is_in_management'] = True
+        # Added boolean to view based on whether user is in management.
+        modified_context['user_is_management_or_executive_staff'] = self.request.user.is_management_or_executive_staff()
 
         # Return our modified context.
         return modified_context

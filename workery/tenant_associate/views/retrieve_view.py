@@ -193,5 +193,8 @@ class MemberRetrieveForJobsListView(LoginRequiredMixin, GroupRequiredMixin, Work
 
         modified_context['paginated_job_items'] = jobs_items
 
+        # Added boolean to view based on whether user is in management.
+        modified_context['user_is_management_or_executive_staff'] = self.request.user.is_management_or_executive_staff()
+
         # Return our modified context.
         return modified_context

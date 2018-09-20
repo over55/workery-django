@@ -55,7 +55,7 @@
                     <th>{% trans 'Start Date' %}</th>
                     <th>{% trans 'Completion Date' %}</th>
                     <th>{% trans 'Status' %}</th>
-                    {% if user_is_in_management %}
+                    {% if user_is_management_or_executive_staff %}
                     <th></th>
                     <th></th>
                     {% endif %}
@@ -127,7 +127,7 @@
                             {{ job.state }}
                         {% endif %}
                     </td>
-                    {% if user_is_in_management %}
+                    {% if user_is_management_or_executive_staff %}
                     <td>
                         <a href="{% url 'workery_tenant_job_retrieve' 'list' job.id %}?page={{ page_obj.number }}"><i class="fa fa-id-card"></i></a>
                     </td>
