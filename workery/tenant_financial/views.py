@@ -42,6 +42,9 @@ class UnpaidJobOrderListView(LoginRequiredMixin, GroupRequiredMixin, WorkeryList
             Q(state=WORK_ORDER_STATE.COMPLETED_AND_PAID)
         ).count()
 
+        # Added boolean to view based on whether user is in management.
+        modified_context['user_is_management_or_executive_staff'] = self.request.user.is_management_or_executive_staff()
+
         # Return our modified context.
         return modified_context
 
@@ -72,6 +75,9 @@ class PaidJobOrderListView(LoginRequiredMixin, GroupRequiredMixin, WorkeryListVi
             Q(state=WORK_ORDER_STATE.COMPLETED_BUT_UNPAID) |
             Q(state=WORK_ORDER_STATE.COMPLETED_AND_PAID)
         ).count()
+
+        # Added boolean to view based on whether user is in management.
+        modified_context['user_is_management_or_executive_staff'] = self.request.user.is_management_or_executive_staff()
 
         # Return our modified context.
         return modified_context
@@ -104,6 +110,9 @@ class AllJobOrderListView(LoginRequiredMixin, GroupRequiredMixin, WorkeryListVie
             Q(state=WORK_ORDER_STATE.COMPLETED_BUT_UNPAID) |
             Q(state=WORK_ORDER_STATE.COMPLETED_AND_PAID)
         ).count()
+
+        # Added boolean to view based on whether user is in management.
+        modified_context['user_is_management_or_executive_staff'] = self.request.user.is_management_or_executive_staff()
 
         # Return our modified context.
         return modified_context

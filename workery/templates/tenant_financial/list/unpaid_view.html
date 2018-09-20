@@ -97,7 +97,10 @@
                     <th>{% trans 'Ongoing Job #' %}&nbsp;<i class="fas fa-external-link-alt"></i></th>
                     <th>{% trans 'Client' %}&nbsp;<i class="fas fa-external-link-alt"></i></th>
                     <th>{% trans 'Associate' %}&nbsp;<i class="fas fa-external-link-alt"></i></th>
+                    {% if user_is_management_or_executive_staff %}
                     <th></th>
+                    <th></th>
+                    {% endif %}
                 </tr>
             </thead>
             <tbody>
@@ -127,9 +130,20 @@
                             {% trans 'Unassigned' %}
                         {% endif %}
                     </td>
-                    <td>
-                        <a href="{% url 'workery_tenant_financlial_job_retrieve' 'unpaid-jobs' job_item.id %}?page={{ page_obj.number }}">{% trans 'View' %}&nbsp;<i class="fas fa-chevron-right"></i></a>
-                    </td>
+
+                    {% if user_is_management_or_executive_staff %}
+                        <td>
+                            <a href="{% url 'workery_tenant_job_retrieve' 'list' job_item.id %}?page={{ page_obj.number }}"><i class="fa fa-id-card"></i></a>
+                        </td>
+                        <td>
+                            <a href="{% url 'workery_tenant_financlial_job_retrieve' 'unpaid-jobs' job_item.id %}?page={{ page_obj.number }}"><i class="fa fa-dollar-sign"></i></a>
+                        </td>
+                    {% else %}
+                        <td>
+                            <a href="{% url 'workery_tenant_job_retrieve' 'list' job_item.id %}?page={{ page_obj.number }}" target="_blank">{% trans 'View' %}&nbsp;<i class="fas fa-chevron-right"></i></a>
+                        </td>
+                    {% endif %}
+
                 </tr>
                 {% empty %}
                     No jobs yet.

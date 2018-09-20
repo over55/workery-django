@@ -62,7 +62,10 @@
                     <th>{% trans 'Associate' %}&nbsp;<i class="fas fa-external-link-alt"></i></th>
                     <th>{% trans 'Payment Date' %}</th>
 		            <th>{% trans 'Status' %}</th>
+                    {% if user_is_management_or_executive_staff %}
                     <th></th>
+                    <th></th>
+                    {% endif %}
                 </tr>
             </thead>
             <tbody>
@@ -122,9 +125,22 @@
                             {{ job_item.state }}
                         {% endif %}
 		            </td>
-                    <td>
-                        <a href="{% url 'workery_tenant_financlial_job_retrieve' 'all-jobs' job_item.id %}?page={{ page_obj.number }}">{% trans 'View' %}&nbsp;<i class="fas fa-chevron-right"></i>
-                    </td>
+
+
+
+                    {% if user_is_management_or_executive_staff %}
+                        <td>
+                            <a href="{% url 'workery_tenant_job_retrieve' 'list' job_item.id %}?page={{ page_obj.number }}"><i class="fa fa-id-card"></i></a>
+                        </td>
+                        <td>
+                            <a href="{% url 'workery_tenant_financlial_job_retrieve' 'all-jobs' job_item.id %}?page={{ page_obj.number }}"><i class="fa fa-dollar-sign"></i></a>
+                        </td>
+                    {% else %}
+                        <td>
+                            <a href="{% url 'workery_tenant_financlial_job_retrieve' 'all-jobs' job_item.id %}?page={{ page_obj.number }}">{% trans 'View' %}&nbsp;<i class="fas fa-chevron-right"></i>
+                        </td>
+                    {% endif %}
+
                 </tr>
                 {% empty %}
                     No jobs yet.
