@@ -61,6 +61,18 @@
         $('#start_date').val(localStorage.getItem("tmp_start_date"));
         $('#frequency').val(localStorage.getItem("tmp_frequency"));
 
+        // DEVELOPERS NOTE:
+        // (1)
+        {% if parameters.client_id %}
+            localStorage.setItem("tmp_branch_previous_url", "{% url 'workery_tenant_customer_lite_retrieve' 'summary' parameters.client_id %}");
+
+            // Save the customer ID # into the users local storage.
+            localStorage.setItem("tmp_customer_id", "{{ parameters.client_id }}");
+            localStorage.setItem("tmp_customer_name", "{{ parameters.customer_name }}");
+            localStorage.setItem("tmp_job_customer_type_of", "{{ parameters.customer_type_of }}");
+
+        {% endif %}
+
 
     }); // end START DOCUMENT
 

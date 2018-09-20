@@ -103,6 +103,18 @@
         <!--------------------------------------------------------------------->
         <!-- end DETAIL FORM -->
 
+        <!-- ADD JOB BUTTON -->
+        <!--------------------------------------------------------------------->
+        <div class="form-group col-md-12 mb-3 mx-auto text-center">
+            <a href="{% url 'workery_tenant_job_step_2_create' %}?client_id={{ customer.id }}&customer_name={{ customer }}&customer_type_of={{ customer.type_of }}">
+                <button id="id_submit_btn" class="btn btn-success btn-lg btn-fxw mt-4" type="button">
+                    <i class="fas fa-plus"></i>&nbsp;{% trans 'Add Job' %}
+                </button>
+            </a>
+        </div>
+        <!--------------------------------------------------------------------->
+        <!-- end ADD JOB BUTTON -->
+
         <!-- BLACKLIST BUTTON -->
         <!--------------------------------------------------------------------->
         {% if request.user.is_executive or request.user.is_management_staff %}
