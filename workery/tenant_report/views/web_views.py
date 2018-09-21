@@ -16,7 +16,8 @@ from tenant_foundation.models import (
     AwayLog,
     Customer,
     WorkOrder,
-    TaskItem
+    TaskItem,
+    SkillSet
 )
 
 
@@ -148,3 +149,23 @@ class Report12DetailView(LoginRequiredMixin, GroupRequiredMixin, WorkeryTemplate
         constants.MANAGEMENT_GROUP_ID,
         constants.FRONTLINE_GROUP_ID
     ]
+
+
+class Report13DetailView(LoginRequiredMixin, GroupRequiredMixin, WorkeryTemplateView):
+    template_name = 'tenant_report/report_13_view.html'
+    menu_id = "reports"
+    group_required = [
+        constants.EXECUTIVE_GROUP_ID,
+        constants.MANAGEMENT_GROUP_ID,
+        constants.FRONTLINE_GROUP_ID
+    ]
+
+    def get_context_data(self, **kwargs):
+        # Get the context of this class based view.
+        modified_context = super().get_context_data(**kwargs)
+
+        # Add skill-sets.
+        modified_context['skillsets'] = SkillSet.objects.all().order_by('sub_category')
+
+        # Return our modified context.
+        return modified_context
