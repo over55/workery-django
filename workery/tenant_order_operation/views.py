@@ -64,3 +64,16 @@ class IncompletedWorkOrderUnassignOperationView(LoginRequiredMixin, GroupRequire
         constants.FRONTLINE_GROUP_ID
     ]
     return_id_required = ['lite-retrieve', 'pending-task']
+
+
+class TransferWorkOrderOperationView(LoginRequiredMixin, GroupRequiredMixin, ReturnIDParameterRequiredMixin, WorkeryDetailView):
+    context_object_name = 'job'
+    model = WorkOrder
+    template_name = 'tenant_order_operation/transfer_work_order_operation.html'
+    menu_id = 'jobs'
+    group_required = [
+        constants.EXECUTIVE_GROUP_ID,
+        constants.MANAGEMENT_GROUP_ID,
+        constants.FRONTLINE_GROUP_ID
+    ]
+    return_id_required = ['lite-retrieve', 'pending-task']

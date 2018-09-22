@@ -287,6 +287,21 @@
         </div>
     </div>
     {% endif %}
+    <div class="form-group col-md-10 mb-3 mx-auto text-center">
+        <div class="row">
+            <!-- end POSTPONE BUTTON -->
+            <div class="col-sm-4">
+                <a href="{% url 'workery_tenant_job_retrieve_for_transfer_operation' job.id %}?return_id=lite-retrieve&parent_node={{ template }}">
+                <button  id="id_submit_btn"
+                    class="btn btn-primary btn-lg btn-fxw mt-4"
+                    type="button">
+                <i class="fas fa-share"></i>&nbsp;{% trans 'Transfer Job' %}
+                </button>
+                </a>
+            </div>
+            <!-- end POSTPONE BUTTON -->
+        </div>
+    </div>
     <!------------------------------------------------------------------------->
     <!-- end FORM -->
     <!-- RETURN-TO-TOP -->

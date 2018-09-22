@@ -8,6 +8,15 @@ from tenant_order_operation import views
 urlpatterns = (
 
     #
+    # Other
+    #
+    path(
+        'jobs/detail/<int:pk>/operation/transfer/',
+        views.TransferWorkOrderOperationView.as_view(),
+        name='workery_tenant_job_retrieve_for_transfer_operation'
+    ),
+
+    #
     # Completed Work Orders
     #
 

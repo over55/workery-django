@@ -1,0 +1,327 @@
+{% extends 'tenant_foundation/tenant_base.html' %}
+{% load staticfiles i18n humanize shared_foundation_tags %}
+
+{% block title %}
+{% trans 'Client Details | Workery' %}
+{% endblock title %}
+
+{% block header_content %}
+{% endblock header_content %}
+
+{% block content %}
+
+<script>
+    /**
+     *  When page loads, the following code will be run first.
+     */
+    $(document).ready(function () {
+        /*
+         * DOCUMENTATION
+         * https://select2.org/
+         */
+        $('#associate').select2({
+            // SETUP OUR STARTUP GUI.
+            placeholder: 'Please select an associate',
+            allowClear: true,
+	        width: '100%',
+
+            // OVERRIDE OUR GUI TO GET OUR DATA FROM REMOTE API WEB-SERVICE.
+            ajax: {
+                // THE URL OF OUR API WEB-SERVICE.
+                url: "{% url 'workery_associate_list_create_api_endpoint' %}?owner__is_active=True",
+
+                // THE AUTH-CREDENTIALS OF OUR API WEB-SERVICE WHICH WE WILL
+                // ATTACH WITH THIS CALL.
+                headers: {
+                    "Authorization" : rest_api_token,
+                    "Content-Type" : "application/json",
+                },
+                dataType: 'json',
+
+                // OVERRIDE OUR QUERY TO WORK WITH OUR API WEB-SERVICE.
+                data: function (params) {
+                    var query = {
+                        search: params.term,
+                    }
+                    // Query parameters will be ?search=[term]
+                    return query;
+                },
+
+                // OVERRIDE HOW WE TAKE THE API WEB-SERVICE RESULTS AND FORMAT
+                // FOR THIS LIBRARY.
+                processResults: function (data) {
+                    // Tranforms the top-level key of the response object from 'items' to 'results'
+                    return {
+                        results: data['results']
+                    };
+                },
+            }, // end AJAX
+
+            // THE IS WHERE WE FORMAT OUR OUTPUT TO GUI.
+            templateResult: function formatState (state) {
+                /**
+                 *  Function used to take our JSON API results and create our own custom
+                 *  GUI elements per each returned customer.
+                 */
+                if (!state.id) {
+                     return  "Please enter 1 or more characters";
+                }
+                var $state = $(
+                    '<span id="' + state.id + '">' + state.given_name + " " + state.last_name + '</span>'
+                );
+                return $state;
+            },
+
+            templateSelection: function (data) {
+                if (data.id === '') { // adjust for custom placeholder values
+                    return 'Please select an associate';
+                }
+                return data.given_name + " " + data.last_name;
+            }
+        }); // end SELECT2
+
+        $('#customer').select2({
+            // SETUP OUR STARTUP GUI.
+            placeholder: 'Please select an customer',
+            allowClear: true,
+	        width: '100%',
+
+            // OVERRIDE OUR GUI TO GET OUR DATA FROM REMOTE API WEB-SERVICE.
+            ajax: {
+                // THE URL OF OUR API WEB-SERVICE.
+                url: "{% url 'workery_customer_list_create_api_endpoint' %}?owner__is_active=True",
+
+                // THE AUTH-CREDENTIALS OF OUR API WEB-SERVICE WHICH WE WILL
+                // ATTACH WITH THIS CALL.
+                headers: {
+                    "Authorization" : rest_api_token,
+                    "Content-Type" : "application/json",
+                },
+                dataType: 'json',
+
+                // OVERRIDE OUR QUERY TO WORK WITH OUR API WEB-SERVICE.
+                data: function (params) {
+                    var query = {
+                        search: params.term,
+                    }
+                    // Query parameters will be ?search=[term]
+                    return query;
+                },
+
+                // OVERRIDE HOW WE TAKE THE API WEB-SERVICE RESULTS AND FORMAT
+                // FOR THIS LIBRARY.
+                processResults: function (data) {
+                    // Tranforms the top-level key of the response object from 'items' to 'results'
+                    return {
+                        results: data['results']
+                    };
+                },
+            }, // end AJAX
+
+            // THE IS WHERE WE FORMAT OUR OUTPUT TO GUI.
+            templateResult: function formatState (state) {
+                /**
+                 *  Function used to take our JSON API results and create our own custom
+                 *  GUI elements per each returned customer.
+                 */
+                if (!state.id) {
+                     return  "Please enter 1 or more characters";
+                }
+                var $state = $(
+                    '<span id="' + state.id + '">' + state.given_name + " " + state.last_name + '</span>'
+                );
+                return $state;
+            },
+
+            templateSelection: function (data) {
+                if (data.id === '') { // adjust for custom placeholder values
+                    return 'Please select an customer';
+                }
+                return data.given_name + " " + data.last_name;
+            }
+        }); // end SELECT2
+
+
+    });
+
+    function click_cancel_button() {
+        {% if return_id == 'lite-retrieve' %}
+            window.location = "{% url 'workery_tenant_job_retrieve' parameters.parent_node job.id %}";
+        {% elif return_id == 'pending-task' %}
+            window.location = "{% url 'workery_tenant_pending_task_retrieve' parameters.task_item %}";
+        {% else %}
+            alert("Is unsupported");
+        {% endif %}
+    }
+
+    function click_submit_button() {
+        var associate = $('#associate').val();
+        var customer = $('#customer').val();
+
+        // alert(associate);
+        // alert(customer);
+
+        // Submit to our API web-service.
+        post_transfer_work_order_operation_api(
+            {
+                'job': {{ job.id }},
+                'associate': associate,
+                'customer': customer,
+                'reason': $('#reason').val(),
+            },
+            function(result_dict) { // Success
+                // FOR DEBUGGING PURPOSES ONLY.
+                console.log(result_dict);
+
+                /////////////////////////////////////
+                // Get our pending task unique ID. //
+                /////////////////////////////////////
+                console.log(result_dict);
+                var latest_pending_task_id = parseInt(result_dict['latest_pending_task']);
+
+                ////////////////////////////////////////////
+                // Redirect to the next page in the form. //
+                ////////////////////////////////////////////
+                {% if return_id == 'lite-retrieve' %}
+                    var temp_url = "{% url 'workery_tenant_job_retrieve' parameters.parent_node job.id %}?was_transfered=True";
+                    window.location = temp_url;
+                {% else %}
+                    alert("Is unsupported");
+                {% endif %}
+            },
+            function(xhr,status,error) { // Error
+                // STEP 1: Convert to JSON.
+                var err = JSON.parse(xhr.responseText);
+
+                // For debugging purposes only.
+                console.log(err);
+
+                // STEP 2: CLEAR EXISTING TEXT.
+                $('#all_error_result').html("");
+
+                // STEP 3: PRINT OUR ERROR.
+                for(var prop in err) {
+                    if(err.hasOwnProperty(prop)) {
+                        var val = err[prop];
+                        console.log(val);
+                        $('#all_error_result').append("<p><b>"+prop+"</b> "+val+"</p><br />");
+                    }
+                }
+
+                // STEP 4: FOCUS TO WHERE THE ERROR IS OCCURING.
+                $('html, body').animate({ scrollTop: $('#id_page_title').offset().top }, 'slow');
+            },
+            function() { // Finally
+                // UNLOCK THE "SUBMIT" BUTTON TO BE AVAILABLE FOR USAGE.
+                // enable_btn();
+            }
+        );
+    }
+</script>
+
+<main id="main" role="main">
+
+    <!-- BREADCRUMB -->
+    <!------------------------------------------------------------------------->
+    <nav aria-label="breadcrumb">
+	  	<ol class="breadcrumb">
+            {% if return_id == 'lite-retrieve' %}
+                <li class="breadcrumb-item"><a href="{% url 'workery_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'workery_tenant_job_summary' %}">{% trans 'Jobs' %}</a></li>
+                <li class="breadcrumb-item">
+                    <a href="{% url 'workery_tenant_job_retrieve' parameters.parent_node job.id %}">
+                        {% trans 'Job #' %}{{ job.id|intcomma }}
+                    </a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">{% trans 'Transfer Job' %}</li>
+            {% else %}
+                ---TODO---
+            {% endif %}
+	  	</ol>
+	</nav>
+    <!------------------------------------------------------------------------->
+    <!-- end BREADCRUMB -->
+
+    <h1 id="id_page_title">{% trans 'Transfer Work Order' %}</h1>
+
+    <div class="container">
+        <div class="row align-items-start">
+
+            <!-- FORM -->
+            <!------------------------------------------------------------------------->
+            <div class="col-sm-6 mx-auto mt-2">
+                <!-- Residential form -->
+                <div class="col-sm-12 fade show active" id="client-form" aria-labelledby="commercial">
+
+                    <p>You are about to transfer the <strong>ownership</strong> of this job for the <strong>associate</strong> or the <strong>client</strong>.</p>
+
+                        <!-- Error Output -->
+                    <div id="all_error_result" name="all_error_result"></div>
+                    <!-- end Error Output -->
+
+                    <form id="add-client-form" method="post" class="needs-validation" action="" novalidate>
+
+                        <!-- ############ ASSOCIATE (REMOTE DATA) ############ -->
+                        <div class="form-group col-md-12 mb-4 field-select2">
+                            <label for="associate">Associate</label>
+                            <select id="associate" name="associate" class="form-control form-control-lg border border-primary" required="" autofocus>
+                            </select>
+                        </div>
+                        <!-- ############ end ASSOCIATE (REMOTE DATA) ############ -->
+
+                        <!-- ############ ASSOCIATE (REMOTE DATA) ############ -->
+                        <div class="form-group col-md-12 mb-4 field-select2">
+                            <label for="customer">Customer</label>
+                            <select id="customer" name="customer" class="form-control form-control-lg border border-primary" required="" autofocus>
+                            </select>
+                        </div>
+                        <!-- ############ end ASSOCIATE (REMOTE DATA) ############ -->
+
+                        <!-- COMMENTS -->
+                        <div class="form-group col-md-12 mb-4">
+                            <label for="reason">Please write the reason why you are transfering <strong>ownership</strong>:&nbsp;<sup>*</sup></label>
+                            <textarea class="form-control form-control-lg border border-primary" id="reason" name="reason" placeholder="Write your reason here..." rows="4" required></textarea>
+                            <div id="reason-error" class="invalid-feedback"></div>
+                        </div>
+                        <!-- end COMMENTS -->
+
+                    </form>
+
+                    <!-- BUTTONS -->
+                    <div class="form-group col-md-12 mb-3 p-0 mx-auto text-center">
+
+                        <!-- ADD -->
+                        <button id="id_submit_btn"
+                             class="btn btn-success btn-lg mt-4 float-right pl-4 pr-4"
+                              type="button"
+                           onclick="click_submit_button();">
+                            <i class="fas fa-check-circle"></i> &nbsp;Save</button>
+                        <!-- end ADD -->
+
+                        <!-- CANCEL -->
+                        <button id="id_cancel_btn"
+                             class="btn btn-orange btn-lg mt-4 float-left pl-4 pr-4"
+                              type="button"
+                           onclick="click_cancel_button();">
+                            <i class="fas fa-times"></i>&nbsp;Cancel
+                        </button>
+                        <!-- end CANCEL -->
+
+                    </div>
+                    <!-- end BUTTONS -->
+
+                </div>
+            </div>
+            <!------------------------------------------------------------------------->
+            <!-- end FORM -->
+
+        </div>
+    </div>
+
+    <!-- RETURN-TO-TOP -->
+    <a id="return-to-top" href="#" class="btn-info btn-lg back-to-top" role="button" title="Back to top"><i class="fas fa-angle-up fa-2x"></i></a>
+    <!-- end RETURN-TO-TOP -->
+
+</main>
+
+{% endblock content %}
