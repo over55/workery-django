@@ -99,7 +99,9 @@
 
         <!-- Residential form -->
         <div class="col-sm-12 fade show active" aria-labelledby="residential">
-            <h3 class="pt-4 pb-2 text-center">Jobs List</h3>
+            <h3 class="pt-4 pb-2 text-center">
+                <strong>Jobs List</strong> | {{ customer }}&nbsp;|&nbsp;{{ customer.telephone|pretty_formatted_phonenumber }}
+            </h3>
 
             <!-- JOBS -->
             <!------------------------------------------------------------->
