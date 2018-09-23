@@ -121,9 +121,11 @@ class AwayLogListCreateSerializer(serializers.ModelSerializer):
         # Create our `Comment` object.
         #-----------------------------
         # Create our comment text.
+        utc_dt = timezone.now()
+        current_dt = self.context['franchise'].to_tenant_dt(utc_dt)
         user = self.context['created_by']
         comment_text = "System Note: Staff member ID #" + str(user.id)
-        comment_text += " has set the Associate to away on " +  str(timezone.now()) + ". "
+        comment_text += " has set the Associate to away on " +  str(current_dt) + ". "
         comment_text += "The away reason is: "
         if log.reason == 1:
             comment_text += str(log.reason_other)

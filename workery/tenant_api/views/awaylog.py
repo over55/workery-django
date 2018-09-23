@@ -5,9 +5,11 @@ from django_filters import rest_framework as filters
 from starterkit.drf.permissions import IsAuthenticatedAndIsActivePermission
 from django.conf.urls import url, include
 from django.shortcuts import get_list_or_404, get_object_or_404
+from django.utils import timezone
 from rest_framework import generics
 from rest_framework import authentication, viewsets, permissions, status
 from rest_framework.response import Response
+
 from tenant_api.pagination import StandardResultsSetPagination
 from tenant_api.permissions.awaylog import (
    CanListCreateAwayLogPermission,
@@ -17,7 +19,13 @@ from tenant_api.serializers.awaylog import (
     AwayLogListCreateSerializer,
     AwayLogRetrieveUpdateDestroySerializer
 )
-from tenant_foundation.models import AwayLog
+from tenant_foundation.models import (
+    AwayLog,
+    Associate,
+    AssociateComment,
+    Comment
+)
+
 
 
 class AwayLogListCreateAPIView(generics.ListCreateAPIView):
@@ -94,10 +102,41 @@ class AwayLogRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView)
         """
         Delete
         """
+        #-----------------------------
+        # Change the `AWayLog` object.
+        #-----------------------------
+        # Lookup the object or give a 404 error.
         obj = get_object_or_404(AwayLog, pk=pk)
         self.check_object_permissions(request, obj)  # Validate permissions.
         obj.was_deleted = True
         obj.save()
         obj.associate.away_log = None
         obj.associate.save()
+
+        #-----------------------------
+        # Create our `Comment` object.
+        #-----------------------------
+        utc_dt = timezone.now()
+        current_dt = request.tenant.to_tenant_dt(utc_dt)
+        # Create our comment text.
+        comment_text = "System Note: Staff member ID #" + str(request.user.id)
+        comment_text += " has set the Associate to no longer be away on " +  str(current_dt) + ". "
+
+        # Create our object.
+        comment_obj = Comment.objects.create(
+            created_by = request.user,
+            last_modified_by = request.user,
+            text=comment_text,
+            # created_from = self.context['created_from'],
+            # created_from_is_public = self.context['created_from_is_public']
+        )
+        associate_comment = AssociateComment.objects.create(
+            about=obj.associate,
+            comment=comment_obj,
+        )
+
+        #-----------------------------
+        # Return our `AwayLog` object.
+        #-----------------------------
+        # Return our result.
         return Response(data=[], status=status.HTTP_200_OK)
