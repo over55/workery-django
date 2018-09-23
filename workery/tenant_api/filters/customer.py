@@ -8,6 +8,7 @@ from django.db import models
 class CustomerFilter(django_filters.FilterSet):
 
     def keyword_filtering(self, queryset, name, value):
+        print(value)
         return Customer.objects.partial_text_search(value)
 
     search = django_filters.CharFilter(method='keyword_filtering')

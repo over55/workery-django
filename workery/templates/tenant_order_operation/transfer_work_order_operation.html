@@ -128,7 +128,7 @@
                      return  "Please enter 1 or more characters";
                 }
                 var $state = $(
-                    '<span id="' + state.id + '">' + state.given_name + " " + state.last_name + '</span>'
+                    '<span id="' + state.id + '">' + state.given_name + " " + state.last_name + ' (ID #' + state.id  + ')' + '</span>'
                 );
                 return $state;
             },

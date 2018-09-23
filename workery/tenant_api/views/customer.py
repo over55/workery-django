@@ -9,6 +9,7 @@ from rest_framework import generics
 from rest_framework import authentication, viewsets, permissions, status
 from rest_framework.response import Response
 from tenant_api.pagination import StandardResultsSetPagination
+from tenant_api.filters.customer import CustomerFilter
 from tenant_api.permissions.customer import (
    CanListCreateCustomerPermission,
    CanRetrieveUpdateDestroyCustomerPermission
@@ -35,7 +36,14 @@ class CustomerListCreateAPIView(generics.ListCreateAPIView):
         """
         List
         """
+        # Fetch all the queries.
         queryset = Customer.objects.all().order_by('-created')
+
+        # The following code will use the 'django-filter'
+        filter = CustomerFilter(self.request.GET, queryset=queryset)
+        queryset = filter.qs
+
+        # Return our filtered list.
         return queryset
 
     def post(self, request, format=None):
