@@ -11,7 +11,13 @@ from django.utils import timezone
 from django.utils.http import urlquote
 from rest_framework import exceptions, serializers
 from rest_framework.response import Response
-from tenant_foundation.models import AwayLog
+
+from tenant_foundation.models import (
+    AwayLog,
+    Associate,
+    AssociateComment,
+    Comment
+)
 
 
 logger = logging.getLogger(__name__)
@@ -98,7 +104,11 @@ class AwayLogListCreateSerializer(serializers.ModelSerializer):
             until_further_notice=until_further_notice,
             until_date=until_date,
             created_by=self.context['created_by'],
+            # created_from = self.context['created_from'],
+            # created_from_is_public = self.context['created_from_is_public'],
             last_modified_by=self.context['created_by'],
+            # last_modified_from=self.context['created_from'],
+            # last_modified_from_is_public=self.context['created_from_is_public'],
         )
         logger.info("Created AwayLog")
 
@@ -107,6 +117,44 @@ class AwayLogListCreateSerializer(serializers.ModelSerializer):
         associate.save()
         logger.info("Assigned AwayLog to associate.")
 
+        #-----------------------------
+        # Create our `Comment` object.
+        #-----------------------------
+        # Create our comment text.
+        user = self.context['created_by']
+        comment_text = "System Note: Staff member ID #" + str(user.id)
+        comment_text += " has set the Associate to away on " +  str(timezone.now()) + ". "
+        comment_text += "The away reason is: "
+        if log.reason == 1:
+            comment_text += str(log.reason_other)
+        elif log.reason == 2:
+            comment_text += "Going on vacation"
+        elif log.reason == 3:
+            comment_text += "Personal reasons"
+        if log.until_further_notice == False:
+            comment_text += ". Until: "+str(log.until_date)
+        else:
+            comment_text += ". Until: Further notice."
+
+        # Create our object.
+        comment_obj = Comment.objects.create(
+            created_by = user,
+            last_modified_by = user,
+            text=comment_text,
+            # created_from = self.context['created_from'],
+            # created_from_is_public = self.context['created_from_is_public']
+        )
+        associate_comment = AssociateComment.objects.create(
+            about=associate,
+            comment=comment_obj,
+        )
+
+        # For debugging purposes only.
+        logger.info("Associate comment created.")
+
+        #-----------------------------
+        # Return our validated result.
+        #-----------------------------
         # Return our validated data.
         validated_data['id'] = log.id
         return validated_data

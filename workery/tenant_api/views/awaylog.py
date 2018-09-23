@@ -43,6 +43,8 @@ class AwayLogListCreateAPIView(generics.ListCreateAPIView):
         client_ip, is_routable = get_client_ip(self.request)
         serializer = AwayLogListCreateSerializer(data=request.data, context={
             'created_by': request.user,
+            'created_from': client_ip,
+            'created_from_is_public': is_routable,
             'franchise': request.tenant
         })
         serializer.is_valid(raise_exception=True)
@@ -78,7 +80,12 @@ class AwayLogRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView)
         client_ip, is_routable = get_client_ip(self.request)
         obj = get_object_or_404(AwayLog, pk=pk)
         self.check_object_permissions(request, obj)  # Validate permissions.
-        serializer = AwayLogRetrieveUpdateDestroySerializer(obj, data=request.data)
+        serializer = AwayLogRetrieveUpdateDestroySerializer(obj, data=request.data, context={
+            'last_modified_by': request.user,
+            'last_modified_from': client_ip,
+            'last_modified_from_is_public': is_routable,
+            'franchise': request.tenant
+        })
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data, status=status.HTTP_200_OK)
