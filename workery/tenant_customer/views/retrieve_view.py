@@ -120,7 +120,7 @@ class CustomerRetrieveForJobsListView(LoginRequiredMixin, GroupRequiredMixin, Wo
         # Required for navigation
         modified_context['jobs'] = WorkOrder.objects.filter(
             customer = modified_context['customer']
-        )
+        ).order_by('-completion_date')
 
         # Return our modified context.
         return modified_context

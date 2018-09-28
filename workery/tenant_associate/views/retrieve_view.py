@@ -179,7 +179,7 @@ class MemberRetrieveForJobsListView(LoginRequiredMixin, GroupRequiredMixin, Work
         ).prefetch_related(
             'associate',
             'customer'
-        ).order_by("-id")
+        ).order_by('-completion_date')
 
         # Added our job state filtering.
         job_state = self.request.GET.get('job_state', 'all')
