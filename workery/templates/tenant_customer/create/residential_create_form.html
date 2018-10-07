@@ -7,8 +7,11 @@
         // Initialize our datepicker jQuery code with our HTML view.
         $( "#birthdate" ).datepicker({
             dateFormat: 'yyyy-mm-dd',
-	        maxDate: 'today'
+	        maxDate: 'today',
 		Format: 'yyyy-mm-dd',
+		onSelect: function (dateText, inst) {
+         		alert('select!');
+      		}
         });
 
         // PLUG IN EVENT LISTENER ON REASON DROPDOWN CHANGE.
