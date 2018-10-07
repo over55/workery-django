@@ -6,8 +6,9 @@
     $(document).ready(function () {
         // Initialize our datepicker jQuery code with our HTML view.
         $( "#birthdate" ).datepicker({
-            dateFormat: 'yy-mm-dd',
+            dateFormat: 'yyyy-mm-dd',
 	        maxDate: 'today'
+		Format: 'yyyy-mm-dd',
         });
 
         // PLUG IN EVENT LISTENER ON REASON DROPDOWN CHANGE.
@@ -493,7 +494,7 @@
             <div class="form-group p-0 col-md-7 mb-4">
                 <label for="birthdate">Date of Birth</label>
                 <div class="input-group input-group-lg">
-                    <input type="text" class="form-control form-control-lg border border-success" id="birthdate" name="birthdate" placeholder="yyyy-mm-dd" required>
+                    <input type="text" class="form-control form-control-lg border border-success" id="birthdate" name="birthdate" placeholder="yyyy-mm-dd" maxlength="10" required>
                     <div class="input-group-append">
                         <span class="input-group-text dob-icon bg-success border-success"><i class="far fa-calendar-alt"></i></span>
                     </div>
