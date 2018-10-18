@@ -100,9 +100,23 @@ class FollowUpTaskOperationSerializer(serializers.Serializer):
             )
 
         # STEP 4 - Update our TaskItem if job was accepted.
-        task_item.is_closed = True
-        task_item.last_modified_by = self.context['user']
-        task_item.save()
+        #----------------------------------------#
+        # Lookup our Task(s) and close them all. #
+        #----------------------------------------#
+        task_items = TaskItem.objects.filter(
+            job=task_item.job,
+            is_closed=False
+        )
+        for item in task_items.iterator():
+            logger.info("Found task # #%(id)s ." % {
+                'id': str(item.id)
+            })
+            item.is_closed = True
+            item.last_modified_by = self.context['user']
+            item.save()
+            logger.info("Task #%(id)s was closed." % {
+                'id': str(item.id)
+            })
 
         # For debugging purposes only.
         logger.info("Task #%(id)s was closed" % {
