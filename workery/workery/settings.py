@@ -120,7 +120,6 @@ TENANT_APPS = (
     'tenant_customer_operation',
     'tenant_dashboard',
     'tenant_foundation',
-    'tenant_historic_etl',
     'tenant_order',
     'tenant_order_operation',
     'tenant_team',
