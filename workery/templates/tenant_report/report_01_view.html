@@ -113,7 +113,8 @@
                     <option value="" selected>Types...</option>
                     <option value="{{ WORK_ORDER_STATE.COMPLETED_BUT_UNPAID }}">Completed but unpaid</option>
                     <option value="{{ WORK_ORDER_STATE.COMPLETED_AND_PAID }}">Completed and paid</option>
-                    <option value="all">All completed paid/unpaid jobs</option>
+                    <option value="{{ WORK_ORDER_STATE.IN_PROGRESS }}">In progress</option>
+                    <option value="all">All completed paid/unpaid/in progress jobs</option>
                 </select>
                 <div id="job_state-error" class="invalid-feedback"></div>
             </div>
