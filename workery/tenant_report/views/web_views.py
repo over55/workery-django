@@ -169,3 +169,13 @@ class Report13DetailView(LoginRequiredMixin, GroupRequiredMixin, WorkeryTemplate
 
         # Return our modified context.
         return modified_context
+
+
+class Report14DetailView(LoginRequiredMixin, GroupRequiredMixin, WorkeryTemplateView):
+    template_name = 'tenant_report/report_14_view.html'
+    menu_id = "reports"
+    group_required = [
+        constants.EXECUTIVE_GROUP_ID,
+        constants.MANAGEMENT_GROUP_ID,
+        constants.FRONTLINE_GROUP_ID
+    ]
