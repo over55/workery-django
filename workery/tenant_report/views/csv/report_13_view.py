@@ -43,8 +43,9 @@ class Echo:
 
 
 def report_13_streaming_csv_view(request):
-    from_dt = request.GET.get('from_dt', None)
-    to_dt = request.GET.get('to_dt', None)
+    # Get our user parameters.
+    naive_from_dt = request.GET.get('from_dt', None)
+    naive_to_dt = request.GET.get('to_dt', None)
     state = request.GET.get('state', 'all')
     skillset_ids = request.GET.get('skillset_ids', None)
 
@@ -52,9 +53,19 @@ def report_13_streaming_csv_view(request):
     for idx, val in enumerate(skillset_ids_arr):
         skillset_ids_arr[idx] = int(val)
 
-    from_dt = parser.parse(from_dt)
-    to_dt = parser.parse(to_dt)
+    # Convert our datatime `string` into a `datatime` object.
+    naive_from_dt = parser.parse(naive_from_dt)
+    naive_to_dt = parser.parse(naive_to_dt)
 
+    # Convert our aware datetimes to the specific timezone of the tenant.
+    today = timezone.now()
+    today = request.tenant.to_tenant_dt(today)
+    from_dt = request.tenant.localize_tenant_dt(naive_from_dt)
+    from_d = from_dt.date()
+    to_dt = request.tenant.localize_tenant_dt(naive_to_dt)
+    to_d = to_dt.date()
+
+    # Run our filter lookup.
     queryset = None
     if state == 'all':
         queryset = WorkOrder.objects.filter(
@@ -90,19 +101,11 @@ def report_13_streaming_csv_view(request):
         response['Content-Disposition'] = 'attachment; filename="leads_by_skill.csv"'
         return response
 
-    # Convert our aware datetimes to the specific timezone of the tenant.
-    today = timezone.now()
-    today = request.tenant.to_tenant_dt(today)
-    from_dt = request.tenant.to_tenant_dt(from_dt)
-    from_dt = from_dt.date()
-    to_dt = request.tenant.to_tenant_dt(to_dt)
-    to_dt = to_dt.date()
-
     # Generate our new header.
     rows = (["Leads by Skill Report","","","","","","","","","",],)
     rows += (["Report Date:", pretty_dt_string(today),"","","","","","","","",],)
-    rows += (["From Assignment Date:", pretty_dt_string(from_dt),"","","","","","","","",],)
-    rows += (["To Assignment Date:", pretty_dt_string(to_dt),"","","","","","","","",],)
+    rows += (["From Assignment Date:", pretty_dt_string(from_d),"","","","","","","","",],)
+    rows += (["To Assignment Date:", pretty_dt_string(to_d),"","","","","","","","",],)
     rows += (["Job Status:", str(state),"","","","","","","","",],)
     # rows += (["Skill Set(s):", str(state),"","","","","","","","",],)
     rows += (["","","","","","","","","","",],)

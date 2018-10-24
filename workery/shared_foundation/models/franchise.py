@@ -97,6 +97,18 @@ class SharedFranchise(TenantMixin, AbstractSharedThing, AbstractSharedContactPoi
         except Exception as e:
             return aware_dt
 
+    def localize_tenant_dt(self, unaware_dt):  #TODO: UNIT TEST
+        """
+        Function will take the `naive` datetime and convert it to an `aware`
+        datetime, using this tenants timezone.
+        """
+        try:
+            tenant_timezone = pytz.timezone(self.timezone_name)
+            now_aware = unaware_dt.replace(tzinfo=tenant_timezone)
+            return now_aware
+        except Exception as e:
+            return unaware_dt
+
     def get_todays_date_plus_days(self, days=0):
         """Returns the current date plus paramter number of days."""
         utc_today = timezone.now()

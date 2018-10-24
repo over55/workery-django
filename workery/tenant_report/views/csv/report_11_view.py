@@ -43,14 +43,25 @@ class Echo:
 
 
 def report_11_streaming_csv_view(request):
-    from_dt = request.GET.get('from_dt', None)
-    to_dt = request.GET.get('to_dt', None)
+    # Get our user parameters.
+    naive_from_dt = request.GET.get('from_dt', None)
+    naive_to_dt = request.GET.get('to_dt', None)
 
-    from_dt = parser.parse(from_dt)
-    to_dt = parser.parse(to_dt)
+    # Convert our datatime `string` into a `datatime` object.
+    naive_from_dt = parser.parse(naive_from_dt)
+    naive_to_dt = parser.parse(naive_to_dt)
 
+    # Convert our aware datetimes to the specific timezone of the tenant.
+    today = timezone.now()
+    tenant_today = request.tenant.to_tenant_dt(today)
+    tenant_from_dt = request.tenant.localize_tenant_dt(naive_from_dt)
+    tenant_from_d = tenant_from_dt.date()
+    tenant_to_dt = request.tenant.localize_tenant_dt(naive_to_dt)
+    tenant_to_d = tenant_to_dt.date()
+
+    # Run our filter lookup.
     jobs = WorkOrder.objects.filter(
-        completion_date__range=(from_dt,to_dt),
+        completion_date__range=(tenant_from_dt,tenant_to_dt),
         type_of=COMMERCIAL_JOB_TYPE_OF_ID,
         customer__isnull=False,
         associate__isnull=False
@@ -62,19 +73,11 @@ def report_11_streaming_csv_view(request):
         'skill_sets'
     )
 
-    # Convert our aware datetimes to the specific timezone of the tenant.
-    today = timezone.now()
-    tenant_today = request.tenant.to_tenant_dt(today)
-    tenant_from_dt = request.tenant.to_tenant_dt(from_dt)
-    tenant_from_dt = tenant_from_dt.date()
-    tenant_to_dt = request.tenant.to_tenant_dt(to_dt)
-    tenant_to_dt = tenant_to_dt.date()
-
     # Generate our new header.
     rows = (["Commercial Jobs Report","","",],)
     rows += (["Report Date:", pretty_dt_string(tenant_today),"",],)
-    rows += (["From Assignment Date:", pretty_dt_string(tenant_from_dt),"",],)
-    rows += (["To Assignment Date:", pretty_dt_string(tenant_to_dt),"",],)
+    rows += (["From Assignment Date:", pretty_dt_string(tenant_from_d),"",],)
+    rows += (["To Assignment Date:", pretty_dt_string(tenant_to_d),"",],)
     rows += (["", "","",],)
     rows += (["", "","",],)
 

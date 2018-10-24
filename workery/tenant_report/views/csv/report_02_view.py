@@ -43,8 +43,9 @@ class Echo:
 
 
 def report_02_streaming_csv_view(request):
-    from_dt = request.GET.get('from_dt', None)
-    to_dt = request.GET.get('to_dt', None)
+    # Get our user parameters.
+    naive_from_dt = request.GET.get('from_dt', None)
+    naive_to_dt = request.GET.get('to_dt', None)
     state = request.GET.get('state', 'all')
     associate_id = request.GET.get('associate_id', None)
     associate = Associate.objects.filter(id=associate_id).first()
@@ -59,9 +60,19 @@ def report_02_streaming_csv_view(request):
         response['Content-Disposition'] = 'attachment; filename="associate_jobs.csv"'
         return response
 
-    from_dt = parser.parse(from_dt)
-    to_dt = parser.parse(to_dt)
+    # Convert our datatime `string` into a `datatime` object.
+    naive_from_dt = parser.parse(naive_from_dt)
+    naive_to_dt = parser.parse(naive_to_dt)
 
+    # Convert our aware datetimes to the specific timezone of the tenant.
+    today = timezone.now()
+    today = request.tenant.to_tenant_dt(today)
+    from_dt = request.tenant.localize_tenant_dt(naive_from_dt)
+    from_d = from_dt.date()
+    to_dt = request.tenant.localize_tenant_dt(naive_to_dt)
+    to_d = to_dt.date()
+
+    # Run our filter lookup.
     jobs = None
     if state == 'all':
         jobs = WorkOrder.objects.filter(
@@ -87,19 +98,11 @@ def report_02_streaming_csv_view(request):
             'skill_sets'
         )
 
-    # Convert our aware datetimes to the specific timezone of the tenant.
-    today = timezone.now()
-    today = request.tenant.to_tenant_dt(today)
-    from_dt = request.tenant.to_tenant_dt(from_dt)
-    from_dt = from_dt.date()
-    to_dt = request.tenant.to_tenant_dt(to_dt)
-    to_dt = to_dt.date()
-
     # Generate our new header.
     rows = (["Associate Jobs Report","","","","","","","","","",],)
     rows += (["Report Date:", pretty_dt_string(today),"","","","","","","","",],)
-    rows += (["From Assignment Date:", pretty_dt_string(from_dt),"","","","","","","","",],)
-    rows += (["To Assignment Date:", pretty_dt_string(to_dt),"","","","","","","","",],)
+    rows += (["From Assignment Date:", pretty_dt_string(from_d),"","","","","","","","",],)
+    rows += (["To Assignment Date:", pretty_dt_string(to_d),"","","","","","","","",],)
     rows += (["Associate Name:", str(associate),"","","","","","","","",],)
     rows += (["Associate No.:", str(associate.id),"","","","","","","","",],)
     rows += (["","","","","","","","","","",],)

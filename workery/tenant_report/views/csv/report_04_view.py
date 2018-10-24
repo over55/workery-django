@@ -43,12 +43,23 @@ class Echo:
 
 
 def report_04_streaming_csv_view(request):
-    from_dt = request.GET.get('from_dt', None)
-    to_dt = request.GET.get('to_dt', None)
+    # Get our user parameters.
+    naive_from_dt = request.GET.get('from_dt', None)
+    naive_to_dt = request.GET.get('to_dt', None)
 
-    from_dt = parser.parse(from_dt)
-    to_dt = parser.parse(to_dt)
+    # Convert our datatime `string` into a `datatime` object.
+    naive_from_dt = parser.parse(naive_from_dt)
+    naive_to_dt = parser.parse(naive_to_dt)
 
+    # Convert our aware datetimes to the specific timezone of the tenant.
+    today = timezone.now()
+    today = request.tenant.to_tenant_dt(today)
+    from_dt = request.tenant.localize_tenant_dt(naive_from_dt)
+    from_d = from_dt.date()
+    to_dt = request.tenant.localize_tenant_dt(naive_to_dt)
+    to_d = to_dt.date()
+
+    # Run our filter lookup.
     cancelled_jobs = WorkOrder.objects.filter(
         Q(completion_date__range=(from_dt,to_dt)) &
         Q(
@@ -64,19 +75,11 @@ def report_04_streaming_csv_view(request):
         'skill_sets'
     )
 
-    # Convert our aware datetimes to the specific timezone of the tenant.
-    today = timezone.now()
-    today = request.tenant.to_tenant_dt(today)
-    from_dt = request.tenant.to_tenant_dt(from_dt)
-    from_dt = from_dt.date()
-    to_dt = request.tenant.to_tenant_dt(to_dt)
-    to_dt = to_dt.date()
-
     # Generate our new header.
     rows = (["Cancelled Jobs Report","","","","","",],)
     rows += (["Report Date:", pretty_dt_string(today),"","","","",],)
-    rows += (["From Assignment Date:", pretty_dt_string(from_dt),"","","","",],)
-    rows += (["To Assignment Date:", pretty_dt_string(to_dt),"","","","",],)
+    rows += (["From Assignment Date:", pretty_dt_string(from_d),"","","","",],)
+    rows += (["To Assignment Date:", pretty_dt_string(to_d),"","","","",],)
     rows += (["","","","","","",],)
     rows += (["","","","","","",],)
 
