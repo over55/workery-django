@@ -102,6 +102,12 @@ class FollowUpPendingTaskOperationSerializer(serializers.Serializer):
             job = task_item.job,
             associate = task_item.job.associate,
         ).first()
+
+        # DEFENSIVE CODE: If the `ActivitySheetItem` was not found then
+        #                 we error.
+        if current_activity_sheet_item is None:
+            raise serializers.ValidationError(_("Activity sheet was not found. This was probably because you already closed this task."))
+
         current_activity_sheet_item.state = state
         current_activity_sheet_item.last_modified_by = self.context['user']
         current_activity_sheet_item.save()
