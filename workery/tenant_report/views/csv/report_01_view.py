@@ -118,7 +118,7 @@ def report_01_streaming_csv_view(request):
         "Skill Set(s)"],)
 
     # Generate hte CSV data.
-    for job in jobs.all():
+    for job in jobs.iterator():
         # Get the type of job from a "tuple" object.
         test = dict(JOB_TYPE_OF_CHOICES)
         job_type = test[job.type_of]
