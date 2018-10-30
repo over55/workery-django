@@ -271,8 +271,8 @@
         var last_name = $('#last_name').val();
         var date_of_birth = $('#birthdate').val();
         if (date_of_birth !== undefined && date_of_birth != null && date_of_birth.length > 0) {
-            var mydate = new Date(date_of_birth); // Convert "MM DD, YYYY" to JS DATE
-            date_of_birth = mydate.toISOString().substring(0, 10); // Convert JS DATE to "YYYY-MM-DD"
+            //var mydate = new Date(date_of_birth); // Convert "MM DD, YYYY" to JS DATE
+            //date_of_birth = mydate.toISOString().substring(0, 10); // Convert JS DATE to "YYYY-MM-DD"
         } else {
             date_of_birth = '';
         }
