@@ -982,7 +982,7 @@
         $('#skill_sets').val(skill_set_ids);
 
         var vehicle_type_ids = [];
-        {% for vehicle_type in associate.get_vehicle_types.all %}
+        {% for vehicle_type in associate.vehicle_types.all %}
         vehicle_type_ids.push({{ vehicle_type.id }});
         {% endfor %}
         $('#vehicle_types').val(vehicle_type_ids);
