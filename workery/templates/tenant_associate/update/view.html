@@ -629,7 +629,7 @@
                 <div class="form-group col-md-12 mb-4">
                     <label for="vehicle_types">Vehicle(s)</label>
                     <select id="vehicle_types" name="vehicle_types" class="form-control form-control-lg border border-success" name="states[]" multiple="multiple">
-                    {% for vehicle_type in associate.vehicle_types.all %}
+                    {% for vehicle_type in vehicle_types %}
                         <option value="{{ vehicle_type.id }}" id="vehicle_type_option_id_{{ vehicle_type.id }}">{{ vehicle_type.text }}</option>
                     {% endfor %}
                     </select>
@@ -819,9 +819,9 @@
         {% if associate.is_ok_to_email == True %}$("#is_ok_to_email").prop("checked", true);{% else %}$("#is_ok_to_email2").prop("checked", true);{% endif %}
         {% if associate.is_ok_to_text == True %}$("#is_ok_to_text").prop("checked", true);{% else %}$("#is_ok_to_text2").prop("checked", true);{% endif %}
         {% if associate.owner.is_active == True %}$("#is_active").prop("checked", true);{% else %}$("#is_active2").prop("checked", true);{% endif %}
-        {% if associate.has_car == True %}$("#has_car").prop("checked", true);{% else %}$("#has_car2").prop("checked", true);{% endif %}
-        {% if associate.has_van == True %}$("#has_van").prop("checked", true);{% else %}$("#has_van2").prop("checked", true);{% endif %}
-        {% if associate.has_truck == True %}$("#has_truck").prop("checked", true);{% else %}$("#has_truck2").prop("checked", true);{% endif %}
+        //{% if associate.has_car == True %}$("#has_car").prop("checked", true);{% else %}$("#has_car2").prop("checked", true);{% endif %}
+        //{% if associate.has_van == True %}$("#has_van").prop("checked", true);{% else %}$("#has_van2").prop("checked", true);{% endif %}
+        //{% if associate.has_truck == True %}$("#has_truck").prop("checked", true);{% else %}$("#has_truck2").prop("checked", true);{% endif %}
 
         //-----------------------------//
         // MISC / OTHER INITIALIZATION //
