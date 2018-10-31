@@ -630,7 +630,7 @@
                     <label for="vehicle_types">Vehicle(s)</label>
                     <select id="vehicle_types" name="vehicle_types" class="form-control form-control-lg border border-success" name="states[]" multiple="multiple">
                     {% for vehicle_type in vehicle_types %}
-                        <option value="{{ vehicle_type.id }}" id="vehicle_type_option_id_{{ vehicle_type.id }}">{{ vehicle_type.text }}</option>
+                        <option value="{{ vehicle_type.id }}" id="vehicle_type_option_id_{{ vehicle_type.id }}">{{ vehicle_type.vehicle_type_text }}</option>
                     {% endfor %}
                     </select>
                     <div id="vehicle_types-error" class="invalid-feedback"></div>
