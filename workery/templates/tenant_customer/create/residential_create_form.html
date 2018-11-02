@@ -9,29 +9,12 @@
             	dateFormat: 'yy-mm-dd',
 	    	changeMonth: true,
             	changeYear: true,
+		firstDay: 1,
+		yearRange: "c-90:c+150",
 	        maxDate: 'today',
         });
 	
-	$(function () {
-            $.validator.addMethod(
-                "date",
-                function (value, element) {
-
-                    var minDate = Date.parse("1900-01-01");
-                    var maxDate = new Date();
-                    var valueEntered = Date.parse(value);
-
-                    if (valueEntered < minDate || valueEntered > maxDate) {
-                        return false;
-                    }
-                    return !/Invalid|NaN/.test(new Date(minDate));
-                },
-                "Please enter a valid date!"
-            );
-        });
-
-
-        // PLUG IN EVENT LISTENER ON REASON DROPDOWN CHANGE.
+	// PLUG IN EVENT LISTENER ON REASON DROPDOWN CHANGE.
         $('#how_hear').on('change',function(){
             if( $(this).val()==="1" || $(this).val()===1){
                 $("#how_hear_other_div").show();
