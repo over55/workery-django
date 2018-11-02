@@ -10,14 +10,15 @@
 	        maxDate: 'today',
         });
 	
-	
-            $("#birthdate").keyup(function(){
-                if ($(this).val().length == 2){
-                    $(this).val($(this).val() + "-");
-                }else if ($(this).val().length == 5){
-                    $(this).val($(this).val() + "-");
+	$("#birthdate").keyup(function(e){
+                if (e.keyCode != 8){    
+                    if ($(this).val().length == 2){
+                        $(this).val($(this).val() + "-");
+                    }else if ($(this).val().length == 5){
+                        $(this).val($(this).val() + "-");
+                    }
                 }
-            });
+        });
 
         // PLUG IN EVENT LISTENER ON REASON DROPDOWN CHANGE.
         $('#how_hear').on('change',function(){
