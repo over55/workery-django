@@ -180,6 +180,32 @@
 
     <h1>{% trans 'Add Job' %}</h1>
 
+    <div class="row">
+	   <div class="stepwizard pt-4 col-md-offset-3">
+            <div class="stepwizard-row setup-panel">
+              <div class="stepwizard-step step-active">
+                <a href="job_add.html" type="button" class="btn btn-primary btn-lg btn-circle step-btn-active"><i class="fas fa-check"></i></a>
+                <p>Search Existing and Add</p>
+              </div>
+              <div class="stepwizard-step step-complete">
+                <a href="#step-2" type="button" class="btn btn-primary btn-lg btn-circle"><i class="fas fa-check"></i></a>
+                <p>Job Type</p>
+              </div>
+              <div class="stepwizard-step">
+                <a href="#step-3" type="button" class="btn btn-secondary btn-lg btn-circle" disabled="disabled"><i class="fas fa-times"></i></a>
+                <p>Describe Job</p>
+              </div>
+              <div class="stepwizard-step">
+                <a href="#step-4" type="button" class="btn btn-secondary btn-lg btn-circle" disabled="disabled"><i class="fas fa-times"></i></a>
+                <p>Skills Required</p>
+              </div>
+              <div class="stepwizard-step stepwizard-step-last">
+                <a href="#step-5" type="button" class="btn btn-secondary btn-lg btn-circle" disabled="disabled"><i class="fas fa-times"></i></a>
+                <p>Review</p>
+              </div>
+            </div>
+        </div>
+    </div>
     <!-- STEP NAVIGATION -->
     <!------------------------------------------------------------------------->
     <div class="row">
