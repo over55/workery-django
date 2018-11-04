@@ -662,8 +662,8 @@ table.custom-cell-w tr th{width:35% !important;}
     width: 54px;
     height: 54px;
     text-align: center;
-    line-height: 1.8;
-    border-radius: 50%;
+    line-height: 1.8 !important;
+    border-radius: 50% !important;
 }
 @media only screen and (max-width: 767px) {
     .stepwizard-step:before {
