@@ -86,26 +86,30 @@
     
     <!-- STEP NAVIGATION -->
     <!------------------------------------------------------------------------->
+   	
     <div class="row">
-        <div class="step-navigation">
-            <div id="step-1" class="st-grey">
-                <a href="{% url 'workery_tenant_job_search_or_add_create' %}">
-                <span class="num">1.</span><span class="">Search or Add</span>
-                </a>
-            </div>
-            <div id="step-2" class="st-grey">
-                <a href="{% url 'workery_tenant_job_step_2_create' %}">
-                <span class="num">2.</span><span class="">Job Type</span>
-                </a>
-            </div>
-            <div id="step-3" class="st-grey active">
-                <span class="num">3.</span><span class="">Skills and Description</span>
-            </div>
-            <div id="step-4" class="st-grey">
-                <span class="num">4.</span><span class="">Comments</span>
-            </div>
-            <div id="step-5" class="st-grey">
-                <span class="num">5.</span><span class="">Review</span>
+	   <div class="stepwizard pt-4 col-md-offset-3">
+            <div class="stepwizard-row setup-panel">
+              <div class="stepwizard-step step-complete">
+                <a href="{% url 'workery_tenant_job_search_or_add_create' %}" type="button" class="btn btn-primary btn-lg btn-circle  text-white"><i class="fas fa-check"></i></a>
+                <p>Search or Add</p>
+              </div>
+              <div class="stepwizard-step step-complete">
+                <a href="{% url 'workery_tenant_job_step_2_create' %}" type="button" class="btn btn-primary btn-lg btn-circle text-white step-btn-active" disabled="disabled"><i class="fas fa-check"></i></a>
+                <p>Job Type</p> 
+              </div>
+              <div class="stepwizard-step step-active">
+                <a type="button" class="btn btn-primary btn-lg btn-circle text-white" disabled="disabled"><i class="fas fa-check"></i></a>
+                <p>Skills and Description</p>
+              </div>
+              <div class="stepwizard-step">
+                <a type="button" class="btn btn-secondary btn-lg btn-circle text-white" disabled="disabled"><i class="fas fa-times"></i></a>
+                <p>Comments</p>
+              </div>
+              <div class="stepwizard-step stepwizard-step-last">
+                <a type="button" class="btn btn-secondary btn-lg btn-circle text-white" disabled="disabled"><i class="fas fa-times"></i></a>
+                <p>Review</p>
+              </div>
             </div>
         </div>
     </div>
