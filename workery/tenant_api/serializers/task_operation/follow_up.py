@@ -166,7 +166,7 @@ class FollowUpTaskOperationSerializer(serializers.Serializer):
             next_task_item = TaskItem.objects.create(
                 type_of = FOLLOW_UP_IS_JOB_COMPLETE_TASK_ITEM_TYPE_OF_ID,
                 title = _('48 hour follow up - 24 hour check'),
-                description = _('It appears a previous 48 hour follow was not completed. This is a 24 hour follow up. Please call up the client and confirm that the associate and client have agreed on scheduled meeting date in the future.'),
+                description = _('It appears a previous 48 hour follow was not completed. This is a 24 hour follow up. Please call the Associate and confirm that they have scheduled a meeting date with the client.'),
                 due_date = get_date_plus_days(timezone.now(), 1), # 24 hour version instead of 48 hour version!
                 is_closed = False,
                 job = task_item.job,
