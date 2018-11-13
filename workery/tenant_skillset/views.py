@@ -21,7 +21,7 @@ class SkillSetSearchView(LoginRequiredMixin, GroupRequiredMixin, WorkeryListView
     context_object_name = 'skill_set_list'
     template_name = 'tenant_skillset/search_view.html'
     paginate_by = 100
-    menu_id = "skillset"
+    menu_id = "skillsets"
     group_required = [
         constants.EXECUTIVE_GROUP_ID,
         constants.MANAGEMENT_GROUP_ID,
@@ -38,7 +38,7 @@ class SkillSetSearchView(LoginRequiredMixin, GroupRequiredMixin, WorkeryListView
 
     def get_context_data(self, **kwargs):
         modified_context = super().get_context_data(**kwargs)
-        modified_context['menu_id'] = "skillset"
+        modified_context['menu_id'] = "skillsets"
         modified_context['skillsets'] = SkillSet.objects.all().order_by('sub_category')
         return modified_context
 
@@ -48,7 +48,7 @@ class SkillSetSearchResultsView(LoginRequiredMixin, GroupRequiredMixin, WorkeryL
     context_object_name = 'associate_list'
     template_name = 'tenant_skillset/result_view.html'
     paginate_by = 100
-    menu_id = "associates"
+    menu_id = "skillsets"
     skip_parameters_array = ['page']
     group_required = [
         constants.EXECUTIVE_GROUP_ID,
@@ -81,5 +81,6 @@ class SkillSetSearchResultsView(LoginRequiredMixin, GroupRequiredMixin, WorkeryL
         arr = []
         for pk in pks_arr:
             arr.append(int(pk))
+        modified_context['menu_id'] = "skillsets"
         modified_context['pks_arr'] = arr
         return modified_context
