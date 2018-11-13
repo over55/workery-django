@@ -127,7 +127,7 @@
                         {% endif %}
                     </td>
                     <td>
-                        {{ last_modified_job.last_modified|timezone:request.tenant.timezone_name|date:"N j, Y"}}
+                        {{ last_modified_job.last_modified|timezone:request.tenant.timezone_name|date:"N j, Y - g:i A"}}
                     </td>
                     <td>
                         <a href="{% url 'workery_tenant_job_retrieve' 'summary' last_modified_job.id %}">
@@ -285,7 +285,7 @@
                         {% endif %}
                     </td>
                     <td>
-                        {{ last_modified_job.last_modified|timezone:request.tenant.timezone_name|date:"N j, Y"}}
+                        {{ last_modified_job.last_modified|timezone:request.tenant.timezone_name|date:"N j, Y - g:i A"}}
                     </td>
                     <td>
                         <a href="{% url 'workery_tenant_job_retrieve' 'summary' last_modified_job.id %}">
