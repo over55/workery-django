@@ -66,6 +66,12 @@
                 <i class="fas fa-clock"></i>
                 <span class="">Pending Tasks ({{ pending_count|intcomma }})</span>
             </div>
+            <div id="step-2" class="st-grey">
+                <a href="{% url 'workery_tenant_48h_follow_up_task_list' %}">
+                    <i class="fas fa-clock"></i>
+                    <span class="">48h Follow Up Tasks ({{ 48h_follow_up_count|intcomma }})</span>
+                </a>
+            </div>
             <div id="step-3" class="st-grey">
                 <a href="{% url 'workery_tenant_closed_task_list' %}">
                     <i class="fas fa-check-circle"></i>

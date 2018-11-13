@@ -9,6 +9,7 @@ urlpatterns = (
     # Active List
     path('unassigned-tasks/', views.UnassignedTaskListView.as_view(), name='workery_tenant_unassigned_task_list'),
     path('pending-tasks/', views.PendingTaskListView.as_view(), name='workery_tenant_task_list'),
+    path('48h-follow-up-tasks/', views.FourtyEightHourFollowUpTaskListView.as_view(), name='workery_tenant_48h_follow_up_task_list'),
     path('closed-tasks/', views.ClosedTaskListView.as_view(), name='workery_tenant_closed_task_list'),
 
     # Retrieve

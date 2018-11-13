@@ -62,6 +62,7 @@ class PendingTaskListView(LoginRequiredMixin, GroupRequiredMixin, WorkeryListVie
         # Get count of total tasks.
         modified_context['unassigned_count'] = TaskItem.objects.filter(type_of=ASSIGNED_ASSOCIATE_TASK_ITEM_TYPE_OF_ID, is_closed=False).count()
         modified_context['pending_count'] = TaskItem.objects.filter(is_closed=False).count()
+        modified_context['48h_follow_up_count'] = TaskItem.objects.filter(type_of=FOLLOW_UP_IS_JOB_COMPLETE_TASK_ITEM_TYPE_OF_ID, is_closed=False).count()
         modified_context['closed_count'] = TaskItem.objects.filter(is_closed=True).count()
 
         # Return our modified context.
@@ -108,6 +109,7 @@ class ClosedTaskListView(LoginRequiredMixin, GroupRequiredMixin, WorkeryListView
         # Get count of total tasks.
         modified_context['unassigned_count'] = TaskItem.objects.filter(type_of=ASSIGNED_ASSOCIATE_TASK_ITEM_TYPE_OF_ID, is_closed=False).count()
         modified_context['pending_count'] = TaskItem.objects.filter(is_closed=False).count()
+        modified_context['48h_follow_up_count'] = TaskItem.objects.filter(type_of=FOLLOW_UP_IS_JOB_COMPLETE_TASK_ITEM_TYPE_OF_ID, is_closed=False).count()
         modified_context['closed_count'] = TaskItem.objects.filter(is_closed=True).count()
 
         # Return our modified context.
@@ -288,6 +290,7 @@ class UnassignedTaskListView(LoginRequiredMixin, GroupRequiredMixin, WorkeryList
         # Get count of total tasks.
         modified_context['unassigned_count'] = TaskItem.objects.filter(type_of=ASSIGNED_ASSOCIATE_TASK_ITEM_TYPE_OF_ID, is_closed=False).count()
         modified_context['pending_count'] = TaskItem.objects.filter(is_closed=False).count()
+        modified_context['48h_follow_up_count'] = TaskItem.objects.filter(type_of=FOLLOW_UP_IS_JOB_COMPLETE_TASK_ITEM_TYPE_OF_ID, is_closed=False).count()
         modified_context['closed_count'] = TaskItem.objects.filter(is_closed=True).count()
 
         # Return our modified context.
@@ -386,3 +389,40 @@ class PendingTaskRetrieveForUpdateOngoingJobView(LoginRequiredMixin, GroupRequir
         constants.EXECUTIVE_GROUP_ID,
         constants.MANAGEMENT_GROUP_ID,
     ]
+
+
+class FourtyEightHourFollowUpTaskListView(LoginRequiredMixin, GroupRequiredMixin, WorkeryListView):
+    context_object_name = 'task_list'
+    queryset = TaskItem.objects.filter(
+        type_of=FOLLOW_UP_IS_JOB_COMPLETE_TASK_ITEM_TYPE_OF_ID,
+        is_closed=False
+    ).prefetch_related(
+        'job',
+        'job__associate',
+        'job__customer',
+        'ongoing_job',
+        'ongoing_job__associate',
+        'ongoing_job__customer',
+        'created_by',
+        'last_modified_by'
+    )
+    template_name = 'tenant_task/48h_follow_up/list_view.html'
+    paginate_by = 100
+    menu_id = "task"
+    group_required = [
+        constants.EXECUTIVE_GROUP_ID,
+        constants.MANAGEMENT_GROUP_ID,
+        constants.FRONTLINE_GROUP_ID
+    ]
+
+    def get_context_data(self, **kwargs):
+        modified_context = super().get_context_data(**kwargs)
+
+        # Get count of total tasks.
+        modified_context['unassigned_count'] = TaskItem.objects.filter(type_of=ASSIGNED_ASSOCIATE_TASK_ITEM_TYPE_OF_ID, is_closed=False).count()
+        modified_context['pending_count'] = TaskItem.objects.filter(is_closed=False).count()
+        modified_context['48h_follow_up_count'] = TaskItem.objects.filter(type_of=FOLLOW_UP_IS_JOB_COMPLETE_TASK_ITEM_TYPE_OF_ID, is_closed=False).count()
+        modified_context['closed_count'] = TaskItem.objects.filter(is_closed=True).count()
+
+        # Return our modified context.
+        return modified_context
