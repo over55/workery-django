@@ -138,6 +138,11 @@
                         </a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link {% if menu_id == 'skillsets' %}active{% endif %}" href="{% url 'workery_tenant_skillset_search' %}">
+                        <i class="fas fa-graduation-cap"></i>&nbsp;{% trans 'Skillsets' %}
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link {% if menu_id == 'team' %}active{% endif %}" href="{% url 'workery_tenant_team_summary' %}">
                         <i class="fas fa-user-tie"></i>&nbsp;{% trans 'Staff' %}
                         </a>

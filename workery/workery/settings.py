@@ -124,6 +124,7 @@ TENANT_APPS = (
     'tenant_order_operation',
     'tenant_team',
     'tenant_setting',
+    'tenant_skillset',
     'tenant_resource',
     'tenant_help',
     'tenant_partner',

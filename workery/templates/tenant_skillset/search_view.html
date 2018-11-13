@@ -1,0 +1,82 @@
+{% extends 'tenant_foundation/tenant_base.html' %}
+{% load staticfiles i18n shared_foundation_tags humanize %}
+{% block title %}
+{% trans 'Add New Job | Workery' %}
+{% endblock title %}
+{% block header_content %}
+{% endblock header_content %}
+{% block content %}
+<script>
+    // Pre-populate the field with previous data.
+    $(document).ready(function() {
+        // Populate our 'select2' chosen values.
+        var tmp_skillsets = localStorage.getObj("tmp_skillsets");
+        $('#skillsets').val(tmp_skillsets);
+
+        // Initialize our 'select2' element.
+        $('.js-example-basic-multiple').select2();
+    });
+
+    // Save this field.
+    function ajax_submit() {
+        var tmp_skillsets = $('#skillsets').val();
+        localStorage.setObj("tmp_skillsets", tmp_skillsets);
+	     if (tmp_skillsets == undefined || tmp_skillsets == null || tmp_skillsets.length == 0) {
+            tmp_skillsets = '';
+        }
+
+        var ids_string = tmp_skillsets.toString();
+
+        window.location = "{% url 'workery_tenant_skillset_search_results' %}?pks="+ids_string;
+    }
+
+    function ajax_previous() {
+        window.location = "{% url 'workery_tenant_job_step_2_create' %}";
+    }
+</script>
+<main id="main" role="main">
+    <!-- BREADCRUMB -->
+    <!------------------------------------------------------------------------->
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'workery_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{% trans 'Skillsets' %}</li>
+        </ol>
+    </nav>
+    <!------------------------------------------------------------------------->
+    <!-- end BREADCRUMB -->
+
+    <h1>Search Associates by Skillset(s)</h1>
+
+    <!-- STEP NAVIGATION -->
+    <!------------------------------------------------------------------------->
+
+
+    <!------------------------------------------------------------------------->
+    <!-- end STEP NAVIGATION -->
+
+    <div class="col-md-5 mx-auto mt-2">
+        <!-- <h3 class="pt-4 pb-2 text-center">Search Associates by Skillset(s)</h3> -->
+        <form id="residential-job" class="needs-validation" action="" novalidate>
+
+            <div class="form-row">
+                <div class="form-group col-md-12 mb-4">
+                    <label for="skillsets" class="font-b6">Please select skill(s) to search by:</label>
+                    <select id="skillsets" name="skillsets" class="js-example-basic-multiple form-control form-control-lg border border-success" name="states[]" multiple="multiple">
+                        {% for skillset in skillsets %}
+                        <option value="{{ skillset.id }}" id="option_id_{{ skillset.id }}">{{ skillset.sub_category }}</option>
+                        {% endfor %}
+                    </select>
+                    <div id="skillsets-error" class="invalid-feedback"></div>
+                </div>
+            </div>
+            <div class="form-group mb-3 mx-auto text-center p-0">
+                <button class="btn btn-success btn-lg mt-4 float-right pl-4 pr-4" type="button" onclick="ajax_submit();">Search <i class="fas fa-arrow-right"></i></button>
+            </div>
+        </form>
+    </div>
+    <!-- RETURN-TO-TOP -->
+    <a id="return-to-top" href="#" class="btn-info btn-lg back-to-top" role="button" title="Back to top"><i class="fas fa-angle-up fa-2x"></i></a>
+    <!-- end RETURN-TO-TOP -->
+</main>
+{% endblock content %}
