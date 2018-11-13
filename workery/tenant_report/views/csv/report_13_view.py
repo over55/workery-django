@@ -118,6 +118,7 @@ def report_13_streaming_csv_view(request):
     rows += ([
         "Job No.",
         "Assignment Date",
+        "Job Status",
         "Job Completion Date",
         "Client No.",
         "Client Name",
@@ -139,20 +140,25 @@ def report_13_streaming_csv_view(request):
         # Attach all the skill sets that are associated with each job.
         skill_set_string = job.get_skill_sets_string()
 
+        customer_telephone = job.customer.telephone if job.customer else "-"
+        customer_email = job.customer.email if job.customer else "-"
+        associate_email = job.associate.email if job.associate else "-"
+
         # Generate the row.
         rows += ([
             job.id,
             pretty_dt_string(job.assignment_date),
+            job.get_pretty_status(),
             pretty_dt_string(job.completion_date),
             job.customer.id,
             str(job.customer),
             job.customer.get_postal_address_without_postal_code(),
-            str(job.customer.telephone),
-            job.customer.email,
+            str(customer_telephone),
+            str(customer_email),
             skill_set_string,
             str(job.associate),
-            str(job.associate.telephone),
-            job.associate.email,
+            str(customer_telephone),
+            str(associate_email),
         ],)
 
     pseudo_buffer = Echo()
