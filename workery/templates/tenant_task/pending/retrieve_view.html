@@ -186,6 +186,18 @@
                     </td>
                 </tr>
                 {% endif %}
+                {% if task_item.type_of != 1 %}
+                <tr>
+                    <th scope="row" class="bg-light">Associate Telephone</th>
+                    <td id="associate_name">
+                        {% if task_item.job %}
+                            {% if task_item.job.associate.telephone %}<a href="tel:{{ task_item.job.associate.telephone }}">{{ task_item.job.associate.telephone|pretty_formatted_phonenumber }}</a>{% else %}-{% endif %}
+                        {% elif task_item.ongoing_job %}
+                            {% if task_item.ongoing_job.associate.telephone %}<a href="tel:{{ task_item.ongoing_job.associate.telephone }}">{{ task_item.ongoing_job.associate.telephone|pretty_formatted_phonenumber }}</a>{% else %}-{% endif %}
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endif %}
                 {% endif %}
                 <tr>
                     <th scope="row" class="bg-light">Job Description</th>
