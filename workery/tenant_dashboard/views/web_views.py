@@ -81,5 +81,14 @@ class DashboardView(LoginRequiredMixin, GroupRequiredMixin, WorkeryTemplateView)
             'comment'
         )
 
+        modified_context['last_modified_jobs_by_user'] = WorkOrder.objects.filter(
+            last_modified_by = self.request.user
+        ).order_by(
+            '-last_modified'
+        )[0:5]
+        modified_context['last_modified_jobs_by_team'] = WorkOrder.objects.order_by(
+            '-last_modified'
+        )[0:10]
+
         # Return our modified context.
         return modified_context

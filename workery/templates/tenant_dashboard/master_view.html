@@ -1,5 +1,5 @@
 {% extends 'tenant_foundation/tenant_base.html' %}
-{% load staticfiles i18n humanize %}
+{% load staticfiles i18n humanize tz shared_foundation_tags %}
 
 {% block title %}
 {% trans 'Dashboard | Workery' %}
@@ -96,6 +96,51 @@
         </div>
 
     </section>
+
+    <!-- LATEST ORDERS BY YOU -->
+    <h1>{% trans 'Lastest jobs modified by you' %}</h1>
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Job #</th>
+                    <th>Client Name</th>
+                    <th>Associate Name</th>
+                    <th>Last Modified</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for last_modified_job in last_modified_jobs_by_user %}
+                <tr>
+                    <td>
+                        <a href="{% url 'workery_tenant_job_retrieve' 'summary' last_modified_job.id %}">{{ last_modified_job.id|intcomma }}</a>
+                    </td>
+                    <td>
+                        {% if last_modified_job.customer %}
+                            {{ last_modified_job.customer }}
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if last_modified_job.associate %}
+                            {{ last_modified_job.associate }}
+                        {% endif %}
+                    </td>
+                    <td>
+                        {{ last_modified_job.last_modified|timezone:request.tenant.timezone_name|date:"N j, Y"}}
+                    </td>
+                    <td>
+                        <a href="{% url 'workery_tenant_job_retrieve' 'summary' last_modified_job.id %}">
+                            {% trans 'View' %}&nbsp;<i class="fas fa-chevron-right"></i>
+                        </a>
+                    </td>
+                </tr>
+                {% empty %}
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <!-- end LATEST ORDERS BY YOU -->
 
     <!-- NOTIFICATION -->
     <!------------------------------------------------------------------------->
@@ -209,6 +254,51 @@
     </div>
     <!-- end ORDER COMMENTS -->
     <a href="{% url 'workery_tenant_job_comments_list' %}">See more comments&nbsp;<i class="fas fa-chevron-right"></i></a>
+
+    <!-- LATEST ORDERS BY TEAM -->
+    <h1>{% trans 'Lastest jobs modified by team' %}</h1>
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Job #</th>
+                    <th>Client Name</th>
+                    <th>Associate Name</th>
+                    <th>Last Modified</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for last_modified_job in last_modified_jobs_by_team %}
+                <tr>
+                    <td>
+                        <a href="{% url 'workery_tenant_job_retrieve' 'summary' last_modified_job.id %}">{{ last_modified_job.id|intcomma }}</a>
+                    </td>
+                    <td>
+                        {% if last_modified_job.customer %}
+                            {{ last_modified_job.customer }}
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if last_modified_job.associate %}
+                            {{ last_modified_job.associate }}
+                        {% endif %}
+                    </td>
+                    <td>
+                        {{ last_modified_job.last_modified|timezone:request.tenant.timezone_name|date:"N j, Y"}}
+                    </td>
+                    <td>
+                        <a href="{% url 'workery_tenant_job_retrieve' 'summary' last_modified_job.id %}">
+                            {% trans 'View' %}&nbsp;<i class="fas fa-chevron-right"></i>
+                        </a>
+                    </td>
+                </tr>
+                {% empty %}
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <!-- end LATEST ORDERS BY TEAM -->
 
     <!-- RETURN-TO-TOP -->
     <a id="return-to-top" href="#" class="btn-info btn-lg back-to-top" role="button" title="Back to top"><i class="fas fa-angle-up fa-2x"></i></a>
