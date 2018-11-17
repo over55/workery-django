@@ -74,26 +74,51 @@
             // Initialize our datepicker jQuery code with our HTML view.
             $( "#birthdate" ).datepicker({
                 dateFormat: 'yy-mm-dd',
-                maxDate: 'today'
+	    	changeMonth: true,
+            	changeYear: true,
+		yearRange: "c-90:c+150",
+	        maxDate: 'today'
             });
             $( "#join_date" ).datepicker({
                 dateFormat: 'yy-mm-dd',
-                maxDate: 'today'
+	    	changeMonth: true,
+            	changeYear: true,
+		yearRange: "c-90:c+150",
+	        maxDate: 'today'
             });
             $( "#dues_date" ).datepicker({
-                dateFormat: 'yy-mm-dd'  // https://stackoverflow.com/a/7500097
+                dateFormat: 'yy-mm-dd',
+	    	changeMonth: true,
+            	changeYear: true,
+		yearRange: "c-90:c+150"
+	       
             });
             $( "#commercial_insurance_expiry_date" ).datepicker({
-                dateFormat: 'yy-mm-dd'  // https://stackoverflow.com/a/7500097
+                dateFormat: 'yy-mm-dd',
+	    	changeMonth: true,
+            	changeYear: true,
+		yearRange: "c-90:c+150"
+	        
             });
             $( "#auto_insurance_expiry_date" ).datepicker({
-                dateFormat: 'yy-mm-dd'  // https://stackoverflow.com/a/7500097
+                dateFormat: 'yy-mm-dd',
+	    	changeMonth: true,
+            	changeYear: true,
+		yearRange: "c-90:c+150"
             });
             $( "#wsib_insurance_date" ).datepicker({
-                dateFormat: 'yy-mm-dd'  // https://stackoverflow.com/a/7500097
+                dateFormat: 'yy-mm-dd',
+	    	changeMonth: true,
+            	changeYear: true,
+		yearRange: "c-90:c+150"
+	       
             });
             $( "#police_check" ).datepicker({
-                dateFormat: 'yy-mm-dd'  // https://stackoverflow.com/a/7500097
+                dateFormat: 'yy-mm-dd',
+	    	changeMonth: true,
+            	changeYear: true,
+		yearRange: "c-90:c+150"
+	       
             });
 
 	        //------------------------//
@@ -729,7 +754,7 @@
                 <div class="form-group p-0 col-md-7 mb-4">
                     <label for="birthdate">Date of Birth</label>
                     <div class="input-group input-group-lg">
-                        <input type="text" class="form-control form-control-lg border border-success" id="birthdate" name="birthdate" placeholder="yyyy-mm-dd" required>
+                        <input type="text" class="form-control form-control-lg border border-success date-box" id="birthdate" name="birthdate" placeholder="yyyy-mm-dd" readonly="true" required>
                         <div class="input-group-append">
                             <span class="input-group-text dob-icon bg-success border-success"><i class="far fa-calendar-alt"></i></span>
                         </div>
@@ -864,7 +889,7 @@
                 <div class="form-group col-md-7 mb-4">
                     <label for="join_date">Join Date <sup>*</sup></label>
                     <div class="input-group input-group-lg">
-                        <input type="text" class="form-control form-control-lg border border-primary" id="join_date" name="join_date" placeholder="yyyy-mm-dd" required>
+                        <input type="text" class="form-control form-control-lg border border-primary date-box" id="join_date" name="join_date" placeholder="yyyy-mm-dd" readonly="true" required>
                         <div class="input-group-append">
                             <span class="input-group-text c-icon-white bg-primary border-primary"><i class="far fa-calendar-alt"></i></span>
                         </div>
@@ -903,7 +928,7 @@
                 <div class="form-group col-md-7 mb-4">
                     <label for="commercial_insurance_expiry_date">Commercial Insurance Expiry Date <sup>*</sup></label>
                     <div class="input-group input-group-lg">
-                        <input type="text" class="form-control form-control-lg border border-success" id="commercial_insurance_expiry_date" name="commercial_insurance_expiry_date" placeholder="yyyy-mm-dd" required>
+                        <input type="text" class="form-control form-control-lg border border-success date-box" id="commercial_insurance_expiry_date" name="commercial_insurance_expiry_date" placeholder="yyyy-mm-dd" readonly="true" required>
                         <div class="input-group-append">
                             <span class="input-group-text c-icon-white bg-success border-success"><i class="far fa-calendar-alt"></i></span>
                         </div>
@@ -913,7 +938,7 @@
                 <div class="form-group col-md-7 mb-4">
                     <label for="auto_insurance_expiry_date">Auto Insurance Expiry Date</label>
                     <div class="input-group input-group-lg">
-                        <input type="text" class="form-control form-control-lg border border-success" id="auto_insurance_expiry_date" name="auto_insurance_expiry_date" placeholder="yyyy-mm-dd" required>
+                        <input type="text" class="form-control form-control-lg border border-success date-box" id="auto_insurance_expiry_date" name="auto_insurance_expiry_date" placeholder="yyyy-mm-dd" readonly="true" required>
                         <div class="input-group-append">
                             <span class="input-group-text c-icon-white bg-success border-success"><i class="far fa-calendar-alt"></i></span>
                         </div>
@@ -923,7 +948,7 @@
                 <div class="form-group col-md-7 mb-4">
                     <label for="wsib_insurance_date">WSIB Insurance Date</label>
                     <div class="input-group input-group-lg">
-                        <input type="text" class="form-control form-control-lg border border-success" id="wsib_insurance_date" name="wsib_insurance_date" placeholder="yyyy-mm-dd" required>
+                        <input type="text" class="form-control form-control-lg border border-success date-box" id="wsib_insurance_date" name="wsib_insurance_date" placeholder="yyyy-mm-dd" readonly="true" required>
                         <div class="input-group-append">
                             <span class="input-group-text c-icon-white bg-success border-success"><i class="far fa-calendar-alt"></i></span>
                         </div>
