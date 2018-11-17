@@ -532,7 +532,7 @@
                 <div class="form-group col-md-7 mb-4">
                     <label for="join_date">Join date&nbsp;<sup>*</sup></label>
                     <div class="input-group input-group-lg">
-                        <input type="text" class="form-control form-control-lg border border-primary" id="join_date" name="join_date" placeholder="yyyy-mm-dd" required value="{% if associate.join_date %}{{ associate.join_date|date:"Y-m-d" }}{% endif %}">
+                        <input type="text" class="form-control form-control-lg border border-primary box-date" id="join_date" name="join_date" readonly="true" placeholder="yyyy-mm-dd" required value="{% if associate.join_date %}{{ associate.join_date|date:"Y-m-d" }}{% endif %}">
                         <div class="input-group-append">
                             <span class="input-group-text dob-icon bg-success border-primary"><i class="far fa-calendar-alt"></i></span>
                         </div>
@@ -561,7 +561,7 @@
                 <div class="form-group col-md-7 mb-4">
                     <label for="dues_date">Member Dues Expiry</label>
                     <div class="input-group input-group-lg">
-                        <input type="text" class="form-control form-control-lg border border-success" id="dues_date" name="dues_date" placeholder="yyyy-mm-dd" value="{% if associate.dues_date %}{{ associate.dues_date|date:"Y-m-d" }}{% endif %}" required>
+                        <input type="text" class="form-control form-control-lg border border-success date-box" id="dues_date" name="dues_date" placeholder="yyyy-mm-dd" readonly="true" value="{% if associate.dues_date %}{{ associate.dues_date|date:"Y-m-d" }}{% endif %}" required>
                         <div class="input-group-append">
                             <span class="input-group-text c-icon-white bg-success border-success"><i class="far fa-calendar-alt"></i></span>
                         </div>
@@ -571,7 +571,7 @@
                 <div class="form-group col-md-7 mb-4">
                     <label for="commercial_insurance_expiry_date">Commercial Insurance Expiry Date</label>
                     <div class="input-group input-group-lg">
-                        <input type="text" class="form-control form-control-lg border border-success" id="commercial_insurance_expiry_date" name="commercial_insurance_expiry_date" placeholder="yyyy-mm-dd" value="{% if associate.commercial_insurance_expiry_date %}{{ associate.commercial_insurance_expiry_date|date:"Y-m-d" }}{% endif %}" required>
+                        <input type="text" class="form-control form-control-lg border border-success date-box" id="commercial_insurance_expiry_date" name="commercial_insurance_expiry_date" placeholder="yyyy-mm-dd" value="{% if associate.commercial_insurance_expiry_date %}{{ associate.commercial_insurance_expiry_date|date:"Y-m-d" }}{% endif %}" readonly="true" required>
                         <div class="input-group-append">
                             <span class="input-group-text c-icon-white bg-success border-success"><i class="far fa-calendar-alt"></i></span>
                         </div>
@@ -581,7 +581,7 @@
                 <div class="form-group col-md-7 mb-4">
                     <label for="auto_insurance_expiry_date">Auto Insurance Expiry Date</label>
                     <div class="input-group input-group-lg">
-                        <input type="text" class="form-control form-control-lg border border-success" id="auto_insurance_expiry_date" name="auto_insurance_expiry_date" placeholder="yyyy-mm-dd" value="{% if associate.auto_insurance_expiry_date %}{{ associate.auto_insurance_expiry_date|date:"Y-m-d" }}{% endif %}" required>
+                        <input type="text" class="form-control form-control-lg border border-success date-box" id="auto_insurance_expiry_date" name="auto_insurance_expiry_date" placeholder="yyyy-mm-dd" value="{% if associate.auto_insurance_expiry_date %}{{ associate.auto_insurance_expiry_date|date:"Y-m-d" }}{% endif %}" readonly="true" required>
                         <div class="input-group-append">
                             <span class="input-group-text c-icon-white bg-success border-success"><i class="far fa-calendar-alt"></i></span>
                         </div>
@@ -596,7 +596,7 @@
                 <div class="form-group col-md-7 mb-4">
                     <label for="wsib_insurance_date">WSIB Insurance Date</label>
                     <div class="input-group input-group-lg">
-                        <input type="text" class="form-control form-control-lg border border-success" id="wsib_insurance_date" name="wsib_insurance_date" placeholder="yyyy-mm-dd" value="{% if associate.wsib_insurance_date %}{{ associate.wsib_insurance_date|date:"Y-m-d" }}{% endif %}" required>
+                        <input type="text" class="form-control form-control-lg border border-success date-box" id="wsib_insurance_date" name="wsib_insurance_date" placeholder="yyyy-mm-dd" value="{% if associate.wsib_insurance_date %}{{ associate.wsib_insurance_date|date:"Y-m-d" }}{% endif %}" readonly="true" required>
                         <div class="input-group-append">
                             <span class="input-group-text c-icon-white bg-success border-success"><i class="far fa-calendar-alt"></i></span>
                         </div>
@@ -606,7 +606,7 @@
                 <div class="form-group col-md-7 mb-4">
                     <label for="police_check">Police Check</label>
                     <div class="input-group input-group-lg">
-                        <input type="text" class="form-control form-control-lg border border-success" id="police_check" name="police_check" placeholder="yyyy-mm-dd" value="{% if associate.police_check  %}{{ associate.police_check|date:"Y-m-d" }}{% endif %}">
+                        <input type="text" class="form-control form-control-lg border border-success date-box" id="police_check" name="police_check" placeholder="yyyy-mm-dd" value="{% if associate.police_check  %}{{ associate.police_check|date:"Y-m-d" }}{% endif %}" readonly="true" >
                         <div class="input-group-append">
                             <span class="input-group-text c-icon-white bg-success border-success"><i class="far fa-calendar-alt"></i></span>
                         </div>
@@ -750,26 +750,47 @@
         // Initialize our datepicker jQuery code with our HTML view.
         $( "#birthdate" ).datepicker({
             dateFormat: 'yy-mm-dd',
-	        maxDate: 'today'
+	     changeMonth: true,
+             changeYear: true,
+	     yearRange: "c-90:c+150",
+	     maxDate: 'today'
         });
         $( "#join_date" ).datepicker({
             dateFormat: 'yy-mm-dd',
-	        maxDate: 'today'
+	     changeMonth: true,
+             changeYear: true,
+	     yearRange: "c-90:c+150",
+	     maxDate: 'today'
         });
         $( "#dues_date" ).datepicker({
-            dateFormat: 'yy-mm-dd'  // https://stackoverflow.com/a/7500097
+            dateFormat: 'yy-mm-dd',
+	     changeMonth: true,
+             changeYear: true,
+	     yearRange: "c-90:c+150"
         });
         $( "#commercial_insurance_expiry_date" ).datepicker({
-            dateFormat: 'yy-mm-dd'  // https://stackoverflow.com/a/7500097
+            dateFormat: 'yy-mm-dd',
+	     changeMonth: true,
+             changeYear: true,
+	     yearRange: "c-90:c+150"
         });
         $( "#auto_insurance_expiry_date" ).datepicker({
-            dateFormat: 'yy-mm-dd'  // https://stackoverflow.com/a/7500097
+            dateFormat: 'yy-mm-dd',
+	     changeMonth: true,
+             changeYear: true,
+	     yearRange: "c-90:c+150"
         });
         $( "#wsib_insurance_date" ).datepicker({
-            dateFormat: 'yy-mm-dd'  // https://stackoverflow.com/a/7500097
+            dateFormat: 'yy-mm-dd',
+	     changeMonth: true,
+             changeYear: true,
+	     yearRange: "c-90:c+150"
         });
         $( "#police_check" ).datepicker({
-            dateFormat: 'yy-mm-dd'  // https://stackoverflow.com/a/7500097
+           dateFormat: 'yy-mm-dd',
+	     changeMonth: true,
+             changeYear: true,
+	     yearRange: "c-90:c+150"
         });
 
 	//------------------------//
