@@ -51,7 +51,10 @@
             // Initialize our datepicker jQuery code with our HTML view.
             $( "#birthdate" ).datepicker({
                 dateFormat: 'yy-mm-dd',
-		        maxDate: 'today'
+	    	changeMonth: true,
+            	changeYear: true,
+		yearRange: "c-90:c+150",
+	        maxDate: 'today'
             });
 
             // Populate our 'select2' chosen values.
@@ -507,7 +510,7 @@
                 <div class="form-group col-md-7 mb-4">
                     <label for="birthdate">Date of Birth</label>
                     <div class="input-group input-group-lg">
-                        <input type="text" class="form-control form-control-lg border border-success" id="birthdate" name="birthdate" placeholder="yyyy-mm-dd" required>
+                        <input type="text" class="form-control form-control-lg border border-success date-box" id="birthdate" name="birthdate" placeholder="yyyy-mm-dd" readonly="true" required>
                         <div class="input-group-append">
                             <span class="input-group-text dob-icon bg-success border-success"><i class="far fa-calendar-alt"></i></span>
                         </div>
