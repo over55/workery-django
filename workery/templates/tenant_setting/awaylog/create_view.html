@@ -17,8 +17,11 @@
     $(document).ready(function () {
         // Initialize our datepicker jQuery code with our HTML view.
         $( "#until_date" ).datepicker({
-            dateFormat: 'yy-mm-dd',
-	        minDate: 'today'
+            	dateFormat: 'yy-mm-dd',
+	        changeMonth: true,
+            	changeYear: true,
+		yearRange: "c-90:c+150",
+		minDate: 'today'
         });
 
         /*
@@ -260,7 +263,7 @@
                         <div class="form-group p-0 col-md-7 mb-4" id="until_date_div" style="display: none;">
                             <label for="dob">Until Date <sup>*</sup></label>
                             <div class="input-group input-group-lg">
-                                <input type="text" class="form-control form-control-lg border border-success" id="until_date" name="until_date" placeholder="yyyy-mm-dd" required="">
+                                <input type="text" class="form-control form-control-lg border border-success date-box" id="until_date" name="until_date" placeholder="yyyy-mm-dd" readonly="true" required="">
                                 <div class="input-group-append">
                                     <span class="input-group-text dob-icon bg-success border-success"><i class="far fa-calendar-alt"></i></span>
                                 </div>
