@@ -417,8 +417,8 @@ class FourtyEightHourFollowUpTaskListView(LoginRequiredMixin, GroupRequiredMixin
         if sort != "all":
             if sort == "job__associates":
                 tasks = tasks.order_by('associate')
-            if sort == "due_date":
-                tasks = tasks.order_by('associate')
+            if sort == "date":
+                tasks = tasks.order_by('due_date')
 
         tasks = tasks.prefetch_related(
             'job',
