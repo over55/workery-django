@@ -78,11 +78,13 @@
                 </button>
                 <div class="dropdown-menu">
 
+                    {% comment %}
                     {% if parameters.sort == "all" %}
                         <strong class="px-4 py-2">All</strong>
                     {% else %}
                         <a class="dropdown-item" href="?sort=all" class="text-center">All</a>
                     {% endif %}
+                    {% endcomment %}
 
                     {% if parameters.sort == "associates" %}
                         <strong class="px-4 py-2">Associates</strong>
