@@ -65,7 +65,10 @@ class SkillSetSearchResultsView(LoginRequiredMixin, GroupRequiredMixin, WorkeryL
         pks_string = self.request.GET.get('pks', None)
         pks_arr = pks_string.split(",")
         if pks_arr:
-            queryset = Associate.objects.filter(skill_sets__in=pks_arr)
+            queryset = Associate.objects.filter(
+                skill_sets__in=pks_arr,
+                owner__is_active=True
+            )
             queryset = queryset.order_by('last_name', 'given_name')
 
         # Attach skillsets.
