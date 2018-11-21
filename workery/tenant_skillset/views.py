@@ -69,7 +69,7 @@ class SkillSetSearchResultsView(LoginRequiredMixin, GroupRequiredMixin, WorkeryL
                 skill_sets__in=pks_arr,
                 owner__is_active=True
             )
-            queryset = queryset.order_by('last_name', 'given_name')
+            queryset = queryset.order_by('last_name', 'given_name').distinct()
 
         # Attach skillsets.
         queryset = queryset.prefetch_related('skill_sets')
