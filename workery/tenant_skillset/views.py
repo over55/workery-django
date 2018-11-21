@@ -61,10 +61,10 @@ class SkillSetSearchResultsView(LoginRequiredMixin, GroupRequiredMixin, WorkeryL
         Override the default queryset to allow dynamic filtering with
         GET parameterss using the 'django-filter' library.
         """
-        queryset = None  # The queryset we will be returning.
-        pks_string = self.request.GET.get('pks', None)
+        queryset = Associate.objects.none()  # The queryset we will be returning.
+        pks_string = self.request.GET.get('pks', "")
         pks_arr = pks_string.split(",")
-        if pks_arr:
+        if pks_arr != ['']:
             queryset = Associate.objects.filter(
                 skill_sets__in=pks_arr,
                 owner__is_active=True
@@ -73,7 +73,6 @@ class SkillSetSearchResultsView(LoginRequiredMixin, GroupRequiredMixin, WorkeryL
 
         # Attach skillsets.
         queryset = queryset.prefetch_related('skill_sets')
-
         return queryset
 
     def get_context_data(self, **kwargs):
@@ -83,7 +82,10 @@ class SkillSetSearchResultsView(LoginRequiredMixin, GroupRequiredMixin, WorkeryL
 
         arr = []
         for pk in pks_arr:
-            arr.append(int(pk))
+            if len(pk):
+                pk_int = int(pk)
+                arr.append(pk_int)
+
         modified_context['menu_id'] = "skillsets"
         modified_context['pks_arr'] = arr
         return modified_context
