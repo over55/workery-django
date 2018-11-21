@@ -393,19 +393,6 @@ class PendingTaskRetrieveForUpdateOngoingJobView(LoginRequiredMixin, GroupRequir
 
 class FourtyEightHourFollowUpTaskListView(LoginRequiredMixin, GroupRequiredMixin, WorkeryListView):
     context_object_name = 'task_list'
-    queryset = TaskItem.objects.filter(
-        type_of=FOLLOW_UP_IS_JOB_COMPLETE_TASK_ITEM_TYPE_OF_ID,
-        is_closed=False
-    ).prefetch_related(
-        'job',
-        'job__associate',
-        'job__customer',
-        'ongoing_job',
-        'ongoing_job__associate',
-        'ongoing_job__customer',
-        'created_by',
-        'last_modified_by'
-    )
     template_name = 'tenant_task/48h_follow_up/list_view.html'
     paginate_by = 100
     menu_id = "task"
@@ -414,6 +401,36 @@ class FourtyEightHourFollowUpTaskListView(LoginRequiredMixin, GroupRequiredMixin
         constants.MANAGEMENT_GROUP_ID,
         constants.FRONTLINE_GROUP_ID
     ]
+
+    def get_queryset(self):
+        """
+        Override the default queryset to allow dynamic filtering with
+        GET parameterss using the 'django-filter' library.
+        """
+        tasks = TaskItem.objects.filter(
+            type_of=FOLLOW_UP_IS_JOB_COMPLETE_TASK_ITEM_TYPE_OF_ID,
+            is_closed=False
+        )
+
+        # Added our job state filtering.
+        sort = self.request.GET.get('sort', 'all')
+        if sort != "all":
+            if sort == "job__associates":
+                tasks = tasks.order_by('associate')
+            if sort == "due_date":
+                tasks = tasks.order_by('associate')
+
+        tasks = tasks.prefetch_related(
+            'job',
+            'job__associate',
+            'job__customer',
+            'ongoing_job',
+            'ongoing_job__associate',
+            'ongoing_job__customer',
+            'created_by',
+            'last_modified_by'
+        )
+        return tasks
 
     def get_context_data(self, **kwargs):
         modified_context = super().get_context_data(**kwargs)

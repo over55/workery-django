@@ -70,6 +70,38 @@
     <!-- end STEP NAVIGATION -->
 
 
+    <div class="row">
+        <div class="col-sm-5 mx-auto text-center">
+            <div class="btn-group">
+                <button class="btn btn-info btn-lg dropdown-toggle btn-block" style="min-width: 240px" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Filter By &nbsp;&nbsp;&nbsp;
+                </button>
+                <div class="dropdown-menu">
+
+                    {% if parameters.sort == "all" %}
+                        <strong class="px-4 py-2">All</strong>
+                    {% else %}
+                        <a class="dropdown-item" href="?sort=all" class="text-center">All</a>
+                    {% endif %}
+
+                    {% if parameters.sort == "associates" %}
+                        <strong class="px-4 py-2">Associates</strong>
+                    {% else %}
+                        <a class="dropdown-item" href="?sort=associates" class="text-center">Associates</a>
+                    {% endif %}
+
+                    {% if parameters.sort == "date" %}
+                        <strong class="px-4 py-2">Date</strong>
+                    {% else %}
+                        <a class="dropdown-item" href="?sort=date" class="text-center">Date</a>
+                    {% endif %}
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
     <div class="table-responsive">
         <table class="table table-striped">
             <thead>
