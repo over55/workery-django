@@ -78,25 +78,20 @@
                 </button>
                 <div class="dropdown-menu">
 
-                    {% comment %}
-                    {% if parameters.sort == "all" %}
-                        <strong class="px-4 py-2">All</strong>
+                    {% if parameters.sort != "associates" %}
+                        <strong class="px-4 py-2">Due Date</strong>
                     {% else %}
-                        <a class="dropdown-item" href="?sort=all" class="text-center">All</a>
+                        <a class="dropdown-item" href="?sort=date" class="text-center">Due Date</a>
                     {% endif %}
-                    {% endcomment %}
+
 
                     {% if parameters.sort == "associates" %}
-                        <strong class="px-4 py-2">Associates</strong>
+                        <strong class="px-4 py-2">Due Date, Associates</strong>
                     {% else %}
-                        <a class="dropdown-item" href="?sort=associates" class="text-center">Associates</a>
+                        <a class="dropdown-item" href="?sort=associates" class="text-center">Due Date, Associates</a>
                     {% endif %}
 
-                    {% if parameters.sort == "date" %}
-                        <strong class="px-4 py-2">Date</strong>
-                    {% else %}
-                        <a class="dropdown-item" href="?sort=date" class="text-center">Date</a>
-                    {% endif %}
+
 
                 </div>
             </div>
