@@ -2,7 +2,7 @@
 {% load staticfiles i18n humanize tz shared_foundation_tags %}
 
 {% block title %}
-{% trans 'Client Comments | Workery' %}
+{% trans 'Client Files | Workery' %}
 {% endblock title %}
 
 {% block header_content %}
@@ -11,28 +11,6 @@
 {% block content %}
 
 <script>
-$(document).ready(function () {
-	var form_comment = document.getElementById('add-note-form');
-	var a_comment = document.getElementById('comment');
-	var comment_error = document.getElementById('comment-error');
-	// Loop over them and prevent submission
-	$(function(){
-	     	// validation for residential form fields
-	        $('#add-note-form').on('submit',function(e){
-		     	if(a_comment.validity.valueMissing) {
-				comment_error.innerHTML = "This field may not be blank.";
-				form_comment.classList.add('was-validated');
-				e.preventDefault();
-			}
-			if(a_comment.validity.tooShort) {
-				comment_error.innerHTML = "Fill in at least 3 characters.";
-				form_comment.classList.add('was-validated');
-				e.preventDefault();
-			}
-	 	});
-	});
-
-}); // end Ready
 
 /**
  *  Function to make text readable removing underscore and capitalizing
@@ -103,34 +81,9 @@ function click_add_button() {
     <!------------------------------------------------------------------------->
     <nav aria-label="breadcrumb">
 	  	<ol class="breadcrumb">
-            {% if template == 'search' %}
-
-            <li class="breadcrumb-item">
-                <a href="{% url 'workery_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a>
-            </li>
-            <li class="breadcrumb-item">
-                <a href="{% url 'workery_tenant_customer_summary' %}">{% trans 'Clients' %}</a>
-            </li>
-            <li class="breadcrumb-item">
-                <a href="{% url 'workery_tenant_customer_search' %}">{% trans 'Search' %}</a>
-            </li>
-            <li class="breadcrumb-item active" aria-current="page">{% trans 'Search Results' %}</li>
-            <li class="breadcrumb-item active" aria-current="page">{% trans 'Client #' %}{{ object.id }}</li>
-
-            {% elif template == 'list' %}
-
-            <li class="breadcrumb-item"><a href="{% url 'workery_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
-            <li class="breadcrumb-item"><a href="{% url 'workery_tenant_customer_summary' %}">{% trans 'Clients' %}</a></li>
-            <li class="breadcrumb-item"><a href="{% url 'workery_tenant_customer_list' %}">{% trans 'List' %}</a></li>
-            <li class="breadcrumb-item active" aria-current="page">{% trans 'Client #' %}{{ object.id|intcomma }}</li>
-
-            {% else %}
-
-	    	<li class="breadcrumb-item"><a href="{% url 'workery_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
+    	    	<li class="breadcrumb-item"><a href="{% url 'workery_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
             <li class="breadcrumb-item"><a href="{% url 'workery_tenant_customer_summary' %}">{% trans 'Clients' %}</a></li>
             <li class="breadcrumb-item active" aria-current="page">{% trans 'Client #' %}{{ object.id|intcomma }}</li>
-
-            {% endif %}
 	  	</ol>
 	</nav>
     <!------------------------------------------------------------------------->
@@ -149,7 +102,7 @@ function click_add_button() {
     <!------------------------------------------------------------------------->
     <!-- end NOTIFICATION -->
 
-    <h1>{% trans 'View Client' %}</h1>
+    <h1>{% trans 'View Files' %}</h1>
 
     <!-- STEP NAVIGATION -->
     <!------------------------------------------------------------------------->
@@ -170,14 +123,15 @@ function click_add_button() {
                     <i class="fa fa-wrench"></i>&nbsp;<span class="">Jobs</span>
                 </a>
             </div>
-            <div class="st-grey active">
-                <i class="fa fa-comments"></i>&nbsp;<span class="">Comments</span>
-            </div>
-	    <div class="st-grey">
-                <a href="#">
-                    <i class="fas fa-file"></i>&nbsp;<span class="">Files</span>
+            <div class="st-grey">
+                <a href="{% url 'workery_tenant_customer_retrieve_for_comment_list_and_create' template customer.id %}">
+                    <i class="fa fa-comments"></i>&nbsp;<span class="">Comments</span>
                 </a>
             </div>
+            <div class="st-grey active">
+                <i class="fas fa-file"></i>&nbsp;<span class="">Files</span>
+            </div>
+	          
         </div>
     </div>
     <!------------------------------------------------------------------------->
@@ -185,7 +139,6 @@ function click_add_button() {
 
     <div class="container">
         <div class="row align-items-start">
-            <!-- <h1>Comments/Notes Screen</h1> -->
             <div class="col-lg-12">
                 <h3 class="py-2 text-center mb-4" id="id_page_title">Client Comments</h3>
 
