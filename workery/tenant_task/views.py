@@ -413,12 +413,9 @@ class FourtyEightHourFollowUpTaskListView(LoginRequiredMixin, GroupRequiredMixin
         )
 
         # Added our job state filtering.
-        sort = self.request.GET.get('sort', 'all')
-        if sort == "associates":
-            tasks = tasks.order_by('due_date', 'job__associate__last_name',)
-        else:
-            tasks = tasks.order_by('due_date')
+        tasks = tasks.order_by('due_date', 'job__associate__last_name',)
 
+        # Add optimization.
         tasks = tasks.prefetch_related(
             'job',
             'job__associate',
