@@ -52,7 +52,10 @@ class Command(BaseCommand): #TODO: UNIT TEST
         perform the necessary operations.
         """
         tenant_todays_date = franchise.get_todays_date_plus_days()
-        away_logs = AwayLog.objects.filter(until_date__gte=tenant_todays_date).order_by('-id')
+        away_logs = AwayLog.objects.filter(
+           until_date__lte=tenant_todays_date,
+           until_further_notice=False,
+        ).order_by('-id')
         for away_log in away_logs.iterator():
             self.stdout.write(
                 self.style.SUCCESS(
@@ -61,4 +64,14 @@ class Command(BaseCommand): #TODO: UNIT TEST
                     })
                 )
             )
+
+            # Send notification message to the user.
+            call_command(
+                'send_update_away_log',
+                franchise.schema_name,
+                away_log.id,
+                verbosity=0
+            )
+
+            # Delete the user.
             away_log.delete()
