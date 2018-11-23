@@ -332,6 +332,33 @@ class WorkOrder(models.Model):
         default=Money(0,WORKERY_APP_DEFAULT_MONEY_CURRENCY),
         blank=True,
     )
+    invoice_quoted_material_amount = MoneyField(
+        _("Invoice Quoted Material Costs Amount"),
+        help_text=_('The quoted amount to charge for material costs by the associate for this job.'),
+        max_digits=10,
+        decimal_places=2,
+        default_currency=WORKERY_APP_DEFAULT_MONEY_CURRENCY,
+        default=Money(0,WORKERY_APP_DEFAULT_MONEY_CURRENCY),
+        blank=True,
+    )
+    invoice_quoted_labour_amount = MoneyField(
+        _("Invoice Quoted Labour Costs Amount"),
+        help_text=_('The quoted amount to charge for labour by the associate for this job.'),
+        max_digits=10,
+        decimal_places=2,
+        default_currency=WORKERY_APP_DEFAULT_MONEY_CURRENCY,
+        default=Money(0,WORKERY_APP_DEFAULT_MONEY_CURRENCY),
+        blank=True,
+    )
+    invoice_total_quote_amount = MoneyField(
+        _("Invoice Total Quoted Amount"),
+        help_text=_('The quoted amount to charge for material costs by the associate for this job.'),
+        max_digits=10,
+        decimal_places=2,
+        default_currency=WORKERY_APP_DEFAULT_MONEY_CURRENCY,
+        default=Money(0,WORKERY_APP_DEFAULT_MONEY_CURRENCY),
+        blank=True,
+    )
     invoice_tax_amount = MoneyField(
         _("Invoice Tax Amount"),
         help_text=_('The amount charged for taxes by the associate for this job.'),
