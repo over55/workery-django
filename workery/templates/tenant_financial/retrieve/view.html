@@ -194,7 +194,7 @@
 
                         <!-- Unassign -->
                         <a href="{% url 'workery_tenant_completed_job_unassign_operation' job_item.id %}?return_id=financials-pending">
-                            <button  id="id_submit_btn"	class="btn mr-4 btn-warning btn-lg btn-fxw mt-4" type="button">
+                            <button  id="id_submit_btn"	class="btn mr-4 btn-warning btn-lg btn-fxw" type="button">
                                 <i class="fas fa-pencil-alt"></i>&nbsp;{% trans 'Unassign' %}
                             </button>
                         </a>
@@ -202,7 +202,7 @@
 
                         <!-- Cancel -->
                         <a href="{% url 'workery_tenant_completed_job_cancel_operation' job_item.id %}?return_id=financials-pending">
-                            <button  id="id_submit_btn"	class="btn btn-danger btn-lg btn-fxw mt-4" type="button">
+                            <button  id="id_submit_btn"	class="btn btn-danger btn-lg btn-fxw" type="button">
                                 <i class="fas fa-pencil-alt"></i>&nbsp;{% trans 'Cancel Job' %}
                             </button>
                         </a>
