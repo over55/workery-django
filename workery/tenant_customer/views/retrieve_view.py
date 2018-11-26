@@ -90,6 +90,32 @@ class CustomerRetrieveForCommentListAndCreateView(LoginRequiredMixin, GroupRequi
 
         # Return our modified context.
         return modified_context
+    
+    
+class CustomerRetrieveForFilesListView(LoginRequiredMixin, GroupRequiredMixin, WorkeryDetailView):
+    context_object_name = 'customer'
+    model = Customer
+    template_name = 'tenant_customer/retrieve/for/files_view.html'
+    menu_id = 'customers'
+    group_required = [
+        constants.EXECUTIVE_GROUP_ID,
+        constants.MANAGEMENT_GROUP_ID,
+        constants.FRONTLINE_GROUP_ID
+    ]
+
+    def get_context_data(self, **kwargs):
+        # Get the context of this class based view.
+        modified_context = super().get_context_data(**kwargs)
+
+        # Validate the template selected.
+        template = self.kwargs['template']
+        if template not in ['search', 'summary', 'list']:
+            from django.core.exceptions import PermissionDenied
+            raise PermissionDenied(_('You entered wrong format.'))
+        modified_context['template'] = template
+
+        # Return our modified context.
+        return modified_context    
 
 
 class CustomerRetrieveForJobsListView(LoginRequiredMixin, GroupRequiredMixin, WorkeryDetailView):
