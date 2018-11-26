@@ -26,6 +26,7 @@ urlpatterns = (
     path('clients/<str:template>/detail/<int:pk>/lite/', retrieve_view.CustomerLiteRetrieveView.as_view(), name='workery_tenant_customer_lite_retrieve'),
     path('clients/<str:template>/detail/<int:pk>/full/', retrieve_view.CustomerFullRetrieveView.as_view(), name='workery_tenant_customer_full_retrieve'),
     path('clients/<str:template>/detail/<int:pk>/jobs/', retrieve_view.CustomerRetrieveForJobsListView.as_view(), name='workery_tenant_customer_retrieve_for_jobs_list'),
+    path('clients/<str:template>/detail/<int:pk>/files/', retrieve_view.CustomerRetrieveForFilesListView.as_view(), name='workery_tenant_customer_retrieve_for_files_list'),
     path('clients/<str:template>/detail/<int:pk>/comments/', retrieve_view.CustomerRetrieveForCommentListAndCreateView.as_view(), name='workery_tenant_customer_retrieve_for_comment_list_and_create'),
 
     # Update
