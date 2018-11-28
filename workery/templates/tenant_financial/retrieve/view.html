@@ -112,15 +112,21 @@
                     </td>
                 </tr>
                 <tr>
-                    <th scope="row" class="bg-light">Original Quote</th>
-                    <td id="selected_invoice_quote_amount">
-                        {{ job_item.invoice_quote_amount }}
-                    </td>
-                </tr>
-                <tr>
                     <th scope="row" class="bg-light">Quoted Labour</th>
                     <td id="selected_invoice_labour_amount">
                         {{ job_item.invoice_quoted_labour_amount }}
+                    </td>
+                </tr>
+		<tr>
+                    <th scope="row" class="bg-light">Quoted Materials</th>
+                    <td id="selected_invoice_material_amount">
+                        {{ job_item.invoice_quoted_material_amount }}
+                    </td>
+                </tr>
+		<tr>
+                    <th scope="row" class="bg-light">Total Quote</th>
+                    <td id="selected_invoice_total_quote_amount">
+                        {{ job_item.invoice_total_quote_amount }}
                     </td>
                 </tr>
                 <tr>
@@ -130,21 +136,9 @@
                     </td>
                 </tr>
                 <tr>
-                    <th scope="row" class="bg-light">Quoted Materials</th>
-                    <td id="selected_invoice_material_amount">
-                        {{ job_item.invoice_quoted_material_amount }}
-                    </td>
-                </tr>
-                <tr>
                     <th scope="row" class="bg-light">Actual Materials</th>
                     <td id="selected_invoice_material_amount">
                         {{ job_item.invoice_material_amount }}
-                    </td>
-                </tr>
-                <tr>
-                    <th scope="row" class="bg-light">Total Quote</th>
-                    <td id="selected_invoice_total_quote_amount">
-                        {{ job_item.invoice_total_quote_amount }}
                     </td>
                 </tr>
                 <tr>
