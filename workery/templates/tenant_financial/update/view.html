@@ -411,7 +411,7 @@
 		    <!-- Total Quoted -->
                     <div class="form-group col-md-7 mb-4">
                         <label for="invoice_total_quote_amount">Total Quoted</label>
-                        <input type="number" class="form-control form-control-lg border border-success" min="0" id="invoice_total_quote_amount" name="invoice_total_quote_amount" placeholder="Total Material" value="{{ job_item.invoice_total_quote_amount.amount }}">
+                        <input type="number" class="form-control form-control-lg border border-success" min="0" id="invoice_total_quote_amount" name="invoice_total_quote_amount" placeholder="Total Material" readonly value="{{ job_item.invoice_total_quote_amount.amount }}">
                         <div id="invoice_total_quote_amount-error" class="invalid-feedback"></div>
                     </div>
                     <!-- end Total Quoted -->
