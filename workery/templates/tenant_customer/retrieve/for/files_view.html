@@ -140,14 +140,35 @@ function click_add_button() {
     <div class="container">
 	    <div class="row py-5 justify-content-md-center">
 		<div class="col-md-4 my-4 mx-3">
-		    <button type="button" class="btn btn-primary btn-lg"><i class="fas fa-cloud-upload-alt"></i>&nbsp; UPLOAD</button>
+			<div class="card box-shadow text-center mx-auto">
+			      <div class="card-body">
+				<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#yesModal"><i class="fas fa-cloud-upload-alt"></i>&nbsp; UPLOAD</button>
+			      </div>
+			</div>
 		</div>
 		<div class="col-md-4 my-4 mx-3">
-		    <button type="button" class="btn btn-secondary btn-lg"><i class="fas fa-compact-disc"></i>&nbsp; SAVE</button>
+			<div class="card box-shadow text-center mx-auto">
+			      <div class="card-body">
+				<button type="button" class="btn btn-secondary btn-lg"><i class="fas fa-compact-disc"></i>&nbsp; SAVE</button>
+			      </div>
+			</div>
 		</div>
 	    </div>
     </div>
 
+		<!-- Modal -->
+		<div class="modal fade" id="yesModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		  <div class="modal-dialog" role="document">
+		    <div class="modal-content">
+		      <div class="modal-body">
+		        <p class="m-3 p-2">It appears that you are going to create a duplicate record for an existing client. Are you sure that you want to continue?</p>
+		        <button type="button" class="btn btn-lg btn-secondary float-left m-2" data-dismiss="modal">No</button>
+		        <button type="button" class="btn btn-lg btn-primary float-right m-2" id="yes_submit">Yes</button>
+		      </div>
+		    </div>
+		  </div>
+		</div>
+	
     <!-- RETURN-TO-TOP -->
     <a id="return-to-top" href="#" class="btn-info btn-lg back-to-top" role="button" title="Back to top"><i class="fas fa-angle-up fa-2x"></i></a>
     <!-- end RETURN-TO-TOP -->
