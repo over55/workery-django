@@ -138,52 +138,14 @@ function click_add_button() {
     <!-- end STEP NAVIGATION -->
 
     <div class="container">
-        <div class="row align-items-start">
-            <div class="col-lg-12">
-                <h3 class="py-2 text-center mb-4" id="id_page_title">Client Comments</h3>
-
-                <!-- FORM -->
-                <!------------------------------------------------------------------------->
-                {% for comment in customer.comments.all %}
-                    <!-- Item -->
-                    <div class="media mt-4">
-                        <img class="mr-3 img-head" src="{% static 'img/placeholder.png' %}" alt="Image">
-                        <div class="media-body">
-                            <div class="row">
-                                <h5 class="mt-0 col-sm-10"><strong>{{ comment.created_by.first_name }} {{ comment.created_by.last_name }}</strong></h5>
-                                <h6 class="col-sm-2 text-secondary text-right">{{ comment.created_at|timezone:request.tenant.timezone_name|date:"N j, Y" }} <br> {{ comment.created_at|timezone:request.tenant.timezone_name|date:"P"}} </h6>
-                            </div>
-                            <p>{{ comment.text }}</p>
-                        </div>
-                    </div>
-                    <!-- end Item -->
-                {% endfor %}
-
-                <hr class="my-4">
-		<!-- Error Output -->
-            	<div id="all_error_result" name="all_error_result" class="alert alert-error fade show" role="alert">
-	    	</div>
-	    	<!-- end Error Output -->
-                <!-- Add note form -->
-                <form id="add-note-form" method="post" class="needs-validation" action="" novalidate>
-                    <div class="form-group">
-                        <label for="comment">Add Comment/Note: </label>
-                        <textarea class="form-control form-control-lg border border-primary" id="comment" name="comment" placeholder="Write a note here..." rows="4" required></textarea>
-			            <div id="comment-error" class="invalid-feedback"></div>
-                        <small class="form-text text-muted">Maximum 1,000 characters.</small>
-                    </div>
-                    <button id="id_submit_btn"
-                         class="btn btn-lg float-right pl-4 pr-4 btn-primary"
-                          type="button"
-                       onclick="click_add_button();">
-                        <i class="fas fa-plus"></i>&nbsp;{% trans 'Add Note' %}</button>
-                </form>
-
-                <!------------------------------------------------------------------------->
-                <!-- end FORM -->
-
-            </div>
-        </div>
+	    <div class="row py-5 justify-content-md-center">
+		<div class="col-md-4 my-4 mx-3">
+		    <button type="button" class="btn btn-primary btn-lg"><i class="fas fa-cloud-upload-alt"></i>&nbsp; UPLOAD</button>
+		</div>
+		<div class="col-md-4 my-4 mx-3">
+		    <button type="button" class="btn btn-secondary btn-lg"><i class="fas fa-compact-disc"></i>&nbsp; SAVE</button>
+		</div>
+	    </div>
     </div>
 
     <!-- RETURN-TO-TOP -->
