@@ -140,20 +140,56 @@ function click_add_button() {
     <div class="container">
 	    <div class="row py-5 justify-content-md-center">
 		<div class="col-md-4 my-4 mx-3">
-			<div class="card box-shadow text-center mx-auto">
+			<div class="card text-center mx-auto">
 			      <div class="card-body">
-				<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#yesModal"><i class="fas fa-cloud-upload-alt"></i>&nbsp; UPLOAD</button>
+				<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#yesModal" style="min-width: 200px;padding: 20px;"><i class="fas fa-cloud-upload-alt"></i>&nbsp; UPLOAD</button>
 			      </div>
 			</div>
 		</div>
 		<div class="col-md-4 my-4 mx-3">
-			<div class="card box-shadow text-center mx-auto">
+			<div class="card text-center mx-auto">
 			      <div class="card-body">
-				<button type="button" class="btn btn-secondary btn-lg"><i class="fas fa-compact-disc"></i>&nbsp; SAVE</button>
+				<button type="button" class="btn btn-secondary btn-lg" style="min-width: 200px;padding: 20px;"><i class="fas fa-compact-disc"></i>&nbsp; SAVE</button>
 			      </div>
 			</div>
 		</div>
 	    </div>
+	<div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>{% trans 'Title' %}</th>
+                    <th>{% trans 'Description' %}</th>
+                    <th>{% trans 'Type' %}</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><a href="" alt="{% trans 'View' %}">&nbsp;<i class="fas fa-search"></i></a></td>
+                    <td>ABC</td>
+                    <td>This is a description area</td>
+                    <td>File type</td>
+                    <td><a href="" alt="{% trans 'Download' %}">&nbsp;<i class="fas fa-download"></i></a></td>
+                </tr>
+                <tr>
+                    <td><a href="" alt="{% trans 'View' %}">&nbsp;<i class="fas fa-search"></i></a></td>
+                    <td>ABC</td>
+                    <td>This is a description area</td>
+                    <td>File type</td>
+                    <td><a href="" alt="{% trans 'Download' %}">&nbsp;<i class="fas fa-download"></i></a></td>
+                </tr>
+		<tr>
+                    <td><a href="" alt="{% trans 'View' %}">&nbsp;<i class="fas fa-search"></i></a></td>
+                    <td>ABC</td>
+                    <td>This is a description area</td>
+                    <td>File type</td>
+                    <td><a href="" alt="{% trans 'Download' %}">&nbsp;<i class="fas fa-download"></i></a></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
     </div>
 
 		<!-- Modal -->
