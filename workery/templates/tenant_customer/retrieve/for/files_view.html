@@ -136,7 +136,7 @@ function click_add_button() {
     </div>
     <!------------------------------------------------------------------------->
     <!-- end STEP NAVIGATION -->
-
+    <h3 class="py-2 text-center mb-4">Upload Files</h3>
     <div class="container">
 	    <div class="row py-5 justify-content-md-center">
 		<div class="col-md-4 my-4 mx-3">
@@ -197,9 +197,37 @@ function click_add_button() {
 		  <div class="modal-dialog" role="document">
 		    <div class="modal-content">
 		      <div class="modal-body">
-		        <p class="m-3 p-2">It appears that you are going to create a duplicate record for an existing client. Are you sure that you want to continue?</p>
-		        <button type="button" class="btn btn-lg btn-secondary float-left m-2" data-dismiss="modal">No</button>
-		        <button type="button" class="btn btn-lg btn-primary float-right m-2" id="yes_submit">Yes</button>
+		        <p class="m-3 p-2">
+				<div class="form-row">
+					<div class="custom-file">
+					  <input type="file" class="custom-file-input" id="customFile">
+					  <label class="custom-file-label" for="customFile">Choose file</label>
+					</div>
+				    <div class="form-group col-md-12 mb-4">
+					<label for="filename">Filename</label>
+					<input type="text" class="form-control form-control-lg border border-primary" id="filename" name="filename" placeholder="Filename" readonly required="">
+					<div id="filename-error" class="invalid-feedback"></div>
+				    </div>
+				    <div class="form-group col-md-12 mb-4">
+					<label for="title">Title</label>
+					<input type="text" class="form-control form-control-lg border border-primary" id="title" name="title" placeholder="Title" required="">
+					<div id="title-error" class="invalid-feedback"></div>
+				    </div>
+				    <div class="form-group col-md-12 mb-4">
+					<label for="type">Type</label>
+					<select class="custom-select form-control-lg border-primary" id="type" name="type" required="">
+						<option value="">Contract</option>
+						<option value="">Image</option>
+						<option value="">Insurance Certificate</option>
+						<option value="">Police Check</option>
+						<option value="">License</option>
+						<option value="">Other</option>
+					</select>
+					<div id="type-error" class="invalid-feedback"></div>
+				    </div>
+				</div>
+			</p>
+		        <button type="button" class="btn btn-lg btn-primary float-right m-2" id="add_submit">Add</button>
 		      </div>
 		    </div>
 		  </div>
