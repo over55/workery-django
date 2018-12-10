@@ -693,3 +693,7 @@ table.custom-cell-w tr th{width:35% !important;}
         padding: .6rem 0.6rem;
     }
 }
+.choose-label {
+	height: 48px !important;
+	padding: .5rem 1rem !important;
+}
