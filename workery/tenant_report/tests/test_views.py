@@ -143,7 +143,7 @@ class TestTenantReportViews(TenantTestCase):
         response = self.auth_c.get(self.tenant.reverse('workery_tenant_report_01_detail_master'))
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertIn('Reports', str(response.content))
-        self.assertIn('Service Fees Due Report', str(response.content))
+        self.assertIn('Service Fee', str(response.content))
 
     def test_report_2_details_page(self):
         response = self.auth_c.get(self.tenant.reverse('workery_tenant_report_02_detail_master'))

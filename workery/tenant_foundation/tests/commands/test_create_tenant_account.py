@@ -4,6 +4,7 @@ from django_tenants.test.cases import TenantTestCase
 from django_tenants.test.client import TenantClient
 from django.db import connection # Used for django tenants.
 from django.urls import reverse
+from django.db import transaction
 from shared_foundation import constants
 from shared_foundation.models import SharedUser
 
@@ -33,6 +34,7 @@ class TestCreateManagementAccountManagementCommand(TenantTestCase):
         del self.c
         super(TestCreateManagementAccountManagementCommand, self).tearDown()
 
+    @transaction.atomic
     def test_command_with_success(self):
         call_command(
             "create_franchise",
@@ -84,6 +86,7 @@ class TestCreateManagementAccountManagementCommand(TenantTestCase):
         # # Delete all the users we've created in this unit test.
         # SharedUser.objects.all().delete()
 
+    @transaction.atomic
     def test_command_with_duplicate_email_error(self):
         call_command(
             "create_franchise",
@@ -137,6 +140,7 @@ class TestCreateManagementAccountManagementCommand(TenantTestCase):
             self.assertIsNotNone(e)
             self.assertIn("Email already exists", str(e))
 
+    @transaction.atomic
     def test_command_with_missing_tenant_error(self):
         try:
             call_command(
@@ -163,6 +167,7 @@ class TestCreateManagementAccountManagementCommand(TenantTestCase):
             self.assertIsNotNone(e)
             self.assertIn("Franchise does not exist!", str(e))
 
+    @transaction.atomic
     def test_command_with_multiple_success(self):
         call_command(
             "create_franchise",
