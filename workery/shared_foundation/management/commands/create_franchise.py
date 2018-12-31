@@ -7,10 +7,6 @@ from django.core.management.base import BaseCommand, CommandError
 from django.db import connection # Used for django tenants.
 from django.utils.translation import ugettext_lazy as _
 from django_rq import get_queue, get_worker
-from starterkit.utils import (
-    get_random_string,
-    get_unique_username_from_email
-)
 from shared_foundation import constants
 from shared_foundation.models import (
     SharedFranchise,

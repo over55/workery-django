@@ -5,10 +5,6 @@ from django.core.management.base import BaseCommand, CommandError
 from django.db import connection # Used for django tenants.
 from django.db.models import Q, Prefetch
 from django.utils.translation import ugettext_lazy as _
-from starterkit.utils import (
-    get_random_string,
-    get_unique_username_from_email
-)
 from shared_foundation.constants import *
 from shared_foundation.models import (
     SharedUser,

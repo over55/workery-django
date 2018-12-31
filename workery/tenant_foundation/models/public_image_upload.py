@@ -14,12 +14,6 @@ from django.utils.text import Truncator
 from django.utils.translation import ugettext_lazy as _
 from djmoney.models.fields import MoneyField
 from djmoney.money import Money
-from starterkit.utils import (
-    get_random_string,
-    generate_hash,
-    int_or_none,
-    float_or_none
-)
 from shared_foundation.models import SharedUser
 from tenant_foundation.utils import *
 from workery.s3utils import PublicMediaStorage

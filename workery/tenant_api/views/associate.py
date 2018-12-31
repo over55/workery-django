@@ -3,11 +3,12 @@ import django_filters
 from ipware import get_client_ip
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters
-from starterkit.drf.permissions import IsAuthenticatedAndIsActivePermission
 from django.shortcuts import get_list_or_404, get_object_or_404
 from rest_framework import generics
 from rest_framework import authentication, viewsets, permissions, status
 from rest_framework.response import Response
+
+from shared_foundation.custom.drf.permissions import IsAuthenticatedAndIsActivePermission
 from tenant_api.pagination import StandardResultsSetPagination
 from tenant_api.permissions.associate import (
    CanListCreateAssociatePermission,

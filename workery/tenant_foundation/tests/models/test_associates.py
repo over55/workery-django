@@ -3,10 +3,6 @@ from django.core.management import call_command
 from django.urls import reverse
 from django_tenants.test.cases import TenantTestCase
 from django_tenants.test.client import TenantClient
-from starterkit.utils import (
-    get_random_string,
-    get_unique_username_from_email
-)
 from shared_foundation.models import SharedUser
 from shared_foundation.utils import *
 from tenant_foundation.models import Associate

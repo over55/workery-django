@@ -13,7 +13,8 @@ from django.utils import timezone
 from django.utils.http import urlquote
 from rest_framework import exceptions, serializers
 from rest_framework.response import Response
-from shared_api.custom_fields import PhoneNumberField
+
+from shared_foundation.custom.drf.fields import PhoneNumberField
 from shared_foundation import constants
 # from tenant_api.serializers.order_comment import WorkOrderCommentSerializer
 from tenant_api.serializers.skill_set import SkillSetListCreateSerializer
@@ -162,7 +163,7 @@ class WorkOrderRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         instance.invoice_material_amount = validated_data.get('invoice_material_amount', instance.invoice_material_amount)
         instance.invoice_quoted_material_amount = validated_data.get('invoice_quoted_material_amount', instance.invoice_quoted_material_amount)
         instance.invoice_quoted_labour_amount = validated_data.get('invoice_quoted_labour_amount', instance.invoice_quoted_labour_amount)
-        instance.invoice_total_quote_amount = validated_data.get('invoice_total_quote_amount', instance.invoice_total_quote_amount)        
+        instance.invoice_total_quote_amount = validated_data.get('invoice_total_quote_amount', instance.invoice_total_quote_amount)
         instance.invoice_tax_amount = validated_data.get('invoice_tax_amount', instance.invoice_tax_amount)
         instance.invoice_total_amount = validated_data.get('invoice_total_amount', instance.invoice_total_amount)
         instance.invoice_service_fee_amount = validated_data.get('invoice_service_fee_amount', instance.invoice_service_fee_amount)

@@ -2,9 +2,6 @@
 import logging
 from datetime import datetime, timedelta
 from dateutil import tz
-from starterkit.utils import (
-    int_or_none
-)
 from django.conf import settings
 from django.contrib.auth.models import Group
 from django.contrib.auth import authenticate
@@ -14,7 +11,9 @@ from django.utils import timezone
 from django.utils.http import urlquote
 from rest_framework import exceptions, serializers
 from rest_framework.response import Response
-from shared_api.custom_fields import Base64ImageField
+
+from shared_foundation.custom.drf.fields import Base64ImageField
+from shared_foundation.utils import int_or_none
 from tenant_foundation.models import (
     Associate,
     Customer,

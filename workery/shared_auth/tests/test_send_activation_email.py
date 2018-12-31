@@ -1,10 +1,6 @@
 # -*- coding: utf-8 -*-
 from datetime import timedelta
 from django.core.management import call_command
-from starterkit.utils import (
-    get_random_string,
-    get_unique_username_from_email
-)
 from django_tenants.test.cases import TenantTestCase
 from django_tenants.test.client import TenantClient
 from django.urls import reverse

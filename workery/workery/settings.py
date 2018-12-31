@@ -78,7 +78,6 @@ SHARED_APPS = (
 
     # Third Party Apps
     # 'whitenoise.runserver_nostatic',
-    'starterkit',
     'django_tenants',
     'rest_framework',
     'rest_framework.authtoken',
@@ -237,18 +236,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
     {
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-    },
-    {
-        'NAME': 'starterkit.password_validation.UppercaseCharacterPasswortValidator',
-        'OPTIONS': {
-            'min_occurrence': 1,
-        }
-    },
-    {
-        'NAME': 'starterkit.password_validation.SpecialCharacterPasswortValidator',
-        'OPTIONS': {
-            'min_occurrence': 1,
-        }
     }
 ]
 

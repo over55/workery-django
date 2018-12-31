@@ -10,12 +10,6 @@ from django.db import transaction
 from django.utils import timezone
 from django.utils.text import Truncator
 from django.utils.translation import ugettext_lazy as _
-from starterkit.utils import (
-    get_random_string,
-    generate_hash,
-    int_or_none,
-    float_or_none
-)
 from shared_foundation.constants import *
 from tenant_foundation.constants import *
 from tenant_foundation.models import (

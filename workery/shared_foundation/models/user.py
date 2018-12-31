@@ -7,12 +7,13 @@ from django.contrib.auth.models import PermissionsMixin
 from django.contrib.auth.base_user import AbstractBaseUser
 from django.utils.translation import ugettext_lazy as _
 from django.utils import timezone
-from starterkit.utils import (
+
+
+from shared_foundation import constants
+from shared_foundation.utils import (
     get_random_string,
     generate_hash
 )
-from shared_foundation import constants
-
 
 
 def get_expiry_date(days=2):

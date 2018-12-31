@@ -99,3 +99,71 @@ def pretty_dt_string(dt):  #TODO: UNIT TEST
     except Exception as e:
         dt_string = dt.strftime("%m-%d-%Y")
     return dt_string
+
+
+def generate_hash(value=None):
+    """
+    TODO: UNIT TEST
+    """
+    # Handle null values.
+    if value is None or value == '':
+        value = timezone.now()
+        value = value.timestamp()
+
+    # Convert whatever data format into a string value.
+    value_str = str(value)
+
+    # Conver into UTF-8 formatted string value
+    utf8_value_str = value_str.encode('utf8', 'ignore')
+
+    # Return the hash binary data.
+    byte_data = base64.urlsafe_b64encode(hashlib.sha256(utf8_value_str).digest())
+
+    # Convert to a UTF-8 string.
+    return byte_data.decode("utf-8")
+
+
+def get_random_string(length=31,
+                      allowed_chars='abcdefghijkmnpqrstuvwxyz'
+                      'ABCDEFGHIJKLMNPQRSTUVWXYZ'
+                      '23456789'):
+    """
+    Random string generator simplified from Django.
+
+    TODO: UNIT TEST
+    """
+    return crypto.get_random_string(length, allowed_chars)
+
+
+def get_unique_username_from_email(email):
+    """
+    Return a hash, which will fit into django "username" field of the `User`
+    object, of the email.
+
+    TODO: UNIT TEST
+    """
+    email = email.lower()  # Emails should be case-insensitive unique
+    hashed_email = generate_hash(email)
+    return hashed_email[:30]
+
+
+
+
+def int_or_none(value):
+    """
+    TODO: UNIT TEST
+    """
+    try:
+        return int(value)
+    except Exception as e:
+        return None
+
+
+def float_or_none(value):
+    """
+    TODO: UNIT TEST
+    """
+    try:
+        return float(value)
+    except Exception as e:
+        return None

@@ -4,11 +4,6 @@ from django.contrib.auth.models import Group
 from django.core.management.base import BaseCommand, CommandError
 from django.db import connection # Used for django tenants.
 from django.utils.translation import ugettext_lazy as _
-from starterkit.utils import (
-    get_random_string,
-    get_unique_username_from_email,
-    int_or_none
-)
 from shared_foundation import constants
 from shared_foundation.models import (
     SharedUser,

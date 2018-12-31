@@ -3,9 +3,10 @@ from django.conf.urls import url, include
 from rest_framework import generics
 from rest_framework import authentication, viewsets, permissions, status
 from rest_framework.response import Response
+
+from shared_foundation.custom.drf.pagination import TinyResultsSetPagination
 from shared_foundation.models.franchise import SharedFranchise
 from shared_api.serializers.franchise_serializers import SharedFranchiseListCreateSerializer
-from shared_api.custom_pagination import TinyResultsSetPagination
 
 
 class SharedFranchiseListCreateAPIView(generics.ListCreateAPIView):

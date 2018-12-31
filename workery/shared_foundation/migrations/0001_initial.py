@@ -7,7 +7,9 @@ import django.db.models.deletion
 import django_tenants.postgresql_backend.base
 import phonenumber_field.modelfields
 import shared_foundation.models.user
-import starterkit.utils
+
+from shared_foundation.utils import generate_hash
+
 
 
 class Migration(migrations.Migration):
@@ -33,9 +35,9 @@ class Migration(migrations.Migration):
                 ('is_active', models.BooleanField(default=True, verbose_name='active')),
                 ('avatar', models.ImageField(blank=True, null=True, upload_to='avatars/')),
                 ('last_modified', models.DateTimeField(auto_now=True, db_index=True)),
-                ('salt', models.CharField(blank=True, default=starterkit.utils.generate_hash, help_text='The unique salt value me with this object.', max_length=127, null=True, unique=True, verbose_name='Salt')),
+                ('salt', models.CharField(blank=True, default=generate_hash, help_text='The unique salt value me with this object.', max_length=127, null=True, unique=True, verbose_name='Salt')),
                 ('was_email_activated', models.BooleanField(default=False, help_text='Was the email address verified as an existing address?', verbose_name='Was Email Activated')),
-                ('pr_access_code', models.CharField(blank=True, default=starterkit.utils.generate_hash, help_text='The access code to enter the password reset page to be granted access to restart your password.', max_length=127, verbose_name='Password Reset Access Code')),
+                ('pr_access_code', models.CharField(blank=True, default=generate_hash, help_text='The access code to enter the password reset page to be granted access to restart your password.', max_length=127, verbose_name='Password Reset Access Code')),
                 ('pr_expiry_date', models.DateTimeField(blank=True, default=shared_foundation.models.user.get_expiry_date, help_text='The date where the access code expires and no longer works.', verbose_name='Password Reset Access Code Expiry Date')),
             ],
             options={

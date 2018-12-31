@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
 from django_filters.rest_framework import DjangoFilterBackend
-from starterkit.drf.permissions import IsAuthenticatedAndIsActivePermission
 from django.conf.urls import url, include
 from django.shortcuts import get_list_or_404, get_object_or_404
 from rest_framework import filters
 from rest_framework import generics
 from rest_framework import authentication, viewsets, permissions, status
 from rest_framework.response import Response
+
+from shared_foundation.custom.drf.permissions import IsAuthenticatedAndIsActivePermission
 from tenant_api.pagination import StandardResultsSetPagination
 from tenant_api.permissions.associate import (
    CanListCreateAssociatePermission,

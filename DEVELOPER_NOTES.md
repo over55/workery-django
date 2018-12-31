@@ -17,7 +17,6 @@ pip install django-htmlmin                # HTML Minify
 pip install psycopg2-binary               # Postgres SQL ODBC
 pip install django-tenants                # Multi-Tenancy Handler
 pip install djangorestframework           # RESTful API Endpoint Generator
-pip install django-starterkit             # Django starter kit
 pip install django_filter                 # Filter querysets dynamically
 pip install djangorestframework-msgpack   # MessagePack support for Django REST framework
 pip install djangorestframework-jwt       # JSON Web Token Authentication support for Django REST Framework

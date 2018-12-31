@@ -1,9 +1,5 @@
 # -*- coding: utf-8 -*-
 import django_rq
-from starterkit.utils import (
-    get_random_string,
-    get_unique_username_from_email
-)
 from datetime import datetime
 from django.conf import settings
 from django.contrib.auth.models import Group

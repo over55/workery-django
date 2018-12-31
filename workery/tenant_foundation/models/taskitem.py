@@ -9,12 +9,6 @@ from django.db import models
 from django.db import transaction
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
-from starterkit.utils import (
-    get_random_string,
-    generate_hash,
-    int_or_none,
-    float_or_none
-)
 from shared_foundation.constants import *
 from shared_foundation.models import SharedUser
 from tenant_foundation.constants import TASK_ITEM_TYPE_OF_CHOICES

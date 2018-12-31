@@ -9,10 +9,7 @@ from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 from rest_framework import exceptions, serializers
 from rest_framework.response import Response
-from starterkit.drf.validation import (
-    MatchingDuelFieldsValidator,
-    EnhancedPasswordStrengthFieldValidator
-)
+
 from shared_foundation.models import SharedUser
 from shared_foundation import utils
 

@@ -16,13 +16,6 @@ from django.dispatch import receiver
 from django.utils import timezone
 from django.utils.text import Truncator
 from django.utils.translation import ugettext_lazy as _
-from starterkit.utils import (
-    get_random_string,
-    get_unique_username_from_email,
-    generate_hash,
-    int_or_none,
-    float_or_none
-)
 from shared_foundation.constants import *
 from shared_foundation.models import SharedUser
 from tenant_foundation.models import AbstractPerson

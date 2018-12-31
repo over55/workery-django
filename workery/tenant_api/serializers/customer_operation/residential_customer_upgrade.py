@@ -3,15 +3,6 @@ import logging
 import phonenumbers
 from datetime import datetime, timedelta
 from dateutil import tz
-from starterkit.drf.validation import (
-    MatchingDuelFieldsValidator,
-    EnhancedPasswordStrengthFieldValidator
-)
-from starterkit.utils import (
-    get_random_string,
-    get_unique_username_from_email,
-    int_or_none
-)
 from django.conf import settings
 from django.contrib.auth.models import Group
 from django.contrib.auth import authenticate
@@ -22,8 +13,10 @@ from django.utils.http import urlquote
 from rest_framework import exceptions, serializers
 from rest_framework.response import Response
 from rest_framework.validators import UniqueValidator
-from shared_api.custom_fields import PhoneNumberField
+
+from shared_foundation.custom.drf.fields import PhoneNumberField
 from shared_foundation.constants import CUSTOMER_GROUP_ID
+from shared_foundation.utils import int_or_none
 from shared_foundation.models import SharedUser
 from tenant_foundation.constants import *
 from tenant_foundation.models import (
