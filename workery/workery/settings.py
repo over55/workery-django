@@ -18,7 +18,6 @@ import re
 import raven # Third party library
 import sys
 from django.utils.log import DEFAULT_LOGGING
-from trapdoor.utils import get_suspicious_paths_to_ignore_array
 
 '''
 django-environ
@@ -81,7 +80,6 @@ SHARED_APPS = (
     # 'whitenoise.runserver_nostatic',
     'starterkit',
     'django_tenants',
-    'trapdoor',
     'rest_framework',
     'rest_framework.authtoken',
     'django_filters',
@@ -145,7 +143,6 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django_tenants.middleware.main.TenantMainMiddleware',       # Third Party
-    'trapdoor.middleware.TrapdoorMiddleware',                    # Third Party
     'whitenoise.middleware.WhiteNoiseMiddleware',                # Third Party
     'django.middleware.common.CommonMiddleware',
     # 'django.middleware.csrf.CsrfViewMiddleware',               #TODO: Add CSRF only to specific resources.
@@ -467,7 +464,6 @@ IGNORABLE_404_URLS = [
     re.compile(r'^/favicon\.ico$'),
     re.compile(r'^/robots\.txt$'),
 ]
-IGNORABLE_404_URLS += get_suspicious_paths_to_ignore_array()
 
 
 #

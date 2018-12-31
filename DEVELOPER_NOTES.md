@@ -14,7 +14,6 @@ pip install Pillow                        # Req: ImageField
 pip install django-cors-headers           # Enable CORS in Headers
 pip install gunicorn                      # Web-Server Helper
 pip install django-htmlmin                # HTML Minify
-pip install django-trapdoor               # Automatically Exploit Scanners
 pip install psycopg2-binary               # Postgres SQL ODBC
 pip install django-tenants                # Multi-Tenancy Handler
 pip install djangorestframework           # RESTful API Endpoint Generator
