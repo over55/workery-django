@@ -13,6 +13,8 @@ from django.db import transaction
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 from django.core.management import call_command
+
+from shared_foundation.utils import int_or_none
 from shared_foundation.models.franchise import SharedFranchise
 from shared_foundation.models.franchise import SharedFranchiseDomain
 from tenant_foundation.constants import *

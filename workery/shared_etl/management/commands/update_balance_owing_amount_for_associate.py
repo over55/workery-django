@@ -11,6 +11,8 @@ from django.db import transaction
 from django.urls import reverse
 from django.utils.translation import ugettext_lazy as _
 from django.template.loader import render_to_string    # HTML to TXT
+
+from shared_foundation.utils import int_or_none
 from tenant_foundation.constants import *
 from tenant_foundation.models import Associate, WorkOrder
 
@@ -35,7 +37,7 @@ class Command(BaseCommand):
         connection.set_schema(franchise_schema_name, True) # Switch to Tenant.
 
         try:
-            associate = Associate.objects.get(id=int(associate_id))
+            associate = Associate.objects.get(id=int_or_none(associate_id))
             self.begin_processing(associate)
 
         except Associate.DoesNotExist:
