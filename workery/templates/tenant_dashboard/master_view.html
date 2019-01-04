@@ -220,43 +220,9 @@
         </p> -->
     </div>
     <!-- end AWAY LOGS -->
-
-    <!-- ORDER COMMENTS -->
-    <h1>{% trans 'Past 5 day comments' %}</h1>
-    <div class="table-responsive">
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>Job #</th>
-                    <th>Comment</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for order_comment in past_few_day_comments %}
-                <tr>
-                    <td>
-                        <a href="{% url 'workery_tenant_job_retrieve' 'summary' order_comment.about.id %}">{{ order_comment.about.id|intcomma }}</a>
-                    </td>
-                    <td>
-                        {{ order_comment.comment.text|truncatechars:150 }}{% if order_comment.comment.text|length > 150 %}...{% endif %}
-                    </td>
-                    <td>
-                        <a href="{% url 'workery_tenant_job_comments_retrieve' 'summary' order_comment.about.id %}">
-                            {% trans 'View' %}&nbsp;<i class="fas fa-chevron-right"></i>
-                        </a>
-                    </td>
-                </tr>
-                {% empty %}
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
-    <!-- end ORDER COMMENTS -->
-    <a href="{% url 'workery_tenant_job_comments_list' %}">See more comments&nbsp;<i class="fas fa-chevron-right"></i></a>
-
+   
     <!-- LATEST ORDERS BY TEAM -->
-    <h1>{% trans 'Team Job History' %}</h1>
+    <h1 class="mt-2">{% trans 'Team Job History' %}</h1>
     <div class="table-responsive">
         <table class="table table-striped">
             <thead>
@@ -300,6 +266,41 @@
     </div>
     <!-- end LATEST ORDERS BY TEAM -->
 
+    <!-- ORDER COMMENTS -->
+    <h1>{% trans 'Past 5 day comments' %}</h1>
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Job #</th>
+                    <th>Comment</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for order_comment in past_few_day_comments %}
+                <tr>
+                    <td>
+                        <a href="{% url 'workery_tenant_job_retrieve' 'summary' order_comment.about.id %}">{{ order_comment.about.id|intcomma }}</a>
+                    </td>
+                    <td>
+                        {{ order_comment.comment.text|truncatechars:150 }}{% if order_comment.comment.text|length > 150 %}...{% endif %}
+                    </td>
+                    <td>
+                        <a href="{% url 'workery_tenant_job_comments_retrieve' 'summary' order_comment.about.id %}">
+                            {% trans 'View' %}&nbsp;<i class="fas fa-chevron-right"></i>
+                        </a>
+                    </td>
+                </tr>
+                {% empty %}
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <!-- end ORDER COMMENTS -->
+    <a href="{% url 'workery_tenant_job_comments_list' %}" class="mb-4">See more comments&nbsp;<i class="fas fa-chevron-right"></i></a>
+
+    
     <!-- RETURN-TO-TOP -->
     <a id="return-to-top" href="#" class="btn-info btn-lg back-to-top" role="button" title="Back to top"><i class="fas fa-angle-up fa-2x"></i></a>
     <!-- end RETURN-TO-TOP -->
