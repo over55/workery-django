@@ -105,6 +105,8 @@ def report_01_streaming_csv_view(request):
         "Associate No.",
         "Assignment Date",
         "Associate Name",
+        "Associate Gender",
+        "Associate DOB",
         "Job Completion Date",
         "Job No.",
         "Service Fee",
@@ -115,6 +117,8 @@ def report_01_streaming_csv_view(request):
         "Service Fee Date Paid",
         "Client No.",
         "Client Name",
+        "Client Gender",
+        "Client DOB",
         "Skill Set(s)"],)
 
     # Generate hte CSV data.
@@ -136,11 +140,21 @@ def report_01_streaming_csv_view(request):
         invoice_actual_service_fee_amount_paid = str(job.invoice_actual_service_fee_amount_paid)
         invoice_actual_service_fee_amount_paid = invoice_actual_service_fee_amount_paid.replace('C', '')
 
+        # Format date of birth (dob)
+        associate_dob = pretty_dt_string(job.associate.birthdate) if job.associate.birthdate is not None else ""
+        customer_dob = pretty_dt_string(job.customer.birthdate) if job.customer.birthdate is not None else ""
+
+        # Format gender.
+        associate_gender = str(job.associate.gender) if job.associate.gender is not None else ""
+        customer_gender = str(job.customer.gender) if job.customer.gender is not None else ""
+
         # Generate the row.
         rows += ([
             job.associate.id,
             pretty_dt_string(job.assignment_date),
             str(job.associate),
+            associate_gender,
+            associate_dob,
             pretty_dt_string(job.completion_date),
             job.id,
             invoice_service_fee_amount,
@@ -151,6 +165,8 @@ def report_01_streaming_csv_view(request):
             job.invoice_service_fee_payment_date,
             job.customer.id,
             str(job.customer),
+            customer_gender,
+            customer_dob,
             skill_set_string
         ],)
 
