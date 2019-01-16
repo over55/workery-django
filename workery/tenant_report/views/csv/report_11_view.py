@@ -82,7 +82,18 @@ def report_11_streaming_csv_view(request):
     rows += (["", "","",],)
 
     # Generate the CSV header row.
-    rows += (["Job No.", "Assignment", "Completion", "Associate", "Client", "WSIB Date", "Total Labour", "Invoice #", "Skill Sets"],)
+    rows += ([
+        "Job No.",
+        "Job Status",
+        "Assignment",
+        "Completion",
+        "Associate",
+        "Client",
+        "WSIB Date",
+        "Total Labour",
+        "Invoice #",
+        "Skill Sets"
+    ],)
 
     # Generate hte CSV data.
     for job in jobs.all():
@@ -102,6 +113,7 @@ def report_11_streaming_csv_view(request):
         # Generate the reason.
         rows += ([
             str(job.id),
+            job.get_pretty_status(),
             pretty_dt_string(job.assignment_date),
             pretty_dt_string(job.completion_date),
             str(job.associate),
