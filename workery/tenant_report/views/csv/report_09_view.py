@@ -80,6 +80,7 @@ def report_09_streaming_csv_view(request):
         'Other Telephone',
         'Other Telephone Type',
         'Other Telephone Extension',
+        'How heard'
     ],)
 
     type_of_choices = dict(CUSTOMER_TYPE_OF_CHOICES)
@@ -102,6 +103,7 @@ def report_09_streaming_csv_view(request):
         elif customer.last_name is None and customer.given_name:
             full_name = customer.given_name
 
+        # Generate the row
         rows += ([
             customer.id,
             full_name,
@@ -121,7 +123,8 @@ def report_09_streaming_csv_view(request):
             customer.telephone_extension,
             customer.other_telephone,
             other_telephone_type_of,
-            customer.other_telephone_extension
+            customer.other_telephone_extension,
+            customer.get_pretty_how_hear()
         ],)
 
     pseudo_buffer = Echo()
