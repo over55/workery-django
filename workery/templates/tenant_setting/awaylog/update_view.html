@@ -23,6 +23,16 @@
 
         $( '#until_date').val('{% if away_log.until_date %}{{ away_log.until_date|date:"Y-m-d" }}{% endif %}');
 
+        $( "#start_date" ).datepicker({
+            dateFormat: 'yy-mm-dd',
+	        changeMonth: true,
+            changeYear: true,
+	    	yearRange: "c-90:c+150",
+		    minDate: 'today'
+        });
+
+        $( '#start_date').val('{% if away_log.start_date %}{{ away_log.start_date|date:"Y-m-d" }}{% endif %}');
+
         // Set the RADIO.
         {% if away_log.until_further_notice == True %}
             $("#until_further_notice").prop("checked", true);
@@ -86,6 +96,14 @@
             until_date = '';
         }
 
+        var start_date = $('#start_date').val();
+        if (start_date !== undefined && start_date != null && start_date.length > 0) {
+            var mydate = new Date(start_date); // Convert "MM DD, YYYY" to JS DATE
+            start_date = mydate.toISOString().substring(0, 10); // Convert JS DATE to "YYYY-MM-DD"
+        } else {
+            start_date = '';
+        }
+
         // RUN THE CODE WHICH WILL SUBMIT THE JSON DATA TO THE SERVER.
         update_away_log_api(
             {{ away_log.id }},
@@ -94,7 +112,8 @@
                 'reason': reason,
                 'reason_other': reason_other,
                 'until_further_notice': until_further_notice,
-                'until_date': until_date
+                'until_date': until_date,
+                'start_date': start_date
             },
             function(result_dict) { // Success
                 console.log(result_dict);
@@ -171,6 +190,17 @@
                             <div id="associate-error" class="invalid-feedback"></div>
                         </div>
                         <!-- ############ end ASSOCIATE (REMOTE DATA) ############ -->
+
+                        <div class="form-group p-0 col-md-7 mb-4">
+                            <label for="start_date">Start Date</label>
+                            <div class="input-group input-group-lg">
+                                <input type="text" class="form-control form-control-lg border border-success" id="start_date" name="start_date" placeholder="yyyy-mm-dd" value="{% if away_log.start_date %}{{ away_log.start_date|date:"Y-m-d" }}{% endif %}" required>
+                                <div class="input-group-append">
+                                    <span class="input-group-text dob-icon bg-success border-success"><i class="far fa-calendar-alt"></i></span>
+                                </div>
+                                <div id="start_date-error" class="invalid-feedback"></div>
+                            </div>
+                        </div>
 
                         <!-- REASON -->
                         <div class="form-group col-md-12 mb-4">

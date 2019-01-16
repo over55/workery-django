@@ -93,6 +93,12 @@ class AwayLog(models.Model):
         blank=True,
         null=True
     )
+    start_date = models.DateField(
+        _('Away start date'),
+        help_text=_('The date that this user will start their absence on.'),
+        blank=True,
+        null=True
+    )
     was_deleted = models.BooleanField(
         _("Was deleted"),
         help_text=_('Track whether this away log was deleted or not.'),

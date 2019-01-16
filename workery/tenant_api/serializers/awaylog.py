@@ -42,6 +42,7 @@ class AwayLogListCreateSerializer(serializers.ModelSerializer):
             'reason_other',
             'until_further_notice',
             'until_date',
+            'start_date',
         )
 
     def validate_reason(self, value):
@@ -92,6 +93,7 @@ class AwayLogListCreateSerializer(serializers.ModelSerializer):
         reason_other = validated_data.get('reason_other', None)
         until_further_notice = validated_data.get('until_further_notice', False)
         until_date = validated_data.get('until_date', None)
+        start_date = validated_data.get('start_date', None)
 
         #-----------------------------
         # Create our `AwayLog` object.
@@ -103,6 +105,7 @@ class AwayLogListCreateSerializer(serializers.ModelSerializer):
             reason_other=reason_other,
             until_further_notice=until_further_notice,
             until_date=until_date,
+            start_date=start_date,
             created_by=self.context['created_by'],
             # created_from = self.context['created_from'],
             # created_from_is_public = self.context['created_from_is_public'],
@@ -181,6 +184,7 @@ class AwayLogRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
             'reason_other',
             'until_further_notice',
             'until_date',
+            'start_date',
         )
 
     def validate_reason(self, value):
