@@ -58,15 +58,30 @@ def report_05_streaming_csv_view(request):
     rows += (["", "", "", "", "", ""],)
 
     # Generate the CSV header row.
-    rows += (["Associate No.", "Name", "Commerical Insurance Due Dates", "Auto Insurance Expiry Date","WSIB Insurance Date","Insurance Requirement(s)"],)
+    rows += ([
+        "Associate No.",
+        "Name",
+        "Commerical Insurance Due Dates",
+        "Auto Insurance Expiry Date",
+        "WSIB Insurance #",
+        "WSIB Insurance Date",
+        "Insurance Requirement(s)"
+    ],)
 
-    # Generate hte CSV data.
+    # Generate the CSV dataset.
     for associate in associates.all():
+
+        # Preformat our `wsib_number` variable.
+        wsib_number = "-" if associate.wsib_number is None else associate.wsib_number
+        wsib_number = "-" if len(wsib_number) == 0 else wsib_number
+
+        # Generate our row.
         rows += ([
             associate.id,
             str(associate),
             "-" if associate.commercial_insurance_expiry_date is None else pretty_dt_string(associate.commercial_insurance_expiry_date),
             "-" if associate.auto_insurance_expiry_date is None else pretty_dt_string(associate.auto_insurance_expiry_date),
+            wsib_number,
             "-" if associate.wsib_insurance_date is None else pretty_dt_string(associate.wsib_insurance_date),
             associate.get_insurance_requirements()
         ],)
