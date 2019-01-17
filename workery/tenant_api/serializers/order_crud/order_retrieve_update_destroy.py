@@ -170,6 +170,16 @@ class WorkOrderRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         instance.invoice_actual_service_fee_amount_paid = validated_data.get('invoice_actual_service_fee_amount_paid', instance.invoice_actual_service_fee_amount_paid)
         instance.invoice_balance_owing_amount = instance.invoice_service_fee_amount.amount - instance.invoice_actual_service_fee_amount_paid.amount
 
+        # Update the job type based off of the customers type. This is done in
+        # in case the new customer is either commercial or residential but
+        # the job type was marked the opposite.
+        if instance.customer:
+            instance.job_type_of = UNASSIGNED_JOB_TYPE_OF_ID
+            if instance.customer.type_of == RESIDENTIAL_CUSTOMER_TYPE_OF_ID:
+                instance.job_type_of = RESIDENTIAL_JOB_TYPE_OF_ID
+            if instance.customer.type_of == COMMERCIAL_CUSTOMER_TYPE_OF_ID:
+                instance.job_type_of = COMMERCIAL_JOB_TYPE_OF_ID
+
         # Save the model.
         instance.save()
         logger.info("Updated order object.")

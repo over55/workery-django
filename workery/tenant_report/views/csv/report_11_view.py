@@ -61,7 +61,7 @@ def report_11_streaming_csv_view(request):
 
     # Run our filter lookup.
     jobs = WorkOrder.objects.filter(
-        completion_date__range=(tenant_from_dt,tenant_to_dt),
+        assignment_date__range=(tenant_from_dt,tenant_to_dt),
         type_of=COMMERCIAL_JOB_TYPE_OF_ID,
         customer__isnull=False,
         associate__isnull=False

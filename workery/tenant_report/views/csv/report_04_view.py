@@ -61,14 +61,14 @@ def report_04_streaming_csv_view(request):
 
     # Run our filter lookup.
     cancelled_jobs = WorkOrder.objects.filter(
-        Q(completion_date__range=(from_dt,to_dt)) &
+        Q(assignment_date__range=(from_dt,to_dt)) &
         Q(
             Q(state=WORK_ORDER_STATE.CANCELLED) |
             Q(state=WORK_ORDER_STATE.DECLINED)
         ) &
         Q(associate__isnull=False)
     ).order_by(
-        '-completion_date'
+        '-assignment_date'
     ).prefetch_related(
         'customer',
         'associate',
@@ -105,7 +105,7 @@ def report_04_streaming_csv_view(request):
         # Generate the reason.
         rows += ([
             str(cancelled_job.id),
-            pretty_dt_string(cancelled_job.completion_date),
+            pretty_dt_string(cancelled_job.assignment_date),
             str(closing_reason),
             str(associate_id),
             str(associate),
