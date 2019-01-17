@@ -188,8 +188,14 @@ class PendingTaskRetrieveForActivitySheetView(LoginRequiredMixin, GroupRequiredM
                Q(skill_sets__in=skill_set_pks) &
                ~Q(id__in=activity_sheet_associate_pks) &
                Q(owner__is_active=True) &
-               Q(away_log__isnull=True)
+               Q(
+                   Q(away_log__isnull=True)|
+                   Q(away_log__start_date__gt=timezone.now()) # (*)
+               )
             ).distinct()
+
+            # (*) - If tassociates vacation did not start today then allow
+            #       the associate to be listed as available in the list.
         except Exception as e:
             available_associates = None
         modified_context['available_associates_list'] = available_associates
