@@ -179,7 +179,7 @@
                 {% for associate in available_associates_list %}
                 <tr>
                     <td>
-                        <a href="{% url 'workery_tenant_member_lite_retrieve' 'summary' associate.id %}" target="_blank">{{ associate }}&nbsp;<i class="fas fa-external-link-alt"></i></a>
+                        <a href="{% url 'workery_tenant_member_lite_retrieve' 'summary' associate.id %}" target="_blank">{{ associate }}&nbsp;{% if associate.wsib_number %}(WSIB # {{ associate.wsib_number }})&nbsp;{% endif %}<i class="fas fa-external-link-alt"></i></a>
                     </td>
                     <td>{{ associate.past_30_days_activity_sheet_count }}</td>
                     <td>
@@ -216,7 +216,7 @@
                 {% for item in existing_activity_sheet.all %}
                 <tr>
                     <td>
-                        <a href="{% url 'workery_tenant_member_lite_retrieve' 'summary' item.associate.id %}" target="_blank">{{ item.associate }}&nbsp;<i class="fas fa-external-link-alt"></i></a>
+                        <a href="{% url 'workery_tenant_member_lite_retrieve' 'summary' item.associate.id %}" target="_blank">{{ item.associate }}&nbsp;{% if item.associate.wsib_number %}(WSIB # {{ item.associate.wsib_number }})&nbsp;{% endif %}<i class="fas fa-external-link-alt"></i></a>
                     </td>
                     <td>
                         {% if item.state == ACTIVITY_SHEET_ITEM_STATE.ACCEPTED %}
