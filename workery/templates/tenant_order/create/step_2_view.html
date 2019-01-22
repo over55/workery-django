@@ -17,10 +17,8 @@
         // STEP 1 - Fetch the values we've saved in localStorage.
         var tmp_job_type = localStorage.getItem("tmp_job_type");
         var tmp_home_support = localStorage.getItem("tmp_home_support");
-        var tmp_frequency = localStorage.getItem("tmp_frequency");
         console.log(tmp_job_type);
         console.log(tmp_home_support);
-        console.log(tmp_frequency);
 
         // STEP 2 - Update the GUI with our saved values.
         $("input[name=job-type][value=" + tmp_job_type + "]").prop('checked', true);
@@ -30,10 +28,8 @@
         //          made by the user.
         if (tmp_job_type == 'Ongoing') {
             $('#id_follow_up_div').show();
-            $('#id_frequency_div').show();
         } else {
             $('#id_follow_up_div').hide();
-            $('#id_frequency_div').hide();
         }
 
         // STEP 4 - Attach event handlers to update the GUI on whether an
@@ -42,14 +38,12 @@
             var job_type = $('input[id=job-type]:checked').val();
             console.log(job_type);
             $('#id_follow_up_div').hide();
-            $('#id_frequency_div').hide();
             $('#start_date').val('');
         });
         $('#job-type2').change(function () {
             var job_type = $('input[id=job-type2]:checked').val();
             console.log(job_type);
             $('#id_follow_up_div').show();
-            $('#id_frequency_div').show();
         });
 
         // STEP 5 - Initialize our datepicker jQuery code with our HTML view.
@@ -59,7 +53,6 @@
 
         // STEP 6 -
         $('#start_date').val(localStorage.getItem("tmp_start_date"));
-        $('#frequency').val(localStorage.getItem("tmp_frequency"));
 
         // DEVELOPERS NOTE:
         // (1)
@@ -81,19 +74,16 @@
         var tmp_job_type = $('input[name=job-type]:checked').val();
         var tmp_home_support = $('input[name=home-support]:checked').val();
         var tmp_start_date = $('#start_date').val();
-        var tmp_frequency = $('#frequency').val();
 
         // For debugging purposes only.
         console.log(tmp_job_type);
         console.log(tmp_home_support);
         console.log(tmp_start_date);
-        console.log(tmp_frequency);
 
         // Save to local storage.
         localStorage.setItem("tmp_job_type", tmp_job_type);
         localStorage.setItem("tmp_home_support", tmp_home_support);
         localStorage.setItem("tmp_start_date", tmp_start_date);
-        localStorage.setItem("tmp_frequency", tmp_frequency);
 
 	    // STEP 2: CLEAR EXISTING ERROR TEXT.
         $('#all_error_result').html("");
@@ -151,7 +141,7 @@
 
     <!-- STEP NAVIGATION -->
     <!------------------------------------------------------------------------->
-    	
+
      <div class="row">
 	   <div class="stepwizard pt-4 col-md-offset-3">
             <div class="stepwizard-row setup-panel">
@@ -161,7 +151,7 @@
               </div>
               <div class="stepwizard-step step-active">
                 <a type="button" class="btn btn-primary btn-lg btn-circle text-white step-btn-active" disabled="disabled"><i class="fas fa-check"></i></a>
-                <p>Job Type</p> 
+                <p>Job Type</p>
               </div>
               <div class="stepwizard-step">
                 <a type="button" class="btn btn-secondary btn-lg btn-circle text-white" disabled="disabled"><i class="fas fa-times"></i></a>
@@ -219,23 +209,6 @@
                 </div>
             </div>
             <!-- end IS ONGOING OR NOT -->
-
-            <!-- FREQUENCY -->
-            <div class="form-group col-md-8 mb-4 p-0" id="id_frequency_div">
-                <label for="frequency">Frequency</label>
-                <select class="custom-select form-control-lg border-success" id="frequency" name="frequency" required>
-                    <option value="" selected>Please select...</option>
-                    <option value="never">Never</option>
-                    <option value="monthly">Monthly</option>
-                    <option value="quarterly">Quarterly</option>
-                    <option value="annually">Annually</option>
-                </select>
-                <div id="frequency-error" class="invalid-feedback"></div>
-                <small id="id_notice" class="form-text text-muted ft-indent">
-                    If you do not know which option to choose, then simply select <strong>quarterly</strong>.
-                </small>
-            </div>
-            <!-- end FREQUENCY -->
 
             <div class="form-group my-3 pt-2">
                 <p class="mb-1 font-b6">Is this job a home support service?</p>
