@@ -292,13 +292,6 @@ class WorkOrderCloseCreateSerializer(serializers.Serializer):
                 'total_score': str(total_score)
             })
 
-        #--------------------------------#
-        # Update our `OngoingWorkOrder`. #
-        #--------------------------------#
-        if job.ongoing_work_order:
-            job.ongoing_work_order.save()
-            job.ongoing_work_order.closed_orders.add(job)
-
         #--------------------#
         # Updated the output #
         #--------------------#
