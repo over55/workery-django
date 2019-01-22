@@ -128,8 +128,6 @@ TENANT_APPS = (
     'tenant_task',
     'tenant_report',
     'tenant_financial',
-    'tenant_ongoing_order',
-    'tenant_ongoing_order_operation'
     # . . .
 )
 
