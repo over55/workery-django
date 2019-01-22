@@ -63,7 +63,7 @@ class AwayLog(models.Model):
     associate = models.ForeignKey(
         "Associate",
         help_text=_('The associate of our away log.'),
-        related_name="%(app_label)s_%(class)s_associate_related",
+        related_name="away_logs",
         on_delete=models.CASCADE,
     )
     reason = models.PositiveSmallIntegerField(
@@ -114,7 +114,7 @@ class AwayLog(models.Model):
     created_by = models.ForeignKey(
         SharedUser,
         help_text=_('The user whom created this away log.'),
-        related_name="%(app_label)s_%(class)s_created_by_related",
+        related_name="created_away_logs",
         on_delete=models.SET_NULL,
         blank=True,
         null=True
@@ -123,7 +123,7 @@ class AwayLog(models.Model):
     last_modified_by = models.ForeignKey(
         SharedUser,
         help_text=_('The user whom last modified this away log.'),
-        related_name="%(app_label)s_%(class)s_last_modified_by_related",
+        related_name="last_modified_away_logs",
         on_delete=models.SET_NULL,
         blank=True,
         null=True

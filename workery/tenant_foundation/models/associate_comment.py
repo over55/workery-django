@@ -60,13 +60,13 @@ class AssociateComment(models.Model):
     comment = models.ForeignKey(
         "Comment",
         help_text=_('The comment this item belongs to.'),
-        related_name="%(app_label)s_%(class)s_comment_categories",
+        related_name="associate_comments",
         on_delete=models.CASCADE,
     )
     about = models.ForeignKey(
         "Associate",
         help_text=_('The associate whom this comment is about.'),
-        related_name="%(app_label)s_%(class)s_about_related",
+        related_name="associate_comments",
         on_delete=models.CASCADE,
     )
     created_at = models.DateTimeField(auto_now_add=True, db_index=True)

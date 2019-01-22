@@ -50,11 +50,8 @@ def get_todays_date(days=0):
 class OngoingWorkOrder(models.Model):
     """
     Class model to represent an ongoing job. This model is essentially a
-    modified `WorkOrder` model tailered to work as `master form` which will
-    (1) Keep track fo the job requirements
-    (2) Used to re-create work orders based on the details in this `master form`.
-    (3) Used to keep track of previous closed `WorkOrder` objects associated
-        with this `master form`.
+    `master form` which will:
+    (1)
     """
     class Meta:
         app_label = 'tenant_foundation'
@@ -82,116 +79,12 @@ class OngoingWorkOrder(models.Model):
     #  WORK ORDER FIELDS
     #
 
-    customer = models.ForeignKey(
-        "Customer",
-        help_text=_('The customer of our ongoing work order.'),
-        related_name="%(app_label)s_%(class)s_customer_related",
-        on_delete=models.CASCADE
-    )
-    associate = models.ForeignKey(
-        "Associate",
-        help_text=_('The associate of our ongoing work order.'),
-        related_name="%(app_label)s_%(class)s_associate_related",
-        on_delete=models.CASCADE,
-        blank=True,
-        null=True
-    )
-    assignment_date = models.DateField(
-        _('Assignment Date'),
-        help_text=_('The date that an associate was assigned to the customer.'),
-        blank=True,
-        null=True
-    )
-    start_date = models.DateField(
-        _('Start Date'),
-        help_text=_('The date that this ongoing order will begin.'),
-        blank=True,
-        default=get_todays_date
-    )
-    frequency = models.CharField(
-        _("Frequency"),
-        help_text=_('The frequency of the ongoing job.'),
-        max_length=31,
-        blank=True,
-        null=True,
-    )
-    completion_date = models.DateField(
-        _('Completion Date'),
-        help_text=_('The date that this ongoing order was completed.'),
-        blank=True,
-        null=True
-    )
-    hours = models.DecimalField(
-        _("Hours"),
-        help_text=_('The total amount of hours worked on for this ongoing order by the associate.'),
-        default=0,
-        max_digits=7,
-        decimal_places=1,
-        blank=True,
-        null=True
-    )
-    description = models.TextField(
-        _("Description"),
-        help_text=_('A description of this ongoing order.'),
-        blank=True,
-        null=True,
-        default='',
-    )
-    tags = models.ManyToManyField(
-        "Tag",
-        help_text=_('The category tags that this order belongs to.'),
-        blank=True,
-        related_name="%(app_label)s_%(class)s_tags_related",
-    )
-    is_home_support_service = models.BooleanField(
-        _("Is Home Support Service"),
-        help_text=_('Track whether this order is a home support service request.'),
-        default=False,
-        blank=True
-    )
-    skill_sets = models.ManyToManyField(
-        "SkillSet",
-        help_text=_('The skill sets that belong to this order.'),
-        blank=True,
-        related_name="%(app_label)s_%(class)s_skill_sets_related",
-    )
-    type_of = models.PositiveSmallIntegerField(
-        _("Type Of"),
-        help_text=_('The type of job this is.'),
-        default=UNASSIGNED_JOB_TYPE_OF_ID,
-        choices=JOB_TYPE_OF_CHOICES,
-        blank=True,
-    )
     comments = models.ManyToManyField(
         "Comment",
         help_text=_('The comments belonging to this ongoing order.'),
         blank=True,
         through='OngoingWorkOrderComment',
-        related_name="%(app_label)s_%(class)s_ongoing_order_comments_related"
-    )
-
-    #
-    # TASK FIELDS
-    #
-
-    latest_pending_task = models.ForeignKey(
-        "TaskItem",
-        help_text=_('The latest pending task of our ongoing job order.'),
-        related_name="%(app_label)s_%(class)s_latest_pending_task_task_related",
-        on_delete=models.SET_NULL,
-        blank=True,
-        null=True
-    )
-
-    #
-    # AGGREGATION FIELDS
-    #
-
-    closed_orders = models.ManyToManyField(
-        "WorkOrder",
-        help_text=_('The work orders associated with this ongoing work order.'),
-        blank=True,
-        related_name="%(app_label)s_%(class)s_closed_orders_related"
+        related_name="ongoing_work_orders"
     )
 
     #
@@ -214,7 +107,7 @@ class OngoingWorkOrder(models.Model):
     created_by = models.ForeignKey(
         SharedUser,
         help_text=_('The user whom created this ongoing order.'),
-        related_name="%(app_label)s_%(class)s_created_by_related",
+        related_name="created_ongoing_work_orders",
         on_delete=models.SET_NULL,
         blank=True,
         null=True
@@ -235,7 +128,7 @@ class OngoingWorkOrder(models.Model):
     last_modified_by = models.ForeignKey(
         SharedUser,
         help_text=_('The user whom last modified this ongoing order.'),
-        related_name="%(app_label)s_%(class)s_last_modified_by_related",
+        related_name="last_modified_ongoing_work_orders",
         on_delete=models.SET_NULL,
         blank=True,
         null=True

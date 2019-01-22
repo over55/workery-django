@@ -97,7 +97,7 @@ class WorkOrderServiceFee(models.Model):
     created_by = models.ForeignKey(
         SharedUser,
         help_text=_('The user whom created this order.'),
-        related_name="%(app_label)s_%(class)s_created_by_related",
+        related_name="created_work_order_fees",
         on_delete=models.SET_NULL,
         blank=True,
         null=True
@@ -106,7 +106,7 @@ class WorkOrderServiceFee(models.Model):
     last_modified_by = models.ForeignKey(
         SharedUser,
         help_text=_('The user whom last modified this order.'),
-        related_name="%(app_label)s_%(class)s_last_modified_by_related",
+        related_name="last_modified_work_order_fees",
         on_delete=models.SET_NULL,
         blank=True,
         null=True

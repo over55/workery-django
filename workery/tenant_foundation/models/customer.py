@@ -155,7 +155,7 @@ class Customer(AbstractPerson):
     created_by = models.ForeignKey(
         SharedUser,
         help_text=_('The user whom created this object.'),
-        related_name="%(app_label)s_%(class)s_created_by_related",
+        related_name="created_customers",
         on_delete=models.SET_NULL,
         blank=True,
         null=True,
@@ -175,7 +175,7 @@ class Customer(AbstractPerson):
     last_modified_by = models.ForeignKey(
         SharedUser,
         help_text=_('The user whom modified this object last.'),
-        related_name="%(app_label)s_%(class)s_last_modified_by_related",
+        related_name="last_modified_customers",
         on_delete=models.SET_NULL,
         blank=True,
         null=True,
@@ -223,7 +223,7 @@ class Customer(AbstractPerson):
     avatar_image = models.ForeignKey(
         "PublicImageUpload",
         help_text=_('The avatar image of this customer.'),
-        related_name="%(app_label)s_%(class)s_avatar_image_related",
+        related_name="customers",
         on_delete=models.SET_NULL,
         blank=True,
         null=True,
@@ -236,6 +236,7 @@ class Customer(AbstractPerson):
     organization = models.ForeignKey(
         "Organization",
         help_text=_('The organization that this customer is affiliated with.'),
+        related_name="customers",
         blank=False,
         null=True,
         on_delete=models.SET_NULL,

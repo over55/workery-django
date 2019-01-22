@@ -94,7 +94,7 @@ class Organization(AbstractThing, AbstractContactPoint, AbstractPostalAddress, A
     avatar_image = models.ForeignKey(
         "PublicImageUpload",
         help_text=_('The avatar image of this organization.'),
-        related_name="%(app_label)s_%(class)s_avatar_image_related",
+        related_name="organizations",
         on_delete=models.SET_NULL,
         blank=True,
         null=True,

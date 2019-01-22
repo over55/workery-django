@@ -212,7 +212,7 @@ class Associate(AbstractPerson):
     created_by = models.ForeignKey(
         SharedUser,
         help_text=_('The user whom created this object.'),
-        related_name="%(app_label)s_%(class)s_created_by_related",
+        related_name="created_associates",
         on_delete=models.SET_NULL,
         blank=True,
         null=True,
@@ -232,7 +232,7 @@ class Associate(AbstractPerson):
     last_modified_by = models.ForeignKey(
         SharedUser,
         help_text=_('The user whom modified this object last.'),
-        related_name="%(app_label)s_%(class)s_last_modified_by_related",
+        related_name="last_modified_associates",
         on_delete=models.SET_NULL,
         blank=True,
         null=True,
@@ -278,7 +278,7 @@ class Associate(AbstractPerson):
     away_log = models.ForeignKey(
         "AwayLog",
         help_text=_('The object referencing our Assocaites away log (if they have one).'),
-        related_name="%(app_label)s_%(class)s_away_info_related",
+        related_name="associates",
         on_delete=models.SET_NULL,
         blank=True,
         null=True,
@@ -299,7 +299,7 @@ class Associate(AbstractPerson):
     avatar_image = models.ForeignKey(
         "PublicImageUpload",
         help_text=_('The avatar image of this associate.'),
-        related_name="%(app_label)s_%(class)s_avatar_image_related",
+        related_name="associates",
         on_delete=models.SET_NULL,
         blank=True,
         null=True,

@@ -67,7 +67,7 @@ class ActivitySheetItem(models.Model):
     job = models.ForeignKey(
         "WorkOrder",
         help_text=_('The job associated with thie activity sheet item.'),
-        related_name="%(app_label)s_%(class)s_work_order_related",
+        related_name="activity_sheet_items",
         on_delete=models.CASCADE,
         blank=True,
         null=True,
@@ -75,7 +75,7 @@ class ActivitySheetItem(models.Model):
     ongoing_job = models.ForeignKey(
         "OngoingWorkOrder",
         help_text=_('The ongoing job associated with thie activity sheet item.'),
-        related_name="%(app_label)s_%(class)s_ongoing_work_order_related",
+        related_name="activity_sheet_items",
         on_delete=models.CASCADE,
         blank=True,
         null=True
@@ -83,7 +83,7 @@ class ActivitySheetItem(models.Model):
     associate = models.ForeignKey(
         "Associate",
         help_text=_('The associate with this activity sheet item.'),
-        related_name="%(app_label)s_%(class)s_associate_related",
+        related_name="activity_sheet_items",
         on_delete=models.CASCADE,
     )
     comment = models.TextField(
@@ -104,7 +104,7 @@ class ActivitySheetItem(models.Model):
     created_by = models.ForeignKey(
         SharedUser,
         help_text=_('The user whom created this activity sheet item.'),
-        related_name="%(app_label)s_%(class)s_created_by_related",
+        related_name="created_activity_sheet_items",
         on_delete=models.SET_NULL,
         blank=True,
         null=True

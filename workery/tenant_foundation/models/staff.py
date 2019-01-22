@@ -110,7 +110,7 @@ class Staff(AbstractPerson):
     created_by = models.ForeignKey(
         SharedUser,
         help_text=_('The user whom created this object.'),
-        related_name="%(app_label)s_%(class)s_created_by_related",
+        related_name="created_staves",
         on_delete=models.SET_NULL,
         blank=True,
         null=True,
@@ -130,7 +130,7 @@ class Staff(AbstractPerson):
     last_modified_by = models.ForeignKey(
         SharedUser,
         help_text=_('The user whom modified this object last.'),
-        related_name="%(app_label)s_%(class)s_last_modified_by_related",
+        related_name="last_modified_staves",
         on_delete=models.SET_NULL,
         blank=True,
         null=True,
@@ -179,7 +179,7 @@ class Staff(AbstractPerson):
     avatar_image = models.ForeignKey(
         "PublicImageUpload",
         help_text=_('The avatar image of this staff.'),
-        related_name="%(app_label)s_%(class)s_avatar_image_related",
+        related_name="staves",
         on_delete=models.SET_NULL,
         blank=True,
         null=True,

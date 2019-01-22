@@ -94,13 +94,13 @@ class WorkOrder(models.Model):
     customer = models.ForeignKey(
         "Customer",
         help_text=_('The customer of our order.'),
-        related_name="%(app_label)s_%(class)s_customer_related",
+        related_name="work_orders",
         on_delete=models.CASCADE
     )
     associate = models.ForeignKey(
         "Associate",
         help_text=_('The associate of our order.'),
-        related_name="%(app_label)s_%(class)s_associate_related",
+        related_name="work_orders",
         on_delete=models.CASCADE,
         blank=True,
         null=True
@@ -204,7 +204,7 @@ class WorkOrder(models.Model):
     latest_pending_task = models.ForeignKey(
         "TaskItem",
         help_text=_('The latest pending task of our job order.'),
-        related_name="%(app_label)s_%(class)s_latest_pending_task_related",
+        related_name="work_orders",
         on_delete=models.SET_NULL,
         blank=True,
         null=True
@@ -392,7 +392,7 @@ class WorkOrder(models.Model):
     invoice_service_fee = models.ForeignKey(
         "WorkOrderServiceFee",
         help_text=_('The service fee applied by the franchise on the total cost of this job order which will be paid by the associate member.'),
-        related_name="%(app_label)s_%(class)s_service_fee_related",
+        related_name="work_orders",
         on_delete=models.SET_NULL,
         blank=True,
         null=True
@@ -421,8 +421,8 @@ class WorkOrder(models.Model):
     ongoing_work_order = models.ForeignKey(
         "OngoingWorkOrder",
         help_text=_('The ongoing work order that this work order is a part of.'),
-        related_name="%(app_label)s_%(class)s_ongoing_work_order_related",
-        on_delete=models.CASCADE,
+        related_name="work_orders",
+        on_delete=models.SET_NULL,
         blank=True,
         null=True
     )
@@ -435,7 +435,7 @@ class WorkOrder(models.Model):
     created_by = models.ForeignKey(
         SharedUser,
         help_text=_('The user whom created this order.'),
-        related_name="%(app_label)s_%(class)s_created_by_related",
+        related_name="created_work_orders",
         on_delete=models.SET_NULL,
         blank=True,
         null=True
@@ -456,7 +456,7 @@ class WorkOrder(models.Model):
     last_modified_by = models.ForeignKey(
         SharedUser,
         help_text=_('The user whom last modified this order.'),
-        related_name="%(app_label)s_%(class)s_last_modified_by_related",
+        related_name="last_modified_work_orders",
         on_delete=models.SET_NULL,
         blank=True,
         null=True

@@ -89,6 +89,7 @@ class Partner(AbstractPerson):
         blank=True,
         null=True,
         on_delete=models.SET_NULL,
+        related_name="partners",
     )
 
     #
@@ -126,7 +127,7 @@ class Partner(AbstractPerson):
     created_by = models.ForeignKey(
         SharedUser,
         help_text=_('The user whom created this object.'),
-        related_name="%(app_label)s_%(class)s_created_by_related",
+        related_name="created_partners",
         on_delete=models.SET_NULL,
         blank=True,
         null=True,
@@ -146,7 +147,7 @@ class Partner(AbstractPerson):
     last_modified_by = models.ForeignKey(
         SharedUser,
         help_text=_('The user whom modified this object last.'),
-        related_name="%(app_label)s_%(class)s_last_modified_by_related",
+        related_name="last_modified_partners",
         on_delete=models.SET_NULL,
         blank=True,
         null=True,
@@ -180,7 +181,7 @@ class Partner(AbstractPerson):
     avatar_image = models.ForeignKey(
         "PublicImageUpload",
         help_text=_('The avatar image of this partner.'),
-        related_name="%(app_label)s_%(class)s_avatar_image_related",
+        related_name="partners",
         on_delete=models.SET_NULL,
         blank=True,
         null=True,

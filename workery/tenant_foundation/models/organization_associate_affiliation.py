@@ -28,13 +28,13 @@ class OrganizationAssociateAffiliation(models.Model):
     associate = models.ForeignKey(
         "Associate",
         help_text=_('The associate of our reference.'),
-        related_name="%(app_label)s_%(class)s_associate_related",
+        related_name="organization_associations",
         on_delete=models.CASCADE
     )
     organization = models.ForeignKey(
         "Organization",
         help_text=_('The organization whom this user is affiliated to.'),
-        related_name="%(app_label)s_%(class)s_organization_related",
+        related_name="organization_associations",
         on_delete=models.CASCADE
     )
     type_of = models.PositiveSmallIntegerField(

@@ -149,7 +149,7 @@ class TaskItem(models.Model):
     job = models.ForeignKey(
         "WorkOrder",
         help_text=_('The job order that this task is referencing.'),
-        related_name="%(app_label)s_%(class)s_job_related",
+        related_name="task_items",
         on_delete=models.CASCADE,
         null=True,
         blank=True
@@ -157,7 +157,7 @@ class TaskItem(models.Model):
     ongoing_job = models.ForeignKey(
         "OngoingWorkOrder",
         help_text=_('The (ongoing) job order that this task is referencing.'),
-        related_name="%(app_label)s_%(class)s_ongoing_job_related",
+        related_name="task_items",
         on_delete=models.CASCADE,
         null=True,
         blank=True
@@ -171,7 +171,7 @@ class TaskItem(models.Model):
     created_by = models.ForeignKey(
         SharedUser,
         help_text=_('The user whom created this order.'),
-        related_name="%(app_label)s_%(class)s_created_by_related",
+        related_name="created_task_items",
         on_delete=models.SET_NULL,
         blank=True,
         null=True
@@ -192,7 +192,7 @@ class TaskItem(models.Model):
     last_modified_by = models.ForeignKey(
         SharedUser,
         help_text=_('The user whom last modified this order.'),
-        related_name="%(app_label)s_%(class)s_last_modified_by_related",
+        related_name="last_modified_task_items",
         on_delete=models.SET_NULL,
         blank=True,
         null=True
