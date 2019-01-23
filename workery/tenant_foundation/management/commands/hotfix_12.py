@@ -45,6 +45,31 @@ class Command(BaseCommand):
         """
         parser.add_argument('schema_name', nargs='+', type=str)
 
+    def delete_old_tasks(self):
+        for task_item in TaskItem.objects.filter(job=None):
+            self.stdout.write(
+                self.style.SUCCESS(_('Deleted task %(id)s.')%{
+                    'id': str(task_item.id)
+                })
+            )
+            task_item.delete()
+
+    def update_task_names(self):
+        for task_item in TaskItem.objects.filter(title="Completion Survey"):
+            self.stdout.write(
+                self.style.SUCCESS(_('Updated title for task %(id)s.')%{
+                    'id': str(task_item.id)
+                })
+            )
+
+            # Generate our task title.
+            title = _('Survey')
+            if task_item.job:
+                if task_item.job.is_ongoing or task_item.ongoing_job != None:
+                    title = _('Survey / Ongoing')
+            task_item.title = title
+            task_item.save()
+
     def handle(self, *args, **options):
         # Connection needs first to be at the public schema, as this is where
         # the database needs to be set before creating a new tenant. If this is
@@ -62,13 +87,8 @@ class Command(BaseCommand):
         # Connection will set it back to our tenant.
         connection.set_schema(franchise.schema_name, True) # Switch to Tenant.
 
-        for task_item in TaskItem.objects.filter(job=None):
-            self.stdout.write(
-                self.style.SUCCESS(_('Deleted task %(id)s.')%{
-                    'id': str(task_item.id)
-                })
-            )
-            task_item.delete()
+        self.delete_old_tasks()
+        self.update_task_names()
 
         # For debugging purposes.
         self.stdout.write(

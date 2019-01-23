@@ -117,13 +117,19 @@ class FollowUpTaskOperationSerializer(serializers.Serializer):
 
         if has_agreed_to_meet:
 
+            # Generate our task title.
+            title = _('Survey')
+            if task_item.job:
+                if task_item.job.is_ongoing or task_item.ongoing_job != None:
+                    title = _('Survey / Ongoing')
+
             # Rational: We want to ask the customer 24 hours AFTER the client meeting data.
             meeting_date = get_date_plus_days(meeting_date, 1)
 
             # STEP 5 - Create our new task for following up.
             next_task_item = TaskItem.objects.create(
                 type_of = FOLLOW_UP_CUSTOMER_SURVEY_TASK_ITEM_TYPE_OF_ID,
-                title = _('Completion Survey'),
+                title = title,
                 description = _('Please call up the client and perform the satisfaction survey.'),
                 due_date = meeting_date,
                 is_closed = False,
