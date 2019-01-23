@@ -125,7 +125,9 @@
                 <tr>
                     <th scope="row" class="bg-light">Last Modified At</th>
                     <td id="selected_description_id">
-                        {{ task_item.last_modified_at }}
+                        {% if task_item.last_modified_at %}
+                            {{ task_item.last_modified_at|timezone:request.tenant.timezone_name }}
+                        {% endif %}
                     </td>
                 </tr>
                 <tr>
