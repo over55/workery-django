@@ -137,11 +137,13 @@ class WorkOrderListCreateSerializer(serializers.ModelSerializer):
             completion_date=completion_date,
             hours=hours,
             created_by=created_by,
-            last_modified_by=None,
-            description=description,
-            start_date=start_date,
             created_from = self.context['created_from'],
             created_from_is_public = self.context['created_from_is_public'],
+            last_modified_by=created_by,
+            last_modified_from = self.context['created_from'],
+            last_modified_from_is_public = self.context['created_from_is_public'],
+            description=description,
+            start_date=start_date,
             state = state
         )
         logger.info("Created order object.")
@@ -149,14 +151,15 @@ class WorkOrderListCreateSerializer(serializers.ModelSerializer):
         #--------------------------------------
         # Create our `OngoingWorkOrder` object.
         #--------------------------------------
-
         if is_ongoing:
             ongoing_job = OngoingWorkOrder.objects.create(
                 state = ONGOING_WORK_ORDER_STATE.RUNNING,
                 created_by=created_by,
-                last_modified_by=None,
                 created_from = self.context['created_from'],
                 created_from_is_public = self.context['created_from_is_public'],
+                last_modified_by=created_by,
+                last_modified_from = self.context['created_from'],
+                last_modified_from_is_public = self.context['created_from_is_public'],
             )
             logger.info("Created ongoing order object.")
             order.ongoing_job = ongoing_job
@@ -188,10 +191,12 @@ class WorkOrderListCreateSerializer(serializers.ModelSerializer):
         if extra_comment is not None:
             comment = Comment.objects.create(
                 created_by=self.context['created_by'],
-                last_modified_by=self.context['created_by'],
-                text=extra_comment,
                 created_from = self.context['created_from'],
-                created_from_is_public = self.context['created_from_is_public']
+                created_from_is_public = self.context['created_from_is_public'],
+                last_modified_by=created_by,
+                last_modified_from = self.context['created_from'],
+                last_modified_from_is_public = self.context['created_from_is_public'],
+                text=extra_comment,
             )
             WorkOrderComment.objects.create(
                 about=order,
@@ -204,7 +209,11 @@ class WorkOrderListCreateSerializer(serializers.ModelSerializer):
         #-----------------------------
         first_task = TaskItem.objects.create(
             created_by=self.context['created_by'],
-            last_modified_by=self.context['created_by'],
+            created_from = self.context['created_from'],
+            created_from_is_public = self.context['created_from_is_public'],
+            last_modified_by=created_by,
+            last_modified_from = self.context['created_from'],
+            last_modified_from_is_public = self.context['created_from_is_public'],
             type_of = ASSIGNED_ASSOCIATE_TASK_ITEM_TYPE_OF_ID,
             due_date = timezone.now(),
             is_closed = False,
