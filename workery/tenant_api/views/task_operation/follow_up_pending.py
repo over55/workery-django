@@ -34,9 +34,9 @@ class FollowUpPendingTaskOperationAPIView(generics.CreateAPIView):
         """
         client_ip, is_routable = get_client_ip(self.request)
         serializer = FollowUpPendingTaskOperationSerializer(data=request.data, context={
-            'user': request.user,
-            'from': client_ip,
-            'from_is_public': is_routable,
+            'created_by': request.user,
+            'created_from': client_ip,
+            'created_from_is_public': is_routable,
             'franchise': request.tenant
         })
         serializer.is_valid(raise_exception=True)
