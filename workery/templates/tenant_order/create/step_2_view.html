@@ -28,8 +28,11 @@
         //          made by the user.
         if (tmp_job_type == 'Ongoing') {
             $('#id_follow_up_div').show();
+            $('#id_ongoing_small_note_div').show();
+
         } else {
             $('#id_follow_up_div').hide();
+            $('#id_ongoing_small_note_div').hide();
         }
 
         // STEP 4 - Attach event handlers to update the GUI on whether an
@@ -38,12 +41,14 @@
             var job_type = $('input[id=job-type]:checked').val();
             console.log(job_type);
             $('#id_follow_up_div').hide();
+            $('#id_ongoing_small_note_div').hide();
             $('#start_date').val('');
         });
         $('#job-type2').change(function () {
             var job_type = $('input[id=job-type2]:checked').val();
             console.log(job_type);
             $('#id_follow_up_div').show();
+            $('#id_ongoing_small_note_div').show();
         });
 
         // STEP 5 - Initialize our datepicker jQuery code with our HTML view.
@@ -207,6 +212,9 @@
                     <label class="custom-control-label form-check-label" for="job-type2">Ongoing</label>
                     <div id="job-type-error" class="invalid-feedback"></div>
                 </div>
+                <small class="form-text text-muted" id="id_ongoing_small_note_div">
+                    <strong>Note</strong>: Selecting 'Ongoing' will result in this job will being re-created by the system every month. You will be able to terminate or pause this job from the <a href="#" target="_blank">ongoing jobs page&nbsp;<i class="fas fa-external-link-alt"></i></a>. If you have any questions please <a href="{% url 'workery_tenant_help_category_list' %}" target="_blank">contact the administrator&nbsp;<i class="fas fa-external-link-alt"></i></a>.
+                </small>
             </div>
             <!-- end IS ONGOING OR NOT -->
 
