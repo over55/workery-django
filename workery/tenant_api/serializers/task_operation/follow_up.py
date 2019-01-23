@@ -81,17 +81,19 @@ class FollowUpTaskOperationSerializer(serializers.Serializer):
         if comment_text:
             comment_obj = Comment.objects.create(
                 created_by=self.context['user'],
-                last_modified_by=self.context['user'],
-                text=comment_text,
                 created_from = self.context['from'],
-                created_from_is_public = self.context['from_is_public']
+                created_from_is_public = self.context['from_is_public'],
+                last_modified_by=self.context['user'],
+                last_modified_from = self.context['from'],
+                last_modified_from_is_public = self.context['from_is_public'],
+                text=comment_text,
             )
             WorkOrderComment.objects.create(
                 about = task_item.job,
                 comment = comment_obj,
             )
 
-        # STEP 4 - Update our TaskItem if job was accepted.
+        # STEP 3 - Update our TaskItem by closing all previous open tasks.
         #----------------------------------------#
         # Lookup our Task(s) and close them all. #
         #----------------------------------------#
@@ -105,6 +107,8 @@ class FollowUpTaskOperationSerializer(serializers.Serializer):
             })
             item.is_closed = True
             item.last_modified_by = self.context['user']
+            item.last_modified_from = self.context['from']
+            item.last_modified_from_is_public = self.context['from_is_public']
             item.save()
             logger.info("Task #%(id)s was closed." % {
                 'id': str(item.id)
@@ -115,6 +119,7 @@ class FollowUpTaskOperationSerializer(serializers.Serializer):
             'id': str(task_item.id)
         })
 
+        # STEP 4 - Check to see if associate and client agreed to meet...
         if has_agreed_to_meet:
 
             # Generate our task title.
@@ -137,7 +142,9 @@ class FollowUpTaskOperationSerializer(serializers.Serializer):
                 created_by = self.context['user'],
                 created_from = self.context['from'],
                 created_from_is_public = self.context['from_is_public'],
-                last_modified_by = self.context['user']
+                last_modified_by = self.context['user'],
+                last_modified_from = self.context['from'],
+                last_modified_from_is_public = self.context['from_is_public'],
             )
 
             # For debugging purposes only.
@@ -155,6 +162,11 @@ class FollowUpTaskOperationSerializer(serializers.Serializer):
             # date between associate and client.
             task_item.job.start_date = meeting_date
 
+            # System details update.
+            task_item.job.last_modified_by = self.context['user']
+            task_item.job.last_modified_from = self.context['from']
+            task_item.job.last_modified_from_is_public = self.context['from_is_public']
+
             # Save our changes.
             task_item.job.save()
 
@@ -171,7 +183,9 @@ class FollowUpTaskOperationSerializer(serializers.Serializer):
                 created_by = self.context['user'],
                 created_from = self.context['from'],
                 created_from_is_public = self.context['from_is_public'],
-                last_modified_by = self.context['user']
+                last_modified_by = self.context['user'],
+                last_modified_from = self.context['from'],
+                last_modified_from_is_public = self.context['from_is_public'],
             )
 
             # For debugging purposes only.
@@ -180,8 +194,16 @@ class FollowUpTaskOperationSerializer(serializers.Serializer):
             })
 
             # Attach our next job.
+            # (a) Object details
             task_item.job.latest_pending_task = next_task_item
             task_item.job.state = WORK_ORDER_STATE.IN_PROGRESS
+
+            # (b) System details.
+            # System details update.
+            task_item.job.last_modified_by = self.context['user']
+            task_item.job.last_modified_from = self.context['from']
+            task_item.job.last_modified_from_is_public = self.context['from_is_public']
+
             task_item.job.save()
 
         # # STEP 6 - Assign our new variables and return the validated data.
