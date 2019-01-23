@@ -138,7 +138,7 @@
                     <td>
                         {% if task_item.job %}
                             {% if task_item.job.customer %}
-                                <a href="{% url 'workery_tenant_customer_lite_retrieve' 'summary' task_item.job.customer.id %}" target="_blank">{{ task_item.job.customer }}</a>
+                                <a href="{% url 'workery_tenant_customer_lite_retrieve' 'summary' task_item.job.customer.id %}" target="_blank">{{ task_item.job.customer.get_pretty_name }}</a>
                             {% else %}
                                 {% trans 'Unassigned' %}
                             {% endif %}

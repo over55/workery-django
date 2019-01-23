@@ -121,14 +121,16 @@ function get_selected_radio_value(radiofields_name) {
     <!-- STEP NAVIGATION -->
     <!------------------------------------------------------------------------->
     <div class="row" id="id_step_navigation">
-        <div class="step-navigation">
-            <div id="step-1" class="st-grey">
-                <a href="{% url 'workery_tenant_pending_task_retrieve' task_item.id %}">
-                    <span class="num">1.</span><span class="">Overview</span>
-                </a>
-            </div>
-            <div id="step-2" class="st-grey active">
-                <span class="num">3.</span><span class="">Follow Up</span>
+	   <div class="stepwizard pt-4 col-md-offset-3">
+            <div class="stepwizard-row setup-panel">
+              <div class="stepwizard-step step-complete">
+                <a href="{% url 'workery_tenant_pending_task_retrieve' task_item.id %}" type="button" class="btn btn-primary btn-lg btn-circle text-white"><i class="fas fa-check"></i></a>
+                <p>Overview</p>
+              </div>
+              <div class="stepwizard-step stepwizard-step-last step-active">
+                <a type="button" class="btn btn-primary btn-lg btn-circle text-white step-btn-active" disabled="disabled"><i class="fas fa-check"></i></a>
+                <p>Follow Up</p>
+              </div>
             </div>
         </div>
     </div>
@@ -147,7 +149,7 @@ function get_selected_radio_value(radiofields_name) {
 				<table class="table table-bordered custom-cell-w">
 				    <tbody>
 					<tr class="bg-primary text-white">
-					    <th scope="row" colspan="2" id="Task">48 hour follow up</th>
+					    <th scope="row" colspan="2" id="Task">Pending 48 hour follow up</th>
 					</tr>
                     <tr>
 					    <th scope="row" class="bg-light">Job #</th>

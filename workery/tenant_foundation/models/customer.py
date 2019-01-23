@@ -252,6 +252,16 @@ class Customer(AbstractPerson):
         else:
             return str(self.given_name)+" "+str(self.last_name)
 
+    def get_pretty_name(self):
+        """
+        Function will format the name output to add the organization name if
+        there is one.
+        """
+        if self.organization:
+            return self.organization.name + " - " + str(self)
+        else:
+            return str(self)
+
     def get_pretty_status(self):
         if self.is_blacklisted:
             return _('Blacklisted')
