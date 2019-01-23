@@ -115,9 +115,9 @@ class WorkOrderListCreateSerializer(serializers.ModelSerializer):
         start_date = validated_data.get('start_date', timezone.now())
         state = validated_data.get('state', WORK_ORDER_STATE.NEW)
 
-        #---------------------------------
-        # Create our `WorkOrder` objects.
-        #---------------------------------
+        #-------------------------------
+        # Create our `WorkOrder` object.
+        #-------------------------------
 
         # Assign the job type based off of the customers type.
         job_type_of = UNASSIGNED_JOB_TYPE_OF_ID
@@ -145,6 +145,23 @@ class WorkOrderListCreateSerializer(serializers.ModelSerializer):
             state = state
         )
         logger.info("Created order object.")
+
+        #--------------------------------------
+        # Create our `OngoingWorkOrder` object.
+        #--------------------------------------
+
+        if is_ongoing:
+            ongoing_job = OngoingWorkOrder.objects.create(
+                state = ONGOING_WORK_ORDER_STATE.RUNNING,
+                created_by=created_by,
+                last_modified_by=None,
+                created_from = self.context['created_from'],
+                created_from_is_public = self.context['created_from_is_public'],
+            )
+            logger.info("Created ongoing order object.")
+            order.ongoing_job = ongoing_job
+            order.save()
+            logger.info("Updated order object with ongoing order.")
 
         #-----------------------------
         # Set our `Tags` objects.
