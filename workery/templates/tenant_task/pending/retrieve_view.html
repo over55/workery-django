@@ -42,7 +42,7 @@
 
     <!-- STEP NAVIGATION -->
     <!------------------------------------------------------------------------->
-   
+
     {% if task_item.type_of != 3 %}
     <div class="row">
         <div class="stepwizard pt-4 col-md-offset-3">
@@ -111,10 +111,6 @@
                             <a href="{% url 'workery_tenant_job_retrieve' 'summary' task_item.job.id %}" target="_blank">
                                 {{ task_item.job.id|intcomma }}&nbsp;<i class="fas fa-external-link-alt"></i>
                             </a>
-                        {% elif task_item.ongoing_job %}
-                            <a href="{% url 'workery_tenant_ongoing_job_lite_retrieve' 'summary' task_item.ongoing_job.id %}" target="_blank">
-                                {{ task_item.ongoing_job.id|intcomma }}&nbsp;<i class="fas fa-external-link-alt"></i>
-                            </a>
                         {% endif %}
                     </td>
                 </tr>
@@ -123,8 +119,6 @@
                     <td id="selected_job_start_date">
                         {% if task_item.job %}
                             {{ task_item.job.start_date }}
-                        {% elif task_item.ongoing_job %}
-                            {{ task_item.ongoing_job.start_date }}
                         {% endif %}
                     </td>
                 </tr>
@@ -154,10 +148,6 @@
                             <a href="{% url 'workery_tenant_customer_lite_retrieve' 'summary' task_item.job.customer.id %}" target="_blank">
                                 {{ task_item.job.customer }}&nbsp;<i class="fas fa-external-link-alt"></i>
                             </a>
-                        {% elif task_item.ongoing_job %}
-                            <a href="{% url 'workery_tenant_customer_lite_retrieve' 'summary' task_item.ongoing_job.customer.id %}" target="_blank">
-                                {{ task_item.ongoing_job.customer }}&nbsp;<i class="fas fa-external-link-alt"></i>
-                            </a>
                         {% endif %}
                     </td>
                 </tr>
@@ -166,8 +156,6 @@
                     <td id="client_phone_number">
                         {% if task_item.job %}
                             {% if task_item.job.customer.telephone %}<a href="tel:{{ task_item.job.customer.telephone }}">{{ task_item.job.customer.telephone|pretty_formatted_phonenumber }}</a>{% else %}-{% endif %}
-                        {% elif task_item.ongoing_job %}
-                            {% if task_item.ongoing_job.customer.telephone %}<a href="tel:{{ task_item.ongoing_job.customer.telephone }}">{{ task_item.ongoing_job.customer.telephone|pretty_formatted_phonenumber }}</a>{% else %}-{% endif %}
                         {% endif %}
                     </td>
                 </tr>
@@ -183,14 +171,6 @@
                             {% else %}
                                 {% trans 'Unassigned' %}
                             {% endif %}
-                        {% elif task_item.ongoing_job %}
-                            {% if task_item.ongoing_job.associate %}
-                                <a href="{% url 'workery_tenant_member_lite_retrieve' 'summary' task_item.ongoing_job.associate.id %}" target="_blank">
-                                    {{ task_item.ongoing_job.associate }}&nbsp;<i class="fas fa-external-link-alt"></i>
-                                </a>
-                            {% else %}
-                                {% trans 'Unassigned' %}
-                            {% endif %}
                         {% endif %}
                     </td>
                 </tr>
@@ -201,8 +181,6 @@
                     <td id="associate_name">
                         {% if task_item.job %}
                             {% if task_item.job.associate.telephone %}<a href="tel:{{ task_item.job.associate.telephone }}">{{ task_item.job.associate.telephone|pretty_formatted_phonenumber }}</a>{% else %}-{% endif %}
-                        {% elif task_item.ongoing_job %}
-                            {% if task_item.ongoing_job.associate.telephone %}<a href="tel:{{ task_item.ongoing_job.associate.telephone }}">{{ task_item.ongoing_job.associate.telephone|pretty_formatted_phonenumber }}</a>{% else %}-{% endif %}
                         {% endif %}
                     </td>
                 </tr>
@@ -214,12 +192,6 @@
                         {% if task_item.job %}
                             {% if task_item.job.description %}
                                 {{ task_item.job.description }}
-                            {% else %}
-                                -
-                            {% endif %}
-                        {% elif task_item.ongoing_job %}
-                            {% if task_item.ongoing_job.description %}
-                                {{ task_item.ongoing_job.description }}
                             {% else %}
                                 -
                             {% endif %}
@@ -235,12 +207,6 @@
                             {% empty %}
                                 -
                             {% endfor %}
-                        {% elif task_item.ongoing_job %}
-                            {% for skill_set in task_item.ongoing_job.skill_sets.all %}
-                                <span class="badge badge-info badge-lg">{{ skill_set.sub_category }}</span>
-                            {% empty %}
-                                -
-                            {% endfor %}
                         {% endif %}
                     </td>
                 </tr>
@@ -249,65 +215,13 @@
                     <td id="comments">
                         {% if task_item.job %}
                             <a href="{% url 'workery_tenant_job_comments_retrieve' 'summary' task_item.job.id  %}" target="_blank">{% trans 'View comments' %}&nbsp;({{ task_item.job.comments.count }})&nbsp;<i class="fas fa-external-link-alt"></i></a>
-                        {% elif task_item.ongoing_job %}
-                            <a href="{% url 'workery_tenant_ongoing_job_retrieve_for_comments' 'summary' task_item.ongoing_job.id  %}" target="_blank">{% trans 'View comments' %}&nbsp;({{ task_item.ongoing_job.comments.count }})&nbsp;<i class="fas fa-external-link-alt"></i></a>
                         {% endif %}
                     </td>
                 </tr>
                 <tr>
                     <th scope="row" class="bg-light">Required Action</th>
                     <td id="selected_comment_id">
-                        {% if task_item.ongoing_job %}
-
-                            {% if task_item.type_of == 1 %}
-                                <a href="{% url 'workery_tenant_pending_task_retrieve_for_activity_sheet_retrieve' task_item.id %}">
-                                    <button  id="id_submit_btn"
-                                        class="btn btn-success btn-lg btn-fxw mt-4"
-                                        type="button">
-                                        <i class="fas fa-arrow-right"></i>&nbsp;{% trans 'Begin' %}
-                                    </button>
-                                </a>
-                            {% elif task_item.type_of == 2 %}
-                                <div class="col-sm-4">
-                                    <a href="{% url 'workery_tenant_ongoing_job_follow_up_operation' task_item.ongoing_job.id %}?return_id=pending-task&task_item={{ task_item.id }}">
-                                    <button  id="id_submit_btn"
-                                        class="btn btn-success btn-lg btn-fxw mt-4"
-                                        type="button">
-                                    <i class="fas fa-arrow-right"></i>&nbsp;{% trans 'Begin' %}
-                                    </button>
-                                    </a>
-                                </div>
-                            {% elif task_item.type_of == 3 %}
-                                <div class="col-sm-4">
-                                    <a href="{% url 'workery_tenant_ongoing_job_completion_survey_operation' task_item.ongoing_job.id %}?return_id=pending-task&task_id={{ task_item.id }}">
-                                    <button  id="id_submit_btn"
-                                        class="btn btn-success btn-lg btn-fxw mt-4"
-                                        type="button">
-                                    <i class="fas fa-arrow-right"></i>&nbsp;{% trans 'Begin' %}
-                                    </button>
-                                    </a>
-                                </div>
-                            {% elif task_item.type_of == 4 %}
-                                <div class="col-sm-4">
-                                    <a href="{% url 'workery_tenant_pending_task_retrieve_for_activity_sheet_follow_up_with_associate_retrieve' task_item.id %}">
-                                    <button  id="id_submit_btn"
-                                        class="btn btn-success btn-lg btn-fxw mt-4"
-                                        type="button">
-                                    <i class="fas fa-arrow-right"></i>&nbsp;{% trans 'Begin' %}
-                                    </button>
-                                    </a>
-                                </div>
-                            {% elif task_item.type_of == 5 %}
-                                <a href="{% url 'workery_tenant_pending_task_retrieve_and_ongoing_update_create' task_item.id %}">
-                                    <button  id="id_submit_btn"
-                                        class="btn btn-success btn-lg btn-fxw mt-4"
-                                        type="button">
-                                        <i class="fas fa-arrow-right"></i>&nbsp;{% trans 'Begin' %}
-                                    </button>
-                                </a>
-                            {% endif %}
-
-                        {% elif task_item.job %}
+                        {% if task_item.job %}
 
                             {% if task_item.type_of == 1 %}
                             <div class="col-sm-4">
@@ -370,54 +284,7 @@
         </p>
     </div>
     <div class="form-group col-md-10 mb-3 mx-auto text-center">
-        {% if task_item.ongoing_job %}
-
-        <div class="row">
-            <!-- UNASSIGN BUTTON -->
-            {% if task_item.type_of != 1 %}
-            <div class="col-sm-4">
-                <a href="{% url 'workery_tenant_ongoing_job_unassign_operation' task_item.ongoing_job.id %}?return_id=pending-task&task_item={{ task_item.id }}">
-                    <button id="id_submit_btn"
-                        class="btn btn-warning btn-lg btn-fxw mt-4"
-                        type="button">
-                    <i class="fas fa-window-close"></i>&nbsp;{% trans 'Unassign Associate' %}
-                    </button>
-                </a>
-            </div>
-            {% endif %}
-            <!-- end UNASSIGN BUTTON -->
-
-            <!-- CLOSE JOB BUTTON -->
-            <div class="col-sm-4">
-                <a href="{% url 'workery_tenant_ongoing_job_close_operation' task_item.ongoing_job.id %}?return_id=pending-task&task_item={{ task_item.id }}">
-                <button  id="id_submit_btn"
-                    class="btn btn-danger btn-lg btn-fxw mt-4"
-                    type="button">
-                <i class="far fa-minus-square"></i>&nbsp;{% trans 'Close Job' %}
-                </button>
-                </a>
-            </div>
-            <!-- end CLOSE JOB BUTTON -->
-
-            <!-- end POSTPONE BUTTON -->
-            {% if task_item.type_of != 1 %}
-            <div class="col-sm-4">
-                <a href="{% url 'workery_tenant_ongoing_job_postpone_operation' task_item.ongoing_job.id %}?return_id=pending-task&task_item={{ task_item.id }}">
-                <button  id="id_submit_btn"
-                    class="btn btn-orange btn-lg btn-fxw mt-4"
-                    type="button">
-                <i class="fas fa-clock"></i>&nbsp;{% trans 'Postpone Job' %}
-                </button>
-                </a>
-            </div>
-            {% endif %}
-            <!-- end POSTPONE BUTTON -->
-
-        </div>
-
-            <div class="row">
-
-        {% elif task_item.job %}
+        {% if task_item.job %}
 
             <div class="row">
                 <!-- UNASSIGN BUTTON -->

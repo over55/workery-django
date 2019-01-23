@@ -116,16 +116,7 @@
                 {% for task_item in task_list %}
                 <tr>
                     <td>
-                        {% if task_item.ongoing_job %}
-                            {% if task_item.ongoing_job.customer.type_of == tenant_constants.RESIDENTIAL_CUSTOMER_TYPE_OF_ID %}
-                                <i class="fa fa-home fa-lg"></i>
-                            {% elif task_item.ongoing_job.customer.type_of == tenant_constants.COMMERCIAL_CUSTOMER_TYPE_OF_ID %}
-                                <i class="fa fa-briefcase fa-lg"></i>
-                            {% else %}
-                                <i class="fa fa-question fa-lg"></i>
-                            {% endif %}
-                            <i class="fa fa-redo fa-lg"></i>
-                        {% else %}
+                        {% if task_item.job %}
                             {% if task_item.job.customer.type_of == tenant_constants.RESIDENTIAL_CUSTOMER_TYPE_OF_ID %}
                                 <i class="fa fa-home fa-lg"></i>
                             {% elif task_item.job.customer.type_of == tenant_constants.COMMERCIAL_CUSTOMER_TYPE_OF_ID %}
@@ -138,20 +129,14 @@
                     </td>
                     <td>{{ task_item.due_date }}</td>
                     <td>
-                        {% if task_item.ongoing_job %}
-                            <strong>{{ task_item.title }}</strong>
-                        {% else %}
+                        {% if task_item.job %}
                             {{ task_item.title }}
+                        {% else %}
+                            <strong>{{ task_item.title }}</strong>
                         {% endif %}
                     </td>
                     <td>
-                        {% if task_item.ongoing_job %}
-                            {% if task_item.ongoing_job.customer %}
-                                <a href="{% url 'workery_tenant_customer_lite_retrieve' 'summary' task_item.ongoing_job.customer.id %}" target="_blank">{{ task_item.ongoing_job.customer }}</a>
-                            {% else %}
-                                {% trans 'Unassigned' %}
-                            {% endif %}
-                        {% else %}
+                        {% if task_item.job %}
                             {% if task_item.job.customer %}
                                 <a href="{% url 'workery_tenant_customer_lite_retrieve' 'summary' task_item.job.customer.id %}" target="_blank">{{ task_item.job.customer }}</a>
                             {% else %}
@@ -160,13 +145,7 @@
                         {% endif %}
                     </td>
                     <td>
-                        {% if task_item.ongoing_job %}
-                            {% if task_item.ongoing_job.associate %}
-                                <a href="{% url 'workery_tenant_member_lite_retrieve' 'summary' task_item.ongoing_job.associate.id %}" target="_blank">{{ task_item.ongoing_job.associate }}&nbsp;{% if task_item.ongoing_job.state == WORK_ORDER_STATE.PENDING %}(Pending){% endif %}</a>
-                            {% else %}
-                                {% trans 'Unassigned' %}
-                            {% endif %}
-                        {% else %}
+                        {% if task_item.job %}
                             {% if task_item.job.associate %}
                                 <a href="{% url 'workery_tenant_member_lite_retrieve' 'summary' task_item.job.associate.id %}" target="_blank">{{ task_item.job.associate }}&nbsp;{% if task_item.job.state == WORK_ORDER_STATE.PENDING %}(Pending){% endif %}</a>
                             {% else %}

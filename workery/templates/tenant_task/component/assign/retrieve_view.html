@@ -77,8 +77,6 @@
 					    <td id="order_no">
                             {% if task_item.job %}
                                 <a href="{% url 'workery_tenant_job_retrieve' 'summary' task_item.job.id %}" target="_blank">{{ task_item.job.id|intcomma }}&nbsp;<i class="fas fa-external-link-alt"></i></a>
-                            {% elif task_item.ongoing_job %}
-                                <a href="{% url 'workery_tenant_job_retrieve' 'summary' task_item.ongoing_job.id %}" target="_blank">{{ task_item.ongoing_job.id|intcomma }}&nbsp;<i class="fas fa-external-link-alt"></i></a>
                             {% endif %}
 					    </td>
 					</tr>
@@ -88,8 +86,6 @@
 					    <td id="customer">
                             {% if task_item.job %}
                                 {% if task_item.job.customer %}<a href="{% url 'workery_tenant_customer_lite_retrieve' 'summary' task_item.job.customer.id %}" target="_blank">{{ task_item.job.customer }}&nbsp;<i class="fas fa-external-link-alt"></i></a>{% else %}-{% endif %}
-                            {% elif task_item.ongoing_job %}
-                                {% if task_item.ongoing_job.customer %}<a href="{% url 'workery_tenant_customer_lite_retrieve' 'summary' task_item.ongoing_job.customer.id %}" target="_blank">{{ task_item.ongoing_job.customer }}&nbsp;<i class="fas fa-external-link-alt"></i></a>{% else %}-{% endif %}
                             {% endif %}
 					    </td>
 					</tr>
@@ -99,8 +95,6 @@
 					    <td id="telephone">
                             {% if task_item.job %}
                                 {% if task_item.job.customer.telephone %}<a href="tel:{{ task_item.job.customer.telephone }}">{{ task_item.job.customer.telephone|pretty_formatted_phonenumber }}</a>{% else %}-{% endif %}
-                            {% elif task_item.ongoing_job %}
-                                {% if task_item.ongoing_job.customer.telephone %}<a href="tel:{{ task_item.ongoing_job.customer.telephone }}">{{ task_item.ongoing_job.customer.telephone|pretty_formatted_phonenumber }}</a>{% else %}-{% endif %}
                             {% endif %}
 					    </td>
 					</tr>
@@ -111,10 +105,6 @@
                                 <a href="{{ task_item.job.customer.get_google_maps_url }}" target="_blank">
                                     {{ task_item.job.customer.get_postal_address_without_postal_code }}&nbsp;<i class="fas fa-map-marker-alt"></i>
                                 </a>
-                            {% elif task_item.ongoing_job %}
-                                <a href="{{ task_item.ongoing_job.customer.get_google_maps_url }}" target="_blank">
-                                    {{ task_item.ongoing_job.customer.get_postal_address_without_postal_code }}&nbsp;<i class="fas fa-map-marker-alt"></i>
-                                </a>
                             {% endif %}
                         </td>
                     </tr>
@@ -123,8 +113,6 @@
 					    <td id="job_description">
                             {% if task_item.job %}
 						        {% if task_item.job.description %}{{ task_item.job.description }}{% else %}-{% endif %}
-                            {% elif task_item.ongoing_job %}
-                                {% if task_item.ongoing_job.description %}{{ task_item.ongoing_job.description }}{% else %}-{% endif %}
                             {% endif %}
 					    </td>
 					</tr>
@@ -137,12 +125,6 @@
                                 {% empty %}
                                     -
                                 {% endfor %}
-                            {% elif task_item.ongoing_job %}
-                                {% for skill_set in task_item.ongoing_job.skill_sets.all %}
-                                    <span class="badge badge-info badge-lg">{{ skill_set.sub_category }}</span>
-                                {% empty %}
-                                    -
-                                {% endfor %}
                             {% endif %}
 					    </td>
 					</tr>
@@ -151,8 +133,6 @@
 					    <td id="job_comments">
                             {% if task_item.job %}
 						        <a href="{% url 'workery_tenant_job_comments_retrieve' 'summary' task_item.job.id  %}" target="_blank">{% trans 'View comments' %}&nbsp;({{ task_item.job.comments.count }})&nbsp;<i class="fas fa-external-link-alt"></i></a>
-                            {% elif task_item.ongoing_job %}
-                                <a href="{% url 'workery_tenant_ongoing_job_retrieve_for_comments' 'summary' task_item.ongoing_job.id  %}" target="_blank">{% trans 'View comments' %}&nbsp;({{ task_item.ongoing_job.comments.count }})&nbsp;<i class="fas fa-external-link-alt"></i></a>
                             {% endif %}
 					    </td>
 					</tr>

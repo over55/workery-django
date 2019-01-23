@@ -42,8 +42,6 @@ class PendingTaskListView(LoginRequiredMixin, GroupRequiredMixin, WorkeryListVie
             'job__associate',
             'job__customer',
             'ongoing_job',
-            'ongoing_job__associate',
-            'ongoing_job__customer',
             'created_by',
             'last_modified_by'
         )
@@ -91,8 +89,6 @@ class ClosedTaskListView(LoginRequiredMixin, GroupRequiredMixin, WorkeryListView
             'job__associate',
             'job__customer',
             'ongoing_job',
-            'ongoing_job__associate',
-            'ongoing_job__customer',
             'created_by',
             'last_modified_by'
         )
@@ -276,8 +272,6 @@ class UnassignedTaskListView(LoginRequiredMixin, GroupRequiredMixin, WorkeryList
         'job__associate',
         'job__customer',
         'ongoing_job',
-        'ongoing_job__associate',
-        'ongoing_job__customer',
         'created_by',
         'last_modified_by'
     )
@@ -427,8 +421,6 @@ class FourtyEightHourFollowUpTaskListView(LoginRequiredMixin, GroupRequiredMixin
             'job__associate',
             'job__customer',
             'ongoing_job',
-            'ongoing_job__associate',
-            'ongoing_job__customer',
             'created_by',
             'last_modified_by'
         )

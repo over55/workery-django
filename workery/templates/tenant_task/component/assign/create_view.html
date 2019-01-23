@@ -45,9 +45,6 @@ function click_add_button() {
                 {% if task_item.job is not None %}
                     // Redirect URL to `WorkOrder` lite page.
                     var temp_url = "{% url 'workery_tenant_job_retrieve' 'summary' task_item.job.id %}?was_modified=True";
-                {% elif task_item.ongoing_job is not None %}
-                    // Redirect URL to `OngoingWorkOrder` lite page.
-                    var temp_url = "{% url 'workery_tenant_ongoing_job_lite_retrieve' 'summary' task_item.ongoing_job.id %}?was_modified=True";
                 {% else %}
                     var temp_url = "{% url 'workery_tenant_task_list' %}?was_closed=True";
                 {% endif %}

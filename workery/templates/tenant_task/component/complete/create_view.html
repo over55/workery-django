@@ -175,8 +175,6 @@ function get_selected_radio_value(radiofields_name) {
 					    <td id="customer">
                             {% if task_item.job %}
                                 {% if task_item.job.customer %}<a href="{% url 'workery_tenant_customer_lite_retrieve' 'summary' task_item.job.customer.id %}" target="_blank">{{ task_item.job.customer }}&nbsp;<i class="fas fa-external-link-alt"></i></a>{% else %}-{% endif %}
-                            {% elif task_item.ongoing_job %}
-                                {% if task_item.ongoing_job.customer %}<a href="{% url 'workery_tenant_customer_lite_retrieve' 'summary' task_item.ongoing_job.customer.id %}" target="_blank">{{ task_item.ongoing_job.customer }}&nbsp;<i class="fas fa-external-link-alt"></i></a>{% else %}-{% endif %}
                             {% endif %}
 					    </td>
 					</tr>
@@ -186,8 +184,6 @@ function get_selected_radio_value(radiofields_name) {
 					    <td id="telephone">
                             {% if task_item.job %}
                                 {% if task_item.job.customer.telephone %}<a href="tel:{{ task_item.job.customer.telephone }}">{{ task_item.job.customer.telephone|pretty_formatted_phonenumber }}</a>{% else %}-{% endif %}
-                            {% elif task_item.ongoing_job %}
-                                {% if task_item.ongoing_job.customer.telephone %}<a href="tel:{{ task_item.ongoing_job.customer.telephone }}">{{ task_item.ongoing_job.customer.telephone|pretty_formatted_phonenumber }}</a>{% else %}-{% endif %}
                             {% endif %}
 					    </td>
 					</tr>
@@ -198,10 +194,6 @@ function get_selected_radio_value(radiofields_name) {
                                 <a href="{{ task_item.job.customer.get_google_maps_url }}" target="_blank">
                                     {{ task_item.job.customer.get_postal_address_without_postal_code }}&nbsp;<i class="fas fa-map-marker-alt"></i>
                                 </a>
-                            {% elif task_item.ongoing_job %}
-                                <a href="{{ task_item.ongoing_job.customer.get_google_maps_url }}" target="_blank">
-                                    {{ task_item.ongoing_job.customer.get_postal_address_without_postal_code }}&nbsp;<i class="fas fa-map-marker-alt"></i>
-                                </a>
                             {% endif %}
                         </td>
                     </tr>
@@ -210,8 +202,6 @@ function get_selected_radio_value(radiofields_name) {
 					    <td id="job_description">
                             {% if task_item.job %}
 						        {% if task_item.job.description %}{{ task_item.job.description }}{% else %}-{% endif %}
-                            {% elif task_item.ongoing_job %}
-                                {% if task_item.ongoing_job.description %}{{ task_item.ongoing_job.description }}{% else %}-{% endif %}
                             {% endif %}
 					    </td>
 					</tr>
@@ -286,7 +276,7 @@ function get_selected_radio_value(radiofields_name) {
             <div class="form-group p-0 col-md-7 mb-4" id="meeting_date_div" style="display: none;">
                 <label for="meeting_date" class="font-b6">Client meeting date</label>
                 <div class="input-group input-group-lg">
-                    <input type="text" class="form-control form-control-lg border border-success" id="meeting_date" name="meeting_date" placeholder="yyyy-mm-dd" value="{% if task_item.job %}{{ task_item.job.start_date }}{% elif task_item.ongoing_job %}{{ task_item.ongoing_job.start_date }}{% endif %}" required>
+                    <input type="text" class="form-control form-control-lg border border-success" id="meeting_date" name="meeting_date" placeholder="yyyy-mm-dd" value="{% if task_item.job %}{{ task_item.job.start_date }}{% endif %}" required>
                     <div class="input-group-append">
                         <span class="input-group-text dob-icon bg-success border-success"><i class="far fa-calendar-alt"></i></span>
                     </div>

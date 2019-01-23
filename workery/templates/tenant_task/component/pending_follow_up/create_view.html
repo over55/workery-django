@@ -152,11 +152,7 @@ function get_selected_radio_value(radiofields_name) {
                     <tr>
 					    <th scope="row" class="bg-light">Job #</th>
 					    <td id="order">
-                            {% if task_item.ongoing_job %}
-                                <a href="{% url 'workery_tenant_job_retrieve' 'summary' task_item.ongoing_job.id %}" target="_blank">
-                                    {{ task_item.ongoing_job.id|intcomma }}&nbsp;<i class="fas fa-external-link-alt"></i>
-                                </a>
-                            {% elif task_item.job %}
+                            {% if task_item.job %}
                                 <a href="{% url 'workery_tenant_job_retrieve' 'summary' task_item.job.id %}" target="_blank">
                                     {{ task_item.job.id|intcomma }}&nbsp;<i class="fas fa-external-link-alt"></i>
                                 </a>
@@ -168,8 +164,6 @@ function get_selected_radio_value(radiofields_name) {
 					    <td id="customer">
                             {% if task_item.job %}
                                 {% if task_item.job.customer %}<a href="{% url 'workery_tenant_customer_lite_retrieve' 'summary' task_item.job.customer.id %}" target="_blank">{{ task_item.job.customer }}&nbsp;<i class="fas fa-external-link-alt"></i></a>{% else %}-{% endif %}
-                            {% elif task_item.ongoing_job %}
-                                {% if task_item.ongoing_job.customer %}<a href="{% url 'workery_tenant_customer_lite_retrieve' 'summary' task_item.ongoing_job.customer.id %}" target="_blank">{{ task_item.ongoing_job.customer }}&nbsp;<i class="fas fa-external-link-alt"></i></a>{% else %}-{% endif %}
                             {% endif %}
 					    </td>
 					</tr>
@@ -179,8 +173,6 @@ function get_selected_radio_value(radiofields_name) {
 					    <td id="telephone">
                             {% if task_item.job %}
                                 {% if task_item.job.customer.telephone %}<a href="tel:{{ task_item.job.customer.telephone }}">{{ task_item.job.customer.telephone|pretty_formatted_phonenumber }}</a>{% else %}-{% endif %}
-                            {% elif task_item.ongoing_job %}
-                                {% if task_item.ongoing_job.customer.telephone %}<a href="tel:{{ task_item.ongoing_job.customer.telephone }}">{{ task_item.ongoing_job.customer.telephone|pretty_formatted_phonenumber }}</a>{% else %}-{% endif %}
                             {% endif %}
 					    </td>
 					</tr>
@@ -191,10 +183,6 @@ function get_selected_radio_value(radiofields_name) {
                                 <a href="{{ task_item.job.customer.get_google_maps_url }}" target="_blank">
                                     {{ task_item.job.customer.get_postal_address_without_postal_code }}&nbsp;<i class="fas fa-map-marker-alt"></i>
                                 </a>
-                            {% elif task_item.ongoing_job %}
-                                <a href="{{ task_item.ongoing_job.customer.get_google_maps_url }}" target="_blank">
-                                    {{ task_item.ongoing_job.customer.get_postal_address_without_postal_code }}&nbsp;<i class="fas fa-map-marker-alt"></i>
-                                </a>
                             {% endif %}
                         </td>
                     </tr>
@@ -203,23 +191,13 @@ function get_selected_radio_value(radiofields_name) {
 					    <td id="job_description">
                             {% if task_item.job %}
 						        {% if task_item.job.description %}{{ task_item.job.description }}{% else %}-{% endif %}
-                            {% elif task_item.ongoing_job %}
-                                {% if task_item.ongoing_job.description %}{{ task_item.ongoing_job.description }}{% else %}-{% endif %}
                             {% endif %}
 					    </td>
 					</tr>
 					<tr>
 					    <th scope="row" class="bg-light">Associate Name</th>
 					    <td id="associate">
-                            {% if task_item.ongoing_job %}
-                                {% if task_item.ongoing_job.associate %}
-                                    <a href="{% url 'workery_tenant_member_lite_retrieve' 'summary' task_item.ongoing_job.associate.id %}" target="_blank">
-                                        {{ task_item.ongoing_job.associate }}&nbsp;<i class="fas fa-external-link-alt"></i>
-                                    </a>
-                                {% else %}
-                                    {% trans 'Unassigned' %}
-                                {% endif %}
-                            {% elif task_item.job %}
+                            {% if task_item.job %}
                                 {% if task_item.job.associate %}
                                     <a href="{% url 'workery_tenant_member_lite_retrieve' 'summary' task_item.job.associate.id %}" target="_blank">
                                         {{ task_item.job.associate }}&nbsp;<i class="fas fa-external-link-alt"></i>
@@ -233,9 +211,7 @@ function get_selected_radio_value(radiofields_name) {
                     <tr>
                         <th scope="row" class="bg-light">Associate Primary Phone</th>
                         <td id="phonenumber">
-                            {% if task_item.ongoing_job %}
-                                {% if task_item.ongoing_job.associate.telephone %}<a href="tel:{{ task_item.ongoing_job.associate.telephone }}">{{ task_item.ongoing_job.associate.telephone|pretty_formatted_phonenumber }}</a>{% else %}-{% endif %}
-                            {% elif task_item.job %}
+                            {% if task_item.job %}
                                 {% if task_item.job.associate.telephone %}<a href="tel:{{ task_item.job.associate.telephone }}">{{ task_item.job.associate.telephone|pretty_formatted_phonenumber }}</a>{% else %}-{% endif %}
                             {% endif %}
                         </td>
@@ -243,9 +219,7 @@ function get_selected_radio_value(radiofields_name) {
                     <tr>
                         <th scope="row" class="bg-light">Associate Secondary Mobile</th>
                         <td id="mobile">
-                            {% if task_item.ongoing_job %}
-                                {% if task_item.ongoing_job.associate.other_telephone %}<a href="tel:{{ task_item.ongoing_job.associate.other_telephone }}">{{ task_item.ongoing_job.associate.other_telephone|pretty_formatted_phonenumber }}</a>{% else %}-{% endif %}
-                            {% elif task_item.job %}
+                            {% if task_item.job %}
                                 {% if task_item.job.associate.other_telephone %}<a href="tel:{{ task_item.job.associate.other_telephone }}">{{ task_item.job.associate.other_telephone|pretty_formatted_phonenumber }}</a>{% else %}-{% endif %}
                             {% endif %}
                         </td>
@@ -253,9 +227,7 @@ function get_selected_radio_value(radiofields_name) {
                     <tr>
                         <th scope="row" class="bg-light">Associate E-Mail</th>
                         <td id="email">
-                            {% if task_item.ongoing_job %}
-                                {% if task_item.ongoing_job.associate.owner.email %}<a href="mailto:{{ task_item.ongoing_job.associate.owner.email }}">{{ task_item.ongoing_job.associate.owner.email }}</a>{% else %}-{% endif %}
-                            {% elif task_item.job %}
+                            {% if task_item.job %}
                                 {% if task_item.job.associate.owner.email %}<a href="mailto:{{ task_item.job.associate.owner.email }}">{{ task_item.job.associate.owner.email }}</a>{% else %}-{% endif %}
                             {% endif %}
                         </td>
@@ -271,10 +243,8 @@ function get_selected_radio_value(radiofields_name) {
                     <tr>
 					    <th scope="row" class="bg-light">Job Comments</th>
 					    <td id="job_comments">
-                            {% if task_item.ongoing_job %}
+                            {% if task_item.job %}
 						        <a href="{% url 'workery_tenant_job_comments_retrieve' 'summary' task_item.job.id  %}" target="_blank">{% trans 'View comments' %}&nbsp;({{ task_item.job.comments.count }})&nbsp;<i class="fas fa-external-link-alt"></i></a>
-                            {% elif task_item.job %}
-                            TODO: ONGOING JOB COMMENTS
                             {% endif %}
 					    </td>
 					</tr>
