@@ -165,7 +165,7 @@ function get_selected_radio_value(radiofields_name) {
 					    <th scope="row" class="bg-light">Client Name</th>
 					    <td id="customer">
                             {% if task_item.job %}
-                                {% if task_item.job.customer %}<a href="{% url 'workery_tenant_customer_lite_retrieve' 'summary' task_item.job.customer.id %}" target="_blank">{{ task_item.job.customer }}&nbsp;<i class="fas fa-external-link-alt"></i></a>{% else %}-{% endif %}
+                                {% if task_item.job.customer %}<a href="{% url 'workery_tenant_customer_lite_retrieve' 'summary' task_item.job.customer.id %}" target="_blank">{{ task_item.job.customer.get_pretty_name }}&nbsp;<i class="fas fa-external-link-alt"></i></a>{% else %}-{% endif %}
                             {% endif %}
 					    </td>
 					</tr>
