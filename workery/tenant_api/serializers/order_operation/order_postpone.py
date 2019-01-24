@@ -94,11 +94,13 @@ class WorkOrderPostponeCreateSerializer(serializers.Serializer):
         #------------------------------------------#
         if additional_comment_text:
             comment_obj = Comment.objects.create(
-                created_by=self.context['user'],
-                last_modified_by=self.context['user'],
-                text=additional_comment_text,
+                created_by = self.context['user'],
                 created_from = self.context['from'],
-                created_from_is_public = self.context['from_is_public']
+                created_from_is_public = self.context['from_is_public'],
+                last_modified_by = self.context['user'],
+                last_modified_from = self.context['from'],
+                last_modified_from_is_public = self.context['from_is_public'],
+                text=additional_comment_text,
             )
             WorkOrderComment.objects.create(
                 about=job,
@@ -122,14 +124,17 @@ class WorkOrderPostponeCreateSerializer(serializers.Serializer):
         })
 
         # Update our TaskItem.
+        # (a) Object details.
         task_item.is_closed = True
         task_item.was_postponed = True
         task_item.closing_reason = reason
         task_item.closing_reason_other = reason_other
+
+        # (b) System details.
         task_item.last_modified_by = self.context['user']
-        task_item.created_from = self.context['from']
-        task_item.created_from_is_public = self.context['from_is_public']
-        task_item.last_modified_by = self.context['user']
+        task_item.last_modified_from = self.context['from']
+        task_item.last_modified_from_is_public = self.context['from_is_public']
+
         task_item.save()
 
         # For debugging purposes only.
@@ -151,7 +156,9 @@ class WorkOrderPostponeCreateSerializer(serializers.Serializer):
             created_by = self.context['user'],
             created_from = self.context['from'],
             created_from_is_public = self.context['from_is_public'],
-            last_modified_by = self.context['user']
+            last_modified_by = self.context['user'],
+            last_modified_from = self.context['from'],
+            last_modified_from_is_public = self.context['from_is_public'],
         )
 
         # For debugging purposes only.
@@ -160,7 +167,14 @@ class WorkOrderPostponeCreateSerializer(serializers.Serializer):
         })
 
         # Attach our next job.
+        # (a) Object details
         job.latest_pending_task = next_task_item
+
+        # (b) System details.
+        job.last_modified_by = self.context['user']
+        job.last_modified_from = self.context['from']
+        job.last_modified_from_is_public = self.context['from_is_public']
+
         job.save()
 
         # Assign our new variables and return the validated data.

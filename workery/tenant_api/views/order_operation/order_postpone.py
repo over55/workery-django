@@ -14,9 +14,7 @@ from tenant_api.permissions.order import (
    CanListCreateWorkOrderPermission,
    CanRetrieveUpdateDestroyWorkOrderPermission
 )
-from tenant_api.serializers.order_postpone import (
-    WorkOrderPostponeCreateSerializer,
-)
+from tenant_api.serializers.order_operation.order_postpone import WorkOrderPostponeCreateSerializer
 from tenant_foundation.models import ActivitySheetItem
 
 
