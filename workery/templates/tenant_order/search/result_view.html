@@ -16,16 +16,16 @@
     <!------------------------------------------------------------------------->
     <nav aria-label="breadcrumb">
 	  	<ol class="breadcrumb">
-	    		<li class="breadcrumb-item">
-                    <a href="{% url 'workery_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a>
-                </li>
-                <li class="breadcrumb-item">
-                    <a href="{% url 'workery_tenant_job_summary' %}">{% trans 'Jobs' %}</a>
-                </li>
-                <li class="breadcrumb-item">
-                    <a href="{% url 'workery_tenant_job_search' %}">{% trans 'Search' %}</a>
-                </li>
-	    		<li class="breadcrumb-item active" aria-current="page">{% trans 'Search Results' %}</li>
+            <li class="breadcrumb-item">
+                <a href="{% url 'workery_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a>
+            </li>
+            <li class="breadcrumb-item">
+                <a href="{% url 'workery_tenant_job_summary' %}">{% trans 'Jobs' %}</a>
+            </li>
+            <li class="breadcrumb-item">
+                <a href="{% url 'workery_tenant_job_search' %}">{% trans 'Search' %}</a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">{% trans 'Search Results' %}</li>
 	  	</ol>
 	</nav>
     <!------------------------------------------------------------------------->
@@ -41,7 +41,6 @@
                     <th>{% trans 'Client' %}</th>
                     <th>{% trans 'Associate' %}</th>
                     <th>{% trans 'Assigned Date' %}</th>
-                    <th>{% trans 'Ongoing' %}</th>
                     <th>{% trans 'Completion Date' %}</th>
                     <th>{% trans 'Status' %}</th>
                     <th></th>
@@ -51,19 +50,23 @@
                 {% for job in job_list %}
                 <tr>
                     <td>
-                        {% if job.customer.type_of == tenant_constants.RESIDENTIAL_CUSTOMER_TYPE_OF_ID %}
-                            <i class="fa fa-home fa-lg"></i>
-                        {% elif job.customer.type_of == tenant_constants.COMMERCIAL_CUSTOMER_TYPE_OF_ID %}
-                            <i class="fa fa-briefcase fa-lg"></i>
+                        {% if job.customer.is_blacklisted %}
+                            <i class="fa fa-frown fa-lg"></i>
                         {% else %}
-                            <i class="fa fa-question fa-lg"></i>
+                            {% if job.customer.type_of == tenant_constants.RESIDENTIAL_CUSTOMER_TYPE_OF_ID %}
+                                <i class="fa fa-home fa-lg"></i>
+                            {% elif job.customer.type_of == tenant_constants.COMMERCIAL_CUSTOMER_TYPE_OF_ID %}
+                                <i class="fa fa-briefcase fa-lg"></i>
+                            {% else %}
+                                <i class="fa fa-question fa-lg"></i>
+                            {% endif %}
                         {% endif %}
+                        {% if job.is_ongoing %}<i class="fa fa-redo fa-lg"></i>{% endif %}
                     </td>
                     <td>{{ job.id|intcomma }}</td>
                     <td>{% if job.customer %}{{ job.customer }}{% else %}-{% endif %}</td>
                     <td>{% if job.associate %}{{ job.associate }}{% else %}-{% endif %}</td>
                     <td>{% if job.assignment_date %}{{ job.assignment_date }}{% else %}-{% endif %}</td>
-                    <td>{{ job.is_ongoing }}</td>
                     <td>{% if job.completion_date %}{{ job.completion_date }}{% else %}-{% endif %}</td>
                     <td>
                         {% if job.state == WORK_ORDER_STATE.PENDING %}

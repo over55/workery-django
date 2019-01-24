@@ -74,7 +74,6 @@
                 <tr>
                     <th></th>
                     <th>{% trans 'Job #' %}</th>
-                    <th>{% trans 'Ongoing Job #' %}&nbsp;<i class="fas fa-external-link-alt"></i></th>
                     <th>{% trans 'Client' %}&nbsp;<i class="fas fa-external-link-alt"></i></th>
                     <th>{% trans 'Associate' %}&nbsp;<i class="fas fa-external-link-alt"></i></th>
                     <th>{% trans 'Assignment Date' %}</th>
@@ -106,13 +105,6 @@
                         {% if job.is_ongoing %}<i class="fa fa-redo fa-lg"></i>{% endif %}
                     </td>
                     <td>{{ job.id|intcomma }}</td>
-                    <td>
-                        {% if job.ongoing_work_order %}
-                            <a href="{% url 'workery_tenant_ongoing_job_lite_retrieve' 'summary' job.ongoing_work_order.id %}" target="_blank">{{ job.ongoing_work_order }}</a>
-                        {% else %}
-                            -
-                        {% endif %}
-                    </td>
                     <td>
                         {% if job.customer %}
                             <a href="{% url 'workery_tenant_customer_lite_retrieve' 'summary' job.customer.id %}" target="_blank">
