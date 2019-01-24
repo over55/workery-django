@@ -67,11 +67,13 @@ class CompletedWorkOrderUnassignOperationSerializer(serializers.Serializer):
         # Create required comments. #
         #---------------------------#
         comment_obj = Comment.objects.create(
-            created_by=self.context['user'],
-            last_modified_by=self.context['user'],
-            text=comment_text,
+            created_by = self.context['user'],
             created_from = self.context['from'],
-            created_from_is_public = self.context['from_is_public']
+            created_from_is_public = self.context['from_is_public'],
+            last_modified_by = self.context['user'],
+            last_modified_from = self.context['from'],
+            last_modified_from_is_public = self.context['from_is_public'],
+            text=comment_text,
         )
         WorkOrderComment.objects.create(
             about=job,
@@ -79,25 +81,35 @@ class CompletedWorkOrderUnassignOperationSerializer(serializers.Serializer):
         )
 
         # For debugging purposes only.
-        logger.info("Job reason comment created.")
+        logger.info("Job unassignment reason comment created.")
 
         #---------------------------#
         # Close all previous tasks. #
         #---------------------------#
         for task_item in TaskItem.objects.filter(job=job, is_closed=False):
+            # (a) Object details.
             task_item.is_closed = True
             task_item.closing_reason = 0
             task_item.closing_reason_other = _('Closed because job was unassigned.')
             task_item.created_by = self.context['user']
+
+            # (b) System details.
             task_item.last_modified_by = self.context['user']
+            task_item.last_modified_from = self.context['from']
+            task_item.last_modified_from_is_public = self.context['from_is_public']
+
             task_item.save()
 
         #---------------------------------------------#
         # Create a new task based on a new start date #
         #---------------------------------------------#
         task_item = TaskItem.objects.create(
-            created_by=self.context['user'],
-            last_modified_by=self.context['user'],
+            created_by = self.context['user'],
+            created_from = self.context['from'],
+            created_from_is_public = self.context['from_is_public'],
+            last_modified_by = self.context['user'],
+            last_modified_from = self.context['from'],
+            last_modified_from_is_public = self.context['from_is_public'],
             type_of = ASSIGNED_ASSOCIATE_TASK_ITEM_TYPE_OF_ID,
             due_date = job.start_date,
             is_closed = False,
@@ -114,9 +126,16 @@ class CompletedWorkOrderUnassignOperationSerializer(serializers.Serializer):
         #------------------------------#
         # Assign our new ticket to job #
         #------------------------------#
+        # (a) Object details.
         job.associate = None
         job.latest_pending_task = task_item
         job.state = WORK_ORDER_STATE.DECLINED
+
+        # (b) System details.
+        job.last_modified_by = self.context['user']
+        job.last_modified_from = self.context['from']
+        job.last_modified_from_is_public = self.context['from_is_public']
+
         job.save()
 
         # For debugging purposes only.
