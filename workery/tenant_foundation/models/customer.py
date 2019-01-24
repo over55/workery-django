@@ -306,6 +306,8 @@ class Customer(AbstractPerson):
         the latest model data before we save.
         '''
         search_text = str(self.id)
+        if self.organization:
+            search_text += " " + self.organization.name
         if self.given_name:
             search_text += " " + self.given_name
         if self.middle_name:
