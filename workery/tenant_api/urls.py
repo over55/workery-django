@@ -2,6 +2,7 @@ from django.conf.urls import include, url
 from rest_framework.urlpatterns import format_suffix_patterns
 from rest_framework import serializers, viewsets, routers
 from rest_framework.urlpatterns import format_suffix_patterns
+
 from tenant_api.views.associate import AssociateListCreateAPIView, AssociateRetrieveUpdateDestroyAPIView, AssociateCreateValidationAPIView
 from tenant_api.views.associate_comment import AssociateCommentListCreateAPIView
 from tenant_api.views.awaylog import AwayLogListCreateAPIView, AwayLogRetrieveUpdateDestroyAPIView
@@ -26,13 +27,11 @@ from tenant_api.views.public_image_upload import PublicImageUploadListCreateAPIV
 from tenant_api.views.order_service_fee import WorkOrderServiceFeeListCreateAPIView, WorkOrderServiceFeeRetrieveUpdateDestroyAPIView
 from tenant_api.views.order_operation import (
     WorkOrderUnassignOperationCreateAPIView,
-    CompletedWorkOrderCloseOperationCreateAPIView,
-    IncompleteWorkOrderCloseOperationCreateAPIView,
+    WorkOrderCloseOperationCreateAPIView,
     WorkOrderPostponeOperationCreateAPIView,
     WorkOrderReopenOperationCreateAPIView,
     TransferWorkerOrderOperationAPIView
 )
-# from tenant_api.views.order_operation import CompletedWorkOrderCloseOperationCreateAPIView
 from tenant_api.views.task_operation import (
     AssignAssociateTaskOperationAPIView,
     FollowUpTaskOperationAPIView,
@@ -77,8 +76,7 @@ urlpatterns = [
 
     # WorkOrder - Operations
     url(r'^api/orders/operation/unassign$', WorkOrderUnassignOperationCreateAPIView.as_view(), name='workery_order_unassign_operation_api_endpoint'),
-    url(r'^api/orders/operation/closed-job/close$', CompletedWorkOrderCloseOperationCreateAPIView.as_view(), name='workery_completed_order_close_operation_api_endpoint'),
-    url(r'^api/orders/operation/open-jobs/close$', IncompleteWorkOrderCloseOperationCreateAPIView.as_view(), name='workery_incomplete_order_close_operation_api_endpoint'),
+    url(r'^api/orders/operation/close$', WorkOrderCloseOperationCreateAPIView.as_view(), name='workery_order_close_operation_api_endpoint'),
     url(r'^api/orders/operation/postpone$', WorkOrderPostponeOperationCreateAPIView.as_view(), name='workery_order_postpone_operation_api_endpoint'),
     url(r'^api/orders/operation/reopen$', WorkOrderReopenOperationCreateAPIView.as_view(), name='workery_order_reopen_operation_api_endpoint'),                           #TODO: DELETE
     url(r'^api/orders/operation/transfer$', TransferWorkerOrderOperationAPIView.as_view(), name='workery_transfer_order_operation_api_endpoint'),                           #TODO: DELETE

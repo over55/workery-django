@@ -15,7 +15,6 @@ from tenant_api.permissions.order import (
    CanRetrieveUpdateDestroyWorkOrderPermission
 )
 from tenant_api.serializers.order_operation.unassign_for_completed import CompletedWorkOrderUnassignOperationSerializer
-from tenant_api.serializers.order_operation.close_for_completed import CompletedWorkOrderCloseOperationSerializer
 from tenant_foundation.models import ActivitySheetItem
 
 
