@@ -5,6 +5,7 @@ from dateutil import tz
 from django.conf import settings
 from django.contrib.auth.models import Group
 from django.contrib.auth import authenticate
+from django.db import transaction
 from django.db.models import Q, Prefetch
 from django.utils.translation import ugettext_lazy as _
 from django.utils import timezone
@@ -81,6 +82,7 @@ class AwayLogListCreateSerializer(serializers.ModelSerializer):
                 raise serializers.ValidationError("Please provide a date for \"until date\".")
         return data  # Return our data.
 
+    @transaction.atomic
     def create(self, validated_data):
         """
         Override the `create` function to add extra functinality.

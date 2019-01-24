@@ -7,6 +7,7 @@ from djmoney.money import Money
 from django.conf import settings
 from django.contrib.auth.models import Group
 from django.contrib.auth import authenticate
+from django.db import transaction
 from django.db.models import Q, Prefetch, Sum
 from django.utils.translation import ugettext_lazy as _
 from django.utils import timezone
@@ -116,6 +117,7 @@ class CloseTaskOperationSerializer(serializers.Serializer):
         # Return our data.
         return data
 
+    @transaction.atomic
     def create(self, validated_data):
         """
         Override the `create` function to add extra functinality.
