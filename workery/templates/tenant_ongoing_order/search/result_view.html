@@ -1,0 +1,126 @@
+{% extends 'tenant_foundation/tenant_base.html' %}
+{% load staticfiles i18n shared_foundation_tags humanize %}
+
+{% block title %}
+{% trans 'Jobs Search | Workery' %}
+{% endblock title %}
+
+{% block header_content %}
+{% endblock header_content %}
+
+{% block content %}
+
+<main id="main" role="main">
+
+    <!-- BREADCRUMB -->
+    <!------------------------------------------------------------------------->
+    <nav aria-label="breadcrumb">
+	  	<ol class="breadcrumb">
+	    		<li class="breadcrumb-item">
+                    <a href="{% url 'workery_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a>
+                </li>
+                <li class="breadcrumb-item">
+                    <a href="{% url 'workery_tenant_job_summary' %}">{% trans 'Jobs' %}</a>
+                </li>
+                <li class="breadcrumb-item">
+                    <a href="{% url 'workery_tenant_job_search' %}">{% trans 'Search' %}</a>
+                </li>
+	    		<li class="breadcrumb-item active" aria-current="page">{% trans 'Search Results' %}</li>
+	  	</ol>
+	</nav>
+    <!------------------------------------------------------------------------->
+    <!-- end BREADCRUMB -->
+
+    <h2>{% trans 'Search Results' %}</h2>
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>{% trans 'Job #' %}</th>
+                    <th>{% trans 'Client' %}</th>
+                    <th>{% trans 'Associate' %}</th>
+                    <th>{% trans 'Assigned Date' %}</th>
+                    <th>{% trans 'Ongoing' %}</th>
+                    <th>{% trans 'Completion Date' %}</th>
+                    <th>{% trans 'Status' %}</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for job in job_list %}
+                <tr>
+                    <td>
+                        {% if job.customer.type_of == tenant_constants.RESIDENTIAL_CUSTOMER_TYPE_OF_ID %}
+                            <i class="fa fa-home fa-lg"></i>
+                        {% elif job.customer.type_of == tenant_constants.COMMERCIAL_CUSTOMER_TYPE_OF_ID %}
+                            <i class="fa fa-briefcase fa-lg"></i>
+                        {% else %}
+                            <i class="fa fa-question fa-lg"></i>
+                        {% endif %}
+                    </td>
+                    <td>{{ job.id|intcomma }}</td>
+                    <td>{% if job.customer %}{{ job.customer }}{% else %}-{% endif %}</td>
+                    <td>{% if job.associate %}{{ job.associate }}{% else %}-{% endif %}</td>
+                    <td>{% if job.assignment_date %}{{ job.assignment_date }}{% else %}-{% endif %}</td>
+                    <td>{{ job.is_ongoing }}</td>
+                    <td>{% if job.completion_date %}{{ job.completion_date }}{% else %}-{% endif %}</td>
+                    <td>
+                        {% if job.state == WORK_ORDER_STATE.PENDING %}
+                            {% trans 'Pending' %}
+                        {% elif job.state == WORK_ORDER_STATE.CANCELLED %}
+                            {% trans 'Cancelled' %}
+                        {% elif job.state == WORK_ORDER_STATE.ONGOING %}
+                            {% trans 'Ongoing' %}
+                        {% elif job.state == WORK_ORDER_STATE.IN_PROGRESS %}
+                            {% trans 'In Progress' %}
+                        {% elif job.state == WORK_ORDER_STATE.COMPLETED_BUT_UNPAID %}
+                            {% trans 'Completed but unpaid' %}
+                        {% elif job.state == WORK_ORDER_STATE.COMPLETED_AND_PAID %}
+                            {% trans 'Completed and paid' %}
+                        {% elif job.state == WORK_ORDER_STATE.ARCHIVED %}
+                            {% trans 'Archived' %}
+                        {% else %}
+                            -
+                        {% endif %}
+                    </td>
+                    <td>
+                        <a href="{% url 'workery_tenant_job_retrieve' 'search' job.id %}?page={{ page_obj.number }}{{ filter_parameters }}">{% trans 'View' %}&nbsp;<i class="fas fa-chevron-right"></i></a>
+                    </td>
+                </tr>
+                {% empty %}
+                No jobs yet.
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="pagination">
+        <span class="step-links">
+            {% if page_obj.has_previous %}
+                {% if filter_parameters %}
+                    <a href="{{ filter_parameters }}&page={{ page_obj.previous_page_number }}">previous</a>
+                {% else %}
+                    <a href="?page={{ page_obj.previous_page_number }}"><i class="fas fa-angle-left"></i>&nbsp;previous</a>
+                {% endif %}
+            {% endif %}
+
+            <span class="current">
+                Page {{ page_obj.number }} of {{ paginator.num_pages }}.
+            </span>
+
+            {% if page_obj.has_next %}
+                {% if filter_parameters %}
+                    <a href="{{ filter_parameters }}&page={{ page_obj.next_page_number }}">next</a>
+                {% else %}
+                    <a href="?page={{ page_obj.next_page_number }}">next&nbsp;<i class="fas fa-angle-right"></i></a>
+                {% endif %}
+            {% endif %}
+        </span>
+    </div>
+
+    <!-- RETURN-TO-TOP -->
+    <a id="return-to-top" href="#" class="btn-info btn-lg back-to-top" role="button" title="Back to top"><i class="fas fa-angle-up fa-2x"></i></a>
+    <!-- end RETURN-TO-TOP -->
+</main>
+{% endblock content %}

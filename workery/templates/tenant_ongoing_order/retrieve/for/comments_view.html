@@ -1,0 +1,201 @@
+{% extends 'tenant_foundation/tenant_base.html' %}
+{% load staticfiles i18n humanize tz shared_foundation_tags %}
+
+{% block title %}
+{% trans 'Client Details | Workery' %}
+{% endblock title %}
+
+{% block header_content %}
+{% endblock header_content %}
+
+{% block content %}
+
+<script>
+/**
+ *  Function will attempt to submit the form to the API server. This
+ *  funciton will:
+ *  (1) Lock / Unlock the submit button.
+ *  (2)
+ */
+function click_add_button() {
+    //
+    create_ongoing_job_comment_api(
+        {
+            'about': {{ job.id }},
+            'extra_text': $('#comment').val(),
+        },
+        function(result_dict) { // Success
+            // FOR DEBUGGING PURPOSES ONLY.
+            console.log(result_dict);
+
+            // REDIRECT TO SUCCESS PAGE.
+            location.reload(true);
+        },
+        function(xhr,status,error) { // Error
+            // STEP 1: Convert to JSON.
+            var err = JSON.parse(xhr.responseText);
+
+            // For debugging purposes only.
+            console.log(err);
+
+            alert("Please fill in the comment.")
+
+            // // STEP 2: CLEAR EXISTING TEXT.
+            // $('#all_error_result').html();
+            //
+            // // STEP 3: PRINT OUR ERROR.
+            // for(var prop in err) {
+            //     if(err.hasOwnProperty(prop)) {
+            //         var val = err[prop];
+            //         console.log(val);
+            //         $('#all_error_result').append("<p><b>"+prop+"</b>"+val+"</p><br />");
+            //     }
+            // }
+            //
+            // // STEP 4: FOCUS TO WHERE THE ERROR IS OCCURING.
+            // $('html, body').animate({ scrollTop: $('#id_page_title').offset().top }, 'slow');
+        },
+        function() { // Finally
+            // UNLOCK THE "SUBMIT" BUTTON TO BE AVAILABLE FOR USAGE.
+            // enable_btn();
+        }
+    );
+}
+</script>
+
+<main id="main" role="main">
+
+    <!-- BREADCRUMB -->
+    <!------------------------------------------------------------------------->
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            {% if template == 'search' %}
+            <li class="breadcrumb-item">
+                <a href="{% url 'workery_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a>
+            </li>
+            <li class="breadcrumb-item">
+                <a href="{% url 'workery_tenant_job_summary' %}">{% trans 'Jobs' %}</a>
+            </li>
+            <li class="breadcrumb-item">
+                <a href="{% url 'workery_tenant_job_search' %}">{% trans 'Search' %}</a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">{% trans 'Search Results' %}</li>
+            <li class="breadcrumb-item active" aria-current="page">{% trans 'Job #' %}{{ object.id|intcomma }}</li>
+            {% elif template == 'list' %}
+            <li class="breadcrumb-item"><a href="{% url 'workery_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'workery_tenant_job_summary' %}">{% trans 'Jobs' %}</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'workery_tenant_job_list' %}">{% trans 'List' %}</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{% trans 'Job #' %}{{ object.id|intcomma }}</li>
+            {% else %}
+            <li class="breadcrumb-item"><a href="{% url 'workery_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'workery_tenant_ongoing_job_list' %}">{% trans 'Ongoing Jobs' %}</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{% trans 'Ongoing Job #' %}{{ object.id|intcomma }}</li>
+            {% endif %}
+        </ol>
+    </nav>
+    <!------------------------------------------------------------------------->
+    <!-- end BREADCRUMB -->
+
+    <!-- NOTIFICATION -->
+    <!------------------------------------------------------------------------->
+    {% if parameters.was_modified == 'True' %}
+        <div class="alert bg-success text-white alert-dismissible fade show" role="alert">
+            Client <strong>Successfully</strong> updated.
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">×</span>
+            </button>
+        </div>
+    {% endif %}
+    <!------------------------------------------------------------------------->
+    <!-- end NOTIFICATION -->
+
+    <h1>{% trans 'View Job' %}</h1>
+
+    <!-- STEP NAVIGATION -->
+    <!------------------------------------------------------------------------->
+    <div class="row">
+        <div class="step-navigation">
+            <div class="st-grey">
+                <a href="{% url 'workery_tenant_ongoing_job_lite_retrieve' template job.id %}">
+                    <i class="far fa-id-badge"></i>&nbsp;<span class="">Summary</span>
+                </a>
+            </div>
+            <div class="st-grey">
+                <a href="{% url 'workery_tenant_ongoing_job_full_retrieve' template job.id %}">
+                    <i class="far fa-id-card"></i>&nbsp;<span class="">Details</span>
+                </a>
+            </div>
+            <div class="st-grey active">
+                <i class="far fa-comments"></i>&nbsp;<span class="">Comments</span>
+            </div>
+        </div>
+    </div>
+    <!------------------------------------------------------------------------->
+    <!-- end STEP NAVIGATION -->
+
+    <div class="container">
+        <div class="row align-items-start">
+            <!-- <h1>Comments/Notes Screen</h1> -->
+            <div class="col-lg-12">
+                <h3 class="py-2 text-center mb-4" id="id_page_title">Job Comments</h3>
+
+                <!-- FORM -->
+                <!------------------------------------------------------------------------->
+                {% for comment in job.comments.all %}
+                    <!-- Item -->
+                    <div class="media mt-4">
+                        <img class="mr-3 img-head" src="{% static 'img/placeholder.png' %}" alt="Image">
+                        <div class="media-body">
+                            <div class="row">
+                                <h5 class="mt-0 col-sm-10">
+                                    <strong>
+                                        {% if comment.created_by %}
+                                            {{ comment.created_by.first_name }} {{ comment.created_by.last_name }}
+                                        {% else %}
+                                            {% trans 'Legacy' %}
+                                        {% endif %}
+                                    </strong>
+                                </h5>
+                                <h6 class="col-sm-2 text-secondary text-right">
+                                    {% if comment.created_by %}
+                                        {{ comment.created_at|timezone:request.tenant.timezone_name|date:"N j, Y"}} <br> {{ comment.created_at|timezone:request.tenant.timezone_name|date:"P"}}
+                                    {% else %}
+                                        {% trans '-' %}
+                                    {% endif %}
+                                </h6>
+                            </div>
+                            <p>{{ comment.text }}</p>
+                        </div>
+                    </div>
+                    <!-- end Item -->
+                {% endfor %}
+
+                <hr class="my-4">
+                <!-- Add note form -->
+                <form>
+                    <div class="form-group">
+                        <label for="comment">Add Comment/Note: </label>
+                        <textarea class="form-control form-control-lg border border-primary" id="comment" name="comment" placeholder="Write a comment here..." rows="4" required></textarea>
+                        <small id="comment-error" class="form-text text-muted">Maximum 1,000 characters.</small>
+                    </div>
+                    <button id="id_submit_btn"
+                         class="btn btn-lg float-right pl-4 pr-4 btn-primary"
+                          type="button"
+                       onclick="click_add_button();">
+                        Save <i class="fas fa-check-circle"></i></button>
+                </form>
+
+                <!------------------------------------------------------------------------->
+                <!-- end FORM -->
+
+            </div>
+        </div>
+    </div>
+
+    <!-- RETURN-TO-TOP -->
+    <a id="return-to-top" href="#" class="btn-info btn-lg back-to-top" role="button" title="Back to top"><i class="fas fa-angle-up fa-2x"></i></a>
+    <!-- end RETURN-TO-TOP -->
+
+</main>
+
+{% endblock content %}

@@ -118,6 +118,11 @@
                         </a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link {% if menu_id == 'ongoing-jobs' %}active{% endif %}" href="{% url 'workery_tenant_ongoing_job_list' %}">
+                        <i class="fa fa-redo"></i>&nbsp;{% trans 'Jobs (Ongoing)' %}
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link {% if menu_id == 'reports' %}active{% endif %}" href="{% url 'workery_tenant_reports_list_master' %}">
                         <i class="fa fa-chart-bar"></i>&nbsp;Reports
                         </a>

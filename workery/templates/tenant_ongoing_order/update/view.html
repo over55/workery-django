@@ -1,0 +1,259 @@
+{% extends 'tenant_foundation/tenant_base.html' %}
+{% load staticfiles i18n shared_foundation_tags humanize djmoney %}
+
+{% block title %}
+{% trans 'Update Job | Workery' %}
+{% endblock title %}
+
+{% block header_content %}
+{% endblock header_content %}
+
+{% block content %}
+
+
+<!-- CUSTOM JAVASCRIPT -->
+<!----------------------------------------------------------------------------->
+<script type="text/javascript">
+    /**
+     *  When page loads, the following code will be run first.
+     */
+    $(document).ready(function () {
+        // Initialize our datepicker jQuery code with our HTML view.
+        $( "#assignment_date" ).datepicker({
+            dateFormat: 'yy-mm-dd'  // https://stackoverflow.com/a/7500097
+        });
+
+        $( "#completion_date" ).datepicker({
+            dateFormat: 'yy-mm-dd'  // https://stackoverflow.com/a/7500097
+        });
+
+        // Initialize our datepicker jQuery code with our HTML view.
+        $('#skill_sets').select2();
+    }); // end Ready
+
+    function ajax_post_form_submission() {
+
+        var description = $('#description').val();
+        console.log("Description:", description);
+
+        var skill_sets = $('#skill_sets').val();
+        console.log("skill_sets:", skill_sets);
+
+        var assignment_date = $('#assignment_date').val();
+        console.log("assignment_date:", assignment_date);
+
+        var frequency = $('#frequency').val();
+        console.log("State:", frequency);
+
+        var state = $('#state').val();
+        console.log("State:", state);
+
+        var completion_date = $('#completion_date').val();
+        console.log("completion_date:", completion_date);
+
+        var hours = $('#hours').val();
+        console.log("hours:", hours);
+
+        var data_dict = {
+            'description': description,
+            'skill_sets': skill_sets,
+            'assignment_date': assignment_date,
+            'frequency': frequency,
+            'customer': {% if ongoing_job.customer %}{{ ongoing_job.customer.id }}{% else %}null{% endif %},
+            'associate': {% if ongoing_job.associate %}{{ ongoing_job.associate.id }}{% else %}null{% endif %},
+            'state': state,
+            'completion_date': completion_date,
+            'hours': hours
+        };
+
+        update_ongoing_job_api(
+            {{ ongoing_job.id }},
+            data_dict,
+            function(json_results) {
+                console.log(json_results);
+                window.location = "{% url 'workery_tenant_ongoing_job_full_retrieve' template ongoing_job.id %}?was_modified=True";
+            },
+	        function(xhr,status,error) { // Error
+                // STEP 1: Convert to JSON.
+                var err = JSON.parse(xhr.responseText);
+                // For debugging purposes only.
+                console.log(err);
+                // STEP 2: CLEAR EXISTING TEXT.
+                $('#all_error_result').html("");
+		        $('#all_error_result').removeClass('error-block');
+                // STEP 3: PRINT OUR ERROR.
+                for(var prop in err) {
+                    if(err.hasOwnProperty(prop)) {
+                        var val = err[prop];
+                        console.log(val);
+                        var fdname = humanize(prop);
+			            // Errors box code
+                        $('#all_error_result').append("<div class='form-error'><b>"+fdname+":</b> "+val+" </div>");
+                        $('#all_error_result').addClass('error-block');
+            			// Inline fields errors code
+            			$('#'+prop+'-error').html("<ul><li>"+val+"</li></ul>");
+            			$('#update-job-form').addClass('was-validated');
+                    }
+                }
+                // STEP 4: FOCUS TO WHERE THE ERROR IS OCCURING.
+                $('html, body').animate({ scrollTop: $('#id_page_title').offset().top }, 'slow');
+            },
+            function(error_json) {
+                console.log(error_json);
+            },
+            function(completed, hr){
+
+            }
+        );
+    }
+</script>
+<!----------------------------------------------------------------------------->
+<!-- end CUSTOM JAVASCRIPT -->
+
+<main id="main" role="main">
+
+    <!-- BREADCRUMB -->
+    <!------------------------------------------------------------------------->
+    <nav aria-label="breadcrumb">
+	  	<ol class="breadcrumb">
+            {% if template == 'search' %}
+
+            TODO
+
+            {% elif template == 'list' %}
+
+            TODO
+
+            {% else %}
+
+	        <li class="breadcrumb-item"><a href="{% url 'workery_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'workery_tenant_ongoing_job_list' %}">{% trans 'Ongoing Jobs' %}</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'workery_tenant_ongoing_job_full_retrieve' template ongoing_job.id %}">{% trans 'Ongoing Job #' %}{{ ongoing_job.id|intcomma }}</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{% trans 'Edit' %}</li>
+
+            {% endif %}
+	  	</ol>
+	</nav>
+    <!------------------------------------------------------------------------->
+    <!-- end BREADCRUMB -->
+
+    <h1 id="id_page_title">{% trans 'Edit Ongoing Job' %}</h1>
+
+    <!-- FORM -->
+    <!------------------------------------------------------------------------->
+    <div class="col-sm-5 mx-auto mt-2">
+        <!-- Residential form -->
+        <div class="col-sm-12 fade show active" id="client-form" aria-labelledby="residential">
+            <p>
+                <span class="text-secondary font-italic">
+                    <sup>*</sup>&nbsp;-&nbsp;Indicates required field to fill out.
+                </span>
+            </p>
+            <!-- Error Output -->
+            <div id="all_error_result" name="all_error_result" class="alert alert-error fade show" role="alert">
+	    </div>
+	    <!-- end Error Output -->
+
+            <form id="update-job-form" method="post" class="needs-validation" action="" novalidate>
+
+                <p class="border-bottom mb-3 pb-1 text-secondary">Describe the Job:</p>
+                <div class="form-row">
+                    <div class="form-group col-md-12 mb-4">
+                            <textarea class="form-control form-control-lg border border-primary" id="description" name="description" placeholder="Describe here..." rows="4" minlength="10" required>{{ ongoing_job.description }}</textarea>
+                        <div id="description-error" class="invalid-feedback"></div>
+                    </div>
+                </div>
+
+                <p class="border-bottom mb-3 pb-1 text-secondary">Please select required job skill(s):</p>
+                <div class="form-row">
+                    <div class="form-group col-md-12 mb-4">
+                        <label for="skill_sets" class="font-b6"></label>
+                        <select id="skill_sets" name="states[]" multiple="multiple" class="form-control form-control-lg border border-primary">
+                            {% for skillset in skillsets %}
+                                <option value="{{ skillset.id }}" id="option_id_{{ skillset.id }}" {% if skillset in ongoing_job.skill_sets.all %}selected="selected"{% endif %}>{{ skillset.sub_category }}</option>
+                            {% endfor %}
+                        </select>
+                        <div id="skill_sets-error" class="invalid-feedback"></div>
+                    </div>
+                </div>
+
+                <!-- ASSIGNMENT -->
+                <div class="form-group p-0 col-md-7 mb-4">
+                    <label for="assignment_date">Assignment Date</label>
+                    <div class="input-group input-group-lg">
+                        <input type="text" class="form-control form-control-lg border border-success" id="assignment_date" name="assignment_date" placeholder="yyyy-mm-dd" value="{% if ongoing_job.assignment_date %}{{ ongoing_job.assignment_date|date:"Y-m-d" }}{% endif %}" required>
+                        <div class="input-group-append">
+                            <span class="input-group-text c-icon-white bg-success border-success"><i class="far fa-calendar-alt"></i></span>
+                        </div>
+                        <div id="assignment_date-error" class="invalid-feedback"></div>
+                    </div>
+                </div>
+                <!-- end ASSIGNMENT -->
+
+                <!-- FREQUENCY -->
+                <div class="form-group col-md-8 mb-4 p-0" id="id_follow_up_div">
+                    <label for="frequency">Frequency</label>
+                    <select class="custom-select form-control-lg border-success" id="frequency" name="frequency" required>
+                        <option value="" selected>Please select...</option>
+                        <option value="never" {% if ongoing_job.frequency == 'never' %}selected="true"{% endif %}>Never</option>
+                        <option value="monthly" {% if ongoing_job.frequency == 'monthly' %}selected="true"{% endif %}>Monthly</option>
+                        <option value="quarterly" {% if ongoing_job.frequency == 'quarterly' %}selected="true"{% endif %}>Quarterly</option>
+                        <option value="annually" {% if ongoing_job.frequency == 'annually' %}selected="true"{% endif %}>Annually</option>
+                    </select>
+                    <div id="frequency-error" class="invalid-feedback"></div>
+                </div>
+                <!-- end FREQUENCY -->
+
+                <div class="form-group col-md-7 mb-4 p-0">
+                    <label for="state">Status&nbsp;<sup>*</sup></label>
+                    <select class="custom-select form-control-lg border-primary" id="state" name="state" required>
+                        <option value="">Status...</option>
+                        <option value="{{ ONGOING_WORK_ORDER_STATE.IDLE }}" {% if ongoing_job.state == ONGOING_WORK_ORDER_STATE.IDLE %}selected="true"{% endif %}>{% trans 'Idle' %}</option>
+                        <option value="{{ ONGOING_WORK_ORDER_STATE.RUNNING }}" {% if ongoing_job.state == ONGOING_WORK_ORDER_STATE.RUNNING %}selected="true"{% endif %}>{% trans 'Running' %}</option>
+                        <option value="{{ ONGOING_WORK_ORDER_STATE.TERMINATED }}" {% if ongoing_job.state == ONGOING_WORK_ORDER_STATE.TERMINATED %}selected="true"{% endif %}>{% trans 'Terminate' %}</option>
+                    </select>
+                    <div id="state-error" class="invalid-feedback"></div>
+                </div>
+
+                <div class="form-group p-0 col-md-7 mb-4">
+                    <label for="completion_date">Completion Date</label>
+                    <div class="input-group input-group-lg">
+                        <input type="text" class="form-control form-control-lg border border-success" id="completion_date" name="completion_date" placeholder="yyyy-mm-dd" value="{% if ongoing_job.completion_date %}{{ ongoing_job.completion_date|date:"Y-m-d" }}{% endif %}" required>
+                        <div class="input-group-append">
+                            <span class="input-group-text c-icon-white bg-success border-success"><i class="far fa-calendar-alt"></i></span>
+                        </div>
+                        <div id="completion_date-error" class="invalid-feedback"></div>
+                    </div>
+                </div>
+
+
+                <div class="form-group p-0 col-md-7 mb-4">
+                    <label for="hours">Hours</label>
+                    <div class="input-group input-group-lg">
+                        <input type="text" class="form-control form-control-lg border border-success" id="hours" name="hours" placeholder="Hours" minlength="3" maxlength="127" required value="{{ ongoing_job.hours }}">
+                        <div id="hours-error" class="invalid-feedback"></div>
+                    </div>
+                </div>
+
+                <!-- end SUBMIT BUTTON -->
+                <div class="form-group col-md-12 mb-3 mx-auto text-center">
+                    <button id="id_submit_btn"
+                         class="btn btn-primary btn-lg btn-fxw mt-4"
+                       onclick="ajax_post_form_submission();"
+                          type="button">
+                        <i class="fas fa-check"></i>&nbsp;{% trans 'Update Ongoing Job' %}
+                    </button>
+                </div>
+                <!-- end SUBMIT BUTTON -->
+            </form>
+        </div>
+    </div>
+    <!------------------------------------------------------------------------->
+    <!-- end FORM -->
+
+
+    <!-- RETURN-TO-TOP -->
+    <a id="return-to-top" href="#" class="btn-info btn-lg back-to-top" role="button" title="Back to top"><i class="fas fa-angle-up fa-2x"></i></a>
+    <!-- end RETURN-TO-TOP -->
+</main>
+{% endblock content %}
