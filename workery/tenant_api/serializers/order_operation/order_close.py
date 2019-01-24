@@ -150,6 +150,7 @@ class WorkOrderCloseCreateSerializer(serializers.Serializer):
         # -------------------------
         # --- FINANCIAL DETAILS ---
         # -------------------------
+        # (a) Object details.
         if job.closing_reason == 4:
             job.state = WORK_ORDER_STATE.COMPLETED_BUT_UNPAID
         else:
@@ -166,10 +167,11 @@ class WorkOrderCloseCreateSerializer(serializers.Serializer):
             job.invoice_total_amount = Money(invoice_total_amount, WORKERY_APP_DEFAULT_MONEY_CURRENCY)
             job.invoice_service_fee_amount = Money(invoice_service_fee_amount, WORKERY_APP_DEFAULT_MONEY_CURRENCY)
 
-        # Attach object associations.
+        # (b) System details.
         job.last_modified_by = self.context['user']
         job.last_modified_from = self.context['from']
         job.last_modified_from_is_public = self.context['from_is_public']
+
         job.save()
 
         # For debugging purposes only.
@@ -180,11 +182,13 @@ class WorkOrderCloseCreateSerializer(serializers.Serializer):
         #------------------------------------------#
         if additional_comment_text:
             comment_obj = Comment.objects.create(
-                created_by=self.context['user'],
-                last_modified_by=self.context['user'],
-                text=additional_comment_text,
+                created_by = self.context['user'],
                 created_from = self.context['from'],
-                created_from_is_public = self.context['from_is_public']
+                created_from_is_public = self.context['from_is_public'],
+                last_modified_by = self.context['user'],
+                last_modified_from = self.context['from'],
+                last_modified_from_is_public = self.context['from_is_public'],
+                text=additional_comment_text,
             )
             WorkOrderComment.objects.create(
                 about=job,
@@ -205,11 +209,19 @@ class WorkOrderCloseCreateSerializer(serializers.Serializer):
             logger.info("Found task # #%(id)s ." % {
                 'id': str(task_item.id)
             })
+
+            # (a) Object details.
             task_item.reason = reason
             task_item.reason_other = reason_other
             task_item.is_closed = True
+
+            # (b) System details.
             task_item.last_modified_by = self.context['user']
+            task_item.last_modified_from = self.context['from']
+            task_item.last_modified_from_is_public = self.context['from_is_public']
+
             task_item.save()
+
             logger.info("Task #%(id)s was closed." % {
                 'id': str(task_item.id)
             })

@@ -60,19 +60,28 @@ class WorkOrderReopenCreateSerializer(serializers.Serializer):
         # Close all previous tasks. #
         #---------------------------#
         if job.latest_pending_task:
+            # (a) Object details.
             job.latest_pending_task.is_closed = True
             job.latest_pending_task.closing_reason = 0
             job.latest_pending_task.closing_reason_other = _('Closed because re-opending job.')
-            job.latest_pending_task.last_modified_by = self.context['user']
-            job.latest_pending_task.last_modified_by = self.context['user']
+
+            # (b) System details.
+            task_item.last_modified_by = self.context['user']
+            task_item.last_modified_from = self.context['from']
+            task_item.last_modified_from_is_public = self.context['from_is_public']
+
             job.latest_pending_task.save()
 
         #---------------------------------------------#
         # Create a new task based on a new start date #
         #---------------------------------------------#
         task_item = TaskItem.objects.create(
-            created_by=self.context['user'],
-            last_modified_by=self.context['user'],
+            created_by = self.context['user'],
+            created_from = self.context['from'],
+            created_from_is_public = self.context['from_is_public'],
+            last_modified_by = self.context['user'],
+            last_modified_from = self.context['from'],
+            last_modified_from_is_public = self.context['from_is_public'],
             type_of = ASSIGNED_ASSOCIATE_TASK_ITEM_TYPE_OF_ID,
             due_date = job.start_date,
             is_closed = False,
@@ -91,11 +100,13 @@ class WorkOrderReopenCreateSerializer(serializers.Serializer):
         #------------------------------------------#
         if reason:
             comment_obj = Comment.objects.create(
-                created_by=self.context['user'],
-                last_modified_by=self.context['user'],
-                text=reason,
+                created_by = self.context['user'],
                 created_from = self.context['from'],
-                created_from_is_public = self.context['from_is_public']
+                created_from_is_public = self.context['from_is_public'],
+                last_modified_by = self.context['user'],
+                last_modified_from = self.context['from'],
+                last_modified_from_is_public = self.context['from_is_public'],
+                text=reason
             )
             WorkOrderComment.objects.create(
                 about=job,
@@ -108,10 +119,16 @@ class WorkOrderReopenCreateSerializer(serializers.Serializer):
         #--------------------------#
         # Update the `job` status. #
         #--------------------------#
-        # Update our job to be in a `declined` state.
+        # (a) Update our job to be in a `declined` state.
         job.associate = None
         job.state = WORK_ORDER_STATE.NEW
         job.latest_pending_task = task_item
+
+        # (b) System details.
+        job.last_modified_by = self.context['user']
+        job.last_modified_from = self.context['from']
+        job.last_modified_from_is_public = self.context['from_is_public']
+
         job.save()
 
         # For debugging purposes only.

@@ -39,7 +39,7 @@ def get_todays_date_plus_days(days=0):
     return timezone.now() + timedelta(days=days)
 
 
-class CompletedWorkOrderCloseOperationSerializer(serializers.Serializer):
+class WorkOrderUnassignCreateSerializer(serializers.Serializer):
     job = serializers.PrimaryKeyRelatedField(many=False, queryset=WorkOrder.objects.all(), required=True)
     reason = serializers.CharField(required=True, allow_blank=False)
     latest_pending_task = serializers.ReadOnlyField()
@@ -67,11 +67,13 @@ class CompletedWorkOrderCloseOperationSerializer(serializers.Serializer):
         # Create required comments. #
         #---------------------------#
         comment_obj = Comment.objects.create(
-            created_by=self.context['user'],
-            last_modified_by=self.context['user'],
-            text=comment_text,
+            created_by = self.context['user'],
             created_from = self.context['from'],
-            created_from_is_public = self.context['from_is_public']
+            created_from_is_public = self.context['from_is_public'],
+            last_modified_by = self.context['user'],
+            last_modified_from = self.context['from'],
+            last_modified_from_is_public = self.context['from_is_public'],
+            text=comment_text,
         )
         WorkOrderComment.objects.create(
             about=job,
@@ -79,27 +81,61 @@ class CompletedWorkOrderCloseOperationSerializer(serializers.Serializer):
         )
 
         # For debugging purposes only.
-        logger.info("Job reason comment created.")
+        logger.info("Job unassignment reason comment created.")
 
         #---------------------------#
         # Close all previous tasks. #
         #---------------------------#
-        for task_item in TaskItem.objects.filter(job=job,is_closed=False):
-            logger.info("Found task # #%(id)s ." % {
-                'id': str(task_item.id)
-            })
+        for task_item in TaskItem.objects.filter(job=job, is_closed=False):
+            # (a) Object details.
             task_item.is_closed = True
             task_item.closing_reason = 0
-            task_item.closing_reason_other = _('Closed because job was closed.')
+            task_item.closing_reason_other = _('Closed because job was unassigned.')
             task_item.created_by = self.context['user']
+
+            # (b) System details.
             task_item.last_modified_by = self.context['user']
+            task_item.last_modified_from = self.context['from']
+            task_item.last_modified_from_is_public = self.context['from_is_public']
+
             task_item.save()
 
-        #----------------#
-        # Update the job #
-        #----------------#
-        job.state = WORK_ORDER_STATE.COMPLETED_BUT_UNPAID
-        job.latest_pending_task = None
+        #---------------------------------------------#
+        # Create a new task based on a new start date #
+        #---------------------------------------------#
+        task_item = TaskItem.objects.create(
+            created_by = self.context['user'],
+            created_from = self.context['from'],
+            created_from_is_public = self.context['from_is_public'],
+            last_modified_by = self.context['user'],
+            last_modified_from = self.context['from'],
+            last_modified_from_is_public = self.context['from_is_public'],
+            type_of = ASSIGNED_ASSOCIATE_TASK_ITEM_TYPE_OF_ID,
+            due_date = job.start_date,
+            is_closed = False,
+            job = job,
+            title = _('Assign an Associate'),
+            description = _('Please assign an associate to this job.')
+        )
+
+        # For debugging purposes only.
+        logger.info("Assignment Task #%(id)s was created b/c of unassignment." % {
+            'id': str(task_item.id)
+        })
+
+        #------------------------------#
+        # Assign our new ticket to job #
+        #------------------------------#
+        # (a) Object details.
+        job.associate = None
+        job.latest_pending_task = task_item
+        job.state = WORK_ORDER_STATE.DECLINED
+
+        # (b) System details.
+        job.last_modified_by = self.context['user']
+        job.last_modified_from = self.context['from']
+        job.last_modified_from_is_public = self.context['from_is_public']
+
         job.save()
 
         # For debugging purposes only.
@@ -108,7 +144,7 @@ class CompletedWorkOrderCloseOperationSerializer(serializers.Serializer):
         #----------------------------#
         # Enhance our output results #
         #----------------------------#
-        validated_data['latest_pending_task'] = None
+        validated_data['latest_pending_task'] = task_item.id
 
         # Return our results.
         return validated_data
