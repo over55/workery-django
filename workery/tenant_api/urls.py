@@ -39,7 +39,11 @@ from tenant_api.views.task_operation import (
     CloseTaskOperationAPIView
 )
 from tenant_api.views.vehicle_type import VehicleTypeListCreateAPIView, VehicleTypeRetrieveUpdateDestroyAPIView
-
+from tenant_api.views.order_crud import (
+    OngoingWorkOrderListCreateAPIView,
+    OngoingWorkOrderRetrieveUpdateDestroyAPIView,
+    OngoingWorkOrderCommentListCreateAPIView
+)
 
 urlpatterns = [
     # Away logs.
@@ -117,6 +121,11 @@ urlpatterns = [
 
     # Utility
     url(r'^api/utility/find-customer-matching$', FindCustomerMatchingAPIView.as_view(), name='workery_find_customer_matching_api_endpoint'),
+
+    # Ongoing Work Order
+    url(r'^api/ongoing-orders$', OngoingWorkOrderListCreateAPIView.as_view(), name='workery_ongoing_order_list_create_api_endpoint'),
+    url(r'^api/ongoing-order/(?P<pk>[^/.]+)/$', OngoingWorkOrderRetrieveUpdateDestroyAPIView.as_view(), name='workery_ongoing_order_retrieve_update_destroy_api_endpoint'),
+    url(r'^api/ongoing-order-comments$', OngoingWorkOrderCommentListCreateAPIView.as_view(), name='workery_ongoing_job_comment_list_create_api_endpoint'),
 ]
 
 
