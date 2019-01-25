@@ -179,20 +179,6 @@
     			    </td>
     			</tr>
                 {% endif %}
-                <tr>
-                    <th scope="row" class="bg-light">Latest Pending Task</th>
-                    <td id="selected_task">
-                        {% if ongoing_job.latest_pending_task %}
-                            {% if ongoing_job.latest_pending_task.is_closed == False %}
-                                <a href="{% url 'workery_tenant_pending_task_retrieve' ongoing_job.latest_pending_task.id %}" target="_blank">{{ ongoing_job.latest_pending_task.id }}&nbsp;<i class="fas fa-external-link-alt"></i></a>
-                            {% else %}
-                                -
-                            {% endif %}
-                        {% else %}
-                            -
-                        {% endif %}
-                    </td>
-                </tr>
             </tbody>
         </table>
     </div>

@@ -66,6 +66,7 @@
                 <tr>
                     <th></th>
                     <th>{% trans 'Job #' %}</th>
+                    <th>{% trans 'Jobs' %}</th>
                     <th>{% trans 'Client' %}&nbsp;<i class="fas fa-external-link-alt"></i></th>
                     <th>{% trans 'Associate' %}&nbsp;<i class="fas fa-external-link-alt"></i></th>
                     <th>{% trans 'Status' %}</th>
@@ -85,6 +86,7 @@
                         {% endif %}
                     </td>
                     <td>{{ job.id|intcomma }}</td>
+                    <td>{{ job.work_orders.count }}</td>
                     <td>
                         {% if job.customer %}
                             <a href="{% url 'workery_tenant_customer_lite_retrieve' 'summary' job.customer.id %}" target="_blank">{{ job.customer }}</a>

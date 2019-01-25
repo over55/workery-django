@@ -21,7 +21,8 @@ from tenant_foundation.models import (
     ResourceItem,
     ONGOING_WORK_ORDER_STATE,
     OngoingWorkOrder,
-    WorkOrderServiceFee
+    WorkOrderServiceFee,
+    WORK_ORDER_STATE
 )
 
 
@@ -141,9 +142,12 @@ class OngoingJobFullRetrieveView(LoginRequiredMixin, GroupRequiredMixin, Workery
             raise PermissionDenied(_('You entered wrong format.'))
         modified_context['template'] = template
 
-        # Get sorted values.
+        # Find all the previously completed jobs.
         ongoing_job = modified_context['ongoing_job']
-        modified_context['ordered_closed_jobs'] = ongoing_job.work_orders.filter(state=ONGOING_WORK_ORDER_STATE.TERMINATED).order_by('-id')
+        jobs = ongoing_job.work_orders.order_by('-id')
+
+        # Get sorted values.
+        modified_context['jobs'] = jobs
 
         # Return our modified context.
         return modified_context

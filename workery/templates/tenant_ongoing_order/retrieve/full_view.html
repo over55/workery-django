@@ -113,130 +113,81 @@
         <table class="table table-bordered custom-cell-w">
     <tbody>
     <tr class="bg-dark text-white">
-        <th scope="row" colspan="2">Job Details</th>
-    </tr>
-    <tr>
-        <th scope="row" class="bg-light">Job #</th>
-        <td id="selected_order_id">
-            {{ ongoing_job.id|intcomma }}
-        </td>
-    </tr>
-    <tr>
-        <th scope="row" class="bg-light">Client</th>
-        <td id="customer">
-            {% if ongoing_job.customer %}
-               <a href="{% url 'workery_tenant_customer_lite_retrieve' template ongoing_job.customer.id %}" target="_blank">
-                   {{ ongoing_job.customer }}
-                   {% if ongoing_job.customer.is_blacklisted %}
-                       &nbsp;<strong>(<i class="fa fa-frown fa-lg"></i>&nbsp;Blacklisted)</strong>
-                   {% endif %}
-                   &nbsp;<i class="fas fa-external-link-alt"></i>
-               </a>
-                  {% else %}-{% endif %}
-        </td>
-    </tr>
-    <tr>
-        <th scope="row" class="bg-light">Phone Number {% if ongoing_job.customer.telephone %}({% if ongoing_job.customer.telephone_type_of == 1 %}Landline{% elif ongoing_job.customer.telephone_type_of == 2 %}Mobile{% elif ongoing_job.customer.telephone_type_of == 3 %}Work{% endif %}){% endif %}</th>
-        <td id="phone">
-            {% if ongoing_job.customer.telephone %}<a href="tel:{{ customer.telephone }}">{{ ongoing_job.customer.telephone|pretty_formatted_phonenumber }}</a>{% else %}-{% endif %}
-        </td>
-    </tr>
-    <tr>
-        <th scope="row" class="bg-light">Description</th>
-        <td id="description">
-            {% if ongoing_job.description %}{{ ongoing_job.description }}{% else %}-{% endif %}
-        </td>
-    </tr>
-    <tr>
-        <th scope="row" class="bg-light">Skill Sets</th>
-        <td id="skill_sets">
-            {% for skill_set in ongoing_job.skill_sets.all %}
-                <span class="badge badge-info badge-lg">{{ skill_set.sub_category }}</span>
-            {% empty %}
-                -
-            {% endfor %}
-        </td>
-    </tr>
-    <tr>
-        <th scope="row" class="bg-light">Assigned Associate</th>
-        <td id="associate">
-        {% if ongoing_job.associate %}<a href="{% url 'workery_tenant_member_lite_retrieve' template ongoing_job.associate.id %}" target="_blank">{{ ongoing_job.associate }}&nbsp;<i class="fas fa-external-link-alt"></i></a>{% else %}-{% endif %}
-        </td>
-    </tr>
-    <tr>
-        <th scope="row" class="bg-light">Assignment Date</th>
-        <td id="assignment_date">
-           {% if ongoing_job.assignment_date %}{{ ongoing_job.assignment_date }}{% else %}-{% endif %}
-        </td>
-    </tr>
-    <tr>
-        <th scope="row" class="bg-light">Is Home Support Service</th>
-        <td id="is_home_support_service">
-           {{ ongoing_job.is_home_support_service }}
-        </td>
-    </tr>
-    <tr>
-        <th scope="row" class="bg-light">Is ongoing?</th>
-        <td id="is_ongoing">
-            True
-        </td>
-    </tr>
-    <tr>
-        <th scope="row" class="bg-light">Status</th>
-        <td id="selected_status">
-            {{ ongoing_job.get_pretty_status }}
-        </td>
-    </tr>
-    {% if ongoing_job.frequency %}
-    <tr>
-        <th scope="row" class="bg-light">Frequency</th>
-        <td id="frequency">
-            {% if ongoing_job.frequency == 'daily' %}
-                Daily
-            {% elif ongoing_job.frequency == 'weekly' %}
-                Weekly
-            {% elif ongoing_job.frequency == 'bi_weekly' %}
-                Bi-weekly
-            {% elif ongoing_job.frequency == 'monthly' %}
-                Monthly
-            {% elif ongoing_job.frequency == 'quarterly' %}
-                Quarterly
-            {% elif ongoing_job.frequency == 'annually' %}
-                Annually
-            {% endif %}
-        </td>
-    </tr>
-    {% endif %}
-    <tr>
-        <th scope="row" class="bg-light">Start date</th>
-        <td id="completion_date">
-            {% if ongoing_job.start_date %}{{ ongoing_job.start_date }}{% else %}<i>{% trans 'No specified' %}</i>{% endif %}
-        </td>
-    </tr>
-    <tr>
-        <th scope="row" class="bg-light">Completion date</th>
-        <td id="completion_date">
-        {% if ongoing_job.completion_date %}{{ ongoing_job.completion_date }}{% else %}-{% endif %}
-        </td>
-    </tr>
-    <tr>
-        <th scope="row" class="bg-light">Hours</th>
-        <td id="hours">
-        {{ ongoing_job.hours }}
-        </td>
-    </tr>
-    {% if ongoing_job.latest_pending_task %}
-        {% if ongoing_job.latest_pending_task.is_closed == False %}
-            <tr>
-                <th scope="row" class="bg-light">Required Task</th>
-                <td id="latest_pending_task">
-                <a href="{% url 'workery_tenant_pending_task_retrieve' ongoing_job.latest_pending_task.id %}" target="_blank">
-                    {{ ongoing_job.latest_pending_task.title }}&nbsp;<i class="fas fa-external-link-alt"></i>
-                </a>
-                </td>
-            </tr>
+
+        <tr class="bg-dark">
+            <th scope="row" colspan="2" class="text-light">Job Details</th>
+        </tr>
+        <tr>
+            <th scope="row" class="bg-light">Ongoing Job #</th>
+            <td id="selected_order_id">
+                {{ ongoing_job.id|intcomma }}
+            </td>
+        </tr>
+        <tr>
+            <th scope="row" class="bg-light">Client Name</th>
+            <td id="selected_customer_name">
+                {% if ongoing_job.customer %}
+                    <a href="{% url 'workery_tenant_customer_lite_retrieve' template ongoing_job.customer.id %}" target="_blank">
+                        {{ ongoing_job.customer }}&nbsp;<i class="fas fa-external-link-alt"></i>
+                    </a>
+                {% else %}-{% endif %}
+            </td>
+        </tr>
+        <tr>
+            <th scope="row" class="bg-light">Associate Name</th>
+            <td id="selected_associate_name">
+                {% if ongoing_job.associate %}<a href="{% url 'workery_tenant_member_lite_retrieve' template ongoing_job.associate.id %}" target="_blank">{{ ongoing_job.associate }}&nbsp;<i class="fas fa-external-link-alt"></i></a>{% else %}-{% endif %}
+            </td>
+        </tr>
+        <tr>
+            <th scope="row" class="bg-light">Job Type</th>
+            <td id="selected_job_type_id">
+                {% if ongoing_job.customer.type_of == tenant_constants.RESIDENTIAL_CUSTOMER_TYPE_OF_ID %}
+                    {% trans 'Residential Job' %}
+                {% elif ongoing_job.customer.type_of == tenant_constants.COMMERCIAL_CUSTOMER_TYPE_OF_ID %}
+                    {% trans 'Commercial Job' %}
+                {% else %}
+                    {% trans 'Unassigned Job' %}
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <th scope="row" class="bg-light">Status</th>
+            <td id="selected_status">
+                {% if ongoing_job.state == ONGOING_WORK_ORDER_STATE.IDLE %}
+                    {% trans 'Idle' %}
+                {% elif ongoing_job.state == ONGOING_WORK_ORDER_STATE.RUNNING %}
+                    {% trans 'Running' %}
+                {% elif ongoing_job.state == ONGOING_WORK_ORDER_STATE.TERMINATED %}
+                    {% trans 'Terminated' %}
+                {% else %}
+                    {{ ongoing_job.state }}
+                {% endif %}
+            </td>
+        </tr>
+        {% if ongoing_job.frequency %}
+        <tr>
+            <th scope="row" class="bg-light">Frequency</th>
+            <td id="frequency">
+                {% if ongoing_job.frequency == 'daily' %}
+                    Daily
+                {% elif ongoing_job.frequency == 'weekly' %}
+                    Weekly
+                {% elif ongoing_job.frequency == 'bi_weekly' %}
+                    Bi-weekly
+                {% elif ongoing_job.frequency == 'monthly' %}
+                    Monthly
+                {% elif ongoing_job.frequency == 'quarterly' %}
+                    Quarterly
+                {% elif ongoing_job.frequency == 'annually' %}
+                    Annually
+                {% endif %}
+            </td>
+        </tr>
         {% endif %}
-    {% endif %}
+
+
+
     <!-- ######################## end JOB DETAILS ######################### -->
 
                 <!-- ############ SYSTEM ############ -->
@@ -290,9 +241,9 @@
         <!-- end CURRENT TABLE -->
 
         <br />
-        <h3 class="py-2 text-center mb-4" id="id_page_title">Past Closed Jobs</h3>
+        <h3 class="py-2 text-center mb-4" id="id_page_title">Jobs History</h3>
 
-        <!-- PREVIOUS TABLE -->
+        <!-- JOBS TABLE -->
         <!--------------------------------------------------------------------->
         <table class="table table-striped">
 
@@ -302,26 +253,28 @@
                     <th>{% trans 'ID #' %}</th>
                     <th>{% trans 'Start Date' %}</th>
                     <th>{% trans 'Completion Date' %}</th>
+                    <th>{% trans 'Status' %}</th>
                     <th><i class="fas fa-external-link-alt"></i></th>
                 </tr>
             </thead>
             <tbody>
-                {% for closed_job in ordered_closed_jobs.all %}
+                {% for job in jobs.all %}
                 <tr>
                     <td>
-                        {% if closed_job.customer.type_of == tenant_constants.RESIDENTIAL_CUSTOMER_TYPE_OF_ID %}
+                        {% if job.customer.type_of == tenant_constants.RESIDENTIAL_CUSTOMER_TYPE_OF_ID %}
                             <i class="fa fa-home fa-lg"></i>
-                        {% elif closed_job.customer.type_of == tenant_constants.COMMERCIAL_CUSTOMER_TYPE_OF_ID %}
+                        {% elif job.customer.type_of == tenant_constants.COMMERCIAL_CUSTOMER_TYPE_OF_ID %}
                             <i class="fa fa-briefcase fa-lg"></i>
                         {% else %}
                             <i class="fa fa-question fa-lg"></i>
                         {% endif %}
                     </td>
-                    <td>{{ closed_job.id|intcomma }}</td>
-                    <td>{% if closed_job.start_date %}{{ closed_job.start_date }}{% else %}-{% endif %}</td>
-                    <td>{% if closed_job.completion_date %}{{ closed_job.completion_date }}{% else %}-{% endif %}</td>
+                    <td>{{ job.id|intcomma }}</td>
+                    <td>{% if job.start_date %}{{ job.start_date }}{% else %}-{% endif %}</td>
+                    <td>{% if job.completion_date %}{{ job.completion_date }}{% else %}-{% endif %}</td>
+                    <td>{{ job.get_pretty_status }}</td>
                     <td>
-                        <a href="{% url 'workery_tenant_job_retrieve' 'summary' closed_job.id %}" target="_blank">{% trans 'View' %}&nbsp;<i class="fas fa-chevron-right"></i></a>
+                        <a href="{% url 'workery_tenant_job_retrieve' 'summary' job.id %}" target="_blank">{% trans 'View' %}&nbsp;<i class="fas fa-chevron-right"></i></a>
                     </td>
                 </tr>
                 {% empty %}
@@ -330,7 +283,7 @@
             </tbody>
         </table>
         <!--------------------------------------------------------------------->
-        <!-- end PREVIOUS TABLE -->
+        <!-- end JOBS TABLE -->
 
     </div>
     <!------------------------------------------------------------------------->
@@ -339,7 +292,6 @@
 
     <!-- FORM -->
     <!------------------------------------------------------------------------->
-    {% comment %}
     {% if ongoing_job.state != ONGOING_WORK_ORDER_STATE.TERMINATED %}
         <div class="form-group col-md-12 mb-3 mx-auto text-center">
             <a href="{% url 'workery_tenant_ongoing_job_update' template ongoing_job.id %}">
@@ -349,7 +301,6 @@
             </a>
         </div>
     {% endif %}
-    {% endcomment %}
     <!------------------------------------------------------------------------->
     <!-- end FORM -->
 
