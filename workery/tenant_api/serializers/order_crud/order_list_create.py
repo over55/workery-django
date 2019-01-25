@@ -155,6 +155,8 @@ class WorkOrderListCreateSerializer(serializers.ModelSerializer):
         #--------------------------------------
         if is_ongoing:
             ongoing_job = OngoingWorkOrder.objects.create(
+                associate = associate,
+                customer = customer,
                 state = ONGOING_WORK_ORDER_STATE.RUNNING,
                 created_by=created_by,
                 created_from = self.context['created_from'],
