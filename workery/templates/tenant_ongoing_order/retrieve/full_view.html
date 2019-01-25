@@ -46,16 +46,16 @@
                 <a href="{% url 'workery_tenant_job_search' %}">{% trans 'Search' %}</a>
             </li>
             <li class="breadcrumb-item active" aria-current="page">{% trans 'Search Results' %}</li>
-            <li class="breadcrumb-item active" aria-current="page">{% trans 'Job #' %}{{ object.id|intcomma }}</li>
+            <li class="breadcrumb-item active" aria-current="page">{% trans 'Job #' %}{{ ongoing_job.id|intcomma }}</li>
             {% elif template == 'list' %}
             <li class="breadcrumb-item"><a href="{% url 'workery_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
             <li class="breadcrumb-item"><a href="{% url 'workery_tenant_job_summary' %}">{% trans 'Jobs' %}</a></li>
             <li class="breadcrumb-item"><a href="{% url 'workery_tenant_job_list' %}">{% trans 'List' %}</a></li>
-            <li class="breadcrumb-item active" aria-current="page">{% trans 'Job #' %}{{ object.id|intcomma }}</li>
+            <li class="breadcrumb-item active" aria-current="page">{% trans 'Job #' %}{{ ongoing_job.id|intcomma }}</li>
             {% else %}
             <li class="breadcrumb-item"><a href="{% url 'workery_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
             <li class="breadcrumb-item"><a href="{% url 'workery_tenant_ongoing_job_list' %}">{% trans 'Ongoing Jobs' %}</a></li>
-            <li class="breadcrumb-item active" aria-current="page">{% trans 'Ongoing Job #' %}{{ object.id|intcomma }}</li>
+            <li class="breadcrumb-item active" aria-current="page">{% trans 'Ongoing Job #' %}{{ ongoing_job.id|intcomma }}</li>
             {% endif %}
         </ol>
     </nav>
@@ -82,7 +82,7 @@
     <div class="row">
         <div class="step-navigation">
             <div class="st-grey">
-                <a href="{% url 'workery_tenant_ongoing_job_lite_retrieve' template job.id %}">
+                <a href="{% url 'workery_tenant_ongoing_job_lite_retrieve' template ongoing_job.id %}">
                     <i class="far fa-id-badge"></i>&nbsp;<span class="">Summary</span>
                 </a>
             </div>
@@ -90,7 +90,7 @@
                 <i class="far fa-id-card"></i>&nbsp;<span class="">Details</span>
             </div>
             <div class="st-grey">
-                <a href="{% url 'workery_tenant_ongoing_job_retrieve_for_comments' template job.id %}">
+                <a href="{% url 'workery_tenant_ongoing_job_retrieve_for_comments' template ongoing_job.id %}">
                     <i class="far fa-comments"></i>&nbsp;<span class="">Comments</span>
                 </a>
             </div>
@@ -118,16 +118,16 @@
     <tr>
         <th scope="row" class="bg-light">Job #</th>
         <td id="selected_order_id">
-            {{ job.id|intcomma }}
+            {{ ongoing_job.id|intcomma }}
         </td>
     </tr>
     <tr>
         <th scope="row" class="bg-light">Client</th>
         <td id="customer">
-            {% if job.customer %}
-               <a href="{% url 'workery_tenant_customer_lite_retrieve' template job.customer.id %}" target="_blank">
-                   {{ job.customer }}
-                   {% if job.customer.is_blacklisted %}
+            {% if ongoing_job.customer %}
+               <a href="{% url 'workery_tenant_customer_lite_retrieve' template ongoing_job.customer.id %}" target="_blank">
+                   {{ ongoing_job.customer }}
+                   {% if ongoing_job.customer.is_blacklisted %}
                        &nbsp;<strong>(<i class="fa fa-frown fa-lg"></i>&nbsp;Blacklisted)</strong>
                    {% endif %}
                    &nbsp;<i class="fas fa-external-link-alt"></i>
@@ -136,21 +136,21 @@
         </td>
     </tr>
     <tr>
-        <th scope="row" class="bg-light">Phone Number {% if job.customer.telephone %}({% if job.customer.telephone_type_of == 1 %}Landline{% elif job.customer.telephone_type_of == 2 %}Mobile{% elif job.customer.telephone_type_of == 3 %}Work{% endif %}){% endif %}</th>
+        <th scope="row" class="bg-light">Phone Number {% if ongoing_job.customer.telephone %}({% if ongoing_job.customer.telephone_type_of == 1 %}Landline{% elif ongoing_job.customer.telephone_type_of == 2 %}Mobile{% elif ongoing_job.customer.telephone_type_of == 3 %}Work{% endif %}){% endif %}</th>
         <td id="phone">
-            {% if job.customer.telephone %}<a href="tel:{{ customer.telephone }}">{{ job.customer.telephone|pretty_formatted_phonenumber }}</a>{% else %}-{% endif %}
+            {% if ongoing_job.customer.telephone %}<a href="tel:{{ customer.telephone }}">{{ ongoing_job.customer.telephone|pretty_formatted_phonenumber }}</a>{% else %}-{% endif %}
         </td>
     </tr>
     <tr>
         <th scope="row" class="bg-light">Description</th>
         <td id="description">
-            {% if job.description %}{{ job.description }}{% else %}-{% endif %}
+            {% if ongoing_job.description %}{{ ongoing_job.description }}{% else %}-{% endif %}
         </td>
     </tr>
     <tr>
         <th scope="row" class="bg-light">Skill Sets</th>
         <td id="skill_sets">
-            {% for skill_set in job.skill_sets.all %}
+            {% for skill_set in ongoing_job.skill_sets.all %}
                 <span class="badge badge-info badge-lg">{{ skill_set.sub_category }}</span>
             {% empty %}
                 -
@@ -160,19 +160,19 @@
     <tr>
         <th scope="row" class="bg-light">Assigned Associate</th>
         <td id="associate">
-        {% if job.associate %}<a href="{% url 'workery_tenant_member_lite_retrieve' template job.associate.id %}" target="_blank">{{ job.associate }}&nbsp;<i class="fas fa-external-link-alt"></i></a>{% else %}-{% endif %}
+        {% if ongoing_job.associate %}<a href="{% url 'workery_tenant_member_lite_retrieve' template ongoing_job.associate.id %}" target="_blank">{{ ongoing_job.associate }}&nbsp;<i class="fas fa-external-link-alt"></i></a>{% else %}-{% endif %}
         </td>
     </tr>
     <tr>
         <th scope="row" class="bg-light">Assignment Date</th>
         <td id="assignment_date">
-           {% if job.assignment_date %}{{ job.assignment_date }}{% else %}-{% endif %}
+           {% if ongoing_job.assignment_date %}{{ ongoing_job.assignment_date }}{% else %}-{% endif %}
         </td>
     </tr>
     <tr>
         <th scope="row" class="bg-light">Is Home Support Service</th>
         <td id="is_home_support_service">
-           {{ job.is_home_support_service }}
+           {{ ongoing_job.is_home_support_service }}
         </td>
     </tr>
     <tr>
@@ -184,24 +184,24 @@
     <tr>
         <th scope="row" class="bg-light">Status</th>
         <td id="selected_status">
-            {{ job.get_pretty_status }}
+            {{ ongoing_job.get_pretty_status }}
         </td>
     </tr>
-    {% if job.frequency %}
+    {% if ongoing_job.frequency %}
     <tr>
         <th scope="row" class="bg-light">Frequency</th>
         <td id="frequency">
-            {% if job.frequency == 'daily' %}
+            {% if ongoing_job.frequency == 'daily' %}
                 Daily
-            {% elif job.frequency == 'weekly' %}
+            {% elif ongoing_job.frequency == 'weekly' %}
                 Weekly
-            {% elif job.frequency == 'bi_weekly' %}
+            {% elif ongoing_job.frequency == 'bi_weekly' %}
                 Bi-weekly
-            {% elif job.frequency == 'monthly' %}
+            {% elif ongoing_job.frequency == 'monthly' %}
                 Monthly
-            {% elif job.frequency == 'quarterly' %}
+            {% elif ongoing_job.frequency == 'quarterly' %}
                 Quarterly
-            {% elif job.frequency == 'annually' %}
+            {% elif ongoing_job.frequency == 'annually' %}
                 Annually
             {% endif %}
         </td>
@@ -210,28 +210,28 @@
     <tr>
         <th scope="row" class="bg-light">Start date</th>
         <td id="completion_date">
-            {% if job.start_date %}{{ job.start_date }}{% else %}<i>{% trans 'No specified' %}</i>{% endif %}
+            {% if ongoing_job.start_date %}{{ ongoing_job.start_date }}{% else %}<i>{% trans 'No specified' %}</i>{% endif %}
         </td>
     </tr>
     <tr>
         <th scope="row" class="bg-light">Completion date</th>
         <td id="completion_date">
-        {% if job.completion_date %}{{ job.completion_date }}{% else %}-{% endif %}
+        {% if ongoing_job.completion_date %}{{ ongoing_job.completion_date }}{% else %}-{% endif %}
         </td>
     </tr>
     <tr>
         <th scope="row" class="bg-light">Hours</th>
         <td id="hours">
-        {{ job.hours }}
+        {{ ongoing_job.hours }}
         </td>
     </tr>
-    {% if job.latest_pending_task %}
-        {% if job.latest_pending_task.is_closed == False %}
+    {% if ongoing_job.latest_pending_task %}
+        {% if ongoing_job.latest_pending_task.is_closed == False %}
             <tr>
                 <th scope="row" class="bg-light">Required Task</th>
                 <td id="latest_pending_task">
-                <a href="{% url 'workery_tenant_pending_task_retrieve' job.latest_pending_task.id %}" target="_blank">
-                    {{ job.latest_pending_task.title }}&nbsp;<i class="fas fa-external-link-alt"></i>
+                <a href="{% url 'workery_tenant_pending_task_retrieve' ongoing_job.latest_pending_task.id %}" target="_blank">
+                    {{ ongoing_job.latest_pending_task.title }}&nbsp;<i class="fas fa-external-link-alt"></i>
                 </a>
                 </td>
             </tr>
@@ -246,40 +246,40 @@
                 <tr>
                     <th scope="row" class="bg-light">Created at</th>
                     <td>
-                        {% if job.created_at %}{{ job.created_at|timezone:request.tenant.timezone_name }}{% else %}-{% endif %}
+                        {% if ongoing_job.created_at %}{{ ongoing_job.created_at|timezone:request.tenant.timezone_name }}{% else %}-{% endif %}
                     </td>
                 </tr>
                 <tr>
                     <th scope="row" class="bg-light">Created by</th>
                     <td>
-                        {% if job.created_by %}{{ job.created_by }}{% else %}-{% endif %}
+                        {% if ongoing_job.created_by %}{{ ongoing_job.created_by }}{% else %}-{% endif %}
                     </td>
                 </tr>
                 <tr>
                     <th scope="row" class="bg-light">Created from</th>
                     <td>
-                        {% if job.created_from %}
-                            <a href="https://whatismyipaddress.com/ip/{{ job.created_from }}" target="_blank">{{ job.created_from }}&nbsp;<i class="fas fa-external-link-alt"></i></a>
+                        {% if ongoing_job.created_from %}
+                            <a href="https://whatismyipaddress.com/ip/{{ ongoing_job.created_from }}" target="_blank">{{ ongoing_job.created_from }}&nbsp;<i class="fas fa-external-link-alt"></i></a>
                         {% else %}-{% endif %}
                     </td>
                 </tr>
                 <tr>
                     <th scope="row" class="bg-light">Modified at</th>
                     <td>
-                        {% if job.last_modified_at %}{{ job.last_modified_at|timezone:request.tenant.timezone_name }}{% else %}-{% endif %}
+                        {% if ongoing_job.last_modified_at %}{{ ongoing_job.last_modified_at|timezone:request.tenant.timezone_name }}{% else %}-{% endif %}
                     </td>
                 </tr>
                 <tr>
                     <th scope="row" class="bg-light">Modified by</th>
                     <td>
-                        {% if job.last_modified_by %}{{ job.last_modified_by }}{% else %}-{% endif %}
+                        {% if ongoing_job.last_modified_by %}{{ ongoing_job.last_modified_by }}{% else %}-{% endif %}
                     </td>
                 </tr>
                 <tr>
                     <th scope="row" class="bg-light">Modified from</th>
                     <td>
-                        {% if job.last_modified_from %}
-                            <a href="https://whatismyipaddress.com/ip/{{ job.last_modified_from }}" target="_blank">{{ job.last_modified_from }}&nbsp;<i class="fas fa-external-link-alt"></i></a>
+                        {% if ongoing_job.last_modified_from %}
+                            <a href="https://whatismyipaddress.com/ip/{{ ongoing_job.last_modified_from }}" target="_blank">{{ ongoing_job.last_modified_from }}&nbsp;<i class="fas fa-external-link-alt"></i></a>
                         {% else %}-{% endif %}
                     </td>
                 </tr>
@@ -339,15 +339,17 @@
 
     <!-- FORM -->
     <!------------------------------------------------------------------------->
-    {% if job.state != ONGOING_WORK_ORDER_STATE.TERMINATED %}
+    {% comment %}
+    {% if ongoing_job.state != ONGOING_WORK_ORDER_STATE.TERMINATED %}
         <div class="form-group col-md-12 mb-3 mx-auto text-center">
-            <a href="{% url 'workery_tenant_ongoing_job_update' template job.id %}">
+            <a href="{% url 'workery_tenant_ongoing_job_update' template ongoing_job.id %}">
                 <button  id="id_submit_btn"	class="btn btn-warning btn-lg btn-fxw mt-4" type="button">
                     <i class="fas fa-edit"></i>&nbsp;{% trans 'Edit Job' %}
                 </button>
             </a>
         </div>
     {% endif %}
+    {% endcomment %}
     <!------------------------------------------------------------------------->
     <!-- end FORM -->
 

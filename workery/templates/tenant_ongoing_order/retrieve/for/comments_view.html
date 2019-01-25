@@ -21,7 +21,7 @@ function click_add_button() {
     //
     create_ongoing_job_comment_api(
         {
-            'about': {{ job.id }},
+            'about': {{ ongoing_job.id }},
             'extra_text': $('#comment').val(),
         },
         function(result_dict) { // Success
@@ -116,12 +116,12 @@ function click_add_button() {
     <div class="row">
         <div class="step-navigation">
             <div class="st-grey">
-                <a href="{% url 'workery_tenant_ongoing_job_lite_retrieve' template job.id %}">
+                <a href="{% url 'workery_tenant_ongoing_job_lite_retrieve' template ongoing_job.id %}">
                     <i class="far fa-id-badge"></i>&nbsp;<span class="">Summary</span>
                 </a>
             </div>
             <div class="st-grey">
-                <a href="{% url 'workery_tenant_ongoing_job_full_retrieve' template job.id %}">
+                <a href="{% url 'workery_tenant_ongoing_job_full_retrieve' template ongoing_job.id %}">
                     <i class="far fa-id-card"></i>&nbsp;<span class="">Details</span>
                 </a>
             </div>
@@ -141,7 +141,7 @@ function click_add_button() {
 
                 <!-- FORM -->
                 <!------------------------------------------------------------------------->
-                {% for comment in job.comments.all %}
+                {% for comment in ongoing_job.comments.all %}
                     <!-- Item -->
                     <div class="media mt-4">
                         <img class="mr-3 img-head" src="{% static 'img/placeholder.png' %}" alt="Image">

@@ -85,12 +85,12 @@
                 <i class="far fa-id-badge"></i>&nbsp;<span class="">Summary</span>
             </div>
             <div class="st-grey">
-                <a href="{% url 'workery_tenant_ongoing_job_full_retrieve' template job.id %}">
+                <a href="{% url 'workery_tenant_ongoing_job_full_retrieve' template ongoing_job.id %}">
                     <i class="far fa-id-card"></i>&nbsp;<span class="">Details</span>
                 </a>
             </div>
             <div class="st-grey">
-                <a href="{% url 'workery_tenant_ongoing_job_retrieve_for_comments' template job.id %}">
+                <a href="{% url 'workery_tenant_ongoing_job_retrieve_for_comments' template ongoing_job.id %}">
                     <i class="far fa-comments"></i>&nbsp;<span class="">Comments</span>
                 </a>
             </div>
@@ -114,15 +114,15 @@
                 <tr>
                     <th scope="row" class="bg-light">Ongoing Job #</th>
                     <td id="selected_order_id">
-                        {{ job.id|intcomma }}
+                        {{ ongoing_job.id|intcomma }}
                     </td>
                 </tr>
                 <tr>
                     <th scope="row" class="bg-light">Client Name</th>
                     <td id="selected_customer_name">
-                        {% if job.customer %}
-                            <a href="{% url 'workery_tenant_customer_lite_retrieve' template job.customer.id %}" target="_blank">
-                                {{ job.customer }}&nbsp;<i class="fas fa-external-link-alt"></i>
+                        {% if ongoing_job.customer %}
+                            <a href="{% url 'workery_tenant_customer_lite_retrieve' template ongoing_job.customer.id %}" target="_blank">
+                                {{ ongoing_job.customer }}&nbsp;<i class="fas fa-external-link-alt"></i>
                             </a>
                         {% else %}-{% endif %}
                     </td>
@@ -130,15 +130,15 @@
                 <tr>
                     <th scope="row" class="bg-light">Associate Name</th>
                     <td id="selected_associate_name">
-                        {% if job.associate %}<a href="{% url 'workery_tenant_member_lite_retrieve' template job.associate.id %}" target="_blank">{{ job.associate }}&nbsp;<i class="fas fa-external-link-alt"></i></a>{% else %}-{% endif %}
+                        {% if ongoing_job.associate %}<a href="{% url 'workery_tenant_member_lite_retrieve' template ongoing_job.associate.id %}" target="_blank">{{ ongoing_job.associate }}&nbsp;<i class="fas fa-external-link-alt"></i></a>{% else %}-{% endif %}
                     </td>
                 </tr>
                 <tr>
                     <th scope="row" class="bg-light">Job Type</th>
                     <td id="selected_job_type_id">
-                        {% if job.customer.type_of == tenant_constants.RESIDENTIAL_CUSTOMER_TYPE_OF_ID %}
+                        {% if ongoing_job.customer.type_of == tenant_constants.RESIDENTIAL_CUSTOMER_TYPE_OF_ID %}
                             {% trans 'Residential Job' %}
-                        {% elif job.customer.type_of == tenant_constants.COMMERCIAL_CUSTOMER_TYPE_OF_ID %}
+                        {% elif ongoing_job.customer.type_of == tenant_constants.COMMERCIAL_CUSTOMER_TYPE_OF_ID %}
                             {% trans 'Commercial Job' %}
                         {% else %}
                             {% trans 'Unassigned Job' %}
@@ -148,32 +148,32 @@
                 <tr>
                     <th scope="row" class="bg-light">Status</th>
                     <td id="selected_status">
-                        {% if job.state == ONGOING_WORK_ORDER_STATE.IDLE %}
+                        {% if ongoing_job.state == ONGOING_WORK_ORDER_STATE.IDLE %}
                             {% trans 'Idle' %}
-                        {% elif job.state == ONGOING_WORK_ORDER_STATE.RUNNING %}
+                        {% elif ongoing_job.state == ONGOING_WORK_ORDER_STATE.RUNNING %}
                             {% trans 'Running' %}
-                        {% elif job.state == ONGOING_WORK_ORDER_STATE.TERMINATED %}
+                        {% elif ongoing_job.state == ONGOING_WORK_ORDER_STATE.TERMINATED %}
                             {% trans 'Terminated' %}
                         {% else %}
-                            {{ job.state }}
+                            {{ ongoing_job.state }}
                         {% endif %}
                     </td>
                 </tr>
-                {% if job.frequency %}
+                {% if ongoing_job.frequency %}
                 <tr>
     			    <th scope="row" class="bg-light">Frequency</th>
     			    <td id="frequency">
-    				    {% if job.frequency == 'daily' %}
+    				    {% if ongoing_job.frequency == 'daily' %}
                             Daily
-                        {% elif job.frequency == 'weekly' %}
+                        {% elif ongoing_job.frequency == 'weekly' %}
                             Weekly
-                        {% elif job.frequency == 'bi_weekly' %}
+                        {% elif ongoing_job.frequency == 'bi_weekly' %}
                             Bi-weekly
-                        {% elif job.frequency == 'monthly' %}
+                        {% elif ongoing_job.frequency == 'monthly' %}
                             Monthly
-                        {% elif job.frequency == 'quarterly' %}
+                        {% elif ongoing_job.frequency == 'quarterly' %}
                             Quarterly
-                        {% elif job.frequency == 'annually' %}
+                        {% elif ongoing_job.frequency == 'annually' %}
                             Annually
                         {% endif %}
     			    </td>
@@ -182,9 +182,9 @@
                 <tr>
                     <th scope="row" class="bg-light">Latest Pending Task</th>
                     <td id="selected_task">
-                        {% if job.latest_pending_task %}
-                            {% if job.latest_pending_task.is_closed == False %}
-                                <a href="{% url 'workery_tenant_pending_task_retrieve' job.latest_pending_task.id %}" target="_blank">{{ job.latest_pending_task.id }}&nbsp;<i class="fas fa-external-link-alt"></i></a>
+                        {% if ongoing_job.latest_pending_task %}
+                            {% if ongoing_job.latest_pending_task.is_closed == False %}
+                                <a href="{% url 'workery_tenant_pending_task_retrieve' ongoing_job.latest_pending_task.id %}" target="_blank">{{ ongoing_job.latest_pending_task.id }}&nbsp;<i class="fas fa-external-link-alt"></i></a>
                             {% else %}
                                 -
                             {% endif %}
@@ -199,59 +199,6 @@
     <!------------------------------------------------------------------------->
     <!-- end FORM -->
 
-
-    <!-- FORM -->
-    <!------------------------------------------------------------------------->
-    <div class="form-group col-md-10 mb-3 mx-auto text-center">
-        <div class="row">
-            <!-- UNASSIGN BUTTON -->
-            {% if job.associate and job.state != ONGOING_WORK_ORDER_STATE.TERMINATED %}
-                <div class="col-sm-4">
-                    <a href="{% url 'workery_tenant_ongoing_job_unassign_operation' job.id %}?return_id=lite-retrieve">
-                        <button id="id_submit_btn"
-                            class="btn btn-warning btn-lg btn-fxw mt-4"
-                            type="button">
-                        <i class="fas fa-window-close"></i>&nbsp;{% trans 'Unassign Associate' %}
-                        </button>
-                    </a>
-                </div>
-            {% endif %}
-            {% if job.state != ONGOING_WORK_ORDER_STATE.TERMINATED %}
-                <div class="col-sm-4">
-                    <a href="{% url 'workery_tenant_ongoing_job_close_operation' job.id %}?return_id=lite-retrieve">
-                    <button id="id_submit_btn"
-                        class="btn btn-orange btn-lg btn-fxw mt-4"
-                        type="button">
-                    <i class="far fa-minus-square"></i>&nbsp;{% trans 'Close Job' %}
-                    </button>
-                    </a>
-                </div>
-                {% if job.associate == None %}
-                <div class="col-sm-4">
-                    <a href="{% url 'workery_tenant_ongoing_job_assign_operation' job.id %}?return_id=lite-retrieve">
-                    <button id="id_submit_btn"
-                        class="btn btn-warning btn-lg btn-fxw mt-4"
-                        type="button">
-                    <i class="fas fa-handshake"></i>&nbsp;{% trans 'Assign Associate' %}
-                    </button>
-                    </a>
-                </div>
-                {% endif %}
-                <div class="col-sm-4">
-                    <a href="{% url 'workery_tenant_ongoing_job_creation_wizard_operation' job.id %}?return_id=lite-retrieve">
-                    <button id="id_submit_btn"
-                        class="btn btn-success btn-lg btn-fxw mt-4"
-                        type="button">
-                    <i class="fas fa-magic"></i>&nbsp;{% trans 'Creation Wizard' %}
-                    </button>
-                    </a>
-                </div>
-            {% endif %}
-
-        </div>
-    </div>
-    <!------------------------------------------------------------------------->
-    <!-- end FORM -->
     <!-- RETURN-TO-TOP -->
     <a id="return-to-top" href="#" class="btn-info btn-lg back-to-top" role="button" title="Back to top"><i class="fas fa-angle-up fa-2x"></i></a>
     <!-- end RETURN-TO-TOP -->

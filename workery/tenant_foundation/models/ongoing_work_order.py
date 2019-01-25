@@ -79,6 +79,20 @@ class OngoingWorkOrder(models.Model):
     #  WORK ORDER FIELDS
     #
 
+    customer = models.ForeignKey(
+        "Customer",
+        help_text=_('The customer of our ongoing work order.'),
+        related_name="ongoing_work_orders",
+        on_delete=models.CASCADE
+    )
+    associate = models.ForeignKey(
+        "Associate",
+        help_text=_('The associate of our ongoing work order.'),
+        related_name="ongoing_work_orders",
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True
+    )
     comments = models.ManyToManyField(
         "Comment",
         help_text=_('The comments belonging to this ongoing order.'),

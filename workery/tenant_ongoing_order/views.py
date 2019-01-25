@@ -26,14 +26,14 @@ from tenant_foundation.models import (
 
 
 class RunningOrInactiveOngoingJobListView(LoginRequiredMixin, GroupRequiredMixin, WorkeryListView):
-    context_object_name = 'job_list'
+    context_object_name = 'ongoing_job_list'
     queryset = OngoingWorkOrder.objects.filter(
         Q(state=ONGOING_WORK_ORDER_STATE.RUNNING) |
         Q(state=ONGOING_WORK_ORDER_STATE.IDLE)
     ).order_by('-id').prefetch_related(
         'work_orders',
-        'work_orders__customer',
-        'work_orders__associate'
+        'customer',
+        'associate'
     )
     template_name = 'tenant_ongoing_order/list/running_or_inactive_view.html'
     paginate_by = 100
@@ -60,11 +60,13 @@ class RunningOrInactiveOngoingJobListView(LoginRequiredMixin, GroupRequiredMixin
         return modified_context
 
 class TerminatedOngoingJobListView(LoginRequiredMixin, GroupRequiredMixin, WorkeryListView):
-    context_object_name = 'job_list'
+    context_object_name = 'ongoing_job_list'
     queryset = OngoingWorkOrder.objects.filter(
         state=ONGOING_WORK_ORDER_STATE.TERMINATED
     ).order_by('-id').prefetch_related(
-        'work_orders'
+        'work_orders',
+        'customer',
+        'associate'
     )
     template_name = 'tenant_ongoing_order/list/terminated_view.html'
     paginate_by = 100
@@ -92,7 +94,7 @@ class TerminatedOngoingJobListView(LoginRequiredMixin, GroupRequiredMixin, Worke
 
 
 class OngoingJobLiteRetrieveView(LoginRequiredMixin, GroupRequiredMixin, WorkeryDetailView):
-    context_object_name = 'job'
+    context_object_name = 'ongoing_job'
     model = OngoingWorkOrder
     template_name = 'tenant_ongoing_order/retrieve/lite_view.html'
     menu_id = 'ongoing-jobs'
@@ -118,7 +120,7 @@ class OngoingJobLiteRetrieveView(LoginRequiredMixin, GroupRequiredMixin, Workery
 
 
 class OngoingJobFullRetrieveView(LoginRequiredMixin, GroupRequiredMixin, WorkeryDetailView):
-    context_object_name = 'job'
+    context_object_name = 'ongoing_job'
     model = OngoingWorkOrder
     template_name = 'tenant_ongoing_order/retrieve/full_view.html'
     menu_id = 'ongoing-jobs'
@@ -140,17 +142,15 @@ class OngoingJobFullRetrieveView(LoginRequiredMixin, GroupRequiredMixin, Workery
         modified_context['template'] = template
 
         # Get sorted values.
-        job = modified_context['job']
-        modified_context['ordered_closed_jobs'] = job.closed_orders.order_by('-id')
+        ongoing_job = modified_context['ongoing_job']
+        modified_context['ordered_closed_jobs'] = ongoing_job.work_orders.filter(state=ONGOING_WORK_ORDER_STATE.TERMINATED).order_by('-id')
 
         # Return our modified context.
         return modified_context
 
 
-
-
 class OngoingJobRetrieveForCommentsListAndCreateView(LoginRequiredMixin, GroupRequiredMixin, WorkeryDetailView):
-    context_object_name = 'job'
+    context_object_name = 'ongoing_job'
     model = OngoingWorkOrder
     template_name = 'tenant_ongoing_order/retrieve/for/comments_view.html'
     menu_id = 'ongoing-jobs'
