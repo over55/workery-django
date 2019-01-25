@@ -12,6 +12,7 @@ from django.db import transaction
 from django.utils import timezone
 from django.utils.text import Truncator
 from django.utils.translation import ugettext_lazy as _
+
 from shared_foundation.constants import *
 from shared_foundation.models import SharedUser
 from tenant_foundation.models import AbstractPerson
@@ -63,6 +64,14 @@ class StaffManager(models.Manager):
         # https://docs.djangoproject.com/en/2.0/ref/contrib/postgres/search/
         return Staff.objects.annotate(search=SearchVector('indexed_text'),).filter(search=keyword)
 
+    def filter_by_executive_group(self, email):
+        return Staff.objects.filter(owner__groups__id=EXECUTIVE_GROUP_ID)
+
+    def filter_by_management_group(self, email):
+        return Staff.objects.filter(owner__groups__id=MANAGEMENT_GROUP_ID)
+
+    def filter_by_staff_group(self, email):
+        return Staff.objects.filter(owner__groups__id=FRONTLINE_GROUP_ID)
 
 @transaction.atomic
 def increment_staff_id_number():

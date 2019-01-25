@@ -2,7 +2,7 @@
 import os
 import sys
 from datetime import datetime, timedelta
-from dateutil import tz
+from dateutil import tz, relativedelta
 from decimal import *
 from django.conf import settings
 from django.core.management.base import BaseCommand, CommandError
@@ -12,8 +12,11 @@ from django.db.models import Q
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 from django.core.management import call_command
+from django_tenants.utils import tenant_context
+
 from shared_foundation.models.franchise import SharedFranchise
 from shared_foundation.models.franchise import SharedFranchiseDomain
+from shared_foundation.utils import get_end_of_date_for_this_dt, get_first_date_for_this_dt
 from tenant_foundation.constants import *
 from tenant_foundation.models import ACTIVITY_SHEET_ITEM_STATE
 from tenant_foundation.models import ActivitySheetItem
@@ -40,18 +43,12 @@ class Command(BaseCommand): #TODO: UNIT TEST
             ~Q(schema_name="public") &
             ~Q(schema_name="test")
         )
+
+        # Iterate through all the franchise schemas and perform our operations
+        # limited to the specific operation.
         for franchise in franchises.all():
-            # Connection needs first to be at the public schema, as this is where
-            # the database needs to be set before creating a new tenant. If this is
-            # not done then django-tenants will raise a "Can't create tenant outside
-            # the public schema." error.
-            connection.set_schema_to_public() # Switch to Public.
-
-            # Connection will set it back to our tenant.
-            connection.set_schema(franchise.schema_name, True) # Switch to Tenant.
-
-            # Run the command which exists in the franchise.
-            self.run_update_ongoing_jobs_for_franchise(franchise)
+            with tenant_context(franchise):
+                self.run_update_ongoing_jobs_for_franchise(franchise)
 
         self.stdout.write(
             self.style.SUCCESS(_('Successfully updated all ongoing job orders.'))
@@ -63,34 +60,43 @@ class Command(BaseCommand): #TODO: UNIT TEST
         perform the necessary operations.
         """
         ongoing_jobs = OngoingWorkOrder.objects.filter(state=ONGOING_WORK_ORDER_STATE.RUNNING).order_by('-id')
+        now_dt = franchise.get_todays_date_plus_days()
+        now_d = now_dt.date()
         for ongoing_job in ongoing_jobs.all():
-            self.process_ongoing_work_order(ongoing_job)
+            self.process_ongoing_work_order(ongoing_job, now_d)
 
-    def process_ongoing_work_order(self, ongoing_job):
+    def process_ongoing_work_order(self, ongoing_job, now_d):
         """
         Function will:
-        (1) Fetch the last job in from the ongoing job master form and create a
-            new pending task.
+        (1) At first of month, if not cancelled (master form aka cancelled) then:
+        (a) Create a new job.
+        (b) Starts job as “In Progress”.
+        (c) From the GUI perspective, make sure all the screens display “In Progress / Ongoing” to make the system more usable.
+        (d) This job has NO TASKS created.
+        (e) Send email to the staff.
+        (2) At last day of month, 12:00AM, the ongoing job becomes “completed but unpaid”.
         """
-        latest_order = WorkOrder.objects.filter(ongoing_work_order=ongoing_job).order_by('-id').first()
-        if latest_order:
-            self.create_pending_task(latest_order, ongoing_job)
+        # Generate the following dates based on today's date.
+        first_day_dt = get_first_date_for_this_dt(now_d)
+        last_day_dt = get_end_of_date_for_this_dt(now_d)
 
-    def create_pending_task(self, latest_job, ongoing_job):
-        # Create our new task for following up.
-        next_task_item = TaskItem.objects.create(
-            type_of = UPDATE_ONGOING_JOB_TASK_ITEM_TYPE_OF_ID,
-            title = _('Ongoing Job Update'),
-            description = _('Please review an ongoing job and process it.'),
-            due_date = get_todays_date_plus_days(0),
-            is_closed = False,
-            job = latest_job
-        )
+        # Get the latest work order.
+        work_orders = ongoing_job.work_orders.filter(created__range=[first_day_dt, last_day_dt])
+        print(work_orders)
 
-        # Attach our pending task to our latest job
-        latest_job.latest_pending_task = next_task_item
-        latest_job.save()
+        # If today is the first of the month then we will:
+        # (1) Create a new job
+        # (2) Make the new job be "In Progress".
+        if now_d is first_day_dt:
+            print("Today is first of month.")
 
-        # Attach our pending task to our ongoing job master form.
-        ongoing_job.latest_pending_task = next_task_item
-        ongoing_job.save()
+        # If today is the end of the month then we will:
+        # (1) Close the existing job.
+        if now_d is last_day_dt:
+            print("Today is end of month.")
+
+        # work_orders = ongoing_job.work_orders.all()
+        #
+        # print(ongoing_job)
+        # print(work_orders)
+        # print()

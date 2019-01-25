@@ -4,6 +4,7 @@ import hashlib
 import string
 import re # Regex
 from datetime import date, timedelta, datetime, time
+from dateutil.relativedelta import relativedelta
 from django.conf import settings
 from django.contrib.auth.models import Group, Permission
 from django.core.signing import Signer
@@ -14,6 +15,7 @@ from django.utils import crypto
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 from rest_framework_jwt.settings import api_settings
+
 from shared_foundation import constants
 
 
@@ -64,19 +66,16 @@ def get_jwt_token_and_orig_iat(authenticated_user):
     return token, orig_iat
 
 
-def get_end_of_date_for_this_month():   #TODO: UNIT TEST
+def get_end_of_date_for_this_dt(dt):   #TODO: UNIT TEST
     """Utility funciton will return last day of this month."""
-    import calendar
-    today = timezone.now()
-    last_day = calendar.mdays[today.month]
-    return today.replace(day=last_day)
+    # Note: https://www.pkimber.net/howto/python/modules/dateutil.html
+    return dt + relativedelta(months=+1, day=1, days=-1)
 
 
-def get_first_date_for_this_month():   #TODO: UNIT TEST
+def get_first_date_for_this_dt(dt):   #TODO: UNIT TEST
     """Utility funciton will return last day of this month."""
-    import calendar
-    today = timezone.now()
-    return datetime(today.year, today.month, 1)
+    # Note: https://www.pkimber.net/howto/python/modules/dateutil.html
+    return dt + relativedelta(day=1)
 
 
 def get_date_plus_days(dt, days=0):   #TODO: UNIT TEST
