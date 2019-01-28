@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from freezegun import freeze_time
 from django.core.management import call_command
+from django.core import mail
 from django.db import transaction
 from django_tenants.test.cases import TenantTestCase
 from django_tenants.test.client import TenantClient
@@ -75,6 +76,7 @@ class TestUpdateOngoingOrdersCommand(TenantTestCase):
         freezer.start()
         call_command('update_ongoing_orders', verbosity=0)
         freezer.stop()
+        self.assertGreaterEqual(len(mail.outbox), 1)
 
     # @transaction.atomic
     # def test_other_days_of_the_month(self):

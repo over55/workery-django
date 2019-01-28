@@ -6,18 +6,20 @@ from dateutil import tz, relativedelta
 from decimal import *
 from django.conf import settings
 from django.core.management.base import BaseCommand, CommandError
+from django.core.management import call_command
+from django.core.mail import EmailMultiAlternatives    # EMAILER
 from django.db import connection # Used for django tenants.
 from django.db.models import Sum
 from django.db.models import Q
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
-from django.core.management import call_command
+from django.template.loader import render_to_string    # EMAILER: HTML to TXT
 from django_tenants.utils import tenant_context
 
 from shared_foundation.models.franchise import SharedFranchise
 from shared_foundation.models.franchise import SharedFranchiseDomain
 from shared_foundation.utils import get_end_of_date_for_this_dt, get_first_date_for_this_dt
-from tenant_foundation.constants import *
+from tenant_foundation import constants
 from tenant_foundation.models import ACTIVITY_SHEET_ITEM_STATE
 from tenant_foundation.models import ActivitySheetItem
 from tenant_foundation.models.work_order import WORK_ORDER_STATE
@@ -53,6 +55,35 @@ class Command(BaseCommand): #TODO: UNIT TEST
 
         self.stdout.write(
             self.style.SUCCESS(_('Successfully updated all ongoing job orders.'))
+        )
+
+    def send_staff_an_email(self, staff, processed_job_ids_arr, now_d):
+        work_orders = WorkOrder.objects.filter(id__in=processed_job_ids_arr)
+        subject = "WORKERY: Updated Ongoing Job(s)"
+        param = {
+            'tenant_todays_date': now_d,
+            'work_orders': work_orders,
+            'constants': constants
+        }
+
+        # Plug-in the data into our templates and render the data.
+        text_content = render_to_string('shared_etl/email/update_ongoing_job_view.txt', param)
+        # html_content = render_to_string('shared_auth/email/update_ongoing_job_view.html', param)
+
+        # Generate our address.
+        from_email = settings.DEFAULT_FROM_EMAIL
+        to = [staff.email]
+
+        # Send the email.
+        msg = EmailMultiAlternatives(subject, text_content, from_email, to)
+        # msg.attach_alternative(html_content, "text/html")
+        msg.send()
+
+        # For debugging purposes only.
+        self.stdout.write(
+            self.style.SUCCESS(_('Sent email to: %(email)s.')%{
+                'email': str(staff.email)
+            })
         )
 
     def run_update_ongoing_jobs_for_franchise(self, franchise):
@@ -121,9 +152,7 @@ class Command(BaseCommand): #TODO: UNIT TEST
         #         were automatically modified by this ETL.
         management_staffs = Staff.objects.filter_by_management_group()
         for management_staff in management_staffs.all():
-            print("EMAIL: %(email)s"%{
-                'email': str(management_staff.email)
-            })
+            self.send_staff_an_email(management_staff, processed_job_ids_arr, now_d)
 
     def process_first_day_of_month_ongoing_work_order(self, now_d):
         """

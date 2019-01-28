@@ -1,0 +1,8 @@
+Attention staff,
+
+The following ongoing jobs were updated automatically as of {{ tenant_todays_date }}.
+
+{% for ongoing_job in ongoing_jobs.all %}
+    Job ID #: {{ ongoing_job.id }}
+    Status: {{ ongoing_job.get_pretty_status }}
+{% endfor %}
