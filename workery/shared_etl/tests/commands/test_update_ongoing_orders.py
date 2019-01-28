@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from datetime import date
 from freezegun import freeze_time
 from django.core.management import call_command
 from django.core import mail
@@ -7,7 +8,7 @@ from django_tenants.test.cases import TenantTestCase
 from django_tenants.test.client import TenantClient
 from django.urls import reverse
 
-from shared_foundation.models.user import SharedUser
+from tenant_foundation.models import WorkOrder, WORK_ORDER_STATE
 
 
 TEST_SCHEMA_NAME = "london"
@@ -62,10 +63,19 @@ class TestUpdateOngoingOrdersCommand(TenantTestCase):
         """
         Unit test confirms the command works for the first day of the month.
         """
+        # Make all previous work orders be closed.
+        for ongoing_job in WorkOrder.objects.filter(is_ongoing=True):
+            ongoing_job.state = WORK_ORDER_STATE.COMPLETED_BUT_UNPAID
+            ongoing_job.closing_reason = 4
+            ongoing_job.closing_reason_other = "Modified by ETL."
+            ongoing_job.completion_date = date.today()
+            ongoing_job.save()
+
         freezer = freeze_time("2019-02-01 12:00:01")
         freezer.start()
         call_command('update_ongoing_orders', verbosity=0)
         freezer.stop()
+        self.assertGreaterEqual(len(mail.outbox), 1)
 
     @transaction.atomic
     def test_last_day_of_month(self):
@@ -78,17 +88,17 @@ class TestUpdateOngoingOrdersCommand(TenantTestCase):
         freezer.stop()
         self.assertGreaterEqual(len(mail.outbox), 1)
 
-    # @transaction.atomic
-    # def test_other_days_of_the_month(self):
-    #     """
-    #     Unit test confirms the command works for the other days of the month.
-    #     """
-    #     freezer = freeze_time("2019-01-30 12:00:01")
-    #     freezer.start()
-    #     call_command('update_ongoing_orders', verbosity=0)
-    #     freezer.stop()
-    #
-    #     freezer = freeze_time("2019-02-02 12:00:01")
-    #     freezer.start()
-    #     call_command('update_ongoing_orders', verbosity=0)
-    #     freezer.stop()
+    @transaction.atomic
+    def test_other_days_of_the_month(self):
+        """
+        Unit test confirms the command works for the other days of the month.
+        """
+        freezer = freeze_time("2019-01-30 12:00:01")
+        freezer.start()
+        call_command('update_ongoing_orders', verbosity=0)
+        freezer.stop()
+
+        freezer = freeze_time("2019-02-02 12:00:01")
+        freezer.start()
+        call_command('update_ongoing_orders', verbosity=0)
+        freezer.stop()

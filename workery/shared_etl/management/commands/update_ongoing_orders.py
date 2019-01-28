@@ -37,6 +37,22 @@ def get_todays_date_plus_days(days=0):
 
 class Command(BaseCommand): #TODO: UNIT TEST
     """
+    Description:
+    Command will iterate through all the ongoing jobs (which are running) and
+    perform the following:
+
+    (1) At first of month, if not cancelled (master form aka cancelled) then:
+    (a) Create a new job.
+    (b) Starts job as “Ongoing”.
+    (c) From the GUI perspective, make sure all the screens display “Ongoing”
+        to make the system more usable.
+    (d) This job has NO TASKS created.
+    (e) Send email to the management staff.
+
+    (2) At last day of month, 12:00AM, the ongoing job becomes “completed but
+        unpaid” and send email to management staff.
+
+    Example:
     python manage.py update_ongoing_orders
     """
     help = _('ETL will iterate through all ongoing jobs in all tenants to create an associated pending task to review by staff.')
@@ -110,7 +126,8 @@ class Command(BaseCommand): #TODO: UNIT TEST
 
     def process_last_day_of_month_ongoing_work_order(self, now_d):
         """
-        At last day of month, 12:00AM, the ongoing job becomes “completed but unpaid”.
+        At last day of month, 12:00AM, the ongoing job becomes “completed but
+        unpaid” and send email to management staff.
         """
         self.stdout.write(
             self.style.SUCCESS(_('Begin processing last day of month ongoing jobs...'))
@@ -132,6 +149,9 @@ class Command(BaseCommand): #TODO: UNIT TEST
             for job in jobs.all():
                 # STEP 2: Close any ongoing jobs and set them to be completed
                 #         but unpaid.
+                job.closing_reason = 4
+                job.closing_reason_other = "Modified by ETL."
+                job.completion_date = now_d
                 job.state = WORK_ORDER_STATE.COMPLETED_BUT_UNPAID
                 job.last_modified_by = None
                 job.last_modified_from = None
@@ -156,24 +176,77 @@ class Command(BaseCommand): #TODO: UNIT TEST
 
     def process_first_day_of_month_ongoing_work_order(self, now_d):
         """
-        (1) At first of month, if not cancelled (master form aka cancelled) then:
+        At first of month, if not cancelled (master form aka cancelled) then:
         (a) Create a new job.
-        (b) Starts job as “In Progress”.
+        (b) Starts job as “Ongoing”.
         (c) From the GUI perspective, make sure all the screens display “In Progress / Ongoing” to make the system more usable.
         (d) This job has NO TASKS created.
-        (e) Send email to the staff.
+        (e) Send email to the management staff.
         """
-        print("Today is first of month.")
-        #
-        # # STEP 1: Iterate through all the ongoing jobs which are running and
-        # #         close all the jobs inside that ongoing job which have not been
-        # #         completed.
-        # ongoing_jobs = OngoingWorkOrder.objects.filter(
-        #     state=ONGOING_WORK_ORDER_STATE.RUNNING
-        # ).order_by('-id')
-        # for ongoing_job in ongoing_jobs.all():
-        #     jobs = ongoing_job.work_orders.filter(
-        #         state=WORK_ORDER_STATE.ONGOING
-        #     )
-        #     for job in jobs.all():
-        #         print(ongoing_job, "|", job)
+        self.stdout.write(
+            self.style.SUCCESS(_('Begin processing first day of month ongoing jobs...'))
+        )
+
+        # Variable used to track all the jobs which have been updated.
+        processed_job_ids_arr = []
+
+        # STEP 1: Iterate through all the ongoing jobs which are running and
+        #         close all the jobs inside that ongoing job which have been
+        #         completed.
+        ongoing_jobs = OngoingWorkOrder.objects.filter(
+            state=ONGOING_WORK_ORDER_STATE.RUNNING
+        ).order_by('-id')
+        for ongoing_job in ongoing_jobs.all():
+            # STEP 2: Find the previously closed ongoing job.
+            previous_job = ongoing_job.work_orders.filter(
+                is_ongoing=True,
+                state=WORK_ORDER_STATE.COMPLETED_BUT_UNPAID
+            ).order_by('-completion_date').first()
+
+            # STEP 3: Create a new job for THIS month based on the previous
+            #         months job.
+            job = WorkOrder.objects.create(
+                customer = previous_job.customer,
+                associate = previous_job.associate,
+                description = previous_job.description,
+                assignment_date = previous_job.assignment_date,
+                is_ongoing = True,
+                is_home_support_service = previous_job.is_home_support_service,
+                start_date = previous_job.start_date,
+                completion_date = None,
+                hours = previous_job.hours,
+                type_of = previous_job.type_of,
+                indexed_text = previous_job.indexed_text,
+                latest_pending_task = None,
+                state = WORK_ORDER_STATE.ONGOING,
+                was_survey_conducted = False,
+                was_there_financials_inputted = False,
+            )
+
+            # STEP 4: Save many-to-many fields from the previous months job.
+            job.tags.set(previous_job.tags.all())
+            job.skill_sets.set(previous_job.skill_sets.all())
+            for activity_sheet in previous_job.activity_sheet.all():
+                ActivitySheetItem.objects.create(
+                    job = job,
+                    ongoing_job = ongoing_job,
+                    associate = previous_job.associate,
+                    comment = "Automatically accepted by as ongoing job by ETL.",
+                    state = ACTIVITY_SHEET_ITEM_STATE.ACCEPTED
+                )
+
+            # STEP 3: Save the job ID of the job we modified to keep track that
+            #         we modified these ongoing jobs.
+            processed_job_ids_arr.append(job.id)
+
+        self.stdout.write(
+            self.style.SUCCESS(_('Finished processing last day of month ongoing jobs with IDs: %(arr)s.')%{
+                'arr': str(processed_job_ids_arr)
+            })
+        )
+
+        # STEP 5: Email the management staff that the following ongoing jobs
+        #         were automatically modified by this ETL.
+        management_staffs = Staff.objects.filter_by_management_group()
+        for management_staff in management_staffs.all():
+            self.send_staff_an_email(management_staff, processed_job_ids_arr, now_d)
