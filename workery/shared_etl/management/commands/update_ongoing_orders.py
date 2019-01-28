@@ -197,10 +197,9 @@ class Command(BaseCommand): #TODO: UNIT TEST
             state=ONGOING_WORK_ORDER_STATE.RUNNING
         ).order_by('-id')
         for ongoing_job in ongoing_jobs.all():
-            # STEP 2: Find the previously closed ongoing job.
+            # STEP 2: Find the previously completion_date ongoing job.
             previous_job = ongoing_job.work_orders.filter(
-                is_ongoing=True,
-                state=WORK_ORDER_STATE.COMPLETED_BUT_UNPAID
+                is_ongoing=True
             ).order_by('-completion_date').first()
 
             # STEP 3: Create a new job for THIS month based on the previous
