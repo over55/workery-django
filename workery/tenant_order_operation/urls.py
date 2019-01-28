@@ -40,10 +40,8 @@ urlpatterns = (
     # Non-Completed Work Orders
     #
 
-    path(
-        'jobs/detail/<int:pk>/operation/unassign/',
-        views.IncompletedWorkOrderUnassignOperationView.as_view(),
-        name='workery_tenant_job_retrieve_for_unassign_create'
-    )
-
+    path('jobs/detail/<int:pk>/operation/unassign/', views.IncompletedWorkOrderUnassignOperationView.as_view(), name='workery_tenant_job_retrieve_for_unassign_create'),
+    path('jobs/<str:template>/detail/<int:pk>/close/',views.JobRetrieveForCloseCreateView.as_view(), name='workery_tenant_job_retrieve_for_close_create'),
+    path('jobs/<str:template>/detail/<int:pk>/postpone/', views.JobRetrieveForPostponeCreateView.as_view(), name='workery_tenant_job_retrieve_for_postpone_create'),
+    path('jobs/<str:template>/detail/<int:pk>/reopen/', views.JobRetrieveForReopeningCreateView.as_view(), name='workery_tenant_job_retrieve_for_reopen_create'),
 )

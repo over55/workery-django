@@ -34,13 +34,6 @@ urlpatterns = (
     path('jobs/<str:template>/detail/<int:pk>/comments/', retrieve_view.JobRetrieveForCommentsListAndCreateView.as_view(), name='workery_tenant_job_comments_retrieve'),
     path('archived-jobs/detail/<int:pk>/full/', retrieve_view.ArchivedJobFullRetrieveView.as_view(), name='workery_tenant_job_archive_full_retrieve'),
 
-    #TODO: REMOVE THE FOLLOWING INTO THE `OPERATIONS` APP.
-    # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    path('jobs/<str:template>/detail/<int:pk>/close/', retrieve_view.JobRetrieveForCloseCreateView.as_view(), name='workery_tenant_job_retrieve_for_close_create'),
-    path('jobs/<str:template>/detail/<int:pk>/postpone/', retrieve_view.JobRetrieveForPostponeCreateView.as_view(), name='workery_tenant_job_retrieve_for_postpone_create'),
-    path('jobs/<str:template>/detail/<int:pk>/reopen/', retrieve_view.JobRetrieveForReopeningCreateView.as_view(), name='workery_tenant_job_retrieve_for_reopen_create'),
-    # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
     # Update
     path('jobs/<str:template>/detail/<int:pk>/edit/', update_views.JobUpdateView.as_view(), name='workery_tenant_job_update'),
 )
