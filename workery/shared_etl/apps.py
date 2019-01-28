@@ -40,7 +40,13 @@ class SharedEtlConfig(AppConfig):
         timeout = timedelta(minutes=666)
 
         scheduler.cron(
-            "0 0 1 * *",                             # A cron string - Run every 12:00AM on the first of every month
+            "0 0 1 * *",                             # A cron string - Run every 12:00AM on the FIRST day of every month
+            func=run_update_ongoing_orders_func,     # Function to be queued
+            repeat=None,                             # Repeat this number of times (None means repeat forever)
+            timeout=timeout.seconds                  # Automatically terminate process if exceeds this time.
+        )
+        scheduler.cron(
+            "0 0 L * *",                             # A cron string - Run every 12:00AM on the LAST day of every month
             func=run_update_ongoing_orders_func,     # Function to be queued
             repeat=None,                             # Repeat this number of times (None means repeat forever)
             timeout=timeout.seconds                  # Automatically terminate process if exceeds this time.

@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import sys
+from freezegun import freeze_time
 from django.conf import settings
 from django.contrib.auth.models import Group
 from django.core.management.base import BaseCommand, CommandError
@@ -17,7 +18,9 @@ from tenant_foundation.models import (
     Customer,
     Organization,
     OngoingWorkOrder,
+    ONGOING_WORK_ORDER_STATE,
     WorkOrder,
+    WORK_ORDER_STATE,
     WorkOrderComment,
     Staff,
     Tag,
@@ -59,13 +62,17 @@ class Command(BaseCommand):
 
     def create_user(self, franchise, first_name, last_name, email, is_active, is_superuser, is_staff, password, was_email_activated, group_id):
         # Create the user.
-        user = SharedUser.objects.create(
-            first_name=first_name,
-            last_name=last_name,
+        user, created = SharedUser.objects.update_or_create(
             email=email,
-            is_active=is_active,
             franchise=franchise,
-            was_email_activated=was_email_activated
+            defaults={
+                'first_name':first_name,
+                'last_name':last_name,
+                'email':email,
+                'is_active':is_active,
+                'franchise':franchise,
+                'was_email_activated':was_email_activated
+            }
         )
 
         # Generate and assign the password.
@@ -239,10 +246,56 @@ class Command(BaseCommand):
             street_address="101 Cheep Street",
             street_address_extra="",
         )
-        worker_1 = WorkOrder.objects.create(
+        order_1 = WorkOrder.objects.create(
             customer=customer_1,
             associate=associate_1,
             assignment_date=timezone.now(),
             created_by=user2,
-            last_modified_by=None
+            last_modified_by=None,
+            is_ongoing=False,
+            state=WORK_ORDER_STATE.NEW
         )
+
+        # --- End of month --- #
+        freezer = freeze_time("2019-01-31 12:00:01")
+        freezer.start()
+
+        ongoing_order_1 = OngoingWorkOrder.objects.create(
+            customer=customer_1,
+            associate=associate_1,
+            state=ONGOING_WORK_ORDER_STATE.RUNNING
+        )
+        order_2 = WorkOrder.objects.create(
+            customer=customer_1,
+            associate=associate_1,
+            assignment_date=timezone.now(),
+            created_by=user2,
+            last_modified_by=None,
+            is_ongoing=True,
+            ongoing_work_order=ongoing_order_1,
+            state=WORK_ORDER_STATE.ONGOING
+        )
+
+        freezer.stop()
+
+        # --- End of month --- #
+        freezer = freeze_time("2019-02-01 12:00:01")
+        freezer.start()
+
+        ongoing_order_2 = OngoingWorkOrder.objects.create(
+            customer=customer_1,
+            associate=associate_1,
+            state=ONGOING_WORK_ORDER_STATE.RUNNING
+        )
+        order_3 = WorkOrder.objects.create(
+            customer=customer_1,
+            associate=associate_1,
+            assignment_date=timezone.now(),
+            created_by=user2,
+            last_modified_by=None,
+            is_ongoing=True,
+            ongoing_work_order=ongoing_order_2,
+            state=WORK_ORDER_STATE.ONGOING
+        )
+
+        freezer.stop()

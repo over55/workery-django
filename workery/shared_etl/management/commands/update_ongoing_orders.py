@@ -25,6 +25,7 @@ from tenant_foundation.models.taskitem import TaskItem
 from tenant_foundation.models.work_order import WorkOrder
 from tenant_foundation.models.ongoing_work_order import ONGOING_WORK_ORDER_STATE
 from tenant_foundation.models.ongoing_work_order import OngoingWorkOrder
+from tenant_foundation.models.staff import Staff
 
 
 def get_todays_date_plus_days(days=0):
@@ -59,44 +60,92 @@ class Command(BaseCommand): #TODO: UNIT TEST
         Function will iterate through all the `running` ongoing work orders and
         perform the necessary operations.
         """
-        ongoing_jobs = OngoingWorkOrder.objects.filter(state=ONGOING_WORK_ORDER_STATE.RUNNING).order_by('-id')
+        # Generate the following dates based on today's date.
         now_dt = franchise.get_todays_date_plus_days()
         now_d = now_dt.date()
-        for ongoing_job in ongoing_jobs.all():
-            self.process_ongoing_work_order(ongoing_job, now_d)
+        first_day_dt = get_first_date_for_this_dt(now_d)
+        last_day_dt = get_end_of_date_for_this_dt(now_d)
 
-    def process_ongoing_work_order(self, ongoing_job, now_d):
+        # If today is the end of the month then we will:
+        # (1) Close the existing job.
+        if now_d == last_day_dt:
+            self.process_last_day_of_month_ongoing_work_order(now_d)
+
+        # If today is the first of the month then we will:
+        # (1) Create a new job
+        # (2) Make the new job be "In Progress".
+        if now_d == first_day_dt:
+            self.process_first_day_of_month_ongoing_work_order(now_d)
+
+    def process_last_day_of_month_ongoing_work_order(self, now_d):
         """
-        Function will:
+        At last day of month, 12:00AM, the ongoing job becomes “completed but unpaid”.
+        """
+        self.stdout.write(
+            self.style.SUCCESS(_('Begin processing last day of month ongoing jobs...'))
+        )
+
+        # Variable used to track all the jobs which have been updated.
+        processed_job_ids_arr = []
+
+        # STEP 1: Iterate through all the ongoing jobs which are running and
+        #         close all the jobs inside that ongoing job which have not been
+        #         completed.
+        ongoing_jobs = OngoingWorkOrder.objects.filter(
+            state=ONGOING_WORK_ORDER_STATE.RUNNING
+        ).order_by('-id')
+        for ongoing_job in ongoing_jobs.all():
+            jobs = ongoing_job.work_orders.filter(
+                state=WORK_ORDER_STATE.ONGOING
+            )
+            for job in jobs.all():
+                # STEP 2: Close any ongoing jobs and set them to be completed
+                #         but unpaid.
+                job.state = WORK_ORDER_STATE.COMPLETED_BUT_UNPAID
+                job.last_modified_by = None
+                job.last_modified_from = None
+                job.last_modified_from_is_public = False
+                job.save()
+
+                # STEP 3: Save the job ID of the job we modified to keep track that
+                #         we modified these ongoing jobs.
+                processed_job_ids_arr.append(job.id)
+
+        self.stdout.write(
+            self.style.SUCCESS(_('Finished processing last day of month ongoing jobs with IDs: %(arr)s.')%{
+                'arr': str(processed_job_ids_arr)
+            })
+        )
+
+        # STEP 4: Email the management staff that the following ongoing jobs
+        #         were automatically modified by this ETL.
+        # management_staffs = Staff.objects.filter_by_management_group()
+        # print(management_staffs)
+        # # for management_staff in management_staffs.all():
+        # #     print("EMAIL: %(email)s"%{
+        # #         'email': str(management_staff.email)
+        # #     })
+
+    def process_first_day_of_month_ongoing_work_order(self, now_d):
+        """
         (1) At first of month, if not cancelled (master form aka cancelled) then:
         (a) Create a new job.
         (b) Starts job as “In Progress”.
         (c) From the GUI perspective, make sure all the screens display “In Progress / Ongoing” to make the system more usable.
         (d) This job has NO TASKS created.
         (e) Send email to the staff.
-        (2) At last day of month, 12:00AM, the ongoing job becomes “completed but unpaid”.
         """
-        # Generate the following dates based on today's date.
-        first_day_dt = get_first_date_for_this_dt(now_d)
-        last_day_dt = get_end_of_date_for_this_dt(now_d)
-
-        # Get the latest work order.
-        work_orders = ongoing_job.work_orders.filter(created__range=[first_day_dt, last_day_dt])
-        print(work_orders)
-
-        # If today is the first of the month then we will:
-        # (1) Create a new job
-        # (2) Make the new job be "In Progress".
-        if now_d is first_day_dt:
-            print("Today is first of month.")
-
-        # If today is the end of the month then we will:
-        # (1) Close the existing job.
-        if now_d is last_day_dt:
-            print("Today is end of month.")
-
-        # work_orders = ongoing_job.work_orders.all()
+        print("Today is first of month.")
         #
-        # print(ongoing_job)
-        # print(work_orders)
-        # print()
+        # # STEP 1: Iterate through all the ongoing jobs which are running and
+        # #         close all the jobs inside that ongoing job which have not been
+        # #         completed.
+        # ongoing_jobs = OngoingWorkOrder.objects.filter(
+        #     state=ONGOING_WORK_ORDER_STATE.RUNNING
+        # ).order_by('-id')
+        # for ongoing_job in ongoing_jobs.all():
+        #     jobs = ongoing_job.work_orders.filter(
+        #         state=WORK_ORDER_STATE.ONGOING
+        #     )
+        #     for job in jobs.all():
+        #         print(ongoing_job, "|", job)

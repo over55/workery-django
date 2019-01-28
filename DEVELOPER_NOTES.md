@@ -35,6 +35,7 @@ pip install boto3                         # AWS SDK for Python
 pip install django-storages               # Collection of custom storage backends for Django.
 pip install sorl-thumbnail                # Thumbnails for Django
 pip install django-fsm                    # Django friendly finite state machine support
+pip install freezegun                     # Python datetime override library
 
 #TODO: IMPLEMENT...
 pip install dateutil                      # Useful extensions to the standard Python datetime features
