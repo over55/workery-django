@@ -143,7 +143,7 @@ class TestTenantOrderViews(TenantTestCase):
         # self.assertIn(TEST_USER_EMAIL, str(response.content))
 
     def test_lite_retrieve_page(self):
-        job = WorkOrder.objects.get()
+        job = WorkOrder.objects.all().first()
         a_url = self.tenant.reverse(
             reverse_id='workery_tenant_job_retrieve',
             reverse_args=['summary', int(job.id)]
@@ -152,7 +152,7 @@ class TestTenantOrderViews(TenantTestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_full_retrieve_page(self):
-        job = WorkOrder.objects.get()
+        job = WorkOrder.objects.all().first()
         a_url = self.tenant.reverse(
             reverse_id='workery_tenant_job_full_retrieve',
             reverse_args=['summary', int(job.id)]
@@ -161,7 +161,7 @@ class TestTenantOrderViews(TenantTestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_comments_retrieve_page(self):
-        job = WorkOrder.objects.get()
+        job = WorkOrder.objects.all().first()
         a_url = self.tenant.reverse(
             reverse_id='workery_tenant_job_comments_retrieve',
             reverse_args=['summary', int(job.id)]
@@ -170,7 +170,7 @@ class TestTenantOrderViews(TenantTestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_update_page(self):
-        job = WorkOrder.objects.get()
+        job = WorkOrder.objects.all().first()
         a_url = self.tenant.reverse(
             reverse_id='workery_tenant_job_update',
             reverse_args=['summary', int(job.id)]

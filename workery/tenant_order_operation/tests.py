@@ -92,7 +92,7 @@ class TestTenantOrderOperationViews(TenantTestCase):
         super(TestTenantOrderOperationViews, self).tearDown()
 
     def test_completed_job_unassign_operation_page(self):
-        job = WorkOrder.objects.get()
+        job = WorkOrder.objects.all().first()
         a_url = self.tenant.reverse(
             reverse_id='workery_tenant_completed_job_unassign_operation',
             reverse_args=[
@@ -104,7 +104,7 @@ class TestTenantOrderOperationViews(TenantTestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_completed_job_close_operation_page(self):
-        job = WorkOrder.objects.get()
+        job = WorkOrder.objects.all().first()
         a_url = self.tenant.reverse(
             reverse_id='workery_tenant_completed_job_close_operation',
             reverse_args=[
@@ -116,7 +116,7 @@ class TestTenantOrderOperationViews(TenantTestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_completed_job_cancel_operation_page(self):
-        job = WorkOrder.objects.get()
+        job = WorkOrder.objects.all().first()
         a_url = self.tenant.reverse(
             reverse_id='workery_tenant_completed_job_cancel_operation',
             reverse_args=[
@@ -131,7 +131,7 @@ class TestTenantOrderOperationViews(TenantTestCase):
     #     """
     #     TODO: FIX UNIT TESTS
     #     """
-    #     job = WorkOrder.objects.get()
+    #     job = WorkOrder.objects.all().first()
     #     a_url = self.tenant.reverse(
     #         reverse_id='workery_tenant_job_retrieve_for_unassign_create',
     #         reverse_args=[

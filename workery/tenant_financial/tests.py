@@ -107,7 +107,7 @@ class TestTenantFinancialViews(TenantTestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_financlial_job_retrieve_page(self):
-        work = WorkOrder.objects.get()
+        work = WorkOrder.objects.all().first()
         a_url = self.tenant.reverse(
             reverse_id='workery_tenant_financlial_job_retrieve',
             reverse_args=[
@@ -119,7 +119,7 @@ class TestTenantFinancialViews(TenantTestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_financlial_job_update_page(self):
-        work = WorkOrder.objects.get()
+        work = WorkOrder.objects.all().first()
         a_url = self.tenant.reverse(
             reverse_id='workery_tenant_financlial_job_update',
             reverse_args=[
