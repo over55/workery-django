@@ -112,6 +112,9 @@
             },
             function(error_result) {
 
+                // Enable the controls.
+                enable_btn();
+
                 // STEP 1: Convert to JSON.
                 var err = JSON.parse(xhr.responseText);
 
@@ -135,8 +138,7 @@
 
             }, // end ERROR
             function(xhr,status) {
-                // Wait for a 5 seconds before enabling buttons again.
-                setTimeout(enable_btn(), 5000);
+                // Do nothing.
             } // end FINISH
         ); // end CREATE API
     } // end FUNC.

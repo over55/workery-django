@@ -11,88 +11,99 @@
 {% block content %}
 
 <script>
-
-function click_back_button() {
-    window.location = "{% url 'workery_tenant_pending_task_retrieve_for_activity_sheet_retrieve' task_item.id %}";
-}
-
-/**
- *  Function will attempt to submit the form to the API server. This
- *  funciton will:
- *  (1) Lock / Unlock the submit button.
- *  (2)
- */
-function click_add_button() {
-    var state = get_selected_radio_value('state');
-
-    //
-    post_assign_associate_task_operation_api(
-        {
-            'task_item': {{ task_item.id }},
-            'associate': {{ parameters.associate_id }},
-            'comment': $('#comment').val(),
-            'state': state,
-        },
-        function(result_dict) { // Success
-            // FOR DEBUGGING PURPOSES ONLY.
-            console.log(result_dict);
-
-            // REDIRECT.
-            if (state == "{{ ACTIVITY_SHEET_ITEM_STATE.ACCEPTED }}" || state == "{{ ACTIVITY_SHEET_ITEM_STATE.PENDING }}" ) {
-                ////////////////////////////////////////////
-                // Redirect to the next page in the form. //
-                ////////////////////////////////////////////
-                {% if task_item.job is not None %}
-                    // Redirect URL to `WorkOrder` lite page.
-                    var temp_url = "{% url 'workery_tenant_job_retrieve' 'summary' task_item.job.id %}?was_modified=True";
-                {% else %}
-                    var temp_url = "{% url 'workery_tenant_task_list' %}?was_closed=True";
-                {% endif %}
-                window.location = temp_url;
-            } else {
-                // REDIRECT BACK TO ACTIVITY PAGE.
-                window.location = "{% url 'workery_tenant_pending_task_retrieve_for_activity_sheet_retrieve' task_item.id %}?was_modified=True";
-            }
-        },
-        function(xhr,status,error) { // Error
-            // STEP 1: Convert to JSON.
-            var err = JSON.parse(xhr.responseText);
-
-            // For debugging purposes only.
-            console.log(err);
-
-            // STEP 2: CLEAR EXISTING TEXT.
-            $('#all_error_result').html("");
-
-            // STEP 3: PRINT OUR ERROR.
-            for(var prop in err) {
-                if(err.hasOwnProperty(prop)) {
-                    var val = err[prop];
-                    console.log(val);
-                    $('#all_error_result').append("<p><b>"+prop+"</b>"+val+"</p><br />");
-                }
-            }
-
-            // STEP 4: FOCUS TO WHERE THE ERROR IS OCCURING.
-            $('html, body').animate({ scrollTop: $('#id_step_navigation').offset().top }, 'slow');
-        },
-        function() { // Finally
-            // UNLOCK THE "SUBMIT" BUTTON TO BE AVAILABLE FOR USAGE.
-            // enable_btn();
-        }
-    );
-}
-
-function get_selected_radio_value(radiofields_name) {
-    var radios = document.getElementsByName(radiofields_name);
-    for (var i = 0, length = radios.length; i < length; i++) {
-        if (radios[i].checked) {
-            // only one radio can be logically checked, don't check the rest
-            return radios[i].value;
-        }
+    function click_back_button() {
+        window.location = "{% url 'workery_tenant_pending_task_retrieve_for_activity_sheet_retrieve' task_item.id %}";
     }
-    return null;
-}
+
+    function click_add_button() {
+        var state = get_selected_radio_value('state');
+
+        disable_btn(); // Disable button clicked.
+
+        post_assign_associate_task_operation_api(
+            {
+                'task_item': {{ task_item.id }},
+                'associate': {{ parameters.associate_id }},
+                'comment': $('#comment').val(),
+                'state': state,
+            },
+            function(result_dict) { // Success
+                // FOR DEBUGGING PURPOSES ONLY.
+                console.log(result_dict);
+
+                // REDIRECT.
+                if (state == "{{ ACTIVITY_SHEET_ITEM_STATE.ACCEPTED }}" || state == "{{ ACTIVITY_SHEET_ITEM_STATE.PENDING }}" ) {
+                    ////////////////////////////////////////////
+                    // Redirect to the next page in the form. //
+                    ////////////////////////////////////////////
+                    {% if task_item.job is not None %}
+                        // Redirect URL to `WorkOrder` lite page.
+                        var temp_url = "{% url 'workery_tenant_job_retrieve' 'summary' task_item.job.id %}?was_modified=True";
+                    {% else %}
+                        var temp_url = "{% url 'workery_tenant_task_list' %}?was_closed=True";
+                    {% endif %}
+                    window.location = temp_url;
+                } else {
+                    // REDIRECT BACK TO ACTIVITY PAGE.
+                    window.location = "{% url 'workery_tenant_pending_task_retrieve_for_activity_sheet_retrieve' task_item.id %}?was_modified=True";
+                }
+            },
+            function(xhr,status,error) { // Error
+                // Wait for a 60 seconds before enabling buttons again.
+                var the_time = 5000 * 12; // Developers note: 5000 = 5 seconds.
+                setTimeout(enable_btn(), the_time);
+                
+                // STEP 1: Convert to JSON.
+                var err = JSON.parse(xhr.responseText);
+
+                // For debugging purposes only.
+                console.log(err);
+
+                // STEP 2: CLEAR EXISTING TEXT.
+                $('#all_error_result').html("");
+
+                // STEP 3: PRINT OUR ERROR.
+                for(var prop in err) {
+                    if(err.hasOwnProperty(prop)) {
+                        var val = err[prop];
+                        console.log(val);
+                        $('#all_error_result').append("<p><b>"+prop+"</b>"+val+"</p><br />");
+                    }
+                }
+
+                // STEP 4: FOCUS TO WHERE THE ERROR IS OCCURING.
+                $('html, body').animate({ scrollTop: $('#id_step_navigation').offset().top }, 'slow');
+            },
+            function() { // Finally
+                // Do nothing.
+            }
+        );
+    }
+
+    function get_selected_radio_value(radiofields_name) {
+        var radios = document.getElementsByName(radiofields_name);
+        for (var i = 0, length = radios.length; i < length; i++) {
+            if (radios[i].checked) {
+                // only one radio can be logically checked, don't check the rest
+                return radios[i].value;
+            }
+        }
+        return null;
+    }
+
+    /**
+     *  Function will unlock the submit button.
+     */
+    function disable_btn() {
+        $('#id_submit_btn').prop("disabled", true);
+    }
+
+    /**
+     *  Function will lock the submit button.
+     */
+    function enable_btn() {
+        $('#id_submit_btn').prop("disabled", false);
+    }
 </script>
 
 <main id="main" role="main">
@@ -178,7 +189,7 @@ function get_selected_radio_value(radiofields_name) {
                 <small class="form-text text-muted">Maximum 1,000 characters.</small>
             </div>
 
-            <button id="id_submit_btn"
+            <button id="id_back_btn"
                  class="btn btn-primary btn-lg mt-4 float-left pl-4 pr-4"
                   type="button"
                onclick="click_back_button();">

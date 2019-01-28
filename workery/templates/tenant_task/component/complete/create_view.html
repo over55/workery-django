@@ -55,6 +55,8 @@ function click_add_button() {
         meeting_date = '';
     }
 
+    disable_btn(); // DISABLE LOGIN BUTTONS.
+
     // Submit to the API endpoint.
     post_follow_up_task_operation_api(
         {
@@ -71,32 +73,48 @@ function click_add_button() {
             window.location = "{% url 'workery_tenant_task_list' %}?was_closed=True";
         },
         function(xhr,status,error) { // Error
+            // UNLOCK THE "SUBMIT" BUTTON TO BE AVAILABLE FOR USAGE.
+            enable_btn();
+
             // STEP 1: Convert to JSON.
             var err = JSON.parse(xhr.responseText);
 
             // For debugging purposes only.
             console.log(err);
 
-            // // STEP 2: CLEAR EXISTING TEXT.
-            // $('#all_error_result').html();
-            //
-            // // STEP 3: PRINT OUR ERROR.
-            // for(var prop in err) {
-            //     if(err.hasOwnProperty(prop)) {
-            //         var val = err[prop];
-            //         console.log(val);
-            //         $('#all_error_result').append("<p><b>"+prop+"</b>"+val+"</p><br />");
-            //     }
-            // }
-            //
-            // // STEP 4: FOCUS TO WHERE THE ERROR IS OCCURING.
-            // $('html, body').animate({ scrollTop: $('#id_page_title').offset().top }, 'slow');
+            // STEP 2: CLEAR EXISTING TEXT.
+            $('#all_error_result').html();
+
+            // STEP 3: PRINT OUR ERROR.
+            for(var prop in err) {
+                if(err.hasOwnProperty(prop)) {
+                    var val = err[prop];
+                    console.log(val);
+                    $('#all_error_result').append("<p><b>"+prop+"</b>"+val+"</p><br />");
+                }
+            }
+
+            // STEP 4: FOCUS TO WHERE THE ERROR IS OCCURING.
+            $('html, body').animate({ scrollTop: $('#id_page_title').offset().top }, 'slow');
         },
         function() { // Finally
-            // UNLOCK THE "SUBMIT" BUTTON TO BE AVAILABLE FOR USAGE.
-            // enable_btn();
+            // Do nothing.
         }
     );
+
+    /**
+     *  Function will unlock the submit button.
+     */
+    function disable_btn() {
+        $('#id_submit_btn').prop("disabled", true);
+    }
+
+    /**
+     *  Function will lock the submit button.
+     */
+    function enable_btn() {
+        $('#id_submit_btn').prop("disabled", false);
+    }
 }
 
 function get_selected_radio_value(radiofields_name) {
@@ -292,7 +310,7 @@ function get_selected_radio_value(radiofields_name) {
                 <small class="form-text text-muted">Maximum 1,000 characters.</small>
             </div>
 
-            <button id="id_submit_btn"
+            <button id="id_back_btn"
                  class="btn btn-primary btn-lg mt-4 float-left pl-4 pr-4"
                   type="button"
                onclick="click_back_button();">

@@ -2,7 +2,7 @@
 {% load staticfiles i18n humanize shared_foundation_tags %}
 
 {% block title %}
-{% trans 'Client Details | Workery' %}
+{% trans 'Job Details | Workery' %}
 {% endblock title %}
 
 {% block header_content %}
@@ -290,6 +290,8 @@
         console.log("invoice_total_amount", invoice_total_amount);
         console.log("invoice_service_fee_amount", invoice_service_fee_amount);
 
+        disable_btn(); // DISABLE LOGIN BUTTONS.
+
         // Submit to our API web-service.
         post_incompleted_order_close_operation_api(
             {
@@ -325,6 +327,9 @@
                 {% endif %}
             },
             function(xhr,status,error) { // Error
+                // UNLOCK THE "SUBMIT" BUTTON TO BE AVAILABLE FOR USAGE.
+                enable_btn();
+
                 // STEP 1: Convert to JSON.
                 var err = JSON.parse(xhr.responseText);
 
@@ -357,6 +362,20 @@
                 // enable_btn();
             }
         );
+    }
+
+    /**
+     *  Function will unlock the submit button.
+     */
+    function disable_btn() {
+        $('#id_submit_btn').prop("disabled", true);
+    }
+
+    /**
+     *  Function will lock the submit button.
+     */
+    function enable_btn() {
+        $('#id_submit_btn').prop("disabled", false);
     }
 </script>
 

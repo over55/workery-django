@@ -2,7 +2,7 @@
 {% load staticfiles i18n humanize tz shared_foundation_tags %}
 
 {% block title %}
-{% trans 'Client Details | Workery' %}
+{% trans 'Job Comments | Workery' %}
 {% endblock title %}
 
 {% block header_content %}
@@ -11,56 +11,71 @@
 {% block content %}
 
 <script>
-/**
- *  Function will attempt to submit the form to the API server. This
- *  funciton will:
- *  (1) Lock / Unlock the submit button.
- *  (2)
- */
-function click_add_button() {
-    //
-    create_job_comment_api(
-        {
-            'about': {{ job.id }},
-            'extra_text': $('#comment').val(),
-        },
-        function(result_dict) { // Success
-            // FOR DEBUGGING PURPOSES ONLY.
-            console.log(result_dict);
+    /**
+     *  Function will attempt to submit the form to the API server. This
+     *  funciton will:
+     *  (1) Lock / Unlock the submit button.
+     *  (2)
+     */
+    function click_add_button() {
+        disable_btn(); // DISABLE LOGIN BUTTONS.
+        create_job_comment_api(
+            {
+                'about': {{ job.id }},
+                'extra_text': $('#comment').val(),
+            },
+            function(result_dict) { // Success
+                // FOR DEBUGGING PURPOSES ONLY.
+                console.log(result_dict);
 
-            // REDIRECT TO SUCCESS PAGE.
-            location.reload(true);
-        },
-        function(xhr,status,error) { // Error
-            // STEP 1: Convert to JSON.
-            var err = JSON.parse(xhr.responseText);
+                // REDIRECT TO SUCCESS PAGE.
+                location.reload(true);
+            },
+            function(xhr,status,error) { // Error
+                enable_btn(); // UNLOCK THE "SUBMIT" BUTTON TO BE AVAILABLE FOR USAGE.
 
-            // For debugging purposes only.
-            console.log(err);
+                // STEP 1: Convert to JSON.
+                var err = JSON.parse(xhr.responseText);
 
-            alert("Please fill in the comment.")
+                // For debugging purposes only.
+                console.log(err);
 
-            // // STEP 2: CLEAR EXISTING TEXT.
-            // $('#all_error_result').html();
-            //
-            // // STEP 3: PRINT OUR ERROR.
-            // for(var prop in err) {
-            //     if(err.hasOwnProperty(prop)) {
-            //         var val = err[prop];
-            //         console.log(val);
-            //         $('#all_error_result').append("<p><b>"+prop+"</b>"+val+"</p><br />");
-            //     }
-            // }
-            //
-            // // STEP 4: FOCUS TO WHERE THE ERROR IS OCCURING.
-            // $('html, body').animate({ scrollTop: $('#id_page_title').offset().top }, 'slow');
-        },
-        function() { // Finally
-            // UNLOCK THE "SUBMIT" BUTTON TO BE AVAILABLE FOR USAGE.
-            // enable_btn();
-        }
-    );
-}
+                alert("Please fill in the comment.")
+
+                // // STEP 2: CLEAR EXISTING TEXT.
+                // $('#all_error_result').html();
+                //
+                // // STEP 3: PRINT OUR ERROR.
+                // for(var prop in err) {
+                //     if(err.hasOwnProperty(prop)) {
+                //         var val = err[prop];
+                //         console.log(val);
+                //         $('#all_error_result').append("<p><b>"+prop+"</b>"+val+"</p><br />");
+                //     }
+                // }
+                //
+                // // STEP 4: FOCUS TO WHERE THE ERROR IS OCCURING.
+                // $('html, body').animate({ scrollTop: $('#id_page_title').offset().top }, 'slow');
+            },
+            function() { // Finally
+                // Do nothing.
+            }
+        );
+    }
+
+    /**
+     *  Function will unlock the submit button.
+     */
+    function disable_btn() {
+        $('#id_submit_btn').prop("disabled", true);
+    }
+
+    /**
+     *  Function will lock the submit button.
+     */
+    function enable_btn() {
+        $('#id_submit_btn').prop("disabled", false);
+    }
 </script>
 
 <main id="main" role="main">
