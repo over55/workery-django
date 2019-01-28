@@ -159,23 +159,34 @@
         </div>
 
         <!-- PAGINATION -->
-        <div class="pagination">
-            <span class="step-links">
-                {% if paginated_activity_sheet_items.has_previous %}
-                    <a href="?page=1">&laquo; first</a>
-                    <a href="?page={{ paginated_activity_sheet_items.previous_page_number }}">previous</a>
-                {% endif %}
-
-                <span class="current">
-                    Page {{ paginated_activity_sheet_items.number }} of {{ paginated_activity_sheet_items.paginator.num_pages }}.
-                </span>
-
-                {% if paginated_activity_sheet_items.has_next %}
-                    <a href="?page={{ paginated_activity_sheet_items.next_page_number }}">next</a>
-                    <a href="?page={{ paginated_activity_sheet_items.paginator.num_pages }}">last &raquo;</a>
-                {% endif %}
-            </span>
-        </div>
+	<nav aria-label="Page navigation">
+	  <ul class="pagination pagination-lg">
+	    <li class="page-item">
+		<button type="button" class="btn btn-link btn-lg" data-container="body" data-toggle="popover" title="Jump to page" data-placement="bottom" data-html="true" data-content="<form action method='get'><div class='input-group mb-3'><input type='text' name='page' class='form-control form-control-lg' placeholder='page' aria-label='page' aria-describedby='button-addon2'>
+		  <div class='input-group-append'>
+		    <button class='btn btn-info btn-lg' type='submit' id='button-addon2'>Go</button>
+		  </div></div></form>" >
+			  Page {{ paginated_activity_sheet_items.number }} of {{ paginated_activity_sheet_items.num_pages }} <i class="fas fa-sort-down"></i>
+		</button>
+	    </li>
+	    <li class="page-item">
+		 {% if paginated_activity_sheet_items.has_previous %}
+		    <a class="page-link rounded-left" href="?page={{ paginated_activity_sheet_items.previous_page_number }}" aria-label="Previous">
+			<span aria-hidden="true">&laquo;</span>
+			<span class="sr-only">Previous</span>
+		    </a>
+		{% endif %}
+	    </li>
+	    <li class="page-item">
+		{% if paginated_activity_sheet_items.has_next %}
+		    <a class="page-link" href="?page={{ paginated_activity_sheet_items.next_page_number }}" aria-label="Next">
+			<span aria-hidden="true">&raquo;</span>
+			<span class="sr-only">Next</span>
+		    </a>
+		{% endif %}
+	    </li>
+	  </ul>
+	</nav>
         <!-- end PAGINATION -->
 
     </div>
