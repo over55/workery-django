@@ -64,13 +64,13 @@ class StaffManager(models.Manager):
         # https://docs.djangoproject.com/en/2.0/ref/contrib/postgres/search/
         return Staff.objects.annotate(search=SearchVector('indexed_text'),).filter(search=keyword)
 
-    def filter_by_executive_group(self, email):
+    def filter_by_executive_group(self):
         return Staff.objects.filter(owner__groups__id=EXECUTIVE_GROUP_ID)
 
-    def filter_by_management_group(self, email):
+    def filter_by_management_group(self):
         return Staff.objects.filter(owner__groups__id=MANAGEMENT_GROUP_ID)
 
-    def filter_by_staff_group(self, email):
+    def filter_by_staff_group(self):
         return Staff.objects.filter(owner__groups__id=FRONTLINE_GROUP_ID)
 
 @transaction.atomic

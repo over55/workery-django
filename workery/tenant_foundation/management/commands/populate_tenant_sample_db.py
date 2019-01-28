@@ -177,6 +177,7 @@ class Command(BaseCommand):
             postal_code="A1A1A1",
             street_address="100 Big Walk Way Street",
             street_address_extra="",
+            email=user1.email,
         )
         staff_2 = Staff.objects.create(
             owner=user2,
@@ -190,6 +191,7 @@ class Command(BaseCommand):
             postal_code="B1B1B1",
             street_address="1 Long Peace Street Street",
             street_address_extra="",
+            email=user2.email,
         )
         staff_3 = Staff.objects.create(
             owner=user3,
@@ -203,6 +205,7 @@ class Command(BaseCommand):
             postal_code="C1C1C1",
             street_address="160 Grey Street",
             street_address_extra="",
+            email=user3.email,
         )
 
         associate_1 = Associate.objects.create(
@@ -217,6 +220,7 @@ class Command(BaseCommand):
             postal_code="D1D1D1",
             street_address="120 Hill Street",
             street_address_extra="",
+            email=user4.email,
         )
 
         customer_1 = Customer.objects.create(
@@ -231,6 +235,7 @@ class Command(BaseCommand):
             postal_code="E1E1E1",
             street_address="101 Cheep Street",
             street_address_extra="",
+            email=user5.email,
         )
 
         partner_1 = Partner.objects.create(
@@ -245,6 +250,7 @@ class Command(BaseCommand):
             postal_code="E1E1E1",
             street_address="101 Cheep Street",
             street_address_extra="",
+            email=user6.email,
         )
         order_1 = WorkOrder.objects.create(
             customer=customer_1,

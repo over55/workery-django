@@ -119,12 +119,11 @@ class Command(BaseCommand): #TODO: UNIT TEST
 
         # STEP 4: Email the management staff that the following ongoing jobs
         #         were automatically modified by this ETL.
-        # management_staffs = Staff.objects.filter_by_management_group()
-        # print(management_staffs)
-        # # for management_staff in management_staffs.all():
-        # #     print("EMAIL: %(email)s"%{
-        # #         'email': str(management_staff.email)
-        # #     })
+        management_staffs = Staff.objects.filter_by_management_group()
+        for management_staff in management_staffs.all():
+            print("EMAIL: %(email)s"%{
+                'email': str(management_staff.email)
+            })
 
     def process_first_day_of_month_ongoing_work_order(self, now_d):
         """
