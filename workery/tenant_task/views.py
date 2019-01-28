@@ -236,10 +236,10 @@ class PendingTaskRetrieveForActivitySheetAndAssignAssociateCreateView(LoginRequi
         return modified_context
 
 
-class PendingTaskRetrieveAndCompleteCreateView(LoginRequiredMixin, GroupRequiredMixin, WorkeryDetailView):
+class PendingTaskRetrieveFor48HourFollowUpView(LoginRequiredMixin, GroupRequiredMixin, WorkeryDetailView):
     context_object_name = 'task_item'
     model = TaskItem
-    template_name = 'tenant_task/component/complete/create_view.html'
+    template_name = 'tenant_task/48h_follow_up/create_view.html'
     menu_id = "task"
     group_required = [
         constants.EXECUTIVE_GROUP_ID,

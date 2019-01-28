@@ -201,7 +201,7 @@ class TestTenantTeamViews(TenantTestCase):
 
     def test_pending_task_retrieve_and_complete_page(self):
         obj = TaskItem.objects.get()
-        a_url = self.tenant.reverse(reverse_id='workery_tenant_pending_task_retrieve_and_complete_create', reverse_args=[int(obj.id)])
+        a_url = self.tenant.reverse(reverse_id='workery_tenant_pending_task_retrieve_for_48h_follow_up_create', reverse_args=[int(obj.id)])
         response = self.exec_auth_c.get(a_url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertIn('Task', str(response.content))
@@ -210,7 +210,7 @@ class TestTenantTeamViews(TenantTestCase):
         obj = TaskItem.objects.get()
         obj.is_closed = True
         obj.save()
-        a_url = self.tenant.reverse(reverse_id='workery_tenant_pending_task_retrieve_and_complete_create', reverse_args=[int(obj.id)])
+        a_url = self.tenant.reverse(reverse_id='workery_tenant_pending_task_retrieve_for_48h_follow_up_create', reverse_args=[int(obj.id)])
         response = self.exec_auth_c.get(a_url)
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 

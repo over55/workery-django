@@ -236,7 +236,7 @@
                             </div>
                             {% elif task_item.type_of == 2 %}
                             <div class="col-sm-4">
-                                <a href="{% url 'workery_tenant_pending_task_retrieve_and_complete_create' task_item.id %}">
+                                <a href="{% url 'workery_tenant_pending_task_retrieve_for_48h_follow_up_create' task_item.id %}">
                                 <button  id="id_submit_btn"
                                     class="btn btn-success btn-lg btn-fxw mt-4"
                                     type="button">
