@@ -2,7 +2,7 @@
 {% load staticfiles i18n humanize shared_foundation_tags %}
 
 {% block title %}
-{% trans 'Client Details | Workery' %}
+{% trans 'Job Unassignment | Workery' %}
 {% endblock title %}
 
 {% block header_content %}
@@ -30,6 +30,8 @@
 
     //
     function click_submit_button() {
+        disable_btn(); // Disable button clicked.
+
         // Submit to our API web-service.
         post_completed_order_unassign_operation_api(
             {
@@ -60,6 +62,8 @@
                 {% endif %}
             },
             function(xhr,status,error) { // Error
+                enable_btn(); // Unlock the submit button.
+
                 // STEP 1: Convert to JSON.
                 var err = JSON.parse(xhr.responseText);
 
@@ -82,10 +86,23 @@
                 $('html, body').animate({ scrollTop: $('#id_page_title').offset().top }, 'slow');
             },
             function() { // Finally
-                // UNLOCK THE "SUBMIT" BUTTON TO BE AVAILABLE FOR USAGE.
-                // enable_btn();
+                // Do nothing.
             }
         );
+    }
+
+    /**
+     *  Function will unlock the submit button.
+     */
+    function disable_btn() {
+        $('#id_submit_btn').prop("disabled", true);
+    }
+
+    /**
+     *  Function will lock the submit button.
+     */
+    function enable_btn() {
+        $('#id_submit_btn').prop("disabled", false);
     }
 </script>
 

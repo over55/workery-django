@@ -40,8 +40,15 @@ def get_todays_date_plus_days(days=0):
 
 
 class WorkOrderUnassignCreateSerializer(serializers.Serializer):
-    job = serializers.PrimaryKeyRelatedField(many=False, queryset=WorkOrder.objects.all(), required=True)
-    reason = serializers.CharField(required=True, allow_blank=False)
+    job = serializers.PrimaryKeyRelatedField(
+        many=False,
+        queryset=WorkOrder.objects.all(),
+        required=True
+    )
+    reason = serializers.CharField(
+        required=True,
+        allow_blank=False
+    )
     latest_pending_task = serializers.ReadOnlyField()
 
     # Meta Information.
