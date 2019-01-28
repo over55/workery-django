@@ -46,7 +46,18 @@ class Command(BaseCommand):
         parser.add_argument('schema_name', nargs='+', type=str)
 
     def delete_old_tasks(self):
+        """
+        Delete outdated task types that we currently have.
+        """
         for task_item in TaskItem.objects.filter(job=None):
+            self.stdout.write(
+                self.style.SUCCESS(_('Deleted task %(id)s.')%{
+                    'id': str(task_item.id)
+                })
+            )
+            task_item.delete()
+
+        for task_item in TaskItem.objects.filter(type_of=UPDATE_ONGOING_JOB_TASK_ITEM_TYPE_OF_ID):
             self.stdout.write(
                 self.style.SUCCESS(_('Deleted task %(id)s.')%{
                     'id': str(task_item.id)
