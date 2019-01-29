@@ -16,9 +16,9 @@ from tenant_foundation.models import (
 )
 
 
-class BlacklistedCustomerListView(LoginRequiredMixin, GroupRequiredMixin, WorkeryListView):
+class DeactivatedCustomerListView(LoginRequiredMixin, GroupRequiredMixin, WorkeryListView):
     context_object_name = 'customer_log_list'
-    template_name = 'tenant_setting/blacklisted/list_view.html'
+    template_name = 'tenant_setting/deactivated/list_view.html'
     paginate_by = 100
     menu_id = "settings"
     group_required = [
@@ -29,7 +29,7 @@ class BlacklistedCustomerListView(LoginRequiredMixin, GroupRequiredMixin, Worker
 
     def get_queryset(self):
         queryset = Customer.objects.filter(
-            is_blacklisted=True
+            state=Customer.CUSTOMER_STATE.INACTIVE
         ).order_by(
             '-id'
         ).prefetch_related(

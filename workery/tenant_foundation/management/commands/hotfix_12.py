@@ -183,6 +183,17 @@ class Command(BaseCommand):
             except Exception as e:
                 print(staff, e)
 
+    def customer_blacklist(self):
+        for customer in Customer.objects.filter(is_blacklisted=True).iterator():
+            customer.state = Customer.CUSTOMER_STATE.INACTIVE
+            customer.deactivation_reason = Customer.DEACTIVATION_REASON.BLACKLISTED
+            customer.save()
+            self.stdout.write(
+                self.style.SUCCESS(_('Customer # %(id)s is blacklisted.')%{
+                    'id': str(customer.id)
+                })
+            )
+
     def handle(self, *args, **options):
         # Connection needs first to be at the public schema, as this is where
         # the database needs to be set before creating a new tenant. If this is
@@ -205,6 +216,7 @@ class Command(BaseCommand):
         self.standardization_customer_province_and_country()
         self.standardization_associate_province_and_country()
         self.standardization_staff_province_and_country()
+        self.customer_blacklist()
 
         # For debugging purposes.
         self.stdout.write(

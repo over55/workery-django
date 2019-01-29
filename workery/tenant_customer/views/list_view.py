@@ -26,7 +26,9 @@ class CustomerSummaryView(LoginRequiredMixin, GroupRequiredMixin, WorkeryListVie
     ]
 
     def get_queryset(self):
-        queryset = Customer.objects.all().prefetch_related(
+        queryset = Customer.objects.filter(
+            state=Customer.CUSTOMER_STATE.ACTIVE
+        ).prefetch_related(
             'owner'
         ).order_by(
             'last_name',

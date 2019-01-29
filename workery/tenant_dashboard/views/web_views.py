@@ -52,7 +52,9 @@ class DashboardView(LoginRequiredMixin, GroupRequiredMixin, WorkeryTemplateView)
             owner__is_active=True
         ).count()
 
-        modified_context['customers_count'] = Customer.objects.all().count()
+        modified_context['customers_count'] = Customer.objects.filter(
+            state=Customer.CUSTOMER_STATE.ACTIVE
+        ).count()
 
         modified_context['jobs_count'] = WorkOrder.objects.filter(
             Q(state=WORK_ORDER_STATE.NEW) |

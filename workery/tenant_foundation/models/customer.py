@@ -23,35 +23,6 @@ from tenant_foundation.models import AbstractPerson
 from tenant_foundation.utils import *
 
 
-class CUSTOMER_STATE:
-    ACTIVE = 'active'
-    INACTIVE = 'inactive'
-    ARCHIVED = 'archived'
-
-
-class DEACTIVATION_REASON:
-    OTHER = 1
-    BLACKLISTED = 2
-    MOVED = 3
-    DECEASED = 4
-    DO_NOT_CONTACT = 5
-
-
-CUSTOMER_STATE_CHOICES = (
-    (CUSTOMER_STATE.ACTIVE, _('Active')),
-    (CUSTOMER_STATE.INACTIVE, _('Inactive')),
-)
-
-
-DEACTIVATION_REASON_CHOICES = (
-    (DEACTIVATION_REASON.BLACKLISTED, _('Blacklisted')),
-    (DEACTIVATION_REASON.MOVED, _('Moved')),
-    (DEACTIVATION_REASON.DECEASED, _('Deceased')),
-    (DEACTIVATION_REASON.DO_NOT_CONTACT, _('Do not contact')),
-    (DEACTIVATION_REASON.OTHER, _('Other')),
-)
-
-
 class CustomerManager(models.Manager):
     def delete_all(self):
         items = Customer.objects.all()
@@ -87,6 +58,11 @@ def increment_customer_id_number():
 
 
 class Customer(AbstractPerson):
+
+    '''
+    METADATA
+    '''
+
     class Meta:
         app_label = 'tenant_foundation'
         db_table = 'workery_customers'
@@ -101,7 +77,51 @@ class Customer(AbstractPerson):
             ("can_delete_customer", "Can delete customer"),
         )
 
+    '''
+    CONSTANTS
+    '''
+
+    class CUSTOMER_STATE:
+        ACTIVE = 'active'
+        INACTIVE = 'inactive'
+        ARCHIVED = 'archived'
+
+
+    class DEACTIVATION_REASON:
+        OTHER = 1
+        BLACKLISTED = 2
+        MOVED = 3
+        DECEASED = 4
+        DO_NOT_CONTACT = 5
+
+    '''
+    CHOICES
+    '''
+
+    CUSTOMER_STATE_CHOICES = (
+        (CUSTOMER_STATE.ACTIVE, _('Active')),
+        (CUSTOMER_STATE.INACTIVE, _('Inactive')),
+    )
+
+
+    DEACTIVATION_REASON_CHOICES = (
+        (DEACTIVATION_REASON.BLACKLISTED, _('Blacklisted')),
+        (DEACTIVATION_REASON.MOVED, _('Moved')),
+        (DEACTIVATION_REASON.DECEASED, _('Deceased')),
+        (DEACTIVATION_REASON.DO_NOT_CONTACT, _('Do not contact')),
+        (DEACTIVATION_REASON.OTHER, _('Other')),
+    )
+
+    '''
+    OBJECT MANAGERS
+    '''
+
     objects = CustomerManager()
+
+    '''
+    MODEL FIELDS
+    '''
+
     id = models.BigAutoField(
        primary_key=True,
        default = increment_customer_id_number,
@@ -353,6 +373,12 @@ class Customer(AbstractPerson):
             return _('Event')
         else:
             return self.how_hear_other
+
+    def get_deactivation_reason(self):
+        if self.deactivation_reason == Customer.DEACTIVATION_REASON.OTHER:
+            return str(self.deactivation_reason_other)
+        else:
+            return dict(Customer.DEACTIVATION_REASON_CHOICES).get(self.deactivation_reason)
 
     """
     Override the `save` function to support save cached searchable terms.

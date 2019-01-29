@@ -1,8 +1,8 @@
 {% extends 'tenant_foundation/tenant_base.html' %}
-{% load staticfiles i18n shared_foundation_tags humanize %}
+{% load staticfiles i18n shared_foundation_tags humanize tz %}
 
 {% block title %}
-{% trans 'Announcements | Workery' %}
+{% trans 'Deactivated Clients | Workery' %}
 {% endblock title %}
 
 {% block header_content %}
@@ -45,13 +45,13 @@
 	  	<ol class="breadcrumb">
 	    	<li class="breadcrumb-item"><a href="{% url 'workery_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
             <li class="breadcrumb-item"><a href="{% url 'workery_tenant_settings_launchpad' %}">{% trans 'Settings' %}</a></li>
-            <li class="breadcrumb-item active" aria-current="page">{% trans 'Clients' %}</li>
+            <li class="breadcrumb-item active" aria-current="page">{% trans 'Deactivated Clients' %}</li>
 	  	</ol>
 	</nav>
     <!------------------------------------------------------------------------->
     <!-- end BREADCRUMB -->
 
-    <h1>Blacklisted Clients</h1>
+    <h1>Deactivated Clients</h1>
 
     <div class="table-responsive">
         <table class="table table-striped">
@@ -59,7 +59,7 @@
                 <tr>
                     <th>{% trans 'Name' %}</th>
                     <th>{% trans 'Created' %}
-                    <th>{% trans 'Last Modified' %}
+                    <th>{% trans 'Reason' %}
                     <th></th>
                 </tr>
             </thead>
@@ -70,10 +70,10 @@
                         {{ customer }}
                     </td>
                     <td>
-                        {{ customer.created }}
+                        {{ customer.created|timezone:request.tenant.timezone_name|date:"N j, Y - g:i A" }}
                     </td>
                     <td>
-                        {{ customer.last_modified }}
+                        {{ customer.get_deactivation_reason }}
                     </td>
                     <td>
                         <a href="{% url 'workery_tenant_customer_lite_retrieve' 'list' customer.id %}?page={{ page_obj.number }}">{% trans 'View' %}&nbsp;<i class="fas fa-chevron-right"></i></a>
