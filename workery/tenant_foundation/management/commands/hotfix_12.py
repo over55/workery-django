@@ -81,6 +81,108 @@ class Command(BaseCommand):
             task_item.title = title
             task_item.save()
 
+    def standardization_customer_province_and_country(self):
+        for customer in Customer.objects.iterator():
+            # REGION
+            try:
+                if len(customer.address_region) != 2:
+                    if customer.address_region == "Ontario":
+                        customer.address_region = "ON"
+                        customer.save()
+                        self.stdout.write(
+                            self.style.SUCCESS(_('Updated province for customer # %(id)s.')%{
+                                'id': str(customer.id)
+                            })
+                        )
+                    else:
+                        print(customer.id, customer.address_region)
+            except Exception as e:
+                print(customer, e)
+
+            # COUNTRY
+            try:
+                if len(customer.address_country) != 2:
+                    if customer.address_country == "Canada":
+                        customer.address_country = "CA"
+                        customer.save()
+                        self.stdout.write(
+                            self.style.SUCCESS(_('Updated country for customer # %(id)s.')%{
+                                'id': str(customer.id)
+                            })
+                        )
+                    else:
+                        print(customer.id, customer.address_country)
+            except Exception as e:
+                print(customer, e)
+
+    def standardization_associate_province_and_country(self):
+        for associate in Associate.objects.iterator():
+            # REGION
+            try:
+                if len(associate.address_region) != 2:
+                    if associate.address_region == "Ontario":
+                        associate.address_region = "ON"
+                        associate.save()
+                        self.stdout.write(
+                            self.style.SUCCESS(_('Updated province for associate # %(id)s.')%{
+                                'id': str(associate.id)
+                            })
+                        )
+                    else:
+                        print(associate.id, associate.address_region)
+            except Exception as e:
+                print(associate, e)
+
+            # COUNTRY
+            try:
+                if len(associate.address_country) != 2:
+                    if associate.address_country == "Canada":
+                        associate.address_country = "CA"
+                        associate.save()
+                        self.stdout.write(
+                            self.style.SUCCESS(_('Updated country for associate # %(id)s.')%{
+                                'id': str(associate.id)
+                            })
+                        )
+                    else:
+                        print(associate.id, associate.address_country)
+            except Exception as e:
+                print(associate, e)
+
+    def standardization_staff_province_and_country(self):
+        for staff in Staff.objects.iterator():
+            # REGION
+            try:
+                if len(staff.address_region) != 2:
+                    if staff.address_region == "Ontario":
+                        staff.address_region = "ON"
+                        staff.save()
+                        self.stdout.write(
+                            self.style.SUCCESS(_('Updated province for staff # %(id)s.')%{
+                                'id': str(staff.id)
+                            })
+                        )
+                    else:
+                        print(staff.id, staff.address_region)
+            except Exception as e:
+                print(staff, e)
+
+            # COUNTRY
+            try:
+                if len(staff.address_country) != 2:
+                    if staff.address_country == "Canada":
+                        staff.address_country = "CA"
+                        staff.save()
+                        self.stdout.write(
+                            self.style.SUCCESS(_('Updated country for staff # %(id)s.')%{
+                                'id': str(staff.id)
+                            })
+                        )
+                    else:
+                        print(staff.id, staff.address_country)
+            except Exception as e:
+                print(staff, e)
+
     def handle(self, *args, **options):
         # Connection needs first to be at the public schema, as this is where
         # the database needs to be set before creating a new tenant. If this is
@@ -100,6 +202,9 @@ class Command(BaseCommand):
 
         self.delete_old_tasks()
         self.update_task_names()
+        self.standardization_customer_province_and_country()
+        self.standardization_associate_province_and_country()
+        self.standardization_staff_province_and_country()
 
         # For debugging purposes.
         self.stdout.write(
