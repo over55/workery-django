@@ -3,6 +3,7 @@ import csv
 import phonenumbers
 import pytz
 from datetime import date, datetime, timedelta
+from django_fsm import FSMField, transition
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.contrib.postgres.search import SearchVector, SearchVectorField
@@ -20,6 +21,35 @@ from shared_foundation.models import SharedUser
 from tenant_foundation.constants import *
 from tenant_foundation.models import AbstractPerson
 from tenant_foundation.utils import *
+
+
+class CUSTOMER_STATE:
+    ACTIVE = 'active'
+    INACTIVE = 'inactive'
+    ARCHIVED = 'archived'
+
+
+class DEACTIVATION_REASON:
+    OTHER = 1
+    BLACKLISTED = 2
+    MOVED = 3
+    DECEASED = 4
+    DO_NOT_CONTACT = 5
+
+
+CUSTOMER_STATE_CHOICES = (
+    (CUSTOMER_STATE.ACTIVE, _('Active')),
+    (CUSTOMER_STATE.INACTIVE, _('Inactive')),
+)
+
+
+DEACTIVATION_REASON_CHOICES = (
+    (DEACTIVATION_REASON.BLACKLISTED, _('Blacklisted')),
+    (DEACTIVATION_REASON.MOVED, _('Moved')),
+    (DEACTIVATION_REASON.DECEASED, _('Deceased')),
+    (DEACTIVATION_REASON.DO_NOT_CONTACT, _('Do not contact')),
+    (DEACTIVATION_REASON.OTHER, _('Other')),
+)
 
 
 class CustomerManager(models.Manager):
@@ -205,14 +235,14 @@ class Customer(AbstractPerson):
         through='CustomerComment',
         related_name="%(app_label)s_%(class)s_customer_comments_related"
     )
-    is_archived = models.BooleanField(
+    is_archived = models.BooleanField( # DEPRECATED
         _("Is Archived"),
         help_text=_('Indicates whether customer was archived.'),
         default=True,
         blank=True,
         db_index=True
     )
-    is_blacklisted = models.BooleanField(
+    is_blacklisted = models.BooleanField( # DEPRECATED
         _("Is Blacklisted"),
         help_text=_('Indicates whether customer was blacklisted or not.'),
         default=False,
@@ -240,6 +270,33 @@ class Customer(AbstractPerson):
         blank=False,
         null=True,
         on_delete=models.SET_NULL,
+    )
+
+    #
+    # State
+    #
+
+    state = FSMField(
+        _('State'),
+        help_text=_('The state of this customer.'),
+        choices=CUSTOMER_STATE_CHOICES,
+        default=CUSTOMER_STATE.ACTIVE,
+        blank=True,
+        db_index=True,
+    )
+    deactivation_reason = models.PositiveSmallIntegerField(
+        _("Deactivation reason"),
+        help_text=_('The reason why this customer was deactivated.'),
+        blank=True,
+        choices=DEACTIVATION_REASON_CHOICES,
+        default=DEACTIVATION_REASON.OTHER # 1 = Other
+    )
+    deactivation_reason_other = models.CharField(
+        _("Deactivation reason (other)"),
+        max_length=2055,
+        help_text=_('The reason why this customer was deactivated which was not in the list.'),
+        blank=True,
+        default=""
     )
 
     #
