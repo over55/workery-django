@@ -167,7 +167,7 @@
         {% if return_id == 'search' %}
             window.location = "{% url 'workery_tenant_job_retrieve' return_id job.id %}";
         {% elif return_id == 'task' %}
-            window.location = "{% url 'workery_tenant_pending_task_retrieve' return_task_id %}";
+            window.location = "{% url 'workery_tenant_pending_task_retrieve' return_obj_id %}";
         {% elif return_id == 'list' %}
             window.location = "{% url 'workery_tenant_job_retrieve' return_id job.id %}";
         {% else %}
@@ -323,7 +323,7 @@
                 {% if return_id == 'task' %}
                 window.location = "{% url 'workery_tenant_task_list' %}?was_closed=True";
                 {% else %}
-                window.location = "{% url 'workery_tenant_job_retrieve' return_id job.id %}?was_closed=True";
+                window.location = "{% url 'workery_tenant_job_retrieve' return_id job.id %}?was_modified=True";
                 {% endif %}
             },
             function(xhr,status,error) { // Error
@@ -404,7 +404,7 @@
 
             <li class="breadcrumb-item"><a href="{% url 'workery_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
             <li class="breadcrumb-item"><a href="{% url 'workery_tenant_task_list' %}">{% trans 'Pending Tasks' %}</a></li>
-            <li class="breadcrumb-item"><a href="{% url 'workery_tenant_pending_task_retrieve' return_task_id %}">{% trans 'Task #' %}{{ return_task_id|intcomma }}</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'workery_tenant_pending_task_retrieve' return_obj_id %}">{% trans 'Task #' %}{{ return_obj_id|intcomma }}</a></li>
             <li class="breadcrumb-item active" aria-current="page">{% trans 'Close Job' %}</li>
 
             {% elif return_id == 'list' %}

@@ -149,13 +149,14 @@ class WorkeryDetailView(DetailView, ExtraRequestProcessingMixin):
 class ReturnIDParameterRequiredMixin(object):
     """
     Mixin used to restrict access to view based on whether the parameter in the
-    URL matches the specified IDs.
+    URL matches the specified IDs. You are also able specify the return object
+    ID as well but is not required; however, you must specify the return ID.
 
     REQUIRED:
     - return_id
 
     OPTIONAL:
-    - return_task_id
+    - return_obj_id
     """
     return_id_required = []
 
@@ -173,7 +174,7 @@ class ReturnIDParameterRequiredMixin(object):
 
         # Attach the URL parameter to our view.
         base_context['return_id'] = self.request.GET.get('return_id', None) # REQUIRED
-        base_context['return_task_id'] = self.request.GET.get('return_task_id', None) # OPTIONAL
+        base_context['return_obj_id'] = self.request.GET.get('return_obj_id', None) # OPTIONAL
 
         # Return our custom context based on our `workery` app.
         return base_context
