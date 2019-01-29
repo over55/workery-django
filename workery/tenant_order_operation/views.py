@@ -79,6 +79,19 @@ class WorkOrderCloseOperationView(LoginRequiredMixin, GroupRequiredMixin, Return
     return_id_required = ['search', 'summary', 'list', 'task',]
 
 
+class WorkOrderPostponeOperationView(LoginRequiredMixin, GroupRequiredMixin, ReturnIDParameterRequiredMixin, WorkeryDetailView):
+    context_object_name = 'job'
+    model = WorkOrder
+    template_name = 'tenant_order_operation/incompleted_work_order_postpone_operation.html'
+    menu_id = 'jobs'
+    group_required = [
+        constants.EXECUTIVE_GROUP_ID,
+        constants.MANAGEMENT_GROUP_ID,
+        constants.FRONTLINE_GROUP_ID
+    ]
+    return_id_required = ['search', 'summary', 'list', 'task',]
+
+
 class JobRetrieveForPostponeCreateView(LoginRequiredMixin, GroupRequiredMixin, WorkeryDetailView):
     """
     DEPRECATED

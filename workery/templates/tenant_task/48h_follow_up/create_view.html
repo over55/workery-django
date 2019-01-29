@@ -252,7 +252,7 @@ function get_selected_radio_value(radiofields_name) {
                                     <a href="{% url 'workery_tenant_job_close_operation' task_item.job.id %}?return_id=task&return_obj_id={{ task_item.id }}">{% trans 'Close Job' %}&nbsp;<i class="fas fa-chevron-right"></i></a>
                                 </li>
                                 <li>
-                                    <a href="{% url 'workery_tenant_job_retrieve_for_postpone_create' 'task' task_item.job.id %}?task_id={{ task_item.id }}">{% trans 'Postpone Job' %}&nbsp;<i class="fas fa-chevron-right"></i></a>
+                                    <a href="{% url 'workery_tenant_job_postpone_operation' task_item.job.id %}?return_id=task&return_obj_id={{ task_item.id }}">{% trans 'Postpone Job' %}&nbsp;<i class="fas fa-chevron-right"></i></a>
                                 </li>
                             </ul>
 					    </td>

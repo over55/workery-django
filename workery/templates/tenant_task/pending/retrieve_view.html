@@ -316,7 +316,7 @@
                 <!-- end CLOSE JOB BUTTON -->
                 <!-- end POSTPONE BUTTON -->
                 <div class="col-sm-4">
-                    <a href="{% url 'workery_tenant_job_retrieve_for_postpone_create' 'task' task_item.job.id %}?task_id={{ task_item.id }}">
+                    <a href="{% url 'workery_tenant_job_postpone_operation' task_item.job.id %}?return_id=task&return_obj_id={{ task_item.id }}">
                     <button  id="id_submit_btn"
                         class="btn btn-orange btn-lg btn-fxw mt-4"
                         type="button">
