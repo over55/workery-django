@@ -66,7 +66,23 @@ class IncompletedWorkOrderUnassignOperationView(LoginRequiredMixin, GroupRequire
     return_id_required = ['lite-retrieve', 'pending-task']
 
 
+class WorkOrderCloseOperationView(LoginRequiredMixin, GroupRequiredMixin, ReturnIDParameterRequiredMixin, WorkeryDetailView):
+    context_object_name = 'job'
+    model = WorkOrder
+    template_name = 'tenant_order_operation/incompleted_work_order_close_operation.html'
+    menu_id = 'jobs'
+    group_required = [
+        constants.EXECUTIVE_GROUP_ID,
+        constants.MANAGEMENT_GROUP_ID,
+        constants.FRONTLINE_GROUP_ID
+    ]
+    return_id_required = ['lite-retrieve', 'pending-task']
+
+
 class JobRetrieveForCloseCreateView(LoginRequiredMixin, GroupRequiredMixin, WorkeryDetailView):
+    """
+    DEPRECATED
+    """
     context_object_name = 'job'
     model = WorkOrder
     template_name = 'tenant_order/retrieve/for/close_view.html'
@@ -94,6 +110,9 @@ class JobRetrieveForCloseCreateView(LoginRequiredMixin, GroupRequiredMixin, Work
 
 
 class JobRetrieveForPostponeCreateView(LoginRequiredMixin, GroupRequiredMixin, WorkeryDetailView):
+    """
+    DEPRECATED
+    """
     context_object_name = 'job'
     model = WorkOrder
     template_name = 'tenant_order/retrieve/for/postpone_view.html'
@@ -120,6 +139,9 @@ class JobRetrieveForPostponeCreateView(LoginRequiredMixin, GroupRequiredMixin, W
 
 
 class JobRetrieveForReopeningCreateView(LoginRequiredMixin, GroupRequiredMixin, WorkeryDetailView):
+    """
+    DEPRECATED
+    """
     context_object_name = 'job'
     model = WorkOrder
     template_name = 'tenant_order/retrieve/for/reopen_view.html'

@@ -150,6 +150,12 @@ class ReturnIDParameterRequiredMixin(object):
     """
     Mixin used to restrict access to view based on whether the parameter in the
     URL matches the specified IDs.
+
+    REQUIRED:
+    - return_id
+
+    OPTIONAL:
+    - return_task_id
     """
     return_id_required = []
 
@@ -166,7 +172,8 @@ class ReturnIDParameterRequiredMixin(object):
         base_context = super().get_context_data(**kwargs)
 
         # Attach the URL parameter to our view.
-        base_context['return_id'] = self.request.GET.get('return_id', None)
+        base_context['return_id'] = self.request.GET.get('return_id', None) # REQUIRED
+        base_context['return_task_id'] = self.request.GET.get('return_task_id', None) # OPTIONAL
 
         # Return our custom context based on our `workery` app.
         return base_context

@@ -10,37 +10,24 @@ urlpatterns = (
     #
     # Other
     #
-    path(
-        'jobs/detail/<int:pk>/operation/transfer/',
-        views.TransferWorkOrderOperationView.as_view(),
-        name='workery_tenant_job_retrieve_for_transfer_operation'
-    ),
+    path('jobs/detail/<int:pk>/operation/transfer/', views.TransferWorkOrderOperationView.as_view(), name='workery_tenant_job_retrieve_for_transfer_operation'),
 
     #
     # Completed Work Orders
     #
 
-    path(
-        'jobs/detail/<int:pk>/operation/closed-job/unassign',
-        views.CompletedWorkOrderUnassignOperationView.as_view(),
-        name='workery_tenant_completed_job_unassign_operation'
-    ),
-    path(
-        'jobs/detail/<int:pk>/operation/closed-job/close',
-        views.CompletedWorkOrderCloseOperationView.as_view(),
-        name='workery_tenant_completed_job_close_operation'
-    ),
-    path(
-        'jobs/detail/<int:pk>/operation/closed-job/cancel',
-        views.CompletedWorkOrderCancelOperationView.as_view(),
-        name='workery_tenant_completed_job_cancel_operation'
-    ),
+    path('jobs/detail/<int:pk>/operation/closed-job/unassign',views.CompletedWorkOrderUnassignOperationView.as_view(), name='workery_tenant_completed_job_unassign_operation'),
+    path('jobs/detail/<int:pk>/operation/closed-job/close',views.CompletedWorkOrderCloseOperationView.as_view(), name='workery_tenant_completed_job_close_operation'),
+    path('jobs/detail/<int:pk>/operation/closed-job/cancel', views.CompletedWorkOrderCancelOperationView.as_view(), name='workery_tenant_completed_job_cancel_operation'),
 
     #
     # Non-Completed Work Orders
     #
 
     path('jobs/detail/<int:pk>/operation/unassign/', views.IncompletedWorkOrderUnassignOperationView.as_view(), name='workery_tenant_job_retrieve_for_unassign_create'),
+    path('jobs/detail/<int:pk>/operation/close/',views.WorkOrderCloseOperationView.as_view(), name='workery_tenant_job_close_operation'),
+
+    # DEPRECATED ...
     path('jobs/<str:template>/detail/<int:pk>/close/',views.JobRetrieveForCloseCreateView.as_view(), name='workery_tenant_job_retrieve_for_close_create'),
     path('jobs/<str:template>/detail/<int:pk>/postpone/', views.JobRetrieveForPostponeCreateView.as_view(), name='workery_tenant_job_retrieve_for_postpone_create'),
     path('jobs/<str:template>/detail/<int:pk>/reopen/', views.JobRetrieveForReopeningCreateView.as_view(), name='workery_tenant_job_retrieve_for_reopen_create'),

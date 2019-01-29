@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from django.core.management import call_command
+from django.db import transaction
 from django_tenants.test.cases import TenantTestCase
 from django_tenants.test.client import TenantClient
 from django.urls import reverse
@@ -20,11 +21,13 @@ class TestCreateSharedAccountManagementCommand(TenantTestCase):
     Console:
     python manage.py test shared_foundation.tests.commands.test_create_shared_account
     """
+    @transaction.atomic
     def setUp(self):
         super(TestCreateSharedAccountManagementCommand, self).setUp()
         self.c = TenantClient(self.tenant)
         call_command('init_app', verbosity=0)
 
+    @transaction.atomic
     def tearDown(self):
         users = SharedUser.objects.all()
         for user in users.all():
@@ -32,6 +35,7 @@ class TestCreateSharedAccountManagementCommand(TenantTestCase):
         del self.c
         super(TestCreateSharedAccountManagementCommand, self).tearDown()
 
+    @transaction.atomic
     def test_command_with_success(self):
         call_command(
            'create_shared_account',
@@ -49,6 +53,7 @@ class TestCreateSharedAccountManagementCommand(TenantTestCase):
         is_authenticated = check_password(TEST_USER_PASSWORD, user.password)
         self.assertTrue(is_authenticated)
 
+    @transaction.atomic
     def test_command_with_duplicate_email_error(self):
         SharedUser.objects.create(
             first_name="Bart",
