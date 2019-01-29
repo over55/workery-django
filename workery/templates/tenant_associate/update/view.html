@@ -793,7 +793,7 @@
 	     yearRange: "c-90:c+150"
         });
 
-	//------------------------//
+	    //------------------------//
         // SELECT2 INITIALIZATION //
         //------------------------//
 
@@ -892,129 +892,136 @@
         //---------------------------------//
 
         // THIS IS WHERE YOU CAN ADD YOUR COUNTRY/PROVINCE DROPDOWN JS CODE....
-	$(function(){
-	  $('#address_country').change(function(){
-	    loadState($(this).find(':selected').val())
-	  });
-	  {% if associate.address_country == 'Canada' %}loadState('CA');{% else %}loadState('{{associate.address_country}}');{% endif %}
-    	});
-	let c_dropdown = $('#address_country');
-	c_dropdown.empty();
-	c_dropdown.append('<option selected="true" disabled>Choose Country</option>');
-	{% if associate.address_country %}c_dropdown.val('{{associate.address_country}}');{% else %}c_dropdown.prop('selectedIndex', 1);{% endif %}
-	const state = "{% url 'workery_get_provinces_api_endpoint' %}?format=json";
+        $(function(){
+            $('#address_country').change(function(){
+                loadState($(this).find(':selected').val())
+            });
+            loadState('{{ associate.address_country }}');
+        });
+
+    	let c_dropdown = $('#address_country');
+    	c_dropdown.empty();
+    	c_dropdown.append('<option selected="true" disabled>Choose Country</option>');
+
+        {% if associate.address_country %}
+            c_dropdown.val('{{ associate.address_country }}');
+        {% else %}
+            c_dropdown.prop('selectedIndex', 1);
+        {% endif %}
+
+    	const state = "{% url 'workery_get_provinces_api_endpoint' %}?format=json";
         const country = "{% url 'workery_get_countries_api_endpoint' %}?format=json";
-	console.log(state);
-        console.log(country); // KANWAR - PLEASE IMPLEMENT.
-	// Populate dropdown with list of countries
-	$.getJSON(country, function (data) {
-	  $.each(data, function (key, entry) {
-	    	c_dropdown.append($('<option></option>').attr('value', entry.code).text(entry.country));
-	  })
-	});
-	function loadState(countryId){
-		let p_dropdown = $('#address_region');
-		p_dropdown.empty();
-		p_dropdown.append('<option selected="true" disabled>Choose State/Province</option>');
-		p_dropdown.prop('selectedIndex', 0);
-		// Populate dropdown with list of provinces
-		$.getJSON(state, function (data) {
-		  $.each(data, function (key, entry) {
-		    if(entry.country == countryId){
-		    	p_dropdown.append($('<option></option>').attr('value', entry.short).text(entry.name));
-		    }
-		  })
-		});
+    	console.log(state);
+        console.log(country);
 
-		{% if associate.address_region == 'Ontario' %}p_dropdown.prop('selectedIndex', 1);{% else %}p_dropdown.val('{{associate.address_region}}');{% endif %}
+        // Populate dropdown with list of countries
+    	$.getJSON(country, function (data) {
+            $.each(data, function (key, entry) {
+    	        c_dropdown.append($('<option></option>').attr('value', entry.code).text(entry.country));
+    	    })
+    	});
+    	function loadState(countryId){
+    		let p_dropdown = $('#address_region');
+    		p_dropdown.empty();
+    		p_dropdown.append('<option selected="true" disabled>Choose State/Province</option>');
+    		p_dropdown.prop('selectedIndex', 0);
+    		// Populate dropdown with list of provinces
+    		$.getJSON(state, function (data) {
+    		  $.each(data, function (key, entry) {
+    		    if(entry.country == countryId){
+    		    	p_dropdown.append($('<option></option>').attr('value', entry.short).text(entry.name));
+    		    }
+    		  })
+    		});
 
+    		p_dropdown.val('{{ associate.address_region }}')
+        }
+
+    	/**
+    	 *  Password Strength Check Validation.
+    	 */
+    	var checkPassword = document.getElementById("password");
+    	var s_letter = document.getElementById("s_lowercase");
+    	var s_capital = document.getElementById("s_uppercase");
+    	var s_character = document.getElementById("s_special");
+    	var s_length = document.getElementById("min_char");
+    	// When the user starts to type something inside the password field
+    	checkPassword.onkeyup = function() {
+      		// Validate lowercase letters
+      		var lowerCaseLetters = /[a-z]/g;
+    		  if(checkPassword.value.match(lowerCaseLetters)) {
+    		    s_letter.classList.remove("pass_check");
+    		    s_letter.classList.add("pass_valid");
+    		  } else {
+    		    s_letter.classList.remove("pass_valid");
+    		    s_letter.classList.add("pass_check");
+    		  }
+
+      		// Validate capital letters
+      		var upperCaseLetters = /[A-Z]/g;
+    		  if(checkPassword.value.match(upperCaseLetters)) {
+    		    s_capital.classList.remove("pass_check");
+    		    s_capital.classList.add("pass_valid");
+    		  } else {
+    		    s_capital.classList.remove("pass_valid");
+    		    s_capital.classList.add("pass_check");
+    		  }
+      		// Validate numbers
+      		var specialChar = /[!@#\$%\^&\*]/g;
+    		  if(checkPassword.value.match(specialChar)) {
+    		    s_character.classList.remove("pass_check");
+    		    s_character.classList.add("pass_valid");
+    		  } else {
+    		    s_character.classList.remove("pass_valid");
+    		    s_character.classList.add("pass_check");
+    		  }
+
+      		// Validate length
+    		  if(checkPassword.value.length >= 8) {
+    		    s_length.classList.remove("pass_check");
+    		    s_length.classList.add("pass_valid");
+    		  } else {
+    		    s_length.classList.remove("pass_valid");
+    		    s_length.classList.add("pass_check");
+    		  }
     	}
-
-	/**
-	 *  Password Strength Check Validation.
-	 */
-	var checkPassword = document.getElementById("password");
-	var s_letter = document.getElementById("s_lowercase");
-	var s_capital = document.getElementById("s_uppercase");
-	var s_character = document.getElementById("s_special");
-	var s_length = document.getElementById("min_char");
-	// When the user starts to type something inside the password field
-	checkPassword.onkeyup = function() {
-  		// Validate lowercase letters
-  		var lowerCaseLetters = /[a-z]/g;
-		  if(checkPassword.value.match(lowerCaseLetters)) {
-		    s_letter.classList.remove("pass_check");
-		    s_letter.classList.add("pass_valid");
-		  } else {
-		    s_letter.classList.remove("pass_valid");
-		    s_letter.classList.add("pass_check");
-		  }
-
-  		// Validate capital letters
-  		var upperCaseLetters = /[A-Z]/g;
-		  if(checkPassword.value.match(upperCaseLetters)) {
-		    s_capital.classList.remove("pass_check");
-		    s_capital.classList.add("pass_valid");
-		  } else {
-		    s_capital.classList.remove("pass_valid");
-		    s_capital.classList.add("pass_check");
-		  }
-  		// Validate numbers
-  		var specialChar = /[!@#\$%\^&\*]/g;
-		  if(checkPassword.value.match(specialChar)) {
-		    s_character.classList.remove("pass_check");
-		    s_character.classList.add("pass_valid");
-		  } else {
-		    s_character.classList.remove("pass_valid");
-		    s_character.classList.add("pass_check");
-		  }
-
-  		// Validate length
-		  if(checkPassword.value.length >= 8) {
-		    s_length.classList.remove("pass_check");
-		    s_length.classList.add("pass_valid");
-		  } else {
-		    s_length.classList.remove("pass_valid");
-		    s_length.classList.add("pass_check");
-		  }
-	}
 
     }); // end Ready
 
-	//------------------------//
-        // SELECT2 INITIALIZATION //
-        //------------------------//
+    //------------------------//
+    // SELECT2 INITIALIZATION //
+    //------------------------//
 
-        var insurance_requirement_ids = [];
-        {% for insurance_requirement in associate.insurance_requirements.all %}
-        insurance_requirement_ids.push({{ insurance_requirement.id }});
-        {% endfor %}
-        $('#insurance_requirements').val(insurance_requirement_ids);
+    var insurance_requirement_ids = [];
+    {% for insurance_requirement in associate.insurance_requirements.all %}
+    insurance_requirement_ids.push({{ insurance_requirement.id }});
+    {% endfor %}
+    $('#insurance_requirements').val(insurance_requirement_ids);
 
-        // // Populate our 'select2' chosen values.
-        var tag_ids = [];
-        {% for tag in associate.tags.all %}
-        tag_ids.push({{ tag.id }});
-        {% endfor %}
-        $('#tags').val(tag_ids);
+    // // Populate our 'select2' chosen values.
+    var tag_ids = [];
+    {% for tag in associate.tags.all %}
+    tag_ids.push({{ tag.id }});
+    {% endfor %}
+    $('#tags').val(tag_ids);
 
-        var skill_set_ids = [];
-        {% for skill_set in associate.skill_sets.all %}
-        skill_set_ids.push({{ skill_set.id }});
-        {% endfor %}
-        $('#skill_sets').val(skill_set_ids);
+    var skill_set_ids = [];
+    {% for skill_set in associate.skill_sets.all %}
+    skill_set_ids.push({{ skill_set.id }});
+    {% endfor %}
+    $('#skill_sets').val(skill_set_ids);
 
-        var vehicle_type_ids = [];
-        {% for vehicle_type in associate.vehicle_types.all %}
-        vehicle_type_ids.push({{ vehicle_type.id }});
-        {% endfor %}
-        $('#vehicle_types').val(vehicle_type_ids);
+    var vehicle_type_ids = [];
+    {% for vehicle_type in associate.vehicle_types.all %}
+    vehicle_type_ids.push({{ vehicle_type.id }});
+    {% endfor %}
+    $('#vehicle_types').val(vehicle_type_ids);
 
-        // Initialize our 'select2' element.
-        $('#insurance_requirements').select2();
-        $('#tags').select2();
-        $('#skill_sets').select2();
-        $("#vehicle_types").select2();
+    // Initialize our 'select2' element.
+    $('#insurance_requirements').select2();
+    $('#tags').select2();
+    $('#skill_sets').select2();
+    $("#vehicle_types").select2();
 </script>
 
 {% endblock content %}

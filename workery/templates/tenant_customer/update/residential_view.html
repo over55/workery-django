@@ -20,10 +20,10 @@
     $(document).ready(function () {
         // Initialize our datepicker jQuery code with our HTML view.
         $( "#birthdate" ).datepicker({
-                dateFormat: 'yy-mm-dd',
+            dateFormat: 'yy-mm-dd',
 	    	changeMonth: true,
-            	changeYear: true,
-		yearRange: "c-90:c+150",
+            changeYear: true,
+		    yearRange: "c-90:c+150",
 	        maxDate: 'today'
         });
 
@@ -52,97 +52,102 @@
             $("#is_ok_to_text2").prop("checked", true);
         {% endif %}
 
-	// THIS IS WHERE YOU CAN ADD YOUR COUNTRY/PROVINCE DROPDOWN JS CODE....
-	$(function(){
-	  $('#address_country').change(function(){
-	    loadState($(this).find(':selected').val())
-	  });
-	  {% if customer.address_country == 'Canada' %}loadState('CA');{% else %}loadState('{{customer.address_country}}');{% endif %}
-    	});
+        // THIS IS WHERE YOU CAN ADD YOUR COUNTRY/PROVINCE DROPDOWN JS CODE....
+    	$(function(){
+    	    $('#address_country').change(function(){
+    	        loadState($(this).find(':selected').val())
+    	    });
+            loadState('{{ customer.address_country }}');
+        });
 
-	let c_dropdown = $('#address_country');
-	c_dropdown.empty();
-	c_dropdown.append('<option selected="true" disabled>Choose Country</option>');
-	{% if customer.address_country %}c_dropdown.val('{{customer.address_country}}');{% else %}c_dropdown.prop('selectedIndex', 1);{% endif %}
+        let c_dropdown = $('#address_country');
+    	c_dropdown.empty();
+    	c_dropdown.append('<option selected="true" disabled>Choose Country</option>');
 
-	const state = "{% url 'workery_get_provinces_api_endpoint' %}?format=json";
+        {% if customer.address_country %}
+            c_dropdown.val('{{customer.address_country}}');
+        {% else %}
+            c_dropdown.prop('selectedIndex', 1);
+        {% endif %}
+
+    	const state = "{% url 'workery_get_provinces_api_endpoint' %}?format=json";
         const country = "{% url 'workery_get_countries_api_endpoint' %}?format=json";
 
-	console.log(state);
+    	console.log(state);
         console.log(country); // KANWAR - PLEASE IMPLEMENT.
 
-	// Populate dropdown with list of countries
-	$.getJSON(country, function (data) {
-	  $.each(data, function (key, entry) {
-	    	c_dropdown.append($('<option></option>').attr('value', entry.code).text(entry.country));
-	  })
-	});
+    	// Populate dropdown with list of countries
+    	$.getJSON(country, function (data) {
+    	    $.each(data, function (key, entry) {
+    	       c_dropdown.append($('<option></option>').attr('value', entry.code).text(entry.country));
+    	    })
+    	});
 
-	function loadState(countryId){
-		let p_dropdown = $('#address_region');
-		p_dropdown.empty();
-		p_dropdown.append('<option selected="true" disabled>Choose State/Province</option>');
-		p_dropdown.prop('selectedIndex', 0);
-		// Populate dropdown with list of provinces
-		$.getJSON(state, function (data) {
-		  $.each(data, function (key, entry) {
-		    if(entry.country == countryId){
-		    	p_dropdown.append($('<option></option>').attr('value', entry.short).text(entry.name));
-		    }
-		  })
-		});
+        function loadState(countryId){
+            let p_dropdown = $('#address_region');
+    		p_dropdown.empty();
+    		p_dropdown.append('<option selected="true" disabled>Choose State/Province</option>');
+    		p_dropdown.prop('selectedIndex', 0);
+    		// Populate dropdown with list of provinces
+    		$.getJSON(state, function (data) {
+    		  $.each(data, function (key, entry) {
+    		    if(entry.country == countryId){
+    		    	p_dropdown.append($('<option></option>').attr('value', entry.short).text(entry.name));
+    		    }
+    		  })
+    		});
 
-		{% if customer.address_region == 'Ontario' %}p_dropdown.prop('selectedIndex', 1);{% else %}p_dropdown.val('{{customer.address_region}}');{% endif %}
+    		p_dropdown.val('{{ customer.address_region }}');
+        }
+
+        /**
+    	 *  Password Strength Check Validation.
+    	 */
+    	var checkPassword = document.getElementById("password");
+    	var s_letter = document.getElementById("s_lowercase");
+    	var s_capital = document.getElementById("s_uppercase");
+    	var s_character = document.getElementById("s_special");
+    	var s_length = document.getElementById("min_char");
+    	// When the user starts to type something inside the password field
+    	checkPassword.onkeyup = function() {
+      		// Validate lowercase letters
+      		var lowerCaseLetters = /[a-z]/g;
+    		  if(checkPassword.value.match(lowerCaseLetters)) {
+    		    s_letter.classList.remove("pass_check");
+    		    s_letter.classList.add("pass_valid");
+    		  } else {
+    		    s_letter.classList.remove("pass_valid");
+    		    s_letter.classList.add("pass_check");
+    		  }
+
+      		// Validate capital letters
+      		var upperCaseLetters = /[A-Z]/g;
+    		  if(checkPassword.value.match(upperCaseLetters)) {
+    		    s_capital.classList.remove("pass_check");
+    		    s_capital.classList.add("pass_valid");
+    		  } else {
+    		    s_capital.classList.remove("pass_valid");
+    		    s_capital.classList.add("pass_check");
+    		  }
+      		// Validate numbers
+      		var specialChar = /[!@#\$%\^&\*]/g;
+    		  if(checkPassword.value.match(specialChar)) {
+    		    s_character.classList.remove("pass_check");
+    		    s_character.classList.add("pass_valid");
+    		  } else {
+    		    s_character.classList.remove("pass_valid");
+    		    s_character.classList.add("pass_check");
+    		  }
+
+      		// Validate length
+    		  if(checkPassword.value.length >= 8) {
+    		    s_length.classList.remove("pass_check");
+    		    s_length.classList.add("pass_valid");
+    		  } else {
+    		    s_length.classList.remove("pass_valid");
+    		    s_length.classList.add("pass_check");
+    		  }
     	}
-
-	/**
-	 *  Password Strength Check Validation.
-	 */
-	var checkPassword = document.getElementById("password");
-	var s_letter = document.getElementById("s_lowercase");
-	var s_capital = document.getElementById("s_uppercase");
-	var s_character = document.getElementById("s_special");
-	var s_length = document.getElementById("min_char");
-	// When the user starts to type something inside the password field
-	checkPassword.onkeyup = function() {
-  		// Validate lowercase letters
-  		var lowerCaseLetters = /[a-z]/g;
-		  if(checkPassword.value.match(lowerCaseLetters)) {
-		    s_letter.classList.remove("pass_check");
-		    s_letter.classList.add("pass_valid");
-		  } else {
-		    s_letter.classList.remove("pass_valid");
-		    s_letter.classList.add("pass_check");
-		  }
-
-  		// Validate capital letters
-  		var upperCaseLetters = /[A-Z]/g;
-		  if(checkPassword.value.match(upperCaseLetters)) {
-		    s_capital.classList.remove("pass_check");
-		    s_capital.classList.add("pass_valid");
-		  } else {
-		    s_capital.classList.remove("pass_valid");
-		    s_capital.classList.add("pass_check");
-		  }
-  		// Validate numbers
-  		var specialChar = /[!@#\$%\^&\*]/g;
-		  if(checkPassword.value.match(specialChar)) {
-		    s_character.classList.remove("pass_check");
-		    s_character.classList.add("pass_valid");
-		  } else {
-		    s_character.classList.remove("pass_valid");
-		    s_character.classList.add("pass_check");
-		  }
-
-  		// Validate length
-		  if(checkPassword.value.length >= 8) {
-		    s_length.classList.remove("pass_check");
-		    s_length.classList.add("pass_valid");
-		  } else {
-		    s_length.classList.remove("pass_valid");
-		    s_length.classList.add("pass_check");
-		  }
-	}
 
     }); // end Ready
 
