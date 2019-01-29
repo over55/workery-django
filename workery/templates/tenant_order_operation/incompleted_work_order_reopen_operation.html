@@ -2,7 +2,7 @@
 {% load staticfiles i18n humanize shared_foundation_tags %}
 
 {% block title %}
-{% trans 'Postpone Job | Workery' %}
+{% trans 'Re-open Job | Workery' %}
 {% endblock title %}
 
 {% block header_content %}
@@ -15,23 +15,7 @@
      *  When page loads, the following code will be run first.
      */
     $(document).ready(function () {
-        // PLUG IN EVENT LISTENER ON REASON DROPDOWN CHANGE.
-        $('#reason').on('change',function(){
-            if( $(this).val()==="other" || $(this).val()===1){
-                $("#reason_other_div").show();
-            }
-            else if( $(this).val()==="4" || $(this).val()===4){
-                $("#reason_other_div").hide();
-            }
-            else{
-                $("#reason_other_div").hide();
-            }
-        });
-
-        // Initialize our datepicker jQuery code with our HTML view.
-        $( "#start_date" ).datepicker({
-            dateFormat: 'yy-mm-dd',
-        });
+        // Do nothing.
     });
 
     function click_cancel_button() {
@@ -48,20 +32,11 @@
 
     //
     function click_submit_button() {
-        // If there was another reason, track it down.
-        var reason = $('#reason').val();
-        if ( reason == 'other' ) {
-            reason = 1;
-        }
-
         // Submit to our API web-service.
-        post_order_postpone_operation_api(
+        post_order_reopen_operation_api(
             {
                 'job': {{ job.id }},
-                'reason': reason,
-                'reason_other': $('#reason_other').val(),
-                'start_date': $('#start_date').val(),
-                'additional_comment': $('#comment').val(),
+                'reason': $('#comment').val(),
             },
             function(result_dict) { // Success
                 // FOR DEBUGGING PURPOSES ONLY.
@@ -69,9 +44,9 @@
 
                 // REDIRECT TO SUCCESS PAGE.
                 {% if template == 'task' %}
-                window.location = "{% url 'workery_tenant_task_list' %}?was_postponed=True";
+                   window.location = "{% url 'workery_tenant_task_list' %}?was_closed=True";
                 {% else %}
-                window.location = "{% url 'workery_tenant_job_retrieve' template job.id %}?was_closed=True";
+                    window.location = "{% url 'workery_tenant_job_retrieve' template job.id %}?was_closed=True";
                 {% endif %}
             },
             function(xhr,status,error) { // Error
@@ -123,14 +98,14 @@
             </li>
             <li class="breadcrumb-item">{% trans 'Search Results' %}</li>
             <li class="breadcrumb-item"><a href="{% url 'workery_tenant_job_retrieve' template job.id %}">{% trans 'Job #' %}{{ object.id|intcomma }}</a></li>
-            <li class="breadcrumb-item active" aria-current="page">{% trans 'Postpone Job' %}</li>
+            <li class="breadcrumb-item active" aria-current="page">{% trans 'Unassigning Associate from Job' %}</li>
 
             {% elif template == 'task' %}
 
             <li class="breadcrumb-item"><a href="{% url 'workery_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
             <li class="breadcrumb-item"><a href="{% url 'workery_tenant_task_list' %}">{% trans 'Pending Tasks' %}</a></li>
             <li class="breadcrumb-item"><a href="{% url 'workery_tenant_pending_task_retrieve' parameters.task_id %}">{% trans 'Task #' %}{{ parameters.task_id|intcomma }}</a></li>
-            <li class="breadcrumb-item active" aria-current="page">{% trans 'Postpone Job' %}</li>
+            <li class="breadcrumb-item active" aria-current="page">{% trans 'Unassigning Associate from Job' %}</li>
 
             {% elif template == 'list' %}
 
@@ -138,14 +113,14 @@
             <li class="breadcrumb-item"><a href="{% url 'workery_tenant_job_summary' %}">{% trans 'Jobs' %}</a></li>
             <li class="breadcrumb-item"><a href="{% url 'workery_tenant_job_list' %}">{% trans 'List' %}</a></li>
             <li class="breadcrumb-item"><a href="{% url 'workery_tenant_job_retrieve' template job.id %}">{% trans 'Job #' %}{{ object.id|intcomma }}</a></li>
-            <li class="breadcrumb-item active" aria-current="page">{% trans 'Postpone Job' %}</li>
+            <li class="breadcrumb-item active" aria-current="page">{% trans 'Unassigning Associate from Job' %}</li>
 
             {% else %}
 
             <li class="breadcrumb-item"><a href="{% url 'workery_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
             <li class="breadcrumb-item"><a href="{% url 'workery_tenant_job_summary' %}">{% trans 'Jobs' %}</a></li>
             <li class="breadcrumb-item"><a href="{% url 'workery_tenant_job_retrieve' template job.id %}">{% trans 'Job #' %}{{ object.id|intcomma }}</a></li>
-            <li class="breadcrumb-item active" aria-current="page">{% trans 'Postpone Job' %}</li>
+            <li class="breadcrumb-item active" aria-current="page">{% trans 'Unassigning Associate from Job' %}</li>
 
             {% endif %}
 	  	</ol>
@@ -167,7 +142,7 @@
     <!------------------------------------------------------------------------->
     <!-- end NOTIFICATION -->
 
-    <h1 id="id_page_title">{% trans 'Postpone Job' %}</h1>
+    <h1 id="id_page_title">{% trans 'Re-open Job' %}</h1>
 
     <div class="container">
         <div class="row align-items-start">
@@ -182,48 +157,17 @@
                     <div id="all_error_result" name="all_error_result"></div>
                     <!-- end Error Output -->
 
-                    <p><span class="text-secondary font-italic"><sup>*</sup>&nbsp;-&nbsp;Indicates required field to fill out.</span></p>
+                    <p>
+                        <span class="text-secondary font-italic"><sup>*</sup>&nbsp;-&nbsp;Indicates required field to fill out.</span>
+                    </p>
                     <form id="add-client-form" method="post" class="needs-validation" action="" novalidate>
                         <div class="form-row">
                             <div class="form-row">
 
-                                <!-- REASON -->
-                                <div class="form-group col-md-12 mb-4">
-                                    <label for="reason">Why was this job postponed?&nbsp;<sup>*</sup></label>
-                                    <select class="form-control form-control-lg border border-primary" id="reason" name="reason" required="">
-                                        <option value="0" selected="selected">Please select reason</option>
-                                        <option value="2">Client needs more time</option>
-                                        <option value="3">Associate needs more time</option>
-                                        <option value="4">Weather</option>
-                                        <option value="other">Other</option>
-                                    </select>
-                                    <div id="reason-error" class="invalid-feedback"></div>
-                                </div>
-                                <!-- end REASON -->
-
-                                <!-- REASON (OTHER) -->
-                                <div class="form-group col-md-12 mb-4" id="reason_other_div" style="display: none;">
-                                    <label for="reason_other">Reason (Other) <sup>*</sup></label>
-                                    <input type="text" class="form-control form-control-lg border border-primary" id="reason_other" name="reason_other" placeholder="Text" minlength="3" value="">
-                                    <div id="reason_other-error" class="invalid-feedback"></div>
-                                </div>
-                                <!-- end REASON (OTHER) -->
-
-                                <div class="form-group p-0 col-md-7 mb-4">
-                                    <label for="start_date">Start date&nbsp;<sup>*</sup></label>
-                                    <div class="input-group input-group-lg">
-                                        <input type="text" class="form-control form-control-lg border border-success" id="start_date" name="start_date" placeholder="yyyy-mm-dd" required>
-                                        <div class="input-group-append">
-                                            <span class="input-group-text start_date-icon bg-success border-success"><i class="far fa-calendar-alt"></i></span>
-                                        </div>
-                                        <div id="start_date-error" class="invalid-feedback"></div>
-                                    </div>
-                                </div>
-
                                 <!-- COMMENTS -->
                                 <div class="form-group col-md-12 mb-4">
-                                    <label for="comment">Additional Comments:</label>
-                                    <textarea class="form-control form-control-lg border border-primary" id="comment" name="comment" placeholder="Write a note here..." rows="4" required></textarea>
+                                    <label for="comment">Please write the reason why you are re-opening this job:&nbsp;<sup>*</sup></label>
+                                    <textarea class="form-control form-control-lg border border-primary" id="comment" name="comment" placeholder="Write your reason here..." rows="4" required></textarea>
                                     <div id="comment-error" class="invalid-feedback"></div>
                                 </div>
                                 <!-- end COMMENTS -->
@@ -237,7 +181,7 @@
 
                         <!-- ADD -->
                         <button id="id_submit_btn"
-                             class="btn btn-success btn-lg mt-4 float-right pl-4 pr-4"
+                             class="btn btn-primary btn-lg mt-4 float-right pl-4 pr-4"
                               type="button"
                            onclick="click_submit_button();">
                             <i class="fas fa-check-circle"></i> &nbsp;Save</button>

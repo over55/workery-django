@@ -275,7 +275,7 @@
         <div class="row">
             <!-- end POSTPONE BUTTON -->
             <div class="col-sm-4">
-                <a href="{% url 'workery_tenant_job_retrieve_for_reopen_create' template job.id %}">
+                <a href="{% url 'workery_tenant_job_reopen_operation' job.id %}?return_id={{ template }}">
                 <button  id="id_submit_btn"
                     class="btn btn-primary btn-lg btn-fxw mt-4"
                     type="button">

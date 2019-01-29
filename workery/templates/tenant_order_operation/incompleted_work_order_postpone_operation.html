@@ -146,7 +146,7 @@
 
             <li class="breadcrumb-item"><a href="{% url 'workery_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
             <li class="breadcrumb-item"><a href="{% url 'workery_tenant_task_list' %}">{% trans 'Pending Tasks' %}</a></li>
-            <li class="breadcrumb-item"><a href="{% url 'workery_tenant_pending_task_retrieve' return_obj_id %}">{% trans 'Task #' %}{{ parameters.task_id|intcomma }}</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'workery_tenant_pending_task_retrieve' return_obj_id %}">{% trans 'Task #' %}{{ return_obj_id|intcomma }}</a></li>
             <li class="breadcrumb-item active" aria-current="page">{% trans 'Postpone Job' %}</li>
 
             {% elif return_id == 'list' %}
