@@ -1,10 +1,11 @@
+{% load staticfiles i18n humanize tz shared_foundation_tags %}
 Attention staff,
 
-The following away log item at id # {{ away_log.id }} will be removed from the away list as of {{ tenant_todays_date }}.
+The following away log item at id # {{ away_log_object.id }} will be removed from the away list as of {{ tenant_todays_date|timezone:franchise.timezone_name }}.
 
-ID #{{ away_log.id }}
-Associate ID #{{ away_log.associate.id }}
-Reason {{ away_log.reason }}
-Other {{ away_log.reason_other }}
-Until Further Notice {{ away_log.until_further_notice }}
-Until: {{ away_log.until_date }}
+ID #{{ away_log_object.id }}
+Associate ID #{{ away_log_object.associate.id }}
+Reason {{ away_log_object.reason }}
+Other {{ away_log_object.reason_other }}
+Until Further Notice {{ away_log_object.until_further_notice }}
+Until: {{ away_log_object.until_date|timezone:franchise.timezone_name }}
