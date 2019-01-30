@@ -81,6 +81,7 @@
         <table class="table table-striped">
             <thead>
                 <tr>
+                    <th></th>
                     <th>{% trans 'Job #' %}&nbsp;<i class="fas fa-external-link-alt"></i></th>
                     <th>{% trans 'Client' %}&nbsp;<i class="fas fa-external-link-alt"></i></th>
                     <th>{% trans 'Associate' %}&nbsp;<i class="fas fa-external-link-alt"></i></th>
@@ -94,6 +95,20 @@
             <tbody>
                 {% for job_item in job_list %}
                 <tr>
+                    <td>
+                        {% if job_item.customer.state == CUSTOMER_STATE.INACTIVE %}
+                            <i class="fa fa-frown fa-lg"></i>
+                        {% else %}
+                            {% if job_item.customer.type_of == tenant_constants.RESIDENTIAL_CUSTOMER_TYPE_OF_ID %}
+                                <i class="fa fa-home fa-lg"></i>
+                            {% elif job_item.customer.type_of == tenant_constants.COMMERCIAL_CUSTOMER_TYPE_OF_ID %}
+                                <i class="fa fa-briefcase fa-lg"></i>
+                            {% else %}
+                                <i class="fa fa-question fa-lg"></i>
+                            {% endif %}
+                        {% endif %}
+                        {% if job_item.is_ongoing %}<i class="fa fa-redo fa-lg"></i>{% endif %}
+                    </td>
                     <td id="selected_order_id">
                         <a href="{% url 'workery_tenant_job_retrieve' 'summary' job_item.id %}" target="_blank">{{ job_item.id|intcomma }}</a>
                     </td>
