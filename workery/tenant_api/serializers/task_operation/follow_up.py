@@ -130,8 +130,8 @@ class FollowUpTaskOperationSerializer(serializers.Serializer):
                 if task_item.job.is_ongoing or task_item.ongoing_job != None:
                     title = _('Survey / Ongoing')
 
-            # Rational: We want to ask the customer 24 hours AFTER the client meeting data.
-            meeting_date = get_date_plus_days(meeting_date, 1)
+            # Rational: We want to ask the customer after 7 days AFTER the client meeting data.
+            meeting_date = get_date_plus_days(meeting_date, 7)
 
             # STEP 5 - Create our new task for following up.
             next_task_item = TaskItem.objects.create(
