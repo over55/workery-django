@@ -9,7 +9,7 @@ from tenant_api.views.awaylog import AwayLogListCreateAPIView, AwayLogRetrieveUp
 # from tenant_api.views.comment import CommentListCreateAPIView, CommentRetrieveUpdateDestroyAPIView
 from tenant_api.views.customer import CustomerListCreateAPIView, CustomerRetrieveUpdateDestroyAPIView, CustomerCreateValidationAPIView
 from tenant_api.views.customer_comment import CustomerCommentListCreateAPIView
-from tenant_api.views.customer_operation import CustomerBlacklistOperationCreateAPIView, ResidentialCustomerUpgradeOperationCreateAPIView
+from tenant_api.views.customer_operation import CustomerDeactivateOperationCreateAPIView, ResidentialCustomerUpgradeOperationCreateAPIView
 from tenant_api.views.insurance_requirement import InsuranceRequirementListCreateAPIView, InsuranceRequirementRetrieveUpdateDestroyAPIView
 from tenant_api.views.order_crud import (
    WorkOrderListCreateAPIView,
@@ -63,7 +63,7 @@ urlpatterns = [
     url(r'^api/customer-comments$', CustomerCommentListCreateAPIView.as_view(), name='workery_customer_comment_list_create_api_endpoint'),
 
     # Customers - Operations
-    url(r'^api/customers/operation/blacklist$', CustomerBlacklistOperationCreateAPIView.as_view(), name='workery_blacklist_customer_operation_create_api_endpoint'),
+    url(r'^api/customers/operation/deactivation$', CustomerDeactivateOperationCreateAPIView.as_view(), name='workery_deactivation_customer_operation_create_api_endpoint'),
     url(r'^api/customers/operation/upgrade-residential$', ResidentialCustomerUpgradeOperationCreateAPIView.as_view(), name='workery_residential_customer_upgrade_operation_api_endpoint'),
 
     # Insurance Requirements

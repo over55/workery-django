@@ -8,6 +8,14 @@
                 <tr class="bg-dark text-white">
                     <th scope="row" colspan="2">Personal Information</th>
                 </tr>
+                {% if customer.state == CUSTOMER_STATE.INACTIVE %}
+                <tr>
+                    <th scope="row" class="bg-light">Deactivation Reason</th>
+                    <td id="state_inactive">
+                        {{ customer.get_deactivation_reason }}
+                    </td>
+                </tr>
+                {% endif %}
                 <tr>
                     <th scope="row" class="bg-light">First Name</th>
                     <td id="given_name">

@@ -36,17 +36,21 @@ from tenant_foundation.models import (
 logger = logging.getLogger(__name__)
 
 
-class CustomerBlacklistOperationCreateSerializer(serializers.Serializer):
+class CustomerDeactivateOperationCreateSerializer(serializers.Serializer):
     customer = serializers.PrimaryKeyRelatedField(many=False, queryset=Customer.objects.all(), required=True)
-    is_blacklisted = serializers.BooleanField(required=True,)
-    reason = serializers.CharField(required=True, allow_blank=False)
+    state = serializers.CharField(required=True, allow_blank=False)
+    deactivation_reason = serializers.CharField(required=True, allow_blank=False)
+    deactivation_reason_other = serializers.CharField(required=True, allow_blank=True)
+    comment = serializers.CharField(required=True, allow_blank=False)
 
     # Meta Information.
     class Meta:
         fields = (
             'customer',
-            'is_blacklisted',
-            'reason',
+            'state',
+            'deactivation_reason',
+            'deactivation_reason_other',
+            'comment',
         )
 
     @transaction.atomic
@@ -54,39 +58,50 @@ class CustomerBlacklistOperationCreateSerializer(serializers.Serializer):
         """
         Override the `create` function to add extra functinality.
         """
-        #-------------------------#
-        # Get validated POST data #
-        #-------------------------#
-        customer = validated_data.get('customer', None)
-        is_blacklisted = validated_data.get('is_blacklisted', True)
-        reason = validated_data.get('reason', None)
+        #-----------------------------------#
+        # Get validated POST & context data #
+        #-----------------------------------#
+        customer = validated_data.get('customer')
+        state = validated_data.get('state')
+        deactivation_reason = validated_data.get('deactivation_reason', None)
+        deactivation_reason_other = validated_data.get('deactivation_reason_other', None)
+        comment_text = validated_data.get('comment')
+        user = self.context['user']
+        from_ip = self.context['from']
+        from_is_public = self.context['from_is_public']
 
         #------------------------------------------#
         # Create any comments explaining decision. #
         #------------------------------------------#
         comment_obj = Comment.objects.create(
-            created_by=self.context['user'],
-            last_modified_by=self.context['user'],
-            text=reason,
-            created_from = self.context['from'],
-            created_from_is_public = self.context['from_is_public']
+            text = comment_text,
+            created_by = user,
+            created_from = from_ip,
+            created_from_is_public = from_is_public,
+            last_modified_by = user,
+            last_modified_from = from_ip,
+            last_modified_from_is_public = from_is_public,
         )
         CustomerComment.objects.create(
             about=customer,
             comment=comment_obj,
         )
+        # For debugging purposes only.
+        logger.info("Customer comment created.")
 
         #-------------------------#
         # Update customer object. #
         #-------------------------#
-        customer.is_blacklisted = is_blacklisted
-        customer.last_modified_by = self.context['user']
-        customer.last_modified_from = self.context['from']
-        customer.last_modified_from_is_public = self.context['from_is_public']
+        customer.state = state
+        customer.deactivation_reason = deactivation_reason
+        customer.deactivation_reason_other = deactivation_reason_other
+        customer.last_modified_by = user
+        customer.last_modified_from = from_ip
+        customer.last_modified_from_is_public = from_is_public
         customer.save()
 
         # For debugging purposes only.
-        logger.info("Customer comment created.")
+        logger.info("Customer updated state.")
 
         # Return the validated results.
         return validated_data

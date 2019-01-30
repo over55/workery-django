@@ -78,7 +78,7 @@
                 {% for customer in customer_list %}
                 <tr>
                     <td>
-                        {% if customer.is_blacklisted %}
+                        {% if customer.state == CUSTOMER_STATE.INACTIVE %}
                             <i class="fa fa-frown fa-lg"></i>
                         {% else %}
                             {% if customer.type_of == tenant_constants.RESIDENTIAL_CUSTOMER_TYPE_OF_ID %}

@@ -2,7 +2,11 @@
 {% load staticfiles i18n humanize shared_foundation_tags %}
 
 {% block title %}
-{% trans 'Client Details | Workery' %}
+{% if customer.state == CUSTOMER_STATE.INACTIVE %}
+    {% trans 'Activate Client | Workery' %}
+{% else %}
+    {% trans 'Deactivate Client | Workery' %}
+{% endif %}
 {% endblock title %}
 
 {% block header_content %}
@@ -15,7 +19,24 @@
      *  When page loads, the following code will be run first.
      */
     $(document).ready(function () {
+        {% if customer.state == CUSTOMER_STATE.INACTIVE %}
+            // Automatically hide this option.
+            $('#id_reason_div').hide();
+            $('#id_reason_other_div').hide();
+        {% else %}
+            $('#id_reason_div').show();
+            $('#id_reason_other_div').hide();
+        {% endif %}
+
         // Do nothing.
+        $('#id_reason').change(function () {
+            var reason = $('#id_reason').val();
+            if (reason == 1) {
+                $('#id_reason_other_div').show();
+            } else {
+                $('#id_reason_other_div').hide();
+            }
+        });
     });
 
     function click_cancel_button() {
@@ -24,12 +45,32 @@
 
     //
     function click_submit_button() {
+        // Adjust the state based on the current `state` position.
+        {% if customer.state == CUSTOMER_STATE.INACTIVE %}
+            var state = '{{ CUSTOMER_STATE.ACTIVE }}';
+        {% else %}
+            var state = '{{ CUSTOMER_STATE.INACTIVE }}';
+        {% endif %}
+
+        // Get our input based on context of the customer `state`.
+        {% if customer.state == CUSTOMER_STATE.INACTIVE %}
+            var deactivation_reason = {{ DEACTIVATION_REASON.NOT_SPECIFIED }};
+        {% else %}
+            var deactivation_reason = $('#id_reason').val();
+        {% endif %}
+        var deactivation_reason_other = $('#id_reason_other').val();
+        var comment = $('#id_comment').val();
+
+        disable_btn(); // Disable the submit button.
+
         // Submit to our API web-service.
-        blacklist_customer_api(
+        deactivate_customer_operation_api(
             {
                 'customer': {{ customer.id }},
-                'is_blacklisted': {% if customer.is_blacklisted %}false{% else %}true{% endif %},
-                'reason': $('#comment').val(),
+                'state': state,
+                'deactivation_reason': deactivation_reason,
+                'deactivation_reason_other': deactivation_reason_other,
+                'comment': comment,
             },
             function(result_dict) { // Success
                 // FOR DEBUGGING PURPOSES ONLY.
@@ -39,6 +80,8 @@
                 window.location = "{% url 'workery_tenant_customer_full_retrieve' template customer.pk %}?was_modified=True";
             },
             function(xhr,status,error) { // Error
+                enable_btn(); // Enable the GUI button.
+
                 // STEP 1: Convert to JSON.
                 var err = JSON.parse(xhr.responseText);
 
@@ -61,10 +104,23 @@
                 $('html, body').animate({ scrollTop: $('#id_page_title').offset().top }, 'slow');
             },
             function() { // Finally
-                // UNLOCK THE "SUBMIT" BUTTON TO BE AVAILABLE FOR USAGE.
-                // enable_btn();
+                // Do nothing.
             }
         );
+    }
+
+    /**
+     *  Function will unlock the submit button.
+     */
+    function disable_btn() {
+        $('#id_submit_btn').prop("disabled", true);
+    }
+
+    /**
+     *  Function will lock the submit button.
+     */
+    function enable_btn() {
+        $('#id_submit_btn').prop("disabled", false);
     }
 </script>
 
@@ -87,7 +143,13 @@
             </li>
             <li class="breadcrumb-item active">{% trans 'Search Results' %}</li>
             <li class="breadcrumb-item"><a href="{% url 'workery_tenant_customer_full_retrieve' template customer.id %}">{% trans 'Client #' %}{{ customer.id|intcomma }}</a></li>
-            <li class="breadcrumb-item active" aria-current="page">{% trans 'Blacklist' %}</li>
+            <li class="breadcrumb-item active" aria-current="page">
+                {% if customer.state == CUSTOMER_STATE.INACTIVE %}
+                    {% trans 'Activate Client' %}
+                {% else %}
+                    {% trans 'Deactivate Client' %}
+                {% endif %}
+            </li>
 
             {% elif template == 'list' %}
 
@@ -95,14 +157,26 @@
             <li class="breadcrumb-item"><a href="{% url 'workery_tenant_customer_summary' %}">{% trans 'Clients' %}</a></li>
             <li class="breadcrumb-item"><a href="{% url 'workery_tenant_customer_list' %}">{% trans 'List' %}</a></li>
             <li class="breadcrumb-item"><a href="{% url 'workery_tenant_customer_full_retrieve' template customer.id %}">{% trans 'Client #' %}{{ customer.id|intcomma }}</a></li>
-            <li class="breadcrumb-item active" aria-current="page">{% trans 'Blacklist' %}</li>
+            <li class="breadcrumb-item active" aria-current="page">
+                {% if customer.state == CUSTOMER_STATE.INACTIVE %}
+                    {% trans 'Activate Client' %}
+                {% else %}
+                    {% trans 'Deactivate Client' %}
+                {% endif %}
+            </li>
 
             {% else %}
 
 	    	<li class="breadcrumb-item"><a href="{% url 'workery_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
             <li class="breadcrumb-item"><a href="{% url 'workery_tenant_customer_summary' %}">{% trans 'Clients' %}</a></li>
             <li class="breadcrumb-item"><a href="{% url 'workery_tenant_customer_full_retrieve' template customer.id %}">{% trans 'Client #' %}{{ customer.id|intcomma }}</a></li>
-            <li class="breadcrumb-item active" aria-current="page">{% trans 'Blacklist' %}</li>
+            <li class="breadcrumb-item active" aria-current="page">
+                {% if customer.state == CUSTOMER_STATE.INACTIVE %}
+                    {% trans 'Activate Client' %}
+                {% else %}
+                    {% trans 'Deactivate Client' %}
+                {% endif %}
+            </li>
 
             {% endif %}
 	  	</ol>
@@ -110,14 +184,20 @@
     <!------------------------------------------------------------------------->
     <!-- end BREADCRUMB -->
 
-    <h1 id="id_page_title">{% trans 'Blacklist Customer' %}</h1>
+    <h1 id="id_page_title">
+        {% if customer.state == CUSTOMER_STATE.INACTIVE %}
+            {% trans 'Activate Client' %}
+        {% else %}
+            {% trans 'Deactivate Client' %}
+        {% endif %}
+    </h1>
 
     <div class="container">
         <div class="row align-items-start">
-            {% if customer.is_blacklisted %}
-                <p>You are about to <strong>remove the client from the blacklist</strong>. While this is great, please explain why this customer is being removed from the blacklist.</p>
+            {% if customer.state == CUSTOMER_STATE.INACTIVE %}
+                <p>You are about to <strong>activate the client</strong>. While this is great, please explain why this client is being activated again.</p>
             {% else %}
-                <p>You are about to <strong>add the client to the blacklist</strong>. This is unfortunate, please write the reason so when staff lookup this customer they will see the reasoning.</p>
+                <p>You are about to <strong>deactivate the client</strong>. This is unfortunate, please write the reason so when staff lookup this client they will see the reasoning.</p>
             {% endif %}
 
             <!-- FORM -->
@@ -137,10 +217,33 @@
                         <div class="form-row">
                             <div class="form-row">
 
+                                <!-- REASON -->
+                                <div class="form-group col-md-7 mb-4 p-0" id="id_reason_div">
+                                    <label for="reason">Reason</label>
+                                    <select class="custom-select form-control-lg border-primary" id="id_reason" name="reason" required>
+                                        <option value="" selected>Reason...</option>
+                                        <option value="{{ DEACTIVATION_REASON.BLACKLISTED }}">Client is blacklisted</option>
+                                        <option value="{{ DEACTIVATION_REASON.MOVED }}">Client has moved</option>
+                                        <option value="{{ DEACTIVATION_REASON.DECEASED }}">Client is deceased</option>
+                                        <option value="{{ DEACTIVATION_REASON.DO_NOT_CONTACT }}">Client does not want us to contact them</option>
+                                        <option value="{{ DEACTIVATION_REASON.OTHER }}">Other</option>
+                                    </select>
+                                    <div id="reason-error" class="invalid-feedback"></div>
+                                </div>
+                                <!-- end REASON -->
+
+                                <!-- REASON OTHER -->
+                                <div class="form-group col-md-12 mb-4" id="id_reason_other_div">
+                                    <label for="reason-other">Reason (other):&nbsp;<sup>*</sup></label>
+                                    <textarea class="form-control form-control-lg border border-primary" id="id_reason_other" name="reason-other" placeholder="Write your reason here..." rows="4" required></textarea>
+                                    <div id="reason-other-error" class="invalid-feedback"></div>
+                                </div>
+                                <!-- end REASON OTHER -->
+
                                 <!-- COMMENTS -->
                                 <div class="form-group col-md-12 mb-4">
                                     <label for="comment">Please write the reason:&nbsp;<sup>*</sup></label>
-                                    <textarea class="form-control form-control-lg border border-primary" id="comment" name="comment" placeholder="Write your reason here..." rows="4" required></textarea>
+                                    <textarea class="form-control form-control-lg border border-primary" id="id_comment" name="comment" placeholder="Write your reason here..." rows="4" required></textarea>
                                     <div id="comment-error" class="invalid-feedback"></div>
                                 </div>
                                 <!-- end COMMENTS -->

@@ -91,7 +91,7 @@
                 {% for job in job_list %}
                 <tr>
                     <td>
-                        {% if job.customer.is_blacklisted %}
+                        {% if job.customer.state == CUSTOMER_STATE.INACTIVE %}
                             <i class="fa fa-frown fa-lg"></i>
                         {% else %}
                             {% if job.customer.type_of == tenant_constants.RESIDENTIAL_CUSTOMER_TYPE_OF_ID %}
@@ -109,8 +109,8 @@
                         {% if job.customer %}
                             <a href="{% url 'workery_tenant_customer_lite_retrieve' 'summary' job.customer.id %}" target="_blank">
                                 {{ job.customer }}
-                                {% if job.customer.is_blacklisted %}
-                                    <strong>(Blacklisted)</strong>
+                                {% if job.customer.state == CUSTOMER_STATE.INACTIVE %}
+                                    <strong>(Deactivated)</strong>
                                 {% endif %}
                             </a>
                         {% else %}-{% endif %}

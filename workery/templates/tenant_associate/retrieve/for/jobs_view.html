@@ -204,7 +204,7 @@
                             </td>
                             <td>
                                 {% if job.customer %}
-                                    <a href="{% url 'workery_tenant_customer_lite_retrieve' 'summary' job.customer.id %}" target="_blank">{{ job.customer }}&nbsp;{% if job.customer.is_blacklisted %}&nbsp;(<i class="fas fa-frown"></i>&nbsp;{% trans 'Blacklisted' %}){% endif %}</a>
+                                    <a href="{% url 'workery_tenant_customer_lite_retrieve' 'summary' job.customer.id %}" target="_blank">{{ job.customer }}&nbsp;{% if job.customer.state == CUSTOMER_STATE.INACTIVE %}&nbsp;(<i class="fas fa-frown"></i>&nbsp;{% trans 'Deactivated' %}){% endif %}</a>
                                 {% else %}-{% endif %}
                             </td>
                             <td>{% if job.assignment_date %}{{ job.assignment_date }}{% else %}-{% endif %}</td>

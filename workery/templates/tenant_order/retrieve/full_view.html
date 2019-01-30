@@ -130,8 +130,8 @@
 				    {% if job.customer %}
                        <a href="{% url 'workery_tenant_customer_lite_retrieve' template job.customer.id %}" target="_blank">
                            {{ job.customer }}
-                           {% if job.customer.is_blacklisted %}
-                               &nbsp;<strong>(<i class="fa fa-frown fa-lg"></i>&nbsp;Blacklisted)</strong>
+                           {% if job.customer.state == CUSTOMER_STATE.INACTIVE %}
+                               &nbsp;<strong>(<i class="fa fa-frown fa-lg"></i>&nbsp;Deactivated)</strong>
                            {% endif %}
                            &nbsp;<i class="fas fa-external-link-alt"></i>
                        </a>

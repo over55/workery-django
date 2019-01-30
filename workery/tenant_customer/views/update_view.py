@@ -78,10 +78,10 @@ class CommercialCustomerUpdateView(LoginRequiredMixin, GroupRequiredMixin, Worke
         return modified_context
 
 
-class BlacklistCustomerUpdateView(LoginRequiredMixin, GroupRequiredMixin, WorkeryDetailView):
+class DeactivateCustomerUpdateView(LoginRequiredMixin, GroupRequiredMixin, WorkeryDetailView):
     context_object_name = 'customer'
     model = Customer
-    template_name = 'tenant_customer/update/blackist_view.html'
+    template_name = 'tenant_customer/update/deactivation_view.html'
     menu_id = "customers"
     group_required = [
         constants.EXECUTIVE_GROUP_ID,

@@ -50,7 +50,7 @@
                 {% for job in job_list %}
                 <tr>
                     <td>
-                        {% if job.customer.is_blacklisted %}
+                        {% if job.customer.state == CUSTOMER_STATE.INACTIVE %}
                             <i class="fa fa-frown fa-lg"></i>
                         {% else %}
                             {% if job.customer.type_of == tenant_constants.RESIDENTIAL_CUSTOMER_TYPE_OF_ID %}

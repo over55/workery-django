@@ -84,10 +84,9 @@ class Customer(AbstractPerson):
     class CUSTOMER_STATE:
         ACTIVE = 'active'
         INACTIVE = 'inactive'
-        ARCHIVED = 'archived'
-
 
     class DEACTIVATION_REASON:
+        NOT_SPECIFIED = 0
         OTHER = 1
         BLACKLISTED = 2
         MOVED = 3
@@ -109,6 +108,7 @@ class Customer(AbstractPerson):
         (DEACTIVATION_REASON.MOVED, _('Moved')),
         (DEACTIVATION_REASON.DECEASED, _('Deceased')),
         (DEACTIVATION_REASON.DO_NOT_CONTACT, _('Do not contact')),
+        (DEACTIVATION_REASON.NOT_SPECIFIED, _('Not specified')),
         (DEACTIVATION_REASON.OTHER, _('Other')),
     )
 
@@ -309,7 +309,7 @@ class Customer(AbstractPerson):
         help_text=_('The reason why this customer was deactivated.'),
         blank=True,
         choices=DEACTIVATION_REASON_CHOICES,
-        default=DEACTIVATION_REASON.OTHER # 1 = Other
+        default=DEACTIVATION_REASON.NOT_SPECIFIED
     )
     deactivation_reason_other = models.CharField(
         _("Deactivation reason (other)"),

@@ -201,7 +201,7 @@ class TestTenantCustomerViews(TenantTestCase):
     def test_residential_blacklist_customer_update_page(self):
         customer = Customer.objects.all().first()
         a_url = self.tenant.reverse(
-            reverse_id='workery_tenant_residential_blacklist_customer_update',
+            reverse_id='workery_tenant_residential_deactivate_customer_update',
             reverse_args=[
                 'summary',
                 int(customer.id)
@@ -226,7 +226,7 @@ class TestTenantCustomerViews(TenantTestCase):
     def test_commercial_blacklist_customer_update_page(self):
         customer = Customer.objects.all().first()
         a_url = self.tenant.reverse(
-            reverse_id='workery_tenant_commercial_blacklist_customer_update',
+            reverse_id='workery_tenant_commercial_deactivate_customer_update',
             reverse_args=[
                 'summary',
                 int(customer.id)

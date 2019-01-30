@@ -124,9 +124,9 @@
         <!--------------------------------------------------------------------->
         {% if request.user.is_executive or request.user.is_management_staff %}
         <div class="form-group col-md-12 mb-3 mx-auto text-center">
-            <a href="{% if customer.type_of == tenant_constants.RESIDENTIAL_CUSTOMER_TYPE_OF_ID %}{% url 'workery_tenant_residential_blacklist_customer_update' template customer.id %}{% elif customer.type_of == tenant_constants.COMMERCIAL_CUSTOMER_TYPE_OF_ID %}{% url 'workery_tenant_commercial_blacklist_customer_update' template customer.id %}{% endif %}">
+            <a href="{% if customer.type_of == tenant_constants.RESIDENTIAL_CUSTOMER_TYPE_OF_ID %}{% url 'workery_tenant_residential_deactivate_customer_update' template customer.id %}{% elif customer.type_of == tenant_constants.COMMERCIAL_CUSTOMER_TYPE_OF_ID %}{% url 'workery_tenant_commercial_deactivate_customer_update' template customer.id %}{% endif %}">
                 <button id="id_submit_btn" class="btn btn-danger btn-lg btn-fxw mt-4" type="button">
-                    <i class="fas fa-frown"></i>&nbsp;{% trans 'Blacklist Client' %}
+                    <i class="fas fa-frown"></i>&nbsp;{% trans 'Deactivate Client' %}
                 </button>
             </a>
         </div>
