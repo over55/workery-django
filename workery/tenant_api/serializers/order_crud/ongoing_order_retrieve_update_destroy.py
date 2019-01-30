@@ -66,9 +66,15 @@ class OngoingWorkOrderRetrieveUpdateDestroySerializer(serializers.ModelSerialize
         """
         Override this function to include extra functionality.
         """
+        # (a) Object details.
         instance.customer = validated_data.get('customer', instance.customer)
         instance.associate = validated_data.get('associate', instance.associate)
         instance.state = validated_data.get('state', instance.state)
+
+        # (b) System details.
+        instance.last_modified_from = self.context['last_modified_from']
+        instance.last_modified_from_is_public = self.context['last_modified_from_is_public']
+        instance.last_modified_by = self.context['last_modified_by']
 
         instance.save()
 
