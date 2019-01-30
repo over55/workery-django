@@ -170,10 +170,10 @@ class TestTenantTeamViews(TenantTestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertIn('Edit Away Announcement', str(response.content))
 
-    def test_settings_blacklisted_clients_page(self):
+    def test_settings_deactivated_clients_page(self):
         response = self.auth_c.get(self.tenant.reverse('workery_tenant_settings_deactivated_clients_list'))
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertIn('Blacklisted Clients', str(response.content))
+        self.assertIn('Deactivated Clients', str(response.content))
 
     def test_settings_tags_list_page(self):
         response = self.auth_c.get(self.tenant.reverse('workery_tenant_settings_tags_list'))
