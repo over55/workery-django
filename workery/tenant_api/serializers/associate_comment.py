@@ -62,14 +62,21 @@ class AssociateListCreateSerializer(serializers.ModelSerializer):
         about = validated_data.get('about', None)
         text = validated_data.get('extra_text', None)
         comment = Comment.objects.create(
-            created_by=self.context['created_by'],
-            last_modified_by=self.context['created_by'],
+            created_by = self.context['created_by'],
+            created_from = self.context['created_from'],
+            created_from_is_public = self.context['created_from_is_public'],
+            last_modified_by = self.context['created_by'],
+            last_modified_from = self.context['created_from'],
+            last_modified_from_is_public = self.context['created_from_is_public'],
             text=text
         )
         AssociateComment.objects.create(
             about=about,
             comment=comment,
         )
+
+        # Add validated data.
+        validated_data['created_at'] = comment.created_at
 
         # Return our validated data.
         return validated_data

@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from ipware import get_client_ip
 from django_filters.rest_framework import DjangoFilterBackend
 from django.conf.urls import url, include
 from django.shortcuts import get_list_or_404, get_object_or_404
@@ -39,8 +40,11 @@ class PartnerCommentListCreateAPIView(generics.ListCreateAPIView):
         """
         Create
         """
+        client_ip, is_routable = get_client_ip(self.request)
         serializer = PartnerListCreateSerializer(data=request.data, context={
             'created_by': request.user,
+            'created_from': client_ip,
+            'created_from_is_public': is_routable,
             'franchise': request.tenant
         })
         serializer.is_valid(raise_exception=True)
