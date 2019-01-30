@@ -340,16 +340,7 @@ class Customer(AbstractPerson):
             return str(self)
 
     def get_pretty_status(self):
-        if self.is_blacklisted:
-            return _('Blacklisted')
-        else:
-            if self.owner:
-                if self.owner.is_active:
-                    return _('Active')
-                else:
-                    return _('Suspended')
-            else:
-                return _('Inactive')
+        return dict(Customer.CUSTOMER_STATE_CHOICES).get(self.state) 
 
     def get_pretty_how_hear(self):
         """
