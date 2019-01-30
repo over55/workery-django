@@ -42,7 +42,7 @@
             calculate_total_and_service_fee();
         });
 
-	$('#invoice_quoted_labour_amount').on('change',function(){
+	    $('#invoice_quoted_labour_amount').on('change',function(){
             calculate_total_quoted_fee();
         });
 
@@ -121,7 +121,7 @@
         var total_amount = 0;
         total_amount = invoice_labour_amount + invoice_material_amount;
         service_fee = service_fee / 100.0;
-        service_fee = service_fee * invoice_labour_amount; // Service fee is only applied to labour.
+        service_fee = service_fee * invoice_labour_amount; // Service fee is only applied to the "actual labour".
 
         // For debugging purposes only.
         console.log("total_amount", total_amount);
@@ -157,6 +157,7 @@
     //
     function click_submit_button() {
         // Get our "financial" information.
+        var visits = $('#visits').val();
         var invoice_date = $('#invoice_date').val();
         var invoice_id = parseInt($('#invoice_id').val());
         var invoice_quote_amount = $('#invoice_quote_amount').val();
@@ -192,6 +193,7 @@
         }
 
         // For debugging purposes only.
+        console.log("visits", visits);
         console.log("invoice_date", invoice_date);
         console.log("invoice_id", invoice_id);
         console.log("invoice_quote_amount", invoice_quote_amount);
@@ -209,20 +211,22 @@
 
         // Attach customer
         {% if job_item.customer %}
-        var customer_id = {{ job_item.customer.id }};
+            var customer_id = {{ job_item.customer.id }};
         {% else %}
-        var customer_id = null;
+            var customer_id = null;
         {% endif %}
 
         // Attach associate.
         {% if job_item.associate %}
-        var associate_id = {{ job_item.associate.id }};
+            var associate_id = {{ job_item.associate.id }};
         {% else %}
-        var associate_id = null;
+            var associate_id = null;
         {% endif %}
 
         // Changed state.
         var payment_job_status = get_selected_radio_value('payment_job_status');
+
+        disable_btn(); // Disable the submit button.
 
         // Submit to our API web-service.
         update_job_api(
@@ -231,6 +235,7 @@
                 'customer': customer_id,
                 'associate': associate_id,
                 'extra_comment': null,
+                'visits': visits,
                 'invoice_date': invoice_date,
                 'invoice_id': invoice_id,
                 'invoice_quote_amount': invoice_quote_amount,
@@ -262,6 +267,8 @@
 
             },
             function(xhr,status,error) { // Error
+                enable_btn(); // Enable the submit button.
+
                 // STEP 1: Convert to JSON.
                 var err = JSON.parse(xhr.responseText);
 
@@ -276,13 +283,13 @@
                     if(err.hasOwnProperty(prop)) {
                         var val = err[prop];
                         console.log(val);
-			var fdname = humanize(prop);
-			// Errors box code
-                        $('#all_error_result').append("<div class='form-error'><b>"+fdname+":</b> "+val+" </div>");
-			$('#all_error_result').addClass('error-block');
-			// Inline fields errors code
-			$('#'+prop+'-error').html("<ul><li>"+val+"</li></ul>");
-			$('#update-job-form').addClass('was-validated');
+                        var fdname = humanize(prop);
+            			// Errors box code
+                                    $('#all_error_result').append("<div class='form-error'><b>"+fdname+":</b> "+val+" </div>");
+            			$('#all_error_result').addClass('error-block');
+            			// Inline fields errors code
+            			$('#'+prop+'-error').html("<ul><li>"+val+"</li></ul>");
+            			$('#update-job-form').addClass('was-validated');
                     }
                 }
 
@@ -294,6 +301,22 @@
                 // enable_btn();
             }
         );
+    }
+
+    /**
+     *  Function will unlock the submit button.
+     */
+    function disable_btn() {
+        $('#id_submit_btn').val("{% trans 'Please Wait...' %}");
+        $('#id_submit_btn').prop("disabled", true);
+    }
+
+    /**
+     *  Function will lock the submit button.
+     */
+    function enable_btn() {
+        $('#id_submit_btn').prop("disabled", false);
+        $('#id_submit_btn').val("{% trans 'Update Job' %}");
     }
 </script>
 <!----------------------------------------------------------------------------->
@@ -401,14 +424,14 @@
                         <div id="invoice_quoted_labour_amount-error" class="invalid-feedback"></div>
                     </div>
                     <!-- end Invoice Labour -->
-		    <!-- Quoted Material -->
+		            <!-- Quoted Material -->
                     <div class="form-group col-md-7 mb-4">
                         <label for="invoice_quoted_material_amount">Quoted Materials</label>
                         <input type="number" class="form-control form-control-lg border border-success" min="0" id="invoice_quoted_material_amount" name="invoice_quoted_material_amount" placeholder="Total Material" value="{{ job_item.invoice_quoted_material_amount.amount }}">
                         <div id="invoice_quoted_material_amount-error" class="invalid-feedback"></div>
                     </div>
                     <!-- end Quoted Material -->
-		    <!-- Total Quoted -->
+		            <!-- Total Quoted -->
                     <div class="form-group col-md-7 mb-4">
                         <label for="invoice_total_quote_amount">Total Quoted</label>
                         <input type="number" class="form-control form-control-lg border border-success" min="0" id="invoice_total_quote_amount" name="invoice_total_quote_amount" placeholder="Total Material" readonly value="{{ job_item.invoice_total_quote_amount.amount }}">
@@ -438,7 +461,7 @@
                         <div id="invoice_tax_amount-error" class="invalid-feedback"></div>
                     </div>
                     <!-- end Invoice Tax -->
-		    <!-- Invoice Total -->
+		            <!-- Invoice Total -->
                     <div class="form-group col-md-7 mb-4">
                         <label for="invoice_total_amount">Total</label>
                         <input type="number" class="form-control form-control-lg border border-success" id="invoice_total_amount" name="invoice_total_amount" placeholder="Total" readonly value="{{ job_item.invoice_total_amount.amount }}">
@@ -465,7 +488,7 @@
                         <div id="invoice_service_fee_amount-error" class="invalid-feedback"></div>
                     </div>
                     <!-- end Invoice Total -->
-		    <!-- Service Fee Payment Date -->
+		            <!-- Service Fee Payment Date -->
                     <div class="form-group col-md-7 mb-4">
                         <label for="invoice_service_fee_payment_date">Service Fee Payment Date&nbsp;<sup>*</sup></label>
                         <div class="input-group input-group-lg">
@@ -493,6 +516,14 @@
                         <div id="invoice_balance_owing_amount-error" class="invalid-feedback"></div>
                     </div>
                     <!-- end Invoice Balance Owing Amount -->
+                    <!-- Number of Visits -->
+                    <div class="form-group col-md-12 mb-4">
+                        <label for="visits"># of Visit(s)</label>
+                        <input type="number" class="form-control form-control-lg border border-success" min="1" max="100" id="visits" name="visits" placeholder="# of visit(s)" value="{{ job_item.visits }}">
+                        <small class="form-text text-muted">{% trans 'The the number of visits that were made between the customer and associate for this particular work order. The minimum visit(s) needs to be 1 and maximum is 100.' %}</small>
+                        <div id="visits-error" class="invalid-feedback"></div>
+                    </div>
+                    <!-- end Number of Visits -->
 
                     <!-- UPDATE BUTTON -->
                     <!--------------------------------------------------------------------->

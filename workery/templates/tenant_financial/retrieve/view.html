@@ -181,6 +181,12 @@
                         {{ job_item.invoice_balance_owing_amount }}
                     </td>
                 </tr>
+                <tr>
+                    <th scope="row" class="bg-light"># of Visits</th>
+                    <td id="selected_number_of_visits">
+                        {{ job_item.visits }}
+                    </td>
+                </tr>
                 {% if job_item.state == WORK_ORDER_STATE.COMPLETED_BUT_UNPAID %}
                 <tr>
                     <th scope="row" class="bg-light">Available Operations</th>

@@ -6,9 +6,10 @@ from djmoney.money import Money
 from datetime import date, datetime, timedelta
 from django_fsm import FSMField, transition
 from django.conf import settings
+from django.core.validators import MaxValueValidator, MinValueValidator
+from django.contrib.postgres.search import SearchVector, SearchVectorField
 from django.db import models
 from django.db import transaction
-from django.contrib.postgres.search import SearchVector, SearchVectorField
 from django.utils import timezone
 from django.utils.text import Truncator
 from django.utils.translation import ugettext_lazy as _
@@ -412,6 +413,16 @@ class WorkOrder(models.Model):
         default_currency=WORKERY_APP_DEFAULT_MONEY_CURRENCY,
         default=Money(0,WORKERY_APP_DEFAULT_MONEY_CURRENCY),
         blank=True,
+    )
+    visits = models.PositiveSmallIntegerField(
+        _("Visits"),
+        help_text=_('The the number of visits that were made between the customer and associate for this particular work order.'),
+        default=1,
+        blank=True,
+        validators=[
+            MinValueValidator(1),
+            MaxValueValidator(100)
+        ],
     )
 
     #

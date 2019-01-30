@@ -86,7 +86,8 @@ class WorkOrderListCreateSerializer(serializers.ModelSerializer):
             # 'last_modified_by',
             'skill_sets',
             'description',
-            'start_date'
+            'start_date',
+            'visits',
         )
 
     def setup_eager_loading(cls, queryset):
@@ -116,6 +117,7 @@ class WorkOrderListCreateSerializer(serializers.ModelSerializer):
         description = validated_data.get('description', None)
         start_date = validated_data.get('start_date', timezone.now())
         state = validated_data.get('state', WORK_ORDER_STATE.NEW)
+        visits = validated_data.get('visits', 1)
 
         #-------------------------------
         # Create our `WorkOrder` object.
@@ -146,7 +148,8 @@ class WorkOrderListCreateSerializer(serializers.ModelSerializer):
             last_modified_from_is_public = self.context['created_from_is_public'],
             description=description,
             start_date=start_date,
-            state = state
+            state = state,
+            visits = visits,
         )
         logger.info("Created order object.")
 

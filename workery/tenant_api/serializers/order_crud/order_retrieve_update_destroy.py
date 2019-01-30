@@ -105,6 +105,7 @@ class WorkOrderRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
             'invoice_actual_service_fee_amount_paid',
             'state',
             'invoice_balance_owing_amount',
+            'visits',
         )
 
     def setup_eager_loading(cls, queryset):
@@ -156,6 +157,7 @@ class WorkOrderRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         instance.state = validated_data.get('state', instance.state)
 
         # Financial information.
+        instance.visits = validated_data.get('visits', instance.visits)
         instance.invoice_service_fee = validated_data.get('invoice_service_fee', instance.invoice_service_fee)
         instance.invoice_service_fee_payment_date = validated_data.get('invoice_service_fee_payment_date', instance.invoice_service_fee_payment_date)
         instance.invoice_id = validated_data.get('invoice_id', instance.invoice_id)
