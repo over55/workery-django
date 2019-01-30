@@ -27,8 +27,12 @@
         console.log("State:", state);
 
         var data_dict = {
+            {% if ongoing_job.associate %}
             'associate': {{ ongoing_job.associate.id }},
+            {% endif %}
+            {% if ongoing_job.customer %}
             'customer': {{ ongoing_job.customer.id }},
+            {% endif %}
             'state': state,
         };
 
