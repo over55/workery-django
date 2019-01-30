@@ -41,7 +41,7 @@
         $('#invoice_tax_amount').on('change',function(){
             calculate_total_and_service_fee();
         });
-	
+
 	$('#invoice_quoted_labour_amount').on('change',function(){
             calculate_total_quoted_fee();
         });
@@ -49,7 +49,7 @@
         $('#invoice_quoted_material_amount').on('change',function(){
             calculate_total_quoted_fee();
         });
-	    
+
         //------------------------------//
         // EVENT HANDLER INITIALIZATION //
         //------------------------------//
@@ -58,7 +58,7 @@
 
 
     }); // end DOCUMENT START
-    	
+
     function calculate_total_quoted_fee() {
         // Get our input fields.
         var invoice_quoted_labour_amount = $('#invoice_quoted_labour_amount').val();
@@ -67,7 +67,7 @@
         // Convert to float
         invoice_quoted_labour_amount = parseFloat(invoice_quoted_labour_amount);
         invoice_quoted_material_amount = parseFloat(invoice_quoted_material_amount);
-	
+
         // Replace NaN with zero.
         invoice_quoted_labour_amount = ( isNaN(invoice_quoted_labour_amount) ? 0 : invoice_quoted_labour_amount );
         invoice_quoted_material_amount = ( isNaN(invoice_quoted_material_amount) ? 0 : invoice_quoted_material_amount );
@@ -80,15 +80,15 @@
         // Calculate
         var total_quoted_amount = 0;
         total_quoted_amount = invoice_quoted_labour_amount + invoice_quoted_material_amount;
-        
+
         // For debugging purposes only.
         console.log("total_quoted_amount", total_quoted_amount);
-        
+
         // Update the GUI.
         $('#invoice_total_quote_amount').val(String(total_quoted_amount));
-        
+
     }
-	
+
     function calculate_total_and_service_fee() {
         // Get our input fields.
         var invoice_labour_amount = $('#invoice_labour_amount').val();
@@ -121,7 +121,7 @@
         var total_amount = 0;
         total_amount = invoice_labour_amount + invoice_material_amount;
         service_fee = service_fee / 100.0;
-        service_fee = service_fee * total_amount;
+        service_fee = service_fee * invoice_labour_amount; // Service fee is only applied to labour.
 
         // For debugging purposes only.
         console.log("total_amount", total_amount);
@@ -422,7 +422,7 @@
                         <div id="invoice_labour_amount-error" class="invalid-feedback"></div>
                     </div>
                     <!-- end Actual Invoice Labour -->
-                    
+
                     <!-- Actual Invoice Material -->
                     <div class="form-group col-md-7 mb-4">
                         <label for="invoice_material_amount">Actual Materials</label>
@@ -430,7 +430,7 @@
                         <div id="invoice_material_amount-error" class="invalid-feedback"></div>
                     </div>
                     <!-- end Actual Invoice Material -->
-                    
+
                     <!-- Invoice Tax -->
                     <div class="form-group col-md-7 mb-4">
                         <label for="invoice_tax_amount">Total Tax</label>
@@ -456,7 +456,7 @@
                         <div id="service_fees-error" class="invalid-feedback"></div>
                     </div>
                     <!-- end Service Fee -->
-                    
+
                     <!-- Invoice Service Fee -->
                     <div class="form-group col-md-12 mb-4">
                         <label for="invoice_service_fee_amount">Service Fee</label>
@@ -493,7 +493,7 @@
                         <div id="invoice_balance_owing_amount-error" class="invalid-feedback"></div>
                     </div>
                     <!-- end Invoice Balance Owing Amount -->
-                    
+
                     <!-- UPDATE BUTTON -->
                     <!--------------------------------------------------------------------->
                     <div class="form-group col-md-12 mb-3 mx-auto text-center">
