@@ -153,9 +153,9 @@
     {% if customer.state == CUSTOMER_STATE.INACTIVE %}
     <div class="jumbotron">
         <h1 class="display-4">Deactivated!</h1>
-        <p class="lead">It appears this customer has been deactivated.</p>
+        <p class="lead">It appears this client has been deactivated.</p>
         <hr class="my-4">
-        <p>Deactivated customers can be activated again by clicking bellow...</p>
+        <p>Deactivated clients can be activated again by clicking below.</p>
         <p class="lead">
            <a class="btn btn-primary btn-lg" href="{% if customer.type_of == tenant_constants.RESIDENTIAL_CUSTOMER_TYPE_OF_ID %}{% url 'workery_tenant_residential_deactivate_customer_update' template customer.id %}{% elif customer.type_of == tenant_constants.COMMERCIAL_CUSTOMER_TYPE_OF_ID %}{% url 'workery_tenant_commercial_deactivate_customer_update' template customer.id %}{% endif %}" role="button">Remove deactivation</a>
         </p>
