@@ -271,6 +271,8 @@
                 window.location = "{% url 'workery_tenant_member_full_retrieve' template associate.pk %}?was_modified=True";
             },
             function(xhr,status,error) { // Error
+                // UNLOCK THE "SUBMIT" BUTTON TO BE AVAILABLE FOR USAGE.
+                enable_btn();
 
                 // STEP 1: Convert to JSON.
                 var err = JSON.parse(xhr.responseText);
@@ -312,8 +314,7 @@
 
             },
             function() { // Finally
-                // UNLOCK THE "SUBMIT" BUTTON TO BE AVAILABLE FOR USAGE.
-                enable_btn();
+                // Do nothing.
             }
         );
     }

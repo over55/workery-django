@@ -313,6 +313,8 @@
                 company_tags_arr.push(option_value);
             } // end FOR LOOP.
 
+            disable_btn(); // Disable the submit button.
+
             // MAKE OUR API CALL TO THE BACKEND TO "CREATE" THE MEMBER USER.
             post_residential_customer_upgrade_api(
                 {
@@ -338,6 +340,9 @@
                     window.location = "{% url 'workery_tenant_customer_full_retrieve' template customer.pk %}?was_modified=True";
                 },
                 function(xhr,status,error) { // Error
+                    // UNLOCK THE "SUBMIT" BUTTON TO BE AVAILABLE FOR USAGE.
+                    enable_btn();
+
                     // STEP 1: Convert to JSON.
                     var err = JSON.parse(xhr.responseText);
 
@@ -365,8 +370,7 @@
                     $('html, body').animate({ scrollTop: $('#id_page_title').offset().top }, 'slow');
                 },
                 function() { // Finally
-                    // UNLOCK THE "SUBMIT" BUTTON TO BE AVAILABLE FOR USAGE.
-                    enable_btn();
+                    // Do nothing.
                 }
             );
 

@@ -83,9 +83,6 @@
      *  (2)
      */
     function ajax_post_form_submission(redirect_url) {
-        // LOCK OUT THE "SUBMIT" BUTTON SO THE USER DOES NOT MAKE MULTI-CALLS.
-        disable_btn();
-
         // Generate random password and apply it automatically to the
         // password fields if no password was selected.
         password = localStorage.getItem("tmp_commercial_customer_password")
@@ -99,6 +96,9 @@
             localStorage.setItem("tmp_commercial_customer_password", password)
             localStorage.setItem("tmp_commercial_customer_password_repeat", password_repeat)
         }
+
+        // LOCK OUT THE "SUBMIT" BUTTON SO THE USER DOES NOT MAKE MULTI-CALLS.
+        disable_btn();
 
         // MAKE OUR API CALL TO THE BACKEND TO "CREATE" THE CUSTOMER USER.
         create_customer_api(
@@ -202,6 +202,9 @@
                 window.location = temp_url;
             },
             function(xhr,status,error) { // Error
+                // UNLOCK THE "SUBMIT" BUTTON TO BE AVAILABLE FOR USAGE.
+                enable_btn();
+
                 // STEP 1: Convert to JSON.
                 var err = JSON.parse(xhr.responseText);
 
@@ -224,8 +227,7 @@
                 $('html, body').animate({ scrollTop: $('#id_page_title').offset().top }, 'slow');
             },
             function() { // Finally
-                // UNLOCK THE "SUBMIT" BUTTON TO BE AVAILABLE FOR USAGE.
-                enable_btn();
+                // Do nothing.
             }
         );
     }

@@ -32,6 +32,8 @@
             'state': state,
         };
 
+        disable_btn(); // Disable the submit button.
+
         update_ongoing_job_api(
             {{ ongoing_job.id }},
             data_dict,
@@ -40,6 +42,8 @@
                 window.location = "{% url 'workery_tenant_ongoing_job_full_retrieve' template ongoing_job.id %}?was_modified=True";
             },
 	        function(xhr,status,error) { // Error
+                enable_btn(); // Enable the submit button.
+                
                 // STEP 1: Convert to JSON.
                 var err = JSON.parse(xhr.responseText);
                 // For debugging purposes only.
@@ -65,16 +69,31 @@
                 $('html, body').animate({ scrollTop: $('#id_page_title').offset().top }, 'slow');
             },
             function(error_json) {
+                enable_btn(); // Enable the submit button.
                 console.log(error_json);
             },
             function(completed, hr){
-
+                // Do nothing.
             }
         );
     }
 
     function click_cancel_button() {
         window.location = "{% url 'workery_tenant_ongoing_job_full_retrieve' template ongoing_job.id %}";
+    }
+
+    /**
+     *  Function will unlock the submit button.
+     */
+    function disable_btn() {
+        $('#id_submit_btn').prop("disabled", true);
+    }
+
+    /**
+     *  Function will lock the submit button.
+     */
+    function enable_btn() {
+        $('#id_submit_btn').prop("disabled", false);
     }
 </script>
 <!----------------------------------------------------------------------------->
