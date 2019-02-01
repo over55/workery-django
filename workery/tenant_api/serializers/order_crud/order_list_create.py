@@ -169,7 +169,7 @@ class WorkOrderListCreateSerializer(serializers.ModelSerializer):
                 last_modified_from_is_public = self.context['created_from_is_public'],
             )
             logger.info("Created ongoing order object.")
-            order.ongoing_job = ongoing_job
+            order.ongoing_work_order = ongoing_job
             order.save()
             logger.info("Updated order object with ongoing order.")
 
