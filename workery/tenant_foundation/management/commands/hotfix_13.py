@@ -36,7 +36,7 @@ from tenant_foundation.utils import *
 
 
 class Command(BaseCommand):
-    help = _('Command will run `hotfix_12`.')
+    help = _('Command will run `hotfix_13`.')
 
     def add_arguments(self, parser):
         """

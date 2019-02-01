@@ -170,9 +170,10 @@ class Command(BaseCommand): #TODO: UNIT TEST
 
         # STEP 4: Email the management staff that the following ongoing jobs
         #         were automatically modified by this ETL.
-        management_staffs = Staff.objects.filter_by_management_group()
-        for management_staff in management_staffs.all():
-            self.send_staff_an_email(management_staff, processed_job_ids_arr, now_d)
+        if len(processed_job_ids_arr) > 0:
+            management_staffs = Staff.objects.filter_by_management_group()
+            for management_staff in management_staffs.all():
+                self.send_staff_an_email(management_staff, processed_job_ids_arr, now_d)
 
     def process_first_day_of_month_ongoing_work_order(self, now_d):
         """
@@ -246,6 +247,7 @@ class Command(BaseCommand): #TODO: UNIT TEST
 
         # STEP 5: Email the management staff that the following ongoing jobs
         #         were automatically modified by this ETL.
-        management_staffs = Staff.objects.filter_by_management_group()
-        for management_staff in management_staffs.all():
-            self.send_staff_an_email(management_staff, processed_job_ids_arr, now_d)
+        if len(processed_job_ids_arr) > 0:
+            management_staffs = Staff.objects.filter_by_management_group()
+            for management_staff in management_staffs.all():
+                self.send_staff_an_email(management_staff, processed_job_ids_arr, now_d)
