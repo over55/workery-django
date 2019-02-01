@@ -19,14 +19,14 @@
     });
 
     function click_cancel_button() {
-        {% if template == 'search' %}
-        window.location = "{% url 'workery_tenant_job_retrieve' template job.id %}";
-        {% elif template == 'task' %}
-        window.location = "{% url 'workery_tenant_pending_task_retrieve' parameters.task_id %}";
-        {% elif template == 'list' %}
-        window.location = "{% url 'workery_tenant_job_retrieve' template job.id %}";
+        {% if return_id == 'search' %}
+        window.location = "{% url 'workery_tenant_job_retrieve' return_id job.id %}";
+        {% elif return_id == 'task' %}
+        window.location = "{% url 'workery_tenant_pending_task_retrieve' return_obj_id %}";
+        {% elif return_id == 'list' %}
+        window.location = "{% url 'workery_tenant_job_retrieve' return_id job.id %}";
         {% else %}
-        window.location = "{% url 'workery_tenant_job_retrieve' template job.id %}";
+        window.location = "{% url 'workery_tenant_job_retrieve' return_id job.id %}";
         {% endif %}
     }
 
@@ -43,10 +43,10 @@
                 console.log(result_dict);
 
                 // REDIRECT TO SUCCESS PAGE.
-                {% if template == 'task' %}
+                {% if return_id == 'task' %}
                    window.location = "{% url 'workery_tenant_task_list' %}?was_closed=True";
                 {% else %}
-                    window.location = "{% url 'workery_tenant_job_retrieve' template job.id %}?was_closed=True";
+                    window.location = "{% url 'workery_tenant_job_retrieve' return_id job.id %}?was_closed=True";
                 {% endif %}
             },
             function(xhr,status,error) { // Error
@@ -85,7 +85,7 @@
     <!------------------------------------------------------------------------->
     <nav aria-label="breadcrumb">
 	  	<ol class="breadcrumb">
-            {% if template == 'search' %}
+            {% if return_id == 'search' %}
 
             <li class="breadcrumb-item">
                 <a href="{% url 'workery_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a>
@@ -97,29 +97,29 @@
                 <a href="{% url 'workery_tenant_job_search' %}">{% trans 'Search' %}</a>
             </li>
             <li class="breadcrumb-item">{% trans 'Search Results' %}</li>
-            <li class="breadcrumb-item"><a href="{% url 'workery_tenant_job_retrieve' template job.id %}">{% trans 'Job #' %}{{ object.id|intcomma }}</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'workery_tenant_job_retrieve' return_id job.id %}">{% trans 'Job #' %}{{ object.id|intcomma }}</a></li>
             <li class="breadcrumb-item active" aria-current="page">{% trans 'Unassigning Associate from Job' %}</li>
 
-            {% elif template == 'task' %}
+            {% elif return_id == 'task' %}
 
             <li class="breadcrumb-item"><a href="{% url 'workery_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
             <li class="breadcrumb-item"><a href="{% url 'workery_tenant_task_list' %}">{% trans 'Pending Tasks' %}</a></li>
-            <li class="breadcrumb-item"><a href="{% url 'workery_tenant_pending_task_retrieve' parameters.task_id %}">{% trans 'Task #' %}{{ parameters.task_id|intcomma }}</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'workery_tenant_pending_task_retrieve' return_obj_id %}">{% trans 'Task #' %}{{ return_obj_id|intcomma }}</a></li>
             <li class="breadcrumb-item active" aria-current="page">{% trans 'Unassigning Associate from Job' %}</li>
 
-            {% elif template == 'list' %}
+            {% elif return_id == 'list' %}
 
             <li class="breadcrumb-item"><a href="{% url 'workery_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
             <li class="breadcrumb-item"><a href="{% url 'workery_tenant_job_summary' %}">{% trans 'Jobs' %}</a></li>
             <li class="breadcrumb-item"><a href="{% url 'workery_tenant_job_list' %}">{% trans 'List' %}</a></li>
-            <li class="breadcrumb-item"><a href="{% url 'workery_tenant_job_retrieve' template job.id %}">{% trans 'Job #' %}{{ object.id|intcomma }}</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'workery_tenant_job_retrieve' return_id job.id %}">{% trans 'Job #' %}{{ object.id|intcomma }}</a></li>
             <li class="breadcrumb-item active" aria-current="page">{% trans 'Unassigning Associate from Job' %}</li>
 
             {% else %}
 
             <li class="breadcrumb-item"><a href="{% url 'workery_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
             <li class="breadcrumb-item"><a href="{% url 'workery_tenant_job_summary' %}">{% trans 'Jobs' %}</a></li>
-            <li class="breadcrumb-item"><a href="{% url 'workery_tenant_job_retrieve' template job.id %}">{% trans 'Job #' %}{{ object.id|intcomma }}</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'workery_tenant_job_retrieve' return_id job.id %}">{% trans 'Job #' %}{{ object.id|intcomma }}</a></li>
             <li class="breadcrumb-item active" aria-current="page">{% trans 'Unassigning Associate from Job' %}</li>
 
             {% endif %}
