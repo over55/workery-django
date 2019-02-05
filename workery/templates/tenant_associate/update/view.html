@@ -41,7 +41,7 @@
 	    
 	let c_dropdown = $('#address_country');
     	c_dropdown.empty();
-    	c_dropdown.append('<option selected="true" disabled>Choose Country</option>');
+    	c_dropdown.append('<option disabled>Choose Country</option>');
 											 
         // Populate dropdown with list of countries
     	$.getJSON(country, function (data) {
@@ -993,9 +993,9 @@
     		  }
     	}
 
-	$('#address_country').val({{ associate.address_country }});
+	//$('#address_country').val({{ associate.address_country }});
 	
-	 	$('select[name="address_country"]').find('option[value="{{ associate.address_country }}"]').attr("selected",true);
+	$('select[name="address_country"]').find('option[value="{{ associate.address_country }}"]').attr("selected",true);
 	    										 
     }); // end Ready
 
