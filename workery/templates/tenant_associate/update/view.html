@@ -50,7 +50,8 @@
     	});
 	
 	{% if associate.address_country %}
-            c_dropdown.val("{{ associate.address_country }}");
+            //c_dropdown.val("{{ associate.address_country }}");
+	    $('#address_country option[value="{{ associate.address_country }}"]').attr('selected', 'selected');
         {% else %}
             c_dropdown.prop('selectedIndex', 1);
         {% endif %}
