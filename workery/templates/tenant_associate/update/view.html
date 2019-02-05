@@ -993,6 +993,10 @@
     		  }
     	}
 
+	$('#address_country').val("{{ associate.address_country }}");
+	
+	    $('select[name="address_country"] option[value="{{ associate.address_country }}"]').attr('selected', 'selected');
+											 
     }); // end Ready
 
     //------------------------//
