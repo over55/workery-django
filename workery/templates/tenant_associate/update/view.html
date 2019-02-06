@@ -51,9 +51,7 @@
     	});
 	
 	{% if associate.address_country %}
-            //c_dropdown.val("{{ associate.address_country }}");
-		//$('select[name="address_country"]').find('option[value="{{ associate.address_country }}"]').attr("selected",true);
-	    
+            c_dropdown.val("{{ associate.address_country }}");
         {% else %}
             c_dropdown.prop('selectedIndex', 1);
         {% endif %}
@@ -67,7 +65,12 @@
     		$.getJSON(state, function (data) {
     		  $.each(data, function (key, entry) {
     		    if(entry.country == countryId){
+			if(entry.short == {{ associate.address_region }} || entry.name == {{ associate.address_region }}){
+				p_dropdown.append($('<option selected="true" ></option>').attr('value', entry.short).text(entry.name));
+				alert('check');
+			} else {
     		    	p_dropdown.append($('<option></option>').attr('value', entry.short).text(entry.name));
+			}
     		    }
     		  })
     		});
@@ -994,11 +997,7 @@
     	}
 
     }); // end Ready
-
-    $( window ).on( "load", function() {
-        $('#address_country').val("{{ associate.address_country }}");
-	//$('select[name="address_country"]').find('option[value="{{ associate.address_country }}"]').attr("selected",true);	  									 
-    });
+	 
     //------------------------//
     // SELECT2 INITIALIZATION //
     //------------------------//
