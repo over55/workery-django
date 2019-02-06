@@ -131,18 +131,25 @@
 	  });
 	  {% if customer.address_country %}loadState('{{customer.address_country}}');{% else %}loadState('CA');{% endif %}
     	});
-	let c_dropdown = $('#address_country');
-	c_dropdown.empty();
-	c_dropdown.append('<option selected="true" disabled>Choose Country</option>');
-	{% if customer.address_country %}c_dropdown.val('{{customer.address_country}}');{% else %}c_dropdown.prop('selectedIndex', 1);{% endif %}
+										      
 	const state = "{% url 'workery_get_provinces_api_endpoint' %}?format=json";
         const country = "{% url 'workery_get_countries_api_endpoint' %}?format=json";
 	console.log(state);
-        console.log(country); // KANWAR - PLEASE IMPLEMENT.
+        console.log(country); 
+
+	let c_dropdown = $('#address_country');
+	c_dropdown.empty();
+	c_dropdown.append('<option disabled>Choose Country</option>');
+	{% if customer.address_country %}c_dropdown.val('{{customer.address_country}}');{% else %}c_dropdown.prop('selectedIndex', 1);{% endif %}
+	
 	// Populate dropdown with list of countries
 	$.getJSON(country, function (data) {
 	  $.each(data, function (key, entry) {
-	    	c_dropdown.append($('<option></option>').attr('value', entry.code).text(entry.country));
+	    	if(entry.code == '{{ customer.address_country }}' || entry.country == '{{ customer.address_country }}'){
+			c_dropdown.append($('<option selected="true"></option>').attr('value', entry.code).text(entry.country));
+		} else {
+    	    		c_dropdown.append($('<option></option>').attr('value', entry.code).text(entry.country));
+		} 
 	  })
 	});
 	function loadState(countryId){
@@ -154,7 +161,11 @@
 		$.getJSON(state, function (data) {
 		  $.each(data, function (key, entry) {
 		    if(entry.country == countryId){
-		    	p_dropdown.append($('<option></option>').attr('value', entry.short).text(entry.name));
+		    	if(entry.short == '{{ customer.address_region }}' || entry.name == '{{ customer.address_region }}'){
+				p_dropdown.append($('<option selected="true" ></option>').attr('value', entry.short).text(entry.name));
+			} else {
+    		    		p_dropdown.append($('<option></option>').attr('value', entry.short).text(entry.name));
+			}
 		    }
 		  })
 		});
