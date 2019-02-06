@@ -46,7 +46,11 @@
         // Populate dropdown with list of countries
     	$.getJSON(country, function (data) {
             $.each(data, function (key, entry) {
-    	        c_dropdown.append($('<option></option>').attr('value', entry.code).text(entry.country));
+		if(entry.code == '{{ associate.address_country }}' || entry.country == '{{ associate.address_country }}'){
+			c_dropdown.append($('<option selected="true"></option>').attr('value', entry.code).text(entry.country));
+		} else {
+    	    		c_dropdown.append($('<option></option>').attr('value', entry.code).text(entry.country));
+		}    
     	    })
     	});
 	
@@ -59,7 +63,7 @@
     	function loadState(countryId){
     		let p_dropdown = $('#address_region');
     		p_dropdown.empty();
-    		p_dropdown.append('<option selected="true" disabled>Choose State/Province</option>');
+    		p_dropdown.append('<option disabled>Choose State/Province</option>');
     		p_dropdown.prop('selectedIndex', 0);
     		// Populate dropdown with list of provinces
     		$.getJSON(state, function (data) {
@@ -67,15 +71,14 @@
     		    if(entry.country == countryId){
 			if(entry.short == '{{ associate.address_region }}' || entry.name == '{{ associate.address_region }}'){
 				p_dropdown.append($('<option selected="true" ></option>').attr('value', entry.short).text(entry.name));
-				alert('check');
 			} else {
-    		    	p_dropdown.append($('<option></option>').attr('value', entry.short).text(entry.name));
+    		    		p_dropdown.append($('<option></option>').attr('value', entry.short).text(entry.name));
 			}
     		    }
     		  })
     		});
-
-    		p_dropdown.val('{{ associate.address_region }}')
+		
+    		p_dropdown.val('{{ associate.address_region }}');
         }
     });
 	
