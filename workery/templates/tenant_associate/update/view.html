@@ -65,7 +65,7 @@
     		$.getJSON(state, function (data) {
     		  $.each(data, function (key, entry) {
     		    if(entry.country == countryId){
-			if(entry.short == {{ associate.address_region }} || entry.name == {{ associate.address_region }}){
+			if(entry.short == '{{ associate.address_region }}' || entry.name == '{{ associate.address_region }}'){
 				p_dropdown.append($('<option selected="true" ></option>').attr('value', entry.short).text(entry.name));
 				alert('check');
 			} else {
