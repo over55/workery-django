@@ -86,10 +86,11 @@
 
         // THIS IS WHERE YOU CAN ADD YOUR COUNTRY/PROVINCE DROPDOWN JS CODE....
     	$(function(){
-    	    $('#address_country').change(function(){
-    	    loadState($(this).find(':selected').val())
-    	});
-        loadState('{{ staff.address_country }}');
+    	    	$('#address_country').change(function(){
+    	    		loadState($(this).find(':selected').val())
+    		});
+        	loadState('{{ staff.address_country }}');
+	});
 	
 	const state = "{% url 'workery_get_provinces_api_endpoint' %}?format=json";
         const country = "{% url 'workery_get_countries_api_endpoint' %}?format=json";
@@ -427,7 +428,7 @@
     <!------------------------------------------------------------------------->
     <!-- end BREADCRUMB -->
 
-    <h1 id="id_page_title">{% trans 'Edit Sstaff Member' %}</h1>
+    <h1 id="id_page_title">{% trans 'Edit Staff Member' %}</h1>
 
     <!-- FORM -->
     <!------------------------------------------------------------------------->
