@@ -52,7 +52,7 @@
 	
 	{% if associate.address_country %}
             //c_dropdown.val("{{ associate.address_country }}");
-		$('select[name="address_country"]').find('option[value="{{ associate.address_country }}"]').attr("selected",true);
+		//$('select[name="address_country"]').find('option[value="{{ associate.address_country }}"]').attr("selected",true);
 	    
         {% else %}
             c_dropdown.prop('selectedIndex', 1);
@@ -993,12 +993,14 @@
     		  }
     	}
 
-	//$('#address_country').val({{ associate.address_country }});
+    }); // end Ready
+
+    $( window ).on( "load", function() {
+        $('#address_country').val({{ associate.address_country }});
 	
 	$('select[name="address_country"]').find('option[value="{{ associate.address_country }}"]').attr("selected",true);
 	    										 
-    }); // end Ready
-
+    });
     //------------------------//
     // SELECT2 INITIALIZATION //
     //------------------------//
