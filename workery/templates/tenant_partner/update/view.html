@@ -58,38 +58,49 @@
       $('#address_country').change(function(){
         loadState($(this).find(':selected').val())
       });
-      loadState('CA');
+      {% if partner.address_country %}loadState('{{partner.address_country}}');{% else %}loadState('CA');{% endif %}
     });
-    let c_dropdown = $('#address_country');
-    c_dropdown.empty();
-    c_dropdown.append('<option selected="true" disabled>Choose Country</option>');
-    c_dropdown.prop('selectedIndex', 1);
+	 
     const state = "{% url 'workery_get_provinces_api_endpoint' %}?format=json";
     const country = "{% url 'workery_get_countries_api_endpoint' %}?format=json";
     console.log(state);
     console.log(country); // KANWAR - PLEASE IMPLEMENT.
+	 
+    let c_dropdown = $('#address_country');
+    c_dropdown.empty();
+    c_dropdown.append('<option disabled>Choose Country</option>');
+    {% if partner.address_country %}c_dropdown.val('{{partner.address_country}}');{% else %}c_dropdown.prop('selectedIndex', 1);{% endif %}
+    
     // Populate dropdown with list of countries
     $.getJSON(country, function (data) {
       $.each(data, function (key, entry) {
-            c_dropdown.append($('<option></option>').attr('value', entry.code).text(entry.country));
+            	if(entry.code == '{{ partner.address_country }}' || entry.country == '{{ partner.address_country }}'){
+			c_dropdown.append($('<option selected="true"></option>').attr('value', entry.code).text(entry.country));
+		} else {
+    	    		c_dropdown.append($('<option></option>').attr('value', entry.code).text(entry.country));
+		}
       })
     });
     function loadState(countryId){
         let p_dropdown = $('#address_region');
         p_dropdown.empty();
-        p_dropdown.append('<option selected="true" disabled>Choose State/Province</option>');
+        p_dropdown.append('<option disabled>Choose State/Province</option>');
         p_dropdown.prop('selectedIndex', 0);
         // Populate dropdown with list of provinces
         $.getJSON(state, function (data) {
           $.each(data, function (key, entry) {
             if(entry.country == countryId){
-                p_dropdown.append($('<option></option>').attr('value', entry.short).text(entry.name));
+                	if(entry.short == '{{ partner.address_region }}' || entry.name == '{{ partner.address_region }}'){
+				p_dropdown.append($('<option selected="true" ></option>').attr('value', entry.short).text(entry.name));
+			} else {
+    		    		p_dropdown.append($('<option></option>').attr('value', entry.short).text(entry.name));
+			}
             }
           })
         });
-        if(countryId == 'CA'){
-            p_dropdown.prop('selectedIndex', 1);
-        }
+	    
+	{% if partner.address_region %}p_dropdown.val('{{partner.address_region}}');{% else %}p_dropdown.prop('selectedIndex', 1);{% endif %}
+	
     }
     // end country/province dropdown function
     // All fields individual inline validation check
