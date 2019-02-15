@@ -49,7 +49,7 @@ class Command(BaseCommand):
 
         # Defensive Code: Prevent continuing if the email already exists.
         if not SharedUser.objects.filter(id=id).exists():
-            raise CommandError(_('Email does not exists, please pick another email.'))
+            raise CommandError(_('ID does not exists, please pick another email.'))
 
         # Create the user.
         user = SharedUser.objects.get(id=id)
