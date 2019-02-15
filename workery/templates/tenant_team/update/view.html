@@ -91,7 +91,7 @@
     		});
         	loadState('{{ staff.address_country }}');
 	});
-	
+
 	const state = "{% url 'workery_get_provinces_api_endpoint' %}?format=json";
         const country = "{% url 'workery_get_countries_api_endpoint' %}?format=json";
     	console.log(state);
@@ -346,7 +346,7 @@
             function(xhr,status,error) { // Error
                 // UNLOCK THE "SUBMIT" BUTTON TO BE AVAILABLE FOR USAGE.
                 enable_btn();
-                
+
                 // STEP 1: Convert to JSON.
                 var err = JSON.parse(xhr.responseText);
 
@@ -567,7 +567,9 @@
                     <label for="account_type">Account Type</label>
                     <select class="custom-select form-control-lg border-primary" id="account_type" name="account_type" required>
                         <option value="" selected>Select account type...</option>
+                        {% if user.is_management_or_executive_staff %}
                         <option value="{{ shared_constants.MANAGEMENT_GROUP_ID }}" id="at_id_{{ shared_constants.MANAGEMENT_GROUP_ID }}">Manager</option>
+                        {% endif %}
                         <option value="{{ shared_constants.FRONTLINE_GROUP_ID }}" id="at_id_{{ shared_constants.FRONTLINE_GROUP_ID }}">Frontline</option>
                     </select>
                     <div id="account_type-error" class="invalid-feedback"></div>

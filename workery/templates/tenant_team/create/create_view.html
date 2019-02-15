@@ -624,7 +624,9 @@
                     <label for="account_type">Account Type</label>
                     <select class="custom-select form-control-lg border-primary" id="account_type" name="account_type" required>
                         <option value="" selected>Select account type...</option>
+                        {% if user.is_management_or_executive_staff %}
                         <option value="{{ shared_constants.MANAGEMENT_GROUP_ID }}" id="at_id_{{ shared_constants.MANAGEMENT_GROUP_ID }}">Manager</option>
+                        {% endif %}
                         <option value="{{ shared_constants.FRONTLINE_GROUP_ID }}" id="at_id_{{ shared_constants.FRONTLINE_GROUP_ID }}">Frontline</option>
                     </select>
                     <div id="account_type-error" class="invalid-feedback"></div>

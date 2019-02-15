@@ -16,7 +16,7 @@ from rest_framework.response import Response
 from rest_framework.validators import UniqueValidator
 
 from shared_foundation.custom.drf.fields import PhoneNumberField
-from shared_foundation.constants import ASSOCIATE_GROUP_ID
+from shared_foundation.constants import ASSOCIATE_GROUP_ID, FRONTLINE_GROUP_ID
 from shared_foundation.custom.drf.validation import MatchingDuelFieldsValidator, EnhancedPasswordStrengthFieldValidator
 from shared_foundation.utils import (
     get_unique_username_from_email,
@@ -195,9 +195,17 @@ class StaffListCreateSerializer(serializers.ModelSerializer):
         """
         Include validation for valid choices.
         """
-        if int_or_none(value) is None:
+        account_type = int_or_none(value)
+        if account_type is None:
             raise serializers.ValidationError("Please select a valid choice.")
-        return value
+        else:
+            if account_type == FRONTLINE_GROUP_ID:
+                return value
+
+            created_by = self.context['created_by']
+            if created_by.is_management_or_executive_staff():
+                return value
+            raise serializers.ValidationError("You do not have permission to change the account type.")
 
     def setup_eager_loading(cls, queryset):
         """ Perform necessary eager loading of data. """
@@ -513,9 +521,17 @@ class StaffRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         """
         Include validation for valid choices.
         """
-        if int_or_none(value) is None:
+        account_type = int_or_none(value)
+        if account_type is None:
             raise serializers.ValidationError("Please select a valid choice.")
-        return value
+        else:
+            if account_type == FRONTLINE_GROUP_ID:
+                return value
+
+            last_modified_by = self.context['last_modified_by']
+            if last_modified_by.is_management_or_executive_staff():
+                return value
+            raise serializers.ValidationError("You do not have permission to change the account type.")
 
     def validate_personal_email(self, value):
         """
