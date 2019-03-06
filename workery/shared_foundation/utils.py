@@ -94,9 +94,9 @@ def pretty_dt_string(dt):  #TODO: UNIT TEST
     try:
         dt = dt.replace(microsecond=0)
         dt = dt.replace(second=0)
-        dt_string = dt.strftime("%m-%d-%Y %H:%M:%S")
+        dt_string = dt.strftime("%Y-%m-%d %H:%M:%S")
     except Exception as e:
-        dt_string = dt.strftime("%m-%d-%Y")
+        dt_string = dt.strftime("%Y-%m-%d")
     return dt_string
 
 
