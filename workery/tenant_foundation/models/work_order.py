@@ -293,17 +293,10 @@ class WorkOrder(models.Model):
         blank=True,
         null=True
     )
-    invoice_id = models.PositiveIntegerField( # THIS IS A DEPRECATED FIELD.
-        _("Invoice ID"),
-        help_text=_('The type of job this is.'),
-        default=UNASSIGNED_JOB_TYPE_OF_ID,
-        choices=JOB_TYPE_OF_CHOICES,
-        blank=True,
-    )
     invoice_ids = models.CharField(
         _("Invoice ID(s)"),
         help_text=_('A list of invoice ID values associated with this order.'),
-        max_length=1024,
+        max_length=127,
         blank=True,
         null=True,
         default='',
