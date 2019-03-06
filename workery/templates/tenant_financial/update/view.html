@@ -159,7 +159,7 @@
         // Get our "financial" information.
         var visits = $('#visits').val();
         var invoice_date = $('#invoice_date').val();
-        var invoice_id = parseInt($('#invoice_id').val());
+        var invoice_ids = $('#invoice_ids').val();
         var invoice_quote_amount = $('#invoice_quote_amount').val();
         var invoice_labour_amount = $('#invoice_labour_amount').val();
         var invoice_material_amount = $('#invoice_material_amount').val();
@@ -195,7 +195,7 @@
         // For debugging purposes only.
         console.log("visits", visits);
         console.log("invoice_date", invoice_date);
-        console.log("invoice_id", invoice_id);
+        console.log("invoice_ids", invoice_ids);
         console.log("invoice_quote_amount", invoice_quote_amount);
         console.log("invoice_quoted_labour_amount", invoice_quoted_labour_amount);
         console.log("invoice_labour_amount", invoice_labour_amount);
@@ -237,7 +237,7 @@
                 'extra_comment': null,
                 'visits': visits,
                 'invoice_date': invoice_date,
-                'invoice_id': invoice_id,
+                'invoice_ids': invoice_ids,
                 'invoice_quote_amount': invoice_quote_amount,
                 'invoice_quoted_labour_amount': invoice_quoted_labour_amount,
                 'invoice_labour_amount': invoice_labour_amount,
@@ -405,9 +405,10 @@
                     <!-- end Invoice Date -->
                     <!-- Invoice ID -->
                     <div class="form-group col-md-12 mb-4">
-                        <label for="invoice_id">Invoice ID #</label>
-                        <input type="number" class="form-control form-control-lg border border-success" min="0" id="invoice_id" name="invoice_id" placeholder="Invoice ID #" value="{{ job_item.invoice_id }}">
-                        <div id="invoice_id-error" class="invalid-feedback"></div>
+                        <label for="invoice_ids">Invoice ID(s) #</label>
+                        <input type="text" class="form-control form-control-lg border border-success" min="0" id="invoice_ids" name="invoice_ids" placeholder="Invoice ID #" value="{{ job_item.invoice_ids }}">
+                        <small class="form-text text-muted">{% trans 'Please note, you are able to input multiple invoice ID values if you want, just separate them by commas. Ex.: 123, 456.' %}</small>
+                        <div id="invoice_ids-error" class="invalid-feedback"></div>
                     </div>
                     <!-- end Invoice ID -->
                     <!-- Invoice Quote -->

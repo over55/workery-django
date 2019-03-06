@@ -66,7 +66,7 @@ class WorkOrderCloseCreateSerializer(serializers.Serializer):
     was_associate_professional = serializers.BooleanField(required=False)
     would_customer_refer_our_organization = serializers.BooleanField(required=False)
     invoice_date = serializers.DateField(required=False)
-    invoice_id = serializers.IntegerField(required=False, validators=[cannot_be_negative,])
+    invoice_ids = serializers.CharField(required=False, allow_blank=True)
     invoice_quote_amount = serializers.FloatField(required=False, validators=[cannot_be_negative,])
     invoice_labour_amount = serializers.FloatField(required=False, validators=[cannot_be_negative,])
     invoice_material_amount = serializers.FloatField(required=False, validators=[cannot_be_negative,])
@@ -89,7 +89,7 @@ class WorkOrderCloseCreateSerializer(serializers.Serializer):
             'was_associate_professional',
             'would_customer_refer_our_organization',
             'invoice_date',
-            'invoice_id',
+            'invoice_ids',
             'invoice_quote_amount',
             'invoice_labour_amount',
             'invoice_material_amount',
@@ -139,7 +139,7 @@ class WorkOrderCloseCreateSerializer(serializers.Serializer):
         was_associate_professional = validated_data.get('was_associate_professional', False)
         would_customer_refer_our_organization = validated_data.get('would_customer_refer_our_organization', False)
         invoice_date = validated_data.get('invoice_date', None)
-        invoice_id = validated_data.get('invoice_id',  0)
+        invoice_ids = validated_data.get('invoice_ids',  0)
         invoice_quote_amount = validated_data.get('invoice_quote_amount',  0)
         invoice_labour_amount = validated_data.get('invoice_labour_amount',  0)
         invoice_material_amount = validated_data.get('invoice_material_amount',  0)
@@ -159,7 +159,7 @@ class WorkOrderCloseCreateSerializer(serializers.Serializer):
 
         # Attach financials.
         if job.was_there_financials_inputted:
-            job.invoice_id = invoice_id
+            job.invoice_ids = invoice_ids
             job.invoice_quote_amount = Money(invoice_quote_amount, WORKERY_APP_DEFAULT_MONEY_CURRENCY)
             job.invoice_labour_amount = Money(invoice_labour_amount, WORKERY_APP_DEFAULT_MONEY_CURRENCY)
             job.invoice_material_amount = Money(invoice_material_amount, WORKERY_APP_DEFAULT_MONEY_CURRENCY)

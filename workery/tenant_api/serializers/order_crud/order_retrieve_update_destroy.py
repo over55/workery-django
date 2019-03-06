@@ -59,7 +59,7 @@ class WorkOrderRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
 
     invoice_service_fee_payment_date = serializers.DateField(required=False, allow_null=True)
     invoice_date = serializers.DateField(required=False, allow_null=True)
-    invoice_id = serializers.IntegerField(required=False, allow_null=True)
+    invoice_ids = serializers.CharField(required=False, allow_null=True)
 
     class Meta:
         model = WorkOrder
@@ -92,7 +92,7 @@ class WorkOrderRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
             'invoice_service_fee',
             'invoice_service_fee_payment_date',
             'invoice_date',
-            'invoice_id',
+            'invoice_ids',
             'invoice_quote_amount',
             'invoice_labour_amount',
             'invoice_material_amount',
@@ -160,7 +160,7 @@ class WorkOrderRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         instance.visits = validated_data.get('visits', instance.visits)
         instance.invoice_service_fee = validated_data.get('invoice_service_fee', instance.invoice_service_fee)
         instance.invoice_service_fee_payment_date = validated_data.get('invoice_service_fee_payment_date', instance.invoice_service_fee_payment_date)
-        instance.invoice_id = validated_data.get('invoice_id', instance.invoice_id)
+        instance.invoice_ids = validated_data.get('invoice_ids', instance.invoice_ids)
         instance.invoice_date = validated_data.get('invoice_date', instance.invoice_date)
         instance.invoice_quote_amount = validated_data.get('invoice_quote_amount', instance.invoice_quote_amount)
         instance.invoice_labour_amount = validated_data.get('invoice_labour_amount', instance.invoice_labour_amount)

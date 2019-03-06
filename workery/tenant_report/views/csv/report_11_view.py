@@ -103,8 +103,8 @@ def report_11_streaming_csv_view(request):
         skill_set_text = job.get_skill_sets_string()
 
         # Set the invoice ID.
-        invoice_id = "-" if job.invoice_id is None else job.invoice_id
-        invoice_id = "-" if job.invoice_id <= 0 else job.invoice_id
+        invoice_ids = "-" if job.invoice_ids is None else job.invoice_ids
+        invoice_ids = "-" if job.invoice_ids <= 0 else job.invoice_ids
         wsib_number = "-" if job.associate.wsib_number is None else job.associate.wsib_number
         wsib_insurance_date = "-" if job.associate.wsib_insurance_date is None else job.associate.wsib_insurance_date
 
@@ -123,7 +123,7 @@ def report_11_streaming_csv_view(request):
             str(wsib_number),
             str(wsib_insurance_date),
             invoice_labour_amount,
-            str(invoice_id),
+            str(invoice_ids),
             skill_set_text,
         ],)
 

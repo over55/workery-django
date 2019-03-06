@@ -164,15 +164,15 @@
                             <div id="invoice_date-error" class="invalid-feedback"></div>
                         </div>
                         <div class="form-group col-md-12 mb-4">
-                            <label for="invoice_id">Invoice ID #</label>
+                            <label for="invoice_ids">Invoice ID(s) #</label>
                             <p>
-                                {% if job.invoice_id %}
-                                    {{ job.invoice_id }}
+                                {% if job.invoice_ids %}
+                                    {{ job.invoice_ids }}
                                 {% else %}
                                     -
                                 {% endif %}
                             </p>
-                            <div id="invoice_id-error" class="invalid-feedback"></div>
+                            <div id="invoice_ids-error" class="invalid-feedback"></div>
                         </div>
                         <div class="form-group col-md-12 mb-4">
                             <label for="invoice_quote_amount">Invoice Quote</label>

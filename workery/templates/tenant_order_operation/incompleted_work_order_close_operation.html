@@ -232,7 +232,7 @@
         var was_associate_professional = get_selected_radio_value('was_associate_professional');
         var would_customer_refer_our_organization = get_selected_radio_value('would_customer_refer_our_organization');
         var invoice_date = $('#invoice_date').val();
-        var invoice_id = $('#invoice_id').val();
+        var invoice_ids = $('#invoice_ids').val();
         var invoice_quote_amount = $('#invoice_quote_amount').val();
         var invoice_labour_amount = $('#invoice_labour_amount').val();
         var invoice_material_amount = $('#invoice_material_amount').val();
@@ -261,7 +261,7 @@
             was_associate_professional = false;
             would_customer_refer_our_organization = false;
             invoice_date = '1900-01-01';
-            invoice_id = null;
+            invoice_ids = null;
             invoice_quote_amount = 0;
             invoice_labour_amount = 0;
             invoice_material_amount = 0;
@@ -282,7 +282,7 @@
         console.log("was_associate_professional", was_associate_professional);
         console.log("would_customer_refer_our_organization", would_customer_refer_our_organization);
         console.log("invoice_date", invoice_date);
-        console.log("invoice_id", invoice_id);
+        console.log("invoice_ids", invoice_ids);
         console.log("invoice_quote_amount", invoice_quote_amount);
         console.log("invoice_labour_amount", invoice_labour_amount);
         console.log("invoice_material_amount", invoice_material_amount);
@@ -307,7 +307,7 @@
                 'was_associate_professional': was_associate_professional,
                 'would_customer_refer_our_organization': would_customer_refer_our_organization,
                 'invoice_date': invoice_date,
-                'invoice_id': invoice_id,
+                'invoice_ids': invoice_ids,
                 'invoice_quote_amount': invoice_quote_amount,
                 'invoice_labour_amount': invoice_labour_amount,
                 'invoice_material_amount': invoice_material_amount,
@@ -568,9 +568,9 @@
 
                                         <!-- Invoice ID -->
                                         <div class="form-group col-md-12 mb-4">
-                                            <label for="invoice_id">Invoice ID #</label>
-                                            <input type="number" class="form-control form-control-lg border border-success" id="invoice_id" name="invoice_id" placeholder="Invoice ID #" required="">
-                                            <div id="invoice_id-error" class="invalid-feedback"></div>
+                                            <label for="invoice_ids">Invoice ID(s) #</label>
+                                            <input type="number" class="form-control form-control-lg border border-success" id="invoice_ids" name="invoice_ids" placeholder="Invoice ID #" required="">
+                                            <div id="invoice_ids-error" class="invalid-feedback"></div>
                                         </div>
                                         <!-- end Invoice ID -->
 

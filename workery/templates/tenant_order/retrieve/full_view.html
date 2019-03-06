@@ -250,10 +250,10 @@
 			    </td>
 			</tr>
 			<tr>
-			    <th scope="row" class="bg-light">Invoice ID #</th>
-			    <td id="invoice_id">
-				{% if job.invoice_id %}
-                    {{ job.invoice_id }}
+			    <th scope="row" class="bg-light">Invoice ID(s) #</th>
+			    <td id="invoice_ids">
+				{% if job.invoice_ids %}
+                    {{ job.invoice_ids }}
                 {% else %}
                     -
                 {% endif %}
