@@ -477,7 +477,7 @@ JWT_AUTH = {
     # 'JWT_PRIVATE_KEY': None,
     'JWT_ALGORITHM': 'HS256',
     'JWT_VERIFY': True,
-    'JWT_VERIFY_EXPIRATION': True,
+    'JWT_VERIFY_EXPIRATION': False, # Disable checking if token expired.
     'JWT_LEEWAY': datetime.timedelta(days=1),
     'JWT_EXPIRATION_DELTA': datetime.timedelta(days=7),
     'JWT_ALLOW_REFRESH': True,
