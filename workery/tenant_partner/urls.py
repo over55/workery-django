@@ -23,6 +23,7 @@ urlpatterns = (
     path('partners/<str:template>/detail/<int:pk>/lite/', retrieve_view.PartnerLiteRetrieveView.as_view(), name='workery_tenant_partner_lite_retrieve'),
     path('partners/<str:template>/detail/<int:pk>/full/', retrieve_view.PartnerFullRetrieveView.as_view(), name='workery_tenant_partner_full_retrieve'),
     path('partners/<str:template>/detail/<int:pk>/comments/', retrieve_view.PartnerCommentsRetrieveView.as_view(), name='workery_tenant_partner_retrieve_for_comment_list'),
+    path('partners/<str:template>/detail/<int:pk>/files/', retrieve_view.PartnerFilesRetrieveView.as_view(), name='workery_tenant_partner_retrieve_for_files_list'),
 
     # Update
     path('partners/<str:template>/detail/<int:pk>/edit/', update_view.PartnerUpdateView.as_view(), name='workery_tenant_partner_update'),
