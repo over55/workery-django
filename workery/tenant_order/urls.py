@@ -33,6 +33,7 @@ urlpatterns = (
     path('jobs/<str:template>/detail/<int:pk>/tasks/', retrieve_view.JobRetrieveForTasksListView.as_view(), name='workery_tenant_job_retrieve_for_tasks_list'),
     path('jobs/<str:template>/detail/<int:pk>/comments/', retrieve_view.JobRetrieveForCommentsListAndCreateView.as_view(), name='workery_tenant_job_comments_retrieve'),
     path('archived-jobs/detail/<int:pk>/full/', retrieve_view.ArchivedJobFullRetrieveView.as_view(), name='workery_tenant_job_archive_full_retrieve'),
+    path('archived-jobs/detail/<int:pk>/files/', retrieve_view.JobRetrieveForFilesListView.as_view(), name='workery_tenant_job_files_retrieve'),
 
     # Update
     path('jobs/<str:template>/detail/<int:pk>/edit/', update_views.JobUpdateView.as_view(), name='workery_tenant_job_update'),
