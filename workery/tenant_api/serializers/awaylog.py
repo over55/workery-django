@@ -139,7 +139,7 @@ class AwayLogListCreateSerializer(serializers.ModelSerializer):
         elif log.reason == 3:
             comment_text += "Personal reasons"
         elif log.reason == 4:
-            comment_text += "Insurance expired"
+            comment_text += "Commercial insurance expired"
         elif log.reason == 5:
             comment_text += "Policy check expired"
         if log.until_further_notice == False:

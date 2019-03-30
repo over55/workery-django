@@ -6,3 +6,6 @@ The following ongoing jobs were updated automatically as of {{ tenant_todays_dat
     Job ID #: {{ ongoing_job.id }}
     Status: {{ ongoing_job.get_pretty_status }}
 {% endfor %}
+
+Thank you,
+Workery.ca

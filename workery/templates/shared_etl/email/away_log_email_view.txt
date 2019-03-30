@@ -9,3 +9,6 @@ Reason {{ away_log_object.reason }}
 Other {{ away_log_object.reason_other }}
 Until Further Notice {{ away_log_object.until_further_notice }}
 Until: {{ away_log_object.until_date|timezone:franchise.timezone_name }}
+
+Thank you,
+Workery.ca
