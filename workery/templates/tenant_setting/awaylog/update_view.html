@@ -207,8 +207,10 @@
                             <label for="reason">Reason <sup>*</sup></label>
                             <select class="form-control form-control-lg border border-primary" id="reason" name="reason" required="" autofocus>
                                 <option value="0">Please select reason</option>
-                                <option value="2" {% if away_log.reason == 3 %}selected="selected"{% endif %}>Going on vacation</option>
-                                <option value="3" {% if away_log.reason == 2 %}selected="selected"{% endif %}>Personal reasons</option>
+                                <option value="2" {% if away_log.reason == 2 %}selected="selected"{% endif %}>Going on vacation</option>
+                                <option value="3" {% if away_log.reason == 3 %}selected="selected"{% endif %}>Personal reasons</option>
+                                <option value="4" {% if away_log.reason == 4 %}selected="selected"{% endif %}>Insurance expired</option>
+                                <option value="5" {% if away_log.reason == 5 %}selected="selected"{% endif %}>Police check expired</option>
                                 <option value="1" {% if away_log.reason == 1 %}selected="selected"{% endif %}>Other</option>
                             </select>
                             <div id="reason-error" class="invalid-feedback"></div>

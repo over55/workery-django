@@ -138,6 +138,10 @@ class AwayLogListCreateSerializer(serializers.ModelSerializer):
             comment_text += "Going on vacation"
         elif log.reason == 3:
             comment_text += "Personal reasons"
+        elif log.reason == 4:
+            comment_text += "Insurance expired"
+        elif log.reason == 5:
+            comment_text += "Policy check expired"
         if log.until_further_notice == False:
             comment_text += ". Until: "+str(log.until_date)
         else:

@@ -66,6 +66,7 @@ class AwayLog(models.Model):
         related_name="away_logs",
         on_delete=models.CASCADE,
     )
+    # 1=Other | 2=Going on vacation | 3=Personal reasons | 4=Insurance Expired | 5=Policy Check Expired
     reason = models.PositiveSmallIntegerField(
         _("Reason"),
         help_text=_('The reason the user is away.'),

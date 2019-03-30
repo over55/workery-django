@@ -49,7 +49,7 @@
 
 
 <main id="main" role="main">
-    <h1>Dashboard</h1>
+    <h1><i class="fas fa-tachometer-alt"></i>&nbsp;Dashboard</h1>
     <section class="row text-center placeholders">
 
 
@@ -98,7 +98,7 @@
     </section>
 
     <!-- LATEST ORDERS BY YOU -->
-    <h1>{% trans 'Job History' %}</h1>
+    <h1><i class="fas fa-wrench"></i>&nbsp;{% trans 'Job History' %}</h1>
     <div class="table-responsive">
         <table class="table table-striped">
             <thead>
@@ -157,12 +157,12 @@
 
     <!-- AWAY LOGS -->
     <div class="jumbotron">
-        <h1 class="display-4">News Items</h1>
+        <h1 class="display-4"><i class="fas fa-bullhorn"></i>&nbsp;News Items</h1>
         <div class="table-responsive-sm my-3">
           <table class="table">
               <thead>
                 <tr>
-                  <th scope="col">Associate</th>
+                  <th scope="col">Associate&nbsp;<i class="fas fa-external-link-alt"></i></th>
                   <th scope="col">Reason</th>
                   <th scope="col">Start</th>
                   <th scope="col">Away until</th>
@@ -172,14 +172,22 @@
               <tbody>
                 {% for awaylog in awaylogs.all %}
                 <tr>
-                  <td>{{ awaylog.associate }}</td>
+                  <td>
+                    <a href="{% url 'workery_tenant_member_lite_retrieve' 'summary' awaylog.associate.id %}" target="_blank">
+                           {{ awaylog.associate }}
+                      </a>
+                  </td>
                   <td>
                       {% if awaylog.reason == 1 %}
-                        {{ awaylog.reason_other }}
+                        <i class="fas fa-umbrella"></i>&nbsp;{{ awaylog.reason_other }}
                       {% elif awaylog.reason == 2 %}
-                        Going on vacation
+                        <i class="fas fa-plane"></i>&nbsp;Going on vacation
                       {% elif awaylog.reason == 3 %}
-                        Personal reasons
+                        <i class="fas fa-home"></i>&nbsp;Personal reasons
+                      {% elif awaylog.reason == 4 %}
+                        <i class="fas fa-university"></i>&nbsp;Insurance expired
+                      {% elif awaylog.reason == 5 %}
+                        <i class="fas fa-balance-scale"></i>&nbsp;Police check expired
                       {% endif %}
                   </td>
                   <td>
@@ -197,6 +205,9 @@
                     {% endif %}
                   </td>
                   <td>
+                       <a href="{% url 'workery_tenant_settings_away_log_update' awaylog.id %}">
+                           {% trans 'Edit' %}&nbsp;<i class="fas fa-pencil-alt"></i>
+                      </a>
                      <button id="id_delete_btn"
                              class="text-danger close"
                              type="button"
@@ -230,7 +241,7 @@
     <!-- end AWAY LOGS -->
 
     <!-- LATEST ORDERS BY TEAM -->
-    <h1 class="mt-4 pt-4">{% trans 'Team Job History' %}</h1>
+    <h1 class="mt-4 pt-4"><i class="fas fa-users"></i>&nbsp;{% trans 'Team Job History' %}</h1>
     <div class="table-responsive">
         <table class="table table-striped">
             <thead>
@@ -275,7 +286,7 @@
     <!-- end LATEST ORDERS BY TEAM -->
 
     <!-- ORDER COMMENTS -->
-    <h1 class="mt-4 pt-4">{% trans 'Past 5 day comments' %}</h1>
+    <h1 class="mt-4 pt-4"><i class="fas fa-comment"></i>&nbsp;{% trans 'Past 5 day comments' %}</h1>
     <div class="table-responsive">
         <table class="table table-striped">
             <thead>
