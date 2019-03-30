@@ -87,8 +87,8 @@
     <nav aria-label="breadcrumb">
 	  	<ol class="breadcrumb">
             {% if return_id == 'financials-pending' %}
-                <li class="breadcrumb-item"><a href="{% url 'workery_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
-                <li class="breadcrumb-item"><a href="{% url 'workery_tenant_paid_jobs_list' %}">{% trans 'Financials' %}</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'workery_tenant_dashboard_master' %}"><i class="fas fa-tachometer-alt"></i>&nbsp;{% trans 'Dashboard' %}</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'workery_tenant_paid_jobs_list' %}"><i class="fas fa-credit-card"></i>&nbsp;{% trans 'Financials' %}</a></li>
                 <li class="breadcrumb-item"><a href="{% url 'workery_tenant_paid_jobs_list' %}">{% trans 'Paid Jobs' %}</a></li>
                 <li class="breadcrumb-item"><a href="{% url 'workery_tenant_financlial_job_retrieve' 'paid-jobs' job.id %}">{% trans 'Job #' %}{{ job.id|intcomma }}</a></li>
                 <li class="breadcrumb-item active" aria-current="page">{% trans 'Unassign' %}</li>
@@ -121,7 +121,7 @@
                     <!-- Error Output -->
                     <div id="all_error_result" name="all_error_result"></div>
                     <!-- end Error Output -->
-                    
+
                     <form id="add-client-form" method="post" class="needs-validation" action="" novalidate>
                         <div class="form-row">
                             <div class="form-row">

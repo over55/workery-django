@@ -113,8 +113,8 @@
     <nav aria-label="breadcrumb">
 	  	<ol class="breadcrumb">
             {% if return_id == 'lite-retrieve' %}
-                <li class="breadcrumb-item"><a href="{% url 'workery_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
-                <li class="breadcrumb-item"><a href="{% url 'workery_tenant_job_summary' %}">{% trans 'Jobs' %}</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'workery_tenant_dashboard_master' %}"><i class="fas fa-tachometer-alt"></i>&nbsp;{% trans 'Dashboard' %}</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'workery_tenant_job_summary' %}"><i class="fas fa-wrench"></i>&nbsp;{% trans 'Jobs' %}</a></li>
                 <li class="breadcrumb-item">
                     <a href="{% url 'workery_tenant_job_retrieve' parameters.template job.id %}">
                         {% trans 'Job #' %}{{ job.id|intcomma }}
@@ -122,7 +122,7 @@
                 </li>
                 <li class="breadcrumb-item active" aria-current="page">{% trans 'Unassign' %}</li>
             {% elif return_id == 'pending-task' %}
-                <li class="breadcrumb-item"><a href="{% url 'workery_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'workery_tenant_dashboard_master' %}"><i class="fas fa-tachometer-alt"></i>&nbsp;{% trans 'Dashboard' %}</a></li>
                 <li class="breadcrumb-item"><a href="{% url 'workery_tenant_task_list' %}">{% trans 'Pending Tasks' %}</a></li>
                 <li class="breadcrumb-item"><a href="{% url 'workery_tenant_pending_task_retrieve' parameters.task_item %}">{% trans 'Task #' %}{{ parameters.task_item|intcomma }}</a></li>
                 <li class="breadcrumb-item active" aria-current="page">{% trans 'Unassign' %}</li>

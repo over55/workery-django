@@ -82,10 +82,10 @@
             {% if template == 'search' %}
 
             <li class="breadcrumb-item">
-                <a href="{% url 'workery_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a>
+                <a href="{% url 'workery_tenant_dashboard_master' %}"><i class="fas fa-tachometer-alt"></i>&nbsp;{% trans 'Dashboard' %}</a>
             </li>
             <li class="breadcrumb-item">
-                <a href="{% url 'workery_tenant_partner_summary' %}">{% trans 'Partners' %}</a>
+                <a href="{% url 'workery_tenant_partner_summary' %}"><i class="fas fa-handshake"></i>&nbsp;{% trans 'Partners' %}</a>
             </li>
             <li class="breadcrumb-item">
                 <a href="{% url 'workery_tenant_partner_search' %}">{% trans 'Search' %}</a>
@@ -95,15 +95,15 @@
 
             {% elif template == 'list' %}
 
-            <li class="breadcrumb-item"><a href="{% url 'workery_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
-            <li class="breadcrumb-item"><a href="{% url 'workery_tenant_partner_summary' %}">{% trans 'Partners' %}</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'workery_tenant_dashboard_master' %}"><i class="fas fa-tachometer-alt"></i>&nbsp;{% trans 'Dashboard' %}</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'workery_tenant_partner_summary' %}"><i class="fas fa-handshake"></i>&nbsp;{% trans 'Partners' %}</a></li>
             <li class="breadcrumb-item"><a href="{% url 'workery_tenant_partner_list' %}">{% trans 'List' %}</a></li>
             <li class="breadcrumb-item active" aria-current="page">{% trans 'Partner #' %}{{ partner.id|intcomma }}</li>
 
             {% else %}
 
-	    	<li class="breadcrumb-item"><a href="{% url 'workery_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
-            <li class="breadcrumb-item"><a href="{% url 'workery_tenant_partner_summary' %}">{% trans 'Partners' %}</a></li>
+	    	<li class="breadcrumb-item"><a href="{% url 'workery_tenant_dashboard_master' %}"><i class="fas fa-tachometer-alt"></i>&nbsp;{% trans 'Dashboard' %}</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'workery_tenant_partner_summary' %}"><i class="fas fa-handshake"></i>&nbsp;{% trans 'Partners' %}</a></li>
             <li class="breadcrumb-item active" aria-current="page">{% trans 'Partner #' %}{{ partner.id|intcomma }}</li>
 
             {% endif %}

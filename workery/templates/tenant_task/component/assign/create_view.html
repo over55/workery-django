@@ -52,7 +52,7 @@
                 // Wait for a 60 seconds before enabling buttons again.
                 var the_time = 5000 * 12; // Developers note: 5000 = 5 seconds.
                 setTimeout(enable_btn(), the_time);
-                
+
                 // STEP 1: Convert to JSON.
                 var err = JSON.parse(xhr.responseText);
 
@@ -112,8 +112,8 @@
     <!------------------------------------------------------------------------->
     <nav aria-label="breadcrumb">
 	  	<ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{% url 'workery_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
-            <li class="breadcrumb-item"><a href="{% url 'workery_tenant_task_list' %}">{% trans 'Pending Tasks' %}</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'workery_tenant_dashboard_master' %}"><i class="fas fa-tachometer-alt"></i>&nbsp;{% trans 'Dashboard' %}</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'workery_tenant_task_list' %}"><i class="fas fa-list-ol"></i>&nbsp;{% trans 'Pending Tasks' %}</a></li>
             <li class="breadcrumb-item"><a href="{% url 'workery_tenant_pending_task_retrieve' task_item.id %}">{% trans 'Task #' %}{{ task_item.id|intcomma }}</a></li>
             <li class="breadcrumb-item"><a href="{% url 'workery_tenant_pending_task_retrieve_for_activity_sheet_retrieve' task_item.id %}">{% trans 'Activity Sheet' %}</a></li>
 	    	<li class="breadcrumb-item active" aria-current="page">{% trans 'Activity Sheet' %}</li>

@@ -14,11 +14,11 @@
     <!------------------------------------------------------------------------->
     <nav aria-label="breadcrumb">
 	  	<ol class="breadcrumb">
-	    	<li class="breadcrumb-item"><a href="{% url 'workery_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
+	    	<li class="breadcrumb-item"><a href="{% url 'workery_tenant_dashboard_master' %}"><i class="fas fa-tachometer-alt"></i>&nbsp;{% trans 'Dashboard' %}</a></li>
             {% if template == "unpaid-jobs" %}
                <li class="breadcrumb-item" aria-current="page">
                    <a href="{% url 'workery_tenant_unpaid_jobs_list' %}">
-                       {% trans 'Financials' %}
+                       <i class="fas fa-credit-card"></i>&nbsp;{% trans 'Financials' %}
                    </a>
                </li>
    	  	       <li class="breadcrumb-item active" aria-current="page">
@@ -30,7 +30,7 @@
             {% elif template == "paid-jobs" %}
                   <li class="breadcrumb-item" aria-current="page">
                       <a href="{% url 'workery_tenant_paid_jobs_list' %}">
-                          {% trans 'Financials' %}
+                          <i class="fas fa-credit-card"></i>&nbsp;{% trans 'Financials' %}
                       </a>
                   </li>
                   <li class="breadcrumb-item active" aria-current="page">

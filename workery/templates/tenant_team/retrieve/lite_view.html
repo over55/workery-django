@@ -76,10 +76,10 @@
             {% if template == 'search' %}
 
             <li class="breadcrumb-item">
-                <a href="{% url 'workery_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a>
+                <a href="{% url 'workery_tenant_dashboard_master' %}"><i class="fas fa-tachometer-alt"></i>&nbsp;{% trans 'Dashboard' %}</a>
             </li>
             <li class="breadcrumb-item">
-                <a href="{% url 'workery_tenant_team_summary' %}">{% trans 'Staff' %}</a>
+                <a href="{% url 'workery_tenant_team_summary' %}"><i class="fas fa-user-tie"></i>&nbsp;{% trans 'Staff' %}</a>
             </li>
             <li class="breadcrumb-item">
                 <a href="{% url 'workery_tenant_team_search' %}">{% trans 'Search' %}</a>
@@ -89,15 +89,15 @@
 
             {% elif template == 'list' %}
 
-            <li class="breadcrumb-item"><a href="{% url 'workery_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
-            <li class="breadcrumb-item"><a href="{% url 'workery_tenant_team_summary' %}">{% trans 'Staff' %}</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'workery_tenant_dashboard_master' %}"><i class="fas fa-tachometer-alt"></i>&nbsp;{% trans 'Dashboard' %}</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'workery_tenant_team_summary' %}"><i class="fas fa-user-tie"></i>&nbsp;{% trans 'Staff' %}</a></li>
             <li class="breadcrumb-item"><a href="{% url 'workery_tenant_team_list' %}">{% trans 'List' %}</a></li>
             <li class="breadcrumb-item active" aria-current="page">{% trans 'Staff Member #' %}{{ staff.id }}</li>
 
             {% else %}
 
-	    	<li class="breadcrumb-item"><a href="{% url 'workery_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
-            <li class="breadcrumb-item"><a href="{% url 'workery_tenant_team_summary' %}">{% trans 'Staff' %}</a></li>
+	    	<li class="breadcrumb-item"><a href="{% url 'workery_tenant_dashboard_master' %}"><i class="fas fa-tachometer-alt"></i>&nbsp;{% trans 'Dashboard' %}</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'workery_tenant_team_summary' %}"><i class="fas fa-user-tie"></i>&nbsp;{% trans 'Staff' %}</a></li>
             <li class="breadcrumb-item active" aria-current="page">{% trans 'Staff Member #' %}{{ staff.id }}</li>
 
             {% endif %}

@@ -327,15 +327,15 @@
     <!------------------------------------------------------------------------->
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{% url 'workery_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'workery_tenant_dashboard_master' %}"><i class="fas fa-tachometer-alt"></i>&nbsp;{% trans 'Dashboard' %}</a></li>
             {% if template == "unpaid-jobs" %}
-               <li class="breadcrumb-item"><a href="{% url 'workery_tenant_unpaid_jobs_list' %}">{% trans 'Financials' %}</a></li>
+               <li class="breadcrumb-item"><a href="{% url 'workery_tenant_unpaid_jobs_list' %}"><i class="fas fa-credit-card"></i>&nbsp;{% trans 'Financials' %}</a></li>
                <li class="breadcrumb-item"><a href="{% url 'workery_tenant_unpaid_jobs_list' %}">{% trans 'Unpaid Jobs' %}</a></li>
             {% elif template == "paid-jobs" %}
-                <li class="breadcrumb-item"><a href="{% url 'workery_tenant_paid_jobs_list' %}">{% trans 'Financials' %}</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'workery_tenant_paid_jobs_list' %}"><i class="fas fa-credit-card"></i>&nbsp;{% trans 'Financials' %}</a></li>
                 <li class="breadcrumb-item"><a href="{% url 'workery_tenant_paid_jobs_list' %}">{% trans 'Paid Jobs' %}</a></li>
              {% elif template == "all-jobs" %}
-                <li class="breadcrumb-item"><a href="{% url 'workery_tenant_all_jobs_list' %}">{% trans 'Financials' %}</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'workery_tenant_all_jobs_list' %}"><i class="fas fa-credit-card"></i>&nbsp;{% trans 'Financials' %}</a></li>
                 <li class="breadcrumb-item"><a href="{% url 'workery_tenant_all_jobs_list' %}">{% trans 'All Jobs' %}</a></li>
             {% endif %}
             <li class="breadcrumb-item">

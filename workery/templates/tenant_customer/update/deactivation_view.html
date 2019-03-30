@@ -133,10 +133,10 @@
             {% if template == 'search' %}
 
             <li class="breadcrumb-item">
-                <a href="{% url 'workery_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a>
+                <a href="{% url 'workery_tenant_dashboard_master' %}"><i class="fas fa-tachometer-alt"></i>&nbsp;{% trans 'Dashboard' %}</a>
             </li>
             <li class="breadcrumb-item">
-                <a href="{% url 'workery_tenant_customer_summary' %}">{% trans 'Clients' %}</a>
+                <a href="{% url 'workery_tenant_customer_summary' %}"><i class="fas fa-id-card"></i>&nbsp;{% trans 'Clients' %}</a>
             </li>
             <li class="breadcrumb-item">
                 <a href="{% url 'workery_tenant_customer_search' %}">{% trans 'Search' %}</a>
@@ -153,8 +153,8 @@
 
             {% elif template == 'list' %}
 
-            <li class="breadcrumb-item"><a href="{% url 'workery_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
-            <li class="breadcrumb-item"><a href="{% url 'workery_tenant_customer_summary' %}">{% trans 'Clients' %}</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'workery_tenant_dashboard_master' %}"><i class="fas fa-tachometer-alt"></i>&nbsp;{% trans 'Dashboard' %}</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'workery_tenant_customer_summary' %}"><i class="fas fa-id-card"></i>&nbsp;{% trans 'Clients' %}</a></li>
             <li class="breadcrumb-item"><a href="{% url 'workery_tenant_customer_list' %}">{% trans 'List' %}</a></li>
             <li class="breadcrumb-item"><a href="{% url 'workery_tenant_customer_full_retrieve' template customer.id %}">{% trans 'Client #' %}{{ customer.id|intcomma }}</a></li>
             <li class="breadcrumb-item active" aria-current="page">
@@ -167,8 +167,8 @@
 
             {% else %}
 
-	    	<li class="breadcrumb-item"><a href="{% url 'workery_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
-            <li class="breadcrumb-item"><a href="{% url 'workery_tenant_customer_summary' %}">{% trans 'Clients' %}</a></li>
+	    	<li class="breadcrumb-item"><a href="{% url 'workery_tenant_dashboard_master' %}"><i class="fas fa-tachometer-alt"></i>&nbsp;{% trans 'Dashboard' %}</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'workery_tenant_customer_summary' %}"><i class="fas fa-id-card"></i>&nbsp;{% trans 'Clients' %}</a></li>
             <li class="breadcrumb-item"><a href="{% url 'workery_tenant_customer_full_retrieve' template customer.id %}">{% trans 'Client #' %}{{ customer.id|intcomma }}</a></li>
             <li class="breadcrumb-item active" aria-current="page">
                 {% if customer.state == CUSTOMER_STATE.INACTIVE %}

@@ -11,8 +11,8 @@
     <!------------------------------------------------------------------------->
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{% url 'workery_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
-            <li class="breadcrumb-item"><a href="{% url 'workery_tenant_task_list' %}">{% trans 'Pending Tasks' %}</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'workery_tenant_dashboard_master' %}"><i class="fas fa-tachometer-alt"></i>&nbsp;{% trans 'Dashboard' %}</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'workery_tenant_task_list' %}"><i class="fas fa-list-ol"></i>&nbsp;{% trans 'Pending Tasks' %}</a></li>
             <li class="breadcrumb-item active" aria-current="page">{% trans 'Task #' %}{{ task_item.id|intcomma }}</li>
         </ol>
     </nav>

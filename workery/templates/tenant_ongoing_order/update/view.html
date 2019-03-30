@@ -115,8 +115,8 @@
 
             {% else %}
 
-	        <li class="breadcrumb-item"><a href="{% url 'workery_tenant_dashboard_master' %}">{% trans 'Dashboard' %}</a></li>
-            <li class="breadcrumb-item"><a href="{% url 'workery_tenant_ongoing_job_list' %}">{% trans 'Ongoing Jobs' %}</a></li>
+	        <li class="breadcrumb-item"><a href="{% url 'workery_tenant_dashboard_master' %}"><i class="fas fa-tachometer-alt"></i>&nbsp;{% trans 'Dashboard' %}</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'workery_tenant_ongoing_job_list' %}"><i class="fas fa-redo"></i>&nbsp;{% trans 'Ongoing Jobs' %}</a></li>
             <li class="breadcrumb-item"><a href="{% url 'workery_tenant_ongoing_job_full_retrieve' template ongoing_job.id %}">{% trans 'Ongoing Job #' %}{{ ongoing_job.id|intcomma }}</a></li>
             <li class="breadcrumb-item active" aria-current="page">{% trans 'Edit' %}</li>
 
