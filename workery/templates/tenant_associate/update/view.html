@@ -38,11 +38,11 @@
         const country = "{% url 'workery_get_countries_api_endpoint' %}?format=json";
     	console.log(state);
         console.log(country);
-	    
+
 	let c_dropdown = $('#address_country');
     	c_dropdown.empty();
     	c_dropdown.append('<option disabled>Choose Country</option>');
-											 
+
         // Populate dropdown with list of countries
     	$.getJSON(country, function (data) {
             $.each(data, function (key, entry) {
@@ -50,16 +50,16 @@
 			c_dropdown.append($('<option selected="true"></option>').attr('value', entry.code).text(entry.country));
 		} else {
     	    		c_dropdown.append($('<option></option>').attr('value', entry.code).text(entry.country));
-		}    
+		}
     	    })
     	});
-	
+
 	{% if associate.address_country %}
             c_dropdown.val("{{ associate.address_country }}");
         {% else %}
             c_dropdown.prop('selectedIndex', 1);
         {% endif %}
-											 
+
     	function loadState(countryId){
     		let p_dropdown = $('#address_region');
     		p_dropdown.empty();
@@ -77,11 +77,11 @@
     		    }
     		  })
     		});
-		
+
     		p_dropdown.val('{{ associate.address_region }}');
         }
     });
-	
+
     /**
      *  Function will unlock the submit button.
      */
@@ -949,7 +949,7 @@
             console.log(email);
         }, 250));
 
-        
+
     	/**
     	 *  Password Strength Check Validation.
     	 */
@@ -1000,7 +1000,7 @@
     	}
 
     }); // end Ready
-	 
+
     //------------------------//
     // SELECT2 INITIALIZATION //
     //------------------------//

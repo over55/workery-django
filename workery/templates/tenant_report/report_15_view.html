@@ -1,0 +1,124 @@
+{% extends 'tenant_foundation/tenant_base.html' %}
+{% load staticfiles i18n shared_foundation_tags humanize %}
+
+{% block title %}
+{% trans 'Report #7 | Workery' %}
+{% endblock title %}
+
+{% block header_content %}
+{% endblock header_content %}
+
+{% block content %}
+
+<script>
+    //
+    /**
+     *  When page loads, the following code will be run first.
+     */
+    $(document).ready(function () {
+        //
+    }); // end DOCUMENT
+
+    function click_cancel_button() {
+        window.location = "{% url 'workery_tenant_reports_list_master' %}";
+    }
+
+    function click_download_button() {
+        var expiry_date_type = $('#expiry_date_type').val();
+        if (expiry_date_type == '') {
+            alert("Please select a choice.");
+            return;
+        }
+        var days_before_expiry = $('#days_before_expiry').val();
+        if (days_before_expiry == '') {
+            alert("Please select a choice.");
+            return;
+        }
+
+        var temp_url = "{% url 'workery_tenant_report_15_download_csv_file_api_endpoint' %}?filter_date_type=xxx&filter_days=yyy";
+        temp_url = temp_url.replace('xxx', expiry_date_type);
+        temp_url = temp_url.replace('yyy', days_before_expiry);
+
+        // Redirect will cause download.
+        window.location = temp_url;
+    }
+</script>
+
+<main id="main" role="main">
+
+    <!-- BREADCRUMB -->
+    <!------------------------------------------------------------------------->
+    <nav aria-label="breadcrumb">
+	  	<ol class="breadcrumb">
+	    	<li class="breadcrumb-item"><a href="{% url 'workery_tenant_dashboard_master' %}"><i class="fas fa-tachometer-alt"></i>&nbsp;{% trans 'Dashboard' %}</a></li>
+        	<li class="breadcrumb-item"><a href="{% url 'workery_tenant_reports_list_master' %}"><i class="fas fa-chart-bar"></i>&nbsp;{% trans 'Reports' %}</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{% trans 'Associate Birthdays Report' %}</li>
+	  	</ol>
+	</nav>
+    <!------------------------------------------------------------------------->
+    <!-- end BREADCRUMB -->
+
+    <h1>Associate Upcoming Expiry Dates Report</h1>
+
+    <div class="col-sm-6 mx-auto mt-2">
+        <!-- Residential form -->
+        <div class="col-sm-12 fade show active" id="client-form" aria-labelledby="residential">
+
+            <p>&nbsp;</p>
+            <form id="add-client-form" method="post" class="needs-validation" action="" novalidate>
+            <!-- ############ PERSON ############ -->
+            <p class="border-bottom mb-3 pb-1 text-secondary">Report Details</p>
+            <p>Run this report to see which associates have upcoming expiry dates for certain items like commercial insurance, policy check, etc. This report is exported to .csv format.</p>
+
+            <!-- Associate Types -->
+            <div class="form-group col-md-7 mb-4">
+                <label for="expiry_date_type">What expiry date are you looking for?</label>
+                <select class="custom-select form-control-lg border-primary" id="expiry_date_type" name="expiry_date_type" required>
+                    <option value="" selected>Types...</option>
+                    <option value="1">Commercial Insurance</option>
+                    <option value="2">Police check</option>
+                    <option value="0">All</option>
+                </select>
+                <div id="expiry_date_type-error" class="invalid-feedback"></div>
+
+            </div>
+
+            <div class="form-group col-md-7 mb-4">
+                <label for="days_before_expiry">Days until expiry</label>
+                <input type="text" class="form-control form-control-lg border border-primary" id="days_before_expiry" name="days_before_expiry" placeholder="Number of days before expiry date" minlength="3" maxlength="255" value="">
+                <div id="days_before_expiry-error" class="invalid-feedback"></div>
+                <small id="drivers_license_class_help" class="form-text text-muted ft-indent">
+                    Indicate how many days before the date will expire. 
+                </small>
+            </div>
+
+            <!-- end Associate Types -->
+
+                <!-- ############ end SECURITY ############ -->
+                <!-- end SUBMIT BUTTON -->
+                <div class="form-group col-md-12 mb-3 p-0 mx-auto text-center">
+                    <button id="id_submit_btn"
+                         class="btn btn-success btn-lg mt-4 float-right pl-4 pr-4"
+                          type="button"
+                       onclick="click_download_button();">
+                         <i class="fa fa-download"></i>&nbsp;Download</button>
+                    <button id="id_cancel_btn"
+                         class="btn btn-orange btn-lg mt-4 float-left pl-4 pr-4"
+                          type="button"
+                       onclick="click_cancel_button();">
+                        <i class="fas fa-times"></i>&nbsp;Back
+                    </button>
+                </div>
+                <!-- end SUBMIT BUTTON -->
+
+
+            </div>
+        </div>
+    </div>
+
+
+    <!-- RETURN-TO-TOP -->
+    <a id="return-to-top" href="#" class="btn-info btn-lg back-to-top" role="button" title="Back to top"><i class="fas fa-angle-up fa-2x"></i></a>
+    <!-- end RETURN-TO-TOP -->
+</main>
+{% endblock content %}
