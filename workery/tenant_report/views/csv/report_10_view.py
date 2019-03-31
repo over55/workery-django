@@ -83,6 +83,7 @@ def report_10_streaming_csv_view(request):
     rows += ([
         "Job No.",
         "Assignment Date",
+        "Associate No.",
         "Associate",
         "Associate DOB",
         "Associate Age",
@@ -101,9 +102,11 @@ def report_10_streaming_csv_view(request):
         skill_set_text = job.get_skill_sets_string()
 
         # Get our DOB and age.
+        associate_id = None
         associate_dob = None
         associate_age = None
         if job.associate:
+            associate_id = job.associate.id
             associate_dob = pretty_dt_string(job.associate.birthdate) if job.associate.birthdate is not None else ""
             associate_age = job.associate.get_current_age()
         customer_dob = pretty_dt_string(job.customer.birthdate) if job.customer.birthdate is not None else ""
@@ -112,6 +115,7 @@ def report_10_streaming_csv_view(request):
         rows += ([
             str(job.id),
             pretty_dt_string(job.assignment_date),
+            str(associate_id),
             str(job.associate),
             str(associate_dob),
             associate_age,

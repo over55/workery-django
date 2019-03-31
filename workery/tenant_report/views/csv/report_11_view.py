@@ -87,9 +87,11 @@ def report_11_streaming_csv_view(request):
         "Job Status",
         "Assignment",
         "Completion",
+        "Associate No.",
         "Associate",
         "Associate DOB",
         "Associate Age",
+        "Client No.",
         "Client",
         "Client Birthdate",
         "Client Age",
@@ -113,9 +115,11 @@ def report_11_streaming_csv_view(request):
         wsib_insurance_date = "-" if job.associate.wsib_insurance_date is None else job.associate.wsib_insurance_date
 
         # Get our DOB and age.
+        associate_id = None
         associate_dob = None
         associate_age = None
         if job.associate:
+            associate_id = job.associate.id
             associate_dob = pretty_dt_string(job.associate.birthdate) if job.associate.birthdate is not None else ""
             associate_age = job.associate.get_current_age()
         customer_dob = pretty_dt_string(job.customer.birthdate) if job.customer.birthdate is not None else ""
@@ -130,9 +134,11 @@ def report_11_streaming_csv_view(request):
             job.get_pretty_status(),
             pretty_dt_string(job.assignment_date),
             pretty_dt_string(job.completion_date),
+            str(associate_id),
             str(job.associate),
             associate_dob,
             associate_age,
+            str(job.customer.id),
             str(job.customer),
             str(customer_dob),
             job.customer.get_current_age(),
