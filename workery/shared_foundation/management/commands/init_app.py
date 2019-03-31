@@ -105,6 +105,13 @@ class Command(BaseCommand):
             'can_put_away_log',
             'can_delete_away_log',
 
+            # --- Bulletin Board Item --- #
+            'can_get_bulletin_board_items',
+            'can_get_bulletin_board_item',
+            'can_post_bulletin_board_item',
+            'can_put_bulletin_board_item',
+            'can_delete_bulletin_board_item',
+
             # --- Insurance Requirement --- #
             'can_get_insurance_requirements',
             'can_get_insurance_requirement',
@@ -208,6 +215,13 @@ class Command(BaseCommand):
             'can_put_away_log',
             'can_delete_away_log',
 
+            # --- Bulletin Board Item --- #
+            'can_get_bulletin_board_items',
+            'can_get_bulletin_board_item',
+            'can_post_bulletin_board_item',
+            'can_put_bulletin_board_item',
+            'can_delete_bulletin_board_item',
+
             # --- Insurance Requirement --- #
             'can_get_insurance_requirements',
             'can_get_insurance_requirement',
@@ -307,6 +321,13 @@ class Command(BaseCommand):
             'can_post_away_log',
             'can_put_away_log',
             'can_delete_away_log',
+
+            # --- Bulletin Board Item --- #
+            'can_get_bulletin_board_items',
+            'can_get_bulletin_board_item',
+            'can_post_bulletin_board_item',
+            'can_put_bulletin_board_item',
+            'can_delete_bulletin_board_item',
 
             # --- Insurance Requirement --- #
             'can_get_insurance_requirements',

@@ -10,9 +10,9 @@ from rest_framework.response import Response
 
 from shared_foundation.custom.drf.permissions import IsAuthenticatedAndIsActivePermission
 from tenant_api.pagination import StandardResultsSetPagination
-from tenant_api.permissions.customer import (
-   CanListCreateCustomerPermission,
-   CanRetrieveUpdateDestroyCustomerPermission
+from tenant_api.permissions.bulletin_board_item import (
+   CanListCreateBulletinBoardItemPermission,
+   CanRetrieveUpdateDestroyBulletinBoardItemPermission
 )
 from tenant_api.serializers.bulletin_board_item import (
     BulletinBoardItemListCreateSerializer,
@@ -27,7 +27,7 @@ class BulletinBoardItemListCreateAPIView(generics.ListCreateAPIView):
     permission_classes = (
         permissions.IsAuthenticated,
         IsAuthenticatedAndIsActivePermission,
-        CanListCreateCustomerPermission
+        CanListCreateBulletinBoardItemPermission
     )
 
     def get_queryset(self):
@@ -59,7 +59,7 @@ class BulletinBoardItemRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestr
     permission_classes = (
         permissions.IsAuthenticated,
         IsAuthenticatedAndIsActivePermission,
-        CanRetrieveUpdateDestroyCustomerPermission
+        CanRetrieveUpdateDestroyBulletinBoardItemPermission
     )
 
     def get(self, request, pk=None):

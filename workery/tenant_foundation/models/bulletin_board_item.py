@@ -43,11 +43,11 @@ class BulletinBoardItem(models.Model):
         ordering = ['-created_at']
         default_permissions = ()
         permissions = (
-            ("can_get_comments", "Can get comments"),
-            ("can_get_comment", "Can get comment"),
-            ("can_post_comment", "Can create comment"),
-            ("can_put_comment", "Can update comment"),
-            ("can_delete_comment", "Can delete comment"),
+            ("can_get_bulletin_board_items", "Can get bulletin board items"),
+            ("can_get_bulletin_board_item", "Can get bulletin board item"),
+            ("can_post_bulletin_board_item", "Can create bulletin board item"),
+            ("can_put_bulletin_board_item", "Can update bulletin board item"),
+            ("can_delete_bulletin_board_item", "Can delete bulletin board item"),
         )
 
     #
