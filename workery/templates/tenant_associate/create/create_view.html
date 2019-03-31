@@ -180,6 +180,11 @@
             $('#drivers_license_class').val(localStorage.getItem("tmp_associate_member_drivers_license_class"));
             $('#how_hear').val(localStorage.getItem("tmp_associate_member_how_hear"));
 
+            $('#emergency_contact_name').val(localStorage.getItem("tmp_emergency_contact_name"));
+            $('#emergency_contact_relationship').val(localStorage.getItem("tmp_emergency_contact_relationship"));
+            $('#emergency_contact_telephone').val(localStorage.getItem("tmp_emergency_contact_telephone"));
+            $('#emergency_contact_alternative_telephone').val(localStorage.getItem("tmp_emergency_contact_alternative_telephone"));
+
             // Pick the dues start date (if it was not done).
             var dues_date = $('#dues_date').val();
             if ( dues_date === undefined || dues_date === null || dues_date == "") {
@@ -497,6 +502,10 @@
             var how_hear_other = $('#how_hear_other').val();
             var tax_id = $('#tax_id').val();
             var insurance_requirements = $('#insurance_requirements').val();
+            var emergency_contact_name = $('#emergency_contact_name').val();
+            var emergency_contact_relationship = $('#emergency_contact_relationship').val();
+            var emergency_contact_telephone = $('#emergency_contact_telephone').val();
+            var emergency_contact_alternative_telephone = $('#emergency_contact_alternative_telephone').val();
 
             if (how_hear == "") {
                 how_hear = 8;
@@ -551,6 +560,11 @@
             localStorage.setItem("tmp_associate_member_how_hear_other", how_hear_other);
             localStorage.setItem("tmp_associate_member_tax_id", tax_id);
             localStorage.setItem("tmp_associate_member_join_date", join_date);
+
+            localStorage.setItem("tmp_emergency_contact_name", emergency_contact_name);
+            localStorage.setItem("tmp_emergency_contact_relationship", emergency_contact_relationship);
+            localStorage.setItem("tmp_emergency_contact_telephone", emergency_contact_telephone);
+            localStorage.setItem("tmp_emergency_contact_alternative_telephone", emergency_contact_alternative_telephone);
 
             // SAVE ARRAY OF IDS.
             localStorage.setObj("tmp_associate_member_person_tag_ids", person_tags);
@@ -841,27 +855,6 @@
             </div>
             <!-- ############ end CONTACT POINT ############ -->
 
-	    <!-- ############ EMERGENCY CONTACT ############ -->
-            <p class="border-bottom mb-3 pb-1 text-secondary">Emergency Contact</p>
-            <div class="form-row">
-                <div class="form-group col-md-7 mb-4">
-                    <label for="em_name">Name <sup>*</sup></label>
-                    <input type="text" class="form-control form-control-lg border border-primary" id="em_name" name="em_name" placeholder="(xxx) xxx-xxxx" minlength="10" maxlength="31" required>
-                    <div id="em_name-error" class="invalid-feedback"></div>
-                </div>
-                <div class="form-group col-md-7 mb-4">
-                    <label for="em_relationship">Relationship <sup>*</sup></label>
-                    <input type="text" class="form-control form-control-lg border border-success" id="em_relationship" name="em_relationship" placeholder="(xxx) xxx-xxxx" minlength="10" maxlength="31">
-                    <div id="em_relationship-error" class="invalid-feedback"></div>
-                </div>
-                <div class="form-group col-md-12 mb-4">
-                    <label for="em_phone">Phone <sup>*</sup></label>
-                    <input type="email" class="form-control form-control-lg border border-primary" id="em_phone" name="em_phone" placeholder="Email Address" maxlength="254" required>
-                    <div id="em_phone-error" class="invalid-feedback"></div>
-                </div>
-	    </div>
-	    <!-- ############ end EMERGENCY CONTACT ############ -->
-
             <!-- ############ LOCATION ############ -->
             <p class="border-bottom mb-3 pb-1 text-secondary">Postal Address</p>
             <div class="form-row">
@@ -1031,6 +1024,33 @@
                 </div>
             </div>
             <!-- ############ end DETAILS ############ -->
+
+            <!-- ############ EMERGENCY CONTACT ############ -->
+            <p class="border-bottom mb-3 pb-1 text-secondary">Emergency Contacts</p>
+            <div class="form-row">
+                <div class="form-group col-md-12 mb-4">
+                    <label for="emergency_contact_name">Full name</label>
+                    <input type="text" class="form-control form-control-lg border border-success" id="emergency_contact_name" name="emergency_contact_name" placeholder="Name" minlength="2" maxlength="30" required value="" autofocus>
+                    <div id="emergency_contact_name-error" class="invalid-feedback"></div>
+                </div>
+                <div class="form-group col-md-12 mb-4">
+                    <label for="emergency_contact_relationship">Relationship</label>
+                    <input type="text" class="form-control form-control-lg border border-success" id="emergency_contact_relationship" name="emergency_contact_relationship" placeholder="Relationship" minlength="2" maxlength="30" required value="" autofocus>
+                    <div id="emergency_contact_relationship-error" class="invalid-feedback"></div>
+                </div>
+                <div class="form-group col-md-12 mb-4">
+                    <label for="emergency_contact_relationship">Telephone</label>
+                    <input type="text" class="form-control form-control-lg border border-success" id="emergency_contact_telephone" name="emergency_contact_telephone" placeholder="(xxx) xxx-xxxx" minlength="10" maxlength="31" required value="">
+                    <div id="emergency_contact_relationship-error" class="invalid-feedback"></div>
+                </div>
+                <div class="form-group col-md-12 mb-4">
+                    <label for="emergency_contact_alternative_telephone">Alternate telephone</label>
+                    <input type="text" class="form-control form-control-lg border border-success" id="emergency_contact_alternative_telephone" name="emergency_contact_alternative_telephone" placeholder="(xxx) xxx-xxxx" minlength="10" maxlength="31" required value="">
+                    <div id="emergency_contact_alternative_telephone-error" class="invalid-feedback"></div>
+                </div>
+            </div>
+            <!-- ############ end EMERGENCY CONTACT ############ -->
+
             <!-- ############ SECURITY ############ -->
             <p class="border-bottom mb-3 pb-1 text-secondary">Account</p>
             <div class="form-row">

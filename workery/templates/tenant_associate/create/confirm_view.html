@@ -62,6 +62,10 @@
         $('#selected_comment').append(localStorage.getItem("tmp_associate_member_comment"));
         $('#selected_tax_id').append(localStorage.getItem("tmp_associate_member_tax_id"));
         $('#selected_join_date').append(localStorage.getItem("tmp_associate_member_join_date"));
+        $('#selected_emergency_contact_name').append(localStorage.getItem("tmp_emergency_contact_name"));
+        $('#selected_emergency_contact_relationship').append(localStorage.getItem("tmp_emergency_contact_relationship"));
+        $('#selected_emergency_contact_telephone').append(localStorage.getItem("tmp_emergency_contact_telephone"));
+        $('#selected_emergency_contact_alternative_telephone').append(localStorage.getItem("tmp_emergency_contact_alternative_telephone"));
 
         // Set our `tags` field.
         var tmp_person_tag_values = localStorage.getObj("tmp_associate_member_person_tag_values");
@@ -274,6 +278,12 @@
                 'how_hear': localStorage.getItem("tmp_associate_member_how_hear"),
                 'how_hear_other': localStorage.getItem("tmp_associate_member_how_hear_other"),
                 'join_date': localStorage.getItem("tmp_associate_member_join_date"),
+
+                // --- Emergency contact
+                'emergency_contact_name': localStorage.getItem("tmp_emergency_contact_name"),
+                'emergency_contact_relationship': localStorage.getItem("tmp_emergency_contact_relationship"),
+                'emergency_contact_telephone': localStorage.getItem("tmp_emergency_contact_telephone"),
+                'emergency_contact_alternative_telephone': localStorage.getItem("tmp_emergency_contact_alternative_telephone"),
             },
             function(result_dict) { // Success
                 // FOR DEBUGGING PURPOSES ONLY.
@@ -311,6 +321,10 @@
                 localStorage.removeItem("tmp_associate_member_insurance_requirement_ids")
                 localStorage.removeItem("tmp_associate_member_insurance_requirement_values")
                 localStorage.removeItem("tmp_associate_member_join_date")
+                localStorage.removeItem("tmp_emergency_contact_name")
+                localStorage.removeItem("tmp_emergency_contact_relationship")
+                localStorage.removeItem("tmp_emergency_contact_telephone")
+                localStorage.removeItem("tmp_emergency_contact_alternative_telephone")
 
                 // --- Associate Details ---
                 localStorage.removeItem("tmp_associate_member_hourly_salary_desired")
@@ -624,6 +638,38 @@
      <table class="table table-bordered custom-cell-w">
        <tbody>
          <tr class="bg-dark">
+           <th scope="row" colspan="2" class="text-light">Emergency Contact</th>
+         </tr>
+         <tr>
+           <th scope="row" class="bg-light">Name</th>
+           <td id="selected_emergency_contact_name">
+               <!-- THIS IS WHERE THE DATA GOES -->
+           </td>
+         </tr>
+         <tr>
+           <th scope="row" class="bg-light">Relationship</th>
+           <td id="selected_emergency_contact_relationship">
+               <!-- THIS IS WHERE THE TAGS GET LOADED -->
+           </td>
+         </tr>
+         <tr>
+           <th scope="row" class="bg-light">Telephone</th>
+           <td id="selected_emergency_contact_telephone" name="emergency_contact_telephone">
+               <!-- POPULATE THROUGH JS. -->
+           </td>
+         </tr>
+         <tr>
+           <th scope="row" class="bg-light">Alternate Telephone</th>
+           <td id="selected_emergency_contact_alternative_telephone" name="emergency_contact_alternative_telephone">
+               <!-- POPULATE THROUGH JS. -->
+           </td>
+         </tr>
+       </tbody>
+     </table>
+
+     <table class="table table-bordered custom-cell-w">
+       <tbody>
+         <tr class="bg-dark">
            <th scope="row" colspan="2" class="text-light">Account Details</th>
          </tr>
          <tr>
@@ -632,7 +678,7 @@
                <!-- THIS IS WHERE THE TAGS GET LOADED -->
            </td>
          </tr>
-     </body>
+     </tbody>
     </table>
 
      <div class="form-group col-md-12 mb-3 p-0 mx-auto text-center">

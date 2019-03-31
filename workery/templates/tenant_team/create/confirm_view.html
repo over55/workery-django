@@ -45,6 +45,10 @@
         $('#selected_description').append(localStorage.getItem("tmp_team_member_description"));
         $('#selected_comment').append(localStorage.getItem("tmp_team_member_comment"));
         $('#selected_is_active').append(localStorage.getItem("tmp_team_member_is_active"));
+        $('#selected_emergency_contact_name').append(localStorage.getItem("tmp_emergency_contact_name"));
+        $('#selected_emergency_contact_relationship').append(localStorage.getItem("tmp_emergency_contact_relationship"));
+        $('#selected_emergency_contact_telephone').append(localStorage.getItem("tmp_emergency_contact_telephone"));
+        $('#selected_emergency_contact_alternative_telephone').append(localStorage.getItem("tmp_emergency_contact_alternative_telephone"));
 
         // Set our `Tag` field.
         var tmp_person_tag_values = localStorage.getObj("tmp_team_member_person_tag_values");
@@ -146,6 +150,12 @@
                 'description': localStorage.getItem("tmp_team_member_description"),
                 'extra_comment': localStorage.getItem("tmp_team_member_comment"),
                 'is_active': localStorage.getItem("tmp_team_member_is_active"),
+
+                // --- Emergency contact
+                'emergency_contact_name': localStorage.getItem("tmp_emergency_contact_name"),
+                'emergency_contact_relationship': localStorage.getItem("tmp_emergency_contact_relationship"),
+                'emergency_contact_telephone': localStorage.getItem("tmp_emergency_contact_telephone"),
+                'emergency_contact_alternative_telephone': localStorage.getItem("tmp_emergency_contact_alternative_telephone"),
             },
             function(result_dict) { // Success
                 // FOR DEBUGGING PURPOSES ONLY.
@@ -175,6 +185,10 @@
                 localStorage.removeItem("tmp_team_member_description")
                 localStorage.removeItem("tmp_team_member_comment")
                 localStorage.removeItem("tmp_team_member_is_active")
+                localStorage.removeItem("tmp_emergency_contact_name")
+                localStorage.removeItem("tmp_emergency_contact_relationship")
+                localStorage.removeItem("tmp_emergency_contact_telephone")
+                localStorage.removeItem("tmp_emergency_contact_alternative_telephone")
 
                 /////////////////////////////////////
                 // Get our pending task unique ID. //
@@ -365,14 +379,54 @@
                <!-- POPULATE THROUGH JS. -->
            </td>
          </tr>
+       </tbody>
+     </table>
+
+     <table class="table table-bordered custom-cell-w">
+       <tbody>
+         <tr class="bg-dark">
+           <th scope="row" colspan="2" class="text-light">Account Details</th>
+         </tr>
          <tr>
-           <th scope="row" class="bg-light">Is Active</th>
+           <th scope="row" class="bg-light">Is active?</th>
            <td id="selected_is_active">
+               <!-- THIS IS WHERE THE TAGS GET LOADED -->
+           </td>
+         </tr>
+     </tbody>
+    </table>
+
+     <table class="table table-bordered custom-cell-w">
+       <tbody>
+         <tr class="bg-dark">
+           <th scope="row" colspan="2" class="text-light">Emergency Contact</th>
+         </tr>
+         <tr>
+           <th scope="row" class="bg-light">Name</th>
+           <td id="selected_emergency_contact_name">
+               <!-- THIS IS WHERE THE DATA GOES -->
+           </td>
+         </tr>
+         <tr>
+           <th scope="row" class="bg-light">Relationship</th>
+           <td id="selected_emergency_contact_relationship">
+               <!-- THIS IS WHERE THE TAGS GET LOADED -->
+           </td>
+         </tr>
+         <tr>
+           <th scope="row" class="bg-light">Telephone</th>
+           <td id="selected_emergency_contact_telephone" name="emergency_contact_telephone">
                <!-- POPULATE THROUGH JS. -->
            </td>
          </tr>
-       </tbody>
+         <tr>
+           <th scope="row" class="bg-light">Alternate Telephone</th>
+           <td id="selected_emergency_contact_alternative_telephone" name="emergency_contact_alternative_telephone">
+               <!-- POPULATE THROUGH JS. -->
+           </td>
+         </tr>
      </table>
+
      <div class="form-group col-md-12 mb-3 p-0 mx-auto text-center">
          <button id="id_create_btn"
               class="btn btn-success btn-lg mt-4 float-right pl-4 pr-4"
