@@ -80,7 +80,7 @@ def report_10_streaming_csv_view(request):
     rows += (["", "","",],)
 
     # Generate the CSV header row.
-    rows += (["Job No.", "Assignment Date", "Associate", "Client", "Client Birthdate", "Skill Sets", "Job Status"],)
+    rows += (["Job No.", "Assignment Date", "Associate", "Client No.", "Client", "Client Birthdate", "Skill Sets", "Job Status"],)
 
     # Generate hte CSV data.
     for job in jobs.all():
@@ -93,6 +93,7 @@ def report_10_streaming_csv_view(request):
             str(job.id),
             pretty_dt_string(job.assignment_date),
             str(job.associate),
+            str(job.customer.id),
             str(job.customer),
             str(job.customer.birthdate),
             skill_set_text,
