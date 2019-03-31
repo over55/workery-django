@@ -17,6 +17,7 @@ from django.db import transaction
 from django.db.models.signals import pre_save, post_save
 from django.db.models import Q
 from django.dispatch import receiver
+from django.utils.functional import cached_property
 from django.utils import timezone
 from django.utils.text import Truncator
 from django.utils.translation import ugettext_lazy as _
@@ -400,6 +401,27 @@ class Associate(AbstractPerson):
             difference_in_years = relativedelta(now_dt, self.birthdate).years
             return difference_in_years
         return None
+
+    @cached_property
+    def latest_completed_and_paid_order(self):
+        """
+        Returns the last work order which the associate paid their membership
+        fees completely
+        """
+        from tenant_foundation.models.work_order import WORK_ORDER_STATE
+        return self.work_orders.filter(state=WORK_ORDER_STATE.COMPLETED_AND_PAID).latest('id')
+
+    def invalidate(self, method_name):
+        """
+        Function used to clear the cache for the cached property functions.
+        """
+        try:
+            if method_name == 'latest_completed_and_paid_order':
+                del self.latest_completed_and_paid_order
+            else:
+                raise Exception("Method name not found.")
+        except AttributeError:
+            pass
 
 
 # def validate_model(sender, **kwargs):

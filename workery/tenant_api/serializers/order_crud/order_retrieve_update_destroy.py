@@ -245,5 +245,11 @@ class WorkOrderRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
                 'associate_id': instance.associate.id
             })
 
+        #----------------------------------------
+        # Clear our cache for specific functions.
+        #----------------------------------------
+        if instance.associate:
+            instance.associate.invalidate("latest_completed_and_paid_order")
+
         # Return our validated data.
         return validated_data

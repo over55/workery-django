@@ -101,8 +101,8 @@ class MemberRetrieveForCommentsListAndCreateView(LoginRequiredMixin, GroupRequir
 
         # Return our modified context.
         return modified_context
-    
-    
+
+
 class MemberRetrieveForFilesListView(LoginRequiredMixin, GroupRequiredMixin, WorkeryDetailView):
     context_object_name = 'associate'
     model = Associate

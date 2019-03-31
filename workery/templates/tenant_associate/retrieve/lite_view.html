@@ -250,6 +250,9 @@
                             {% if associate.wsib_insurance_date %}
                             <li>WSIB Expiry: {{ associate.wsib_insurance_date }}</li>
                             {% endif %}
+                            {% if associate.latest_completed_and_paid_order %}
+                                <li>Last service fee paid on {{ associate.latest_completed_and_paid_order.invoice_service_fee_payment_date }} in <a href="{% url 'workery_tenant_job_retrieve' 'summary'  associate.latest_completed_and_paid_order.id %}" target="_blank">work order #{{ associate.latest_completed_and_paid_order.id }}&nbsp;<i class="fas fa-external-link-alt"></i></a>.</li>
+                            {% endif %}
                         </ul>
                     </p>
                 </div>
