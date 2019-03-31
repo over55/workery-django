@@ -86,7 +86,8 @@ class WorkOrderRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIVie
             'last_modified_by': request.user,
             'last_modified_from': client_ip,
             'last_modified_from_is_public': is_routable,
-            'franchise': request.tenant
+            'franchise': request.tenant,
+            'state': request.data.get("state", None)
         })
         serializer.is_valid(raise_exception=True)
         serializer.save()

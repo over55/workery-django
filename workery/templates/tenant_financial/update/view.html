@@ -207,7 +207,7 @@
         console.log("invoice_service_fee_amount", invoice_service_fee_amount);
         console.log("invoice_actual_service_fee_amount_paid", invoice_actual_service_fee_amount_paid);
         console.log("invoice_service_fee_payment_date", invoice_service_fee_payment_date);
-        console.log("invoice_balance_owing_amount", invoice_service_fee_payment_date);
+        console.log("invoice_balance_owing_amount", invoice_balance_owing_amount);
 
         // Attach customer
         {% if job_item.customer %}
@@ -491,9 +491,9 @@
                     <!-- end Invoice Total -->
 		            <!-- Service Fee Payment Date -->
                     <div class="form-group col-md-7 mb-4">
-                        <label for="invoice_service_fee_payment_date">Service Fee Payment Date&nbsp;<sup>*</sup></label>
+                        <label for="invoice_service_fee_payment_date">Service Fee Payment Date</label>
                         <div class="input-group input-group-lg">
-                            <input type="text" class="form-control form-control-lg border border-primary" id="invoice_service_fee_payment_date" name="invoice_service_fee_payment_date" placeholder="yyyy-mm-dd" required value="{% if job_item.invoice_service_fee_payment_date %}{{ job_item.invoice_service_fee_payment_date|date:"Y-m-d" }}{% endif %}">
+                            <input type="text" class="form-control form-control-lg border border-success" id="invoice_service_fee_payment_date" name="invoice_service_fee_payment_date" placeholder="yyyy-mm-dd" required value="{% if job_item.invoice_service_fee_payment_date %}{{ job_item.invoice_service_fee_payment_date|date:"Y-m-d" }}{% endif %}">
                             <div class="input-group-append">
                                 <span class="input-group-text dob-icon bg-success border-success"><i class="far fa-calendar-alt"></i></span>
                             </div>

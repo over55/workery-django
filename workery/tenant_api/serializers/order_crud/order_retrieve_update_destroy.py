@@ -124,10 +124,14 @@ class WorkOrderRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
 
     def validate_invoice_service_fee_payment_date(self, value):
         """
-        Include validation on no-blanks
+        Include validation on no-blanks if the state is set to be changed
+        to ``completed_and_paid`` state of the work order.
         """
-        if value is None:
-            raise serializers.ValidationError("This field may not be blank.")
+        state = self.context['state']
+        if state:
+            if state == WORK_ORDER_STATE.COMPLETED_AND_PAID:
+                if value is None:
+                    raise serializers.ValidationError("This field may not be blank when submitting a payment status.")
         return value
 
     def validate_invoice_date(self, value):
