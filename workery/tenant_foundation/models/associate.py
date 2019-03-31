@@ -2,6 +2,7 @@
 import csv
 import phonenumbers
 import pytz
+from dateutil.relativedelta import relativedelta
 from datetime import date, datetime, timedelta
 from djmoney.money import Money
 from djmoney.models.fields import MoneyField
@@ -392,6 +393,13 @@ class Associate(AbstractPerson):
             else:
                 pass # Skip last
         return insurance_requirements_string
+
+    def get_current_age(self):
+        if self.birthdate:
+            now_dt = datetime.now()
+            difference_in_years = relativedelta(now_dt, self.birthdate).years
+            return difference_in_years
+        return None
 
 
 # def validate_model(sender, **kwargs):

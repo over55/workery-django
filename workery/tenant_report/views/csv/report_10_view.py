@@ -80,13 +80,32 @@ def report_10_streaming_csv_view(request):
     rows += (["", "","",],)
 
     # Generate the CSV header row.
-    rows += (["Job No.", "Assignment Date", "Associate", "Client No.", "Client", "Client Birthdate", "Client Age", "Skill Sets", "Job Status"],)
+    rows += ([
+        "Job No.",
+        "Assignment Date",
+        "Associate",
+        "Associate DOB",
+        "Associate Age",
+        "Client No.",
+        "Client",
+        "Client Birthdate",
+        "Client Age",
+        "Skill Sets",
+        "Job Status"
+    ],)
 
     # Generate hte CSV data.
     for job in jobs.all():
 
         # Get our list of skill sets.
         skill_set_text = job.get_skill_sets_string()
+
+        # Get our DOB and age.
+        associate_dob = None
+        associate_age = None
+        if job.associate:
+            associate_dob = pretty_dt_string(job.associate.birthdate) if job.associate.birthdate is not None else ""
+            associate_age = job.associate.get_current_age()
         customer_dob = pretty_dt_string(job.customer.birthdate) if job.customer.birthdate is not None else ""
 
         # Generate the reason.
@@ -94,6 +113,8 @@ def report_10_streaming_csv_view(request):
             str(job.id),
             pretty_dt_string(job.assignment_date),
             str(job.associate),
+            str(associate_dob),
+            associate_age,
             str(job.customer.id),
             str(job.customer),
             str(customer_dob),
