@@ -55,3 +55,6 @@ from tenant_foundation.models.staff_comment import StaffComment
 from tenant_foundation.models.partner_comment import PartnerComment
 from tenant_foundation.models.activity_sheet_item import ACTIVITY_SHEET_ITEM_STATE
 from tenant_foundation.models.activity_sheet_item import ActivitySheetItem
+
+# Bulletin board item
+from tenant_foundation.models.bulletin_board_item import BulletinBoardItem

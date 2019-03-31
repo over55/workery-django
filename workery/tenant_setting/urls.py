@@ -3,6 +3,7 @@ from django.urls import path
 from django.views.generic.base import RedirectView
 from tenant_setting.views import (
     awaylog_views,
+    bulletin_board_item_views,
     deactivated_views,
     insurance_requirement_views,
     launchpad_views,
@@ -24,6 +25,11 @@ urlpatterns = (
 
     # Backlist.
     path('settings/deactivated/clients', deactivated_views.DeactivatedCustomerListView.as_view(), name='workery_tenant_settings_deactivated_clients_list'),
+
+    # Bulletin Board.
+    path('settings/bulletin_board_items/', bulletin_board_item_views.BulletinBoardItemListView.as_view(), name='workery_tenant_settings_bulletin_board_item_list'),
+    path('settings/bulletin_board_item/create/', bulletin_board_item_views.BulletinBoardItemCreateView.as_view(), name='workery_tenant_settings_bulletin_board_item_create'),
+    path('settings/bulletin_board_item/<int:pk>/', bulletin_board_item_views.BulletinBoardItemUpdateView.as_view(), name='workery_tenant_settings_bulletin_board_item_update'),
 
     # Tag
     path('settings/tags/', tag_views.TagListView.as_view(), name='workery_tenant_settings_tags_list'),

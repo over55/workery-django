@@ -1,0 +1,332 @@
+{% extends 'tenant_foundation/tenant_base.html' %}
+{% load staticfiles i18n shared_foundation_tags humanize %}
+
+{% block title %}
+{% trans 'Add Bulletin Board Item | Workery' %}
+{% endblock title %}
+
+{% block header_content %}
+{% endblock header_content %}
+
+{% block content %}
+
+<script>
+    /**
+     *  When page loads, the following code will be run first.
+     */
+    $(document).ready(function () {
+        // Initialize our datepicker jQuery code with our HTML view.
+        $( "#until_date" ).datepicker({
+            dateFormat: 'yy-mm-dd',
+	        changeMonth: true,
+            changeYear: true,
+	    	yearRange: "c-90:c+150",
+		    minDate: 'today'
+        });
+
+        $( "#start_date" ).datepicker({
+            dateFormat: 'yy-mm-dd',
+	        changeMonth: true,
+            changeYear: true,
+	    	yearRange: "c-90:c+150",
+		    minDate: 'today'
+        });
+
+        /*
+         * DOCUMENTATION
+         * https://select2.org/
+         */
+        $('#associate').select2({
+            // SETUP OUR STARTUP GUI.
+            placeholder: 'Please select an associate',
+            allowClear: true,
+	        width: '100%',
+
+            // OVERRIDE OUR GUI TO GET OUR DATA FROM REMOTE API WEB-SERVICE.
+            ajax: {
+                // THE URL OF OUR API WEB-SERVICE.
+                url: "{% url 'workery_associate_list_create_api_endpoint' %}?owner__is_active=True",
+
+                // THE AUTH-CREDENTIALS OF OUR API WEB-SERVICE WHICH WE WILL
+                // ATTACH WITH THIS CALL.
+                headers: {
+                    "Authorization" : rest_api_token,
+                    "Content-Type" : "application/json",
+                },
+                dataType: 'json',
+
+                // OVERRIDE OUR QUERY TO WORK WITH OUR API WEB-SERVICE.
+                data: function (params) {
+                    var query = {
+                        search: params.term,
+                    }
+                    // Query parameters will be ?search=[term]
+                    return query;
+                },
+
+                // OVERRIDE HOW WE TAKE THE API WEB-SERVICE RESULTS AND FORMAT
+                // FOR THIS LIBRARY.
+                processResults: function (data) {
+                    // Tranforms the top-level key of the response object from 'items' to 'results'
+                    return {
+                        results: data['results']
+                    };
+                },
+            }, // end AJAX
+
+            // THE IS WHERE WE FORMAT OUR OUTPUT TO GUI.
+            templateResult: function formatState (state) {
+                /**
+                 *  Function used to take our JSON API results and create our own custom
+                 *  GUI elements per each returned customer.
+                 */
+                if (!state.id) {
+                     return  "Please enter 1 or more characters";
+                }
+                var $state = $(
+                    '<span id="' + state.id + '">' + state.given_name + " " + state.last_name + '</span>'
+                );
+                return $state;
+            },
+
+            templateSelection: function (data) {
+                if (data.id === '') { // adjust for custom placeholder values
+                    return 'Please select an associate';
+                }
+                return data.given_name + " " + data.last_name;
+            }
+        }); // end SELECT2
+
+        $('#reason').on('change',function(){
+        	if( $(this).val()==="1" || $(this).val()===1){
+        		$("#reason_other_div").show();
+        	}
+        	else{
+        		$("#reason_other_div").hide();
+        	}
+        });
+
+        $('input[type=radio][name=until_further_notice]').change(function() {
+            //
+            if (this.value == 'yes') {
+                $("#until_date_div").hide();
+            }
+            else if (this.value == 'no') {
+
+                $("#until_date_div").show();
+            }
+        });
+
+    }); // end DOCUMENT
+
+    function click_cancel_button() {
+        window.location = "{% url 'workery_tenant_settings_away_log_list' %}";
+    }
+
+    function get_selected_radio_value(radiofields_name) {
+        var radios = document.getElementsByName(radiofields_name);
+        for (var i = 0, length = radios.length; i < length; i++) {
+            if (radios[i].checked) {
+                // only one radio can be logically checked, don't check the rest
+                return radios[i].value;
+            }
+        }
+        return null;
+    }
+
+    function click_submit_button() {
+        // GET OUR FORM.
+        var form = document.getElementById('add-client-form');
+
+        // EXTRACT OUR FIELD VALUES AND SAVE THEM IN LOCAL STORAGE.
+        var associate = $('#associate').val();
+        var reason = $('#reason').val();
+        var reason_other = $('#reason_other').val();
+        var until_further_notice = get_selected_radio_value('until_further_notice');
+        var until_date = $('#until_date').val();
+        if (until_date !== undefined && until_date != null && until_date.length > 0) {
+            var mydate = new Date(until_date); // Convert "MM DD, YYYY" to JS DATE
+            until_date = mydate.toISOString().substring(0, 10); // Convert JS DATE to "YYYY-MM-DD"
+        } else {
+            until_date = '';
+        }
+
+        var start_date = $('#start_date').val();
+        if (start_date !== undefined && start_date != null && start_date.length > 0) {
+            var mydate = new Date(start_date); // Convert "MM DD, YYYY" to JS DATE
+            start_date = mydate.toISOString().substring(0, 10); // Convert JS DATE to "YYYY-MM-DD"
+        } else {
+            start_date = '';
+        }
+
+        // RUN THE CODE WHICH WILL SUBMIT THE JSON DATA TO THE SERVER.
+        create_away_log_api(
+            {
+                'associate': associate,
+                'reason': reason,
+                'reason_other': reason_other,
+                'until_further_notice': until_further_notice,
+                'until_date': until_date,
+                'start_date': start_date
+            },
+            function(result_dict) { // Success
+                console.log(result_dict);
+                window.location = "{% url 'workery_tenant_settings_away_log_list' %}?was_created=True";
+            },
+            function(xhr,status,error) { // Error
+                // STEP 1: Convert to JSON.
+                var err = JSON.parse(xhr.responseText);
+
+                // For debugging purposes only.
+                console.log(err);
+
+                // STEP 2: CLEAR EXISTING TEXT.
+                $('#all_error_result').html("");
+
+                // STEP 3: PRINT OUR ERROR.
+                for(var prop in err) {
+                    if(err.hasOwnProperty(prop)) {
+                        var val = err[prop];
+                        console.log(val);
+                        $('#all_error_result').append("<p><b>"+prop+"</b>"+val+"</p><br />");
+                    }
+                }
+
+                // STEP 4: FOCUS TO WHERE THE ERROR IS OCCURING.
+                $('html, body').animate({ scrollTop: $('#id_page_title').offset().top }, 'slow');
+            },
+            function() { // Finally
+                // UNLOCK THE "SUBMIT" BUTTON TO BE AVAILABLE FOR USAGE.
+                enable_btn();
+            }
+        );
+    }
+</script>
+
+<main id="main" role="main">
+
+    <!-- BREADCRUMB -->
+    <!------------------------------------------------------------------------->
+    <nav aria-label="breadcrumb">
+	  	<ol class="breadcrumb">
+	    	<li class="breadcrumb-item"><a href="{% url 'workery_tenant_dashboard_master' %}"><i class="fas fa-tachometer-alt"></i>&nbsp;{% trans 'Dashboard' %}</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'workery_tenant_settings_launchpad' %}"><i class="fas fa-cog"></i>&nbsp;{% trans 'Settings' %}</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'workery_tenant_settings_bulletin_board_item_list' %}">{% trans 'Bulletin Board Item' %}</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{% trans 'Add item' %}</li>
+	  	</ol>
+	</nav>
+    <!------------------------------------------------------------------------->
+    <!-- end BREADCRUMB -->
+
+    <h1 id="id_page_title">Add Bulletin Board Item</h1>
+
+    <!-- FORM -->
+    <!------------------------------------------------------------------------->
+    <div class="col-sm-5 mx-auto mt-2">
+        <!-- Residential form -->
+        <div class="col-sm-12 fade show active" id="client-form" aria-labelledby="commercial">
+
+            <!-- Error Output -->
+            <div id="all_error_result" name="all_error_result"></div>
+            <!-- end Error Output -->
+
+            <p><span class="text-secondary font-italic"><sup>*</sup>&nbsp;-&nbsp;Indicates required field to fill out.</span></p>
+            <form id="add-client-form" method="post" class="needs-validation" action="" novalidate>
+                <div class="form-row">
+                    <div class="form-row">
+
+                        <!-- ############ ASSOCIATE (REMOTE DATA) ############ -->
+                        <div class="form-group col-md-12 mb-4 field-select2">
+                            <label for="associate">Associate <sup>*</sup></label>
+                            <select id="associate" name="associate" class="form-control form-control-lg border border-primary" required="" autofocus>
+                            </select>
+                        </div>
+                        <!-- ############ end ASSOCIATE (REMOTE DATA) ############ -->
+
+                        <div class="form-group p-0 col-md-7 mb-4">
+                            <label for="start_date">Start Date</label>
+                            <div class="input-group input-group-lg">
+                                <input type="text" class="form-control form-control-lg border border-success" id="start_date" name="start_date" placeholder="yyyy-mm-dd" required>
+                                <div class="input-group-append">
+                                    <span class="input-group-text dob-icon bg-success border-success"><i class="far fa-calendar-alt"></i></span>
+                                </div>
+                                <div id="start_date-error" class="invalid-feedback"></div>
+                            </div>
+                        </div>
+
+                        <!-- REASON -->
+                        <div class="form-group col-md-12 mb-4">
+                            <label for="reason">Reason <sup>*</sup></label>
+                            <select class="form-control form-control-lg border border-primary" id="reason" name="reason" required="">
+                                <option value="0" selected="selected">Please select reason</option>
+                                <option value="2">Going on vacation</option>
+                                <option value="3">Personal reasons</option>
+                                <option value="4">Commercial insurance expired</option>
+                                <option value="5">Policy check expired</option>
+                                <option value="1">Other</option>
+                            </select>
+                            <div id="reason-error" class="invalid-feedback"></div>
+                        </div>
+                        <!-- end REASON -->
+
+                        <div class="form-group col-md-12 mb-4" id="reason_other_div" style="display: none;">
+                            <label for="reason_other">Reason (Other)</label>
+                            <input type="text" class="form-control form-control-lg border border-primary" id="reason_other" name="reason_other" placeholder="Text" minlength="3" value="">
+                            <div id="reason_other-error" class="invalid-feedback"></div>
+                        </div>
+
+                        <!-- Until further notice -->
+                        <div class="form-group col-md-12 mb-4">
+                            <p class="mb-1">Until further notice? <sup>*</sup></p>
+                            <div class="form-radio custom-control custom-radio custom-control-inline">
+                                <input type="radio" id="until_further_notice" name="until_further_notice" value="yes" class="custom-control-input form-check-input">
+                                <label class="custom-control-label form-check-label" for="until_further_notice">Yes</label>
+                            </div>
+                            <div class="form-radio custom-control custom-radio custom-control-inline">
+                                <input type="radio" id="until_further_notice2" name="until_further_notice" value="no" class="custom-control-input form-check-input">
+                                <label class="custom-control-label form-check-label" for="until_further_notice2">No</label>
+                                <div id="until_further_notice-error" class="invalid-feedback ml-2"></div>
+                            </div>
+                        </div>
+                        <!-- end Until further notice -->
+
+                        <div class="form-group p-0 col-md-7 mb-4" id="until_date_div" style="display: none;">
+                            <label for="dob">Until Date <sup>*</sup></label>
+                            <div class="input-group input-group-lg">
+                                <input type="text" class="form-control form-control-lg border border-success date-box" id="until_date" name="until_date" placeholder="yyyy-mm-dd" readonly="true" required="">
+                                <div class="input-group-append">
+                                    <span class="input-group-text dob-icon bg-success border-success"><i class="far fa-calendar-alt"></i></span>
+                                </div>
+                                <div id="dob-error" class="invalid-feedback"></div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </form>
+
+            <!-- end SUBMIT BUTTON -->
+            <div class="form-group col-md-12 mb-3 p-0 mx-auto text-center">
+                <button id="id_submit_btn"
+                     class="btn btn-primary btn-lg mt-4 float-right pl-4 pr-4"
+                      type="button"
+                   onclick="click_submit_button();">
+                    <i class="fas fa-plus"></i> Add</button>
+                <button id="id_cancel_btn"
+                     class="btn btn-orange btn-lg mt-4 float-left pl-4 pr-4"
+                      type="button"
+                   onclick="click_cancel_button();">
+                    <i class="fas fa-times"></i>&nbsp;Cancel
+                </button>
+            </div>
+            <!-- end SUBMIT BUTTON -->
+
+        </div>
+    </div>
+
+
+    <!-- RETURN-TO-TOP -->
+    <a id="return-to-top" href="#" class="btn-info btn-lg back-to-top" role="button" title="Back to top"><i class="fas fa-angle-up fa-2x"></i></a>
+    <!-- end RETURN-TO-TOP -->
+</main>
+{% endblock content %}
