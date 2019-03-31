@@ -44,6 +44,8 @@ from tenant_api.views.order_crud import (
     OngoingWorkOrderRetrieveUpdateDestroyAPIView,
     OngoingWorkOrderCommentListCreateAPIView
 )
+from tenant_api.views.bulletin_board_item import BulletinBoardItemListCreateAPIView, BulletinBoardItemRetrieveUpdateDestroyAPIView
+
 
 urlpatterns = [
     # Away logs.
@@ -126,6 +128,10 @@ urlpatterns = [
     url(r'^api/ongoing-orders$', OngoingWorkOrderListCreateAPIView.as_view(), name='workery_ongoing_order_list_create_api_endpoint'),
     url(r'^api/ongoing-order/(?P<pk>[^/.]+)/$', OngoingWorkOrderRetrieveUpdateDestroyAPIView.as_view(), name='workery_ongoing_order_retrieve_update_destroy_api_endpoint'),
     url(r'^api/ongoing-order-comments$', OngoingWorkOrderCommentListCreateAPIView.as_view(), name='workery_ongoing_job_comment_list_create_api_endpoint'),
+
+    # Bulletin Board Items
+    url(r'^api/bulletin_board_items$', BulletinBoardItemListCreateAPIView.as_view(), name='workery_bulletin_board_item_list_create_api_endpoint'),
+    url(r'^api/bulletin_board_item/(?P<pk>[^/.]+)/$', BulletinBoardItemRetrieveUpdateDestroyAPIView.as_view(), name='workery_bulletin_board_item_retrieve_update_destroy_api_endpoint'),
 ]
 
 

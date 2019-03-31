@@ -18,7 +18,7 @@ from tenant_foundation.models import (
 
 
 class BulletinBoardItemListView(LoginRequiredMixin, GroupRequiredMixin, WorkeryListView):
-    context_object_name = 'away_log_list'
+    context_object_name = 'bulletin_board_item_list'
     template_name = 'tenant_setting/bulletin_board_item/list_view.html'
     paginate_by = 100
     menu_id = "settings"
@@ -45,7 +45,7 @@ class BulletinBoardItemListView(LoginRequiredMixin, GroupRequiredMixin, WorkeryL
 
 
 class BulletinBoardItemUpdateView(LoginRequiredMixin, GroupRequiredMixin, WorkeryDetailView):
-    context_object_name = 'away_log'
+    context_object_name = 'bulletin_board_item'
     model = BulletinBoardItem
     template_name = 'tenant_setting/bulletin_board_item/update_view.html'
     menu_id = "settings"

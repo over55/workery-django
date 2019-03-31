@@ -12,11 +12,11 @@
 
 <script>
     function ajax_delete(obj_id) {
-        delete_away_log_api(
+        delete_bulletin_board_item_api(
             parseInt(obj_id),
-            function(away_log) {
-                console.log(away_log);
-                window.location = "{% url 'workery_tenant_settings_away_log_list' %}?was_deleted=True";
+            function(bulletin_board_item) {
+                console.log(bulletin_board_item);
+                window.location = "{% url 'workery_tenant_settings_bulletin_board_item_list' %}?was_deleted=True";
             },
             function(json_results) {
                 console.log(json_results);
@@ -104,27 +104,27 @@
                 </tr>
             </thead>
             <tbody>
-                {% for away_log in away_log_list %}
+                {% for bulletin_board_item in bulletin_board_item_list %}
                 <tr>
                     <td>
-                        test
+                        {{ bulletin_board_item.created_by }}
                     </td>
                     <td>
-                        {{ away_log.created }}
+                        {{ bulletin_board_item.created_at }}
                     </td>
                     <td>
-                        {{ away_log.last_modified }}
+                        {{ bulletin_board_item.last_modified_at }}
                     </td>
                     <td>
                         <button id="id_delete_btn"
                              class="btn btn-danger btn-lg m-2 float-right px-4"
                               type="button"
-                           onclick="ajax_delete({{ away_log.id }});">
+                           onclick="ajax_delete({{ bulletin_board_item.id }});">
                          <i class="fas fa-trash"></i>
                          {% trans 'Delete' %}
                         </button>
 
-                        <a href="{% url 'workery_tenant_settings_away_log_update' away_log.id %}">
+                        <a href="{% url 'workery_tenant_settings_bulletin_board_item_update' bulletin_board_item.id %}">
                         <button id="id_delete_btn"
                              class="btn btn-primary btn-lg m-2 float-right px-4"
                               type="button">
