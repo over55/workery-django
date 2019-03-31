@@ -38,14 +38,14 @@
             <li class="breadcrumb-item">
                 <a href="{% url 'workery_tenant_job_search' %}">{% trans 'Search' %}</a>
             </li>
-            <li class="breadcrumb-item active" aria-current="page">{% trans 'Search Results' %}</li>
+            <li class="breadcrumb-item active" aria-current="page"><i class="fas fa-search"></i>&nbsp;{% trans 'Search Results' %}</li>
             <li class="breadcrumb-item active" aria-current="page">{% trans 'Job #' %}{{ object.id|intcomma }}</li>
 
             {% elif template == 'list' %}
 
             <li class="breadcrumb-item"><a href="{% url 'workery_tenant_dashboard_master' %}"><i class="fas fa-tachometer-alt"></i>&nbsp;{% trans 'Dashboard' %}</a></li>
             <li class="breadcrumb-item"><a href="{% url 'workery_tenant_job_summary' %}"><i class="fas fa-wrench"></i>&nbsp;{% trans 'Jobs' %}</a></li>
-            <li class="breadcrumb-item"><a href="{% url 'workery_tenant_job_list' %}">{% trans 'List' %}</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'workery_tenant_job_list' %}"><i class="fas fa-list-alt"></i>&nbsp;{% trans 'List' %}</a></li>
             <li class="breadcrumb-item active" aria-current="page">{% trans 'Job #' %}{{ object.id|intcomma }}</li>
 
             {% else %}
