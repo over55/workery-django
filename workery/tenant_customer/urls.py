@@ -1,7 +1,7 @@
 from django.conf.urls import include, url
 from django.urls import path
 from django.views.generic.base import RedirectView
-from tenant_customer.views import create_view, list_view, retrieve_view, search_view, update_view
+from tenant_customer.views import create_view, list_view, retrieve_view, search_view, update_view, delete_view
 
 
 urlpatterns = (
@@ -34,4 +34,7 @@ urlpatterns = (
     path('clients/<str:template>/residential-detail/<int:pk>/deactivation/', update_view.DeactivateCustomerUpdateView.as_view(), name='workery_tenant_residential_deactivate_customer_update'),
     path('clients/<str:template>/commercial-detail/<int:pk>/edit/', update_view.CommercialCustomerUpdateView.as_view(), name='workery_tenant_commercial_customer_update'),
     path('clients/<str:template>/commercial-detail/<int:pk>/deactivation/', update_view.DeactivateCustomerUpdateView.as_view(), name='workery_tenant_commercial_deactivate_customer_update'),
+
+    # Delete
+    path('clients/<str:template>/delete/<int:pk>', delete_view.CustomerDeleteView.as_view(), name='workery_tenant_customer_delete'),
 )

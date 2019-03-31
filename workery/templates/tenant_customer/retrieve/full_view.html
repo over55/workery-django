@@ -148,6 +148,20 @@
         <!--------------------------------------------------------------------->
         <!-- end RESIDENTIAL UPGRADE BUTTON -->
 
+        <!-- DELETE BUTTON -->
+        <!--------------------------------------------------------------------->
+        {% if request.user.is_executive or request.user.is_management_staff %}
+        <div class="form-group col-md-12 mb-3 mx-auto text-center">
+            <a href="{% url 'workery_tenant_customer_delete' template customer.id %}">
+                <button id="id_submit_btn" class="btn btn-danger btn-lg btn-fxw mt-4" type="button">
+                    <i class="fas fa-bolt"></i>&nbsp;{% trans 'Delete Client' %}
+                </button>
+            </a>
+        </div>
+        {% endif %}
+        <!--------------------------------------------------------------------->
+        <!-- end DELETE BUTTON -->
+
         <!-- UPDATE BUTTON -->
         <!--------------------------------------------------------------------->
         <div class="form-group col-md-12 mb-3 mx-auto text-center">
