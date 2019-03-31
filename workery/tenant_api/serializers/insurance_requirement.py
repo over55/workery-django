@@ -10,10 +10,19 @@ from django.utils import timezone
 from django.utils.http import urlquote
 from rest_framework import exceptions, serializers
 from rest_framework.response import Response
+
+from shared_foundation.custom.drf.validation import RestrictCSVCharactersFieldValidator
 from tenant_foundation.models import InsuranceRequirement
 
 
 class InsuranceRequirementListCreateSerializer(serializers.ModelSerializer):
+
+    text = serializers.CharField(
+        required=True,
+        allow_blank=False,
+        allow_null=False,
+        validators=[RestrictCSVCharactersFieldValidator(),]
+    )
 
     class Meta:
         model = InsuranceRequirement
@@ -26,6 +35,13 @@ class InsuranceRequirementListCreateSerializer(serializers.ModelSerializer):
 
 
 class InsuranceRequirementRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
+
+    text = serializers.CharField(
+        required=True,
+        allow_blank=False,
+        allow_null=False,
+        validators=[RestrictCSVCharactersFieldValidator(),]
+    )
 
     class Meta:
         model = InsuranceRequirement

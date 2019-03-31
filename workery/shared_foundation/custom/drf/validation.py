@@ -46,3 +46,19 @@ class OnlyTrueBooleanFieldValidator(object):
     def __call__(self, value):
         if value is False:
             raise serializers.ValidationError(self.message)
+
+
+class RestrictCSVCharactersFieldValidator(object):
+    """
+    Validator ensures a django-rest-serializer "CharField" value does not
+    contain any special characters used in CSV.
+    """
+    def __init__(self):
+        pass
+
+    def __call__(self, value):
+        for c in value:
+            if c in ["\"", "\'", "\\"]:
+                raise serializers.ValidationError("You cannot use the character %(c)s." %{
+                    'c': str(c),
+                })

@@ -16,6 +16,7 @@ from rest_framework.response import Response
 from rest_framework.validators import UniqueValidator
 
 from shared_foundation.custom.drf.fields import PhoneNumberField
+from shared_foundation.custom.drf.validation import RestrictCSVCharactersFieldValidator
 from shared_foundation.constants import ASSOCIATE_GROUP_ID, FRONTLINE_GROUP_ID
 from shared_foundation.custom.drf.validation import MatchingDuelFieldsValidator, EnhancedPasswordStrengthFieldValidator
 from shared_foundation.utils import (
@@ -38,35 +39,45 @@ class StaffListCreateSerializer(serializers.ModelSerializer):
     given_name = serializers.CharField(
         required=True,
         allow_blank=False,
+        validators=[RestrictCSVCharactersFieldValidator(),]
     )
     last_name = serializers.CharField(
         required=True,
         allow_blank=False,
+        validators=[RestrictCSVCharactersFieldValidator(),]
     )
     address_country = serializers.CharField(
         required=True,
         allow_blank=False,
+        validators=[RestrictCSVCharactersFieldValidator(),]
     )
     address_region = serializers.CharField(
         required=True,
         allow_blank=False,
+        validators=[RestrictCSVCharactersFieldValidator(),]
     )
     address_locality = serializers.CharField(
         required=True,
         allow_blank=False,
+        validators=[RestrictCSVCharactersFieldValidator(),]
     )
     postal_code = serializers.CharField(
         required=True,
         allow_blank=False,
+        validators=[RestrictCSVCharactersFieldValidator(),]
     )
     street_address = serializers.CharField(
         required=True,
         allow_blank=False,
+        validators=[RestrictCSVCharactersFieldValidator(),]
     )
 
     # We are overriding the `email` field to include unique email validation.
     email = serializers.EmailField(
-        validators=[UniqueValidator(queryset=SharedUser.objects.all())],
+        validators=[
+            UniqueValidator(queryset=SharedUser.objects.all()),
+            RestrictCSVCharactersFieldValidator(),
+        ],
         required=True,
     )
 
@@ -376,14 +387,55 @@ class StaffListCreateSerializer(serializers.ModelSerializer):
 
 class StaffRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
     # owner = serializers.PrimaryKeyRelatedField(many=False, read_only=True)
+    given_name = serializers.CharField(
+        required=True,
+        allow_blank=False,
+        validators=[RestrictCSVCharactersFieldValidator(),]
+    )
+    last_name = serializers.CharField(
+        required=True,
+        allow_blank=False,
+        validators=[RestrictCSVCharactersFieldValidator(),]
+    )
+    address_country = serializers.CharField(
+        required=True,
+        allow_blank=False,
+        validators=[RestrictCSVCharactersFieldValidator(),]
+    )
+    address_region = serializers.CharField(
+        required=True,
+        allow_blank=False,
+        validators=[RestrictCSVCharactersFieldValidator(),]
+    )
+    address_locality = serializers.CharField(
+        required=True,
+        allow_blank=False,
+        validators=[RestrictCSVCharactersFieldValidator(),]
+    )
+    postal_code = serializers.CharField(
+        required=True,
+        allow_blank=False,
+        validators=[RestrictCSVCharactersFieldValidator(),]
+    )
+    street_address = serializers.CharField(
+        required=True,
+        allow_blank=False,
+        validators=[RestrictCSVCharactersFieldValidator(),]
+    )
 
     # We are overriding the `email` field to include unique email validation.
     email = serializers.EmailField(
-        validators=[UniqueValidator(queryset=Staff.objects.all())],
+        validators=[
+            UniqueValidator(queryset=Staff.objects.all()),
+            RestrictCSVCharactersFieldValidator(),
+        ],
         required=False
     )
     personal_email = serializers.EmailField(
-        validators=[UniqueValidator(queryset=Staff.objects.all())],
+        validators=[
+            UniqueValidator(queryset=Staff.objects.all()),
+            RestrictCSVCharactersFieldValidator(),
+        ],
         required=False
     )
 

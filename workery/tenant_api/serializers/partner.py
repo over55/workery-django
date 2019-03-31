@@ -16,6 +16,7 @@ from rest_framework.response import Response
 from rest_framework.validators import UniqueValidator
 
 from shared_foundation.custom.drf.fields import PhoneNumberField
+from shared_foundation.custom.drf.validation import RestrictCSVCharactersFieldValidator
 from shared_foundation.constants import *
 from shared_foundation.models import SharedUser
 from shared_foundation.custom.drf.validation import MatchingDuelFieldsValidator, EnhancedPasswordStrengthFieldValidator
@@ -37,35 +38,45 @@ class PartnerListCreateSerializer(serializers.ModelSerializer):
     given_name = serializers.CharField(
         required=True,
         allow_blank=False,
+        validators=[RestrictCSVCharactersFieldValidator(),]
     )
     last_name = serializers.CharField(
         required=True,
         allow_blank=False,
+        validators=[RestrictCSVCharactersFieldValidator(),]
     )
     address_country = serializers.CharField(
         required=True,
         allow_blank=False,
+        validators=[RestrictCSVCharactersFieldValidator(),]
     )
     address_region = serializers.CharField(
         required=True,
         allow_blank=False,
+        validators=[RestrictCSVCharactersFieldValidator(),]
     )
     address_locality = serializers.CharField(
         required=True,
         allow_blank=False,
+        validators=[RestrictCSVCharactersFieldValidator(),]
     )
     postal_code = serializers.CharField(
         required=True,
         allow_blank=False,
+        validators=[RestrictCSVCharactersFieldValidator(),]
     )
     street_address = serializers.CharField(
         required=True,
         allow_blank=False,
+        validators=[RestrictCSVCharactersFieldValidator(),]
     )
 
     # We are overriding the `email` field to include unique email validation.
     email = serializers.EmailField(
-        validators=[UniqueValidator(queryset=SharedUser.objects.all())],
+        validators=[
+            UniqueValidator(queryset=SharedUser.objects.all()),
+            RestrictCSVCharactersFieldValidator(),
+        ],
         required=True,
     )
 

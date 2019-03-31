@@ -10,11 +10,18 @@ from django.utils import timezone
 from django.utils.http import urlquote
 from rest_framework import exceptions, serializers
 from rest_framework.response import Response
+
+from shared_foundation.custom.drf.validation import RestrictCSVCharactersFieldValidator
 from tenant_foundation.models import Tag
 
 
 class TagListCreateSerializer(serializers.ModelSerializer):
-
+    text = serializers.CharField(
+        required=True,
+        allow_blank=False,
+        allow_null=False,
+        validators=[RestrictCSVCharactersFieldValidator(),]
+    )
     class Meta:
         model = Tag
         fields = (
@@ -26,7 +33,12 @@ class TagListCreateSerializer(serializers.ModelSerializer):
 
 
 class TagRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
-
+    text = serializers.CharField(
+        required=True,
+        allow_blank=False,
+        allow_null=False,
+        validators=[RestrictCSVCharactersFieldValidator(),]
+    )
     class Meta:
         model = Tag
         fields = (

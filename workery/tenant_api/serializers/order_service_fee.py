@@ -10,11 +10,18 @@ from django.utils import timezone
 from django.utils.http import urlquote
 from rest_framework import exceptions, serializers
 from rest_framework.response import Response
+
+from shared_foundation.custom.drf.validation import RestrictCSVCharactersFieldValidator
 from tenant_foundation.models import WorkOrderServiceFee
 
 
 class WorkOrderServiceFeeListCreateSerializer(serializers.ModelSerializer):
-
+    title = serializers.CharField(
+        required=True,
+        allow_blank=False,
+        allow_null=False,
+        validators=[RestrictCSVCharactersFieldValidator(),]
+    )
     class Meta:
         model = WorkOrderServiceFee
         fields = (
@@ -27,7 +34,12 @@ class WorkOrderServiceFeeListCreateSerializer(serializers.ModelSerializer):
 
 
 class WorkOrderServiceFeeRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
-
+    title = serializers.CharField(
+        required=True,
+        allow_blank=False,
+        allow_null=False,
+        validators=[RestrictCSVCharactersFieldValidator(),]
+    )
     class Meta:
         model = WorkOrderServiceFee
         fields = (
