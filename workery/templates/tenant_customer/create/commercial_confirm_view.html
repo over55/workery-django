@@ -57,12 +57,12 @@
             {% if parameters.back_id == 'create_job' %}
                 <li class="breadcrumb-item"><a href="{% url 'workery_tenant_dashboard_master' %}"><i class="fas fa-tachometer-alt"></i>&nbsp;{% trans 'Dashboard' %}</a></li>
                 <li class="breadcrumb-item"><a href="{% url 'workery_tenant_job_summary' %}"><i class="fas fa-wrench"></i>&nbsp;{% trans 'Jobs' %}</a></li>
-                <li class="breadcrumb-item"><a href="{% url 'workery_tenant_job_search_or_add_create' %}">{% trans 'Add' %}</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'workery_tenant_job_search_or_add_create' %}"><i class="fas fa-plus"></i>&nbsp;{% trans 'Add' %}</a></li>
                 <li class="breadcrumb-item active" aria-current="page">{% trans 'Add Client' %}</li>
             {% else %}
                 <li class="breadcrumb-item"><a href="{% url 'workery_tenant_dashboard_master' %}"><i class="fas fa-tachometer-alt"></i>&nbsp;{% trans 'Dashboard' %}</a></li>
                 <li class="breadcrumb-item"><a href="{% url 'workery_tenant_customer_summary' %}"><i class="fas fa-id-card"></i>&nbsp;{% trans 'Clients' %}</a></li>
-                <li class="breadcrumb-item"><a href="{% url 'workery_tenant_pick_customer_create' %}">{% trans 'Add' %}</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'workery_tenant_pick_customer_create' %}"><i class="fas fa-plus"></i>&nbsp;{% trans 'Add' %}</a></li>
                 <li class="breadcrumb-item active" aria-current="page">{% trans 'Commercial Client' %}</li>
             {% endif %}
 	  	</ol>
