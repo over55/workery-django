@@ -389,7 +389,7 @@ class CustomerListCreateSerializer(serializers.ModelSerializer):
         # Create or update our Organization.
         #-----------------------------------
         type_of_customer = validated_data.get('type_of', UNASSIGNED_CUSTOMER_TYPE_OF_ID)
-        if type_of_customer == COMMERCIAL_JOB_TYPE_OF_ID:
+        if type_of_customer == COMMERCIAL_CUSTOMER_TYPE_OF_ID:
             logger.info("Detected commercial customer...")
             organization_name = validated_data.get('organization_name', None)
             organization_type_of = validated_data.get('organization_type_of', None)
