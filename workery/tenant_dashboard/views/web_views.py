@@ -19,6 +19,7 @@ from tenant_api.filters.customer import CustomerFilter
 from tenant_foundation.models import (
     Associate,
     AwayLog,
+    BulletinBoardItem,
     Comment,
     Customer,
     WORK_ORDER_STATE,
@@ -97,6 +98,14 @@ class DashboardView(LoginRequiredMixin, GroupRequiredMixin, WorkeryTemplateView)
             'associate',
             'customer'
         )[0:10]
+
+        modified_context['bulletin_board_items'] = BulletinBoardItem.objects.filter(
+            is_archived=False
+        ).order_by(
+            '-created_at'
+        ).prefetch_related(
+            'created_by'
+        )
 
         # Return our modified context.
         return modified_context
