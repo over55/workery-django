@@ -6,13 +6,13 @@
     $(document).ready(function () {
         // Initialize our datepicker jQuery code with our HTML view.
         $( "#birthdate" ).datepicker({
-            	dateFormat: 'yy-mm-dd',
+            dateFormat: 'yy-mm-dd',
 	    	changeMonth: true,
-            	changeYear: true,
-		yearRange: "c-90:c+150",
+            changeYear: true,
+		    yearRange: "c-120:c+150",
 	        maxDate: 'today',
         });
-	
+
 	// PLUG IN EVENT LISTENER ON REASON DROPDOWN CHANGE.
         $('#how_hear').on('change',function(){
             if( $(this).val()==="1" || $(this).val()===1){
