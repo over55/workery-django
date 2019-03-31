@@ -92,7 +92,7 @@
         	loadState('{{ staff.address_country }}');
 	});
 
-	const state = "{% url 'workery_get_provinces_api_endpoint' %}?format=json";
+	    const state = "{% url 'workery_get_provinces_api_endpoint' %}?format=json";
         const country = "{% url 'workery_get_countries_api_endpoint' %}?format=json";
     	console.log(state);
         console.log(country); // KANWAR - PLEASE IMPLEMENT.
@@ -294,6 +294,11 @@
         var description = $('#description').val();
         var account_type = $('#account_type').val();
 
+        var emergency_contact_name = $('#emergency_contact_name').val();
+        var emergency_contact_relationship = $('#emergency_contact_relationship').val();
+        var emergency_contact_telephone = $('#emergency_contact_telephone').val();
+        var emergency_contact_alternative_telephone = $('#emergency_contact_alternative_telephone').val();
+
         // LOCK OUT THE "SUBMIT" BUTTON SO THE USER DOES NOT MAKE MULTI-CALLS.
         disable_btn();
 
@@ -338,6 +343,12 @@
                 'password': password,
                 'password_repeat': password_repeat,
                 'account_type': parseInt(account_type),
+
+                // --- Emergency Contact ---
+                'emergency_contact_name': emergency_contact_name,
+                'emergency_contact_relationship': emergency_contact_relationship,
+                'emergency_contact_telephone': emergency_contact_telephone,
+                'emergency_contact_alternative_telephone': emergency_contact_alternative_telephone,
             },
             function(result_dict) { // Success
                 console.log(result_dict);
@@ -559,6 +570,33 @@
                 </div>
             </div>
             <!-- ############ end LOCATION ############ -->
+
+            <!-- ############ EMERGENCY CONTACT ############ -->
+            <p class="border-bottom mb-3 pb-1 text-secondary">Emergency Contacts</p>
+            <div class="form-row">
+                <div class="form-group col-md-12 mb-4">
+                    <label for="emergency_contact_name">Full name</label>
+                    <input type="text" class="form-control form-control-lg border border-success" id="emergency_contact_name" name="emergency_contact_name" placeholder="Name" minlength="2" maxlength="30" required value="{% if staff.emergency_contact_name %}{{ staff.emergency_contact_name }}{% endif %}" autofocus>
+                    <div id="emergency_contact_name-error" class="invalid-feedback"></div>
+                </div>
+                <div class="form-group col-md-12 mb-4">
+                    <label for="emergency_contact_relationship">Relationship</label>
+                    <input type="text" class="form-control form-control-lg border border-success" id="emergency_contact_relationship" name="emergency_contact_relationship" placeholder="Relationship" minlength="2" maxlength="30" required value="{% if staff.emergency_contact_relationship %}{{ staff.emergency_contact_relationship }}{% endif %}" autofocus>
+                    <div id="emergency_contact_relationship-error" class="invalid-feedback"></div>
+                </div>
+                <div class="form-group col-md-12 mb-4">
+                    <label for="emergency_contact_relationship">Telephone</label>
+                    <input type="text" class="form-control form-control-lg border border-success" id="emergency_contact_telephone" name="emergency_contact_telephone" placeholder="(xxx) xxx-xxxx" minlength="10" maxlength="31" required value="{% if staff.emergency_contact_telephone %}{{ staff.emergency_contact_telephone }}{% endif %}">
+                    <div id="emergency_contact_relationship-error" class="invalid-feedback"></div>
+                </div>
+                <div class="form-group col-md-12 mb-4">
+                    <label for="emergency_contact_alternative_telephone">Alternate telephone</label>
+                    <input type="text" class="form-control form-control-lg border border-success" id="emergency_contact_alternative_telephone" name="emergency_contact_alternative_telephone" placeholder="(xxx) xxx-xxxx" minlength="10" maxlength="31" required value="{% if staff.emergency_contact_alternative_telephone %}{{ staff.emergency_contact_alternative_telephone }}{% endif %}">
+                    <div id="emergency_contact_alternative_telephone-error" class="invalid-feedback"></div>
+                </div>
+            </div>
+            <!-- ############ end EMERGENCY CONTACT ############ -->
+
             <!-- ############ SECURITY ############ -->
             <p class="border-bottom mb-3 pb-1 text-secondary">Account Security</p>
             <div class="form-row">

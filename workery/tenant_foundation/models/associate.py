@@ -2,6 +2,7 @@
 import csv
 import phonenumbers
 import pytz
+from phonenumber_field.modelfields import PhoneNumberField
 from dateutil.relativedelta import relativedelta
 from datetime import date, datetime, timedelta
 from djmoney.money import Money
@@ -314,6 +315,32 @@ class Associate(AbstractPerson):
         default_currency=WORKERY_APP_DEFAULT_MONEY_CURRENCY,
         default=Money(0,WORKERY_APP_DEFAULT_MONEY_CURRENCY),
         blank=True,
+    )
+    emergency_contact_name = models.CharField(
+        _("Emergency contact full-name"),
+        max_length=127,
+        help_text=_('The name of this associate\'s primary contact.'),
+        blank=True,
+        null=True,
+    )
+    emergency_contact_relationship = models.CharField(
+        _("Emergency contact relationship"),
+        max_length=127,
+        help_text=_('The relationship of this associate\'s primary contact.'),
+        blank=True,
+        null=True,
+    )
+    emergency_contact_telephone = PhoneNumberField(
+        _("Emergency contact telephone"),
+        help_text=_('The telephone of this associate\'s primary contact.'),
+        blank=True,
+        null=True,
+    )
+    emergency_contact_alternative_telephone = PhoneNumberField(
+        _("Emergency contact alternative telephone"),
+        help_text=_('The alternative telephone of this associate\'s primary contact.'),
+        blank=True,
+        null=True,
     )
 
     #

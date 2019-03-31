@@ -39,7 +39,7 @@
     	console.log(state);
         console.log(country);
 
-	let c_dropdown = $('#address_country');
+	    let c_dropdown = $('#address_country');
     	c_dropdown.empty();
     	c_dropdown.append('<option disabled>Choose Country</option>');
 
@@ -259,6 +259,11 @@
         var tax_id = $('#tax_id').val();
         var insurance_requirements = $('#insurance_requirements').val();
 
+        var emergency_contact_name = $('#emergency_contact_name').val();
+        var emergency_contact_relationship = $('#emergency_contact_relationship').val();
+        var emergency_contact_telephone = $('#emergency_contact_telephone').val();
+        var emergency_contact_alternative_telephone = $('#emergency_contact_alternative_telephone').val();
+
         // LOCK OUT THE "SUBMIT" BUTTON SO THE USER DOES NOT MAKE MULTI-CALLS.
         disable_btn();
 
@@ -325,7 +330,13 @@
                 'has_van': has_van,
                 'has_truck': has_truck,
                 'how_hear': how_hear,
-                'how_hear_other': how_hear_other
+                'how_hear_other': how_hear_other,
+
+                // --- Emergency Contact ---
+                'emergency_contact_name': emergency_contact_name,
+                'emergency_contact_relationship': emergency_contact_relationship,
+                'emergency_contact_telephone': emergency_contact_telephone,
+                'emergency_contact_alternative_telephone': emergency_contact_alternative_telephone,
             },
             function(result_dict) { // Success
                 console.log(result_dict);
@@ -696,8 +707,8 @@
                     {% endfor %}
                     </select>
                     <div id="vehicle_types-error" class="invalid-feedback"></div>
-			---
-		{% for vehicle_type in vehicle_types %}
+			        ---
+		            {% for vehicle_type in vehicle_types %}
                         <p>{{ vehicle_type.text }}</p>
                     {% endfor %}
                 </div>
@@ -725,6 +736,32 @@
             </div>
             <!-- ############ end DETAILS ############ -->
 
+
+            <!-- ############ EMERGENCY CONTACT ############ -->
+            <p class="border-bottom mb-3 pb-1 text-secondary">Emergency Contacts</p>
+            <div class="form-row">
+                <div class="form-group col-md-12 mb-4">
+                    <label for="emergency_contact_name">Full name</label>
+                    <input type="text" class="form-control form-control-lg border border-success" id="emergency_contact_name" name="emergency_contact_name" placeholder="Name" minlength="2" maxlength="30" required value="{% if associate.emergency_contact_name %}{{ associate.emergency_contact_name }}{% endif %}" autofocus>
+                    <div id="emergency_contact_name-error" class="invalid-feedback"></div>
+                </div>
+                <div class="form-group col-md-12 mb-4">
+                    <label for="emergency_contact_relationship">Relationship</label>
+                    <input type="text" class="form-control form-control-lg border border-success" id="emergency_contact_relationship" name="emergency_contact_relationship" placeholder="Relationship" minlength="2" maxlength="30" required value="{% if associate.emergency_contact_relationship %}{{ associate.emergency_contact_relationship }}{% endif %}" autofocus>
+                    <div id="emergency_contact_relationship-error" class="invalid-feedback"></div>
+                </div>
+                <div class="form-group col-md-12 mb-4">
+                    <label for="emergency_contact_relationship">Telephone</label>
+                    <input type="text" class="form-control form-control-lg border border-success" id="emergency_contact_telephone" name="emergency_contact_telephone" placeholder="(xxx) xxx-xxxx" minlength="10" maxlength="31" required value="{% if associate.emergency_contact_telephone %}{{ associate.emergency_contact_telephone }}{% endif %}">
+                    <div id="emergency_contact_relationship-error" class="invalid-feedback"></div>
+                </div>
+                <div class="form-group col-md-12 mb-4">
+                    <label for="emergency_contact_alternative_telephone">Alternate telephone</label>
+                    <input type="text" class="form-control form-control-lg border border-success" id="emergency_contact_alternative_telephone" name="emergency_contact_alternative_telephone" placeholder="(xxx) xxx-xxxx" minlength="10" maxlength="31" required value="{% if associate.emergency_contact_alternative_telephone %}{{ associate.emergency_contact_alternative_telephone }}{% endif %}">
+                    <div id="emergency_contact_alternative_telephone-error" class="invalid-feedback"></div>
+                </div>
+            </div>
+            <!-- ############ end EMERGENCY CONTACT ############ -->
 
 
             <!-- ############ SECURITY ############ -->

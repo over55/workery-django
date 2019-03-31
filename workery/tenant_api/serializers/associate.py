@@ -103,6 +103,9 @@ class AssociateListCreateSerializer(serializers.ModelSerializer):
     telephone = PhoneNumberField(allow_null=False, required=True,)
     other_telephone = PhoneNumberField(allow_null=True, required=False)
 
+    emergency_contact_telephone = PhoneNumberField(allow_null=True, required=False)
+    emergency_contact_alternative_telephone = PhoneNumberField(allow_null=True, required=False)
+
     # Add password adding.
     password = serializers.CharField(
         write_only=True,
@@ -210,6 +213,12 @@ class AssociateListCreateSerializer(serializers.ModelSerializer):
             'latitude',
             'longitude',
             # 'location' #TODO: FIX
+
+            # Emergency Contact
+            'emergency_contact_name',
+            'emergency_contact_relationship',
+            'emergency_contact_telephone',
+            'emergency_contact_alternative_telephone'
         )
         extra_kwargs = {
             "is_ok_to_email": {
@@ -370,6 +379,12 @@ class AssociateListCreateSerializer(serializers.ModelSerializer):
             latitude=validated_data.get('latitude', None),
             longitude=validated_data.get('longitude', None),
             # 'location' #TODO: IMPLEMENT.
+
+            # Emergency contact
+            emergency_contact_name=validated_data.get('emergency_contact_name', None),
+            emergency_contact_relationship=validated_data.get('emergency_contact_relationship', None),
+            emergency_contact_telephone=validated_data.get('emergency_contact_telephone', None),
+            emergency_contact_alternative_telephone=validated_data.get('emergency_contact_alternative_telephone', None),
         )
         logger.info("Created associate.")
 
@@ -507,6 +522,9 @@ class AssociateRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
     telephone = PhoneNumberField()
     other_telephone = PhoneNumberField(allow_null=True, required=False)
 
+    emergency_contact_telephone = PhoneNumberField(allow_null=True, required=False)
+    emergency_contact_alternative_telephone = PhoneNumberField(allow_null=True, required=False)
+
     is_active = serializers.BooleanField(
         write_only=True,
         required=True,
@@ -591,6 +609,12 @@ class AssociateRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
             'latitude',
             'longitude',
             # 'location' #TODO: FIX
+
+            # Emergency Contact
+            'emergency_contact_name',
+            'emergency_contact_relationship',
+            'emergency_contact_telephone',
+            'emergency_contact_alternative_telephone'
         )
         extra_kwargs = {
             "is_ok_to_email": {
@@ -735,6 +759,12 @@ class AssociateRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         instance.latitude=validated_data.get('latitude', instance.latitude)
         instance.longitude=validated_data.get('longitude', instance.longitude)
         # 'location' #TODO: IMPLEMENT.
+
+        # Emergency contact.
+        instance.emergency_contact_name=validated_data.get('emergency_contact_name', instance.emergency_contact_name)
+        instance.emergency_contact_relationship=validated_data.get('emergency_contact_relationship', instance.emergency_contact_relationship)
+        instance.emergency_contact_telephone=validated_data.get('emergency_contact_telephone', instance.emergency_contact_telephone)
+        instance.emergency_contact_alternative_telephone=validated_data.get('emergency_contact_alternative_telephone', instance.emergency_contact_alternative_telephone)
 
         # Save our instance.
         instance.save()

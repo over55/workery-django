@@ -2,6 +2,7 @@
 import csv
 import phonenumbers
 import pytz
+from phonenumber_field.modelfields import PhoneNumberField
 from datetime import date, datetime, timedelta
 from django.conf import settings
 from django.contrib.auth.models import User
@@ -201,6 +202,32 @@ class Staff(AbstractPerson):
         validators=[email_validator],
         db_index=True,
         unique=True
+    )
+    emergency_contact_name = models.CharField(
+        _("Emergency contact full-name"),
+        max_length=127,
+        help_text=_('The name of this staff member\'s primary contact.'),
+        blank=True,
+        null=True,
+    )
+    emergency_contact_relationship = models.CharField(
+        _("Emergency contact relationship"),
+        max_length=127,
+        help_text=_('The relationship of this staff member\'s primary contact.'),
+        blank=True,
+        null=True,
+    )
+    emergency_contact_telephone = PhoneNumberField(
+        _("Emergency contact telephone"),
+        help_text=_('The telephone of this staff member\'s primary contact.'),
+        blank=True,
+        null=True,
+    )
+    emergency_contact_alternative_telephone = PhoneNumberField(
+        _("Emergency contact alternative telephone"),
+        help_text=_('The alternative telephone of this staff member\'s primary contact.'),
+        blank=True,
+        null=True,
     )
 
     #

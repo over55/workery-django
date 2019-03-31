@@ -102,6 +102,9 @@ class StaffListCreateSerializer(serializers.ModelSerializer):
     telephone = PhoneNumberField(allow_null=True, required=False)
     other_telephone = PhoneNumberField(allow_null=True, required=False)
 
+    emergency_contact_telephone = PhoneNumberField(allow_null=True, required=False)
+    emergency_contact_alternative_telephone = PhoneNumberField(allow_null=True, required=False)
+
     # Add password adding.
     password = serializers.CharField(
         write_only=True,
@@ -192,6 +195,12 @@ class StaffListCreateSerializer(serializers.ModelSerializer):
             'latitude',
             'longitude',
             # 'location' #TODO: FIX
+
+            # Emergency Contact
+            'emergency_contact_name',
+            'emergency_contact_relationship',
+            'emergency_contact_telephone',
+            'emergency_contact_alternative_telephone'
         )
 
     def validate_telephone(self, value):
@@ -340,6 +349,12 @@ class StaffListCreateSerializer(serializers.ModelSerializer):
             latitude=validated_data.get('latitude', None),
             longitude=validated_data.get('longitude', None),
             # 'location' #TODO: IMPLEMENT.
+
+            # Emergency contact
+            emergency_contact_name=validated_data.get('emergency_contact_name', None),
+            emergency_contact_relationship=validated_data.get('emergency_contact_relationship', None),
+            emergency_contact_telephone=validated_data.get('emergency_contact_telephone', None),
+            emergency_contact_alternative_telephone=validated_data.get('emergency_contact_alternative_telephone', None),
         )
         logger.info("Created staff member.")
 
@@ -491,6 +506,9 @@ class StaffRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
     telephone = PhoneNumberField(allow_null=True, required=False)
     other_telephone = PhoneNumberField(allow_null=True, required=False)
 
+    emergency_contact_telephone = PhoneNumberField(allow_null=True, required=False)
+    emergency_contact_alternative_telephone = PhoneNumberField(allow_null=True, required=False)
+
     # Meta Information.
     class Meta:
         model = Staff
@@ -556,6 +574,12 @@ class StaffRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
             'latitude',
             'longitude',
             # 'location' #TODO: FIX
+
+            # Emergency Contact
+            'emergency_contact_name',
+            'emergency_contact_relationship',
+            'emergency_contact_telephone',
+            'emergency_contact_alternative_telephone'
         )
 
     def setup_eager_loading(cls, queryset):
@@ -706,6 +730,12 @@ class StaffRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         instance.latitude=validated_data.get('latitude', None)
         instance.longitude=validated_data.get('longitude', None)
         # 'location' #TODO: IMPLEMENT.
+
+        # Emergency contact.
+        instance.emergency_contact_name=validated_data.get('emergency_contact_name', None)
+        instance.emergency_contact_relationship=validated_data.get('emergency_contact_relationship', None)
+        instance.emergency_contact_telephone=validated_data.get('emergency_contact_telephone', None)
+        instance.emergency_contact_alternative_telephone=validated_data.get('emergency_contact_alternative_telephone', None)
 
         # Save our instance.
         instance.save()
