@@ -113,6 +113,75 @@
 
     </section>
 
+    <!-- BULLETIN BOARD ITEM NOTIFICATION -->
+    <!------------------------------------------------------------------------->
+    {% if parameters.was_bulletin_board_item_deleted == 'True' %}
+        <div class="alert bg-success text-white alert-dismissible fade show" role="alert">
+            Bulletin board was <strong>successfully</strong> deleted.
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">×</span>
+            </button>
+        </div>
+    {% endif %}
+    <!------------------------------------------------------------------------->
+    <!-- end BULLETIN BOARD ITEM NOTIFICATION -->
+
+    <!-- BULLETIN BOARD ITEMS -->
+    <!------------------------------------------------------------------------->
+    <div class="jumbotron">
+        <h1 class="display-4"><i class="fas fa-newspaper"></i>&nbsp;Office News</h1>
+        <div class="table-responsive-sm my-3">
+          <table class="table">
+              <thead>
+                <tr>
+                  <th scope="col">Text</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for bulletin_board_item in bulletin_board_items.all %}
+                <tr>
+                  <td>
+                    {% if bulletin_board_item.text %}
+                        {{ bulletin_board_item.text }}
+                    {% else %}
+                        -
+                    {% endif %}
+
+
+
+                  <button id="id_delete_btn"
+                          class="text-danger close"
+                          type="button"
+                        onclick="ajax_bulletin_board_item_delete({{ bulletin_board_item.id }});">
+                      <i class="fas fa-times"></i>
+                  </button>
+                  </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="3">
+                        <p>No bulletin board items.</p>
+                    </td>
+                </tr>
+                {% endfor %}
+                <tr>
+                    <td colspan="3">
+                        <p class="lead">
+                            <a class="btn btn-primary btn-lg px-4" href="{% url 'workery_tenant_settings_bulletin_board_item_create' %}" role="button"><i class="fas fa-plus"></i> Add</a>
+                        </p>
+                    </td>
+                </tr>
+              </tbody>
+          </table>
+        </div>
+
+        <!-- <p class="lead">
+            <a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a>
+        </p> -->
+    </div>
+    <!------------------------------------------------------------------------->
+    <!-- end BULLETIN BOARD ITEMS -->
+
     <!-- LATEST ORDERS BY YOU -->
     <h1><i class="fas fa-wrench"></i>&nbsp;{% trans 'Job History' %}</h1>
     <div class="table-responsive">
@@ -300,75 +369,6 @@
         </table>
     </div>
     <!-- end LATEST ORDERS BY TEAM -->
-
-    <!-- BULLETIN BOARD ITEM NOTIFICATION -->
-    <!------------------------------------------------------------------------->
-    {% if parameters.was_bulletin_board_item_deleted == 'True' %}
-        <div class="alert bg-success text-white alert-dismissible fade show" role="alert">
-            Bulletin board was <strong>successfully</strong> deleted.
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">×</span>
-            </button>
-        </div>
-    {% endif %}
-    <!------------------------------------------------------------------------->
-    <!-- end BULLETIN BOARD ITEM NOTIFICATION -->
-
-    <!-- BULLETIN BOARD ITEMS -->
-    <!------------------------------------------------------------------------->
-    <div class="jumbotron">
-        <h1 class="display-4"><i class="fas fa-newspaper"></i>&nbsp;Office News</h1>
-        <div class="table-responsive-sm my-3">
-          <table class="table">
-              <thead>
-                <tr>
-                  <th scope="col">Text</th>
-                </tr>
-              </thead>
-              <tbody>
-                {% for bulletin_board_item in bulletin_board_items.all %}
-                <tr>
-                  <td>
-                    {% if bulletin_board_item.text %}
-                        {{ bulletin_board_item.text }}
-                    {% else %}
-                        -
-                    {% endif %}
-
-
-
-                  <button id="id_delete_btn"
-                          class="text-danger close"
-                          type="button"
-                        onclick="ajax_bulletin_board_item_delete({{ bulletin_board_item.id }});">
-                      <i class="fas fa-times"></i>
-                  </button>
-                  </td>
-                </tr>
-                {% empty %}
-                <tr>
-                    <td colspan="3">
-                        <p>No bulletin board items.</p>
-                    </td>
-                </tr>
-                {% endfor %}
-                <tr>
-                    <td colspan="3">
-                        <p class="lead">
-                            <a class="btn btn-primary btn-lg px-4" href="{% url 'workery_tenant_settings_bulletin_board_item_create' %}" role="button"><i class="fas fa-plus"></i> Add</a>
-                        </p>
-                    </td>
-                </tr>
-              </tbody>
-          </table>
-        </div>
-
-        <!-- <p class="lead">
-            <a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a>
-        </p> -->
-    </div>
-    <!------------------------------------------------------------------------->
-    <!-- end BULLETIN BOARD ITEMS -->
 
     <!-- ORDER COMMENTS -->
     <h1 class="mt-4 pt-4"><i class="fas fa-comment"></i>&nbsp;{% trans 'Past 5 day comments' %}</h1>
