@@ -119,6 +119,7 @@ def report_01_streaming_csv_view(request):
         "Client Name",
         "Client Gender",
         "Client DOB",
+        "Client Age",
         "Skill Set(s)"],)
 
     # Generate hte CSV data.
@@ -167,6 +168,7 @@ def report_01_streaming_csv_view(request):
             str(job.customer),
             customer_gender,
             customer_dob,
+            job.customer.get_current_age(),
             skill_set_string
         ],)
 

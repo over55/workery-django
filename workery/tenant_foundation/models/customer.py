@@ -2,6 +2,7 @@
 import csv
 import phonenumbers
 import pytz
+from dateutil.relativedelta import relativedelta
 from datetime import date, datetime, timedelta
 from django_fsm import FSMField, transition
 from django.conf import settings
@@ -340,7 +341,7 @@ class Customer(AbstractPerson):
             return str(self)
 
     def get_pretty_status(self):
-        return dict(Customer.CUSTOMER_STATE_CHOICES).get(self.state) 
+        return dict(Customer.CUSTOMER_STATE_CHOICES).get(self.state)
 
     def get_pretty_how_hear(self):
         """
@@ -370,6 +371,13 @@ class Customer(AbstractPerson):
             return str(self.deactivation_reason_other)
         else:
             return dict(Customer.DEACTIVATION_REASON_CHOICES).get(self.deactivation_reason)
+
+    def get_current_age(self):
+        if self.birthdate:
+            now_dt = datetime.now()
+            difference_in_years = relativedelta(now_dt, self.birthdate).years
+            return difference_in_years
+        return None
 
     """
     Override the `save` function to support save cached searchable terms.

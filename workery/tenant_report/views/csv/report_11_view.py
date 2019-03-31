@@ -89,6 +89,8 @@ def report_11_streaming_csv_view(request):
         "Completion",
         "Associate",
         "Client",
+        "Client Birthdate",
+        "Client Age",
         "WSIB #",
         "WSIB Date",
         "Total Labour",
@@ -104,9 +106,10 @@ def report_11_streaming_csv_view(request):
 
         # Set the invoice ID.
         invoice_ids = "-" if job.invoice_ids is None else job.invoice_ids
-        invoice_ids = "-" if job.invoice_ids <= 0 else job.invoice_ids
+        invoice_ids = "-" if job.invoice_ids is None else job.invoice_ids
         wsib_number = "-" if job.associate.wsib_number is None else job.associate.wsib_number
         wsib_insurance_date = "-" if job.associate.wsib_insurance_date is None else job.associate.wsib_insurance_date
+        customer_dob = pretty_dt_string(job.customer.birthdate) if job.customer.birthdate is not None else ""
 
         # Format labour amount
         invoice_labour_amount = str(job.invoice_labour_amount)
@@ -120,6 +123,8 @@ def report_11_streaming_csv_view(request):
             pretty_dt_string(job.completion_date),
             str(job.associate),
             str(job.customer),
+            str(customer_dob),
+            job.customer.get_current_age(),
             str(wsib_number),
             str(wsib_insurance_date),
             invoice_labour_amount,
