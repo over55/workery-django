@@ -351,7 +351,7 @@
                 </tr>
                 <!-- ############ end DETAILS ############ -->
                 <!-- ############ ACCOUNT ############ -->
-		<tr class="bg-dark text-white">
+		        <tr class="bg-dark text-white">
                     <th scope="row" colspan="2">Account</th>
                 </tr>
                 <tr>
@@ -365,6 +365,37 @@
                     </td>
                 </tr>
                 <!-- ############ end ACCOUNT ############ -->
+
+                <!-- ############ EMERGENCY CONTACT ############ -->
+                <tr class="bg-dark text-white">
+                    <th scope="row" colspan="2">Emergency Contact</th>
+                </tr>
+                <tr>
+                    <th scope="row" class="bg-light">Name</th>
+                    <td id="emergency_contact_name">
+                        {% if associate.emergency_contact_name %}{{ associate.emergency_contact_name }}{% else %}-{% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row" class="bg-light">Relationship</th>
+                    <td id="emergency_contact_relationship">
+                        {% if associate.emergency_contact_relationship %}{{ associate.emergency_contact_relationship }}{% else %}-{% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row" class="bg-light">Telephone</th>
+                    <td id="emergency_contact_telephone">
+                        {% if associate.emergency_contact_telephone %}{{ associate.emergency_contact_telephone }}{% else %}-{% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row" class="bg-light">Alternate Telephone</th>
+                    <td id="emergency_contact_telephone">
+                        {% if associate.emergency_contact_alternative_telephone %}{{ associate.emergency_contact_alternative_telephone }}{% else %}-{% endif %}
+                    </td>
+                </tr>
+                <!-- ############ end EMERGENCY CONTACT ############ -->
+
                 <!-- ############ SYSTEM ############ -->
                 <tr class="bg-dark text-white">
                     <th scope="row" colspan="2">System</th>

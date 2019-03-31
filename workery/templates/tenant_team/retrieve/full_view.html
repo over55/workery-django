@@ -205,6 +205,37 @@
                     </td>
                 </tr>
 		    <!-- ############ end LOCATION ############ -->
+
+            <!-- ############ EMERGENCY CONTACT ############ -->
+            <tr class="bg-dark text-white">
+                <th scope="row" colspan="2">Emergency Contact</th>
+            </tr>
+            <tr>
+                <th scope="row" class="bg-light">Name</th>
+                <td id="emergency_contact_name">
+                    {% if staff.emergency_contact_name %}{{ staff.emergency_contact_name }}{% else %}-{% endif %}
+                </td>
+            </tr>
+            <tr>
+                <th scope="row" class="bg-light">Relationship</th>
+                <td id="emergency_contact_relationship">
+                    {% if staff.emergency_contact_relationship %}{{ staff.emergency_contact_relationship }}{% else %}-{% endif %}
+                </td>
+            </tr>
+            <tr>
+                <th scope="row" class="bg-light">Telephone</th>
+                <td id="emergency_contact_telephone">
+                    {% if staff.emergency_contact_telephone %}{{ staff.emergency_contact_telephone }}{% else %}-{% endif %}
+                </td>
+            </tr>
+            <tr>
+                <th scope="row" class="bg-light">Alternate Telephone</th>
+                <td id="emergency_contact_telephone">
+                    {% if staff.emergency_contact_alternative_telephone %}{{ staff.emergency_contact_alternative_telephone }}{% else %}-{% endif %}
+                </td>
+            </tr>
+            <!-- ############ end EMERGENCY CONTACT ############ -->
+
             <!-- ############ SYSTEM ############ -->
             <tr class="bg-dark text-white">
                 <th scope="row" colspan="2">System</th>
