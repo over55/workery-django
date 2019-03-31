@@ -67,14 +67,14 @@
         };
         SetRatingStar();
 
-	$("#id_image_placeholder").click(function () {
+	    $("#id_image_placeholder").click(function () {
     		$("#id_image").trigger('click');
     	});
         $("#upload-btn").click(function () {
     		$("#id_image").trigger('click');
     	});
-	$("#upload-btn").css("cursor", "pointer");
-	$("#id_image_placeholder").css("cursor", "pointer");
+	    $("#upload-btn").css("cursor", "pointer");
+	    $("#id_image_placeholder").css("cursor", "pointer");
 
     });
 </script>
@@ -238,6 +238,20 @@
                             <span class="far fa-star" data-rating="5"></span>
                         </div>
                     </div>
+                    <p class="m-0"><strong>Notes:</strong></p>
+                    <p class="mb-2">
+                        <ul>
+                            {% if associate.commercial_insurance_expiry_date %}
+                            <li>Commercial Insurance Expiry: {{ associate.commercial_insurance_expiry_date }}</li>
+                            {% endif %}
+                            {% if associate.wsib_number %}
+                            <li>WSIB number: {{ associate.wsib_number }}</li>
+                            {% endif %}
+                            {% if associate.wsib_insurance_date %}
+                            <li>WSIB Expiry: {{ associate.wsib_insurance_date }}</li>
+                            {% endif %}
+                        </ul>
+                    </p>
                 </div>
             </div>
         </div>
