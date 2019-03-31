@@ -29,7 +29,7 @@
             <div class="input-group mb-2">
                 <input id="id_keywords" type="text" class="form-control form-control-lg border border-primary" placeholder="Search" required>
                 <div class="input-group-append">
-                    <button class="btn btn-primary btn-lg" type="button" onclick="ajax_perform_basic_search();"><i class="fas fa-search"></i></button>
+                    <button id="id_search_btn" class="btn btn-primary btn-lg" type="button" onclick="ajax_perform_basic_search();"><i class="fas fa-search"></i></button>
                 </div>
                 <div class="invalid-feedback" id="id_keywords_error" style="display: none;">
                     Fill in at least 3 characters.
@@ -119,6 +119,12 @@
     <!-- SCRIPTS -->
     <!------------------------------------------------------------------------->
     <script>
+        $("#id_keywords").keyup(function(event) {
+            if (event.keyCode === 13) {
+                $("#id_search_btn").click();
+            }
+        });
+        
         var is_advanced_on = false;
 
         function ajax_perform_basic_search() {
