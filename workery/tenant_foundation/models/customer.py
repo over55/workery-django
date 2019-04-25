@@ -360,9 +360,19 @@ class Customer(AbstractPerson):
         elif self.how_hear == 8:
             return _('Instagram')
         elif self.how_hear == 9:
-            return _('Magazine Ad')
+            return _('Magazine Ad') # DEPRECATED
         elif self.how_hear == 10:
-            return _('Event')
+            return _('Event') # DEPRECATED
+        elif self.how_hear == 11:
+            return _('Home & Outdoor Show')
+        elif self.how_hear == 12:
+            return _('Western Fair')
+        elif self.how_hear == 13:
+            return _('Rib Fest')
+        elif self.how_hear == 14:
+            return _('Coffee News')
+        elif self.how_hear == 15:
+            return _('Business London Magazine')
         else:
             return self.how_hear_other
 
