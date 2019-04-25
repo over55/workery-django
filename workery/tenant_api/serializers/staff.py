@@ -16,7 +16,6 @@ from rest_framework.response import Response
 from rest_framework.validators import UniqueValidator
 
 from shared_foundation.custom.drf.fields import PhoneNumberField
-from shared_foundation.custom.drf.validation import RestrictCSVCharactersFieldValidator
 from shared_foundation.constants import ASSOCIATE_GROUP_ID, FRONTLINE_GROUP_ID
 from shared_foundation.custom.drf.validation import MatchingDuelFieldsValidator, EnhancedPasswordStrengthFieldValidator
 from shared_foundation.utils import (
@@ -39,44 +38,44 @@ class StaffListCreateSerializer(serializers.ModelSerializer):
     given_name = serializers.CharField(
         required=True,
         allow_blank=False,
-        validators=[RestrictCSVCharactersFieldValidator(),]
+        validators=[]
     )
     last_name = serializers.CharField(
         required=True,
         allow_blank=False,
-        validators=[RestrictCSVCharactersFieldValidator(),]
+        validators=[]
     )
     address_country = serializers.CharField(
         required=True,
         allow_blank=False,
-        validators=[RestrictCSVCharactersFieldValidator(),]
+        validators=[]
     )
     address_region = serializers.CharField(
         required=True,
         allow_blank=False,
-        validators=[RestrictCSVCharactersFieldValidator(),]
+        validators=[]
     )
     address_locality = serializers.CharField(
         required=True,
         allow_blank=False,
-        validators=[RestrictCSVCharactersFieldValidator(),]
+        validators=[]
     )
     postal_code = serializers.CharField(
         required=True,
         allow_blank=False,
-        validators=[RestrictCSVCharactersFieldValidator(),]
+        validators=[]
     )
     street_address = serializers.CharField(
         required=True,
         allow_blank=False,
-        validators=[RestrictCSVCharactersFieldValidator(),]
+        validators=[]
     )
 
     # We are overriding the `email` field to include unique email validation.
     email = serializers.EmailField(
         validators=[
             UniqueValidator(queryset=SharedUser.objects.all()),
-            RestrictCSVCharactersFieldValidator(),
+
         ],
         required=True,
     )
@@ -405,51 +404,51 @@ class StaffRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
     given_name = serializers.CharField(
         required=True,
         allow_blank=False,
-        validators=[RestrictCSVCharactersFieldValidator(),]
+        validators=[]
     )
     last_name = serializers.CharField(
         required=True,
         allow_blank=False,
-        validators=[RestrictCSVCharactersFieldValidator(),]
+        validators=[]
     )
     address_country = serializers.CharField(
         required=True,
         allow_blank=False,
-        validators=[RestrictCSVCharactersFieldValidator(),]
+        validators=[]
     )
     address_region = serializers.CharField(
         required=True,
         allow_blank=False,
-        validators=[RestrictCSVCharactersFieldValidator(),]
+        validators=[]
     )
     address_locality = serializers.CharField(
         required=True,
         allow_blank=False,
-        validators=[RestrictCSVCharactersFieldValidator(),]
+        validators=[]
     )
     postal_code = serializers.CharField(
         required=True,
         allow_blank=False,
-        validators=[RestrictCSVCharactersFieldValidator(),]
+        validators=[]
     )
     street_address = serializers.CharField(
         required=True,
         allow_blank=False,
-        validators=[RestrictCSVCharactersFieldValidator(),]
+        validators=[]
     )
 
     # We are overriding the `email` field to include unique email validation.
     email = serializers.EmailField(
         validators=[
             UniqueValidator(queryset=Staff.objects.all()),
-            RestrictCSVCharactersFieldValidator(),
+
         ],
         required=False
     )
     personal_email = serializers.EmailField(
         validators=[
             UniqueValidator(queryset=Staff.objects.all()),
-            RestrictCSVCharactersFieldValidator(),
+            
         ],
         required=False
     )

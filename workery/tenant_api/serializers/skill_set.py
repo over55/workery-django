@@ -11,7 +11,6 @@ from django.utils.http import urlquote
 from rest_framework import exceptions, serializers
 from rest_framework.response import Response
 
-from shared_foundation.custom.drf.validation import RestrictCSVCharactersFieldValidator
 from tenant_foundation.models import InsuranceRequirement, SkillSet
 
 
@@ -20,17 +19,17 @@ class SkillSetListCreateSerializer(serializers.ModelSerializer):
     category = serializers.CharField(
         required=True,
         allow_blank=False,
-        validators=[RestrictCSVCharactersFieldValidator(),]
+        validators=[]
     )
     sub_category = serializers.CharField(
         required=True,
         allow_blank=False,
-        validators=[RestrictCSVCharactersFieldValidator(),]
+        validators=[]
     )
     description = serializers.CharField(
         required=True,
         allow_blank=False,
-        validators=[RestrictCSVCharactersFieldValidator(),]
+        validators=[]
     )
     insurance_requirements = serializers.PrimaryKeyRelatedField(
         many=True,
@@ -63,17 +62,17 @@ class SkillSetRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
     category = serializers.CharField(
         required=True,
         allow_blank=False,
-        validators=[RestrictCSVCharactersFieldValidator(),]
+        validators=[]
     )
     sub_category = serializers.CharField(
         required=True,
         allow_blank=False,
-        validators=[RestrictCSVCharactersFieldValidator(),]
+        validators=[]
     )
     description = serializers.CharField(
         required=True,
         allow_blank=False,
-        validators=[RestrictCSVCharactersFieldValidator(),]
+        validators=[]
     )
     insurance_requirements = serializers.PrimaryKeyRelatedField(
         many=True,

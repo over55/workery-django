@@ -16,7 +16,6 @@ from rest_framework.response import Response
 from rest_framework.validators import UniqueValidator
 
 from shared_foundation.custom.drf.fields import PhoneNumberField
-from shared_foundation.custom.drf.validation import RestrictCSVCharactersFieldValidator
 from shared_foundation.constants import CUSTOMER_GROUP_ID
 from shared_foundation.models import SharedUser
 from shared_foundation.custom.drf.validation import MatchingDuelFieldsValidator, EnhancedPasswordStrengthFieldValidator
@@ -39,44 +38,44 @@ class CustomerListCreateSerializer(serializers.ModelSerializer):
     given_name = serializers.CharField(
         required=True,
         allow_blank=False,
-        validators=[RestrictCSVCharactersFieldValidator(),]
+        validators=[]
     )
     last_name = serializers.CharField(
         required=True,
         allow_blank=False,
-        validators=[RestrictCSVCharactersFieldValidator(),]
+        validators=[]
     )
     address_country = serializers.CharField(
         required=True,
         allow_blank=False,
-        validators=[RestrictCSVCharactersFieldValidator(),]
+        validators=[]
     )
     address_region = serializers.CharField(
         required=True,
         allow_blank=False,
-        validators=[RestrictCSVCharactersFieldValidator(),]
+        validators=[]
     )
     address_locality = serializers.CharField(
         required=True,
         allow_blank=False,
-        validators=[RestrictCSVCharactersFieldValidator(),]
+        validators=[]
     )
     postal_code = serializers.CharField(
         required=True,
         allow_blank=False,
-        validators=[RestrictCSVCharactersFieldValidator(),]
+        validators=[]
     )
     street_address = serializers.CharField(
         required=True,
         allow_blank=False,
-        validators=[RestrictCSVCharactersFieldValidator(),]
+        validators=[]
     )
 
     # We are overriding the `email` field to include unique email validation.
     email = serializers.EmailField(
         validators=[
             UniqueValidator(queryset=SharedUser.objects.all()),
-            RestrictCSVCharactersFieldValidator(),
+
         ],
         required=False,
     )
@@ -129,7 +128,7 @@ class CustomerListCreateSerializer(serializers.ModelSerializer):
         allow_null=False,
         max_length=63,
         validators=[
-            RestrictCSVCharactersFieldValidator(),
+
         #     UniqueValidator(
         #         queryset=Organization.objects.all(),
         #     )
@@ -140,56 +139,56 @@ class CustomerListCreateSerializer(serializers.ModelSerializer):
         required=True,
         allow_blank=True,
         max_length=63,
-        validators=[RestrictCSVCharactersFieldValidator(),]
+        validators=[]
     )
     organization_address_country = serializers.CharField(
         write_only=True,
         required=False,
         allow_blank=True,
         max_length=127,
-        validators=[RestrictCSVCharactersFieldValidator(),]
+        validators=[]
     )
     organization_address_locality = serializers.CharField(
         write_only=True,
         required=False,
         allow_blank=True,
         max_length=127,
-        validators=[RestrictCSVCharactersFieldValidator(),]
+        validators=[]
     )
     organization_address_region = serializers.CharField(
         write_only=True,
         required=False,
         allow_blank=True,
         max_length=127,
-        validators=[RestrictCSVCharactersFieldValidator(),]
+        validators=[]
     )
     organization_post_office_box_number = serializers.CharField(
         write_only=True,
         required=False,
         allow_blank=True,
         max_length=255,
-        validators=[RestrictCSVCharactersFieldValidator(),]
+        validators=[]
     )
     organization_postal_code = serializers.CharField(
         write_only=True,
         required=False,
         allow_blank=True,
         max_length=127,
-        validators=[RestrictCSVCharactersFieldValidator(),]
+        validators=[]
     )
     organization_street_address = serializers.CharField(
         write_only=True,
         required=False,
         allow_blank=True,
         max_length=255,
-        validators=[RestrictCSVCharactersFieldValidator(),]
+        validators=[]
     )
     organization_street_address_extra = serializers.CharField(
         write_only=True,
         required=False,
         allow_blank=True,
         max_length=255,
-        validators=[RestrictCSVCharactersFieldValidator(),]
+        validators=[]
     )
 
     # Meta Information.
@@ -491,44 +490,44 @@ class CustomerRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
     given_name = serializers.CharField(
         required=True,
         allow_blank=False,
-        validators=[RestrictCSVCharactersFieldValidator(),]
+        validators=[]
     )
     last_name = serializers.CharField(
         required=True,
         allow_blank=False,
-        validators=[RestrictCSVCharactersFieldValidator(),]
+        validators=[]
     )
     address_country = serializers.CharField(
         required=True,
         allow_blank=False,
-        validators=[RestrictCSVCharactersFieldValidator(),]
+        validators=[]
     )
     address_region = serializers.CharField(
         required=True,
         allow_blank=False,
-        validators=[RestrictCSVCharactersFieldValidator(),]
+        validators=[]
     )
     address_locality = serializers.CharField(
         required=True,
         allow_blank=False,
-        validators=[RestrictCSVCharactersFieldValidator(),]
+        validators=[]
     )
     postal_code = serializers.CharField(
         required=True,
         allow_blank=False,
-        validators=[RestrictCSVCharactersFieldValidator(),]
+        validators=[]
     )
     street_address = serializers.CharField(
         required=True,
         allow_blank=False,
-        validators=[RestrictCSVCharactersFieldValidator(),]
+        validators=[]
     )
 
     # We are overriding the `email` field to include unique email validation.
     email = serializers.EmailField(
         validators=[
             UniqueValidator(queryset=Customer.objects.all()),
-            RestrictCSVCharactersFieldValidator(),
+
         ],
         required=False
     )
@@ -581,7 +580,7 @@ class CustomerRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         allow_null=False,
         max_length=63,
         validators=[
-            RestrictCSVCharactersFieldValidator(),
+
         #     UniqueValidator(
         #         queryset=Organization.objects.all(),
         #     )
@@ -592,56 +591,56 @@ class CustomerRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         required=True,
         allow_blank=True,
         max_length=63,
-        validators=[RestrictCSVCharactersFieldValidator(),]
+        validators=[]
     )
     organization_address_country = serializers.CharField(
         write_only=True,
         required=False,
         allow_blank=True,
         max_length=127,
-        validators=[RestrictCSVCharactersFieldValidator(),]
+        validators=[]
     )
     organization_address_locality = serializers.CharField(
         write_only=True,
         required=False,
         allow_blank=True,
         max_length=127,
-        validators=[RestrictCSVCharactersFieldValidator(),]
+        validators=[]
     )
     organization_address_region = serializers.CharField(
         write_only=True,
         required=False,
         allow_blank=True,
         max_length=127,
-        validators=[RestrictCSVCharactersFieldValidator(),]
+        validators=[]
     )
     organization_post_office_box_number = serializers.CharField(
         write_only=True,
         required=False,
         allow_blank=True,
         max_length=255,
-        validators=[RestrictCSVCharactersFieldValidator(),]
+        validators=[]
     )
     organization_postal_code = serializers.CharField(
         write_only=True,
         required=False,
         allow_blank=True,
         max_length=127,
-        validators=[RestrictCSVCharactersFieldValidator(),]
+        validators=[]
     )
     organization_street_address = serializers.CharField(
         write_only=True,
         required=False,
         allow_blank=True,
         max_length=255,
-        validators=[RestrictCSVCharactersFieldValidator(),]
+        validators=[]
     )
     organization_street_address_extra = serializers.CharField(
         write_only=True,
         required=False,
         allow_blank=True,
         max_length=255,
-        validators=[RestrictCSVCharactersFieldValidator(),]
+        validators=[]
     )
 
     class Meta:

@@ -16,7 +16,6 @@ from rest_framework.response import Response
 from rest_framework.validators import UniqueValidator
 
 from shared_foundation.custom.drf.fields import PhoneNumberField
-from shared_foundation.custom.drf.validation import RestrictCSVCharactersFieldValidator
 from shared_foundation.constants import *
 from shared_foundation.custom.drf.validation import MatchingDuelFieldsValidator, EnhancedPasswordStrengthFieldValidator
 from shared_foundation.models import SharedUser
@@ -41,37 +40,37 @@ class AssociateListCreateSerializer(serializers.ModelSerializer):
     given_name = serializers.CharField(
         required=True,
         allow_blank=False,
-        validators=[RestrictCSVCharactersFieldValidator(),]
+        validators=[]
     )
     last_name = serializers.CharField(
         required=True,
         allow_blank=False,
-        validators=[RestrictCSVCharactersFieldValidator(),]
+        validators=[]
     )
     address_country = serializers.CharField(
         required=True,
         allow_blank=False,
-        validators=[RestrictCSVCharactersFieldValidator(),]
+        validators=[]
     )
     address_region = serializers.CharField(
         required=True,
         allow_blank=False,
-        validators=[RestrictCSVCharactersFieldValidator(),]
+        validators=[]
     )
     address_locality = serializers.CharField(
         required=True,
         allow_blank=False,
-        validators=[RestrictCSVCharactersFieldValidator(),]
+        validators=[]
     )
     postal_code = serializers.CharField(
         required=True,
         allow_blank=False,
-        validators=[RestrictCSVCharactersFieldValidator(),]
+        validators=[]
     )
     street_address = serializers.CharField(
         required=True,
         allow_blank=False,
-        validators=[RestrictCSVCharactersFieldValidator(),]
+        validators=[]
     )
     join_date = serializers.DateField(
         required=True,
@@ -458,44 +457,43 @@ class AssociateRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
     given_name = serializers.CharField(
         required=True,
         allow_blank=False,
-        validators=[RestrictCSVCharactersFieldValidator(),]
+        validators=[]
     )
     last_name = serializers.CharField(
         required=True,
         allow_blank=False,
-        validators=[RestrictCSVCharactersFieldValidator(),]
+        validators=[]
     )
     address_country = serializers.CharField(
         required=True,
         allow_blank=False,
-        validators=[RestrictCSVCharactersFieldValidator(),]
+        validators=[]
     )
     address_region = serializers.CharField(
         required=True,
         allow_blank=False,
-        validators=[RestrictCSVCharactersFieldValidator(),]
+        validators=[]
     )
     address_locality = serializers.CharField(
         required=True,
         allow_blank=False,
-        validators=[RestrictCSVCharactersFieldValidator(),]
+        validators=[]
     )
     postal_code = serializers.CharField(
         required=True,
         allow_blank=False,
-        validators=[RestrictCSVCharactersFieldValidator(),]
+        validators=[]
     )
     street_address = serializers.CharField(
         required=True,
         allow_blank=False,
-        validators=[RestrictCSVCharactersFieldValidator(),]
+        validators=[]
     )
 
     # We are overriding the `email` field to include unique email validation.
     email = serializers.EmailField(
         validators=[
             UniqueValidator(queryset=Associate.objects.all()),
-            RestrictCSVCharactersFieldValidator()
         ],
         required=True,
         allow_blank=False,
