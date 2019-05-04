@@ -25,7 +25,8 @@ from tenant_foundation.models import (
     Partner,
     Comment,
     SkillSet,
-    Organization
+    Organization,
+    HowHearAboutUsItem
 )
 
 
@@ -96,6 +97,14 @@ class PartnerListCreateSerializer(serializers.ModelSerializer):
     fax_number = PhoneNumberField(allow_null=True, required=False)
     telephone = PhoneNumberField(allow_null=True, required=False)
     other_telephone = PhoneNumberField(allow_null=True, required=False)
+
+    # Attach with our foreign keys.
+    how_hear = serializers.PrimaryKeyRelatedField(
+        many=False,
+        required=True,
+        allow_null=False,
+        queryset=HowHearAboutUsItem.objects.all()
+    )
 
     # Add password adding.
     password = serializers.CharField(
@@ -383,6 +392,7 @@ class PartnerListCreateSerializer(serializers.ModelSerializer):
             birthdate=validated_data.get('birthdate', None),
             join_date=validated_data.get('join_date', None),
             gender=validated_data.get('gender', None),
+            how_hear=validated_data.get('how_hear', None),
 
             # Misc
             is_ok_to_email=validated_data.get('is_ok_to_email', None),
@@ -525,6 +535,14 @@ class PartnerRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         required=True,
     )
 
+    # Attach with our foreign keys.
+    how_hear = serializers.PrimaryKeyRelatedField(
+        many=False,
+        required=True,
+        allow_null=False,
+        queryset=HowHearAboutUsItem.objects.all()
+    )
+
     class Meta:
         model = Partner
         fields = (
@@ -550,6 +568,7 @@ class PartnerRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
             # 'is_support',
             # 'job_info_read',
             'gender',
+            'how_hear',
 
             # Misc (Read Only)
             # 'comments',

@@ -150,6 +150,8 @@
                 'description': localStorage.getItem("tmp_team_member_description"),
                 'extra_comment': localStorage.getItem("tmp_team_member_comment"),
                 'is_active': localStorage.getItem("tmp_team_member_is_active"),
+                'how_hear': localStorage.getItem("tmp_cteam_member_how_hear"),
+                'how_hear_other': localStorage.getItem("tmp_team_member_how_hear_other"),
 
                 // --- Emergency contact
                 'emergency_contact_name': localStorage.getItem("tmp_emergency_contact_name"),
@@ -189,6 +191,8 @@
                 localStorage.removeItem("tmp_emergency_contact_relationship")
                 localStorage.removeItem("tmp_emergency_contact_telephone")
                 localStorage.removeItem("tmp_emergency_contact_alternative_telephone")
+                localStorage.removeItem("tmp_cteam_member_how_hear")
+                localStorage.removeItem("tmp_team_member_how_hear_other")
 
                 /////////////////////////////////////
                 // Get our pending task unique ID. //

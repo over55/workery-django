@@ -90,8 +90,8 @@ class CustomerRetrieveForCommentListAndCreateView(LoginRequiredMixin, GroupRequi
 
         # Return our modified context.
         return modified_context
-    
-    
+
+
 class CustomerRetrieveForFilesListView(LoginRequiredMixin, GroupRequiredMixin, WorkeryDetailView):
     context_object_name = 'customer'
     model = Customer
@@ -115,7 +115,7 @@ class CustomerRetrieveForFilesListView(LoginRequiredMixin, GroupRequiredMixin, W
         modified_context['template'] = template
 
         # Return our modified context.
-        return modified_context    
+        return modified_context
 
 
 class CustomerRetrieveForJobsListView(LoginRequiredMixin, GroupRequiredMixin, WorkeryDetailView):

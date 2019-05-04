@@ -14,7 +14,8 @@ from tenant_api.filters.staff import StaffFilter
 from tenant_foundation.models import (
     Staff,
     SkillSet,
-    Tag
+    Tag,
+    HowHearAboutUsItem
 )
 
 
@@ -31,6 +32,7 @@ class TeamCreateView(LoginRequiredMixin, GroupRequiredMixin, WorkeryTemplateView
         context = super().get_context_data(**kwargs)
         context['tags'] = Tag.objects.all()
         context['skill_sets'] = SkillSet.objects.all()
+        context['how_hear_set'] = HowHearAboutUsItem.objects.filter(is_for_staff=True).order_by('sort_number')
         return context
 
 

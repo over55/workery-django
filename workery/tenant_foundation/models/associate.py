@@ -187,13 +187,13 @@ class Associate(AbstractPerson):
         blank=True,
         null=True,
     )
-    how_hear = models.PositiveSmallIntegerField(
-        _("How hear"),
+    how_hear_old = models.PositiveSmallIntegerField(
+        _("Learned about us (old)"),
         help_text=_('How associate heared about this us from a select range of choices.'),
         blank=True,
         default=8 # Prefer not to say.
     )
-    how_hear_about_us = models.ForeignKey(
+    how_hear = models.ForeignKey(
         "HowHearAboutUsItem",
         help_text=_('How associate heared about this us from a select range of choices.'),
         on_delete=models.SET_NULL,

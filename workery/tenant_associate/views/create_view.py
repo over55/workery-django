@@ -16,7 +16,8 @@ from tenant_foundation.models import (
     InsuranceRequirement,
     SkillSet,
     Tag,
-    VehicleType
+    VehicleType,
+    HowHearAboutUsItem
 )
 
 
@@ -35,6 +36,7 @@ class MemberCreateView(LoginRequiredMixin, GroupRequiredMixin, WorkeryTemplateVi
         modified_context['tags'] = Tag.objects.all()
         modified_context['skill_sets'] = SkillSet.objects.all().order_by('sub_category')
         modified_context['vehicle_types'] = VehicleType.objects.all()
+        modified_context['how_hear_set'] = HowHearAboutUsItem.objects.filter(is_for_associate=True).order_by('sort_number')
         return modified_context
 
 

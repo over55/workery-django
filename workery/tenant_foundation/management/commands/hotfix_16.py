@@ -49,41 +49,41 @@ class Command(BaseCommand):
 
     def process_customer(self, customer):
         # Map our new change.
-        if customer.how_hear == 1:
-            customer.how_hear_about_us = HowHearAboutUsItem.objects.get(id=1)
+        if customer.how_hear_old == 1:
+            customer.how_hear = HowHearAboutUsItem.objects.get(id=1)
 
-        if customer.how_hear == 2:
-            customer.how_hear_about_us = HowHearAboutUsItem.objects.get(id=9)
+        if customer.how_hear_old == 2:
+            customer.how_hear = HowHearAboutUsItem.objects.get(id=9)
 
-        if customer.how_hear == 3:
-            customer.how_hear_about_us = HowHearAboutUsItem.objects.get(id=5)
+        if customer.how_hear_old == 3:
+            customer.how_hear = HowHearAboutUsItem.objects.get(id=5)
 
-        if customer.how_hear == 5:
-            customer.how_hear_about_us = HowHearAboutUsItem.objects.get(id=10)
+        if customer.how_hear_old == 5:
+            customer.how_hear = HowHearAboutUsItem.objects.get(id=10)
 
-        if customer.how_hear == 6:
-            customer.how_hear_about_us = HowHearAboutUsItem.objects.get(id=11)
+        if customer.how_hear_old == 6:
+            customer.how_hear = HowHearAboutUsItem.objects.get(id=11)
 
-        if customer.how_hear == 7:
-            customer.how_hear_about_us = HowHearAboutUsItem.objects.get(id=12)
+        if customer.how_hear_old == 7:
+            customer.how_hear = HowHearAboutUsItem.objects.get(id=12)
 
-        if customer.how_hear == 8:
-            customer.how_hear_about_us = HowHearAboutUsItem.objects.get(id=13)
+        if customer.how_hear_old == 8:
+            customer.how_hear = HowHearAboutUsItem.objects.get(id=13)
 
-        if customer.how_hear == 11:
-            customer.how_hear_about_us = HowHearAboutUsItem.objects.get(id=14)
+        if customer.how_hear_old == 11:
+            customer.how_hear = HowHearAboutUsItem.objects.get(id=14)
 
-        if customer.how_hear == 12:
-            customer.how_hear_about_us = HowHearAboutUsItem.objects.get(id=15)
+        if customer.how_hear_old == 12:
+            customer.how_hear = HowHearAboutUsItem.objects.get(id=15)
 
-        if customer.how_hear == 13:
-            customer.how_hear_about_us = HowHearAboutUsItem.objects.get(id=16)
+        if customer.how_hear_old == 13:
+            customer.how_hear = HowHearAboutUsItem.objects.get(id=16)
 
-        if customer.how_hear == 14:
-            customer.how_hear_about_us = HowHearAboutUsItem.objects.get(id=17)
+        if customer.how_hear_old == 14:
+            customer.how_hear = HowHearAboutUsItem.objects.get(id=17)
 
-        if customer.how_hear == 15:
-            customer.how_hear_about_us = HowHearAboutUsItem.objects.get(id=18)
+        if customer.how_hear_old == 15:
+            customer.how_hear = HowHearAboutUsItem.objects.get(id=18)
 
         # Save our change.
         customer.save()
@@ -97,29 +97,29 @@ class Command(BaseCommand):
 
     def process_associate(self, associate):
         # Map our new change.
-        if associate.how_hear == 1:
-            associate.how_hear_about_us = HowHearAboutUsItem.objects.get(id=1)
+        if associate.how_hear_old == 1:
+            associate.how_hear = HowHearAboutUsItem.objects.get(id=1)
 
-        if associate.how_hear == 2:
-            associate.how_hear_about_us = HowHearAboutUsItem.objects.get(id=2)
+        if associate.how_hear_old == 2:
+            associate.how_hear = HowHearAboutUsItem.objects.get(id=2)
 
-        if associate.how_hear == 3:
-            associate.how_hear_about_us = HowHearAboutUsItem.objects.get(id=3)
+        if associate.how_hear_old == 3:
+            associate.how_hear = HowHearAboutUsItem.objects.get(id=3)
 
-        if associate.how_hear == 4:
-            associate.how_hear_about_us = HowHearAboutUsItem.objects.get(id=4)
+        if associate.how_hear_old == 4:
+            associate.how_hear = HowHearAboutUsItem.objects.get(id=4)
 
-        if associate.how_hear == 5:
-            associate.how_hear_about_us = HowHearAboutUsItem.objects.get(id=5)
+        if associate.how_hear_old == 5:
+            associate.how_hear = HowHearAboutUsItem.objects.get(id=5)
 
-        if associate.how_hear == 6:
-            associate.how_hear_about_us = HowHearAboutUsItem.objects.get(id=6)
+        if associate.how_hear_old == 6:
+            associate.how_hear = HowHearAboutUsItem.objects.get(id=6)
 
-        if associate.how_hear == 7:
-            associate.how_hear_about_us = HowHearAboutUsItem.objects.get(id=7)
+        if associate.how_hear_old == 7:
+            associate.how_hear = HowHearAboutUsItem.objects.get(id=7)
 
-        if associate.how_hear == 8:
-            associate.how_hear_about_us = HowHearAboutUsItem.objects.get(id=8)
+        if associate.how_hear_old == 8:
+            associate.how_hear = HowHearAboutUsItem.objects.get(id=8)
 
         # Save our change.
         associate.save()

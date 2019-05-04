@@ -507,10 +507,10 @@
             var emergency_contact_telephone = $('#emergency_contact_telephone').val();
             var emergency_contact_alternative_telephone = $('#emergency_contact_alternative_telephone').val();
 
-            if (how_hear == "") {
-                how_hear = 8;
-                how_hear_other = null;
-            }
+            // if (how_hear == "") {
+            //     how_hear = 8;
+            //     how_hear_other = null;
+            // }
 
             var join_date = $('#join_date').val();
             if (join_date !== undefined && join_date != null && join_date.length > 0) {
@@ -1003,7 +1003,7 @@
                 </div>
                 <div class="form-group col-md-7 mb-4">
                     <label for="how_hear">How did they hear about us?</label>
-                    <select class="custom-select form-control-lg border-success" id="how_hear" name="how_hear" required>
+                    <select class="custom-select form-control-lg border-primary" id="how_hear" name="how_hear" required>
                         <option value="" selected>Please select...</option>
                         <option value="2">An existing member</option>
                         <option value="3">Print Ad</option>

@@ -26,7 +26,8 @@ from shared_foundation.models import SharedUser
 from tenant_foundation.models import (
     Comment,
     StaffComment,
-    Staff
+    Staff,
+    HowHearAboutUsItem
 )
 
 
@@ -139,6 +140,14 @@ class StaffListCreateSerializer(serializers.ModelSerializer):
         }
     )
 
+    # Attach with our foreign keys.
+    how_hear = serializers.PrimaryKeyRelatedField(
+        many=False,
+        required=True,
+        allow_null=False,
+        queryset=HowHearAboutUsItem.objects.all()
+    )
+
     # Meta Information.
     class Meta:
         model = Staff
@@ -161,6 +170,7 @@ class StaffListCreateSerializer(serializers.ModelSerializer):
             # Misc (Read/Write)
             'tags',
             'is_active',
+            'how_hear',
 
             # # Misc (Read Only)
             # 'comments',
@@ -500,6 +510,13 @@ class StaffRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         required=True
     )
 
+    # # Attach with our foreign keys.
+    # how_hear = serializers.PrimaryKeyRelatedField(
+    #     many=False,
+    #     required=True,
+    #     allow_null=False,
+    #     queryset=HowHearAboutUsItem.objects.all()
+    # )
 
     # All comments are created by our `create` function and not by
     # # `django-rest-framework`.
@@ -704,7 +721,7 @@ class StaffRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         instance.commercial_insurance_expiry_date=validated_data.get('commercial_insurance_expiry_date', None)
         instance.police_check=validated_data.get('police_check', None)
         instance.drivers_license_class=validated_data.get('drivers_license_class', None)
-        instance.how_hear=validated_data.get('how_hear', None)
+        # instance.how_hear=validated_data.get('how_hear', None)
         instance.last_modified_by = self.context['last_modified_by']
         instance.last_modified_from = self.context['last_modified_from']
         instance.last_modified_from_is_public = self.context['last_modified_from_is_public']

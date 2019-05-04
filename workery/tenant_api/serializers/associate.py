@@ -28,7 +28,8 @@ from tenant_foundation.models import (
     InsuranceRequirement,
     SkillSet,
     Organization,
-    VehicleType
+    VehicleType,
+    HowHearAboutUsItem
 )
 
 
@@ -139,6 +140,14 @@ class AssociateListCreateSerializer(serializers.ModelSerializer):
         error_messages={
             "invalid": "Please pick either 'Yes' or 'No' choice."
         }
+    )
+
+    # Attach with our foreign keys.
+    how_hear = serializers.PrimaryKeyRelatedField(
+        many=False,
+        required=True,
+        allow_null=False,
+        queryset=HowHearAboutUsItem.objects.all()
     )
 
 
@@ -542,6 +551,14 @@ class AssociateRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         required=True,
     )
 
+    # # Attach with our foreign keys.
+    # how_hear = serializers.PrimaryKeyRelatedField(
+    #     many=False,
+    #     required=True,
+    #     allow_null=False,
+    #     queryset=HowHearAboutUsItem.objects.all()
+    # )
+
     class Meta:
         model = Associate
         fields = (
@@ -575,8 +592,8 @@ class AssociateRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
             'police_check',
             'drivers_license_class',
             'vehicle_types',         # many-to-many
-            'how_hear',
-            'how_hear_other',
+            # 'how_hear',
+            # 'how_hear_other',
             'skill_sets',            # many-to-many
             'tags',                  # many-to-many
             'insurance_requirements', # many-to-many
@@ -733,8 +750,8 @@ class AssociateRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         instance.wsib_number = validated_data.get('wsib_number', instance.wsib_number)
         instance.police_check=validated_data.get('police_check', instance.police_check)
         instance.drivers_license_class=validated_data.get('drivers_license_class', instance.drivers_license_class)
-        instance.how_hear=validated_data.get('how_hear', instance.how_hear)
-        instance.how_hear_other=validated_data.get('how_hear_other', instance.how_hear_other)
+        # instance.how_hear=validated_data.get('how_hear', instance.how_hear)
+        # instance.how_hear_other=validated_data.get('how_hear_other', instance.how_hear_other)
         instance.last_modified_from = self.context['last_modified_from']
         instance.last_modified_from_is_public = self.context['last_modified_from_is_public']
         instance.last_modified_by = self.context['last_modified_by']

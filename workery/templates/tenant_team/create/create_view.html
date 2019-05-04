@@ -51,10 +51,10 @@
             // Initialize our datepicker jQuery code with our HTML view.
             $( "#birthdate" ).datepicker({
                 dateFormat: 'yy-mm-dd',
-	    	changeMonth: true,
+	    	    changeMonth: true,
             	changeYear: true,
-		yearRange: "c-90:c+150",
-	        maxDate: 'today'
+		        yearRange: "c-90:c+150",
+	            maxDate: 'today'
             });
 
             // Populate our 'select2' chosen values.
@@ -63,6 +63,16 @@
 
             // Initialize our 'select2' element.
             $('#tags').select2();
+
+            // PLUG IN EVENT LISTENER ON REASON DROPDOWN CHANGE.
+            $('#how_hear').on('change',function(){
+                if( $(this).val()==="1" || $(this).val()===1){
+                    $("#how_hear_other_div").show();
+                }
+                else{
+                    $("#how_hear_other_div").hide();
+                }
+            });
 
             // Populate previously set values.
             $('#given_name').val(localStorage.getItem("tmp_team_member_given_name"));
@@ -90,6 +100,14 @@
             $('#emergency_contact_relationship').val(localStorage.getItem("tmp_emergency_contact_relationship"));
             $('#emergency_contact_telephone').val(localStorage.getItem("tmp_emergency_contact_telephone"));
             $('#emergency_contact_alternative_telephone').val(localStorage.getItem("tmp_emergency_contact_alternative_telephone"));
+
+            $('#how_hear').val(localStorage.getItem("tmp_cteam_member_how_hear"));
+            $('#how_hear_other').val(localStorage.getItem("tmp_team_member_how_hear_other"));
+
+            if ( $('#how_hear').val() == 1 ) {
+                $("#how_hear_other_div").show();
+            }
+
 
             // Radio buttons.
             $("input[name=is_active][value=" + localStorage.getItem("tmp_team_member_is_active") + "]").prop('checked', true);
@@ -335,6 +353,8 @@
             var emergency_contact_relationship = $('#emergency_contact_relationship').val();
             var emergency_contact_telephone = $('#emergency_contact_telephone').val();
             var emergency_contact_alternative_telephone = $('#emergency_contact_alternative_telephone').val();
+            var how_hear = $('#how_hear').val();
+            var how_hear_other = $('#how_hear_other').val();
 
             //----------------------------------------------------------------//
             //             SAVE THE EXTRACTED DATA INTO LOCAL STORAGE         //
@@ -366,6 +386,9 @@
             localStorage.setItem("tmp_emergency_contact_relationship", emergency_contact_relationship);
             localStorage.setItem("tmp_emergency_contact_telephone", emergency_contact_telephone);
             localStorage.setItem("tmp_emergency_contact_alternative_telephone", emergency_contact_alternative_telephone);
+
+            localStorage.setItem("tmp_cteam_member_how_hear", how_hear);
+            localStorage.setItem("tmp_team_member_how_hear_other", how_hear_other);
 
             // SAVE ARRAY OF IDS.
             localStorage.setObj("tmp_team_member_person_tag_ids", person_tags);
@@ -432,6 +455,9 @@
                     'account_type': parseInt(localStorage.getItem("tmp_team_member_account_type")),
                     'description': localStorage.getItem("tmp_team_member_description"),
                     'extra_comment': localStorage.getItem("tmp_team_member_comment"),
+
+                    'how_hear': localStorage.getItem("tmp_cteam_member_how_hear"),
+                    'how_hear_other': localStorage.getItem("tmp_team_member_how_hear_other"),
                 },
                 function(result_dict) { // Success
                     // FOR DEBUGGING PURPOSES ONLY.
@@ -555,6 +581,18 @@
                     </select>
                     <div id="tags-error" class="invalid-feedback"></div>
                 </div>
+                <!-- HOW HEAR -->
+                    <div class="form-group col-md-12 mb-4">
+                        <label for="how_hear">How did you hear about us? <sup>*</sup></label>
+                        <select class="form-control form-control-lg border border-primary" id="how_hear" name="how_hear" required="">
+                            <option value="0" selected="selected">Please select an option...</option>
+                            {% for how_hear in how_hear_set %}
+                                <option value="{{ how_hear.id }}">{{ how_hear.text }}</option>
+                            {% endfor %}
+                        </select>
+                        <div id="how_hear-error" class="invalid-feedback"></div>
+                    </div>
+                    <!-- end HOW HEAR -->
             </div>
             <!-- ############ end PERSON ############ -->
             <!-- ############ CONTACT POINT ############ -->

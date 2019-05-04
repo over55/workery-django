@@ -117,14 +117,13 @@ class Partner(AbstractPerson):
         default=True,
         blank=True
     )
-    how_hear = models.CharField(
-        _("How hear"),
-        max_length=2055,
+    how_hear_old = models.PositiveSmallIntegerField(
+        _("Learned about us (old)"),
         help_text=_('How partner heared about this business.'),
         blank=True,
         null=True,
     )
-    how_hear_about_us = models.ForeignKey(
+    how_hear = models.ForeignKey(
         "HowHearAboutUsItem",
         help_text=_('How partner heared about this business.'),
         on_delete=models.SET_NULL,

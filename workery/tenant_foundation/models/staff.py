@@ -110,14 +110,13 @@ class Staff(AbstractPerson):
     #  CUSTOM FIELDS
     #
 
-    how_hear = models.CharField(
-        _("How hear"),
-        max_length=2055,
+    how_hear_old = models.PositiveSmallIntegerField(
+        _("Learned about us (old)"),
         help_text=_('How this staff member heared about this organization.'),
         blank=True,
         null=True,
     )
-    how_hear_about_us = models.ForeignKey(
+    how_hear = models.ForeignKey(
         "HowHearAboutUsItem",
         help_text=_('How this staff member heared about this organization.'),
         on_delete=models.SET_NULL,

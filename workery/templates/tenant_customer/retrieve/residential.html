@@ -110,7 +110,9 @@
                 <tr>
                     <th scope="row" class="bg-light">How did they discover us?</th>
                     <td id="street_address">
-                        {{ customer.get_pretty_how_hear }}
+                        {% if customer.how_hear %}
+                            {{ customer.how_hear.text }}
+                        {% endif %}
                     </td>
                 </tr>
                 <!-- ############ end INTERNAL METRICS ############ -->

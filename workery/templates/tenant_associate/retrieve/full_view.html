@@ -322,25 +322,9 @@
 		        <tr>
                     <th scope="row" class="bg-light">How did this associate hear about us?</th>
                     <td>
-                        {% if associate.how_hear == 1 %}
-                                {{ associate.how_hear_other }}
-                            {% elif associate.how_hear == 2 %}
-                                An existing member
-                            {% elif associate.how_hear == 3 %}
-                                Print Ad
-                            {% elif associate.how_hear == 4 %}
-                                Online Ad
-                            {% elif associate.how_hear == 5 %}
-                                Google
-                            {% elif associate.how_hear == 6 %}
-                                Tradeshow/Event
-                            {% elif associate.how_hear == 7 %}
-                                Agency
-                            {% elif associate.how_hear == 8 %}
-                                Prefer not to say / I don't know
-                            {% else %}
-                                -
-                            {% endif %}
+                        {% if associate.how_hear  %}
+                            {{ associate.how_hear.text }}
+                        {% endif %}
                     </td>
                 </tr>
                 <tr>

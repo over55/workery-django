@@ -190,13 +190,13 @@ class Customer(AbstractPerson):
         blank=True,
         null=True,
     )
-    how_hear = models.PositiveSmallIntegerField(
-        _("Learned about us"),
+    how_hear_old = models.PositiveSmallIntegerField(
+        _("Learned about us (old)"),
         help_text=_('How customer heared/learned about this Over 55 Inc.'),
         blank=True,
         default=1 # 1 = Other
     )
-    how_hear_about_us = models.ForeignKey(
+    how_hear= models.ForeignKey(
         "HowHearAboutUsItem",
         help_text=_('How customer heared/learned about this Over 55 Inc.'),
         on_delete=models.SET_NULL,
