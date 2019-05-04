@@ -22,6 +22,7 @@ from tenant_api.views.skill_set import SkillSetListCreateAPIView, SkillSetRetrie
 from tenant_api.views.staff import StaffListCreateAPIView, StaffRetrieveUpdateDestroyAPIView, StaffCreateValidationAPIView
 from tenant_api.views.staff_comment import StaffCommentListCreateAPIView
 from tenant_api.views.tag import TagListCreateAPIView, TagRetrieveUpdateDestroyAPIView
+from tenant_api.views.how_hear import HowHearAboutUsItemListCreateAPIView, HowHearAboutUsItemRetrieveUpdateDestroyAPIView
 from tenant_api.views.utility import FindCustomerMatchingAPIView
 from tenant_api.views.public_image_upload import PublicImageUploadListCreateAPIView
 from tenant_api.views.order_service_fee import WorkOrderServiceFeeListCreateAPIView, WorkOrderServiceFeeRetrieveUpdateDestroyAPIView
@@ -120,6 +121,10 @@ urlpatterns = [
     # Vehicle Type
     url(r'^api/vehicle_types$', VehicleTypeListCreateAPIView.as_view(), name='workery_vehicle_type_list_create_api_endpoint'),
     url(r'^api/vehicle_type/(?P<pk>[^/.]+)/$', VehicleTypeRetrieveUpdateDestroyAPIView.as_view(), name='workery_vehicle_type_retrieve_update_destroy_api_endpoint'),
+
+    # HowHearAboutUsItems
+    url(r'^api/how_hears$', HowHearAboutUsItemListCreateAPIView.as_view(), name='workery_how_hear_list_create_api_endpoint'),
+    url(r'^api/how_hear/(?P<pk>[^/.]+)/$', HowHearAboutUsItemRetrieveUpdateDestroyAPIView.as_view(), name='workery_how_hear_retrieve_update_destroy_api_endpoint'),
 
     # Utility
     url(r'^api/utility/find-customer-matching$', FindCustomerMatchingAPIView.as_view(), name='workery_find_customer_matching_api_endpoint'),

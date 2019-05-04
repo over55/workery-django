@@ -10,7 +10,8 @@ from tenant_setting.views import (
     order_service_fee_views,
     skill_set_views,
     tag_views,
-    vehicle_type_views
+    vehicle_type_views,
+    how_hear_views
 )
 
 
@@ -55,4 +56,9 @@ urlpatterns = (
     path('settings/insurance_requirements/', insurance_requirement_views.TagListView.as_view(), name='workery_tenant_settings_insurance_requirements_list'),
     path('settings/insurance_requirement/create/', insurance_requirement_views.TagCreateView.as_view(), name='workery_tenant_settings_insurance_requirement_create'),
     path('settings/insurance_requirement/<int:pk>/', insurance_requirement_views.TagUpdateView.as_view(), name='workery_tenant_settings_insurance_requirement_update'),
+
+    # How Hear
+    path('settings/how_hears/', how_hear_views.HowHearAboutUsItemListView.as_view(), name='workery_tenant_settings_how_hears_list'),
+    path('settings/how_hear/create/', how_hear_views.HowHearAboutUsItemCreateView.as_view(), name='workery_tenant_settings_how_hear_create'),
+    path('settings/how_hear/<int:pk>/', how_hear_views.HowHearAboutUsItemUpdateView.as_view(), name='workery_tenant_settings_how_hears_update'),
 )

@@ -1,0 +1,102 @@
+{% extends 'tenant_foundation/tenant_base.html' %}
+{% load staticfiles i18n shared_foundation_tags humanize %}
+
+{% block title %}
+{% trans 'Tag | Workery' %}
+{% endblock title %}
+
+{% block header_content %}
+{% endblock header_content %}
+
+{% block content %}
+
+<script>
+    function click_cancel_button() {
+        window.location = "{% url 'workery_tenant_settings_how_hears_list' %}";
+    }
+
+    function click_submit_button() {
+        var how_hear_text = $('#how_hear_text').val();
+        create_how_hear_api(
+            {
+                'text': $('#how_hear_text').val(),
+                'description': $('#how_hear_desc').val()
+            },
+            function(how_hear) {
+                window.location = "{% url 'workery_tenant_settings_how_hears_list' %}?was_created=True";
+            },
+            function(json_results) {
+                console.log(json_results);
+            },
+            function(xhr, status) {
+                console.log(xhr, status);
+            }
+        );
+    }
+</script>
+
+<main id="main" role="main">
+
+    <!-- BREADCRUMB -->
+    <!------------------------------------------------------------------------->
+    <nav aria-label="breadcrumb">
+	  	<ol class="breadcrumb">
+	    	<li class="breadcrumb-item"><a href="{% url 'workery_tenant_dashboard_master' %}"><i class="fas fa-tachometer-alt"></i>&nbsp;{% trans 'Dashboard' %}</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'workery_tenant_settings_launchpad' %}"><i class="fas fa-cog"></i>&nbsp;{% trans 'Settings' %}</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'workery_tenant_settings_how_hears_list' %}">{% trans 'Tags' %}</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{% trans 'Add Tag' %}</li>
+	  	</ol>
+	</nav>
+    <!------------------------------------------------------------------------->
+    <!-- end BREADCRUMB -->
+
+    <h1>Add Tag</h1>
+
+    <!-- FORM -->
+    <!------------------------------------------------------------------------->
+    <div class="col-sm-5 mx-auto mt-2">
+        <!-- Residential form -->
+        <div class="col-sm-12 fade show active" id="client-form" aria-labelledby="commercial">
+            <h3 class="pt-4 pb-2 text-center">Add Tag</h3>
+            <p>Please change the text of the how_hear.</p>
+
+            <form id="add-client-form" method="post" class="needs-validation" action="" novalidate>
+                <div class="form-row">
+                    <div class="form-group col-md-12 mb-4">
+                        <label for="how_hear_text">Text</label>
+                        <input type="text" class="form-control form-control-lg border border-primary" id="how_hear_text" name="how_hear_text" placeholder="Text" minlength="3" required="" autofocus value="{{ how_hear.text }}">
+                        <div id="how_hear_text-error" class="invalid-feedback"></div>
+                    </div>
+                    <div class="form-group col-md-12 mb-4">
+                        <label for="how_hear_text">Description</label>
+                        <input type="text" class="form-control form-control-lg border border-primary" id="how_hear_desc" name="how_hear_desc" placeholder="Description" minlength="3" required="" value="{{ how_hear.description }}">
+                        <div id="how_hear_text-error" class="invalid-feedback"></div>
+                    </div>
+                </div>
+            </form>
+
+            <!-- end SUBMIT BUTTON -->
+            <div class="form-group col-md-12 mb-3 p-0 mx-auto text-center">
+                <button id="id_submit_btn"
+                     class="btn btn-primary btn-lg mt-4 float-right pl-4 pr-4"
+                      type="button"
+                   onclick="click_submit_button();">
+                    <i class="fas fa-plus"></i> Add Tag</button>
+                <button id="id_cancel_btn"
+                     class="btn btn-orange btn-lg mt-4 float-left pl-4 pr-4"
+                      type="button"
+                   onclick="click_cancel_button();">
+                    <i class="fas fa-times"></i>&nbsp;Cancel
+                </button>
+            </div>
+            <!-- end SUBMIT BUTTON -->
+
+        </div>
+    </div>
+
+
+    <!-- RETURN-TO-TOP -->
+    <a id="return-to-top" href="#" class="btn-info btn-lg back-to-top" role="button" title="Back to top"><i class="fas fa-angle-up fa-2x"></i></a>
+    <!-- end RETURN-TO-TOP -->
+</main>
+{% endblock content %}

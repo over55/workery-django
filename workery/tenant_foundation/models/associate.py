@@ -193,6 +193,14 @@ class Associate(AbstractPerson):
         blank=True,
         default=8 # Prefer not to say.
     )
+    how_hear_about_us = models.ForeignKey(
+        "HowHearAboutUsItem",
+        help_text=_('How associate heared about this us from a select range of choices.'),
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True,
+        related_name="associates"
+    )
     how_hear_other = models.CharField(
         _("How hear (other)"),
         max_length=2055,

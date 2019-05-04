@@ -117,6 +117,14 @@ class Staff(AbstractPerson):
         blank=True,
         null=True,
     )
+    how_hear_about_us = models.ForeignKey(
+        "HowHearAboutUsItem",
+        help_text=_('How this staff member heared about this organization.'),
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True,
+        related_name="staves"
+    )
     created_by = models.ForeignKey(
         SharedUser,
         help_text=_('The user whom created this object.'),

@@ -196,6 +196,14 @@ class Customer(AbstractPerson):
         blank=True,
         default=1 # 1 = Other
     )
+    how_hear_about_us = models.ForeignKey(
+        "HowHearAboutUsItem",
+        help_text=_('How customer heared/learned about this Over 55 Inc.'),
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True,
+        related_name="customers"
+    )
     how_hear_other = models.CharField(
         _("Learned about us (other)"),
         max_length=2055,

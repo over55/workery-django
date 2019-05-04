@@ -124,6 +124,14 @@ class Partner(AbstractPerson):
         blank=True,
         null=True,
     )
+    how_hear_about_us = models.ForeignKey(
+        "HowHearAboutUsItem",
+        help_text=_('How partner heared about this business.'),
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True,
+        related_name="partners"
+    )
     created_by = models.ForeignKey(
         SharedUser,
         help_text=_('The user whom created this object.'),
