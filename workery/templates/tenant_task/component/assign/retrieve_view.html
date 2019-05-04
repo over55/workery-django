@@ -153,6 +153,7 @@
                     <th>{% trans 'Contacts (30 days)' %}</th>
                     <th>{% trans 'Phone Number' %}</th>
                     <th>{% trans 'WSIB #' %}</th>
+                    <th>{% trans 'Rate' %}</th>
                     <th></th>
                 </tr>
             </thead>
@@ -170,6 +171,13 @@
                         {% if associate.wsib_number %}
                             {{ associate.wsib_number }}
                         {% else %}-{% endif%}
+                    </td>
+                    <td>
+                        {% if associate.hourly_salary_desired %}
+                            ${{ associate.hourly_salary_desired }} / hr
+                        {% else %}
+                            =
+                        {% endif %}
                     </td>
                     <td>
                         <a href="{% url 'workery_tenant_pending_task_retrieve_for_activity_sheet_retrieve_and_create' task_item.id %}?associate_id={{ associate.id }}">Assign</a>
