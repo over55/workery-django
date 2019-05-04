@@ -26,7 +26,11 @@ class HowHearAboutUsItemListCreateSerializer(serializers.ModelSerializer):
         fields = (
             'id',
             'text',
-            'sort_number'
+            'sort_number',
+            'is_for_associate',
+            'is_for_customer',
+            'is_for_staff',
+            'is_for_partner'
         )
 
 
@@ -44,4 +48,8 @@ class HowHearAboutUsItemRetrieveUpdateDestroySerializer(serializers.ModelSeriali
             'id',
             'text',
             'sort_number',
+            'is_for_associate',
+            'is_for_customer',
+            'is_for_staff',
+            'is_for_partner'
         )
