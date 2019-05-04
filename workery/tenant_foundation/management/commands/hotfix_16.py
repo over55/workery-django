@@ -122,12 +122,12 @@ class Command(BaseCommand):
             associate.how_hear_about_us = HowHearAboutUsItem.objects.get(id=8)
 
         # Save our change.
-        customer.save()
+        associate.save()
 
         # For debugging purposes.
         self.stdout.write(
-            self.style.SUCCESS(_('Updated customer %(id)s.') %{
-                'id': str(customer.id)
+            self.style.SUCCESS(_('Updated associate %(id)s.') %{
+                'id': str(associate.id)
             })
         )
 
@@ -154,14 +154,14 @@ class Command(BaseCommand):
             try:
                 self.process_customer(customer)
             except Exception as e:
-                print("ERROR", customer.id)
+                print("ERROR CUSTOMER", customer.id, "-", e)
 
         # Process the associates.
         for associate in Associate.objects.iterator(chunk_size=250):
             try:
                 self.process_associate(associate)
             except Exception as e:
-                print("ERROR", associate.id)
+                print("ERROR ASSOCIATE", associate.id, "-", e)
 
         # For debugging purposes.
         self.stdout.write(

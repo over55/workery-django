@@ -77,7 +77,7 @@ class Command(BaseCommand):
             # ID | SORT # | TEXT | ASSOCIATE | CUSTOMER | STAFF | PARTNER
             #-------------------------------------------------------------------
             # Associate
-            [1, 1, "Other",                            True, True,  True,  True,],
+            [1, 99,"Other",                            True, True,  True,  True,],
             [2, 2, "An existing member",               True, False, False, False,],
             [3, 3, "Print Ad",                         True, False, False, False,],
             [4, 4, "Online Ad",                        True, False, False, False,],

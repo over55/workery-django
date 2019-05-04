@@ -26,7 +26,8 @@ from tenant_foundation.models import (
     Comment,
     CustomerComment,
     Customer,
-    Organization
+    Organization,
+    HowHearAboutUsItem
 )
 
 
@@ -98,6 +99,14 @@ class CustomerListCreateSerializer(serializers.ModelSerializer):
     fax_number = PhoneNumberField(allow_null=True, required=False)
     telephone = PhoneNumberField(allow_null=False, required=True,)
     other_telephone = PhoneNumberField(allow_null=True, required=False)
+
+    # Attach with our foreign keys.
+    how_hear_about_us = serializers.PrimaryKeyRelatedField(
+        many=False,
+        required=True,
+        allow_null=False,
+        queryset=HowHearAboutUsItem.objects.all()
+    )
 
     # Add password adding.
     password = serializers.CharField(
@@ -225,6 +234,7 @@ class CustomerListCreateSerializer(serializers.ModelSerializer):
             'type_of',
             'tags',
             'how_hear',
+            'how_hear_about_us',
             'how_hear_other',
 
             # Misc (Read Only)
@@ -373,6 +383,7 @@ class CustomerListCreateSerializer(serializers.ModelSerializer):
             is_support=validated_data.get('is_support', False),
             job_info_read=validated_data.get('job_info_read', False),
             how_hear=validated_data.get('how_hear', 1),
+            how_hear_about_us=validated_data.get('how_hear_about_us', 1),
             how_hear_other=validated_data.get('how_hear_other', "Not answered"),
             type_of=type_of_customer,
             created_from = self.context['created_from'],
@@ -579,6 +590,14 @@ class CustomerRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         style={'input_type': 'password'}
     )
 
+    # Attach with our foreign keys.
+    how_hear_about_us = serializers.PrimaryKeyRelatedField(
+        many=False,
+        required=True,
+        allow_null=False,
+        queryset=HowHearAboutUsItem.objects.all()
+    )
+
     #
     # Fields used for mapping to organizations.
     #
@@ -680,6 +699,7 @@ class CustomerRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
             'type_of',
             'tags',
             'how_hear',
+            'how_hear_about_us',
             'how_hear_other',
 
             # Misc (Read Only)
@@ -833,6 +853,7 @@ class CustomerRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         instance.is_support = validated_data.get('is_support', instance.is_support)
         instance.job_info_read = validated_data.get('job_info_read', instance.job_info_read)
         instance.how_hear = validated_data.get('how_hear', instance.how_hear)
+        instance.how_hear_about_us = validated_data.get('how_hear_about_us', instance.how_hear_about_us)
         instance.how_hear_other = validated_data.get('how_hear_other', instance.how_hear_other)
         instance.type_of=validated_data.get('type_of', instance.type_of)
 

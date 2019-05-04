@@ -15,7 +15,8 @@ from tenant_api.filters.customer import CustomerFilter
 from tenant_foundation.models import (
     Customer,
     SkillSet,
-    Tag
+    Tag,
+    HowHearAboutUsItem
 )
 
 
@@ -42,6 +43,7 @@ class ResidentialCustomerCreateView(LoginRequiredMixin, GroupRequiredMixin, Work
         context = super().get_context_data(**kwargs)
         context['tags'] = Tag.objects.all()
         context['skill_sets'] = SkillSet.objects.all()
+        context['how_hear_set'] = HowHearAboutUsItem.objects.filter(is_for_customer=True).order_by('sort_number')
         return context
 
 
@@ -68,6 +70,7 @@ class CommercialCustomerCreateView(LoginRequiredMixin, GroupRequiredMixin, Worke
         context = super().get_context_data(**kwargs)
         context['tags'] = Tag.objects.all()
         context['skill_sets'] = SkillSet.objects.all()
+        context['how_hear_set'] = HowHearAboutUsItem.objects.filter(is_for_customer=True).order_by('sort_number')
         return context
 
 

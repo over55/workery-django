@@ -14,7 +14,8 @@ from tenant_api.filters.customer import CustomerFilter
 from tenant_foundation.models import (
     Customer,
     SkillSet,
-    Tag
+    Tag,
+    HowHearAboutUsItem
 )
 
 
@@ -43,6 +44,7 @@ class ResidentialCustomerUpdateView(LoginRequiredMixin, GroupRequiredMixin, Work
         # Extra
         modified_context['tags'] = Tag.objects.all()
         modified_context['skill_sets'] = SkillSet.objects.all()
+        modified_context['how_hear_set'] = HowHearAboutUsItem.objects.filter(is_for_customer=True).order_by('sort_number')
 
         # Return our modified context.
         return modified_context
@@ -73,6 +75,7 @@ class CommercialCustomerUpdateView(LoginRequiredMixin, GroupRequiredMixin, Worke
         # Extra
         modified_context['tags'] = Tag.objects.all()
         modified_context['skill_sets'] = SkillSet.objects.all()
+        modified_context['how_hear_set'] = HowHearAboutUsItem.objects.filter(is_for_customer=True).order_by('sort_number')
 
         # Return our modified context.
         return modified_context
@@ -103,6 +106,7 @@ class DeactivateCustomerUpdateView(LoginRequiredMixin, GroupRequiredMixin, Worke
         # Extra
         modified_context['tags'] = Tag.objects.all()
         modified_context['skill_sets'] = SkillSet.objects.all()
+        modified_context['how_hear_set'] = HowHearAboutUsItem.objects.filter(is_for_customer=True).order_by('sort_number')
 
         # Return our modified context.
         return modified_context
