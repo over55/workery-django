@@ -131,17 +131,17 @@
 	  });
 	  {% if customer.address_country %}loadState('{{customer.address_country}}');{% else %}loadState('CA');{% endif %}
     	});
-										      
+
 	const state = "{% url 'workery_get_provinces_api_endpoint' %}?format=json";
         const country = "{% url 'workery_get_countries_api_endpoint' %}?format=json";
 	console.log(state);
-        console.log(country); 
+        console.log(country);
 
 	let c_dropdown = $('#address_country');
 	c_dropdown.empty();
 	c_dropdown.append('<option disabled>Choose Country</option>');
 	{% if customer.address_country %}c_dropdown.val('{{customer.address_country}}');{% else %}c_dropdown.prop('selectedIndex', 1);{% endif %}
-	
+
 	// Populate dropdown with list of countries
 	$.getJSON(country, function (data) {
 	  $.each(data, function (key, entry) {
@@ -149,7 +149,7 @@
 			c_dropdown.append($('<option selected="true"></option>').attr('value', entry.code).text(entry.country));
 		} else {
     	    		c_dropdown.append($('<option></option>').attr('value', entry.code).text(entry.country));
-		} 
+		}
 	  })
 	});
 	function loadState(countryId){
@@ -634,7 +634,7 @@
                 </div>
                 <div class="form-group col-md-7 mb-4">
                     <label for="gender">Gender</label>
-                    <select class="custom-select form-control-lg border-success" id="gender" name="gender" required>
+                    <select class="custom-select form-control-lg border-primary" id="gender" name="gender" required>
                         <option value="" {% if customer.gender == None %}selected{% endif %}>Gender...</option>
                         <option value="male" {% if customer.gender == 'Male' %}selected{% endif %}>Male</option>
                         <option value="female" {% if customer.gender == 'Female' %}selected{% endif %}>Female</option>

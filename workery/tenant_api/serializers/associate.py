@@ -47,6 +47,11 @@ class AssociateListCreateSerializer(serializers.ModelSerializer):
         allow_blank=False,
         validators=[]
     )
+    gender = serializers.CharField(
+        required=True,
+        allow_blank=False,
+        allow_null=False,
+    )
     address_country = serializers.CharField(
         required=True,
         allow_blank=False,
@@ -463,6 +468,11 @@ class AssociateRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         required=True,
         allow_blank=False,
         validators=[]
+    )
+    gender = serializers.CharField(
+        required=True,
+        allow_blank=False,
+        allow_null=False,
     )
     address_country = serializers.CharField(
         required=True,

@@ -478,7 +478,7 @@
                 </div>
                 <div class="form-group col-md-7 mb-4">
                     <label for="gender">Gender</label>
-                    <select class="custom-select form-control-lg border-success" id="gender" name="gender" required>
+                    <select class="custom-select form-control-lg border-primary" id="gender" name="gender" required>
                         <option value="" {% if staff.gender == None %}selected{% endif %}>Gender...</option>
                         <option value="male" {% if staff.gender == 'Male' %}selected{% endif %}>Male</option>
                         <option value="female" {% if staff.gender == 'Female' %}selected{% endif %}>Female</option>

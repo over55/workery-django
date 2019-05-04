@@ -60,17 +60,17 @@
       });
       {% if partner.address_country %}loadState('{{partner.address_country}}');{% else %}loadState('CA');{% endif %}
     });
-	 
+
     const state = "{% url 'workery_get_provinces_api_endpoint' %}?format=json";
     const country = "{% url 'workery_get_countries_api_endpoint' %}?format=json";
     console.log(state);
     console.log(country); // KANWAR - PLEASE IMPLEMENT.
-	 
+
     let c_dropdown = $('#address_country');
     c_dropdown.empty();
     c_dropdown.append('<option disabled>Choose Country</option>');
     {% if partner.address_country %}c_dropdown.val('{{partner.address_country}}');{% else %}c_dropdown.prop('selectedIndex', 1);{% endif %}
-    
+
     // Populate dropdown with list of countries
     $.getJSON(country, function (data) {
       $.each(data, function (key, entry) {
@@ -98,9 +98,9 @@
             }
           })
         });
-	    
+
 	{% if partner.address_region %}p_dropdown.val('{{partner.address_region}}');{% else %}p_dropdown.prop('selectedIndex', 1);{% endif %}
-	
+
     }
     // end country/province dropdown function
     // All fields individual inline validation check
@@ -869,7 +869,7 @@
                 </div>
                 <div class="form-group col-md-7 mb-4 p-0">
                     <label for="gender">Gender</label>
-                    <select class="custom-select form-control-lg border-success" id="gender" name="gender" required>
+                    <select class="custom-select form-control-lg border-primary" id="gender" name="gender" required>
                         <option value="" {% if partner.gender == None %}selected{% endif %}>Gender...</option>
                         <option value="male" {% if partner.gender == 'male' %}selected{% endif %}>Male</option>
                         <option value="female" {% if partner.gender == 'female' %}selected{% endif %}>Female</option>

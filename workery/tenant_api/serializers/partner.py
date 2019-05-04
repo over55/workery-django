@@ -44,6 +44,11 @@ class PartnerListCreateSerializer(serializers.ModelSerializer):
         allow_blank=False,
         validators=[]
     )
+    gender = serializers.CharField(
+        required=True,
+        allow_blank=False,
+        allow_null=False,
+    )
     address_country = serializers.CharField(
         required=True,
         allow_blank=False,
@@ -493,6 +498,12 @@ class PartnerRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         validators=[UniqueValidator(queryset=Partner.objects.all())],
         required=True,
         allow_blank=False,
+    )
+
+    gender = serializers.CharField(
+        required=True,
+        allow_blank=False,
+        allow_null=False,
     )
 
     # All comments are created by our `create` function and not by
