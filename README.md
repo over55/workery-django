@@ -1,6 +1,5 @@
 ![alt tag](https://github.com/over55/workery-django/blob/master/workery/static/img/compressed-logo.png)
 # workery-django
-**This library is currently being developed and is not production quality ready!**
 
 ## Build Status
 [![Build Status](https://travis-ci.org/over55/workery-django.svg?branch=master)](https://travis-ci.org/over55/workery-django)
