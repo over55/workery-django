@@ -16,15 +16,19 @@
     }
 
     function click_submit_button() {
-        var how_hear_text = $('#how_hear_text').val();
+        var is_for_associate = $('#how_hear_is_for_associate').is(':checked');
+        var is_for_customer = $('#how_hear_is_for_customer').is(':checked');
+        var is_for_staff = $('#how_hear_is_for_staff').is(':checked');
+        var is_for_partner = $('#how_hear_is_for_partners').is(':checked');
+
         create_how_hear_api(
             {
                 'text': $('#how_hear_text').val(),
                 'sort_number': $('#how_hear_sort_num').val(),
-                'is_for_associate': $('#how_hear_is_for_associate').val(),
-                'is_for_customer': $('#how_hear_is_for_customer').val(),
-                'is_for_staff': $('#how_hear_is_for_staff').val(),
-                'is_for_partner': $('#how_hear_is_for_partners').val()
+                'is_for_associate': is_for_associate,
+                'is_for_customer': is_for_customer,
+                'is_for_staff': is_for_staff,
+                'is_for_partner': is_for_partner
             },
             function(how_hear) {
                 window.location = "{% url 'workery_tenant_settings_how_hears_list' %}?was_created=True";
