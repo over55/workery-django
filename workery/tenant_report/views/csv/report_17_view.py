@@ -17,12 +17,10 @@ from tenant_api.filters.customer import CustomerFilter
 from tenant_foundation.constants import *
 from tenant_foundation.models import (
     Associate,
-    AwayLog,
     Customer,
-    WORK_ORDER_STATE,
-    WorkOrder,
-    TaskItem,
-    SkillSet
+    Staff,
+    Partner,
+    HowHearAboutUsItem
 )
 
 """
@@ -42,111 +40,31 @@ class Echo:
         return value
 
 
-def report_17_streaming_csv_view(request):
-    # Get our user parameters.
-    naive_from_dt = request.GET.get('from_dt', None)
-    naive_to_dt = request.GET.get('to_dt', None)
-
-    # Convert our datatime `string` into a `datatime` object.
-    naive_from_dt = parser.parse(naive_from_dt)
-    naive_to_dt = parser.parse(naive_to_dt)
-
-    # Convert our aware datetimes to the specific timezone of the tenant.
-    today = timezone.now()
-    tenant_today = request.tenant.to_tenant_dt(today)
-    tenant_from_dt = request.tenant.localize_tenant_dt(naive_from_dt)
-    tenant_from_d = tenant_from_dt.date()
-    tenant_to_dt = request.tenant.localize_tenant_dt(naive_to_dt)
-    tenant_to_d = tenant_to_dt.date()
-
-    # Run our filter lookup.
-    jobs = WorkOrder.objects.filter(
-        assignment_date__range=(tenant_from_dt,tenant_to_dt),
-        type_of=COMMERCIAL_JOB_TYPE_OF_ID,
-        customer__isnull=False,
-        associate__isnull=False
-    ).order_by(
-       '-id'
-    ).prefetch_related(
-        'customer',
-        'associate',
-        'skill_sets'
-    )
+def client_report(aware_now_d, aware_from_d, aware_to_d):
+    items = HowHearAboutUsItem.objects.filter(is_for_customer=True).order_by('sort_number')
 
     # Generate our new header.
-    rows = (["Commercial Jobs Report","","",],)
-    rows += (["Report Date:", pretty_dt_string(tenant_today),"",],)
-    rows += (["From Assignment Date:", pretty_dt_string(tenant_from_d),"",],)
-    rows += (["To Assignment Date:", pretty_dt_string(tenant_to_d),"",],)
+    rows = (["How Client Finds Us (Short) Report","","",],)
+    rows += (["Report Date:", pretty_dt_string(aware_now_d),"",],)
+    rows += (["From Assignment Date:", pretty_dt_string(aware_from_d),"",],)
+    rows += (["To Assignment Date:", pretty_dt_string(aware_to_d),"",],)
     rows += (["", "","",],)
     rows += (["", "","",],)
 
     # Generate the CSV header row.
     rows += ([
-        "Job No.",
-        "Job Status",
-        "Assignment",
-        "Completion",
-        "Associate No.",
-        "Associate",
-        "Associate DOB",
-        "Associate Age",
-        "Client No.",
-        "Client",
-        "Client Birthdate",
-        "Client Age",
-        "WSIB #",
-        "WSIB Date",
-        "Total Labour",
-        "Invoice #",
-        "Skill Sets"
+        "Description",
+        "Count"
     ],)
 
-    # Generate hte CSV data.
-    for job in jobs.all():
-
-        # Get our list of skill sets.
-        skill_set_text = job.get_skill_sets_string()
-
-        # Set the invoice ID.
-        invoice_ids = "-" if job.invoice_ids is None else job.invoice_ids
-        invoice_ids = "-" if job.invoice_ids is None else job.invoice_ids
-        wsib_number = "-" if job.associate.wsib_number is None else job.associate.wsib_number
-        wsib_insurance_date = "-" if job.associate.wsib_insurance_date is None else job.associate.wsib_insurance_date
-
-        # Get our DOB and age.
-        associate_id = None
-        associate_dob = None
-        associate_age = None
-        if job.associate:
-            associate_id = job.associate.id
-            associate_dob = pretty_dt_string(job.associate.birthdate) if job.associate.birthdate is not None else ""
-            associate_age = job.associate.get_current_age()
-        customer_dob = pretty_dt_string(job.customer.birthdate) if job.customer.birthdate is not None else ""
-
-        # Format labour amount
-        invoice_labour_amount = str(job.invoice_labour_amount)
-        invoice_labour_amount = invoice_labour_amount.replace('C', '')
+    # Iterate through all the items.
+    for item in items.all():
+        count = item.customers.count()
 
         # Generate the reason.
         rows += ([
-            str(job.id),
-            job.get_pretty_status(),
-            pretty_dt_string(job.assignment_date),
-            pretty_dt_string(job.completion_date),
-            str(associate_id),
-            str(job.associate),
-            associate_dob,
-            associate_age,
-            str(job.customer.id),
-            str(job.customer),
-            str(customer_dob),
-            job.customer.get_current_age(),
-            str(wsib_number),
-            str(wsib_insurance_date),
-            invoice_labour_amount,
-            str(invoice_ids),
-            skill_set_text,
+            item.text,
+            str(count),
         ],)
 
     # Create the virtual CSV file and stream all the data in real time to the
@@ -157,5 +75,150 @@ def report_17_streaming_csv_view(request):
         (writer.writerow(row) for row in rows),
         content_type="text/csv"
     )
-    response['Content-Disposition'] = 'attachment; filename="commercial_jobs.csv"'
+    response['Content-Disposition'] = 'attachment; filename="how_clients_finds_us_short_report.csv"'
     return response
+
+def associate_report(aware_now_d, aware_from_d, aware_to_d):
+    items = HowHearAboutUsItem.objects.filter(is_for_associate=True).order_by('sort_number')
+
+    # Generate our new header.
+    rows = (["How Associates Finds Us (Short) Report","","",],)
+    rows += (["Report Date:", pretty_dt_string(aware_now_d),"",],)
+    rows += (["From Assignment Date:", pretty_dt_string(aware_from_d),"",],)
+    rows += (["To Assignment Date:", pretty_dt_string(aware_to_d),"",],)
+    rows += (["", "","",],)
+    rows += (["", "","",],)
+
+    # Generate the CSV header row.
+    rows += ([
+        "Description",
+        "Count"
+    ],)
+
+    # Iterate through all the items.
+    for item in items.all():
+        count = item.associates.count()
+
+        # Generate the reason.
+        rows += ([
+            item.text,
+            str(count),
+        ],)
+
+    # Create the virtual CSV file and stream all the data in real time to the
+    # client.
+    pseudo_buffer = Echo()
+    writer = csv.writer(pseudo_buffer)
+    response = StreamingHttpResponse(
+        (writer.writerow(row) for row in rows),
+        content_type="text/csv"
+    )
+    response['Content-Disposition'] = 'attachment; filename="how_associates_finds_us_short_report.csv"'
+    return response
+
+def staff_report(aware_now_d, aware_from_d, aware_to_d):
+    items = HowHearAboutUsItem.objects.filter(is_for_staff=True).order_by('sort_number')
+
+    # Generate our new header.
+    rows = (["How Staff Finds Us (Short) Report","","",],)
+    rows += (["Report Date:", pretty_dt_string(aware_now_d),"",],)
+    rows += (["From Assignment Date:", pretty_dt_string(aware_from_d),"",],)
+    rows += (["To Assignment Date:", pretty_dt_string(aware_to_d),"",],)
+    rows += (["", "","",],)
+    rows += (["", "","",],)
+
+    # Generate the CSV header row.
+    rows += ([
+        "Description",
+        "Count"
+    ],)
+
+    # Iterate through all the items.
+    for item in items.all():
+        count = item.staves.count()
+
+        # Generate the reason.
+        rows += ([
+            item.text,
+            str(count),
+        ],)
+
+    # Create the virtual CSV file and stream all the data in real time to the
+    # client.
+    pseudo_buffer = Echo()
+    writer = csv.writer(pseudo_buffer)
+    response = StreamingHttpResponse(
+        (writer.writerow(row) for row in rows),
+        content_type="text/csv"
+    )
+    response['Content-Disposition'] = 'attachment; filename="how_staff_finds_us_short_report.csv"'
+    return response
+
+def partner_report(aware_now_d, aware_from_d, aware_to_d):
+    items = HowHearAboutUsItem.objects.filter(is_for_partner=True).order_by('sort_number')
+
+    # Generate our new header.
+    rows = (["How Partners Finds Us (Short) Report","","",],)
+    rows += (["Report Date:", pretty_dt_string(aware_now_d),"",],)
+    rows += (["From Assignment Date:", pretty_dt_string(aware_from_d),"",],)
+    rows += (["To Assignment Date:", pretty_dt_string(aware_to_d),"",],)
+    rows += (["", "","",],)
+    rows += (["", "","",],)
+
+    # Generate the CSV header row.
+    rows += ([
+        "Description",
+        "Count"
+    ],)
+
+    # Iterate through all the items.
+    for item in items.all():
+        count = item.partners.count()
+
+        # Generate the reason.
+        rows += ([
+            item.text,
+            str(count),
+        ],)
+
+    # Create the virtual CSV file and stream all the data in real time to the
+    # client.
+    pseudo_buffer = Echo()
+    writer = csv.writer(pseudo_buffer)
+    response = StreamingHttpResponse(
+        (writer.writerow(row) for row in rows),
+        content_type="text/csv"
+    )
+    response['Content-Disposition'] = 'attachment; filename="how_partners_finds_us_short_report.csv"'
+    return response
+
+def report_17_streaming_csv_view(request):
+    # Get our user parameters.
+    naive_from_dt = request.GET.get('from_dt', None)
+    naive_to_dt = request.GET.get('to_dt', None)
+    user_type = request.GET.get('user_type', None)
+
+    # Convert our datatime `string` into a `datatime` object.
+    naive_from_dt = parser.parse(naive_from_dt)
+    naive_to_dt = parser.parse(naive_to_dt)
+
+    # Convert our aware datetimes to the specific timezone of the tenant.
+    today = timezone.now()
+    tenant_today_dt = request.tenant.to_tenant_dt(today)
+    tenant_today_d = tenant_today_dt.date()
+    tenant_from_dt = request.tenant.localize_tenant_dt(naive_from_dt)
+    tenant_from_d = tenant_from_dt.date()
+    tenant_to_dt = request.tenant.localize_tenant_dt(naive_to_dt)
+    tenant_to_d = tenant_to_dt.date()
+
+    if user_type == "client":
+        return client_report(tenant_today_d, tenant_from_d, tenant_to_d)
+
+    if user_type == "associate":
+        return associate_report(tenant_today_d, tenant_from_d, tenant_to_d)
+
+    if user_type == "staff":
+        return staff_report(tenant_today_d, tenant_from_d, tenant_to_d)
+
+    if user_type == "partner":
+        return partner_report(tenant_today_d, tenant_from_d, tenant_to_d)

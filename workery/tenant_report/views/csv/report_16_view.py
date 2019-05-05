@@ -48,7 +48,7 @@ def client_report(aware_now_d, aware_from_d, aware_to_d):
     )
 
     # Generate our new header.
-    rows = (["How Client Finds Us Report","","",],)
+    rows = (["How Client Finds Us (Long) Report","","",],)
     rows += (["Report Date:", pretty_dt_string(aware_now_d),"",],)
     rows += (["From Assignment Date:", pretty_dt_string(aware_from_d),"",],)
     rows += (["To Assignment Date:", pretty_dt_string(aware_to_d),"",],)
@@ -90,7 +90,7 @@ def client_report(aware_now_d, aware_from_d, aware_to_d):
         (writer.writerow(row) for row in rows),
         content_type="text/csv"
     )
-    response['Content-Disposition'] = 'attachment; filename="how_clients_finds_us.csv"'
+    response['Content-Disposition'] = 'attachment; filename="how_clients_finds_us_long_report.csv"'
     return response
 
 
@@ -103,7 +103,7 @@ def associate_report(aware_now_d, aware_from_d, aware_to_d):
     )
 
     # Generate our new header.
-    rows = (["How Associates Finds Us Report","","",],)
+    rows = (["How Associates Finds Us (Long) Report","","",],)
     rows += (["Report Date:", pretty_dt_string(aware_now_d),"",],)
     rows += (["From Assignment Date:", pretty_dt_string(aware_from_d),"",],)
     rows += (["To Assignment Date:", pretty_dt_string(aware_to_d),"",],)
@@ -145,7 +145,7 @@ def associate_report(aware_now_d, aware_from_d, aware_to_d):
         (writer.writerow(row) for row in rows),
         content_type="text/csv"
     )
-    response['Content-Disposition'] = 'attachment; filename="how_associates_finds_us.csv"'
+    response['Content-Disposition'] = 'attachment; filename="how_associates_finds_us_long_report.csv"'
     return response
 
 def staff_report(aware_now_d, aware_from_d, aware_to_d):
@@ -157,7 +157,7 @@ def staff_report(aware_now_d, aware_from_d, aware_to_d):
     )
 
     # Generate our new header.
-    rows = (["How Staff Finds Us Report","","",],)
+    rows = (["How Staff Finds Us (Long) Report","","",],)
     rows += (["Report Date:", pretty_dt_string(aware_now_d),"",],)
     rows += (["From Assignment Date:", pretty_dt_string(aware_from_d),"",],)
     rows += (["To Assignment Date:", pretty_dt_string(aware_to_d),"",],)
@@ -199,7 +199,7 @@ def staff_report(aware_now_d, aware_from_d, aware_to_d):
         (writer.writerow(row) for row in rows),
         content_type="text/csv"
     )
-    response['Content-Disposition'] = 'attachment; filename="how_staff_finds_us.csv"'
+    response['Content-Disposition'] = 'attachment; filename="how_staff_finds_us_long_report.csv"'
     return response
 
 def partner_report(aware_now_d, aware_from_d, aware_to_d):
@@ -211,7 +211,7 @@ def partner_report(aware_now_d, aware_from_d, aware_to_d):
     )
 
     # Generate our new header.
-    rows = (["How Partner Finds Us Report","","",],)
+    rows = (["How Partner Finds Us (Long) Report","","",],)
     rows += (["Report Date:", pretty_dt_string(aware_now_d),"",],)
     rows += (["From Assignment Date:", pretty_dt_string(aware_from_d),"",],)
     rows += (["To Assignment Date:", pretty_dt_string(aware_to_d),"",],)
@@ -253,7 +253,7 @@ def partner_report(aware_now_d, aware_from_d, aware_to_d):
         (writer.writerow(row) for row in rows),
         content_type="text/csv"
     )
-    response['Content-Disposition'] = 'attachment; filename="how_partners_finds_us.csv"'
+    response['Content-Disposition'] = 'attachment; filename="how_partners_finds_us_long_report.csv"'
     return response
 
 def report_16_streaming_csv_view(request):
