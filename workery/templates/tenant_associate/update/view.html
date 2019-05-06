@@ -716,14 +716,9 @@
                     <label for="how_hear">How did they hear about us?</label>
                     <select class="custom-select form-control-lg border-success" id="how_hear" name="how_hear" required>
                         <option value="">Please select...</option>
-                        <option value="2" {% if associate.how_hear == 2 %}selected{% endif %}>An existing member</option>
-                        <option value="3" {% if associate.how_hear == 3 %}selected{% endif %}>Print Ad</option>
-                        <option value="4" {% if associate.how_hear == 4 %}selected{% endif %}>Online Ad</option>
-                        <option value="5" {% if associate.how_hear == 5 %}selected{% endif %}>Google</option>
-                        <option value="6" {% if associate.how_hear == 6 %}selected{% endif %}>Tradeshow/Event</option>
-                        <option value="7" {% if associate.how_hear == 7 %}selected{% endif %}>Agency</option>
-                        <option value="8" {% if associate.how_hear == 8 %}selected{% endif %}>Prefer not to say / I don't know</option>
-                        <option value="1" {% if associate.how_hear == 1 %}selected{% endif %}>Other</option>
+                        {% for how_hear in how_hear_set %}
+                            <option value="{{ how_hear.id }}" {% if associate.how_hear.id == how_hear.id %}selected{% endif %}>{{ how_hear.text }}</option>
+                        {% endfor %}
                     </select>
                     <div id="how_hear-error" class="invalid-feedback"></div>
                 </div>
@@ -950,7 +945,7 @@
         //-----------------------------//
 
         // --- How hear ---
-        var how_hear = {{ associate.how_hear }};
+        var how_hear = {{ associate.how_hear.id }};
         if (how_hear == 1) {
             $("#how_hear_other_div").show();
         } else {

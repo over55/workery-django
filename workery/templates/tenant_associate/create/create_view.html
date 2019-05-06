@@ -1005,14 +1005,9 @@
                     <label for="how_hear">How did they hear about us?</label>
                     <select class="custom-select form-control-lg border-primary" id="how_hear" name="how_hear" required>
                         <option value="" selected>Please select...</option>
-                        <option value="2">An existing member</option>
-                        <option value="3">Print Ad</option>
-                        <option value="4">Online Ad</option>
-                        <option value="5">Google</option>
-                        <option value="6">Tradeshow/Event</option>
-                        <option value="7">Agency</option>
-                        <option value="8">Prefer not to say / I don't know</option>
-                        <option value="1">Other</option>
+                        {% for how_hear in how_hear_set %}
+                            <option value="{{ how_hear.id }}">{{ how_hear.text }}</option>
+                        {% endfor %}
                     </select>
                     <div id="how_hear-error" class="invalid-feedback"></div>
                 </div>

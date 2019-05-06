@@ -15,7 +15,8 @@ from tenant_foundation.models import (
     Associate,
     InsuranceRequirement,
     SkillSet,
-    Tag
+    Tag,
+    HowHearAboutUsItem
 )
 
 
@@ -45,6 +46,7 @@ class MemberUpdateView(LoginRequiredMixin, GroupRequiredMixin, WorkeryDetailView
         modified_context['insurance_requirements'] = InsuranceRequirement.objects.all()
         modified_context['tags'] = Tag.objects.all()
         modified_context['skill_sets'] = SkillSet.objects.all().order_by('sub_category')
+        modified_context['how_hear_set'] = HowHearAboutUsItem.objects.filter(is_for_associate=True).order_by('sort_number')
 
         # Return our modified context.
         return modified_context
