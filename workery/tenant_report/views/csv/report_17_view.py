@@ -59,7 +59,10 @@ def client_report(aware_now_d, aware_from_d, aware_to_d):
 
     # Iterate through all the items.
     for item in items.all():
-        count = item.customers.count()
+        count = item.customers.filter(
+            join_date__range=(aware_from_d,aware_to_d),
+            how_hear__isnull=False
+        ).count()
 
         # Generate the reason.
         rows += ([
@@ -97,7 +100,10 @@ def associate_report(aware_now_d, aware_from_d, aware_to_d):
 
     # Iterate through all the items.
     for item in items.all():
-        count = item.associates.count()
+        count = item.associates.filter(
+            join_date__range=(aware_from_d,aware_to_d),
+            how_hear__isnull=False
+        ).count()
 
         # Generate the reason.
         rows += ([
@@ -135,7 +141,10 @@ def staff_report(aware_now_d, aware_from_d, aware_to_d):
 
     # Iterate through all the items.
     for item in items.all():
-        count = item.staves.count()
+        count = item.staves.filter(
+            join_date__range=(aware_from_d,aware_to_d),
+            how_hear__isnull=False
+        ).count()
 
         # Generate the reason.
         rows += ([
@@ -173,7 +182,10 @@ def partner_report(aware_now_d, aware_from_d, aware_to_d):
 
     # Iterate through all the items.
     for item in items.all():
-        count = item.partners.count()
+        count = item.partners.filter(
+            join_date__range=(aware_from_d,aware_to_d),
+            how_hear__isnull=False
+        ).count()
 
         # Generate the reason.
         rows += ([
