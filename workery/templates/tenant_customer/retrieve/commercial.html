@@ -112,8 +112,24 @@
                 </tr>
                 <tr>
                     <th scope="row" class="bg-light">How did they discover us?</th>
-                    <td id="street_address">
-                        {{ customer.get_pretty_how_hear }}
+                    <td id="how_hear">
+                        {% if customer.how_hear %}
+                            {% if customer.how_hear.id == 1 %}
+                                {{ customer.how_hear_other }}
+                            {% else %}
+                                {{ customer.how_hear.text }}
+                            {% endif %}
+                        {% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row" class="bg-light">Join date</th>
+                    <td id="join_date">
+                        {% if customer.join_date %}
+                            {{ customer.join_date }}
+                        {% else %}
+                            -
+                        {% endif %}
                     </td>
                 </tr>
                 <!-- ############ end INTERNAL METRICS ############ -->

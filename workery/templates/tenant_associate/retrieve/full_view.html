@@ -325,6 +325,7 @@
                         {% if associate.how_hear  %}
                             {{ associate.how_hear.text }}
                         {% endif %}
+                        {% if associate.how_hear_other != 0 %}&nbsp;-&nbsp;{{ associate.how_hear_other }}{% endif %}
                     </td>
                 </tr>
                 <tr>

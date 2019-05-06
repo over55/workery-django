@@ -68,6 +68,7 @@
                     <th>{% trans 'Last Name' %}</th>
                     <th>{% trans 'Phone' %}</th>
                     <th>{% trans 'E-Mail' %}</th>
+                    <th>{% trans 'Joined' %}</th>
                     <th></th>
                 </tr>
             </thead>
@@ -81,6 +82,7 @@
                         {% if member.telephone %}<a href="tel:{{ member.telephone }}">{{ member.telephone|pretty_formatted_phonenumber }}</a>{% else %}-{% endif %}
                     </td>
                     <td>{% if member.owner.email %}<a href="mailto:{{ member.owner.email }}">{{ member.owner.email }}</a>{% else %}-{% endif %}</td>
+                    <td>{% if member.join_date %}{{ member.join_date }}{% else %}-{% endif %}</td>
                     <td>
                         <a href="{% url 'workery_tenant_member_lite_retrieve' 'list' member.id %}?page={{ page_obj.number }}">{% trans 'View' %}&nbsp;<i class="fas fa-chevron-right"></i></a>
                     </td>
