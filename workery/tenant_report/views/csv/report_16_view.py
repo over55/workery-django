@@ -61,8 +61,9 @@ def client_report(aware_now_d, aware_from_d, aware_to_d):
         "First Name",
         "Last Name",
         "Join Date",
-        "How Did You Heard About Us?",
-        "Other"
+        "How Did You Heard About Us? (NEW)",
+        "Other",
+        "How Did You Heard About Us? (OLD)",
     ],)
 
     # Generate hte CSV data.
@@ -80,6 +81,7 @@ def client_report(aware_now_d, aware_from_d, aware_to_d):
             pretty_dt_string(customer.join_date),
             str(customer.how_hear.text),
             str(how_hear_other),
+            customer.get_pretty_how_hear(),
         ],)
 
     # Create the virtual CSV file and stream all the data in real time to the
