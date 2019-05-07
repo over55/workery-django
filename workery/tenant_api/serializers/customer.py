@@ -588,13 +588,13 @@ class CustomerRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         style={'input_type': 'password'}
     )
 
-    # # Attach with our foreign keys.
-    # how_hear = serializers.PrimaryKeyRelatedField(
-    #     many=False,
-    #     required=False,
-    #     allow_null=True,
-    #     queryset=HowHearAboutUsItem.objects.all()
-    # )
+    # Attach with our foreign keys.
+    how_hear = serializers.PrimaryKeyRelatedField(
+        many=False,
+        required=True,
+        allow_null=False,
+        queryset=HowHearAboutUsItem.objects.all()
+    )
 
     #
     # Fields used for mapping to organizations.
@@ -696,8 +696,8 @@ class CustomerRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
             'job_info_read',
             'type_of',
             'tags',
-            # 'how_hear',
-            # 'how_hear_other',
+            'how_hear',
+            'how_hear_other',
 
             # Misc (Read Only)
             'extra_comment',
@@ -849,8 +849,8 @@ class CustomerRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         instance.is_senior = validated_data.get('is_senior', instance.is_senior)
         instance.is_support = validated_data.get('is_support', instance.is_support)
         instance.job_info_read = validated_data.get('job_info_read', instance.job_info_read)
-        # instance.how_hear = validated_data.get('how_hear', instance.how_hear)
-        # instance.how_hear_other = validated_data.get('how_hear_other', instance.how_hear_other)
+        instance.how_hear = validated_data.get('how_hear', instance.how_hear)
+        instance.how_hear_other = validated_data.get('how_hear_other', instance.how_hear_other)
         instance.type_of=validated_data.get('type_of', instance.type_of)
 
         # # Misc (Read Only)

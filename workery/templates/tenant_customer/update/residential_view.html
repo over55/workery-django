@@ -40,6 +40,20 @@
         // Initialize our 'select2' element.
         $('#tags').select2();
 
+        // --- How hear ---
+        var how_hear = "{{ customer.how_hear.id }}";
+        if (how_hear == 1) {
+            $("#how_hear_other_div").show();
+        } else {
+            $("#how_hear_other_div").hide();
+        }
+
+        // --- How hear (other) ---
+        var how_hear_other = "{{ customer.how_hear_other }}";
+        if (how_hear == 1) {
+            $("#how_hear_other").val(how_hear_other);
+        }
+
         {% if customer.is_ok_to_email == True %}
             $("#is_ok_to_email").prop("checked", true);
         {% else %}
@@ -278,6 +292,8 @@
         if (gender == undefined || gender == null || gender.length == 0) {
             gender = '';
         }
+        var how_hear = $('#how_hear').val();
+        var how_hear_other = $('#how_hear_other').val();
         var ok_to_email = get_selected_radio_value('is_ok_to_email');
         var ok_to_text = get_selected_radio_value('is_ok_to_text');
         if (ok_to_email == 'yes') {
@@ -333,6 +349,8 @@
                 'last_name': last_name,
                 'birthdate': date_of_birth,
                 'gender': gender,
+                'how_hear': how_hear,
+                'how_hear_other': how_hear_other,
                 'description': description,
                 'tags': person_tags,
                 'nationality': null,
@@ -498,7 +516,7 @@
                     </div>
                 </div>
                 <div class="form-group col-md-7 mb-4 p-0">
-                    <label for="gender">Gender</label>
+                    <label for="gender">Gender *</label>
                     <select class="custom-select form-control-lg border-primary" id="gender" name="gender" required>
                         <option value="" {% if customer.gender == None %}selected{% endif %}>Gender...</option>
                         <option value="male" {% if customer.gender == 'Male' %}selected{% endif %}>Male</option>
@@ -522,6 +540,26 @@
                     </select>
                     <div id="tags-error" class="invalid-feedback"></div>
                 </div>
+
+
+                <div class="form-group col-md-7 mb-4">
+                    <label for="how_hear">How did they hear about us? *</label>
+                    <select class="custom-select form-control-lg border-primary" id="how_hear" name="how_hear" required>
+                        <option value="">Please select...</option>
+                        {% for how_hear in how_hear_set %}
+                            <option value="{{ how_hear.id }}" {% if customer.how_hear.id == how_hear.id %}selected{% endif %}>{{ how_hear.text }}</option>
+                        {% endfor %}
+                    </select>
+                    <div id="how_hear-error" class="invalid-feedback"></div>
+                </div>
+                <div class="form-group col-md-12 mb-4" id="how_hear_other_div">
+      		        <label for="how_hear_other" class="font-b6">Describe how customer hear about us:</label>
+      		        <textarea class="form-control form-control-lg border border-success" id="how_hear_other" name="how_hear_other" placeholder="How here..." rows="4" minlength="10" required></textarea>
+      		        <div id="how_hear_other-error" class="invalid-feedback"></div>
+                    <small class="form-text text-muted">Maximum 1,000 characters.</small>
+                </div>
+
+
             </div>
             <!-- ############ end PERSON ############ -->
             <!-- ############ CONTACT POINT ############ -->
