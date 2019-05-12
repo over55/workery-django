@@ -14,6 +14,21 @@ class TaskItemFilter(django_filters.FilterSet):
         name="title",
         label="Title",)
 
+    o = django_filters.OrderingFilter(
+        # tuple-mapping retains order
+        fields=(
+            ('due_date', 'due_date'),
+            ('type_of', 'type_of'),
+            ('job__customer', 'client'),
+            ('job__associate', 'associate'),
+        ),
+
+        # # labels do not need to retain order
+        # field_labels={
+        #     'username': 'User account',
+        # }
+    )
+
     class Meta:
         model = TaskItem
         fields = [
