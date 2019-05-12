@@ -97,6 +97,10 @@ class ClosedTaskListView(LoginRequiredMixin, GroupRequiredMixin, WorkeryListView
             'last_modified_by'
         )
 
+        # Add more advanced filtering and ordering.
+        filter = TaskItemFilter(self.request.GET, queryset=queryset)
+        queryset = filter.qs
+
         # Filter out management staff restricted tasks from being loaded.
         if not self.request.user.is_executive() and not self.request.user.is_management_staff():
             queryset = queryset.exclude(type_of=UPDATE_ONGOING_JOB_TASK_ITEM_TYPE_OF_ID)
