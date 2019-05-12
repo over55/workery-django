@@ -272,17 +272,6 @@ class PendingTaskRetrieveFor48HourFollowUpView(LoginRequiredMixin, GroupRequired
 
 class UnassignedTaskListView(LoginRequiredMixin, GroupRequiredMixin, WorkeryListView):
     context_object_name = 'task_list'
-    queryset = TaskItem.objects.filter(
-        type_of=ASSIGNED_ASSOCIATE_TASK_ITEM_TYPE_OF_ID,
-        is_closed=False
-    ).prefetch_related(
-        'job',
-        'job__associate',
-        'job__customer',
-        'ongoing_job',
-        'created_by',
-        'last_modified_by'
-    )
     template_name = 'tenant_task/unassigned/list_view.html'
     paginate_by = 100
     menu_id = "task"
@@ -291,6 +280,34 @@ class UnassignedTaskListView(LoginRequiredMixin, GroupRequiredMixin, WorkeryList
         constants.MANAGEMENT_GROUP_ID,
         constants.FRONTLINE_GROUP_ID
     ]
+
+    def get_queryset(self):
+        """
+        Override the `get_queryset` function to include context based filtering.
+        """
+        queryset = TaskItem.objects.filter(
+            type_of=ASSIGNED_ASSOCIATE_TASK_ITEM_TYPE_OF_ID,
+            is_closed=False
+        ).prefetch_related(
+            'job',
+            'job__associate',
+            'job__customer',
+            'ongoing_job',
+            'created_by',
+            'last_modified_by'
+        )
+
+        # Add more advanced filtering and ordering.
+        filter = TaskItemFilter(self.request.GET, queryset=queryset)
+        queryset = filter.qs
+
+        # Filter out management staff restricted tasks from being loaded.
+        if not self.request.user.is_executive() and not self.request.user.is_management_staff():
+            queryset = queryset.exclude(type_of=UPDATE_ONGOING_JOB_TASK_ITEM_TYPE_OF_ID)
+            queryset = queryset.exclude(job__state=WORK_ORDER_STATE.COMPLETED_BUT_UNPAID)
+            queryset = queryset.exclude(job__state=WORK_ORDER_STATE.COMPLETED_AND_PAID)
+
+        return queryset
 
     def get_context_data(self, **kwargs):
         modified_context = super().get_context_data(**kwargs)
@@ -415,16 +432,20 @@ class FourtyEightHourFollowUpTaskListView(LoginRequiredMixin, GroupRequiredMixin
         Override the default queryset to allow dynamic filtering with
         GET parameterss using the 'django-filter' library.
         """
-        tasks = TaskItem.objects.filter(
+        queryset = TaskItem.objects.filter(
             type_of=FOLLOW_UP_IS_JOB_COMPLETE_TASK_ITEM_TYPE_OF_ID,
             is_closed=False
         )
 
         # Added our job state filtering.
-        tasks = tasks.order_by('due_date', 'job__associate__last_name',)
+        queryset = queryset.order_by('due_date', 'job__associate__last_name',)
+
+        # Add more advanced filtering and ordering.
+        filter = TaskItemFilter(self.request.GET, queryset=queryset)
+        queryset = filter.qs
 
         # Add optimization.
-        tasks = tasks.prefetch_related(
+        queryset = queryset.prefetch_related(
             'job',
             'job__associate',
             'job__customer',
@@ -432,7 +453,7 @@ class FourtyEightHourFollowUpTaskListView(LoginRequiredMixin, GroupRequiredMixin
             'created_by',
             'last_modified_by'
         )
-        return tasks
+        return queryset
 
     def get_context_data(self, **kwargs):
         modified_context = super().get_context_data(**kwargs)

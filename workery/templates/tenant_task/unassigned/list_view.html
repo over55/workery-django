@@ -75,8 +75,24 @@
             <thead>
                 <tr>
                     <th></th>
-                    <th>{% trans 'Due Date' %}</th>
-                    <th>{% trans 'Client' %}&nbsp;<i class="fas fa-external-link-alt"></i></th>
+                    <th>
+                        {% if parameters.o == "due_date" %}
+                            <a href="?o=-due_date">{% trans 'Due Date' %}&nbsp;<i class="fas fa-caret-up"></i></a>
+                        {% elif parameters.o == "-due_date" %}
+                            <a href="?o=">{% trans 'Due Date' %}&nbsp;<i class="fas fa-caret-down"></i></a>
+                        {% else %}
+                            <a href="?o=due_date">{% trans 'Due Date' %}</a>
+                        {% endif %}
+                    </th>
+                    <th>
+                        {% if parameters.o == "client" %}
+                            <a href="?o=-client">{% trans 'Client' %}&nbsp;<i class="fas fa-caret-up"></i></a>
+                        {% elif parameters.o == "-client" %}
+                            <a href="?o=">{% trans 'Client' %}&nbsp;<i class="fas fa-caret-down"></i></a>
+                        {% else %}
+                            <a href="?o=client">{% trans 'Client' %}</a>
+                        {% endif %}
+                    </th>
                     <th></th>
                 </tr>
             </thead>
@@ -99,7 +115,7 @@
                     <td>
                         {% if task_item.job %}
                             {% if task_item.job.customer %}
-                                <a href="{% url 'workery_tenant_customer_lite_retrieve' 'summary' task_item.job.customer.id %}" target="_blank">{{ task_item.job.customer.get_pretty_name }}</a>
+                                <a href="{% url 'workery_tenant_customer_lite_retrieve' 'summary' task_item.job.customer.id %}" target="_blank">{{ task_item.job.customer.get_pretty_name }}&nbsp;<i class="fas fa-external-link-alt"></i></a>
                             {% else %}
                                 {% trans 'Unassigned' %}
                             {% endif %}
