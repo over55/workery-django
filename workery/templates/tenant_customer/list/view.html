@@ -81,47 +81,47 @@
                     <th></th>
                     <th>
                         {% if parameters.o == "id" %}
-                            <a href="?o=-id">{% trans 'ID #' %}&nbsp;<i class="fas fa-caret-up"></i></a>
+                            <a href="?o=-id{% if page_obj.number %}&page={{ page_obj.number }}{% endif %}">{% trans 'ID #' %}&nbsp;<i class="fas fa-caret-up"></i></a>
                         {% elif parameters.o == "-id" %}
-                            <a href="?o=">{% trans 'ID #' %}&nbsp;<i class="fas fa-caret-down"></i></a>
+                            <a href="?o={% if page_obj.number %}&page={{ page_obj.number }}{% endif %}">{% trans 'ID #' %}&nbsp;<i class="fas fa-caret-down"></i></a>
                         {% else %}
-                            <a href="?o=id">{% trans 'ID #' %}</a>
+                            <a href="?o=id{% if page_obj.number %}&page={{ page_obj.number }}{% endif %}">{% trans 'ID #' %}</a>
                         {% endif %}
                     </th>
                     <th>
                         {% if parameters.o == "given_name" %}
-                            <a href="?o=-given_name">{% trans 'First Name' %}&nbsp;<i class="fas fa-caret-up"></i></a>
+                            <a href="?o=-given_name{% if page_obj.number %}&page={{ page_obj.number }}{% endif %}">{% trans 'First Name' %}&nbsp;<i class="fas fa-caret-up"></i></a>
                         {% elif parameters.o == "-given_name" %}
-                            <a href="?o=">{% trans 'First Name' %}&nbsp;<i class="fas fa-caret-down"></i></a>
+                            <a href="?o={% if page_obj.number %}&page={{ page_obj.number }}{% endif %}">{% trans 'First Name' %}&nbsp;<i class="fas fa-caret-down"></i></a>
                         {% else %}
-                            <a href="?o=given_name">{% trans 'First Name' %}</a>
+                            <a href="?o=given_name{% if page_obj.number %}&page={{ page_obj.number }}{% endif %}">{% trans 'First Name' %}</a>
                         {% endif %}
                     </th>
                     <th>
                         {% if parameters.o == "last_name" %}
-                            <a href="?o=-last_name">{% trans 'Last Name' %}&nbsp;<i class="fas fa-caret-up"></i></a>
+                            <a href="?o=-last_name{% if page_obj.number %}&page={{ page_obj.number }}{% endif %}">{% trans 'Last Name' %}&nbsp;<i class="fas fa-caret-up"></i></a>
                         {% elif parameters.o == "-last_name" %}
-                            <a href="?o=">{% trans 'Last Name' %}&nbsp;<i class="fas fa-caret-down"></i></a>
+                            <a href="?o={% if page_obj.number %}&page={{ page_obj.number }}{% endif %}">{% trans 'Last Name' %}&nbsp;<i class="fas fa-caret-down"></i></a>
                         {% else %}
-                            <a href="?o=last_name">{% trans 'Last Name' %}</a>
+                            <a href="?o=last_name{% if page_obj.number %}&page={{ page_obj.number }}{% endif %}">{% trans 'Last Name' %}</a>
                         {% endif %}
                     </th>
                     <th>
                         {% if parameters.o == "telephone" %}
-                            <a href="?o=-telephone">{% trans 'Phone' %}&nbsp;<i class="fas fa-caret-up"></i></a>
+                            <a href="?o=-telephone{% if page_obj.number %}&page={{ page_obj.number }}{% endif %}">{% trans 'Phone' %}&nbsp;<i class="fas fa-caret-up"></i></a>
                         {% elif parameters.o == "-telephone" %}
-                            <a href="?o=">{% trans 'Phone' %}&nbsp;<i class="fas fa-caret-down"></i></a>
+                            <a href="?o={% if page_obj.number %}&page={{ page_obj.number }}{% endif %}">{% trans 'Phone' %}&nbsp;<i class="fas fa-caret-down"></i></a>
                         {% else %}
-                            <a href="?o=telephone">{% trans 'Phone' %}</a>
+                            <a href="?o=telephone{% if page_obj.number %}&page={{ page_obj.number }}{% endif %}">{% trans 'Phone' %}</a>
                         {% endif %}
                     </th>
                     <th>
                         {% if parameters.o == "email" %}
-                            <a href="?o=-email">{% trans 'E-Mail' %}&nbsp;<i class="fas fa-caret-up"></i></a>
+                            <a href="?o=-email{% if page_obj.number %}&page={{ page_obj.number }}{% endif %}">{% trans 'E-Mail' %}&nbsp;<i class="fas fa-caret-up"></i></a>
                         {% elif parameters.o == "-email" %}
-                            <a href="?o=">{% trans 'E-Mail' %}&nbsp;<i class="fas fa-caret-down"></i></a>
+                            <a href="?o={% if page_obj.number %}&page={{ page_obj.number }}{% endif %}">{% trans 'E-Mail' %}&nbsp;<i class="fas fa-caret-down"></i></a>
                         {% else %}
-                            <a href="?o=email">{% trans 'E-Mail' %}</a>
+                            <a href="?o=email{% if page_obj.number %}&page={{ page_obj.number }}{% endif %}">{% trans 'E-Mail' %}</a>
                         {% endif %}
                     </th>
                     <th></th>
@@ -174,7 +174,7 @@
     </li>
     <li class="page-item">
 	 {% if page_obj.has_previous %}
-            <a class="page-link rounded-left" href="?page={{ page_obj.previous_page_number }}" aria-label="Previous">
+            <a class="page-link rounded-left" href="?page={{ page_obj.previous_page_number }}{% if parameters.o %}&o={{ parameters.o }}{% endif %}" aria-label="Previous">
 	    	<span aria-hidden="true">&laquo;</span>
         	<span class="sr-only">Previous</span>
 	    </a>
@@ -182,7 +182,7 @@
     </li>
     <li class="page-item">
 	{% if page_obj.has_next %}
-            <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Next">
+            <a class="page-link" href="?page={{ page_obj.next_page_number }}{% if parameters.o %}&o={{ parameters.o }}{% endif %}" aria-label="Next">
 	    	<span aria-hidden="true">&raquo;</span>
         	<span class="sr-only">Next</span>
 	    </a>

@@ -91,38 +91,38 @@
                 <tr>
                     <th>
                         {% if parameters.o == "given_name" %}
-                            <a href="?o=-given_name">{% trans 'First Name' %}&nbsp;<i class="fas fa-caret-up"></i></a>
+                            <a href="?o=-given_name{% if page_obj.number %}&page={{ page_obj.number }}{% endif %}">{% trans 'First Name' %}&nbsp;<i class="fas fa-caret-up"></i></a>
                         {% elif parameters.o == "-given_name" %}
-                            <a href="?o=">{% trans 'First Name' %}&nbsp;<i class="fas fa-caret-down"></i></a>
+                            <a href="?o={% if page_obj.number %}&page={{ page_obj.number }}{% endif %}">{% trans 'First Name' %}&nbsp;<i class="fas fa-caret-down"></i></a>
                         {% else %}
-                            <a href="?o=given_name">{% trans 'First Name' %}</a>
+                            <a href="?o=given_name{% if page_obj.number %}&page={{ page_obj.number }}{% endif %}">{% trans 'First Name' %}</a>
                         {% endif %}
                     </th>
                     <th>
                         {% if parameters.o == "last_name" %}
-                            <a href="?o=-last_name">{% trans 'Last Name' %}&nbsp;<i class="fas fa-caret-up"></i></a>
+                            <a href="?o=-last_name{% if page_obj.number %}&page={{ page_obj.number }}{% endif %}">{% trans 'Last Name' %}&nbsp;<i class="fas fa-caret-up"></i></a>
                         {% elif parameters.o == "-last_name" %}
-                            <a href="?o=">{% trans 'Last Name' %}&nbsp;<i class="fas fa-caret-down"></i></a>
+                            <a href="?o={% if page_obj.number %}&page={{ page_obj.number }}{% endif %}">{% trans 'Last Name' %}&nbsp;<i class="fas fa-caret-down"></i></a>
                         {% else %}
-                            <a href="?o=last_name">{% trans 'Last Name' %}</a>
+                            <a href="?o=last_name{% if page_obj.number %}&page={{ page_obj.number }}{% endif %}">{% trans 'Last Name' %}</a>
                         {% endif %}
                     </th>
                     <th>
                         {% if parameters.o == "telephone" %}
-                            <a href="?o=-telephone">{% trans 'Phone' %}&nbsp;<i class="fas fa-caret-up"></i></a>
+                            <a href="?o=-telephone{% if page_obj.number %}&page={{ page_obj.number }}{% endif %}">{% trans 'Phone' %}&nbsp;<i class="fas fa-caret-up"></i></a>
                         {% elif parameters.o == "-telephone" %}
-                            <a href="?o=">{% trans 'Phone' %}&nbsp;<i class="fas fa-caret-down"></i></a>
+                            <a href="?o={% if page_obj.number %}&page={{ page_obj.number }}{% endif %}">{% trans 'Phone' %}&nbsp;<i class="fas fa-caret-down"></i></a>
                         {% else %}
-                            <a href="?o=telephone">{% trans 'Phone' %}</a>
+                            <a href="?o=telephone{% if page_obj.number %}&page={{ page_obj.number }}{% endif %}">{% trans 'Phone' %}</a>
                         {% endif %}
                     </th>
                     <th>
                         {% if parameters.o == "email" %}
-                            <a href="?o=-email">{% trans 'E-Mail' %}&nbsp;<i class="fas fa-caret-up"></i></a>
+                            <a href="?o=-email{% if page_obj.number %}&page={{ page_obj.number }}{% endif %}">{% trans 'E-Mail' %}&nbsp;<i class="fas fa-caret-up"></i></a>
                         {% elif parameters.o == "-email" %}
-                            <a href="?o=">{% trans 'E-Mail' %}&nbsp;<i class="fas fa-caret-down"></i></a>
+                            <a href="?o={% if page_obj.number %}&page={{ page_obj.number }}{% endif %}">{% trans 'E-Mail' %}&nbsp;<i class="fas fa-caret-down"></i></a>
                         {% else %}
-                            <a href="?o=email">{% trans 'E-Mail' %}</a>
+                            <a href="?o=email{% if page_obj.number %}&page={{ page_obj.number }}{% endif %}">{% trans 'E-Mail' %}</a>
                         {% endif %}
                     </th>
                     <th>
@@ -161,15 +161,15 @@
     <div class="pagination">
         <span class="step-links">
         {% if page_obj.has_previous %}
-            <a href="?page=1">&laquo; first</a>
-            <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+            <a href="?page=1{% if parameters.o %}&o={{ parameters.o }}{% endif %}">&laquo; first</a>
+            <a href="?page={{ page_obj.previous_page_number }}{% if parameters.o %}&o={{ parameters.o }}{% endif %}">previous</a>
         {% endif %}
         <span class="current">
         Page {{ page_obj.number }} of {{ paginator.num_pages }}.
         </span>
         {% if page_obj.has_next %}
-            <a href="?page={{ page_obj.next_page_number }}">next</a>
-            <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+            <a href="?page={{ page_obj.next_page_number }}{% if parameters.o %}&o={{ parameters.o }}{% endif %}">next</a>
+            <a href="?page={{ page_obj.paginator.num_pages }}{% if parameters.o %}&o={{ parameters.o }}{% endif %}">last &raquo;</a>
         {% endif %}
         </span>
     </div>
