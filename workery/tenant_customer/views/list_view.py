@@ -34,6 +34,10 @@ class CustomerSummaryView(LoginRequiredMixin, GroupRequiredMixin, WorkeryListVie
             'last_name',
             'given_name',
         )
+
+        # The following code will use the 'django-filter'.
+        filter = CustomerFilter(self.request.GET, queryset=queryset)
+        queryset = filter.qs
         return queryset
 
 
@@ -56,7 +60,7 @@ class CustomerListView(LoginRequiredMixin, GroupRequiredMixin, WorkeryListView):
             'given_name',
         )
 
-        # The following code will use the 'django-filter'
+        # The following code will use the 'django-filter'.
         filter = CustomerFilter(self.request.GET, queryset=queryset)
         queryset = filter.qs
         return queryset

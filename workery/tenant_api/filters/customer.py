@@ -7,6 +7,21 @@ from django.db import models
 
 
 class CustomerFilter(django_filters.FilterSet):
+    o = django_filters.OrderingFilter(
+        # tuple-mapping retains order
+        fields=(
+            ('id', 'id'),
+            ('given_name', 'given_name'),
+            ('last_name', 'last_name'),
+            ('telephone', 'telephone'),
+            ('email', 'email'),
+        ),
+
+        # # labels do not need to retain order
+        # field_labels={
+        #     'username': 'User account',
+        # }
+    )
 
     def keyword_filtering(self, queryset, name, value):
         return Customer.objects.partial_text_search(value)

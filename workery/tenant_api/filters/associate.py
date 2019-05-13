@@ -6,6 +6,21 @@ from django.db import models
 
 
 class AssociateFilter(django_filters.FilterSet):
+    o = django_filters.OrderingFilter(
+        # tuple-mapping retains order
+        fields=(
+            ('id', 'id'),
+            ('first_name', 'first_name'),
+            ('last_name', 'last_name'),
+            ('telephone', 'telephone'),
+            ('email', 'email'),
+        ),
+
+        # # labels do not need to retain order
+        # field_labels={
+        #     'username': 'User account',
+        # }
+    )
 
     def keyword_filtering(self, queryset, name, value):
         return Associate.objects.partial_text_search(value)
