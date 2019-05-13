@@ -39,6 +39,9 @@ class TeamSummaryView(LoginRequiredMixin, GroupRequiredMixin, WorkeryListView):
         ).prefetch_related(
             'owner',
         )
+        # The following code will use the 'django-filter'
+        filter = StaffFilter(self.request.GET, queryset=queryset)
+        queryset = filter.qs
         return queryset
 
 

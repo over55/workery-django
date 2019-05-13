@@ -6,6 +6,23 @@ from django.db import models
 
 
 class StaffFilter(django_filters.FilterSet):
+    o = django_filters.OrderingFilter(
+        # tuple-mapping retains order
+        fields=(
+            ('id', 'id'),
+            ('given_name', 'given_name'),
+            ('last_name', 'last_name'),
+            ('telephone', 'telephone'),
+            ('email', 'email'),
+            ('join_date', 'join_date'),
+        ),
+
+        # # labels do not need to retain order
+        # field_labels={
+        #     'username': 'User account',
+        # }
+    )
+    
     class Meta:
         model = Staff
         fields = [
