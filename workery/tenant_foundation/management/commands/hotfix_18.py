@@ -64,13 +64,13 @@ class Command(BaseCommand):
         # https://stackoverflow.com/a/40423482
         #----------------------------------------------------------------------#
 
-        # # (1) PROCESS CUSTOMERS
-        # for customer in Customer.objects.iterator(chunk_size=250):
-        #     try:
-        #         with freeze_time(customer.last_modified):
-        #             customer.save()
-        #     except Exception as e:
-        #         print(e)
+        # (1) PROCESS CUSTOMERS
+        for customer in Customer.objects.iterator(chunk_size=250):
+            try:
+                with freeze_time(customer.last_modified):
+                    customer.save()
+            except Exception as e:
+                print(e)
 
         # (2) PROCESS ASSOCIATES
         for associate in Associate.objects.iterator(chunk_size=250):
