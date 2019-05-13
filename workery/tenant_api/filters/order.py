@@ -6,6 +6,24 @@ from django.db import models
 
 
 class WorkOrderFilter(django_filters.FilterSet):
+    o = django_filters.OrderingFilter(
+        # tuple-mapping retains order
+        fields=(
+            ('id', 'id'),
+            ('customer', 'client'),
+            ('associate', 'associate'),
+            ('assignment_date', 'assignment_date'),
+            ('start_date', 'start_date'),
+            ('completion_date', 'completion_date'),
+            ('state', 'state'),
+        ),
+
+        # # labels do not need to retain order
+        # field_labels={
+        #     'username': 'User account',
+        # }
+    )
+
     class Meta:
         model = WorkOrder
         fields = [

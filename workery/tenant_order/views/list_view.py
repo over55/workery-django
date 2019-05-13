@@ -18,14 +18,6 @@ from tenant_foundation.models import WorkOrder, WorkOrderComment, WORK_ORDER_STA
 
 class JobSummaryView(LoginRequiredMixin, GroupRequiredMixin, WorkeryListView):
     context_object_name = 'job_list'
-    queryset = WorkOrder.objects.filter(
-        Q(state=WORK_ORDER_STATE.NEW) |
-        Q(state=WORK_ORDER_STATE.IN_PROGRESS) |
-        Q(state=WORK_ORDER_STATE.DECLINED)
-    ).order_by('-id').prefetch_related(
-        'customer',
-        'associate'
-    )
     template_name = 'tenant_order/summary/view.html'
     paginate_by = 100
     menu_id = 'jobs'
@@ -34,6 +26,26 @@ class JobSummaryView(LoginRequiredMixin, GroupRequiredMixin, WorkeryListView):
         constants.MANAGEMENT_GROUP_ID,
         constants.FRONTLINE_GROUP_ID
     ]
+
+    def get_queryset(self):
+        """
+        Override the `get_queryset` function to include context based filtering.
+        """
+        queryset = WorkOrder.objects.filter(
+            Q(state=WORK_ORDER_STATE.NEW) |
+            Q(state=WORK_ORDER_STATE.IN_PROGRESS) |
+            Q(state=WORK_ORDER_STATE.DECLINED)
+        ).order_by('-id').prefetch_related(
+            'customer',
+            'associate'
+        )
+
+        # Add more advanced filtering and ordering.
+        filter = WorkOrderFilter(self.request.GET, queryset=queryset)
+        queryset = filter.qs
+
+        # Return.
+        return queryset
 
     def get_context_data(self, **kwargs):
         modified_context = super().get_context_data(**kwargs)

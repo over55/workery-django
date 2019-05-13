@@ -73,12 +73,60 @@
             <thead>
                 <tr>
                     <th></th>
-                    <th>{% trans 'Job #' %}</th>
-                    <th>{% trans 'Client' %}&nbsp;<i class="fas fa-external-link-alt"></i></th>
-                    <th>{% trans 'Associate' %}&nbsp;<i class="fas fa-external-link-alt"></i></th>
-                    <th>{% trans 'Assignment Date' %}</th>
-                    <th>{% trans 'Start Date' %}</th>
-                    <th>{% trans 'Status' %}</th>
+                    <th>
+                        {% if parameters.o == "id" %}
+                            <a href="?o=-id">{% trans 'Job #' %}&nbsp;<i class="fas fa-caret-up"></i></a>
+                        {% elif parameters.o == "-id" %}
+                            <a href="?o=">{% trans 'Job #' %}&nbsp;<i class="fas fa-caret-down"></i></a>
+                        {% else %}
+                            <a href="?o=id">{% trans 'Job #' %}</a>
+                        {% endif %}
+                    </th>
+                    <th>
+                        {% if parameters.o == "client" %}
+                            <a href="?o=-client">{% trans 'Client' %}&nbsp;<i class="fas fa-caret-up"></i></a>
+                        {% elif parameters.o == "-client" %}
+                            <a href="?o=">{% trans 'Client' %}&nbsp;<i class="fas fa-caret-down"></i></a>
+                        {% else %}
+                            <a href="?o=client">{% trans 'Client' %}</a>
+                        {% endif %}
+                    </th>
+                    <th>
+                        {% if parameters.o == "associate" %}
+                            <a href="?o=-associate">{% trans 'Associate' %}&nbsp;<i class="fas fa-caret-up"></i></a>
+                        {% elif parameters.o == "-associate" %}
+                            <a href="?o=">{% trans 'Associate' %}&nbsp;<i class="fas fa-caret-down"></i></a>
+                        {% else %}
+                            <a href="?o=associate">{% trans 'Associate' %}</a>
+                        {% endif %}
+                    </th>
+                    <th>
+                        {% if parameters.o == "assignment_date" %}
+                            <a href="?o=-assignment_date">{% trans 'Assigned Date' %}&nbsp;<i class="fas fa-caret-up"></i></a>
+                        {% elif parameters.o == "-assignment_date" %}
+                            <a href="?o=">{% trans 'Assigned Date' %}&nbsp;<i class="fas fa-caret-down"></i></a>
+                        {% else %}
+                            <a href="?o=assignment_date">{% trans 'Assigned Date' %}</a>
+                        {% endif %}
+                    </th>
+                    <th>
+                        {% if parameters.o == "start_date" %}
+                            <a href="?o=-start_date">{% trans 'Start Date' %}&nbsp;<i class="fas fa-caret-up"></i></a>
+                        {% elif parameters.o == "-start_date" %}
+                            <a href="?o=">{% trans 'Start Date' %}&nbsp;<i class="fas fa-caret-down"></i></a>
+                        {% else %}
+                            <a href="?o=start_date">{% trans 'Start Date' %}</a>
+                        {% endif %}
+                    </th>
+                    <th>
+                        {% if parameters.o == "state" %}
+                            <a href="?o=-state">{% trans 'Status' %}&nbsp;<i class="fas fa-caret-up"></i></a>
+                        {% elif parameters.o == "-state" %}
+                            <a href="?o=">{% trans 'Status' %}&nbsp;<i class="fas fa-caret-down"></i></a>
+                        {% else %}
+                            <a href="?o=state">{% trans 'Status' %}</a>
+                        {% endif %}
+                    </th>
                     {% if user_is_management_or_executive_staff %}
                     <th></th>
                     <th></th>
@@ -111,13 +159,13 @@
                                 {{ job.customer }}
                                 {% if job.customer.state == CUSTOMER_STATE.INACTIVE %}
                                     <strong>(Deactivated)</strong>
-                                {% endif %}
+                                {% endif %}&nbsp;<i class="fas fa-external-link-alt"></i>
                             </a>
                         {% else %}-{% endif %}
                     </td>
                     <td>
                         {% if job.associate %}
-                            <a href="{% url 'workery_tenant_member_lite_retrieve' 'summary' job.associate.id %}" target="_blank">{{ job.associate }}&nbsp;{% if task_item.job.state == WORK_ORDER_STATE.PENDING %}(Pending){% endif %}</a>
+                            <a href="{% url 'workery_tenant_member_lite_retrieve' 'summary' job.associate.id %}" target="_blank">{{ job.associate }}&nbsp;{% if task_item.job.state == WORK_ORDER_STATE.PENDING %}(Pending){% endif %}&nbsp;<i class="fas fa-external-link-alt"></i></a>
                         {% else %}-{% endif %}
                     </td>
                     <td>{% if job.assignment_date %}{{ job.assignment_date }}{% else %}-{% endif %}</td>
