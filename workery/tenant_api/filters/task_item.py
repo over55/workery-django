@@ -19,8 +19,8 @@ class TaskItemFilter(django_filters.FilterSet):
         fields=(
             ('due_date', 'due_date'),
             ('type_of', 'type_of'),
-            ('job__customer', 'client'),
-            ('job__associate', 'associate'),
+            ('job__customer__indexed_text', 'client'),
+            ('job__associate__indexed_text', 'associate'),
         ),
 
         # # labels do not need to retain order

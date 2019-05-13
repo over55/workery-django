@@ -369,13 +369,14 @@ class Associate(AbstractPerson):
         The following code will populate our indexed_custom search text with
         the latest model data before we save.
         '''
-        search_text = str(self.id)
-        if self.given_name:
-            search_text += " " + self.given_name
-        if self.middle_name:
-            search_text += " " + self.middle_name
+        search_text = ""
         if self.last_name:
             search_text += " " + self.last_name
+        if self.middle_name:
+            search_text += " " + self.middle_name
+        if self.given_name:
+            search_text += " " + self.given_name
+        search_text += " " + str(self.id)
         if self.email:
             search_text += " " + self.email
         if self.telephone:
