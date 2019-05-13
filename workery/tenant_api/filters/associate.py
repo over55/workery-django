@@ -10,10 +10,11 @@ class AssociateFilter(django_filters.FilterSet):
         # tuple-mapping retains order
         fields=(
             ('id', 'id'),
-            ('first_name', 'first_name'),
+            ('given_name', 'given_name'),
             ('last_name', 'last_name'),
             ('telephone', 'telephone'),
             ('email', 'email'),
+            ('join_date', 'join_date'),
         ),
 
         # # labels do not need to retain order

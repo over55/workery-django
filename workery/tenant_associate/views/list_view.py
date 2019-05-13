@@ -39,6 +39,10 @@ class MemberSummaryView(LoginRequiredMixin, GroupRequiredMixin, WorkeryListView)
             'last_name',
             'given_name',
         )
+
+        # The following code will use the 'django-filter'.
+        filter = AssociateFilter(self.request.GET, queryset=queryset)
+        queryset = filter.qs
         return queryset
 
 
@@ -63,4 +67,8 @@ class MemberListView(LoginRequiredMixin, GroupRequiredMixin, WorkeryListView):
             'last_name',
             'given_name',
         ).prefetch_related('owner')
+
+        # The following code will use the 'django-filter'.
+        filter = AssociateFilter(self.request.GET, queryset=queryset)
+        queryset = filter.qs
         return queryset

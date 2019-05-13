@@ -63,12 +63,60 @@
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th>{% trans '#' %}</th>
-                    <th>{% trans 'First Name' %}</th>
-                    <th>{% trans 'Last Name' %}</th>
-                    <th>{% trans 'Phone' %}</th>
-                    <th>{% trans 'E-Mail' %}</th>
-                    <th>{% trans 'Joined' %}</th>
+                    <th>
+                        {% if parameters.o == "id" %}
+                            <a href="?o=-id">{% trans 'ID #' %}&nbsp;<i class="fas fa-caret-up"></i></a>
+                        {% elif parameters.o == "-id" %}
+                            <a href="?o=">{% trans 'ID #' %}&nbsp;<i class="fas fa-caret-down"></i></a>
+                        {% else %}
+                            <a href="?o=id">{% trans 'ID #' %}</a>
+                        {% endif %}
+                    </th>
+                    <th>
+                        {% if parameters.o == "given_name" %}
+                            <a href="?o=-given_name">{% trans 'First Name' %}&nbsp;<i class="fas fa-caret-up"></i></a>
+                        {% elif parameters.o == "-given_name" %}
+                            <a href="?o=">{% trans 'First Name' %}&nbsp;<i class="fas fa-caret-down"></i></a>
+                        {% else %}
+                            <a href="?o=given_name">{% trans 'First Name' %}</a>
+                        {% endif %}
+                    </th>
+                    <th>
+                        {% if parameters.o == "last_name" %}
+                            <a href="?o=-last_name">{% trans 'Last Name' %}&nbsp;<i class="fas fa-caret-up"></i></a>
+                        {% elif parameters.o == "-last_name" %}
+                            <a href="?o=">{% trans 'Last Name' %}&nbsp;<i class="fas fa-caret-down"></i></a>
+                        {% else %}
+                            <a href="?o=last_name">{% trans 'Last Name' %}</a>
+                        {% endif %}
+                    </th>
+                    <th>
+                        {% if parameters.o == "telephone" %}
+                            <a href="?o=-telephone">{% trans 'Phone' %}&nbsp;<i class="fas fa-caret-up"></i></a>
+                        {% elif parameters.o == "-telephone" %}
+                            <a href="?o=">{% trans 'Phone' %}&nbsp;<i class="fas fa-caret-down"></i></a>
+                        {% else %}
+                            <a href="?o=telephone">{% trans 'Phone' %}</a>
+                        {% endif %}
+                    </th>
+                    <th>
+                        {% if parameters.o == "email" %}
+                            <a href="?o=-email">{% trans 'E-Mail' %}&nbsp;<i class="fas fa-caret-up"></i></a>
+                        {% elif parameters.o == "-email" %}
+                            <a href="?o=">{% trans 'E-Mail' %}&nbsp;<i class="fas fa-caret-down"></i></a>
+                        {% else %}
+                            <a href="?o=email">{% trans 'E-Mail' %}</a>
+                        {% endif %}
+                    </th>
+                    <th>
+                        {% if parameters.o == "join_date" %}
+                            <a href="?o=-join_date">{% trans 'Joined' %}&nbsp;<i class="fas fa-caret-up"></i></a>
+                        {% elif parameters.o == "-join_date" %}
+                            <a href="?o=">{% trans 'Joined' %}&nbsp;<i class="fas fa-caret-down"></i></a>
+                        {% else %}
+                            <a href="?o=join_date">{% trans 'Joined' %}</a>
+                        {% endif %}
+                    </th>
                     <th></th>
                 </tr>
             </thead>
