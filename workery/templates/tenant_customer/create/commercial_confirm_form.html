@@ -13,7 +13,7 @@
         $('#selected_phonenumber').append(localStorage.getItem("tmp_commercial_customer_telephone"));
         $('#selected_other_phonenumber').append(localStorage.getItem("tmp_commercial_customer_other_telephone"));
         $('#selected_dob').append(localStorage.getItem("tmp_commercial_customer_date_of_birth"));
-        $('#selected_gender').append(localStorage.getItem("tmp_commercial_customer_gender"));
+        $('#selected_join_date').append(localStorage.getItem("tmp_commercial_customer_join_date"));
         $("#selected_ok_to_email").append(localStorage.getItem("tmp_commercial_customer_ok_to_email"));
         $("#selected_ok_to_text").append(localStorage.getItem("tmp_commercial_customer_ok_to_text"));
         $('#selected_street_address').append(localStorage.getItem("tmp_commercial_customer_street_address"));
@@ -108,7 +108,6 @@
                 'middle_name': null,
                 'last_name': localStorage.getItem("tmp_commercial_customer_last_name"),
                 'birthdate': localStorage.getItem("tmp_commercial_customer_date_of_birth"),
-                'gender': localStorage.getItem("tmp_commercial_customer_gender"),
                 'nationality': null,
                 'is_ok_to_email': localStorage.getItem("tmp_commercial_customer_ok_to_email"),
                 'is_ok_to_text': localStorage.getItem("tmp_commercial_customer_ok_to_text"),
@@ -135,6 +134,7 @@
                 'tags': localStorage.getObj("tmp_commercial_customer_person_tag_ids"),
                 'description': localStorage.getItem("tmp_commercial_customer_description"),
                 'extra_comment': localStorage.getItem("tmp_commercial_customer_comment"),
+                'join_date': localStorage.getItem("tmp_commercial_customer_join_date"),
                 'how_hear': localStorage.getItem("tmp_commercial_customer_how_hear"),
                 'how_hear_other': localStorage.getItem("tmp_commercial_customer_how_hear_other"),
 
@@ -162,7 +162,6 @@
                 localStorage.removeItem("tmp_commercial_customer_given_name");
                 localStorage.removeItem("tmp_commercial_customer_last_name");
                 localStorage.removeItem("tmp_commercial_customer_date_of_birth");
-                localStorage.removeItem("tmp_commercial_customer_gender");
                 localStorage.removeItem("tmp_commercial_customer_ok_to_email");
                 localStorage.removeItem("tmp_commercial_customer_ok_to_text");
                 localStorage.removeItem("tmp_commercial_customer_street_address");
@@ -185,6 +184,7 @@
                 localStorage.removeItem("tmp_commercial_customer_company_tag_values");
                 localStorage.removeItem("tmp_commercial_customer_description")
                 localStorage.removeItem("tmp_commercial_customer_comment")
+                localStorage.removeItem("tmp_commercial_customer_join_date")
                 localStorage.removeItem("tmp_commercial_customer_how_hear")
                 localStorage.removeItem("tmp_commercial_customer_how_hear_other")
 
@@ -308,11 +308,11 @@
        </td>
      </tr>
      <tr>
-       <th scope="row" class="bg-light">Gender</th>
-       <td id="selected_gender">
-           <!-- POPULATE THROUGH JS. -->
-       </td>
-     </tr>
+        <th scope="row" class="bg-light">Join date</th>
+        <td id="selected_join_date">
+            <!-- THIS IS WHERE THE JOIN DATE GOES -->
+        </td>
+      </tr>
      <tr>
        <th scope="row" class="bg-light">Okay to Email?</th>
        <td id="selected_ok_to_email">

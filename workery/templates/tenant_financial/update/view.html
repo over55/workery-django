@@ -119,7 +119,7 @@
 
         // Calculate
         var total_amount = 0;
-        total_amount = invoice_labour_amount + invoice_material_amount;
+        total_amount = invoice_labour_amount + invoice_material_amount + invoice_tax_amount;
         service_fee = service_fee / 100.0;
         service_fee = service_fee * invoice_labour_amount; // Service fee is only applied to the "actual labour".
 

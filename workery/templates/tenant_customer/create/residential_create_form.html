@@ -12,6 +12,13 @@
 		    yearRange: "c-120:c+150",
 	        maxDate: 'today',
         });
+        $( "#join_date" ).datepicker({
+            dateFormat: 'yy-mm-dd',
+            changeMonth: true,
+            changeYear: true,
+            yearRange: "c-120:c+150",
+            maxDate: 'today'
+        });
 
 	// PLUG IN EVENT LISTENER ON REASON DROPDOWN CHANGE.
         $('#how_hear').on('change',function(){
@@ -35,7 +42,6 @@
         $('#telephone').val(localStorage.getItem("tmp_residential_customer_telephone"));
         $('#other_telephone').val(localStorage.getItem("tmp_residential_customer_other_telephone"));
         $('#birthdate').val(localStorage.getItem("tmp_residential_customer_date_of_birth"));
-        $('#gender').val(localStorage.getItem("tmp_residential_customer_gender"));
         $("input[name=is_ok_to_email][value=" + localStorage.getItem("tmp_residential_customer_ok_to_email") + "]").prop('checked', true);
         $("input[name=is_ok_to_text][value=" + localStorage.getItem("tmp_residential_customer_ok_to_text") + "]").prop('checked', true);
         $('#street_address').val(localStorage.getItem("tmp_residential_customer_street_address"));
@@ -51,6 +57,7 @@
         $('#password_repeat').val(localStorage.getItem("tmp_residential_customer_password_repeat"));
         $('#description').val(localStorage.getItem("tmp_residential_customer_description"));
         $('#comment').val(localStorage.getItem("tmp_residential_customer_comment"));
+        $('#join_date').val(localStorage.getItem("tmp_residential_customer_join_date"));
         $('#how_hear').val(localStorage.getItem("tmp_residential_customer_how_hear"));
         $('#how_hear_other').val(localStorage.getItem("tmp_residential_customer_how_hear_other"));
 
@@ -279,10 +286,6 @@
         } else {
             date_of_birth = '';
         }
-        var gender = $('#gender').val();
-        if (gender == undefined || gender == null || gender.length == 0) {
-            gender = '';
-        }
         var ok_to_email = get_selected_radio_value('is_ok_to_email');
         var ok_to_text = get_selected_radio_value('is_ok_to_text');
         var street_address = $('#street_address').val();
@@ -313,6 +316,14 @@
         var how_hear = $('#how_hear').val();
         var how_hear_other = $('#how_hear_other').val();
 
+        var join_date = $('#join_date').val();
+        if (join_date !== undefined && join_date != null && join_date.length > 0) {
+            var mydate = new Date(join_date); // Convert "MM DD, YYYY" to JS DATE
+            join_date = mydate.toISOString().substring(0, 10); // Convert JS DATE to "YYYY-MM-DD"
+        } else {
+            join_date = '';
+        }
+
         //----------------------------------------------------------------//
         //             SAVE THE EXTRACTED DATA INTO LOCAL STORAGE         //
         //----------------------------------------------------------------//
@@ -320,7 +331,6 @@
         localStorage.setItem("tmp_residential_customer_given_name", given_name);
         localStorage.setItem("tmp_residential_customer_last_name", last_name);
         localStorage.setItem("tmp_residential_customer_date_of_birth", date_of_birth);
-        localStorage.setItem("tmp_residential_customer_gender", gender);
         localStorage.setItem("tmp_residential_customer_ok_to_email", ok_to_email);
         localStorage.setItem("tmp_residential_customer_ok_to_text", ok_to_text);
         localStorage.setItem("tmp_residential_customer_street_address", street_address);
@@ -337,6 +347,7 @@
         localStorage.setItem("tmp_residential_customer_password_repeat", password_repeat);
         localStorage.setItem("tmp_residential_customer_description", description);
         localStorage.setItem("tmp_residential_customer_comment", comment);
+        localStorage.setItem("tmp_residential_customer_join_date", join_date);
         localStorage.setItem("tmp_residential_customer_how_hear", how_hear);
         localStorage.setItem("tmp_residential_customer_how_hear_other", how_hear_other);
 
@@ -379,7 +390,6 @@
                 'middle_name': null,
                 'last_name': localStorage.getItem("tmp_residential_customer_last_name"),
                 'birthdate': localStorage.getItem("tmp_residential_customer_date_of_birth"),
-                'gender': localStorage.getItem("tmp_residential_customer_gender"),
                 'nationality': null,
                 'is_ok_to_email': localStorage.getItem("tmp_residential_customer_ok_to_email"),
                 'is_ok_to_text': localStorage.getItem("tmp_residential_customer_ok_to_text"),
@@ -408,6 +418,7 @@
                 'extra_comment': localStorage.getItem("tmp_residential_customer_comment"),
                 'organization_name': null, // LEAVE ALONE AS IS.
                 'organization_type_of': null, // LEAVE ALONE AS IS.
+                'join_date': localStorage.getItem("tmp_residential_customer_join_date"),
                 'how_hear': how_hear,
                 'how_hear_other': how_hear_other,
             },
@@ -502,16 +513,6 @@
                     </div>
                     <div id="birthdate-error" class="invalid-feedback"></div>
                 </div>
-            </div>
-            <div class="form-group col-md-7 mb-4 p-0">
-                <label for="gender">Gender</label>
-                <select class="custom-select form-control-lg border-primary" id="gender" name="gender" required>
-                    <option value="" selected>Gender...</option>
-                    <option value="male">Male</option>
-                    <option value="female">Female</option>
-                    <option value="prefer not to say">Prefer not to say</option>
-                </select>
-                <div id="gender-error" class="invalid-feedback"></div>
             </div>
             <div class="form-group col-md-12 mb-4 p-0">
   		      <label for="describe" class="font-b6">Describe the client:</label>
@@ -641,6 +642,16 @@
                 <div id="how_hear_other-error" class="invalid-feedback"></div>
             </div>
             <!-- end HOW HEAR (OTHER) -->
+            <div class="form-group col-md-7 mb-4">
+                <label for="join_date">Join Date <sup>*</sup></label>
+                <div class="input-group input-group-lg">
+                    <input type="text" class="form-control form-control-lg border border-primary date-box" id="join_date" name="join_date" placeholder="yyyy-mm-dd" readonly="true" required>
+                    <div class="input-group-append">
+                        <span class="input-group-text c-icon-white bg-primary border-primary"><i class="far fa-calendar-alt"></i></span>
+                    </div>
+                    <div id="join_date-error" class="invalid-feedback"></div>
+                </div>
+            </div>
         </div>
         <!-- ############ end INTERNAL METRICS ############ -->
 
