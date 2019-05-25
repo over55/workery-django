@@ -81,7 +81,7 @@ class CustomerListCreateSerializer(serializers.ModelSerializer):
     email = serializers.EmailField(
         validators=[
             UniqueValidator(queryset=SharedUser.objects.all()),
-
+            
         ],
         required=False,
     )

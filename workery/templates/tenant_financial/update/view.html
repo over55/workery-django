@@ -173,6 +173,17 @@
         var invoice_service_fee_payment_date = $('#invoice_service_fee_payment_date').val();
         var invoice_balance_owing_amount = $('#invoice_balance_owing_amount').val();
 
+        var was_survey_conducted = false;
+        var was_there_financials_inputted = false;
+        var was_job_satisfactory = false;
+        var was_job_finished_on_time_and_on_budget = false;
+        var was_associate_punctual = false;
+        var was_associate_professional = false;
+        var would_customer_refer_our_organization = false;
+        var additional_comment = "";
+        var reason_other = "";
+        var reason = 4;
+
         // Get our service fee id.
         var invoice_service_fee_str = $('#service_fees').val();
         var invoice_service_fee_arr = invoice_service_fee_str.split("|");
@@ -229,78 +240,145 @@
         disable_btn(); // Disable the submit button.
 
         // Submit to our API web-service.
-        update_job_api(
-            {{ job_item.id }},
-            {
-                'customer': customer_id,
-                'associate': associate_id,
-                'extra_comment': null,
-                'visits': visits,
-                'invoice_date': invoice_date,
-                'invoice_ids': invoice_ids,
-                'invoice_quote_amount': invoice_quote_amount,
-                'invoice_quoted_labour_amount': invoice_quoted_labour_amount,
-                'invoice_labour_amount': invoice_labour_amount,
-                'invoice_quoted_material_amount': invoice_quoted_material_amount,
-                'invoice_material_amount': invoice_material_amount,
-                'invoice_total_quote_amount': invoice_total_quote_amount,
-                'invoice_tax_amount': invoice_tax_amount,
-                'invoice_total_amount': invoice_total_amount,
-                'invoice_service_fee_amount': invoice_service_fee_amount,
-                'invoice_service_fee': invoice_service_fee_id,
-                'invoice_actual_service_fee_amount_paid': invoice_actual_service_fee_amount_paid,
-                'invoice_service_fee_payment_date': invoice_service_fee_payment_date,
-                'state': payment_job_status,
-                'invoice_balance_owing_amount': invoice_balance_owing_amount,
-            },
-            function(result_dict) { // Success
-                // FOR DEBUGGING PURPOSES ONLY.
-                console.log(result_dict);
+        if ((payment_job_status == "{{ WORK_ORDER_STATE.COMPLETED_BUT_UNPAID }}") && ((invoice_labour_amount == 0) || (invoice_material_amount == 0))) {
+            post_incompleted_order_close_operation_api(
+                {
+                    'job': {{ job_item.id }},
+                    'reason': reason,
+                    'reason_other': reason_other,
+                    'additional_comment': additional_comment,
+                    'was_survey_conducted': was_survey_conducted,
+                    'was_there_financials_inputted': was_there_financials_inputted,
+                    'was_job_satisfactory': was_job_satisfactory,
+                    'was_job_finished_on_time_and_on_budget': was_job_finished_on_time_and_on_budget,
+                    'was_associate_punctual': was_associate_punctual,
+                    'was_associate_professional': was_associate_professional,
+                    'would_customer_refer_our_organization': would_customer_refer_our_organization,
+                    'invoice_date': invoice_date,
+                    'invoice_ids': invoice_ids,
+                    'invoice_quote_amount': invoice_quote_amount,
+                    'invoice_labour_amount': invoice_labour_amount,
+                    'invoice_material_amount': invoice_material_amount,
+                    'invoice_tax_amount': invoice_tax_amount,
+                    'invoice_total_amount': invoice_total_amount,
+                    'invoice_service_fee_amount': invoice_service_fee_amount
+                },
+                function(result_dict) { // Success
+                    // FOR DEBUGGING PURPOSES ONLY.
+                    console.log(result_dict);
 
-                // REDIRECT TO SUCCESS PAGE BASED ON STATUS.
-                if (payment_job_status == "{{ WORK_ORDER_STATE.COMPLETED_AND_PAID }}") {
-                    window.location = "{% url 'workery_tenant_financlial_job_retrieve' 'paid-jobs' job_item.id %}?was_modified=True";
-                }
-                if (payment_job_status == "{{ WORK_ORDER_STATE.COMPLETED_BUT_UNPAID }}") {
-                    window.location = "{% url 'workery_tenant_financlial_job_retrieve' 'unpaid-jobs' job_item.id %}?was_modified=True";
-                }
+                    // REDIRECT TO SUCCESS PAGE.
+                    window.location = "{% url 'workery_tenant_job_retrieve' 'list' job_item.id %}?was_modified=True";
+                },
+                function(xhr,status,error) { // Error
+                    // UNLOCK THE "SUBMIT" BUTTON TO BE AVAILABLE FOR USAGE.
+                    enable_btn();
 
-            },
-            function(xhr,status,error) { // Error
-                enable_btn(); // Enable the submit button.
+                    // STEP 1: Convert to JSON.
+                    var err = JSON.parse(xhr.responseText);
 
-                // STEP 1: Convert to JSON.
-                var err = JSON.parse(xhr.responseText);
+                    // For debugging purposes only.
+                    console.log(err);
 
-                // For debugging purposes only.
-                console.log(err);
+                    // STEP 2: CLEAR EXISTING TEXT.
+                    $('#all_error_result').html("");
+                    $('#all_error_result').removeClass('error-block');
 
-                // STEP 2: CLEAR EXISTING TEXT.
-                $('#all_error_result').html("");
-		        $('#all_error_result').removeClass('error-block');
-                // STEP 3: PRINT OUR ERROR.
-                for(var prop in err) {
-                    if(err.hasOwnProperty(prop)) {
-                        var val = err[prop];
-                        console.log(val);
-                        var fdname = humanize(prop);
-            			// Errors box code
-                                    $('#all_error_result').append("<div class='form-error'><b>"+fdname+":</b> "+val+" </div>");
-            			$('#all_error_result').addClass('error-block');
-            			// Inline fields errors code
-            			$('#'+prop+'-error').html("<ul><li>"+val+"</li></ul>");
-            			$('#update-job-form').addClass('was-validated');
+                    // STEP 3: PRINT OUR ERROR.
+                    for(var prop in err) {
+                        if(err.hasOwnProperty(prop)) {
+                            var val = err[prop];
+                            var fdname = humanize(prop);
+                            // Errors box code
+                            $('#all_error_result').append("<div class='form-error'><b>"+fdname+":</b> "+val+" </div>");
+                            $('#all_error_result').addClass('error-block');
+                            // Inline fields errors code
+                            $('#'+prop+'-error').html("<ul><li>"+val+"</li></ul>");
+                            $('#add-client-form').addClass('was-validated');
+                        }
                     }
-                }
 
-                // STEP 4: FOCUS TO WHERE THE ERROR IS OCCURING.
-                $('html, body').animate({ scrollTop: $('#id_page_title').offset().top }, 'slow');
-            },
-            function() { // Finally
-                // UNLOCK THE "SUBMIT" BUTTON TO BE AVAILABLE FOR USAGE.
-                // enable_btn();
-            }
-        );
+                    // STEP 4: FOCUS TO WHERE THE ERROR IS OCCURING.
+                    $('html, body').animate({ scrollTop: $('#id_page_title').offset().top }, 'slow');
+                },
+                function() { // Finally
+                    // UNLOCK THE "SUBMIT" BUTTON TO BE AVAILABLE FOR USAGE.
+                    // enable_btn();
+                }
+            );
+        } else {
+            update_job_api(
+                {{ job_item.id }},
+                {
+                    'customer': customer_id,
+                    'associate': associate_id,
+                    'extra_comment': null,
+                    'visits': visits,
+                    'invoice_date': invoice_date,
+                    'invoice_ids': invoice_ids,
+                    'invoice_quote_amount': invoice_quote_amount,
+                    'invoice_quoted_labour_amount': invoice_quoted_labour_amount,
+                    'invoice_labour_amount': invoice_labour_amount,
+                    'invoice_quoted_material_amount': invoice_quoted_material_amount,
+                    'invoice_material_amount': invoice_material_amount,
+                    'invoice_total_quote_amount': invoice_total_quote_amount,
+                    'invoice_tax_amount': invoice_tax_amount,
+                    'invoice_total_amount': invoice_total_amount,
+                    'invoice_service_fee_amount': invoice_service_fee_amount,
+                    'invoice_service_fee': invoice_service_fee_id,
+                    'invoice_actual_service_fee_amount_paid': invoice_actual_service_fee_amount_paid,
+                    'invoice_service_fee_payment_date': invoice_service_fee_payment_date,
+                    'state': payment_job_status,
+                    'invoice_balance_owing_amount': invoice_balance_owing_amount,
+                },
+                function(result_dict) { // Success
+                    // FOR DEBUGGING PURPOSES ONLY.
+                    console.log(result_dict);
+
+                    // REDIRECT TO SUCCESS PAGE BASED ON STATUS.
+                    if (payment_job_status == "{{ WORK_ORDER_STATE.COMPLETED_AND_PAID }}") {
+                        window.location = "{% url 'workery_tenant_financlial_job_retrieve' 'paid-jobs' job_item.id %}?was_modified=True";
+                    }
+                    if (payment_job_status == "{{ WORK_ORDER_STATE.COMPLETED_BUT_UNPAID }}") {
+                        window.location = "{% url 'workery_tenant_financlial_job_retrieve' 'unpaid-jobs' job_item.id %}?was_modified=True";
+                    }
+                },
+                function(xhr,status,error) { // Error
+                    enable_btn(); // Enable the submit button.
+
+                    // STEP 1: Convert to JSON.
+                    var err = JSON.parse(xhr.responseText);
+
+                    // For debugging purposes only.
+                    console.log(err);
+
+                    // STEP 2: CLEAR EXISTING TEXT.
+                    $('#all_error_result').html("");
+                    $('#all_error_result').removeClass('error-block');
+                    // STEP 3: PRINT OUR ERROR.
+                    for(var prop in err) {
+                        if(err.hasOwnProperty(prop)) {
+                            var val = err[prop];
+                            console.log(val);
+                            var fdname = humanize(prop);
+                            // Errors box code
+                                        $('#all_error_result').append("<div class='form-error'><b>"+fdname+":</b> "+val+" </div>");
+                            $('#all_error_result').addClass('error-block');
+                            // Inline fields errors code
+                            $('#'+prop+'-error').html("<ul><li>"+val+"</li></ul>");
+                            $('#update-job-form').addClass('was-validated');
+                        }
+                    }
+
+                    // STEP 4: FOCUS TO WHERE THE ERROR IS OCCURING.
+                    $('html, body').animate({ scrollTop: $('#id_page_title').offset().top }, 'slow');
+                },
+                function() { // Finally
+                    // UNLOCK THE "SUBMIT" BUTTON TO BE AVAILABLE FOR USAGE.
+                    // enable_btn();
+                }
+            );
+        }
     }
 
     /**
