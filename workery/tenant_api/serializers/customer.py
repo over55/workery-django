@@ -47,7 +47,7 @@ class CustomerListCreateSerializer(serializers.ModelSerializer):
         validators=[]
     )
     gender = serializers.CharField(
-        required=False,
+        required=True,
         allow_blank=False,
         allow_null=False,
     )

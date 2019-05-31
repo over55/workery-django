@@ -12,6 +12,7 @@
         $('#selected_phonenumber').append(localStorage.getItem("tmp_residential_customer_telephone"));
         $('#selected_other_phonenumber').append(localStorage.getItem("tmp_residential_customer_other_telephone"));
         $('#selected_dob').append(localStorage.getItem("tmp_residential_customer_date_of_birth"));
+        $('#selected_gender').append(localStorage.getItem("tmp_residential_customer_gender"));
         $('#selected_join_date').append(localStorage.getItem("tmp_residential_customer_join_date"));
         $("#selected_ok_to_email").append(localStorage.getItem("tmp_residential_customer_ok_to_email"));
         $("#selected_ok_to_text").append(localStorage.getItem("tmp_residential_customer_ok_to_text"));
@@ -92,6 +93,7 @@
                 'middle_name': null,
                 'last_name': localStorage.getItem("tmp_residential_customer_last_name"),
                 'birthdate': localStorage.getItem("tmp_residential_customer_date_of_birth"),
+                'gender': localStorage.getItem("tmp_residential_customer_gender"),
                 'nationality': null,
                 'is_ok_to_email': localStorage.getItem("tmp_residential_customer_ok_to_email"),
                 'is_ok_to_text': localStorage.getItem("tmp_residential_customer_ok_to_text"),
@@ -132,6 +134,7 @@
                 localStorage.removeItem("tmp_residential_customer_given_name");
                 localStorage.removeItem("tmp_residential_customer_last_name");
                 localStorage.removeItem("tmp_residential_customer_date_of_birth");
+                localStorage.removeItem("tmp_residential_customer_gender");
                 localStorage.removeItem("tmp_residential_customer_ok_to_email");
                 localStorage.removeItem("tmp_residential_customer_ok_to_text");
                 localStorage.removeItem("tmp_residential_customer_street_address");
@@ -245,6 +248,12 @@
            <!-- POPULATE THROUGH JS. -->
        </td>
      </tr>
+     <tr>
+      <th scope="row" class="bg-light">Gender</th>
+      <td id="selected_gender">
+          <!-- POPULATE THROUGH JS. -->
+      </td>
+    </tr>
      <tr>
         <th scope="row" class="bg-light">Join date</th>
         <td id="selected_join_date">

@@ -53,6 +53,7 @@
         $('#other_telephone').val(localStorage.getItem("tmp_commercial_customer_other_telephone"));
         $('#other_telephone_type_of').val(localStorage.getItem("tmp_commercial_customer_other_telephone_type_of"));
         $('#birthdate').val(localStorage.getItem("tmp_commercial_customer_date_of_birth"));
+        $('#gender').val(localStorage.getItem("tmp_commercial_customer_gender"));
         $("input[name=is_ok_to_email][value=" + localStorage.getItem("tmp_commercial_customer_ok_to_email") + "]").prop('checked', true);
         $("input[name=is_ok_to_text][value=" + localStorage.getItem("tmp_commercial_customer_ok_to_text") + "]").prop('checked', true);
         $('#street_address').val(localStorage.getItem("tmp_commercial_customer_street_address"));
@@ -360,6 +361,10 @@
         } else {
             date_of_birth = '';
         }
+        var gender = $('#gender').val();
+        if (gender == undefined || gender == null || gender.length == 0) {
+            gender = '';
+        }
         var ok_to_email = get_selected_radio_value('is_ok_to_email');
         var ok_to_text = get_selected_radio_value('is_ok_to_text');
         var street_address = $('#street_address').val();
@@ -411,6 +416,7 @@
         localStorage.setItem("tmp_commercial_customer_given_name", given_name);
         localStorage.setItem("tmp_commercial_customer_last_name", last_name);
         localStorage.setItem("tmp_commercial_customer_date_of_birth", date_of_birth);
+        localStorage.setItem("tmp_commercial_customer_gender", gender);
         localStorage.setItem("tmp_commercial_customer_ok_to_email", ok_to_email);
         localStorage.setItem("tmp_commercial_customer_ok_to_text", ok_to_text);
         localStorage.setItem("tmp_commercial_customer_street_address", street_address);
@@ -483,6 +489,7 @@
                 'middle_name': null,
                 'last_name': localStorage.getItem("tmp_commercial_customer_last_name"),
                 'birthdate': localStorage.getItem("tmp_commercial_customer_date_of_birth"),
+                'gender': localStorage.getItem("tmp_commercial_customer_gender"),
                 'nationality': null,
                 'is_ok_to_email': localStorage.getItem("tmp_commercial_customer_ok_to_email"),
                 'is_ok_to_text': localStorage.getItem("tmp_commercial_customer_ok_to_text"),
@@ -675,6 +682,16 @@
                     </div>
                     <div id="birthdate-error" class="invalid-feedback"></div>
                 </div>
+            </div>
+            <div class="form-group col-md-7 mb-4">
+                <label for="gender">Gender</label>
+                <select class="custom-select form-control-lg border-primary" id="gender" name="gender" required>
+                    <option value="" selected>Gender...</option>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                    <option value="prefer not to say">Prefer not to say</option>
+                </select>
+                <div id="gender-error" class="invalid-feedback"></div>
             </div>
             <div class="form-group col-md-12 mb-4">
   		        <label for="description" class="font-b6">Describe the client:</label>
