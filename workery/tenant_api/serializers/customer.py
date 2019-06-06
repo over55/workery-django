@@ -376,6 +376,7 @@ class CustomerListCreateSerializer(serializers.ModelSerializer):
             middle_name=validated_data['middle_name'],
             birthdate=validated_data.get('birthdate', None),
             join_date=validated_data.get('join_date', None),
+            gender=validated_data.get('gender', None),
 
             # Misc
             is_senior=validated_data.get('is_senior', False),
