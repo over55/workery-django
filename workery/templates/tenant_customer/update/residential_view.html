@@ -40,6 +40,16 @@
         // Initialize our 'select2' element.
         $('#tags').select2();
 
+        // PLUG IN EVENT LISTENER ON REASON DROPDOWN CHANGE.
+        $('#how_hear').on('change',function(){
+            if( $(this).val()==="1" || $(this).val()===1){
+                $("#how_hear_other_div").show();
+            }
+            else{
+                $("#how_hear_other_div").hide();
+            }
+        });
+
         // --- How hear ---
         var how_hear = "{{ customer.how_hear.id }}";
         if (how_hear == 1) {
