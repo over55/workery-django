@@ -110,6 +110,7 @@
 
         <!-- ADD JOB BUTTON -->
         <!--------------------------------------------------------------------->
+        {% if customer.state != CUSTOMER_STATE.INACTIVE %}
         <div class="form-group col-md-12 mb-3 mx-auto text-center">
             <a href="{% url 'workery_tenant_job_step_2_create' %}?client_id={{ customer.id }}&customer_name={{ customer }}&customer_type_of={{ customer.type_of }}">
                 <button id="id_submit_btn" class="btn btn-success btn-lg btn-fxw mt-4" type="button">
@@ -117,6 +118,7 @@
                 </button>
             </a>
         </div>
+        {% endif %}
         <!--------------------------------------------------------------------->
         <!-- end ADD JOB BUTTON -->
 
