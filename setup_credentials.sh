@@ -52,9 +52,9 @@ SENTRY_RAVEN_CONFIG_DSN=https://xxxx:yyyyy@sentry.io/zzzzzzzz
 AWS_S3_HOST=''
 AWS_ACCESS_KEY_ID=''
 AWS_SECRET_ACCESS_KEY=''
-AWS_STORAGE_BUCKET_NAME=''
-AWS_S3_CUSTOM_DOMAIN=''
-AWS_BACKUP_BUCKET_NAME=''
+AWS_STORAGE_BUCKET_NAME=workery
+AWS_S3_REGION_NAME=nyc3
+AWS_S3_ENDPOINT_URL=https://workery.nyc3.digitaloceanspaces.com
 
 #--------------------------------#
 # Application Specific Variables #
