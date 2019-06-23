@@ -133,46 +133,112 @@ class Command(BaseCommand): #TODO: UNIT TEST
             else:
                 self.run_update_expired_associate(associate, now_dt, now_d)
 
+    def process_associate_for_expired_police_check(self, associate, now_dt, now_d, police_check_d):
+        """
+        Function called when an associate needs to be be put on the away
+        list if their policy check has expired.
+        """
+        log = AwayLog.objects.create(
+            associate=associate,
+            reason=4, # Commercial Insurance Expiry.
+            reason_other=None,
+            until_further_notice=True,
+            start_date=now_dt,
+        )
+
+        comment_obj = Comment.objects.create(
+            text="Police check expired"
+        )
+        associate_comment = AssociateComment.objects.create(
+            about=associate,
+            comment=comment_obj,
+        )
+
+        # For debugging purposes only.
+        self.stdout.write(
+            self.style.SUCCESS(_('Created away-log for associate # %(id)s for police check expiry at %(dt)s.')%{
+                'id': str(associate.id),
+                'dt': str(police_check_d)
+            })
+        )
+
+        # Fetch the franchise management staff and send a notification
+        # email informing them that an associate has expired commercial
+        # insurance.
+        management_staffs = Staff.objects.filter_by_management_group()
+        for staff in management_staffs.iterator():
+            self.send_staff_an_email(staff, "police-check-expiry", associate, now_dt, now_d)
+
+    def process_associate_for_commercial_insurance_expiry(self, associate, now_dt, now_d, commercial_insurance_expiry_d):
+        """
+        Function called when an associate needs to be be put on the away
+        list if their commercial check has expired.
+        """
+        log = AwayLog.objects.create(
+            associate=associate,
+            reason=4, # Commercial Insurance Expiry.
+            reason_other=None,
+            until_further_notice=True,
+            start_date=now_dt,
+        )
+
+        comment_obj = Comment.objects.create(
+            text="Commercial insurance expired"
+        )
+        associate_comment = AssociateComment.objects.create(
+            about=associate,
+            comment=comment_obj,
+        )
+
+        # For debugging purposes only.
+        self.stdout.write(
+            self.style.SUCCESS(_('Created away-log for associate # %(id)s for commercial insurance expiry at %(dt)s.')%{
+                'id': str(associate.id),
+                'dt': str(commercial_insurance_expiry_d)
+            })
+        )
+
+        # Fetch the franchise management staff and send a notification
+        # email informing them that an associate has expired commercial
+        # insurance.
+        management_staffs = Staff.objects.filter_by_management_group()
+        for staff in management_staffs.iterator():
+            self.send_staff_an_email(staff, "commercial-insurance-expiry", associate, now_dt, now_d)
+
     def run_update_expired_associate(self, associate, now_dt, now_d):
         # Insurance expired.
         commercial_insurance_expiry_d = associate.commercial_insurance_expiry_date
         if commercial_insurance_expiry_d:
             if commercial_insurance_expiry_d <= now_d:
+                self.process_associate_for_commercial_insurance_expiry(associate, now_dt, now_d, commercial_insurance_expiry_d)
 
-                log = AwayLog.objects.create(
-                    associate=associate,
-                    reason=4, # Commercial Insurance Expiry.
-                    reason_other=None,
-                    until_further_notice=True,
-                    start_date=now_dt,
-                )
+        # Policy check expired.
+        police_check_d = associate.police_check
 
-                comment_obj = Comment.objects.create(
-                    text="Commercial insurance expired"
-                )
-                associate_comment = AssociateComment.objects.create(
-                    about=associate,
-                    comment=comment_obj,
-                )
-
-                # For debugging purposes only.
+        if police_check_d:
+            # CASE 1 OF 3: POLICE CHECK HAS EXPIRED.
+            if police_check_d <= now_d:
                 self.stdout.write(
-                    self.style.SUCCESS(_('Created away-log for associate # %(id)s for commercial insurance expiry at %(dt)s.')%{
+                    self.style.WARNING(_('Associate #%(id)s policy check of %(dt) has expired as of today %(dt_fin)s.')%{
                         'id': str(associate.id),
-                        'dt': str(commercial_insurance_expiry_d)
+                        'dt': str(police_check_d),
+                        'dt_fin': str(now_d)
                     })
                 )
+                self.process_associate_for_expired_police_check(associate, now_dt, now_d, police_check_d)
 
-                # Fetch the franchise management staff and send a notification
-                # email informing them that an associate has expired commercial
-                # insurance.
-                management_staffs = Staff.objects.filter_by_management_group()
-                for staff in management_staffs.iterator():
-                    self.send_staff_an_email(staff, "commercial-insurance-expiry", associate, now_dt, now_d)
-
-        # # Policy check expired.
-        # police_check_d = associate.police_check
-        #
-        # if police_check_d:
-        #     if police_check_d <= now_d:
-        #         print(associate, "- police_check_d", police_check_d, now_d)
+            # CASE 2 OF 3: POLICE CHECK HAS NOT EXPIRED.
+            else:
+                self.stdout.write(
+                    self.style.SUCCESS(_('Associate #%(id)s has police check which has not expired.')%{
+                        'id': str(associate.id)
+                    })
+                )
+        # CASE 3 OF 3: NO POLICE CHECK SPECIFIED! (VERY BAD!)
+        else:
+            self.stdout.write(
+                self.style.ERROR(_('Associate #%(id)s is missing a policy check!')%{
+                    'id': str(associate.id),
+                })
+            )
+            self.process_associate_for_expired_police_check(associate, now_dt, now_d, police_check_d)
