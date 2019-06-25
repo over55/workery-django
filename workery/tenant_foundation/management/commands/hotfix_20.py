@@ -46,11 +46,12 @@ class Command(BaseCommand):
 
     def process_away_log(self, away_log, now_d):
         associate = away_log.associate
-        associate.away_log = away_log
-        associate.save()
-        self.stdout.write(
-            self.style.SUCCESS(_('Fixed associate #%(id)s.') %{ 'id': str(associate.id)})
-        )
+        with freeze_time(associate.last_modified):
+            associate.away_log = away_log
+            associate.save()
+            self.stdout.write(
+                self.style.SUCCESS(_('Fixed associate #%(id)s.') %{ 'id': str(associate.id)})
+            )
 
     def handle(self, *args, **options):
         # Connection needs first to be at the public schema, as this is where
@@ -79,8 +80,7 @@ class Command(BaseCommand):
         # DOES NOT LOOKED LIKE IT WAS MODIFIED. SPECIAL THANKS TO LINK:
         # https://stackoverflow.com/a/40423482
         #----------------------------------------------------------------------#
-        start_dt = parser.parse("2019-06-22")
-        for away_log in AwayLog.objects.filter(start_date__gte=start_dt).iterator(chunk_size=250):
+        for away_log in AwayLog.objects.iterator(chunk_size=250):
             self.process_away_log(away_log, now_d);
 
         # For debugging purposes.
