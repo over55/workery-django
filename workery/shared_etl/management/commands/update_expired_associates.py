@@ -138,6 +138,7 @@ class Command(BaseCommand): #TODO: UNIT TEST
         Function called when an associate needs to be be put on the away
         list if their policy check has expired.
         """
+        # STEP 1: Create `AwayLog` object.
         log = AwayLog.objects.create(
             associate=associate,
             reason=5, # Policy Check Expired
@@ -146,6 +147,7 @@ class Command(BaseCommand): #TODO: UNIT TEST
             start_date=now_dt,
         )
 
+        # STEP 2: Create comments.
         comment_obj = Comment.objects.create(
             text="Police check expired"
         )
@@ -153,6 +155,10 @@ class Command(BaseCommand): #TODO: UNIT TEST
             about=associate,
             comment=comment_obj,
         )
+
+        # STEP 3: Update the associate to have the `AwayLog` object assigned to it.
+        associate.away_log = log
+        associate.save()
 
         # For debugging purposes only.
         self.stdout.write(
@@ -162,6 +168,7 @@ class Command(BaseCommand): #TODO: UNIT TEST
             })
         )
 
+        # STEP 4:
         # Fetch the franchise management staff and send a notification
         # email informing them that an associate has expired commercial
         # insurance.
@@ -174,6 +181,7 @@ class Command(BaseCommand): #TODO: UNIT TEST
         Function called when an associate needs to be be put on the away
         list if their commercial check has expired.
         """
+        # STEP 1: Create `AwayLog` object.
         log = AwayLog.objects.create(
             associate=associate,
             reason=4, # Commercial Insurance Expiry.
@@ -182,6 +190,7 @@ class Command(BaseCommand): #TODO: UNIT TEST
             start_date=now_dt,
         )
 
+        # STEP 2: Create comments.
         comment_obj = Comment.objects.create(
             text="Commercial insurance expired"
         )
@@ -189,6 +198,10 @@ class Command(BaseCommand): #TODO: UNIT TEST
             about=associate,
             comment=comment_obj,
         )
+
+        # STEP 3: Update the associate to have the `AwayLog` object assigned to it.
+        associate.away_log = log
+        associate.save()
 
         # For debugging purposes only.
         self.stdout.write(
@@ -198,6 +211,7 @@ class Command(BaseCommand): #TODO: UNIT TEST
             })
         )
 
+        # STEP 4:
         # Fetch the franchise management staff and send a notification
         # email informing them that an associate has expired commercial
         # insurance.
