@@ -140,7 +140,7 @@ class Command(BaseCommand): #TODO: UNIT TEST
         """
         log = AwayLog.objects.create(
             associate=associate,
-            reason=4, # Commercial Insurance Expiry.
+            reason=5, # Policy Check Expired
             reason_other=None,
             until_further_notice=True,
             start_date=now_dt,
