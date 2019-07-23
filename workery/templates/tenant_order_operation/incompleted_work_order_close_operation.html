@@ -569,7 +569,7 @@
                                         <!-- Invoice ID -->
                                         <div class="form-group col-md-12 mb-4">
                                             <label for="invoice_ids">Invoice ID(s) #</label>
-                                            <input type="number" class="form-control form-control-lg border border-success" id="invoice_ids" name="invoice_ids" placeholder="Invoice ID #" required="">
+                                            <input type="text" class="form-control form-control-lg border border-success" id="invoice_ids" name="invoice_ids" placeholder="Invoice ID #" required="" value="{{ job.invoice_ids }}">
                                             <div id="invoice_ids-error" class="invalid-feedback"></div>
                                         </div>
                                         <!-- end Invoice ID -->
@@ -577,7 +577,7 @@
                                         <!-- Invoice Quote -->
                                         <div class="form-group col-md-12 mb-4">
                                             <label for="invoice_quote_amount">Original Quote</label>
-                                            <input type="number" class="form-control form-control-lg border border-success" id="invoice_quote_amount" name="invoice_quote_amount" placeholder="Invoice Quote" required="">
+                                            <input type="number" class="form-control form-control-lg border border-success" id="invoice_quote_amount" name="invoice_quote_amount" placeholder="Invoice Quote" required="" value="{{ job.invoice_quote_amount.amount }}">
                                             <div id="invoice_quote_amount-error" class="invalid-feedback"></div>
                                         </div>
                                         <!-- end Invoice Quote -->
@@ -585,7 +585,7 @@
                                         <!-- Invoice Labour -->
                                         <div class="form-group col-md-12 mb-4">
                                             <label for="invoice_labour_amount">Total Labour</label>
-                                            <input type="number" class="form-control form-control-lg border border-success" id="invoice_labour_amount" name="invoice_labour_amount" placeholder="Total Labour" required="">
+                                            <input type="number" class="form-control form-control-lg border border-success" id="invoice_labour_amount" name="invoice_labour_amount" placeholder="Total Labour" required="" value="{{ job.invoice_labour_amount.amount }}">
                                             <div id="invoice_labour_amount-error" class="invalid-feedback"></div>
                                         </div>
                                         <!-- end Invoice Labour -->
@@ -593,7 +593,7 @@
                                         <!-- Invoice Material -->
                                         <div class="form-group col-md-12 mb-4">
                                             <label for="invoice_material_amount">Total Materials</label>
-                                            <input type="number" class="form-control form-control-lg border border-success" id="invoice_material_amount" name="invoice_material_amount" placeholder="Total Material" required="">
+                                            <input type="number" class="form-control form-control-lg border border-success" id="invoice_material_amount" name="invoice_material_amount" placeholder="Total Material" required="" value="{{ job.invoice_material_amount.amount }}">
                                             <div id="invoice_material_amount-error" class="invalid-feedback"></div>
                                         </div>
                                         <!-- end Invoice Material -->
@@ -601,7 +601,7 @@
                                         <!-- Invoice Tax -->
                                         <div class="form-group col-md-12 mb-4">
                                             <label for="invoice_tax_amount">Total Tax</label>
-                                            <input type="number" class="form-control form-control-lg border border-success" id="invoice_tax_amount" name="invoice_tax_amount" placeholder="Total Tax" required="">
+                                            <input type="number" class="form-control form-control-lg border border-success" id="invoice_tax_amount" name="invoice_tax_amount" placeholder="Total Tax" required="" value="{{ job.invoice_tax_amount.amount }}">
                                             <div id="invoice_tax_amount-error" class="invalid-feedback"></div>
                                         </div>
                                         <!-- end Invoice Material -->
@@ -609,7 +609,7 @@
                                         <!-- Invoice Total -->
                                         <div class="form-group col-md-12 mb-4">
                                             <label for="invoice_total_amount">Total</label>
-                                            <input type="number" class="form-control form-control-lg border border-success" id="invoice_total_amount" name="invoice_total_amount" required="" placeholder="Total" readonly>
+                                            <input type="number" class="form-control form-control-lg border border-success" id="invoice_total_amount" name="invoice_total_amount" required="" placeholder="Total" readonly value="{{ job.invoice_total_amount.amount }}">
                                             <div id="invoice_total_amount-error" class="invalid-feedback"></div>
                                         </div>
                                         <!-- end Invoice Total -->
@@ -617,7 +617,7 @@
                                         <!-- Invoice Service Fee -->
                                         <div class="form-group col-md-12 mb-4">
                                             <label for="invoice_service_fee_amount">Service Fee</label>
-                                            <input type="number" class="form-control form-control-lg border border-success" id="invoice_service_fee_amount" name="invoice_service_fee_amount" required="" placeholder="Service Fee" readonly>
+                                            <input type="number" class="form-control form-control-lg border border-success" id="invoice_service_fee_amount" name="invoice_service_fee_amount" required="" placeholder="Service Fee" readonly value="{{ job.invoice_service_fee_amount.amount }}">
                                             <div id="invoice_service_fee_amount-error" class="invalid-feedback"></div>
                                         </div>
                                         <!-- end Invoice Total -->
