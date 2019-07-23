@@ -442,6 +442,20 @@
 
     <h1 id="id_page_title">{% trans 'Close Job' %}</h1>
 
+    <!-- WARNING -->
+    <!------------------------------------------------------------------------->
+    {% if job.state == WORK_ORDER_STATE.COMPLETED_BUT_UNPAID or job.state == WORK_ORDER_STATE.COMPLETED_AND_PAID %}
+    <div class="jumbotron">
+        <h1 class="display-4"><i class="fas fa-exclamation-triangle "></i>&nbsp;Warning</h1>
+        <div class="table-responsive-sm my-3">
+          <p>It appears this job was already inputted financial data through the financials page and this <strong>survey has potential to override the financial data</strong>.</p>
+          <p>Please visit the <a href="{% url 'workery_tenant_financlial_job_retrieve' 'all-jobs' job.id %}">financials page&nbsp;<i class="fas fa-external-link-alt"></i></a> before proceeding to complete this survey.</p>
+        </div>
+    </div>
+    {% endif %}
+    <!------------------------------------------------------------------------->
+    <!-- end WARNING -->
+
     <div class="container">
         <div class="row align-items-start">
 		<div class="col-md-10 mx-auto py-3">
