@@ -46,9 +46,13 @@ from tenant_api.views.order_crud import (
     OngoingWorkOrderCommentListCreateAPIView
 )
 from tenant_api.views.bulletin_board_item import BulletinBoardItemListCreateAPIView, BulletinBoardItemRetrieveUpdateDestroyAPIView
+from tenant_api.views.account.profile import ProfileAPIView
 
 
 urlpatterns = [
+    # Profile.
+    url(r'^api/profile$', ProfileAPIView.as_view(), name='workery_profile_api_endpoint'),
+
     # Away logs.
     url(r'^api/away-logs$', AwayLogListCreateAPIView.as_view(), name='workery_away_log_list_create_api_endpoint'),
     url(r'^api/away-log/(?P<pk>[^/.]+)/$', AwayLogRetrieveUpdateDestroyAPIView.as_view(), name='workery_away_log_retrieve_update_destroy_api_endpoint'),
