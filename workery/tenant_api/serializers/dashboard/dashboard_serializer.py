@@ -18,73 +18,113 @@ from rest_framework.validators import UniqueValidator
 from shared_foundation.custom.drf.fields import PhoneNumberField
 from shared_foundation.constants import ASSOCIATE_GROUP_ID, FRONTLINE_GROUP_ID
 from shared_foundation.custom.drf.validation import MatchingDuelFieldsValidator, EnhancedPasswordStrengthFieldValidator
-from shared_foundation.utils import (
-    get_unique_username_from_email,
-    int_or_none
+from shared_foundation.utils import ( int_or_none )
+from tenant_api.filters.customer import CustomerFilter
+from tenant_foundation.models import (
+    Associate,
+    AwayLog,
+    BulletinBoardItem,
+    Comment,
+    Customer,
+    WORK_ORDER_STATE,
+    WorkOrder,
+    WorkOrderComment,
+    TaskItem
 )
-from shared_foundation.models import SharedUser
+from tenant_api.serializers.awaylog import AwayLogListCreateSerializer
+from tenant_api.serializers.bulletin_board_item import BulletinBoardItemListCreateSerializer
+from tenant_api.serializers.order_crud.order_list_create import WorkOrderListCreateSerializer
+from tenant_api.serializers.customer_comment import CustomerCustomerListCreateSerializer
 
 
 logger = logging.getLogger(__name__)
 
 
+def get_todays_date_minus_days(days=0):
+    """Returns the current date plus paramter number of days."""
+    return timezone.now() - timedelta(days=days)
+
+
 class DashboardSerializer(serializers.Serializer):
-    def to_representation(self, instance):
+    def to_representation(self, user):
+        # --- COUNTING ---
+        customer_count = Customer.objects.filter(
+            state=Customer.CUSTOMER_STATE.ACTIVE
+        ).count()
+
+        job_count = WorkOrder.objects.filter(
+            Q(state=WORK_ORDER_STATE.NEW) |
+            Q(state=WORK_ORDER_STATE.PENDING) |
+            Q(state=WORK_ORDER_STATE.ONGOING) |
+            Q(state=WORK_ORDER_STATE.IN_PROGRESS)
+        ).count()
+
+        member_count = Associate.objects.filter(
+            owner__is_active=True
+        ).count()
+
+        tasks_count = TaskItem.objects.filter(
+            is_closed=False
+        ).count()
+
+        # --- BULLETIN BOARD ITEMS ---
+        bulletin_board_items = BulletinBoardItem.objects.filter(
+            is_archived=False
+        ).order_by(
+            '-created_at'
+        ).prefetch_related(
+            'created_by'
+        )
+        bbi_s = BulletinBoardItemListCreateSerializer(bulletin_board_items, many=True)
+
+        # --- LATEST JOBS BY USER ---
+        last_modified_jobs_by_user = WorkOrder.objects.filter(
+            last_modified_by = user
+        ).order_by(
+            '-last_modified'
+        ).prefetch_related(
+            'associate',
+            'customer'
+        )[0:5]
+        lmjbu_s = WorkOrderListCreateSerializer(last_modified_jobs_by_user, many=True)
+
+        # --- LATEST JOBS BY TEAM ---
+        last_modified_jobs_by_team = WorkOrder.objects.order_by(
+            '-last_modified'
+        ).prefetch_related(
+            'associate',
+            'customer'
+        )[0:10]
+        lmjbt_s = WorkOrderListCreateSerializer(last_modified_jobs_by_team, many=True)
+
+        # --- ASSOCIATE AWAY LOGS ---
+        away_logs = AwayLog.objects.filter(
+            was_deleted=False
+        ).prefetch_related(
+            'associate'
+        )
+        away_log_s = AwayLogListCreateSerializer(away_logs, many=True)
+
+        # --- LATEST AWAY COMMENT ---
+        one_week_before_today = get_todays_date_minus_days(5)
+        past_few_day_comments = WorkOrderComment.objects.filter(
+            created_at__gte=one_week_before_today
+        ).order_by(
+            '-created_at'
+        ).prefetch_related(
+            'about',
+            'comment'
+        )
+        c_s = CustomerCustomerListCreateSerializer(past_few_day_comments, many=True)
+
         return {
-            "customerCount": 17099,
-            "jobCount": 109,
-            "memberCount": 42,
-            "taskCount": 119,
-            "bulletinBoardItems": [
-                {
-                    "id": 1,
-                    "text": "July 2, 2019: As of today's date we have no plumber or electrician available. Alvaro's commercial insurance has expired and Tom is too busy to take new jobs.",
-                }, {
-                    "id": 2,
-                    "text": "TO ALL STAFF: Please do not call Frank Herbert for 48 hour updates & job completion. Rei (Franks's wife) emails me with all the updates.",
-                }, {
-                    "id": 3,
-                    "text": "6/18/19 - TO ALL STAFF - Do not follow up on Harkonan or Ix jobs. Speak to Paul, or Leto in the office prior to taking any actions."
-                }
-            ],
-            "jobHistory": [
-                {
-                    "id": 1,
-                    "jobID": 111,
-                    "clientName": "Frank Herbert",
-                    "associateName": "Vladimir Harkonan",
-                    "lastModified": "2019-01-01"
-                }
-            ],
-            "associateNews": [
-                {
-                    "id": 1,
-                    "associateName": "Bob Page",
-                    "reason": "Busy taking over the world.",
-                    "start": "2019-01-01",
-                    "awayUntil": "Further notice",
-                },{
-                    "id": 2,
-                    "associateName": "Walter Simons",
-                    "reason": "Busy running UNATCO.",
-                    "start": "2019-06-01",
-                    "awayUntil": "2019-09-01",
-                }
-            ],
-            "teamJobHistory": [
-                {
-                    "id": 1,
-                    "jobID": 111,
-                    "clientName": "Frank Herbert",
-                    "associateName": "Vladimir Harkonan",
-                    "lastModified": "2019-01-01"
-                }
-            ],
-            "commentHistory": [
-                {
-                    "id": 1,
-                    "jobID": 111,
-                    "text": "This is a test comment from a job.",
-                }
-            ],
+            "customer_count": customer_count,
+            "job_count": job_count,
+            "member_count": member_count,
+            "tasks_count": tasks_count,
+            "bulletin_board_items": bbi_s.data,
+            # "last_modified_jobs_by_user": lmjbu_s.data,
+            # "away_logs": away_log_s.data,
+            # "last_modified_jobs_by_team": lmjbt_s.data,
+            # "commentHistory": c_s.data,
         }
