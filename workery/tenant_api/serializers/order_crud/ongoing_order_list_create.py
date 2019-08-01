@@ -17,7 +17,6 @@ from rest_framework.response import Response
 
 from shared_foundation.custom.drf.fields import PhoneNumberField
 from shared_foundation import constants
-# from tenant_api.serializers.order_comment import WorkOrderCommentSerializer
 from tenant_api.serializers.skill_set import SkillSetListCreateSerializer
 from tenant_foundation.constants import *
 from tenant_foundation.models import (

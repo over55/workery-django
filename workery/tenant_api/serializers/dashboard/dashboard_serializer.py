@@ -34,7 +34,7 @@ from tenant_foundation.models import (
 from tenant_api.serializers.awaylog import AwayLogListCreateSerializer
 from tenant_api.serializers.bulletin_board_item import BulletinBoardItemListCreateSerializer
 from tenant_api.serializers.order_crud.order_list_create import WorkOrderListCreateSerializer
-from tenant_api.serializers.order_comment import WorkOrderListCreateSerializer
+from tenant_api.serializers.order_comment import WorkOrderCommentListCreateSerializer
 
 
 logger = logging.getLogger(__name__)
@@ -86,7 +86,7 @@ class DashboardSerializer(serializers.Serializer):
             'associate',
             'customer'
         )[0:5]
-        lmjbu_s = WorkOrderListCreateSerializer(last_modified_jobs_by_user, many=True)
+        lmjbu_s = WorkOrderCommentListCreateSerializer(last_modified_jobs_by_user, many=True)
 
         # --- LATEST JOBS BY TEAM ---
         last_modified_jobs_by_team = WorkOrder.objects.order_by(
@@ -115,7 +115,7 @@ class DashboardSerializer(serializers.Serializer):
             'about',
             'comment'
         )
-        c_s = WorkOrderListCreateSerializer(past_few_day_comments, many=True)
+        c_s = WorkOrderCommentListCreateSerializer(past_few_day_comments, many=True)
 
         return {
             "customer_count": customer_count,

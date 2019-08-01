@@ -15,13 +15,13 @@ from tenant_api.permissions.order import (
    CanRetrieveUpdateDestroyWorkOrderPermission
 )
 from tenant_api.serializers.order_comment import (
-    WorkOrderListCreateSerializer,
+    WorkOrderCommentListCreateSerializer,
 )
 from tenant_foundation.models import WorkOrder
 
 
 class WorkOrderCommentListCreateAPIView(generics.ListCreateAPIView):
-    serializer_class = WorkOrderListCreateSerializer
+    serializer_class = WorkOrderCommentListCreateSerializer
     pagination_class = StandardResultsSetPagination
     permission_classes = (
         permissions.IsAuthenticated,
@@ -41,7 +41,7 @@ class WorkOrderCommentListCreateAPIView(generics.ListCreateAPIView):
         Create
         """
         client_ip, is_routable = get_client_ip(self.request)
-        serializer = WorkOrderListCreateSerializer(data=request.data, context={
+        serializer = WorkOrderCommentListCreateSerializer(data=request.data, context={
             'created_by': request.user,
             'from': client_ip,
             'from_is_public': is_routable,

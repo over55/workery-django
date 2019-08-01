@@ -17,7 +17,6 @@ from rest_framework.validators import UniqueValidator
 from shared_foundation.custom.drf.fields import PhoneNumberField
 from shared_foundation.constants import CUSTOMER_GROUP_ID
 from shared_foundation.models import SharedUser
-# from tenant_api.serializers.order_comment import WorkOrderCommentSerializer
 from tenant_foundation.constants import *
 from tenant_foundation.models import (
     Comment,

@@ -17,7 +17,6 @@ from rest_framework.validators import UniqueValidator
 from shared_foundation.custom.drf.fields import PhoneNumberField
 from shared_foundation.constants import CUSTOMER_GROUP_ID
 from shared_foundation.models import SharedUser
-# from tenant_api.serializers.order_comment import WorkOrderCommentSerializer
 from tenant_foundation.constants import *
 from tenant_foundation.models import (
     Comment,
@@ -27,11 +26,11 @@ from tenant_foundation.models import (
 )
 
 
-class WorkOrderListCreateSerializer(serializers.ModelSerializer):
+class WorkOrderCommentListCreateSerializer(serializers.ModelSerializer):
     # about = serializers.PrimaryKeyRelatedField(many=False, read_only=True)
     # comment = serializers.PrimaryKeyRelatedField(many=False, read_only=True)
     extra_text = serializers.CharField(write_only=True, allow_null=False)
-    text = serializers.CharField(read_only=True)
+    text = serializers.CharField(read_only=True, source="comment.text")
 
     # Meta Information.
     class Meta:
