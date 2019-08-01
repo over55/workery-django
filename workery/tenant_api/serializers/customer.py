@@ -240,6 +240,7 @@ class CustomerListCreateSerializer(serializers.ModelSerializer):
             # 'comments',
             'password',
             'password_repeat',
+            'state',
 
             # Organization
             'organization_name',

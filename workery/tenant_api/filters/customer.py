@@ -65,7 +65,8 @@ class CustomerFilter(django_filters.FilterSet):
             # # 'comments',
             'owner__email',
             'telephone',
-            'organization_name'
+            'organization_name',
+            'state',
         ]
         filter_overrides = {
             models.CharField: { # given_name
