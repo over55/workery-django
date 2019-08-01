@@ -47,9 +47,13 @@ from tenant_api.views.order_crud import (
 )
 from tenant_api.views.bulletin_board_item import BulletinBoardItemListCreateAPIView, BulletinBoardItemRetrieveUpdateDestroyAPIView
 from tenant_api.views.account.profile import ProfileAPIView
+from tenant_api.views.dashboard.dashboard import DashboardAPIView
 
 
 urlpatterns = [
+    # Dashboard
+    url(r'^api/dashboard$', DashboardAPIView.as_view(), name='workery_dashboard_api_endpoint'),
+
     # Profile.
     url(r'^api/profile$', ProfileAPIView.as_view(), name='workery_profile_api_endpoint'),
 
