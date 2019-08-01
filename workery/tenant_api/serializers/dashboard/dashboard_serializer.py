@@ -86,7 +86,7 @@ class DashboardSerializer(serializers.Serializer):
             'associate',
             'customer'
         )[0:5]
-        lmjbu_s = WorkOrderCommentListCreateSerializer(last_modified_jobs_by_user, many=True)
+        lmjbu_s = WorkOrderListCreateSerializer(last_modified_jobs_by_user, many=True)
 
         # --- LATEST JOBS BY TEAM ---
         last_modified_jobs_by_team = WorkOrder.objects.order_by(
@@ -123,8 +123,8 @@ class DashboardSerializer(serializers.Serializer):
             "member_count": member_count,
             "tasks_count": tasks_count,
             "bulletin_board_items": bbi_s.data,
-            # "last_modified_jobs_by_user": lmjbu_s.data,
+            "last_modified_jobs_by_user": lmjbu_s.data,
             "away_log": away_log_s.data,
-            # "last_modified_jobs_by_team": lmjbt_s.data,
+            "last_modified_jobs_by_team": lmjbt_s.data,
             "past_few_day_comments": c_s.data,
         }

@@ -36,14 +36,17 @@ logger = logging.getLogger(__name__)
 
 
 class WorkOrderListCreateSerializer(serializers.ModelSerializer):
+    associate_name = serializers.SerializerMethodField()
     associate_first_name = serializers.ReadOnlyField(source='associate.owner.first_name')
     associate_last_name = serializers.ReadOnlyField(source='associate.owner.last_name')
+    customer_name = serializers.SerializerMethodField()
     customer_first_name = serializers.ReadOnlyField(source='customer.owner.first_name')
     customer_last_name = serializers.ReadOnlyField(source='customer.owner.last_name')
-    latest_pending_task = serializers.ReadOnlyField()
+    latest_pending_task = serializers.ReadOnlyField(source="id")
 
     # created_by = serializers.ReadOnlyField()
     # last_modified_by = serializers.ReadOnlyField()
+    last_modified = serializers.DateTimeField(read_only=True)
     tags = serializers.PrimaryKeyRelatedField(many=True, queryset=Tag.objects.all(), allow_null=True)
 
     # This is a field used in the `create` function if the user enters a
@@ -63,8 +66,10 @@ class WorkOrderListCreateSerializer(serializers.ModelSerializer):
             # Read only fields.
             'id',
             'assigned_skill_sets',
+            'associate_name',
             'associate_first_name',
             'associate_last_name',
+            'customer_name',
             'customer_first_name',
             'customer_last_name',
             'latest_pending_task',
@@ -83,6 +88,7 @@ class WorkOrderListCreateSerializer(serializers.ModelSerializer):
             'is_home_support_service',
             # 'created_by',
             # 'last_modified_by',
+            'last_modified',
             'skill_sets',
             'description',
             'start_date',
@@ -102,6 +108,18 @@ class WorkOrderListCreateSerializer(serializers.ModelSerializer):
             'latest_pending_task'
         )
         return queryset
+
+    def get_associate_name(self, obj):
+        try:
+            return str(obj.associate)
+        except Exception as e:
+            return None
+
+    def get_customer_name(self, obj):
+        try:
+            return str(obj.customer)
+        except Exception as e:
+            return None
 
     @transaction.atomic
     def create(self, validated_data):
