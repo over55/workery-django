@@ -98,12 +98,12 @@ class DashboardSerializer(serializers.Serializer):
         lmjbt_s = WorkOrderListCreateSerializer(last_modified_jobs_by_team, many=True)
 
         # --- ASSOCIATE AWAY LOGS ---
-        away_logs = AwayLog.objects.filter(
+        away_log = AwayLog.objects.filter(
             was_deleted=False
         ).prefetch_related(
             'associate'
         )
-        away_log_s = AwayLogListCreateSerializer(away_logs, many=True)
+        away_log_s = AwayLogListCreateSerializer(away_log, many=True)
 
         # --- LATEST AWAY COMMENT ---
         one_week_before_today = get_todays_date_minus_days(5)
@@ -124,7 +124,7 @@ class DashboardSerializer(serializers.Serializer):
             "tasks_count": tasks_count,
             "bulletin_board_items": bbi_s.data,
             # "last_modified_jobs_by_user": lmjbu_s.data,
-            # "away_logs": away_log_s.data,
+            "away_log": away_log_s.data,
             # "last_modified_jobs_by_team": lmjbt_s.data,
-            # "commentHistory": c_s.data,
+            "commentHistory": c_s.data,
         }

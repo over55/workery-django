@@ -33,18 +33,26 @@ class AwayLogListCreateSerializer(serializers.ModelSerializer):
             "invalid": "Please pick either 'Yes' or 'No' choice."
         }
     )
+    associate_name = serializers.SerializerMethodField()
 
     class Meta:
         model = AwayLog
         fields = (
             'id',
             'associate',
+            'associate_name',
             'reason',
             'reason_other',
             'until_further_notice',
             'until_date',
             'start_date',
         )
+
+    def get_associate_name(self, obj):
+        try:
+            return str(obj.associate)
+        except Exception as e:
+            return None
 
     def validate_reason(self, value):
         if value is None or value == "null" or value == "0" or value == 0:
