@@ -11,10 +11,7 @@ from rest_framework.response import Response
 from shared_foundation.custom.drf.permissions import IsAuthenticatedAndIsActivePermission
 from tenant_api.pagination import TinyResultsSetPagination
 from tenant_api.filters.task_item import TaskItemFilter
-# from tenant_api.permissions.customer import (
-#    CanListCreateTaskItemPermission,
-#    CanRetrieveUpdateDestroyTaskItemPermission
-# )
+from tenant_api.permissions.order import CanListCreateWorkOrderPermission
 from tenant_api.serializers.task_crud.task_item import ( TaskItemListSerializer )
 from tenant_foundation.models import TaskItem
 
@@ -23,9 +20,9 @@ class TaskItemListPIView(generics.ListAPIView):
     serializer_class = TaskItemListSerializer
     pagination_class = TinyResultsSetPagination
     permission_classes = (
-        # permissions.IsAuthenticated,
-        # IsAuthenticatedAndIsActivePermission,
-        # CanListCreateTaskItemPermission
+        permissions.IsAuthenticated,
+        IsAuthenticatedAndIsActivePermission,
+        CanListCreateWorkOrderPermission
     )
     filter_backends = (filters.SearchFilter, DjangoFilterBackend)
     # search_fields = ('@given_name', '@middle_name', '@last_name', '@email', 'telephone',)
