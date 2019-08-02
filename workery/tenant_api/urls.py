@@ -48,6 +48,7 @@ from tenant_api.views.order_crud import (
 from tenant_api.views.bulletin_board_item import BulletinBoardItemListCreateAPIView, BulletinBoardItemRetrieveUpdateDestroyAPIView
 from tenant_api.views.account.profile import ProfileAPIView
 from tenant_api.views.dashboard.dashboard import DashboardAPIView
+from tenant_api.views.task_crud.task_item import TaskItemListPIView
 
 
 urlpatterns = [
@@ -145,6 +146,9 @@ urlpatterns = [
     # Bulletin Board Items
     url(r'^api/bulletin_board_items$', BulletinBoardItemListCreateAPIView.as_view(), name='workery_bulletin_board_item_list_create_api_endpoint'),
     url(r'^api/bulletin_board_item/(?P<pk>[^/.]+)/$', BulletinBoardItemRetrieveUpdateDestroyAPIView.as_view(), name='workery_bulletin_board_item_retrieve_update_destroy_api_endpoint'),
+
+    # Tasks
+    url(r'^api/tasks$', TaskItemListPIView.as_view(), name='workery_task_item_list_api_endpoint'),
 ]
 
 

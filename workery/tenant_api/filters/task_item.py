@@ -18,9 +18,10 @@ class TaskItemFilter(django_filters.FilterSet):
         # tuple-mapping retains order
         fields=(
             ('due_date', 'due_date'),
+            ('title', 'title'),
             ('type_of', 'type_of'),
-            ('job__customer__indexed_text', 'client'),
-            ('job__associate__indexed_text', 'associate'),
+            ('job__customer__indexed_text', 'customer_name'),
+            ('job__associate__indexed_text', 'associate_name'),
         ),
 
         # # labels do not need to retain order

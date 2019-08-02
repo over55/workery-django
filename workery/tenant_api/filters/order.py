@@ -10,9 +10,8 @@ class WorkOrderFilter(django_filters.FilterSet):
         # tuple-mapping retains order
         fields=(
             ('id', 'id'),
-            ('customer__indexed_text', 'customer'),
-            ('customer__indexed_text', 'client'),
-            ('associate__indexed_text', 'associate'),
+            ('customer__indexed_text', 'customer_name'),
+            ('associate__indexed_text', 'associate_name'),
             ('customer__type_of', 'type_of'),
             ('assignment_date', 'assignment_date'),
             ('start_date', 'start_date'),
