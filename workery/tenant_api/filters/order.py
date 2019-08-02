@@ -12,6 +12,7 @@ class WorkOrderFilter(django_filters.FilterSet):
             ('id', 'id'),
             ('customer__indexed_text', 'client'),
             ('associate__indexed_text', 'associate'),
+            ('customer__type_of', 'type_of'),
             ('assignment_date', 'assignment_date'),
             ('start_date', 'start_date'),
             ('completion_date', 'completion_date'),
@@ -28,6 +29,7 @@ class WorkOrderFilter(django_filters.FilterSet):
         model = WorkOrder
         fields = [
             'customer',
+            'state',
         ]
         # filter_overrides = {
         #     models.CharField: { # given_name

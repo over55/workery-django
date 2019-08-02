@@ -43,6 +43,8 @@ class WorkOrderListCreateSerializer(serializers.ModelSerializer):
     customer_first_name = serializers.ReadOnlyField(source='customer.owner.first_name')
     customer_last_name = serializers.ReadOnlyField(source='customer.owner.last_name')
     latest_pending_task = serializers.ReadOnlyField(source="id")
+    state = serializers.ReadOnlyField()
+    type_of = serializers.SerializerMethodField()
 
     # created_by = serializers.ReadOnlyField()
     # last_modified_by = serializers.ReadOnlyField()
@@ -73,6 +75,8 @@ class WorkOrderListCreateSerializer(serializers.ModelSerializer):
             'customer_first_name',
             'customer_last_name',
             'latest_pending_task',
+            'state',
+            'type_of',
 
             # Write only fields.
             'extra_comment',
@@ -118,6 +122,17 @@ class WorkOrderListCreateSerializer(serializers.ModelSerializer):
     def get_customer_name(self, obj):
         try:
             return str(obj.customer)
+        except Exception as e:
+            return None
+
+    def get_type_of(self, obj):
+        try:
+            job_type_of = UNASSIGNED_JOB_TYPE_OF_ID
+            if obj.customer.type_of == RESIDENTIAL_CUSTOMER_TYPE_OF_ID:
+                return RESIDENTIAL_JOB_TYPE_OF_ID
+            if obj.customer.type_of == COMMERCIAL_CUSTOMER_TYPE_OF_ID:
+                return COMMERCIAL_JOB_TYPE_OF_ID
+            return job_type_of
         except Exception as e:
             return None
 
