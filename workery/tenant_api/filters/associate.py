@@ -27,6 +27,12 @@ class AssociateFilter(django_filters.FilterSet):
         return Associate.objects.partial_text_search(value)
 
     search = django_filters.CharFilter(method='keyword_filtering')
+
+    def state_filtering(self, queryset, name, value):
+        return queryset.filter(owner__is_active=value)
+
+    state = django_filters.NumberFilter(method='state_filtering')
+
     class Meta:
         model = Associate
         fields = [
@@ -52,7 +58,8 @@ class AssociateFilter(django_filters.FilterSet):
             # 'comments',
             'owner__email',
             'owner__is_active',
-            'telephone'
+            'telephone',
+            'state'
         ]
         filter_overrides = {
             models.CharField: { # given_name

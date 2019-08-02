@@ -40,7 +40,9 @@ class AssociateListCreateAPIView(generics.ListCreateAPIView):
         List
         """
         # Fetch all the queries.
-        queryset = Associate.objects.all().order_by('-created')
+        queryset = Associate.objects.all().order_by('-created').prefetch_related(
+            'owner',
+        )
 
         # The following code will use the 'django-filter'
         filter = AssociateFilter(self.request.GET, queryset=queryset)
