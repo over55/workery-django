@@ -507,6 +507,9 @@ class WorkOrder(models.Model):
                 pass # Skip last
         return skill_set_string
 
+    # def get_pretty_state(self):
+    #     return dict(self.WORK_ORDER_STATE).get(self.state)
+
     def get_pretty_status(self):
         """
         Function returns the job status in a more user-friendly format.

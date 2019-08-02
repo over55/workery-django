@@ -44,6 +44,7 @@ class WorkOrderListCreateSerializer(serializers.ModelSerializer):
     customer_last_name = serializers.ReadOnlyField(source='customer.owner.last_name')
     latest_pending_task = serializers.ReadOnlyField(source="id")
     state = serializers.ReadOnlyField()
+    pretty_state = serializers.ReadOnlyField(source='get_pretty_status')
     type_of = serializers.SerializerMethodField()
 
     # created_by = serializers.ReadOnlyField()
@@ -76,6 +77,7 @@ class WorkOrderListCreateSerializer(serializers.ModelSerializer):
             'customer_last_name',
             'latest_pending_task',
             'state',
+            'pretty_state',
             'type_of',
 
             # Write only fields.
