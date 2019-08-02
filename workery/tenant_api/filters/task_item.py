@@ -35,4 +35,5 @@ class TaskItemFilter(django_filters.FilterSet):
         fields = [
             'id',
             'title',
+            'is_closed',
         ]
