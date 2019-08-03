@@ -34,6 +34,7 @@ class AwayLogListCreateSerializer(serializers.ModelSerializer):
         }
     )
     associate_name = serializers.SerializerMethodField()
+    was_deleted = serializers.BooleanField(read_only=True)
 
     class Meta:
         model = AwayLog
@@ -46,6 +47,7 @@ class AwayLogListCreateSerializer(serializers.ModelSerializer):
             'until_further_notice',
             'until_date',
             'start_date',
+            'was_deleted',
         )
 
     def get_associate_name(self, obj):
