@@ -148,6 +148,9 @@ class StaffListCreateSerializer(serializers.ModelSerializer):
         queryset=HowHearAboutUsItem.objects.all()
     )
 
+    # Useful for determining if the user is active or not.
+    state = serializers.IntegerField(read_only=True,source="owner.is_active")
+
     # Meta Information.
     class Meta:
         model = Staff
@@ -171,6 +174,7 @@ class StaffListCreateSerializer(serializers.ModelSerializer):
             'tags',
             'is_active',
             'how_hear',
+            'state',
 
             # # Misc (Read Only)
             # 'comments',

@@ -22,7 +22,17 @@ class StaffFilter(django_filters.FilterSet):
         #     'username': 'User account',
         # }
     )
-    
+
+    def keyword_filtering(self, queryset, name, value):
+        return Associate.objects.partial_text_search(value)
+
+    search = django_filters.CharFilter(method='keyword_filtering')
+
+    def state_filtering(self, queryset, name, value):
+        return queryset.filter(owner__is_active=value)
+
+    state = django_filters.NumberFilter(method='state_filtering')
+
     class Meta:
         model = Staff
         fields = [
@@ -31,7 +41,9 @@ class StaffFilter(django_filters.FilterSet):
             'last_name',
             'street_address',
             'owner__email',
-            'telephone'
+            'telephone',
+            'search',
+            'state',
         ]
         filter_overrides = {
             models.CharField: { # given_name
