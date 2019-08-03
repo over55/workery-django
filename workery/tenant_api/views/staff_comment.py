@@ -9,7 +9,7 @@ from rest_framework import authentication, viewsets, permissions, status
 from rest_framework.response import Response
 
 from shared_foundation.custom.drf.permissions import IsAuthenticatedAndIsActivePermission
-from tenant_api.pagination import StandardResultsSetPagination
+from tenant_api.pagination import TinyResultsSetPagination
 from tenant_api.permissions.staff import (
    CanListCreateStaffPermission,
    CanRetrieveUpdateDestroyStaffPermission
@@ -22,7 +22,7 @@ from tenant_foundation.models import Staff
 
 class StaffCommentListCreateAPIView(generics.ListCreateAPIView):
     serializer_class = StaffCommentListCreateSerializer
-    pagination_class = StandardResultsSetPagination
+    pagination_class = TinyResultsSetPagination
     permission_classes = (
         permissions.IsAuthenticated,
         IsAuthenticatedAndIsActivePermission,

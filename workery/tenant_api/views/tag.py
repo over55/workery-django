@@ -10,7 +10,7 @@ from rest_framework.response import Response
 
 from shared_foundation.custom.drf.permissions import IsAuthenticatedAndIsActivePermission
 from tenant_api.filters.tag import TagFilter
-from tenant_api.pagination import StandardResultsSetPagination
+from tenant_api.pagination import TinyResultsSetPagination
 from tenant_api.permissions.tag import (
    CanListCreateTagPermission,
    CanRetrieveUpdateDestroyTagPermission
@@ -24,7 +24,7 @@ from tenant_foundation.models import Tag
 
 class TagListCreateAPIView(generics.ListCreateAPIView):
     serializer_class = TagListCreateSerializer
-    pagination_class = StandardResultsSetPagination
+    pagination_class = TinyResultsSetPagination
     permission_classes = (
         permissions.IsAuthenticated,
         IsAuthenticatedAndIsActivePermission,
@@ -58,7 +58,7 @@ class TagListCreateAPIView(generics.ListCreateAPIView):
 
 class TagRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = TagRetrieveUpdateDestroySerializer
-    pagination_class = StandardResultsSetPagination
+    pagination_class = TinyResultsSetPagination
     permission_classes = (
         permissions.IsAuthenticated,
         IsAuthenticatedAndIsActivePermission,

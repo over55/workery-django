@@ -9,7 +9,7 @@ from rest_framework import authentication, viewsets, permissions, status
 from rest_framework.response import Response
 
 from shared_foundation.custom.drf.permissions import IsAuthenticatedAndIsActivePermission
-from tenant_api.pagination import StandardResultsSetPagination
+from tenant_api.pagination import TinyResultsSetPagination
 from tenant_api.permissions.bulletin_board_item import (
    CanListCreateBulletinBoardItemPermission,
    CanRetrieveUpdateDestroyBulletinBoardItemPermission
@@ -23,7 +23,7 @@ from tenant_foundation.models import BulletinBoardItem, Customer
 
 class BulletinBoardItemListCreateAPIView(generics.ListCreateAPIView):
     serializer_class = BulletinBoardItemListCreateSerializer
-    pagination_class = StandardResultsSetPagination
+    pagination_class = TinyResultsSetPagination
     permission_classes = (
         permissions.IsAuthenticated,
         IsAuthenticatedAndIsActivePermission,
@@ -55,7 +55,7 @@ class BulletinBoardItemListCreateAPIView(generics.ListCreateAPIView):
 
 class BulletinBoardItemRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = BulletinBoardItemRetrieveUpdateDestroySerializer
-    pagination_class = StandardResultsSetPagination
+    pagination_class = TinyResultsSetPagination
     permission_classes = (
         permissions.IsAuthenticated,
         IsAuthenticatedAndIsActivePermission,

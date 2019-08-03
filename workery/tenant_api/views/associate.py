@@ -9,7 +9,7 @@ from rest_framework import authentication, viewsets, permissions, status
 from rest_framework.response import Response
 
 from shared_foundation.custom.drf.permissions import IsAuthenticatedAndIsActivePermission
-from tenant_api.pagination import StandardResultsSetPagination
+from tenant_api.pagination import TinyResultsSetPagination
 from tenant_api.permissions.associate import (
    CanListCreateAssociatePermission,
    CanRetrieveUpdateDestroyAssociatePermission
@@ -25,7 +25,7 @@ from django.db import transaction
 
 class AssociateListCreateAPIView(generics.ListCreateAPIView):
     serializer_class = AssociateListCreateSerializer
-    pagination_class = StandardResultsSetPagination
+    pagination_class = TinyResultsSetPagination
     permission_classes = (
         permissions.IsAuthenticated,
         IsAuthenticatedAndIsActivePermission,
@@ -70,7 +70,7 @@ class AssociateListCreateAPIView(generics.ListCreateAPIView):
 
 class AssociateRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = AssociateRetrieveUpdateDestroySerializer
-    pagination_class = StandardResultsSetPagination
+    pagination_class = TinyResultsSetPagination
     permission_classes = (
         permissions.IsAuthenticated,
         IsAuthenticatedAndIsActivePermission,

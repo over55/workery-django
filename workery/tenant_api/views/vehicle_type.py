@@ -8,7 +8,7 @@ from rest_framework import authentication, viewsets, permissions, status
 from rest_framework.response import Response
 
 from shared_foundation.custom.drf.permissions import IsAuthenticatedAndIsActivePermission
-from tenant_api.pagination import StandardResultsSetPagination
+from tenant_api.pagination import TinyResultsSetPagination
 from tenant_api.permissions.tag import (
    CanListCreateTagPermission,
    CanRetrieveUpdateDestroyTagPermission
@@ -22,7 +22,7 @@ from tenant_foundation.models import VehicleType
 
 class VehicleTypeListCreateAPIView(generics.ListCreateAPIView):
     serializer_class = VehicleTypeListCreateSerializer
-    pagination_class = StandardResultsSetPagination
+    pagination_class = TinyResultsSetPagination
     permission_classes = (
         permissions.IsAuthenticated,
         IsAuthenticatedAndIsActivePermission,
@@ -48,7 +48,7 @@ class VehicleTypeListCreateAPIView(generics.ListCreateAPIView):
 
 class VehicleTypeRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = VehicleTypeRetrieveUpdateDestroySerializer
-    pagination_class = StandardResultsSetPagination
+    pagination_class = TinyResultsSetPagination
     permission_classes = (
         permissions.IsAuthenticated,
         IsAuthenticatedAndIsActivePermission,

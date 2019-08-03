@@ -9,7 +9,7 @@ from rest_framework import authentication, viewsets, permissions, status
 from rest_framework.response import Response
 
 from shared_foundation.custom.drf.permissions import IsAuthenticatedAndIsActivePermission
-from tenant_api.pagination import StandardResultsSetPagination
+from tenant_api.pagination import TinyResultsSetPagination
 from tenant_api.permissions.order_service_fee import (
    CanListCreateWorkOrderServiceFeePermission,
    CanRetrieveUpdateDestroyWorkOrderServiceFeePermission
@@ -23,7 +23,7 @@ from tenant_foundation.models import WorkOrderServiceFee
 
 class WorkOrderServiceFeeListCreateAPIView(generics.ListCreateAPIView):
     serializer_class = WorkOrderServiceFeeListCreateSerializer
-    pagination_class = StandardResultsSetPagination
+    pagination_class = TinyResultsSetPagination
     permission_classes = (
         permissions.IsAuthenticated,
         IsAuthenticatedAndIsActivePermission,
@@ -50,7 +50,7 @@ class WorkOrderServiceFeeListCreateAPIView(generics.ListCreateAPIView):
 
 class WorkOrderServiceFeeRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = WorkOrderServiceFeeRetrieveUpdateDestroySerializer
-    pagination_class = StandardResultsSetPagination
+    pagination_class = TinyResultsSetPagination
     permission_classes = (
         permissions.IsAuthenticated,
         IsAuthenticatedAndIsActivePermission,

@@ -10,7 +10,7 @@ from rest_framework.response import Response
 
 from shared_foundation.custom.drf.permissions import IsAuthenticatedAndIsActivePermission
 from tenant_api.filters.skill_set import SkillSetFilter
-from tenant_api.pagination import StandardResultsSetPagination
+from tenant_api.pagination import TinyResultsSetPagination
 from tenant_api.permissions.skill_set import (
    CanListCreateSkillSetPermission,
    CanRetrieveUpdateDestroySkillSetPermission
@@ -25,7 +25,7 @@ from tenant_foundation.models import SkillSet
 class SkillSetListCreateAPIView(generics.ListCreateAPIView):
     filter_class = SkillSetFilter
     serializer_class = SkillSetListCreateSerializer
-    pagination_class = StandardResultsSetPagination
+    pagination_class = TinyResultsSetPagination
     permission_classes = (
         permissions.IsAuthenticated,
         IsAuthenticatedAndIsActivePermission,
@@ -53,7 +53,7 @@ class SkillSetListCreateAPIView(generics.ListCreateAPIView):
 
 class SkillSetRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = SkillSetRetrieveUpdateDestroySerializer
-    pagination_class = StandardResultsSetPagination
+    pagination_class = TinyResultsSetPagination
     permission_classes = (
         permissions.IsAuthenticated,
         IsAuthenticatedAndIsActivePermission,
