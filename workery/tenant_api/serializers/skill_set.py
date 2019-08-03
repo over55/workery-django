@@ -40,6 +40,7 @@ class SkillSetListCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = SkillSet
         fields = (
+            'id',
             'category',
             'sub_category',
             'description',

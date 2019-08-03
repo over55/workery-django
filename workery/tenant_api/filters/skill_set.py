@@ -6,6 +6,20 @@ from django.db import models
 
 
 class SkillSetFilter(django_filters.FilterSet):
+    o = django_filters.OrderingFilter(
+        # tuple-mapping retains order
+        fields=(
+            ('id', 'id'),
+            ('category', 'category'),
+            ('sub_category', 'sub_category'),
+        ),
+
+        # # labels do not need to retain order
+        # field_labels={
+        #     'username': 'User account',
+        # }
+    )
+
     def keyword_filtering(self, queryset, name, value):
         return SkillSet.objects.partial_text_search(value)
 
