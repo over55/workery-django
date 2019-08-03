@@ -49,6 +49,7 @@ from tenant_api.views.bulletin_board_item import BulletinBoardItemListCreateAPIV
 from tenant_api.views.account.profile import ProfileAPIView
 from tenant_api.views.dashboard.dashboard import DashboardAPIView
 from tenant_api.views.task_crud.task_item import TaskItemListPIView
+from tenant_api.views.deactivated_customer import DeactivatedCustomerListAPIView
 
 
 urlpatterns = [
@@ -73,6 +74,7 @@ urlpatterns = [
     url(r'^api/customers/validate$', CustomerCreateValidationAPIView.as_view(), name='workery_customer_create_validate_api_endpoint'),
     url(r'^api/customer/(?P<pk>[^/.]+)/$', CustomerRetrieveUpdateDestroyAPIView.as_view(), name='workery_customer_retrieve_update_destroy_api_endpoint'),
     url(r'^api/customer-comments$', CustomerCommentListCreateAPIView.as_view(), name='workery_customer_comment_list_create_api_endpoint'),
+    url(r'^api/deactivated-customers$', DeactivatedCustomerListAPIView.as_view(), name='workery_deactivated_customer_list_api_endpoint'),
 
     # Customers - Operations
     url(r'^api/customers/operation/deactivation$', CustomerDeactivateOperationCreateAPIView.as_view(), name='workery_deactivation_customer_operation_create_api_endpoint'),

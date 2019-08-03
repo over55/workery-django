@@ -388,7 +388,8 @@ class Customer(AbstractPerson):
         if self.deactivation_reason == Customer.DEACTIVATION_REASON.OTHER:
             return str(self.deactivation_reason_other)
         else:
-            return dict(Customer.DEACTIVATION_REASON_CHOICES).get(self.deactivation_reason)
+            reason = dict(Customer.DEACTIVATION_REASON_CHOICES).get(self.deactivation_reason)
+            return str(reason)
 
     def get_current_age(self):
         if self.birthdate:
