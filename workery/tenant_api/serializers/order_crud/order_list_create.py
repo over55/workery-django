@@ -99,6 +99,9 @@ class WorkOrderListCreateSerializer(serializers.ModelSerializer):
             'description',
             'start_date',
             'visits',
+
+            # Payment
+            'invoice_service_fee_payment_date',
         )
 
     def setup_eager_loading(cls, queryset):
@@ -111,7 +114,7 @@ class WorkOrderListCreateSerializer(serializers.ModelSerializer):
             'comments',
             'last_modified_by',
             'skill_sets',
-            'latest_pending_task'
+            'latest_pending_task',
         )
         return queryset
 
