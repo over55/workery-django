@@ -55,16 +55,19 @@ class WorkOrderListCreateAPIView(generics.ListCreateAPIView):
         Create
         """
         client_ip, is_routable = get_client_ip(self.request)
-        serializer = WorkOrderListCreateSerializer(data=request.data, context={
+        write_serializer = WorkOrderListCreateSerializer(data=request.data, context={
             'created_by': request.user,
             'created_from': client_ip,
             'created_from_is_public': is_routable,
             'franchise': request.tenant
         })
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
-
+        write_serializer.is_valid(raise_exception=True)
+        order_obj = write_serializer.save()
+        read_serializer = WorkOrderRetrieveUpdateDestroySerializer(order_obj, many=False)
+        return Response(
+            data=read_serializer.data,
+            status=status.HTTP_201_CREATED
+        )
 
 class WorkOrderRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = WorkOrderRetrieveUpdateDestroySerializer

@@ -41,7 +41,7 @@ class WorkOrderListCreateSerializer(serializers.ModelSerializer):
     customer_name = serializers.SerializerMethodField()
     customer_first_name = serializers.ReadOnlyField(source='customer.owner.first_name')
     customer_last_name = serializers.ReadOnlyField(source='customer.owner.last_name')
-    latest_pending_task = serializers.ReadOnlyField(source="id")
+    latest_pending_task = serializers.ReadOnlyField(source="latest_pending_task.id")
     state = serializers.ReadOnlyField()
     pretty_state = serializers.ReadOnlyField(source='get_pretty_status')
     type_of = serializers.SerializerMethodField()
@@ -272,13 +272,13 @@ class WorkOrderListCreateSerializer(serializers.ModelSerializer):
 
         # Update validation data.
         # validated_data['comments'] = WorkOrderComment.objects.filter(order=order)
-        validated_data['created'] = order.created
-        validated_data['created_by'] = created_by
-        validated_data['last_modified_by'] = created_by
-        validated_data['last_modified'] = self.context['created_by']
+        # validated_data['created'] = order.created
+        # validated_data['created_by'] = created_by
+        # validated_data['last_modified_by'] = created_by
+        # validated_data['last_modified'] = self.context['created_by']
         # validated_data['extra_comment'] = None
         validated_data['assigned_skill_sets'] = order.skill_sets.all()
         validated_data['latest_pending_task'] = first_task.id
 
         # Return our validated data.
-        return validated_data
+        return order

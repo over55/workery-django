@@ -36,6 +36,7 @@ logger = logging.getLogger(__name__)
 
 
 class WorkOrderRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
+    assigned_skill_sets = SkillSetListCreateSerializer(many=True, read_only=True)
     associate_first_name = serializers.ReadOnlyField(source='associate.owner.first_name')
     associate_last_name = serializers.ReadOnlyField(source='associate.owner.last_name')
     customer_first_name = serializers.ReadOnlyField(source='customer.owner.first_name')
@@ -54,11 +55,15 @@ class WorkOrderRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
     # keys only. This field is read/write accessible.
     skill_sets = serializers.PrimaryKeyRelatedField(many=True, queryset=SkillSet.objects.all(), allow_null=True)
 
-    assigned_skill_sets = SkillSetListCreateSerializer(many=True, read_only=True)
+    invoice_ids = serializers.CharField(required=False, allow_null=True)
 
+    assignment_date = serializers.DateField(required=False, allow_null=True)
+    completion_date = serializers.DateField(required=False, allow_null=True)
+    start_date = serializers.DateTimeField(required=False, allow_null=True, default=timezone.now)
     invoice_service_fee_payment_date = serializers.DateField(required=False, allow_null=True)
     invoice_date = serializers.DateField(required=False, allow_null=True)
-    invoice_ids = serializers.CharField(required=False, allow_null=True)
+
+    latest_pending_task = serializers.ReadOnlyField(source="latest_pending_task.id")
 
     class Meta:
         model = WorkOrder
@@ -71,6 +76,7 @@ class WorkOrderRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
             'associate_last_name',
             'customer_first_name',
             'customer_last_name',
+            'tags',
 
             # Write only fields.
             'extra_comment',
@@ -78,7 +84,6 @@ class WorkOrderRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
             # Read or write fields.
             'assignment_date',
             'associate',
-            'tags',
             'completion_date',
             'customer',
             'hours',
@@ -89,9 +94,9 @@ class WorkOrderRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
             'description',
             'start_date',
             'invoice_service_fee',
+            'invoice_ids',
             'invoice_service_fee_payment_date',
             'invoice_date',
-            'invoice_ids',
             'invoice_quote_amount',
             'invoice_labour_amount',
             'invoice_material_amount',
@@ -105,6 +110,7 @@ class WorkOrderRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
             'state',
             'invoice_balance_owing_amount',
             'visits',
+            'latest_pending_task',
         )
 
     def setup_eager_loading(cls, queryset):
