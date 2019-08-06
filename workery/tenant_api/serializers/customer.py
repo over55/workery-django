@@ -81,7 +81,7 @@ class CustomerListCreateSerializer(serializers.ModelSerializer):
     email = serializers.EmailField(
         validators=[
             UniqueValidator(queryset=SharedUser.objects.all()),
-            
+
         ],
         required=False,
     )
@@ -317,7 +317,6 @@ class CustomerListCreateSerializer(serializers.ModelSerializer):
         )
         return queryset
 
-    @transaction.atomic
     def create(self, validated_data):
         """
         Override the `create` function to add extra functinality.
@@ -777,7 +776,6 @@ class CustomerRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         # Return our data.
         return data
 
-    @transaction.atomic
     def update(self, instance, validated_data):
         """
         Override this function to include extra functionality.
