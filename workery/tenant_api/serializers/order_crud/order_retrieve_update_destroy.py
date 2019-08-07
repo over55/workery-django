@@ -59,7 +59,7 @@ class WorkOrderRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
 
     assignment_date = serializers.DateField(required=False, allow_null=True)
     completion_date = serializers.DateField(required=False, allow_null=True)
-    start_date = serializers.DateField(required=False, allow_null=True, default=timezone.now)
+    start_date = serializers.DateField(required=False, allow_null=True)
     invoice_service_fee_payment_date = serializers.DateField(required=False, allow_null=True)
     invoice_date = serializers.DateField(required=False, allow_null=True)
 
