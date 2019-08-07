@@ -2,6 +2,7 @@
 import django_filters
 from ipware import get_client_ip
 from django_filters import rest_framework as filters
+from django.db import transaction
 from django.conf.urls import url, include
 from django.shortcuts import get_list_or_404, get_object_or_404
 from rest_framework import generics
@@ -37,6 +38,7 @@ class PartnerListCreateAPIView(generics.ListCreateAPIView):
         queryset = Partner.objects.all().order_by('-created')
         return queryset
 
+    @transaction.atomic
     def post(self, request, format=None):
         """
         Create
@@ -62,6 +64,7 @@ class PartnerRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView)
         CanRetrieveUpdateDestroyPartnerPermission
     )
 
+    @transaction.atomic
     def get(self, request, pk=None):
         """
         Retrieve
@@ -74,6 +77,7 @@ class PartnerRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView)
             status=status.HTTP_200_OK
         )
 
+    @transaction.atomic
     def put(self, request, pk=None):
         """
         Update
@@ -91,6 +95,7 @@ class PartnerRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView)
         serializer.save()
         return Response(serializer.data, status=status.HTTP_200_OK)
 
+    @transaction.atomic
     def delete(self, request, pk=None):
         """
         Delete

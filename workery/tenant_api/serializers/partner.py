@@ -6,7 +6,6 @@ from dateutil import tz
 from django.conf import settings
 from django.contrib.auth.models import Group
 from django.contrib.auth import authenticate
-from django.db import transaction
 from django.db.models import Q, Prefetch
 from django.utils.translation import ugettext_lazy as _
 from django.utils import timezone
@@ -319,7 +318,6 @@ class PartnerListCreateSerializer(serializers.ModelSerializer):
         )
         return queryset
 
-    @transaction.atomic
     def create(self, validated_data):
         """
         Override the `create` function to add extra functinality:
@@ -383,12 +381,12 @@ class PartnerListCreateSerializer(serializers.ModelSerializer):
             owner=owner,
             created_by=self.context['created_by'],
             last_modified_by=self.context['created_by'],
-            description=validated_data['description'],
+            description=validated_data.get('description', None),
 
             # Profile
-            given_name=validated_data['given_name'],
-            last_name=validated_data['last_name'],
-            middle_name=validated_data['middle_name'],
+            given_name=validated_data.get('given_name', None),
+            last_name=validated_data.get('last_name', None),
+            middle_name=validated_data.get('middle_name', None),
             birthdate=validated_data.get('birthdate', None),
             join_date=validated_data.get('join_date', None),
             gender=validated_data.get('gender', None),
@@ -617,7 +615,6 @@ class PartnerRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         )
         return queryset
 
-    @transaction.atomic
     def update(self, instance, validated_data):
         """
         Override this function to include extra functionality.
