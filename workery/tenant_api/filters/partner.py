@@ -6,6 +6,13 @@ from django.db import models
 
 
 class PartnerFilter(django_filters.FilterSet):
+
+    def state_filtering(self, queryset, name, value):
+        print(">>>", name, value)
+        return queryset.filter(owner__is_active=value)
+
+    state = django_filters.NumberFilter(method='state_filtering')
+
     class Meta:
         model = Partner
         fields = [
@@ -29,7 +36,8 @@ class PartnerFilter(django_filters.FilterSet):
             # 'last_modified_by',
             # 'comments',
             'owner__email',
-            'telephone'
+            'telephone',
+            'state'
         ]
         filter_overrides = {
             models.CharField: { # given_name

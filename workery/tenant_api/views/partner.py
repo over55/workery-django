@@ -1,15 +1,17 @@
 # -*- coding: utf-8 -*-
 import django_filters
 from ipware import get_client_ip
-from django_filters import rest_framework as filters
+from django_filters.rest_framework import DjangoFilterBackend
 from django.db import transaction
 from django.conf.urls import url, include
 from django.shortcuts import get_list_or_404, get_object_or_404
+from rest_framework import filters
 from rest_framework import generics
 from rest_framework import authentication, viewsets, permissions, status
 from rest_framework.response import Response
 
 from shared_foundation.custom.drf.permissions import IsAuthenticatedAndIsActivePermission
+from tenant_api.filters.partner import PartnerFilter
 from tenant_api.pagination import TinyResultsSetPagination
 from tenant_api.permissions.partner import (
    CanListCreatePartnerPermission,
@@ -30,12 +32,22 @@ class PartnerListCreateAPIView(generics.ListCreateAPIView):
         IsAuthenticatedAndIsActivePermission,
         CanListCreatePartnerPermission
     )
+    filter_backends = (filters.SearchFilter, DjangoFilterBackend)
 
     def get_queryset(self):
         """
         List
         """
-        queryset = Partner.objects.all().order_by('-created')
+        # Fetch all the queries.
+        queryset = Partner.objects.all().order_by('-created').prefetch_related(
+            'owner',
+        )
+
+        # The following code will use the 'django-filter'
+        filter = PartnerFilter(self.request.GET, queryset=queryset)
+        queryset = filter.qs
+
+        # Return our filtered list.
         return queryset
 
     @transaction.atomic
