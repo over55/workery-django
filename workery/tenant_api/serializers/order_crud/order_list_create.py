@@ -61,6 +61,7 @@ class WorkOrderListCreateSerializer(serializers.ModelSerializer):
     skill_sets = serializers.PrimaryKeyRelatedField(many=True, queryset=SkillSet.objects.all(), allow_null=True)
 
     assigned_skill_sets = SkillSetListCreateSerializer(many=True, read_only=True)
+    start_date = serializers.DateField(allow_null=True,)
 
     class Meta:
         model = WorkOrder
@@ -151,6 +152,8 @@ class WorkOrderListCreateSerializer(serializers.ModelSerializer):
         created_by = self.context['created_by']
         description = validated_data.get('description', None)
         start_date = validated_data.get('start_date', timezone.now())
+        if start_date is None or start_date == None:
+            start_date = timezone.now().date()
         state = validated_data.get('state', WORK_ORDER_STATE.NEW)
         visits = validated_data.get('visits', 1)
 
