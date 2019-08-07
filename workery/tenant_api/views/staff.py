@@ -3,6 +3,7 @@ import django_filters
 from ipware import get_client_ip
 from django_filters.rest_framework import DjangoFilterBackend
 from django.conf.urls import url, include
+from django.db import transaction
 from django.shortcuts import get_list_or_404, get_object_or_404
 from rest_framework import generics
 from rest_framework import filters
@@ -49,6 +50,7 @@ class StaffListCreateAPIView(generics.ListCreateAPIView):
         # Return our filtered list.
         return queryset
 
+    @transaction.atomic
     def post(self, request, format=None):
         """
         Create
@@ -86,6 +88,7 @@ class StaffRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
             status=status.HTTP_200_OK
         )
 
+    @transaction.atomic
     def put(self, request, pk=None):
         """
         Update
@@ -103,6 +106,7 @@ class StaffRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
         serializer.save()
         return Response(serializer.data, status=status.HTTP_200_OK)
 
+    @transaction.atomic
     def delete(self, request, pk=None):
         """
         Delete
@@ -121,6 +125,7 @@ class StaffCreateValidationAPIView(generics.ListCreateAPIView):
         CanListCreateStaffPermission
     )
 
+    @transaction.atomic
     def post(self, request, format=None):
         """
         Create

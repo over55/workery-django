@@ -6,7 +6,6 @@ from dateutil import tz
 from django.conf import settings
 from django.contrib.auth.models import Group
 from django.contrib.auth import authenticate
-from django.db import transaction
 from django.db.models import Q, Prefetch
 from django.utils.translation import ugettext_lazy as _
 from django.utils import timezone
@@ -93,7 +92,7 @@ class StaffListCreateSerializer(serializers.ModelSerializer):
     # This is a field used in the `create` function if the user enters a
     # comment. This field is *ONLY* to be used during the POST creation and
     # will be blank during GET.
-    extra_comment = serializers.CharField(write_only=True, allow_null=True)
+    extra_comment = serializers.CharField(write_only=True, allow_null=True, allow_blank=True,)
 
     # This field is used to assign the user to the group.
     account_type = serializers.CharField(
@@ -256,7 +255,6 @@ class StaffListCreateSerializer(serializers.ModelSerializer):
         )
         return queryset
 
-    @transaction.atomic
     def create(self, validated_data):
         """
         Override the `create` function to add extra functinality:
@@ -647,7 +645,6 @@ class StaffRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
             raise serializers.ValidationError("This field may not be blank.")
         return value
 
-    @transaction.atomic
     def update(self, instance, validated_data):
         """
         Override this function to include extra functionality.
