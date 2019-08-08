@@ -13,6 +13,7 @@ class BulletinBoardItemFilter(django_filters.FilterSet):
         fields=(
             ('id', 'id'),
             ('text', 'text'),
+            ('created_at', 'created_at'),
         ),
 
         # # labels do not need to retain order

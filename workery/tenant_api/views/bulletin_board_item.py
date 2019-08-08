@@ -36,7 +36,7 @@ class BulletinBoardItemListCreateAPIView(generics.ListCreateAPIView):
         List
         """
         # Fetch all the queries.
-        queryset = BulletinBoardItem.objects.all().order_by('text')
+        queryset = BulletinBoardItem.objects.all().order_by('-created_at')
 
         # The following code will use the 'django-filter'
         filter = BulletinBoardItemFilter(self.request.GET, queryset=queryset)
