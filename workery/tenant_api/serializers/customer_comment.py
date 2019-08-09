@@ -86,6 +86,7 @@ class CustomerCommentListCreateSerializer(serializers.ModelSerializer):
     extra_text = serializers.CharField(write_only=True, allow_null=True)
     text = serializers.CharField(write_only=True)
     text = serializers.CharField(read_only=True, source="comment.text")
+    created_by = serializers.SerializerMethodField(allow_null=False)
 
     # Meta Information.
     class Meta:
@@ -93,10 +94,17 @@ class CustomerCommentListCreateSerializer(serializers.ModelSerializer):
         fields = (
             'id',
             'created_at',
+            'created_by',
             'about',
             'text',
             'extra_text'
         )
+
+    def get_created_by(self, obj):
+        try:
+            return str(obj.comment.created_by)
+        except Exception as e:
+            return None
 
     def setup_eager_loading(cls, queryset):
         """ Perform necessary eager loading of data. """
