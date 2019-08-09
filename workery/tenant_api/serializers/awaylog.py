@@ -105,6 +105,8 @@ class AwayLogListCreateSerializer(serializers.ModelSerializer):
         reason_other = validated_data.get('reason_other', None)
         until_further_notice = validated_data.get('until_further_notice', False)
         until_date = validated_data.get('until_date', None)
+        if until_further_notice:
+            until_date = None
         start_date = validated_data.get('start_date', None)
 
         #-----------------------------
