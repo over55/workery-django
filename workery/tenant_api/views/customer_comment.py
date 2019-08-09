@@ -9,31 +9,42 @@ from rest_framework import authentication, viewsets, permissions, status
 from rest_framework.response import Response
 
 from shared_foundation.custom.drf.permissions import IsAuthenticatedAndIsActivePermission
+from tenant_api.filters.customer_comment import CustomerCommentFilter
 from tenant_api.pagination import TinyResultsSetPagination
 from tenant_api.permissions.customer import (
    CanListCreateCustomerPermission,
    CanRetrieveUpdateDestroyCustomerPermission
 )
 from tenant_api.serializers.customer_comment import (
-    CustomerCustomerListCreateSerializer,
+    CustomerCommentListCreateSerializer,
 )
-from tenant_foundation.models import Customer
+from tenant_foundation.models import CustomerComment
 
 
 class CustomerCommentListCreateAPIView(generics.ListCreateAPIView):
-    serializer_class = CustomerCustomerListCreateSerializer
+    serializer_class = CustomerCommentListCreateSerializer
     pagination_class = TinyResultsSetPagination
     permission_classes = (
         permissions.IsAuthenticated,
         IsAuthenticatedAndIsActivePermission,
         CanListCreateCustomerPermission
     )
+    filter_backends = (filters.SearchFilter, DjangoFilterBackend)
 
     def get_queryset(self):
         """
         List
         """
-        queryset = Customer.objects.all().order_by('-created')
+        queryset = CustomerComment.objects.all().order_by('-created_at').prefetch_related(
+            'about',
+            'comment',
+        )
+
+        # The following code will use the 'django-filter'
+        filter = CustomerCommentFilter(self.request.GET, queryset=queryset)
+        queryset = filter.qs
+
+        # Return our filtered list.
         return queryset
 
     def post(self, request, format=None):
@@ -41,7 +52,7 @@ class CustomerCommentListCreateAPIView(generics.ListCreateAPIView):
         Create
         """
         client_ip, is_routable = get_client_ip(self.request)
-        serializer = CustomerCustomerListCreateSerializer(data=request.data, context={
+        serializer = CustomerCommentListCreateSerializer(data=request.data, context={
             'created_by': request.user,
             'created_from': client_ip,
             'created_from_is_public': is_routable,
