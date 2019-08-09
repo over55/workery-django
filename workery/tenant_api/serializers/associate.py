@@ -153,6 +153,9 @@ class AssociateListCreateSerializer(serializers.ModelSerializer):
     # Useful for determining if the user is active or not.
     state = serializers.IntegerField(read_only=True,source="owner.is_active")
 
+    # Generate the full name of the associate.
+    full_name = serializers.SerializerMethodField()
+
     # Meta Information.
     class Meta:
         model = Associate
@@ -197,6 +200,7 @@ class AssociateListCreateSerializer(serializers.ModelSerializer):
             'password',
             'password_repeat',
             'state',
+            'full_name',
 
             # # Misc (Write Only)
             'extra_comment',
@@ -276,6 +280,12 @@ class AssociateListCreateSerializer(serializers.ModelSerializer):
             'insurance_requirements',
         )
         return queryset
+
+    def get_full_name(self, obj):
+        try:
+            return str(obj)
+        except Exception as e:
+            return None
 
     @transaction.atomic
     def create(self, validated_data):

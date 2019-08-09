@@ -40,7 +40,7 @@ class AssociateListCreateAPIView(generics.ListCreateAPIView):
         List
         """
         # Fetch all the queries.
-        queryset = Associate.objects.all().order_by('-created').prefetch_related(
+        queryset = Associate.objects.all().order_by('last_name').prefetch_related(
             'owner',
         )
 
