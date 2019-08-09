@@ -8,6 +8,7 @@ from django.db.models import Q, Prefetch
 from django.utils.translation import ugettext_lazy as _
 from django.utils import timezone
 from django.utils.http import urlquote
+from rest_framework.validators import UniqueValidator
 from rest_framework import exceptions, serializers
 from rest_framework.response import Response
 
@@ -20,7 +21,7 @@ class InsuranceRequirementListCreateSerializer(serializers.ModelSerializer):
         required=True,
         allow_blank=False,
         allow_null=False,
-        validators=[]
+        validators=[UniqueValidator(queryset=InsuranceRequirement.objects.all())]
     )
 
     class Meta:
