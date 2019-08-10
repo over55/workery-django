@@ -155,6 +155,10 @@ class AssociateListCreateSerializer(serializers.ModelSerializer):
 
     # Generate the full name of the associate.
     full_name = serializers.SerializerMethodField()
+    address = serializers.SerializerMethodField()
+    address_url = serializers.SerializerMethodField()
+    full_address = serializers.SerializerMethodField()
+    e164_telephone = serializers.SerializerMethodField()
 
     # Meta Information.
     class Meta:
@@ -201,6 +205,10 @@ class AssociateListCreateSerializer(serializers.ModelSerializer):
             'password_repeat',
             'state',
             'full_name',
+            'address',
+            'address_url',
+            'full_address',
+            'e164_telephone',
 
             # # Misc (Write Only)
             'extra_comment',
@@ -284,6 +292,37 @@ class AssociateListCreateSerializer(serializers.ModelSerializer):
     def get_full_name(self, obj):
         try:
             return str(obj)
+        except Exception as e:
+            return None
+
+    def get_address(self, obj):
+        try:
+            return obj.get_postal_address_without_postal_code()
+        except Exception as e:
+            return None
+
+    def get_address_url(self, obj):
+        try:
+            return obj.get_google_maps_url()
+        except Exception as e:
+            return None
+
+    def get_full_address(self, obj):
+        try:
+            return obj.get_postal_address()
+        except Exception as e:
+            return None
+
+    def get_e164_telephone(self, obj):
+        """
+        Converts the "PhoneNumber" object into a "NATIONAL" format.
+        See: https://github.com/daviddrysdale/python-phonenumbers
+        """
+        try:
+            if obj.telephone:
+                return phonenumbers.format_number(obj.telephone, phonenumbers.PhoneNumberFormat.E164)
+            else:
+                return "-"
         except Exception as e:
             return None
 
@@ -572,6 +611,13 @@ class AssociateRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         queryset=HowHearAboutUsItem.objects.all()
     )
 
+    # Generate the full name of the associate.
+    full_name = serializers.SerializerMethodField()
+    address = serializers.SerializerMethodField()
+    address_url = serializers.SerializerMethodField()
+    full_address = serializers.SerializerMethodField()
+    e164_telephone = serializers.SerializerMethodField()
+
     class Meta:
         model = Associate
         fields = (
@@ -615,6 +661,11 @@ class AssociateRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
             # 'comments',
             # 'assigned_skill_sets',
             # 'organizations', #TODO: FIX
+            'full_name',
+            'address',
+            'address_url',
+            'full_address',
+            'e164_telephone',
 
             # # Misc (Write Only)
             # 'extra_comment',
@@ -687,6 +738,43 @@ class AssociateRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
             'insurance_requirements'
         )
         return queryset
+
+    def get_full_name(self, obj):
+        try:
+            return str(obj)
+        except Exception as e:
+            return None
+
+    def get_address(self, obj):
+        try:
+            return obj.get_postal_address_without_postal_code()
+        except Exception as e:
+            return None
+
+    def get_address_url(self, obj):
+        try:
+            return obj.get_google_maps_url()
+        except Exception as e:
+            return None
+
+    def get_full_address(self, obj):
+        try:
+            return obj.get_postal_address()
+        except Exception as e:
+            return None
+
+    def get_e164_telephone(self, obj):
+        """
+        Converts the "PhoneNumber" object into a "NATIONAL" format.
+        See: https://github.com/daviddrysdale/python-phonenumbers
+        """
+        try:
+            if obj.telephone:
+                return phonenumbers.format_number(obj.telephone, phonenumbers.PhoneNumberFormat.E164)
+            else:
+                return "-"
+        except Exception as e:
+            return None
 
     @transaction.atomic
     def update(self, instance, validated_data):

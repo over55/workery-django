@@ -29,6 +29,7 @@ class WorkOrderFilter(django_filters.FilterSet):
     class Meta:
         model = WorkOrder
         fields = [
+            'associate',
             'customer',
             'state',
         ]
