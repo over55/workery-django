@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import logging
 import phonenumbers
 from datetime import datetime, timedelta
 from dateutil import tz
@@ -13,24 +14,32 @@ from django.utils.http import urlquote
 from rest_framework import exceptions, serializers
 from rest_framework.response import Response
 from rest_framework.validators import UniqueValidator
+
 from shared_foundation.custom.drf.fields import PhoneNumberField
 from shared_foundation.constants import CUSTOMER_GROUP_ID
 from shared_foundation.models import SharedUser
-# from tenant_api.serializers.associate_comment import AssociateCommentSerializer
+from shared_foundation.custom.drf.validation import MatchingDuelFieldsValidator, EnhancedPasswordStrengthFieldValidator
+from shared_foundation.utils import get_unique_username_from_email
+# from tenant_api.serializers.customer_comment import CustomerCommentSerializer
 from tenant_foundation.constants import *
 from tenant_foundation.models import (
     Comment,
     AssociateComment,
     Associate,
-    Organization
+    Organization,
+    HowHearAboutUsItem
 )
 
 
-class AssociateListCreateSerializer(serializers.ModelSerializer):
+logger = logging.getLogger(__name__)
+
+class AssociateCommentListCreateSerializer(serializers.ModelSerializer):
     # about = serializers.PrimaryKeyRelatedField(many=False, read_only=True)
     # comment = serializers.PrimaryKeyRelatedField(many=False, read_only=True)
     extra_text = serializers.CharField(write_only=True, allow_null=True)
-    text = serializers.CharField(read_only=True)
+    text = serializers.CharField(write_only=True)
+    text = serializers.CharField(read_only=True, source="comment.text")
+    created_by = serializers.SerializerMethodField(allow_null=False)
 
     # Meta Information.
     class Meta:
@@ -38,10 +47,17 @@ class AssociateListCreateSerializer(serializers.ModelSerializer):
         fields = (
             'id',
             'created_at',
+            'created_by',
             'about',
             'text',
             'extra_text'
         )
+
+    def get_created_by(self, obj):
+        try:
+            return str(obj.comment.created_by)
+        except Exception as e:
+            return None
 
     def setup_eager_loading(cls, queryset):
         """ Perform necessary eager loading of data. """
@@ -74,9 +90,6 @@ class AssociateListCreateSerializer(serializers.ModelSerializer):
             about=about,
             comment=comment,
         )
-
-        # Add validated data.
-        validated_data['created_at'] = comment.created_at
 
         # Return our validated data.
         return validated_data
