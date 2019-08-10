@@ -50,7 +50,10 @@ from tenant_api.views.account.profile import ProfileAPIView
 from tenant_api.views.dashboard.dashboard import DashboardAPIView
 from tenant_api.views.task_crud.task_item import TaskItemListPIView
 from tenant_api.views.deactivated_customer import DeactivatedCustomerListAPIView
-
+from tenant_api.views.activity_sheet_item import (
+    ActivitySheetItemListCreateAPIView,
+    ActivitySheetItemRetrieveUpdateDestroyAPIView
+)
 
 urlpatterns = [
     # Dashboard
@@ -151,6 +154,11 @@ urlpatterns = [
 
     # Tasks
     url(r'^api/tasks$', TaskItemListPIView.as_view(), name='workery_task_item_list_api_endpoint'),
+
+    # ActivitySheetItem
+    url(r'^api/activity-sheets$', ActivitySheetItemListCreateAPIView.as_view(), name='workery_activity_sheet_list_create_api_endpoint'),
+    url(r'^api/activity-sheet/(?P<pk>[^/.]+)/$', ActivitySheetItemRetrieveUpdateDestroyAPIView.as_view(), name='workery_activity_sheet_retrieve_update_destroy_api_endpoint'),
+
 ]
 
 
