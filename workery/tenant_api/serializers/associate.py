@@ -30,7 +30,8 @@ from tenant_foundation.models import (
     SkillSet,
     Organization,
     VehicleType,
-    HowHearAboutUsItem
+    HowHearAboutUsItem,
+    TaskItem
 )
 
 
@@ -620,6 +621,7 @@ class AssociateRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
     e164_telephone = serializers.SerializerMethodField()
     pretty_skill_sets = serializers.SerializerMethodField()
     pretty_tags = serializers.SerializerMethodField()
+    latest_completed_and_paid_order = serializers.SerializerMethodField()
 
     class Meta:
         model = Associate
@@ -671,6 +673,7 @@ class AssociateRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
             'e164_telephone',
             'pretty_skill_sets',
             'pretty_tags',
+            'latest_completed_and_paid_order',
 
             # # Misc (Write Only)
             # 'extra_comment',
@@ -794,6 +797,19 @@ class AssociateRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
             return s.data
         except Exception as e:
             return None
+
+    def get_latest_completed_and_paid_order(self, obj):
+        try:
+            task_item = obj.latest_completed_and_paid_order
+            return {
+                'id': task_item.id,
+                'paid_at': str(task_item.invoice_service_fee_payment_date)
+            }
+        except Exception as e:
+            return {
+                'id': None,
+                'paid_at': None
+            }
 
     @transaction.atomic
     def update(self, instance, validated_data):
