@@ -623,6 +623,8 @@ class AssociateRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
     pretty_tags = serializers.SerializerMethodField()
     latest_completed_and_paid_order = serializers.SerializerMethodField()
     balance_owing_amount = serializers.SerializerMethodField()
+    created_by = serializers.SerializerMethodField()
+    last_modified_by = serializers.SerializerMethodField()
 
     class Meta:
         model = Associate
@@ -630,7 +632,9 @@ class AssociateRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
             # Thing
             'id',
             'created',
+            'created_by',
             'last_modified',
+            'last_modified_by',
             'description',
 
             # Person
@@ -816,6 +820,18 @@ class AssociateRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
     def get_balance_owing_amount(self, obj):
         try:
             return str(obj.balance_owing_amount).replace("C", "")
+        except Exception as e:
+            return None
+
+    def get_created_by(self, obj):
+        try:
+            return str(obj.created_by)
+        except Exception as e:
+            return None
+
+    def get_last_modified_by(self, obj):
+        try:
+            return str(obj.last_modified_by)
         except Exception as e:
             return None
 
