@@ -21,6 +21,7 @@ from shared_foundation.custom.drf.validation import MatchingDuelFieldsValidator,
 from shared_foundation.models import SharedUser
 # from tenant_api.serializers.associate_comment import AssociateCommentSerializer
 from tenant_api.serializers.skill_set import SkillSetListCreateSerializer
+from tenant_api.serializers.tag import TagListCreateSerializer
 from tenant_foundation.models import (
     AssociateComment,
     Associate,
@@ -617,6 +618,8 @@ class AssociateRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
     address_url = serializers.SerializerMethodField()
     full_address = serializers.SerializerMethodField()
     e164_telephone = serializers.SerializerMethodField()
+    pretty_skill_sets = serializers.SerializerMethodField()
+    pretty_tags = serializers.SerializerMethodField()
 
     class Meta:
         model = Associate
@@ -666,6 +669,8 @@ class AssociateRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
             'address_url',
             'full_address',
             'e164_telephone',
+            'pretty_skill_sets',
+            'pretty_tags',
 
             # # Misc (Write Only)
             # 'extra_comment',
@@ -773,6 +778,20 @@ class AssociateRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
                 return phonenumbers.format_number(obj.telephone, phonenumbers.PhoneNumberFormat.E164)
             else:
                 return "-"
+        except Exception as e:
+            return None
+
+    def get_pretty_skill_sets(self, obj):
+        try:
+            s = SkillSetListCreateSerializer(obj.skill_sets.all(), many=True)
+            return s.data
+        except Exception as e:
+            return None
+
+    def get_pretty_tags(self, obj):
+        try:
+            s = TagListCreateSerializer(obj.tags.all(), many=True)
+            return s.data
         except Exception as e:
             return None
 
