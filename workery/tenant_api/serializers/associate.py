@@ -622,6 +622,7 @@ class AssociateRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
     pretty_skill_sets = serializers.SerializerMethodField()
     pretty_tags = serializers.SerializerMethodField()
     latest_completed_and_paid_order = serializers.SerializerMethodField()
+    balance_owing_amount = serializers.SerializerMethodField()
 
     class Meta:
         model = Associate
@@ -674,6 +675,7 @@ class AssociateRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
             'pretty_skill_sets',
             'pretty_tags',
             'latest_completed_and_paid_order',
+            'balance_owing_amount',
 
             # # Misc (Write Only)
             # 'extra_comment',
@@ -810,6 +812,12 @@ class AssociateRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
                 'id': None,
                 'paid_at': None
             }
+
+    def get_balance_owing_amount(self, obj):
+        try:
+            return str(obj.balance_owing_amount).replace("C", "")
+        except Exception as e:
+            return None
 
     @transaction.atomic
     def update(self, instance, validated_data):
