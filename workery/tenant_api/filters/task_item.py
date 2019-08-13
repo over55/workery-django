@@ -37,4 +37,5 @@ class TaskItemFilter(django_filters.FilterSet):
             'title',
             'is_closed',
             'type_of',
+            'job',
         ]
