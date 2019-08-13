@@ -10,6 +10,9 @@ class ActivitySheetItemFilter(django_filters.FilterSet):
         # tuple-mapping retains order
         fields=(
             ('id', 'id'),
+            ('state', 'state'),
+            ('job__customer__indexed_text', 'customer_name'),
+            ('associate__indexed_text', 'associate_name'),
         ),
 
         # # labels do not need to retain order
@@ -22,6 +25,8 @@ class ActivitySheetItemFilter(django_filters.FilterSet):
         model = ActivitySheetItem
         fields = [
             'id',
+            'state',
+            'job',
             'associate',
             # 'is_closed',
             # 'type_of',
