@@ -18,6 +18,7 @@ from rest_framework.response import Response
 from shared_foundation.custom.drf.fields import PhoneNumberField
 from shared_foundation import constants
 from tenant_api.serializers.skill_set import SkillSetListCreateSerializer
+from tenant_api.serializers.tag import TagListCreateSerializer
 from tenant_foundation.constants import *
 from tenant_foundation.models import (
     Comment,
@@ -63,9 +64,6 @@ class WorkOrderRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
     invoice_service_fee_payment_date = serializers.DateField(required=False, allow_null=True)
     invoice_date = serializers.DateField(required=False, allow_null=True)
 
-    latest_pending_task = serializers.ReadOnlyField(source="latest_pending_task.id")
-
-
     associate_full_name = serializers.SerializerMethodField()
     associate_telephone = PhoneNumberField(read_only=True, source="associate.telephone")
     associate_telephone_type_of = serializers.IntegerField(read_only=True, source="associate.telephone_type_of")
@@ -81,6 +79,16 @@ class WorkOrderRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
     customer_other_telephone_type_of = serializers.IntegerField(read_only=True, source="customer.other_telephone_type_of")
     customer_pretty_other_telephone_type_of = serializers.CharField(read_only=True, source="customer.get_pretty_other_telephone_type_of")
     pretty_status = serializers.CharField(read_only=True, source="get_pretty_status")
+    pretty_type_of = serializers.CharField(read_only=True, source="get_pretty_type_of")
+    pretty_skill_sets = serializers.SerializerMethodField()
+    pretty_tags = serializers.SerializerMethodField()
+    latest_pending_task = serializers.ReadOnlyField(source="latest_pending_task.id")
+    latest_pending_task_type_of = serializers.ReadOnlyField(source="latest_pending_task.type_of")
+    pretty_latest_pending_task = serializers.ReadOnlyField(source="latest_pending_task.title")
+    created_at = serializers.DateTimeField(read_only=True, source="created")
+    created_by = serializers.SerializerMethodField()
+    last_modified_at = serializers.DateTimeField(read_only=True, source="last_modified")
+    last_modified_by = serializers.SerializerMethodField()
 
     class Meta:
         model = WorkOrder
@@ -127,7 +135,7 @@ class WorkOrderRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
             'state',
             'invoice_balance_owing_amount',
             'visits',
-            'latest_pending_task',
+
 
             # Read Only fields.
             'associate_full_name',
@@ -145,6 +153,16 @@ class WorkOrderRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
             'customer_other_telephone_type_of',
             'customer_pretty_other_telephone_type_of',
             'pretty_status',
+            'pretty_type_of',
+            'pretty_skill_sets',
+            'pretty_tags',
+            'pretty_latest_pending_task',
+            'latest_pending_task',
+            'latest_pending_task_type_of',
+            'created_at',
+            'created_by',
+            'last_modified_at',
+            'last_modified_by',
         )
 
     def setup_eager_loading(cls, queryset):
@@ -177,6 +195,25 @@ class WorkOrderRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
             pass
         return None
 
+    def get_pretty_skill_sets(self, obj):
+        try:
+            s = SkillSetListCreateSerializer(obj.skill_sets.all(), many=True)
+            return s.data
+        except Exception as e:
+            return None
+
+    def get_created_by(self, obj):
+        try:
+            return str(obj.created_by)
+        except Exception as e:
+            return None
+
+    def get_last_modified_by(self, obj):
+        try:
+            return str(obj.last_modified_by)
+        except Exception as e:
+            return None
+
     def validate_invoice_service_fee_payment_date(self, value):
         """
         Include validation on no-blanks if the state is set to be changed
@@ -196,6 +233,13 @@ class WorkOrderRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         if value is None:
             raise serializers.ValidationError("This field may not be blank.")
         return value
+
+    def get_pretty_tags(self, obj):
+        try:
+            s = TagListCreateSerializer(obj.tags.all(), many=True)
+            return s.data
+        except Exception as e:
+            return None
 
     @transaction.atomic
     def update(self, instance, validated_data):

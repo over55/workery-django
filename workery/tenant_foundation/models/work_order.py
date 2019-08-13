@@ -510,6 +510,15 @@ class WorkOrder(models.Model):
     # def get_pretty_state(self):
     #     return dict(self.WORK_ORDER_STATE).get(self.state)
 
+    def get_pretty_type_of(self):
+        pretty_type_of = dict(JOB_TYPE_OF_CHOICES).get(self.type_of)
+
+        if self.is_ongoing:
+            pretty_type_of += " (Ongoing)"
+        else:
+            pretty_type_of += " (One-time)"
+        return pretty_type_of
+
     def get_pretty_status(self):
         """
         Function returns the job status in a more user-friendly format.
