@@ -65,6 +65,23 @@ class WorkOrderRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
 
     latest_pending_task = serializers.ReadOnlyField(source="latest_pending_task.id")
 
+
+    associate_full_name = serializers.SerializerMethodField()
+    associate_telephone = PhoneNumberField(read_only=True, source="associate.telephone")
+    associate_telephone_type_of = serializers.IntegerField(read_only=True, source="associate.telephone_type_of")
+    associate_pretty_telephone_type_of = serializers.CharField(read_only=True, source="associate.get_pretty_telephone_type_of")
+    associate_other_telephone = PhoneNumberField(read_only=True, source="associate.other_telephone")
+    associate_other_telephone_type_of = serializers.IntegerField(read_only=True, source="associate.other_telephone_type_of")
+    associate_pretty_other_telephone_type_of = serializers.CharField(read_only=True, source="associate.get_pretty_other_telephone_type_of")
+    customer_full_name = serializers.SerializerMethodField()
+    customer_telephone = PhoneNumberField(read_only=True, source="customer.telephone")
+    customer_telephone_type_of = serializers.IntegerField(read_only=True, source="customer.telephone_type_of")
+    customer_pretty_telephone_type_of = serializers.CharField(read_only=True, source="customer.get_pretty_telephone_type_of")
+    customer_other_telephone = PhoneNumberField(read_only=True, source="customer.other_telephone")
+    customer_other_telephone_type_of = serializers.IntegerField(read_only=True, source="customer.other_telephone_type_of")
+    customer_pretty_other_telephone_type_of = serializers.CharField(read_only=True, source="customer.get_pretty_other_telephone_type_of")
+    pretty_status = serializers.CharField(read_only=True, source="get_pretty_status")
+
     class Meta:
         model = WorkOrder
         fields = (
@@ -111,6 +128,23 @@ class WorkOrderRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
             'invoice_balance_owing_amount',
             'visits',
             'latest_pending_task',
+
+            # Read Only fields.
+            'associate_full_name',
+            'associate_telephone',
+            'associate_telephone_type_of',
+            'associate_pretty_telephone_type_of',
+            'associate_other_telephone',
+            'associate_other_telephone_type_of',
+            'associate_pretty_other_telephone_type_of',
+            'customer_full_name',
+            'customer_telephone',
+            'customer_telephone_type_of',
+            'customer_pretty_telephone_type_of',
+            'customer_other_telephone',
+            'customer_other_telephone_type_of',
+            'customer_pretty_other_telephone_type_of',
+            'pretty_status',
         )
 
     def setup_eager_loading(cls, queryset):
@@ -126,6 +160,22 @@ class WorkOrderRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
             'invoice_service_fee'
         )
         return queryset
+
+    def get_associate_full_name(self, obj):
+        try:
+            if obj.associate:
+                return str(obj.associate)
+        except Exception as e:
+            pass
+        return None
+
+    def get_customer_full_name(self, obj):
+        try:
+            if obj.customer:
+                return str(obj.customer)
+        except Exception as e:
+            pass
+        return None
 
     def validate_invoice_service_fee_payment_date(self, value):
         """

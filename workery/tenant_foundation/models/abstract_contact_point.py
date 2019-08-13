@@ -118,3 +118,9 @@ class AbstractContactPoint(models.Model):
         blank=True,
         choices=TELEPHONE_CONTACT_POINT_TYPE_OF_CHOICES,
     )
+
+    def get_pretty_telephone_type_of(self):
+        return dict(TELEPHONE_CONTACT_POINT_TYPE_OF_CHOICES).get(self.telephone_type_of)
+
+    def get_pretty_other_telephone_type_of(self):
+        return dict(TELEPHONE_CONTACT_POINT_TYPE_OF_CHOICES).get(self.other_telephone_type_of)
