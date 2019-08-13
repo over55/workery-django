@@ -896,7 +896,7 @@ class CustomerRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         try:
             return str(obj.how_hear)
         except Exception as e:
-            return Non
+            return None
 
     def update(self, instance, validated_data):
         """
