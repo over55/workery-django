@@ -39,7 +39,7 @@ class CustomerListCreateAPIView(generics.ListCreateAPIView):
         List
         """
         # Fetch all the queries.
-        queryset = Customer.objects.all().order_by('-last_name')
+        queryset = Customer.objects.all().order_by('last_name')
 
         # The following code will use the 'django-filter'
         filter = CustomerFilter(self.request.GET, queryset=queryset)
