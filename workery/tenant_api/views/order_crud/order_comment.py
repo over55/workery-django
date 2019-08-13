@@ -10,6 +10,7 @@ from rest_framework.response import Response
 
 from shared_foundation.custom.drf.permissions import IsAuthenticatedAndIsActivePermission
 from tenant_api.pagination import TinyResultsSetPagination
+from tenant_api.filters.order_comment import WorkOrderCommentFilter
 from tenant_api.permissions.order import (
    CanListCreateWorkOrderPermission,
    CanRetrieveUpdateDestroyWorkOrderPermission
@@ -17,7 +18,7 @@ from tenant_api.permissions.order import (
 from tenant_api.serializers.order_comment import (
     WorkOrderCommentListCreateSerializer,
 )
-from tenant_foundation.models import WorkOrder
+from tenant_foundation.models import WorkOrder, WorkOrderComment
 
 
 class WorkOrderCommentListCreateAPIView(generics.ListCreateAPIView):
@@ -28,12 +29,22 @@ class WorkOrderCommentListCreateAPIView(generics.ListCreateAPIView):
         IsAuthenticatedAndIsActivePermission,
         CanListCreateWorkOrderPermission
     )
+    filter_backends = (filters.SearchFilter, DjangoFilterBackend)
 
     def get_queryset(self):
         """
         List
         """
-        queryset = WorkOrder.objects.all().order_by('-created')
+        # Fetch all the queries.
+        queryset = WorkOrderComment.objects.all().order_by('-created_at')
+        s = self.get_serializer_class()
+        queryset = s.setup_eager_loading(self, queryset)
+
+        # The following code will use the 'django-filter'
+        filter = WorkOrderCommentFilter(self.request.GET, queryset=queryset)
+        queryset = filter.qs
+
+        # Return our filtered list.
         return queryset
 
     def post(self, request, format=None):
