@@ -38,7 +38,7 @@ class SkillSetListCreateAPIView(generics.ListCreateAPIView):
         List
         """
         # Fetch all the queries.
-        queryset = SkillSet.objects.all().order_by('category', 'sub_category')
+        queryset = SkillSet.objects.all().order_by('sub_category')
 
         # The following code will use the 'django-filter'
         filter = SkillSetFilter(self.request.GET, queryset=queryset)
