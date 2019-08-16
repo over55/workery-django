@@ -14,10 +14,11 @@ from tenant_api.permissions.staff import (
    CanListCreateStaffPermission,
    CanRetrieveUpdateDestroyStaffPermission
 )
+from tenant_api.filters.staff_comment import StaffCommentFilter
 from tenant_api.serializers.staff_comment import (
     StaffCommentListCreateSerializer,
 )
-from tenant_foundation.models import Staff
+from tenant_foundation.models import StaffComment
 
 
 class StaffCommentListCreateAPIView(generics.ListCreateAPIView):
@@ -28,12 +29,22 @@ class StaffCommentListCreateAPIView(generics.ListCreateAPIView):
         IsAuthenticatedAndIsActivePermission,
         CanListCreateStaffPermission
     )
+    filter_backends = (filters.SearchFilter, DjangoFilterBackend)
 
     def get_queryset(self):
         """
         List
         """
-        queryset = Staff.objects.all().order_by('-created')
+        queryset = StaffComment.objects.all().order_by('-created_at').prefetch_related(
+            'about',
+            'comment',
+        )
+
+        # The following code will use the 'django-filter'
+        filter = StaffCommentFilter(self.request.GET, queryset=queryset)
+        queryset = filter.qs
+
+        # Return our filtered list.
         return queryset
 
     def post(self, request, format=None):
