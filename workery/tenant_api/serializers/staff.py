@@ -28,6 +28,7 @@ from tenant_foundation.models import (
     Staff,
     HowHearAboutUsItem
 )
+from tenant_api.serializers.tag import TagListCreateSerializer
 
 
 logger = logging.getLogger(__name__)
@@ -150,6 +151,14 @@ class StaffListCreateSerializer(serializers.ModelSerializer):
     # Useful for determining if the user is active or not.
     state = serializers.IntegerField(read_only=True,source="owner.is_active")
 
+    # Generate the full name of the associate.
+    full_name = serializers.SerializerMethodField()
+    address = serializers.SerializerMethodField()
+    address_url = serializers.SerializerMethodField()
+    full_address = serializers.SerializerMethodField()
+    e164_telephone = serializers.SerializerMethodField()
+    # pretty_tags = serializers.SerializerMethodField()
+
     # Meta Information.
     class Meta:
         model = Staff
@@ -174,6 +183,12 @@ class StaffListCreateSerializer(serializers.ModelSerializer):
             'is_active',
             'how_hear',
             'state',
+            'full_name',
+            'address',
+            'address_url',
+            'full_address',
+            'e164_telephone',
+            # 'pretty_tags',
 
             # # Misc (Read Only)
             # 'comments',
@@ -254,6 +269,43 @@ class StaffListCreateSerializer(serializers.ModelSerializer):
             'tags',
         )
         return queryset
+
+    def get_full_name(self, obj):
+        try:
+            return str(obj)
+        except Exception as e:
+            return None
+
+    def get_address(self, obj):
+        try:
+            return obj.get_postal_address_without_postal_code()
+        except Exception as e:
+            return None
+
+    def get_address_url(self, obj):
+        try:
+            return obj.get_google_maps_url()
+        except Exception as e:
+            return None
+
+    def get_full_address(self, obj):
+        try:
+            return obj.get_postal_address()
+        except Exception as e:
+            return None
+
+    def get_e164_telephone(self, obj):
+        """
+        Converts the "PhoneNumber" object into a "NATIONAL" format.
+        See: https://github.com/daviddrysdale/python-phonenumbers
+        """
+        try:
+            if obj.telephone:
+                return phonenumbers.format_number(obj.telephone, phonenumbers.PhoneNumberFormat.E164)
+            else:
+                return "-"
+        except Exception as e:
+            return None
 
     def create(self, validated_data):
         """
@@ -537,6 +589,17 @@ class StaffRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
     emergency_contact_telephone = PhoneNumberField(allow_null=True, required=False)
     emergency_contact_alternative_telephone = PhoneNumberField(allow_null=True, required=False)
 
+    # Generate the full name of the associate.
+    full_name = serializers.SerializerMethodField()
+    address = serializers.SerializerMethodField()
+    address_url = serializers.SerializerMethodField()
+    full_address = serializers.SerializerMethodField()
+    e164_telephone = serializers.SerializerMethodField()
+    created_by = serializers.SerializerMethodField()
+    last_modified_by = serializers.SerializerMethodField()
+    how_hear_pretty = serializers.SerializerMethodField()
+    pretty_tags = serializers.SerializerMethodField()
+
     # Meta Information.
     class Meta:
         model = Staff
@@ -572,6 +635,15 @@ class StaffRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
             'password',
             'password_repeat',
             # 'extra_comment',
+            'full_name',
+            'address',
+            'address_url',
+            'full_address',
+            'created_by',
+            'last_modified_by',
+            'e164_telephone',
+            'how_hear_pretty',
+            'pretty_tags',
 
             # Contact Point
             'area_served',
@@ -644,6 +716,68 @@ class StaffRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         if value is None or value == '':
             raise serializers.ValidationError("This field may not be blank.")
         return value
+
+    def get_full_name(self, obj):
+        try:
+            return str(obj)
+        except Exception as e:
+            return None
+
+    def get_address(self, obj):
+        try:
+            return obj.get_postal_address_without_postal_code()
+        except Exception as e:
+            return None
+
+    def get_address_url(self, obj):
+        try:
+            return obj.get_google_maps_url()
+        except Exception as e:
+            return None
+
+    def get_full_address(self, obj):
+        try:
+            return obj.get_postal_address()
+        except Exception as e:
+            return None
+
+    def get_created_by(self, obj):
+        try:
+            return str(obj.created_by)
+        except Exception as e:
+            return None
+
+    def get_last_modified_by(self, obj):
+        try:
+            return str(obj.last_modified_by)
+        except Exception as e:
+            return None
+
+    def get_how_hear_pretty(self, obj):
+        try:
+            return str(obj.how_hear)
+        except Exception as e:
+            return None
+
+    def get_pretty_tags(self, obj):
+        try:
+            s = TagListCreateSerializer(obj.tags.all(), many=True)
+            return s.data
+        except Exception as e:
+            return None
+
+    def get_e164_telephone(self, obj):
+        """
+        Converts the "PhoneNumber" object into a "NATIONAL" format.
+        See: https://github.com/daviddrysdale/python-phonenumbers
+        """
+        try:
+            if obj.telephone:
+                return phonenumbers.format_number(obj.telephone, phonenumbers.PhoneNumberFormat.E164)
+            else:
+                return "-"
+        except Exception as e:
+            return None
 
     def update(self, instance, validated_data):
         """
