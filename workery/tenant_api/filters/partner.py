@@ -8,7 +8,6 @@ from django.db import models
 class PartnerFilter(django_filters.FilterSet):
 
     def state_filtering(self, queryset, name, value):
-        print(">>>", name, value)
         return queryset.filter(owner__is_active=value)
 
     state = django_filters.NumberFilter(method='state_filtering')

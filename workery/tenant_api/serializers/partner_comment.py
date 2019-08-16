@@ -27,11 +27,11 @@ from tenant_foundation.models import (
 )
 
 
-class PartnerListCreateSerializer(serializers.ModelSerializer):
+class PartnerCommentListCreateSerializer(serializers.ModelSerializer):
     # about = serializers.PrimaryKeyRelatedField(many=False, read_only=True)
     # comment = serializers.PrimaryKeyRelatedField(many=False, read_only=True)
     extra_text = serializers.CharField(write_only=True, allow_null=True)
-    text = serializers.CharField(read_only=True)
+    text = serializers.CharField(read_only=True, source="comment.text")
 
     # Meta Information.
     class Meta:
