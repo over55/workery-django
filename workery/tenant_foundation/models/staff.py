@@ -13,6 +13,7 @@ from django.db import transaction
 from django.utils import timezone
 from django.utils.text import Truncator
 from django.utils.translation import ugettext_lazy as _
+from django.utils.functional import cached_property
 
 from shared_foundation.constants import *
 from shared_foundation.models import SharedUser
@@ -241,6 +242,30 @@ class Staff(AbstractPerson):
     #  FUNCTIONS
     #
 
+    @cached_property
+    def group_id(self):
+        group = self.owner.groups.first()
+        return group.id
+
+    @cached_property
+    def group_description(self):
+        group = self.owner.groups.first()
+        return str(group)
+
+    def invalidate(self, method_name):
+        """
+        Function used to clear the cache for the cached property functions.
+        """
+        try:
+            if method_name == 'group_id':
+                del self.group_id
+            if method_name == 'group_description':
+                del self.group_description
+            else:
+                raise Exception("Method name not found.")
+        except AttributeError:
+            pass
+
     def __str__(self):
         if self.middle_name:
             return str(self.given_name)+" "+str(self.middle_name)+" "+str(self.last_name)
@@ -275,6 +300,10 @@ class Staff(AbstractPerson):
         if self.description:
             search_text += " " + self.description
         self.indexed_text = Truncator(search_text).chars(511)
+
+        # Invalidate caches.
+        self.invalidate("group_id")
+        self.invalidate("group_description")
 
         '''
         Run our `save` function.

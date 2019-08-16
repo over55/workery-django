@@ -599,6 +599,9 @@ class StaffRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
     last_modified_by = serializers.SerializerMethodField()
     how_hear_pretty = serializers.SerializerMethodField()
     pretty_tags = serializers.SerializerMethodField()
+    group_id = serializers.ReadOnlyField(allow_null=True)
+    group_description = serializers.ReadOnlyField(allow_null=True)
+    state = serializers.IntegerField(read_only=True,source="owner.is_active")
 
     # Meta Information.
     class Meta:
@@ -644,6 +647,9 @@ class StaffRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
             'e164_telephone',
             'how_hear_pretty',
             'pretty_tags',
+            'group_id',
+            'group_description',
+            'state',
 
             # Contact Point
             'area_served',
