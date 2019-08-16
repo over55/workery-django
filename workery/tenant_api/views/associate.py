@@ -42,6 +42,13 @@ class AssociateListCreateAPIView(generics.ListCreateAPIView):
         # Fetch all the queries.
         queryset = Associate.objects.all().order_by('last_name').prefetch_related(
             'owner',
+            # 'created_by',
+            # 'last_modified_by',
+            'tags',
+            'skill_sets',
+            # 'vehicle_types',
+            # 'comments',
+            # 'insurance_requirements',
         )
 
         # The following code will use the 'django-filter'

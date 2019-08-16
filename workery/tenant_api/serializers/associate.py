@@ -161,6 +161,8 @@ class AssociateListCreateSerializer(serializers.ModelSerializer):
     address_url = serializers.SerializerMethodField()
     full_address = serializers.SerializerMethodField()
     e164_telephone = serializers.SerializerMethodField()
+    # pretty_skill_sets = serializers.SerializerMethodField()
+    # pretty_tags = serializers.SerializerMethodField()
 
     # Meta Information.
     class Meta:
@@ -211,6 +213,8 @@ class AssociateListCreateSerializer(serializers.ModelSerializer):
             'address_url',
             'full_address',
             'e164_telephone',
+            # 'pretty_skill_sets',
+            # 'pretty_tags',
 
             # # Misc (Write Only)
             'extra_comment',
@@ -285,7 +289,7 @@ class AssociateListCreateSerializer(serializers.ModelSerializer):
             'last_modified_by',
             'tags',
             'skill_sets',
-            'vehicle_types'
+            'vehicle_types',
             'comments',
             'insurance_requirements',
         )
@@ -327,6 +331,20 @@ class AssociateListCreateSerializer(serializers.ModelSerializer):
                 return "-"
         except Exception as e:
             return None
+
+    # def get_pretty_skill_sets(self, obj):
+    #     try:
+    #         s = SkillSetListCreateSerializer(obj.skill_sets.all(), many=True)
+    #         return s.data
+    #     except Exception as e:
+    #         return None
+    #
+    # def get_pretty_tags(self, obj):
+    #     try:
+    #         s = TagListCreateSerializer(obj.tags.all(), many=True)
+    #         return s.data
+    #     except Exception as e:
+    #         return None
 
     @transaction.atomic
     def create(self, validated_data):
