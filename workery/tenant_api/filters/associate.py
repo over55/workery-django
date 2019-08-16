@@ -47,6 +47,28 @@ class AssociateFilter(django_filters.FilterSet):
 
     skill_sets = django_filters.CharFilter(method='skill_sets_filtering')
 
+    def email_filtering(self, queryset, name, value):
+        # DEVELOPERS NOTE:
+        # `Django REST Framework` appears to replace the plus character ("+")
+        # with a whitespace, as a result, to fix this issue, we will replace
+        # the whitespace with the plus character for the email.
+        value = value.replace(" ", "+")
+
+        # Search inside user account OR the customer account, then return
+        # our filtered results.
+        queryset = queryset.filter(
+            Q(owner__email=value)|
+            Q(email=value)
+        )
+        return queryset
+
+    email = django_filters.CharFilter(method='email_filtering')
+
+    def telephonel_filtering(self, queryset, name, value):
+        return queryset.filter(Q(telephone=value)|Q(other_telephone=value))
+
+    telephone = django_filters.CharFilter(method='telephonel_filtering')
+
     class Meta:
         model = Associate
         fields = [
@@ -56,6 +78,8 @@ class AssociateFilter(django_filters.FilterSet):
             'middle_name',
             'last_name',
             'street_address',
+            'email',
+            'telephone',
             # 'business',
             # 'birthdate',
             # 'join_date',
