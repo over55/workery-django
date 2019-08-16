@@ -125,6 +125,13 @@ class Staff(AbstractPerson):
         null=True,
         related_name="staves"
     )
+    how_hear_other = models.CharField(
+        _("How hear (other)"),
+        max_length=2055,
+        help_text=_('How associate heared about this us in detail.'),
+        blank=True,
+        null=True,
+    )
     created_by = models.ForeignKey(
         SharedUser,
         help_text=_('The user whom created this object.'),
