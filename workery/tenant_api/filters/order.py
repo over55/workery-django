@@ -26,12 +26,18 @@ class WorkOrderFilter(django_filters.FilterSet):
         # }
     )
 
+    def keyword_filtering(self, queryset, name, value):
+        return WorkOrder.objects.partial_text_search(value)
+
+    search = django_filters.CharFilter(method='keyword_filtering')
+
     class Meta:
         model = WorkOrder
         fields = [
             'associate',
             'customer',
             'state',
+            'search',
         ]
         # filter_overrides = {
         #     models.CharField: { # given_name

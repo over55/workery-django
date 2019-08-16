@@ -10,6 +10,7 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 from django.contrib.postgres.search import SearchVector, SearchVectorField
 from django.db import models
 from django.db import transaction
+from django.db.models import Q
 from django.utils import timezone
 from django.utils.text import Truncator
 from django.utils.translation import ugettext_lazy as _
@@ -38,6 +39,16 @@ class WorkOrderManager(models.Manager):
         items = WorkOrder.objects.all()
         for item in items.all():
             item.delete()
+
+    def partial_text_search(self, keyword):
+        """Function performs partial text search of various textfields."""
+        return WorkOrder.objects.filter(
+            Q(indexed_text__icontains=keyword) |
+            Q(indexed_text__istartswith=keyword) |
+            Q(indexed_text__iendswith=keyword) |
+            Q(indexed_text__exact=keyword) |
+            Q(indexed_text__icontains=keyword)
+        )
 
     def full_text_search(self, keyword):
         """Function performs full text search of various textfields."""
