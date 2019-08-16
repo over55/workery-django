@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
 import django_filters
 from phonenumber_field.modelfields import PhoneNumberField
-from tenant_foundation.models import WorkOrder
 from django.db import models
+from django.db.models import Q
+
+from tenant_foundation.models import WorkOrder
 
 
 class WorkOrderFilter(django_filters.FilterSet):
@@ -31,6 +33,33 @@ class WorkOrderFilter(django_filters.FilterSet):
 
     search = django_filters.CharFilter(method='keyword_filtering')
 
+    def email_filtering(self, queryset, name, value):
+        # DEVELOPERS NOTE:
+        # `Django REST Framework` appears to replace the plus character ("+")
+        # with a whitespace, as a result, to fix this issue, we will replace
+        # the whitespace with the plus character for the email.
+        value = value.replace(" ", "+")
+
+        # Search inside user accounts OR profiles.
+        queryset = queryset.filter(
+            Q(associate__owner__email=value)|
+            Q(associate__email=value)|
+            Q(customer__owner__email=value)|
+            Q(customer__email=value)
+        )
+        print(queryset)
+        return queryset
+
+    email = django_filters.CharFilter(method='email_filtering')
+
+    def telephonel_filtering(self, queryset, name, value):
+        return queryset.filter(
+            Q(associate__telephone=value)|Q(associate__other_telephone=value)|
+            Q(customer__telephone=value)|Q(customer__other_telephone=value)
+        )
+
+    telephone = django_filters.CharFilter(method='telephonel_filtering')
+
     class Meta:
         model = WorkOrder
         fields = [
@@ -38,6 +67,8 @@ class WorkOrderFilter(django_filters.FilterSet):
             'customer',
             'state',
             'search',
+            'email',
+            'telephone',
         ]
         # filter_overrides = {
         #     models.CharField: { # given_name
