@@ -289,10 +289,24 @@ class Customer(AbstractPerson):
     )
 
     #
-    #  PERSON FIELDS (EXTRA) - http://schema.org/Person
+    #  ORGANIZATION FIELDS
     #
 
-    organization = models.ForeignKey(
+    organization_name = models.CharField(
+        _("Organization Name"),
+        max_length=255,
+        help_text=_('The name of the organization or business this person represents.'),
+        blank=True,
+        null=True,
+    )
+    organization_type_of = models.PositiveSmallIntegerField(
+        _("Organization Type of"),
+        help_text=_('The type of organization this is based on Over55 internal classification.'),
+        default=UNKNOWN_ORGANIZATION_TYPE_OF_ID,
+        blank=True,
+        choices=ORGANIZATION_TYPE_OF_CHOICES,
+    )
+    organization = models.ForeignKey( # DEPRECATED
         "Organization",
         help_text=_('The organization that this customer is affiliated with.'),
         related_name="customers",

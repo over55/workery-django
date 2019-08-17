@@ -8,6 +8,7 @@ from tenant_api.views.associate_comment import AssociateCommentListCreateAPIView
 from tenant_api.views.awaylog import AwayLogListCreateAPIView, AwayLogRetrieveUpdateDestroyAPIView
 # from tenant_api.views.comment import CommentListCreateAPIView, CommentRetrieveUpdateDestroyAPIView
 from tenant_api.views.customer import CustomerListCreateAPIView, CustomerRetrieveUpdateDestroyAPIView, CustomerCreateValidationAPIView
+from tenant_api.views.customer_crud import CustomerListCreateV2APIView
 from tenant_api.views.customer_comment import CustomerCommentListCreateAPIView
 from tenant_api.views.customer_operation import CustomerDeactivateOperationCreateAPIView, ResidentialCustomerUpgradeOperationCreateAPIView
 from tenant_api.views.insurance_requirement import InsuranceRequirementListCreateAPIView, InsuranceRequirementRetrieveUpdateDestroyAPIView
@@ -74,6 +75,7 @@ urlpatterns = [
 
     # Customers
     url(r'^api/customers$', CustomerListCreateAPIView.as_view(), name='workery_customer_list_create_api_endpoint'),
+    url(r'^api/v2/customers$', CustomerListCreateV2APIView.as_view(), name='workery_customer_list_create_v2_api_endpoint'),
     url(r'^api/customers/validate$', CustomerCreateValidationAPIView.as_view(), name='workery_customer_create_validate_api_endpoint'),
     url(r'^api/customer/(?P<pk>[^/.]+)/$', CustomerRetrieveUpdateDestroyAPIView.as_view(), name='workery_customer_retrieve_update_destroy_api_endpoint'),
     url(r'^api/customer-comments$', CustomerCommentListCreateAPIView.as_view(), name='workery_customer_comment_list_create_api_endpoint'),
