@@ -40,14 +40,11 @@ class CustomerListCreateSerializer(serializers.ModelSerializer):
         required=False,
         allow_blank=True,
         validators=[
-            UniqueValidator(queryset=SharedUser.objects.all()),
+            UniqueValidator(queryset=Customer.objects.all()),
         ],
     )
-    organization_type_of = serializers.CharField(
+    organization_type_of = serializers.IntegerField(
         required=False,
-        allow_blank=True,
-        max_length=63,
-        validators=[]
     )
     given_name = serializers.CharField(
         required=True,
@@ -64,23 +61,20 @@ class CustomerListCreateSerializer(serializers.ModelSerializer):
         allow_blank=False,
         allow_null=False,
     )
-    country = serializers.CharField(
+    address_country = serializers.CharField(
         required=True,
         allow_blank=False,
         validators=[],
-        source="address_country"
     )
-    region = serializers.CharField(
+    address_region = serializers.CharField(
         required=True,
         allow_blank=False,
         validators=[],
-        source="address_region"
     )
-    locality = serializers.CharField(
+    address_locality = serializers.CharField(
         required=True,
         allow_blank=False,
         validators=[],
-        source="address_locality"
     )
     postal_code = serializers.CharField(
         required=True,
@@ -217,9 +211,9 @@ class CustomerListCreateSerializer(serializers.ModelSerializer):
             'other_telephone_type_of',
 
             # Postal Address
-            'country',
-            'locality',
-            'region',
+            'address_country',
+            'address_locality',
+            'address_region',
             # 'post_office_box_number',
             'postal_code',
             'street_address',
@@ -406,9 +400,9 @@ class CustomerListCreateSerializer(serializers.ModelSerializer):
             other_telephone_type_of=validated_data.get('other_telephone_type_of', None),
 
             # Postal Address
-            address_country=validated_data.get('country', None),
-            address_locality=validated_data.get('locality', None),
-            address_region=validated_data.get('region', None),
+            address_country=validated_data.get('address_country', None),
+            address_locality=validated_data.get('address_locality', None),
+            address_region=validated_data.get('address_region', None),
             post_office_box_number=validated_data.get('post_office_box_number', None),
             postal_code=validated_data.get('postal_code', None),
             street_address=validated_data.get('street_address', None),
@@ -456,8 +450,6 @@ class CustomerListCreateSerializer(serializers.ModelSerializer):
         validated_data['fax_number'] = fax_number
         validated_data['other_telephone'] = other_telephone
         validated_data['id'] = customer.id
-
-        raise serializers.ValidationError("TEST")
 
         # Return our validated data.
         return validated_data

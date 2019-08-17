@@ -58,7 +58,7 @@ class CustomerListCreateV2APIView(generics.ListCreateAPIView):
             'created_from_is_public': is_routable,
             'franchise': request.tenant,
             'type_of': request.data.get('type_of', UNASSIGNED_CUSTOMER_TYPE_OF_ID)
-        })
+        });
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)

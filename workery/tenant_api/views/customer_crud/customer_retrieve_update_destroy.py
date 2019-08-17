@@ -16,10 +16,7 @@ from tenant_api.permissions.customer import (
    CanListCreateCustomerPermission,
    CanRetrieveUpdateDestroyCustomerPermission
 )
-from tenant_api.serializers.customer import (
-    CustomerListCreateSerializer,
-    CustomerRetrieveUpdateDestroySerializer
-)
+from tenant_api.serializers.customer_crud import CustomerRetrieveUpdateDestroySerializer
 from tenant_foundation.models import Customer
 
 
