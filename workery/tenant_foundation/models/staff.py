@@ -10,6 +10,7 @@ from django.contrib.postgres.search import SearchVector, SearchVectorField
 from django.core.validators import EmailValidator
 from django.db import models
 from django.db import transaction
+from django.db.models import Q
 from django.utils import timezone
 from django.utils.text import Truncator
 from django.utils.translation import ugettext_lazy as _

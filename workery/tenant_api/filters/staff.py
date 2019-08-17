@@ -3,6 +3,7 @@ import django_filters
 from phonenumber_field.modelfields import PhoneNumberField
 from tenant_foundation.models import Staff
 from django.db import models
+from django.db.models import Q
 
 
 class StaffFilter(django_filters.FilterSet):
@@ -24,7 +25,7 @@ class StaffFilter(django_filters.FilterSet):
     )
 
     def keyword_filtering(self, queryset, name, value):
-        return Associate.objects.partial_text_search(value)
+        return Staff.objects.partial_text_search(value)
 
     search = django_filters.CharFilter(method='keyword_filtering')
 
@@ -32,6 +33,28 @@ class StaffFilter(django_filters.FilterSet):
         return queryset.filter(owner__is_active=value)
 
     state = django_filters.NumberFilter(method='state_filtering')
+
+    def email_filtering(self, queryset, name, value):
+        # DEVELOPERS NOTE:
+        # `Django REST Framework` appears to replace the plus character ("+")
+        # with a whitespace, as a result, to fix this issue, we will replace
+        # the whitespace with the plus character for the email.
+        value = value.replace(" ", "+")
+
+        # Search inside user account OR the customer account, then return
+        # our filtered results.
+        queryset = queryset.filter(
+            Q(owner__email=value)|
+            Q(email=value)
+        )
+        return queryset
+
+    email = django_filters.CharFilter(method='email_filtering')
+
+    def telephonel_filtering(self, queryset, name, value):
+        return queryset.filter(Q(telephone=value)|Q(other_telephone=value))
+
+    telephone = django_filters.CharFilter(method='telephonel_filtering')
 
     class Meta:
         model = Staff
@@ -41,6 +64,7 @@ class StaffFilter(django_filters.FilterSet):
             'last_name',
             'street_address',
             'owner__email',
+            'email',
             'telephone',
             'search',
             'state',
