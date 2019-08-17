@@ -429,6 +429,8 @@ class Customer(AbstractPerson):
             search_text += " " + self.given_name
         if self.organization:
             search_text += " " + self.organization.name
+        if self.organization_name:
+            search_text += " " + self.organization_name
         search_text += " " + str(self.id)
         if self.email:
             search_text += " " + self.email
