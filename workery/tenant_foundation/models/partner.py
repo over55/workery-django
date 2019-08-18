@@ -20,6 +20,7 @@ from shared_foundation.constants import *
 from shared_foundation.models import SharedUser
 from tenant_foundation.models import AbstractPerson
 from tenant_foundation.utils import *
+from tenant_foundation.constants import *
 
 
 class PartnerManager(models.Manager):
@@ -96,6 +97,20 @@ class Partner(AbstractPerson):
     #  CUSTOM FIELDS
     #
 
+    organization_name = models.CharField(
+        _("Organization Name"),
+        max_length=255,
+        help_text=_('The name of the organization or business this person represents.'),
+        blank=True,
+        null=True,
+    )
+    organization_type_of = models.PositiveSmallIntegerField(
+        _("Organization Type of"),
+        help_text=_('The type of organization this is based on Over55 internal classification.'),
+        default=UNKNOWN_ORGANIZATION_TYPE_OF_ID,
+        blank=True,
+        choices=ORGANIZATION_TYPE_OF_CHOICES,
+    )
     indexed_text = models.CharField(
         _("Indexed Text"),
         max_length=511,
