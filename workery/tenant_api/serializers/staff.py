@@ -559,6 +559,10 @@ class StaffRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
             "invalid": _("Please pick either 'Yes' or 'No' choice.")
         }
     )
+    is_active = serializers.BooleanField(
+        read_only=True,
+        source="owner.is_active"
+    )
 
     # This field is used to assign the user to the group.
     account_type = serializers.CharField(
