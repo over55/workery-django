@@ -537,7 +537,9 @@ class PartnerListCreateSerializer(serializers.ModelSerializer):
                 organization.save()
                 logger.info("Created organization.")
 
-            partner.organization = organization
+            partner.organization = organization # DEPRECATED
+            partner.organization_name = validated_data.get('organization_name', None)
+            partner.organization_type_of = validated_data.get('organization_type_of', None)
             partner.save()
             logger.info("Attached created organization to partner.")
 

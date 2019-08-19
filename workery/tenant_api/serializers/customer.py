@@ -506,7 +506,9 @@ class CustomerListCreateSerializer(serializers.ModelSerializer):
                     organization.owner = owner
                     organization.save()
 
-                customer.organization = organization
+                customer.organization = organization # DEPRECATED
+                customer.organization_name = validated_data.get('organization_name', None)
+                customer.organization_type_of = validated_data.get('organization_type_of', None)
                 customer.save()
                 logger.info("Attached created organization to customer.")
 
