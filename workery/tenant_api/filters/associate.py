@@ -3,6 +3,7 @@ import django_filters
 from phonenumber_field.modelfields import PhoneNumberField
 from tenant_foundation.models import Associate
 from django.db import models
+from django.db.models import Q
 
 
 class AssociateFilter(django_filters.FilterSet):
