@@ -12,7 +12,8 @@ from tenant_api.views.customer_crud import (
     CustomerListCreateV2APIView,
     CustomerRetrieveUpdateDestroyV2APIView,
     CustomerContactUpdateAPIView,
-    CustomerAddressUpdateAPIView
+    CustomerAddressUpdateAPIView,
+    CustomerMetricsUpdateAPIView
 )
 from tenant_api.views.customer_comment import CustomerCommentListCreateAPIView
 from tenant_api.views.customer_operation import CustomerDeactivateOperationCreateAPIView, ResidentialCustomerUpgradeOperationCreateAPIView
@@ -89,6 +90,7 @@ urlpatterns = [
     url(r'^api/v2/customer/(?P<pk>[^/.]+)/$', CustomerRetrieveUpdateDestroyV2APIView.as_view(), name='workery_customer_retrieve_update_destroy_v2_api_endpoint'),
     url(r'^api/customer/(?P<pk>[^/.]+)/contact$', CustomerContactUpdateAPIView.as_view(), name='workery_customer_contact_update_api_endpoint'),
     url(r'^api/customer/(?P<pk>[^/.]+)/address$', CustomerAddressUpdateAPIView.as_view(), name='workery_customer_address_update_api_endpoint'),
+    url(r'^api/customer/(?P<pk>[^/.]+)/metrics$', CustomerMetricsUpdateAPIView.as_view(), name='workery_customer_metrics_update_api_endpoint'),
     url(r'^api/customer-comments$', CustomerCommentListCreateAPIView.as_view(), name='workery_customer_comment_list_create_api_endpoint'),
     url(r'^api/deactivated-customers$', DeactivatedCustomerListAPIView.as_view(), name='workery_deactivated_customer_list_api_endpoint'),
 

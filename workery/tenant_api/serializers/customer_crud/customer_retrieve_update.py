@@ -21,6 +21,7 @@ from shared_foundation.models import SharedUser
 from shared_foundation.custom.drf.validation import MatchingDuelFieldsValidator, EnhancedPasswordStrengthFieldValidator
 from shared_foundation.utils import get_unique_username_from_email
 # from tenant_api.serializers.customer_comment import CustomerCommentSerializer
+from tenant_api.serializers.tag import TagListCreateSerializer
 from tenant_foundation.constants import *
 from tenant_foundation.models import (
     Comment,
@@ -149,7 +150,7 @@ class CustomerRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
     created_by = serializers.SerializerMethodField()
     last_modified_by = serializers.SerializerMethodField()
     how_hear_pretty = serializers.SerializerMethodField()
-
+    pretty_tags = serializers.SerializerMethodField()
 
     class Meta:
         model = Customer
@@ -190,6 +191,7 @@ class CustomerRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
             'full_address',
             'e164_telephone',
             'how_hear_pretty',
+            'pretty_tags',
 
             # Misc (Write Only)
             'password',
@@ -309,6 +311,13 @@ class CustomerRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
     def get_how_hear_pretty(self, obj):
         try:
             return str(obj.how_hear)
+        except Exception as e:
+            return None
+
+    def get_pretty_tags(self, obj):
+        try:
+            s = TagListCreateSerializer(obj.tags.all(), many=True)
+            return s.data
         except Exception as e:
             return None
 
