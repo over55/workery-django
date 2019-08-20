@@ -23,6 +23,7 @@ from tenant_api.views.partner_comment import PartnerCommentListCreateAPIView
 from tenant_api.views.skill_set import SkillSetListCreateAPIView, SkillSetRetrieveUpdateDestroyAPIView
 from tenant_api.views.staff import StaffListCreateAPIView, StaffRetrieveUpdateDestroyAPIView, StaffCreateValidationAPIView
 from tenant_api.views.staff_comment import StaffCommentListCreateAPIView
+from tenant_api.views.staff_crud import StaffContactUpdateAPIView
 from tenant_api.views.tag import TagListCreateAPIView, TagRetrieveUpdateDestroyAPIView
 from tenant_api.views.how_hear import HowHearAboutUsItemListCreateAPIView, HowHearAboutUsItemRetrieveUpdateDestroyAPIView
 from tenant_api.views.utility import FindCustomerMatchingAPIView
@@ -132,6 +133,7 @@ urlpatterns = [
     url(r'^api/staves$', StaffListCreateAPIView.as_view(), name='workery_staff_list_create_api_endpoint'),
     url(r'^api/staves/validate$', StaffCreateValidationAPIView.as_view(), name='workery_staff_create_validate_api_endpoint'),
     url(r'^api/staff/(?P<pk>[^/.]+)/$', StaffRetrieveUpdateDestroyAPIView.as_view(), name='workery_staff_retrieve_update_destroy_api_endpoint'),
+    url(r'^api/staff/(?P<pk>[^/.]+)/contact$', StaffContactUpdateAPIView.as_view(), name='workery_staff_contact_update_api_endpoint'),
     url(r'^api/staff-comments$', StaffCommentListCreateAPIView.as_view(), name='workery_staff_comment_list_create_api_endpoint'),
 
     # Tags
