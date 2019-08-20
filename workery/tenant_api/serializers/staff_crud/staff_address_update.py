@@ -130,6 +130,7 @@ class StaffAddressUpdateSerializer(serializers.ModelSerializer):
         #---------------------------
         # Update `Staff` object.
         #---------------------------
+        # Address
         instance.address_country=validated_data.get('address_country', None)
         instance.address_locality=validated_data.get('address_locality', None)
         instance.address_region=validated_data.get('address_region', None)
@@ -137,6 +138,11 @@ class StaffAddressUpdateSerializer(serializers.ModelSerializer):
         instance.postal_code=validated_data.get('postal_code', None)
         instance.street_address=validated_data.get('street_address', None)
         instance.street_address_extra=validated_data.get('street_address_extra', None)
+
+        # Misc
+        instance.last_modified_by = self.context['last_modified_by']
+        instance.last_modified_from = self.context['last_modified_from']
+        instance.last_modified_from_is_public = self.context['last_modified_from_is_public']
 
         # Save our instance.
         instance.save()
