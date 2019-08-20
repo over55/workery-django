@@ -64,10 +64,6 @@ class StaffAccountUpdateSerializer(serializers.ModelSerializer):
             "invalid": _("Please pick either 'Yes' or 'No' choice.")
         }
     )
-    is_active = serializers.BooleanField(
-        read_only=True,
-        source="owner.is_active"
-    )
 
     # This field is used to assign the user to the group.
     account_type = serializers.CharField(
@@ -132,7 +128,6 @@ class StaffAccountUpdateSerializer(serializers.ModelSerializer):
         # For debugging purposes only.
         # print(validated_data)
 
-
         #-------------------------------------
         # Bugfix: Created `SharedUser` object.
         #-------------------------------------
@@ -190,6 +185,7 @@ class StaffAccountUpdateSerializer(serializers.ModelSerializer):
         instance.last_modified_from_is_public = self.context['last_modified_from_is_public']
 
         # Emergency contact.
+        instance.description=validated_data.get('description', None)
         instance.emergency_contact_name=validated_data.get('emergency_contact_name', None)
         instance.emergency_contact_relationship=validated_data.get('emergency_contact_relationship', None)
         instance.emergency_contact_telephone=validated_data.get('emergency_contact_telephone', None)
