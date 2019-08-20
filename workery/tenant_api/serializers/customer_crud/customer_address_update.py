@@ -34,7 +34,7 @@ from tenant_foundation.models import (
 logger = logging.getLogger(__name__)
 
 
-class CustomerRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
+class CustomerAddressUpdateSerializer(serializers.ModelSerializer):
     organization_name = serializers.CharField(
         required=False,
         allow_blank=True,

@@ -38,12 +38,12 @@ class CustomerContactUpdateAPIView(generics.UpdateAPIView):
             'last_modified_by': request.user,
             'last_modified_from': client_ip,
             'last_modified_from_is_public': is_routable,
-            'franchise': request.tenant
+            'franchise': request.tenant,
+            'type_of': customer.type_of,
         })
         write_serializer.is_valid(raise_exception=True)
         customer = write_serializer.save()
-
-        read_serializer = CustomerRetrieveUpdateDestroySerializer(customer, many=True, context={
+        read_serializer = CustomerRetrieveUpdateDestroySerializer(customer, many=False, context={
             'last_modified_by': request.user,
             'last_modified_from': client_ip,
             'last_modified_from_is_public': is_routable,
