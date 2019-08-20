@@ -16,11 +16,11 @@ from tenant_api.permissions.customer import (
    CanListCreateCustomerPermission,
    CanRetrieveUpdateDestroyCustomerPermission
 )
-from tenant_api.serializers.customer_crud import CustomerRetrieveUpdateDestroySerializer
+from tenant_api.serializers.customer_crud import CustomerRetrieveUpdateDestroySerializer, CustomerAddressUpdateSerializer
 from tenant_foundation.models import Customer
 
 
-class CustomerContactUpdateAPIView(generics.UpdateAPIView):
+class CustomerAddressUpdateAPIView(generics.UpdateAPIView):
     serializer_class = CustomerRetrieveUpdateDestroySerializer
     pagination_class = TinyResultsSetPagination
     permission_classes = (
@@ -37,12 +37,18 @@ class CustomerContactUpdateAPIView(generics.UpdateAPIView):
         client_ip, is_routable = get_client_ip(self.request)
         customer = get_object_or_404(Customer, pk=pk)
         self.check_object_permissions(request, customer)  # Validate permissions.
-        serializer = CustomerRetrieveUpdateDestroySerializer(customer, data=request.data, context={
+        write_serializer = CustomerAddressUpdateSerializer(customer, data=request.data, context={
             'last_modified_by': request.user,
             'last_modified_from': client_ip,
             'last_modified_from_is_public': is_routable,
             'franchise': request.tenant
         })
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        write_serializer.is_valid(raise_exception=True)
+        customer = write_serializer.save()
+        read_serializer = CustomerRetrieveUpdateDestroySerializer(customer, many=False, context={
+            'last_modified_by': request.user,
+            'last_modified_from': client_ip,
+            'last_modified_from_is_public': is_routable,
+            'franchise': request.tenant
+        })
+        return Response(read_serializer.data, status=status.HTTP_200_OK)
