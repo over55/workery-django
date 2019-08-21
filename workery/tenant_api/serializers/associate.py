@@ -22,6 +22,8 @@ from shared_foundation.models import SharedUser
 # from tenant_api.serializers.associate_comment import AssociateCommentSerializer
 from tenant_api.serializers.skill_set import SkillSetListCreateSerializer
 from tenant_api.serializers.tag import TagListCreateSerializer
+from tenant_api.serializers.insurance_requirement import InsuranceRequirementListCreateSerializer
+from tenant_api.serializers.vehicle_type import VehicleTypeListCreateSerializer
 from tenant_foundation.models import (
     AssociateComment,
     Associate,
@@ -639,6 +641,8 @@ class AssociateRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
     e164_telephone = serializers.SerializerMethodField()
     pretty_skill_sets = serializers.SerializerMethodField()
     pretty_tags = serializers.SerializerMethodField()
+    pretty_insurance_requirements = serializers.SerializerMethodField()
+    pretty_vehicle_types = serializers.SerializerMethodField()
     latest_completed_and_paid_order = serializers.SerializerMethodField()
     balance_owing_amount = serializers.SerializerMethodField()
     created_by = serializers.SerializerMethodField()
@@ -696,6 +700,8 @@ class AssociateRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
             'e164_telephone',
             'pretty_skill_sets',
             'pretty_tags',
+            'pretty_insurance_requirements',
+            'pretty_vehicle_types',
             'latest_completed_and_paid_order',
             'balance_owing_amount',
 
@@ -818,6 +824,20 @@ class AssociateRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
     def get_pretty_tags(self, obj):
         try:
             s = TagListCreateSerializer(obj.tags.all(), many=True)
+            return s.data
+        except Exception as e:
+            return None
+
+    def get_pretty_insurance_requirements(self, obj):
+        try:
+            s = InsuranceRequirementListCreateSerializer(obj.insurance_requirements.all(), many=True)
+            return s.data
+        except Exception as e:
+            return None
+
+    def get_pretty_vehicle_types(self, obj):
+        try:
+            s = VehicleTypeListCreateSerializer(obj.vehicle_types.all(), many=True)
             return s.data
         except Exception as e:
             return None
