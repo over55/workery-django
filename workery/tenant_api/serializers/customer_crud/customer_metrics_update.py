@@ -53,18 +53,6 @@ class CustomerMetricsUpdateSerializer(serializers.ModelSerializer):
             'how_hear_other',
         )
 
-    def setup_eager_loading(cls, queryset):
-        """ Perform necessary eager loading of data. """
-        queryset = queryset.prefetch_related(
-            'owner',
-            'created_by',
-            'last_modified_by',
-            'tags',
-            'comments',
-            'organization'
-        )
-        return queryset
-
     def update(self, instance, validated_data):
         """
         Override this function to include extra functionality.

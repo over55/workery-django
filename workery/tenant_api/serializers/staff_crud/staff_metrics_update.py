@@ -53,6 +53,7 @@ class StaffMetricsUpdateSerializer(serializers.ModelSerializer):
             'how_hear',
             'how_hear_other',
             'join_date',
+            'description',
         )
 
     def setup_eager_loading(cls, queryset):
@@ -100,7 +101,7 @@ class StaffMetricsUpdateSerializer(serializers.ModelSerializer):
         #---------------------------
         # Update `Staff` object.
         #---------------------------
-        # Person
+        instance.description=validated_data.get('description', None)
         instance.birthdate=validated_data.get('birthdate', None)
         instance.join_date=validated_data.get('join_date', None)
         instance.gender=validated_data.get('gender', None)
