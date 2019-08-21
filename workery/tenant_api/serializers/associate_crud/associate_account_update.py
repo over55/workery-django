@@ -40,7 +40,7 @@ from tenant_foundation.models import (
 logger = logging.getLogger(__name__)
 
 
-class AssociateRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
+class AssociateAccountUpdateSerializer(serializers.ModelSerializer):
     given_name = serializers.CharField(
         required=True,
         allow_blank=False,

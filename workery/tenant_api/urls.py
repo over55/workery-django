@@ -6,7 +6,9 @@ from rest_framework.urlpatterns import format_suffix_patterns
 from tenant_api.views.associate import AssociateListCreateAPIView, AssociateRetrieveUpdateDestroyAPIView, AssociateCreateValidationAPIView
 from tenant_api.views.associate_crud import (
     AssociateContactUpdateAPIView,
-    AssociateAddressUpdateAPIView
+    AssociateAddressUpdateAPIView,
+    AssociateAccountUpdateAPIView,
+    AssociateMetricsUpdateAPIView
 )
 from tenant_api.views.associate_comment import AssociateCommentListCreateAPIView
 from tenant_api.views.awaylog import AwayLogListCreateAPIView, AwayLogRetrieveUpdateDestroyAPIView
@@ -85,6 +87,8 @@ urlpatterns = [
     url(r'^api/associates/validate$', AssociateCreateValidationAPIView.as_view(), name='workery_associate_create_validate_api_endpoint'),
     url(r'^api/associate/(?P<pk>[^/.]+)/contact$', AssociateContactUpdateAPIView.as_view(), name='workery_associate_contact_update_api_endpoint'),
     url(r'^api/associate/(?P<pk>[^/.]+)/address$', AssociateAddressUpdateAPIView.as_view(), name='workery_associate_address_update_api_endpoint'),
+    url(r'^api/associate/(?P<pk>[^/.]+)/account$', AssociateAccountUpdateAPIView.as_view(), name='workery_associate_account_update_api_endpoint'),
+    url(r'^api/associate/(?P<pk>[^/.]+)/metrics$', AssociateMetricsUpdateAPIView.as_view(), name='workery_associate_metrics_update_api_endpoint'),
     url(r'^api/associate/(?P<pk>[^/.]+)/$', AssociateRetrieveUpdateDestroyAPIView.as_view(), name='workery_associate_retrieve_update_destroy_api_endpoint'),
     url(r'^api/associate-comments$', AssociateCommentListCreateAPIView.as_view(), name='workery_associate_comment_list_create_api_endpoint'),
 

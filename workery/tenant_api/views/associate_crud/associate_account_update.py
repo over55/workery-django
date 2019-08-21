@@ -23,59 +23,7 @@ from tenant_foundation.models import Associate
 from django.db import transaction
 
 
-class AssociateListCreateAPIView(generics.ListCreateAPIView):
-    serializer_class = AssociateListCreateSerializer
-    pagination_class = TinyResultsSetPagination
-    permission_classes = (
-        permissions.IsAuthenticated,
-        IsAuthenticatedAndIsActivePermission,
-        CanListCreateAssociatePermission
-    )
-    filter_backends = (filters.SearchFilter, DjangoFilterBackend)
-    # search_fields = ('@given_name', '@middle_name', '@last_name', '@email', 'telephone', '@wsib_number')
-
-    @transaction.atomic
-    def get_queryset(self):
-        """
-        List
-        """
-        # Fetch all the queries.
-        queryset = Associate.objects.all().order_by('last_name').prefetch_related(
-            'owner',
-            # 'created_by',
-            # 'last_modified_by',
-            'tags',
-            'skill_sets',
-            # 'vehicle_types',
-            # 'comments',
-            # 'insurance_requirements',
-        )
-
-        # The following code will use the 'django-filter'
-        filter = AssociateFilter(self.request.GET, queryset=queryset)
-        queryset = filter.qs
-
-        # Return our filtered list.
-        return queryset
-
-    @transaction.atomic
-    def post(self, request, format=None):
-        """
-        Create
-        """
-        client_ip, is_routable = get_client_ip(self.request)
-        serializer = AssociateListCreateSerializer(data=request.data, context={
-            'created_by': request.user,
-            'created_from': client_ip,
-            'created_from_is_public': is_routable,
-            'franchise': request.tenant
-        })
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
-
-
-class AssociateRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
+class AssociateAccountUpdateAPIView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = AssociateRetrieveUpdateDestroySerializer
     pagination_class = TinyResultsSetPagination
     permission_classes = (
