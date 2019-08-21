@@ -31,6 +31,11 @@ from tenant_api.views.order_crud import (
    WorkOrderLiteUpdateAPIView
 )
 from tenant_api.views.partner import PartnerListCreateAPIView, PartnerRetrieveUpdateDestroyAPIView, PartnerCreateValidationAPIView
+from tenant_api.views.partner_crud import (
+    PartnerContactUpdateAPIView,
+    PartnerAddressUpdateAPIView,
+    PartnerMetricsUpdateAPIView
+)
 from tenant_api.views.partner_crud import PartnerListCreateV2APIView, PartnerRetrieveUpdateDestroyV2APIView
 from tenant_api.views.partner_comment import PartnerCommentListCreateAPIView
 from tenant_api.views.skill_set import SkillSetListCreateAPIView, SkillSetRetrieveUpdateDestroyAPIView
@@ -144,6 +149,9 @@ urlpatterns = [
     url(r'^api/partners/validate$', PartnerCreateValidationAPIView.as_view(), name='workery_partner_create_validate_api_endpoint'),
     url(r'^api/partner/(?P<pk>[^/.]+)/$', PartnerRetrieveUpdateDestroyAPIView.as_view(), name='workery_partner_retrieve_update_destroy_api_endpoint'),
     url(r'^api/v2/partner/(?P<pk>[^/.]+)/$', PartnerRetrieveUpdateDestroyV2APIView.as_view(), name='workery_partner_retrieve_update_destroy_api_v2_endpoint'),
+    url(r'^api/partner/(?P<pk>[^/.]+)/contact$', PartnerContactUpdateAPIView.as_view(), name='workery_partner_contact_update_api_endpoint'),
+    url(r'^api/partner/(?P<pk>[^/.]+)/address$', PartnerAddressUpdateAPIView.as_view(), name='workery_partner_address_update_api_endpoint'),
+    url(r'^api/partner/(?P<pk>[^/.]+)/metrics$', PartnerMetricsUpdateAPIView.as_view(), name='workery_partner_metrics_update_api_endpoint'),
     url(r'^api/partner-comments$', PartnerCommentListCreateAPIView.as_view(), name='workery_partner_comment_list_create_api_endpoint'),
 
     # Skill Sets
