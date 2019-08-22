@@ -48,7 +48,6 @@ class PartnerMetricsUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Partner
         fields = (
-            'tags',
             'gender',
             'birthdate',
             'how_hear',
@@ -75,13 +74,4 @@ class PartnerMetricsUpdateSerializer(serializers.ModelSerializer):
         instance.last_modified_from_is_public = self.context['last_modified_from_is_public']
         instance.save()
         logger.info("Updated the staff member.")
-
-        #------------------------
-        # Set our `Tag` objects.
-        #------------------------
-        tags = validated_data.get('tags', None)
-        if tags is not None:
-            if len(tags) > 0:
-                instance.tags.set(tags)
-
         return instance
