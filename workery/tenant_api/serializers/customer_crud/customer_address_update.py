@@ -80,31 +80,6 @@ class CustomerAddressUpdateSerializer(serializers.ModelSerializer):
         """
         Override this function to include extra functionality.
         """
-        # Get our inputs.
-        email = instance.email
-        type_of_customer = instance.type_of
-
-        #-----------------------------------------------------------
-        # Bugfix: Created `SharedUser` object if not created before.
-        #-----------------------------------------------------------
-        if instance.owner is None and instance.email:
-            owner = SharedUser.objects.filter(email=instance.email).first()
-            if owner:
-                instance.owner = owner
-                instance.save()
-                logger.info("BUGFIX: Attached existing shared user to staff.")
-            else:
-                instance.owner = SharedUser.objects.create(
-                    first_name=instance.given_name,
-                    last_name=instance.last_name,
-                    email=instance.email,
-                    is_active=True,
-                    franchise=self.context['franchise'],
-                    was_email_activated=True
-                )
-                instance.save()
-                logger.info("BUGFIX: Created shared user and attached to staff.")
-
         #---------------------------
         # Update `Customer` object.
         #---------------------------

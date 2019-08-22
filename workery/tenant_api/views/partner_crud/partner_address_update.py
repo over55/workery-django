@@ -18,6 +18,7 @@ from tenant_api.permissions.partner import (
    CanRetrieveUpdateDestroyPartnerPermission
 )
 from tenant_api.serializers.partner_crud import PartnerRetrieveUpdateDestroySerializer
+from tenant_api.serializers.partner_crud import PartnerAddressUpdateSerializer
 from tenant_foundation.models import Partner
 
 
@@ -36,7 +37,7 @@ class PartnerAddressUpdateAPIView(generics.UpdateAPIView):
         client_ip, is_routable = get_client_ip(self.request)
         partner = get_object_or_404(Partner, pk=pk)
         self.check_object_permissions(request, partner)  # Validate permissions.
-        write_serializer = PartnerRetrieveUpdateDestroySerializer(partner, data=request.data, context={
+        write_serializer = PartnerAddressUpdateSerializer(partner, data=request.data, context={
             'last_modified_by': request.user,
             'last_modified_from': client_ip,
             'last_modified_from_is_public': is_routable,
@@ -44,7 +45,7 @@ class PartnerAddressUpdateAPIView(generics.UpdateAPIView):
         })
         write_serializer.is_valid(raise_exception=True)
         partner = write_serializer.save()
-        read_serializer = PartnerRetrieveUpdateDestroySerializer(partner, many=True, context={
+        read_serializer = PartnerRetrieveUpdateDestroySerializer(partner, many=False, context={
             'last_modified_by': request.user,
             'last_modified_from': client_ip,
             'last_modified_from_is_public': is_routable,
