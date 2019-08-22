@@ -45,7 +45,7 @@ class PartnerMetricsUpdateAPIView(generics.UpdateAPIView):
         })
         write_serializer.is_valid(raise_exception=True)
         partner = write_serializer.save()
-        read_serializer = PartnerRetrieveUpdateDestroySerializer(partner, many=True, context={
+        read_serializer = PartnerRetrieveUpdateDestroySerializer(partner, many=False, context={
             'last_modified_by': request.user,
             'last_modified_from': client_ip,
             'last_modified_from_is_public': is_routable,

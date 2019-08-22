@@ -51,7 +51,7 @@ class PartnerMetricsUpdateSerializer(serializers.ModelSerializer):
             'gender',
             'birthdate',
             'how_hear',
-            'how_hear_other',
+            # 'how_hear_other',
             'join_date',
             'description',
         )
@@ -68,7 +68,7 @@ class PartnerMetricsUpdateSerializer(serializers.ModelSerializer):
         instance.join_date=validated_data.get('join_date', None)
         instance.gender=validated_data.get('gender', None)
         instance.how_hear=validated_data.get('how_hear', None)
-        instance.how_hear_other=validated_data.get('how_hear_other', None)
+        # instance.how_hear_other=validated_data.get('how_hear_other', None)
         instance.last_modified_by = self.context['last_modified_by']
         instance.last_modified_from = self.context['last_modified_from']
         instance.last_modified_from_is_public = self.context['last_modified_from_is_public']
