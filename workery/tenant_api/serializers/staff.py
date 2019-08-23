@@ -143,7 +143,7 @@ class StaffListCreateSerializer(serializers.ModelSerializer):
     # Attach with our foreign keys.
     how_hear = serializers.PrimaryKeyRelatedField(
         many=False,
-        required=True,
+        required=False,
         allow_null=False,
         queryset=HowHearAboutUsItem.objects.all()
     )
@@ -574,8 +574,8 @@ class StaffRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
     # Attach with our foreign keys.
     how_hear = serializers.PrimaryKeyRelatedField(
         many=False,
-        required=True,
-        allow_null=False,
+        required=False,
+        allow_null=True,
         queryset=HowHearAboutUsItem.objects.all()
     )
 
@@ -942,12 +942,5 @@ class StaffRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
                 comment=comment,
             )
 
-        #---------------------------
-        # Update validation data.
-        #---------------------------
-        # validated_data['comments'] = StaffComment.objects.filter(staff=instance)
-        validated_data['last_modified_by'] = self.context['last_modified_by']
-        # validated_data['extra_comment'] = None
-
         # Return our validated data.
-        return validated_data
+        return instance
