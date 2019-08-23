@@ -26,6 +26,7 @@ from tenant_foundation.models import (
     Comment,
     TaskItem
 )
+from tenant_api.serializers.skill_set import SkillSetListCreateSerializer
 from tenant_api.serializers.tag import TagListCreateSerializer
 
 
@@ -33,10 +34,34 @@ logger = logging.getLogger(__name__)
 
 
 class TaskItemRetrieveSerializer(serializers.ModelSerializer):
-
+    # JOB RELATED
     job_start_date = serializers.DateField(source="job.start_date")
+    job_description = serializers.CharField(read_only=True, source="job.description")
+    job_pretty_status = serializers.CharField(read_only=True, source="job.get_pretty_status")
+    job_pretty_type_of = serializers.CharField(read_only=True, source="job.get_pretty_type_of")
+    job_pretty_skill_sets = serializers.SerializerMethodField()
+    job_pretty_tags = serializers.SerializerMethodField()
+    job_comments_count = serializers.SerializerMethodField()
+
+    # CUSTOMER RELATED
     job_customer_full_name = serializers.SerializerMethodField()
+    # job_customer_telephone = PhoneNumberField(read_only=True, source="customer.telephone")
+    # job_customer_telephone_type_of = serializers.IntegerField(read_only=True, source="customer.telephone_type_of")
+    # job_customer_pretty_telephone_type_of = serializers.CharField(read_only=True, source="customer.get_pretty_telephone_type_of")
+    # job_customer_other_telephone = PhoneNumberField(read_only=True, source="customer.other_telephone")
+    # job_customer_other_telephone_type_of = serializers.IntegerField(read_only=True, source="customer.other_telephone_type_of")
+    # job_customer_pretty_other_telephone_type_of = serializers.CharField(read_only=True, source="customer.get_pretty_other_telephone_type_of")
+
+    # ASSOCIATE RELATED
     job_associate_full_name = serializers.SerializerMethodField()
+    # associate_full_name = serializers.SerializerMethodField()
+    # associate_telephone = PhoneNumberField(read_only=True, source="associate.telephone")
+    # associate_telephone_type_of = serializers.IntegerField(read_only=True, source="associate.telephone_type_of")
+    # associate_pretty_telephone_type_of = serializers.CharField(read_only=True, source="associate.get_pretty_telephone_type_of")
+    # associate_other_telephone = PhoneNumberField(read_only=True, source="associate.other_telephone")
+    # associate_other_telephone_type_of = serializers.IntegerField(read_only=True, source="associate.other_telephone_type_of")
+    # associate_pretty_other_telephone_type_of = serializers.CharField(read_only=True, source="associate.get_pretty_other_telephone_type_of")
+    #
 
     # Meta Information.
     class Meta:
@@ -61,8 +86,20 @@ class TaskItemRetrieveSerializer(serializers.ModelSerializer):
             'last_modified_by',
             'last_modified_from',
             'last_modified_from_is_public',
+
+            # ORDER RELATED
+            'job_description',
             'job_start_date',
+            'job_pretty_status',
+            'job_pretty_type_of',
+            'job_pretty_skill_sets',
+            'job_pretty_tags',
+            'job_comments_count',
+
+            # CUSTOMER RELATED
             'job_customer_full_name',
+
+            # ASSOCIATE RELATED
             'job_associate_full_name',
         )
 
@@ -81,3 +118,23 @@ class TaskItemRetrieveSerializer(serializers.ModelSerializer):
         except Exception as e:
             pass
         return None
+
+    def get_job_pretty_skill_sets(self, obj):
+        try:
+            s = SkillSetListCreateSerializer(obj.job.skill_sets.all(), many=True)
+            return s.data
+        except Exception as e:
+            return None
+
+    def get_job_pretty_tags(self, obj):
+        try:
+            s = TagListCreateSerializer(obj.job.tags.all(), many=True)
+            return s.data
+        except Exception as e:
+            return None
+
+    def get_job_comments_count(self, obj):
+        try:
+            return obj.job.comments.count()
+        except Exception as e:
+            return None
