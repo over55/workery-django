@@ -34,6 +34,10 @@ logger = logging.getLogger(__name__)
 
 class TaskItemRetrieveSerializer(serializers.ModelSerializer):
 
+    job_start_date = serializers.DateField(source="job.start_date")
+    job_customer_full_name = serializers.SerializerMethodField()
+    job_associate_full_name = serializers.SerializerMethodField()
+
     # Meta Information.
     class Meta:
         model = TaskItem
@@ -57,4 +61,23 @@ class TaskItemRetrieveSerializer(serializers.ModelSerializer):
             'last_modified_by',
             'last_modified_from',
             'last_modified_from_is_public',
+            'job_start_date',
+            'job_customer_full_name',
+            'job_associate_full_name',
         )
+
+    def get_job_customer_full_name(self, obj):
+        try:
+            if obj.job.customer:
+                return str(obj.job.customer)
+        except Exception as e:
+            pass
+        return None
+
+    def get_job_associate_full_name(self, obj):
+        try:
+            if obj.job.associate:
+                return str(obj.job.associate)
+        except Exception as e:
+            pass
+        return None
