@@ -71,7 +71,8 @@ from tenant_api.views.bulletin_board_item import BulletinBoardItemListCreateAPIV
 from tenant_api.views.account.profile import ProfileAPIView
 from tenant_api.views.dashboard.dashboard import DashboardAPIView
 from tenant_api.views.task_crud import (
-    TaskItemListPIView
+    TaskItemListPIView,
+    TaskItemRetrieveAPIView
 )
 from tenant_api.views.deactivated_customer import DeactivatedCustomerListAPIView
 from tenant_api.views.activity_sheet_item import (
@@ -141,12 +142,6 @@ urlpatterns = [
     url(r'^api/order_service_fees$', WorkOrderServiceFeeListCreateAPIView.as_view(), name='workery_order_service_fee_list_create_api_endpoint'),
     url(r'^api/order_service_fee/(?P<pk>[^/.]+)/$', WorkOrderServiceFeeRetrieveUpdateDestroyAPIView.as_view(), name='workery_order_service_fee_retrieve_update_destroy_api_endpoint'),
 
-    # Tasks - Operation
-    url(r'^api/task/operation/assign-associate$', AssignAssociateTaskOperationAPIView.as_view(), name='workery_order_task_operation_assign_associate_api_endpoint'),
-    url(r'^api/orders/complete$', FollowUpTaskOperationAPIView.as_view(), name='workery_order_order_complete_create_api_endpoint'),
-    url(r'^api/task/operation/follow-up-pending$', FollowUpPendingTaskOperationAPIView.as_view(), name='workery_order_task_operation_follow_up_pending_api_endpoint'),
-    url(r'^api/task/operation/close$', CloseTaskOperationAPIView.as_view(), name='workery_task_operation_close_api_endpoint'), #TODO: Integrate `CloseTaskOperationAPIView` with current close out view.
-
     # Partners
     url(r'^api/partners$', PartnerListCreateAPIView.as_view(), name='workery_partner_list_create_api_endpoint'),
     url(r'^api/v2/partners$', PartnerListCreateV2APIView.as_view(), name='workery_partner_list_create_api_v2_endpoint'),
@@ -198,6 +193,13 @@ urlpatterns = [
 
     # Tasks
     url(r'^api/tasks$', TaskItemListPIView.as_view(), name='workery_task_item_list_api_endpoint'),
+    url(r'^api/task/(?P<pk>[^/.]+)/$', TaskItemRetrieveAPIView.as_view(), name='workery_task_item_retrieve_api_endpoint'),
+
+    # Tasks - Operation
+    url(r'^api/task/operation/assign-associate$', AssignAssociateTaskOperationAPIView.as_view(), name='workery_order_task_operation_assign_associate_api_endpoint'),
+    url(r'^api/orders/complete$', FollowUpTaskOperationAPIView.as_view(), name='workery_order_order_complete_create_api_endpoint'),
+    url(r'^api/task/operation/follow-up-pending$', FollowUpPendingTaskOperationAPIView.as_view(), name='workery_order_task_operation_follow_up_pending_api_endpoint'),
+    url(r'^api/task/operation/close$', CloseTaskOperationAPIView.as_view(), name='workery_task_operation_close_api_endpoint'), #TODO: Integrate `CloseTaskOperationAPIView` with current close out view.
 
     # ActivitySheetItem
     url(r'^api/activity-sheets$', ActivitySheetItemListCreateAPIView.as_view(), name='workery_activity_sheet_list_create_api_endpoint'),
