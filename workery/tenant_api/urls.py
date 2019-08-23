@@ -70,7 +70,9 @@ from tenant_api.views.order_crud import (
 from tenant_api.views.bulletin_board_item import BulletinBoardItemListCreateAPIView, BulletinBoardItemRetrieveUpdateDestroyAPIView
 from tenant_api.views.account.profile import ProfileAPIView
 from tenant_api.views.dashboard.dashboard import DashboardAPIView
-from tenant_api.views.task_crud.task_item import TaskItemListPIView
+from tenant_api.views.task_crud import (
+    TaskItemListPIView
+)
 from tenant_api.views.deactivated_customer import DeactivatedCustomerListAPIView
 from tenant_api.views.activity_sheet_item import (
     ActivitySheetItemListCreateAPIView,
