@@ -72,7 +72,8 @@ from tenant_api.views.account.profile import ProfileAPIView
 from tenant_api.views.dashboard.dashboard import DashboardAPIView
 from tenant_api.views.task_crud import (
     TaskItemListPIView,
-    TaskItemRetrieveAPIView
+    TaskItemRetrieveAPIView,
+    TaskItemAvailableAssociateListCreateAPIView
 )
 from tenant_api.views.deactivated_customer import DeactivatedCustomerListAPIView
 from tenant_api.views.activity_sheet_item import (
@@ -194,6 +195,7 @@ urlpatterns = [
     # Tasks
     url(r'^api/tasks$', TaskItemListPIView.as_view(), name='workery_task_item_list_api_endpoint'),
     url(r'^api/task/(?P<pk>[^/.]+)/$', TaskItemRetrieveAPIView.as_view(), name='workery_task_item_retrieve_api_endpoint'),
+    url(r'^api/task/(?P<pk>[^/.]+)/available-associates$', TaskItemAvailableAssociateListCreateAPIView.as_view(), name='workery_task_item_available_associate_list_create_api_endpoint'),
 
     # Tasks - Operation
     url(r'^api/task/operation/assign-associate$', AssignAssociateTaskOperationAPIView.as_view(), name='workery_order_task_operation_assign_associate_api_endpoint'),
