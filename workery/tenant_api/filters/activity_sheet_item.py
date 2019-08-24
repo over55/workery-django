@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import django_filters
 from phonenumber_field.modelfields import PhoneNumberField
-from tenant_foundation.models import ActivitySheetItem
+from tenant_foundation.models import ActivitySheetItem, TaskItem
 from django.db import models
 
 
@@ -21,6 +21,12 @@ class ActivitySheetItemFilter(django_filters.FilterSet):
         # }
     )
 
+    def task_item_filtering(self, queryset, name, value):
+        task_item = TaskItem.objects.filter(id=value).first()
+        return queryset.filter(job=task_item.job)
+
+    task_item = django_filters.CharFilter(method='task_item_filtering')
+
     class Meta:
         model = ActivitySheetItem
         fields = [
@@ -30,4 +36,5 @@ class ActivitySheetItemFilter(django_filters.FilterSet):
             'associate',
             # 'is_closed',
             # 'type_of',
+            'task_item',
         ]
