@@ -44,8 +44,12 @@ class TaskItemRetrieveSerializer(serializers.ModelSerializer):
     job_comments_count = serializers.SerializerMethodField()
 
     # CUSTOMER RELATED
+    job_customer = serializers.IntegerField(read_only=True, source="job.customer.id")
     job_customer_full_name = serializers.SerializerMethodField()
-    # job_customer_telephone = PhoneNumberField(read_only=True, source="customer.telephone")
+    job_customer_telephone = PhoneNumberField(read_only=True, source="job.customer.telephone")
+    job_customer_e164_telephone = serializers.SerializerMethodField()
+    job_customer_location = serializers.CharField(read_only=True, source="job.customer.get_postal_address_without_postal_code")
+    job_customer_location_google_url = serializers.URLField(read_only=True, source="job.customer.get_google_maps_url")
     # job_customer_telephone_type_of = serializers.IntegerField(read_only=True, source="customer.telephone_type_of")
     # job_customer_pretty_telephone_type_of = serializers.CharField(read_only=True, source="customer.get_pretty_telephone_type_of")
     # job_customer_other_telephone = PhoneNumberField(read_only=True, source="customer.other_telephone")
@@ -53,9 +57,9 @@ class TaskItemRetrieveSerializer(serializers.ModelSerializer):
     # job_customer_pretty_other_telephone_type_of = serializers.CharField(read_only=True, source="customer.get_pretty_other_telephone_type_of")
 
     # ASSOCIATE RELATED
+    job_associate = serializers.IntegerField(read_only=True, source="job.associate.id")
     job_associate_full_name = serializers.SerializerMethodField()
-    # associate_full_name = serializers.SerializerMethodField()
-    # associate_telephone = PhoneNumberField(read_only=True, source="associate.telephone")
+    job_associate_telephone = PhoneNumberField(read_only=True, source="job.associate.telephone")
     # associate_telephone_type_of = serializers.IntegerField(read_only=True, source="associate.telephone_type_of")
     # associate_pretty_telephone_type_of = serializers.CharField(read_only=True, source="associate.get_pretty_telephone_type_of")
     # associate_other_telephone = PhoneNumberField(read_only=True, source="associate.other_telephone")
@@ -97,10 +101,17 @@ class TaskItemRetrieveSerializer(serializers.ModelSerializer):
             'job_comments_count',
 
             # CUSTOMER RELATED
+            'job_customer',
             'job_customer_full_name',
+            'job_customer_telephone',
+            'job_customer_e164_telephone',
+            'job_customer_location',
+            'job_customer_location_google_url',
 
             # ASSOCIATE RELATED
+            'job_associate',
             'job_associate_full_name',
+            'job_associate_telephone',
         )
 
     def get_job_customer_full_name(self, obj):
@@ -110,6 +121,19 @@ class TaskItemRetrieveSerializer(serializers.ModelSerializer):
         except Exception as e:
             pass
         return None
+
+    def get_job_customer_e164_telephone(self, obj):
+        """
+        Converts the "PhoneNumber" object into a "NATIONAL" format.
+        See: https://github.com/daviddrysdale/python-phonenumbers
+        """
+        try:
+            if obj.job.customer.telephone:
+                return phonenumbers.format_number(obj.job.customer.telephone, phonenumbers.PhoneNumberFormat.E164)
+            else:
+                return "-"
+        except Exception as e:
+            return None
 
     def get_job_associate_full_name(self, obj):
         try:
