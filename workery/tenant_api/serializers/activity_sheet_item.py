@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import phonenumbers
 from datetime import datetime, timedelta
 from dateutil import tz
 from django.conf import settings
@@ -11,6 +12,7 @@ from django.utils.http import urlquote
 from rest_framework import exceptions, serializers
 from rest_framework.response import Response
 
+from shared_foundation.custom.drf.fields import PhoneNumberField
 from tenant_foundation.models import ActivitySheetItem
 
 
@@ -21,6 +23,12 @@ class ActivitySheetItemListCreateSerializer(serializers.ModelSerializer):
     #     allow_null=False,
     #     validators=[]
     # )
+    associate_full_name = serializers.SerializerMethodField()
+    associate_telephone = PhoneNumberField(read_only=True, source="associate.telephone")
+    associate_e164_telephone = serializers.SerializerMethodField()
+    associate_email = serializers.EmailField(read_only=True, source="associate.email")
+    pretty_state = serializers.CharField(read_only=True, source="get_pretty_state")
+
     class Meta:
         model = ActivitySheetItem
         fields = (
@@ -28,11 +36,38 @@ class ActivitySheetItemListCreateSerializer(serializers.ModelSerializer):
             'job',
             'ongoing_job',
             'associate',
+            'associate_full_name',
+            'associate_telephone',
+            'associate_e164_telephone',
+            'associate_email',
             'comment',
             'state',
+            'pretty_state',
             'created_at',
             'created_by',
         )
+
+    def get_associate_full_name(self, obj):
+        try:
+            if obj.associate:
+                return str(obj.associate)
+        except Exception as e:
+            pass
+        return None
+
+    def get_associate_e164_telephone(self, obj):
+        """
+        Converts the "PhoneNumber" object into a "NATIONAL" format.
+        See: https://github.com/daviddrysdale/python-phonenumbers
+        """
+        try:
+            if obj.associate.telephone:
+                return phonenumbers.format_number(obj.associate.telephone, phonenumbers.PhoneNumberFormat.E164)
+            else:
+                return "-"
+        except Exception as e:
+            print(e)
+            return None
 
 
 

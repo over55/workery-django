@@ -128,3 +128,12 @@ class ActivitySheetItem(models.Model):
 
     def __str__(self):
         return str(self.job)+" "+str(self.associate)+" - "+str(self.id)
+
+    def get_pretty_state(self):
+        if ACTIVITY_SHEET_ITEM_STATE.PENDING == self.state:
+            return "Pending"
+        elif ACTIVITY_SHEET_ITEM_STATE.ACCEPTED == self.state:
+            return "Accepted"
+        elif ACTIVITY_SHEET_ITEM_STATE.DECLINED == self.state:
+            return "Declined"
+        return "-"
