@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 import django_filters
 from phonenumber_field.modelfields import PhoneNumberField
-from tenant_foundation.models import Associate
+from tenant_foundation.models import Associate, TaskItem, ActivitySheetItem
 from django.db import models
 from django.db.models import Q
+from django.utils import timezone
 
 
 class AssociateFilter(django_filters.FilterSet):
@@ -23,6 +24,45 @@ class AssociateFilter(django_filters.FilterSet):
         #     'username': 'User account',
         # }
     )
+
+    def available_for_task_item_filtering(self, queryset, name, value):
+        """
+        Filter will find all the available associates for the specific job
+        for the task.
+        """
+        task_item = TaskItem.objects.filter(id=value).first()
+
+        # (a) Find all the unique associates that match the job skill criteria
+        #     for the job.
+        # (b) Find all the unique associates which do not have any activity
+        #     sheet items created previously.
+        # (c) FInd all unique associates which have active accounts.
+        # (d) If an Associate has an active Announcement attached to them,
+        #     they should be uneligible for a job.
+        skill_set_pks = None
+        try:
+            skill_set_pks = task_item.job.skill_sets.values_list('pk', flat=True)
+            activity_sheet_associate_pks = ActivitySheetItem.objects.filter(
+                job=task_item.job
+            ).values_list('associate_id', flat=True)
+            queryset = queryset.filter(
+               Q(skill_sets__in=skill_set_pks) &
+               ~Q(id__in=activity_sheet_associate_pks) &
+               Q(owner__is_active=True) &
+               Q(
+                   Q(away_log__isnull=True)|
+                   Q(away_log__start_date__gt=timezone.now()) # (*)
+               )
+            ).distinct()
+
+            # (*) - If tassociates vacation did not start today then allow
+            #       the associate to be listed as available in the list.
+        except Exception as e:
+            available_associates = None
+            print("available_for_task_item_filtering |", e)
+        return queryset
+
+    available_for_task_item = django_filters.CharFilter(method='available_for_task_item_filtering')
 
     def keyword_filtering(self, queryset, name, value):
         return Associate.objects.partial_text_search(value)
@@ -74,6 +114,7 @@ class AssociateFilter(django_filters.FilterSet):
         model = Associate
         fields = [
             # 'organizations',
+            'available_for_task_item',
             'search',
             'given_name',
             'middle_name',
