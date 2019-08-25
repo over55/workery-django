@@ -60,6 +60,9 @@ class TaskItemRetrieveSerializer(serializers.ModelSerializer):
     job_associate = serializers.IntegerField(read_only=True, source="job.associate.id")
     job_associate_full_name = serializers.SerializerMethodField()
     job_associate_telephone = PhoneNumberField(read_only=True, source="job.associate.telephone")
+    job_associate_e164_telephone = serializers.SerializerMethodField()
+    job_associate_location = serializers.CharField(read_only=True, source="job.associate.get_postal_address_without_postal_code")
+    job_associate_location_google_url = serializers.URLField(read_only=True, source="job.associate.get_google_maps_url")
     # associate_telephone_type_of = serializers.IntegerField(read_only=True, source="associate.telephone_type_of")
     # associate_pretty_telephone_type_of = serializers.CharField(read_only=True, source="associate.get_pretty_telephone_type_of")
     # associate_other_telephone = PhoneNumberField(read_only=True, source="associate.other_telephone")
@@ -112,6 +115,9 @@ class TaskItemRetrieveSerializer(serializers.ModelSerializer):
             'job_associate',
             'job_associate_full_name',
             'job_associate_telephone',
+            'job_associate_e164_telephone',
+            'job_associate_location',
+            'job_associate_location_google_url',
         )
 
     def get_job_customer_full_name(self, obj):
@@ -160,5 +166,18 @@ class TaskItemRetrieveSerializer(serializers.ModelSerializer):
     def get_job_comments_count(self, obj):
         try:
             return obj.job.comments.count()
+        except Exception as e:
+            return None
+
+    def get_job_associate_e164_telephone(self, obj):
+        """
+        Converts the "PhoneNumber" object into a "NATIONAL" format.
+        See: https://github.com/daviddrysdale/python-phonenumbers
+        """
+        try:
+            if obj.job.associate.telephone:
+                return phonenumbers.format_number(obj.job.associate.telephone, phonenumbers.PhoneNumberFormat.E164)
+            else:
+                return "-"
         except Exception as e:
             return None
