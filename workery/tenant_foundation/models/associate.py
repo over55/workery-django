@@ -25,6 +25,7 @@ from django.utils.translation import ugettext_lazy as _
 
 from shared_foundation.constants import *
 from shared_foundation.models import SharedUser
+from tenant_foundation.constants import *
 from tenant_foundation.models import AbstractPerson
 from tenant_foundation.utils import *
 
@@ -90,7 +91,7 @@ class Associate(AbstractPerson):
     #  PERSON FIELDS (EXTRA) - http://schema.org/Person
     #
 
-    organizations = models.ManyToManyField(
+    organizations = models.ManyToManyField( # DEPRECATED
         "Organization",
         help_text=_('The organizations that this associate is affiliated with.'),
         blank=True,
@@ -98,9 +99,36 @@ class Associate(AbstractPerson):
     )
 
     #
+    #  ORGANIZATION FIELDS
+    #
+
+    organization_name = models.CharField(
+        _("Organization Name"),
+        max_length=255,
+        help_text=_('The name of the organization or business this person represents.'),
+        blank=True,
+        null=True,
+    )
+    organization_type_of = models.PositiveSmallIntegerField(
+        _("Organization Type of"),
+        help_text=_('The type of organization this is based on Over55 internal classification.'),
+        default=UNKNOWN_ORGANIZATION_TYPE_OF_ID,
+        blank=True,
+        choices=ORGANIZATION_TYPE_OF_CHOICES,
+    )
+
+    #
     #  CUSTOM FIELDS
     #
 
+    type_of = models.PositiveSmallIntegerField(
+        _("Type of"),
+        help_text=_('The type of customer this is.'),
+        default=UNASSIGNED_ASSOCIATE_TYPE_OF_ID,
+        blank=True,
+        choices=ASSOCIATE_TYPE_OF_CHOICES,
+        db_index=True,
+    )
     business = models.CharField(
         _("Business"),
         max_length=63,
@@ -376,6 +404,8 @@ class Associate(AbstractPerson):
             search_text += " " + self.middle_name
         if self.given_name:
             search_text += " " + self.given_name
+        if self.organization_name:
+            search_text += " " + self.organization_name
         search_text += " " + str(self.id)
         if self.email:
             search_text += " " + self.email

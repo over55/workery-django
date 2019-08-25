@@ -54,6 +54,20 @@ CUSTOMER_TYPE_OF_CHOICES = (
 )
 
 
+# The following constants are used by the "Associate" model.
+#
+
+UNASSIGNED_ASSOCIATE_TYPE_OF_ID = 1
+RESIDENTIAL_ASSOCIATE_TYPE_OF_ID = 2
+COMMERCIAL_ASSOCIATE_TYPE_OF_ID = 3
+
+ASSOCIATE_TYPE_OF_CHOICES = (
+    (RESIDENTIAL_ASSOCIATE_TYPE_OF_ID, _('Residential Associate')),
+    (COMMERCIAL_ASSOCIATE_TYPE_OF_ID, _('Commercial Associate')),
+    (UNASSIGNED_ASSOCIATE_TYPE_OF_ID, _('Unknown Associate'))
+)
+
+
 # The following constants are used by the "Organization" model.
 #
 
