@@ -24,6 +24,7 @@ from tenant_api.serializers.skill_set import SkillSetListCreateSerializer
 from tenant_api.serializers.tag import TagListCreateSerializer
 from tenant_api.serializers.insurance_requirement import InsuranceRequirementListCreateSerializer
 from tenant_api.serializers.vehicle_type import VehicleTypeListCreateSerializer
+from tenant_foundation.constants import *
 from tenant_foundation.models import (
     AssociateComment,
     Associate,
@@ -42,6 +43,28 @@ logger = logging.getLogger(__name__)
 
 class AssociateListCreateSerializer(serializers.ModelSerializer):
     # OVERRIDE THE MODEL FIELDS AND ENFORCE THE FOLLOWING CUSTOM VALIDATION RULES.
+    organization_name = serializers.CharField(
+        required=False,
+        allow_blank=True,
+        allow_null=True,
+        max_length=63,
+        validators=[
+        #     UniqueValidator(
+        #         queryset=Organization.objects.all(),
+        #     )
+        ],
+    )
+    organization_type_of = serializers.CharField(
+        required=False,
+        allow_blank=False,
+        max_length=63,
+        validators=[]
+    )
+    type_of = serializers.IntegerField(
+        required=False,
+        allow_null=True,
+        validators=[]
+    )
     given_name = serializers.CharField(
         required=True,
         allow_blank=False,
@@ -176,6 +199,8 @@ class AssociateListCreateSerializer(serializers.ModelSerializer):
             'last_modified',
 
             # Person
+            'organization_name',
+            'organization_type_of',
             'given_name',
             'middle_name',
             'last_name',
@@ -186,6 +211,7 @@ class AssociateListCreateSerializer(serializers.ModelSerializer):
             'tax_id',
 
             # Misc (Read/Write)
+            'type_of',
             'is_active',
             'is_ok_to_email',
             'is_ok_to_text',
@@ -406,12 +432,15 @@ class AssociateListCreateSerializer(serializers.ModelSerializer):
         #---------------------------------------------------
         # Create an "Associate".
         associate = Associate.objects.create(
+            type_of=validated_data.get("type_of", UNASSIGNED_ASSOCIATE_TYPE_OF_ID),
             owner=owner,
             created_by=self.context['created_by'],
             last_modified_by=self.context['created_by'],
             description=validated_data['description'],
 
             # Profile
+            organization_name=validated_data.get("organization_name", None),
+            organization_type_of=validated_data.get("organization_type_of", UNKNOWN_ORGANIZATION_TYPE_OF_ID),
             given_name=validated_data['given_name'],
             last_name=validated_data['last_name'],
             middle_name=validated_data['middle_name'],
@@ -542,6 +571,28 @@ class AssociateListCreateSerializer(serializers.ModelSerializer):
 
 
 class AssociateRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
+    organization_name = serializers.CharField(
+        required=False,
+        allow_blank=True,
+        allow_null=True,
+        max_length=63,
+        validators=[
+        #     UniqueValidator(
+        #         queryset=Organization.objects.all(),
+        #     )
+        ],
+    )
+    organization_type_of = serializers.CharField(
+        required=False,
+        allow_blank=False,
+        max_length=63,
+        validators=[]
+    )
+    type_of = serializers.IntegerField(
+        required=False,
+        allow_null=True,
+        validators=[]
+    )
     given_name = serializers.CharField(
         required=True,
         allow_blank=False,
@@ -660,6 +711,8 @@ class AssociateRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
             'description',
 
             # Person
+            'organization_name',
+            'organization_type_of',
             'given_name',
             'middle_name',
             'last_name',
@@ -670,6 +723,7 @@ class AssociateRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
             'tax_id',
 
             # Misc (Read/Write)
+            'type_of',
             'is_active',
             'is_ok_to_email',
             'is_ok_to_text',
@@ -937,6 +991,9 @@ class AssociateRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         instance.tax_id = validated_data.get('tax_id', instance.tax_id)
 
         # Misc
+        instance.organization_name=validated_data.get("organization_name", None)
+        instance.organization_type_of=validated_data.get("organization_type_of", UNKNOWN_ORGANIZATION_TYPE_OF_ID)
+        instance.type_of=validated_data.get("type_of", UNASSIGNED_ASSOCIATE_TYPE_OF_ID)
         instance.is_ok_to_email=validated_data.get('is_ok_to_email', instance.is_ok_to_email)
         instance.is_ok_to_text=validated_data.get('is_ok_to_text', instance.is_ok_to_text)
         instance.hourly_salary_desired=validated_data.get('hourly_salary_desired', instance.hourly_salary_desired)
