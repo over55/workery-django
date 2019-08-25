@@ -49,9 +49,9 @@ class AssociateListCreateSerializer(serializers.ModelSerializer):
         allow_null=True,
         max_length=63,
         validators=[
-        #     UniqueValidator(
-        #         queryset=Organization.objects.all(),
-        #     )
+            UniqueValidator(
+                queryset=Associate.objects.all(),
+            )
         ],
     )
     organization_type_of = serializers.CharField(
@@ -577,9 +577,9 @@ class AssociateRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         allow_null=True,
         max_length=63,
         validators=[
-        #     UniqueValidator(
-        #         queryset=Organization.objects.all(),
-        #     )
+            UniqueValidator(
+                queryset=Associate.objects.all(),
+            )
         ],
     )
     organization_type_of = serializers.CharField(
