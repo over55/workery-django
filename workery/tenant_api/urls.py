@@ -199,6 +199,7 @@ urlpatterns = [
 
     # Tasks - Operation
     url(r'^api/task/operation/assign-associate$', AssignAssociateTaskOperationAPIView.as_view(), name='workery_order_task_operation_assign_associate_api_endpoint'),
+    url(r'^api/task/operation/follow-up$', FollowUpTaskOperationAPIView.as_view(), name='workery_task_operation_follow_up_create_api_endpoint'),
     url(r'^api/orders/complete$', FollowUpTaskOperationAPIView.as_view(), name='workery_order_order_complete_create_api_endpoint'),
     url(r'^api/task/operation/follow-up-pending$', FollowUpPendingTaskOperationAPIView.as_view(), name='workery_order_task_operation_follow_up_pending_api_endpoint'),
     url(r'^api/task/operation/close$', CloseTaskOperationAPIView.as_view(), name='workery_task_operation_close_api_endpoint'), #TODO: Integrate `CloseTaskOperationAPIView` with current close out view.
