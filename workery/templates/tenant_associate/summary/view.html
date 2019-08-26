@@ -55,6 +55,7 @@
 
     <h1>{% trans 'Members' %}</h1>
     <section class="row text-center placeholders">
+        {% if user.is_management_or_executive_staff %}
         <div class="col-sm-4 placeholder">
             <div class="rounded-circle mx-auto mt-4 mb-4 circle-200 bg-pink">
                 <a href="{% url 'workery_tenant_member_create' %}" class="d-block link-ndecor" title="Add Member">
@@ -64,6 +65,7 @@
             <h4>Add</h4>
             <div class="text-muted">Add Member</div>
         </div>
+        {% endif %}
         <div class="col-sm-4 placeholder">
             <div class="rounded-circle mx-auto mt-4 mb-4 circle-200 bg-dgreen">
                 <a href="{% url 'workery_tenant_member_search' %}" class="d-block link-ndecor" title="Search Members">
