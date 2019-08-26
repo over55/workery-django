@@ -77,7 +77,7 @@ def report_07_streaming_csv_view(request):
     rows += (["", "","","",],)
 
     # Generate the CSV header row.
-    rows += (["Associate No.", "Name", "Birthday", "Skill Set(s)"],)
+    rows += (["Associate No.", "Name", "Birthday", "Join Date", "Skill Set(s)"],)
 
     # Generate hte CSV data.
     for associate in associates.all():
@@ -86,6 +86,7 @@ def report_07_streaming_csv_view(request):
             associate.id,
             str(associate),
             "-" if associate.birthdate is None else pretty_dt_string(associate.birthdate),
+            "-" if associate.join_date is None else pretty_dt_string(associate.join_date),
             skill_set_string
         ],)
 
