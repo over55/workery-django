@@ -50,11 +50,14 @@ class TaskItemAvailableAssociateListCreateSerializer(serializers.ModelSerializer
         model = Associate
         fields = (
             'id',
+            'type_of',
             'full_name',
             'past_30_days_activity_sheet_count',
             'telephone',
             'e164_telephone',
             'email',
+            'wsib_number',
+            'hourly_salary_desired',
         )
         extra_kwargs = {
             # "is_ok_to_email": {
