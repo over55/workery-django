@@ -41,6 +41,14 @@ logger = logging.getLogger(__name__)
 
 class AssociateContactUpdateSerializer(serializers.ModelSerializer):
     # OVERRIDE THE MODEL FIELDS AND ENFORCE THE FOLLOWING CUSTOM VALIDATION RULES.
+    organization_name = serializers.CharField(
+        required=False,
+        validators=[]
+    )
+    organization_type_of = serializers.IntegerField(
+        required=False,
+        validators=[]
+    )
     given_name = serializers.CharField(
         required=True,
         allow_blank=False,
@@ -76,6 +84,8 @@ class AssociateContactUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Associate
         fields = (
+            'organization_name',
+            'organization_type_of',
             'given_name',
             'last_name',
             'primary_phone',
@@ -144,6 +154,8 @@ class AssociateContactUpdateSerializer(serializers.ModelSerializer):
         instance.email = email
 
         # Profile
+        instance.organization_name=validated_data.get('organization_name', instance.organization_name)
+        instance.organization_type_of=validated_data.get('organization_type_of', instance.organization_type_of)
         instance.given_name=validated_data.get('given_name', instance.given_name)
         instance.last_name=validated_data.get('last_name', instance.last_name)
         instance.middle_name=validated_data.get('middle_name', instance.middle_name)
