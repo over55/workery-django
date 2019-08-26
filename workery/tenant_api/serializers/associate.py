@@ -54,10 +54,8 @@ class AssociateListCreateSerializer(serializers.ModelSerializer):
             )
         ],
     )
-    organization_type_of = serializers.CharField(
+    organization_type_of = serializers.IntegerField(
         required=False,
-        allow_blank=False,
-        max_length=63,
         validators=[]
     )
     type_of = serializers.IntegerField(
@@ -582,12 +580,11 @@ class AssociateRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
             )
         ],
     )
-    organization_type_of = serializers.CharField(
+    organization_type_of = serializers.IntegerField(
         required=False,
-        allow_blank=False,
-        max_length=63,
         validators=[]
     )
+    organization_type_of_label = serializers.ReadOnlyField(source="get_organization_type_of_label")
     type_of = serializers.IntegerField(
         required=False,
         allow_null=True,
@@ -713,6 +710,7 @@ class AssociateRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
             # Person
             'organization_name',
             'organization_type_of',
+            'organization_type_of_label',
             'given_name',
             'middle_name',
             'last_name',

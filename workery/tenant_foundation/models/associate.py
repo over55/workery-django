@@ -489,6 +489,9 @@ class Associate(AbstractPerson):
         except AttributeError:
             pass
 
+    def get_organization_type_of_label(self):
+        choice = dict(ORGANIZATION_TYPE_OF_CHOICES).get(self.organization_type_of)
+        return str(choice)
 
 # def validate_model(sender, **kwargs):
 #     if 'raw' in kwargs and not kwargs['raw']:
