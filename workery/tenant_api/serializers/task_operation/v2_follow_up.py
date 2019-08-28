@@ -125,7 +125,7 @@ class FollowUpTaskOperationV2Serializer(serializers.Serializer):
         if has_agreed_to_meet:
 
             # Generate our task title.
-            title = _('Job Completion')
+            title = _('Order Completion')
 
             # Rational: We want to ask the customer after 7 days AFTER the client meeting data.
             meeting_date = get_date_plus_days(meeting_date, 7)
