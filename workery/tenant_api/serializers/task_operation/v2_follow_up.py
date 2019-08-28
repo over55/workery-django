@@ -38,7 +38,7 @@ def get_date_plus_days(dt, days=0):
     return dt + timedelta(days=days)
 
 
-class FollowUpTaskOperationSerializer(serializers.Serializer):
+class FollowUpTaskOperationV2Serializer(serializers.Serializer):
     task_item = serializers.PrimaryKeyRelatedField(many=False, queryset=TaskItem.objects.all(), required=True)
     comment = serializers.CharField(required=False)
     has_agreed_to_meet = serializers.BooleanField(required=True)
@@ -125,19 +125,16 @@ class FollowUpTaskOperationSerializer(serializers.Serializer):
         if has_agreed_to_meet:
 
             # Generate our task title.
-            title = _('Survey')
-            if task_item.job:
-                if task_item.job.is_ongoing or task_item.ongoing_job != None:
-                    title = _('Survey / Ongoing')
+            title = _('Job Completion')
 
             # Rational: We want to ask the customer after 7 days AFTER the client meeting data.
             meeting_date = get_date_plus_days(meeting_date, 7)
 
-            # STEP 5 - Create our new task for following up.
+            # STEP 5 - Create our new task for job completion confirmation.
             next_task_item = TaskItem.objects.create(
-                type_of = FOLLOW_UP_CUSTOMER_SURVEY_TASK_ITEM_TYPE_OF_ID,
+                type_of = FOLLOW_UP_DID_ASSOCIATE_COMPLETE_JOB_TASK_ITEM_TYPE_OF_ID,
                 title = title,
-                description = _('Please call up the client and perform the satisfaction survey.'),
+                description = _('Please call up the associate or customer and confirm the job was completed.'),
                 due_date = meeting_date,
                 is_closed = False,
                 job = task_item.job,
