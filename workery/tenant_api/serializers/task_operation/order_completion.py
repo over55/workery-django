@@ -158,9 +158,15 @@ class OrderCompletionTaskOperationSerializer(serializers.Serializer):
         # Step 2 of 4
         if was_completed:
             task_item.job.state = WORK_ORDER_STATE.COMPLETED_BUT_UNPAID
+            logger.info("Job was completed put unpaid.")  # For debugging purposes only.
         else:
+            task_item.job.closing_reason = reason
+            task_item.job.closing_reason_other = reason_other
             task_item.job.state = WORK_ORDER_STATE.CANCELLED
+            logger.info("Job was cancelled.")  # For debugging purposes only.
         task_item.job.completion_date = completion_date
+        task_item.job.last_modified_by = self.context['user']
+        task_item.job.latest_pending_task = None
 
         # Step 3 of 4
         task_item.job.invoice_date = invoice_date
@@ -171,6 +177,13 @@ class OrderCompletionTaskOperationSerializer(serializers.Serializer):
         task_item.job.invoice_tax_amount = Money(invoice_tax_amount, WORKERY_APP_DEFAULT_MONEY_CURRENCY)
         task_item.job.invoice_total_amount = Money(invoice_total_amount, WORKERY_APP_DEFAULT_MONEY_CURRENCY)
         task_item.job.invoice_service_fee_amount = Money(invoice_service_fee_amount, WORKERY_APP_DEFAULT_MONEY_CURRENCY)
+
+        # ----------------------------------
+        # --- ONGOING WORK ORDER DETAILS ---
+        # ----------------------------------
+        if task_item.job.ongoing_work_order:
+            task_item.job.ongoing_work_order.save()
+            task_item.job.ongoing_work_order.closed_orders.add(task_item.job)
 
         # Misc.
         task_item.job.last_modified_by = self.context['user']
@@ -220,29 +233,41 @@ class OrderCompletionTaskOperationSerializer(serializers.Serializer):
             })
 
         # ------------------------
-        # --- JOB IS CANCELLED ---
+        # --- SURVEY TASK ITEM ---
         # ------------------------
-        if reason != 4:
-            # Close the job.
-            task_item.job.closing_reason = reason
-            task_item.job.closing_reason_other = reason_other
-            task_item.job.last_modified_by = self.context['user']
-            task_item.job.state = WORK_ORDER_STATE.CANCELLED
-            task_item.job.completion_date = get_todays_date_plus_days(0)
-            task_item.job.latest_pending_task = None
-            task_item.job.save()
+        # Generate our task title.
+        title = _('Survey (v2)')
 
-            # For debugging purposes only.
-            logger.info("Job was cancelled.")
+        # Rational: We want to ask the customer after 7 days AFTER the completion date.
+        meeting_date = get_todays_date_plus_days(7)
 
-        #--------------------------------#
-        # Update our `OngoingWorkOrder`. #
-        #--------------------------------#
-        if task_item.job.ongoing_work_order:
-            task_item.job.ongoing_work_order.save()
-            task_item.job.ongoing_work_order.closed_orders.add(task_item.job)
+        # STEP 5 - Create our new task for survey.
+        next_task_item = TaskItem.objects.create(
+            type_of = FOLLOW_UP_DID_CUSTOMER_REVIEW_ASSOCIATE_AFTER_JOB_TASK_ITEM_TYPE_OF_ID,
+            title = title,
+            description = _('Please call client and review the associate.'),
+            due_date = meeting_date,
+            is_closed = False,
+            job = task_item.job,
+            created_by = self.context['user'],
+            created_from = self.context['from'],
+            created_from_is_public = self.context['from_is_public'],
+            last_modified_by = self.context['user'],
+            last_modified_from = self.context['from'],
+            last_modified_from_is_public = self.context['from_is_public'],
+        )
 
-        raise serializers.ValidationError(_("---"))
+        # For debugging purposes only.
+        logger.info("Task #%(id)s was created" % {
+            'id': str(next_task_item.id)
+        })
+
+        # The following code will add our new item to the job.
+        task_item.job.latest_pending_task = next_task_item
+        task_item.job.last_modified_by = self.context['user']
+        task_item.job.last_modified_from = self.context['from']
+        task_item.job.last_modified_from_is_public = self.context['from_is_public']
+        task_item.job.save()
 
         #--------------------#
         # Updated the output #
