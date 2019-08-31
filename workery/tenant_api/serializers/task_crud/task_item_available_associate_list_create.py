@@ -58,6 +58,7 @@ class TaskItemAvailableAssociateListCreateSerializer(serializers.ModelSerializer
             'email',
             'wsib_number',
             'hourly_salary_desired',
+            'score',
         )
         extra_kwargs = {
             # "is_ok_to_email": {
