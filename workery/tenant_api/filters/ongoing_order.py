@@ -12,13 +12,13 @@ class OngoingWorkOrderFilter(django_filters.FilterSet):
         # tuple-mapping retains order
         fields=(
             ('id', 'id'),
-            # ('customer__indexed_text', 'customer_name'),
-            # ('associate__indexed_text', 'associate_name'),
-            # ('customer__type_of', 'type_of'),
+            ('customer__indexed_text', 'customer_name'),
+            ('associate__indexed_text', 'associate_name'),
+            ('customer__type_of', 'type_of'),
             # ('assignment_date', 'assignment_date'),
             # ('start_date', 'start_date'),
             # ('completion_date', 'completion_date'),
-            # ('state', 'state'),
+            ('state', 'state'),
             # ('invoice_service_fee_payment_date', 'invoice_service_fee_payment_date'),
             # ('score', 'score'),
         ),
@@ -65,8 +65,8 @@ class OngoingWorkOrderFilter(django_filters.FilterSet):
         model = OngoingWorkOrder
         fields = [
             'associate',
-            # 'customer',
-            # 'state',
+            'customer',
+            'state',
             # 'search',
             # 'email',
             # 'telephone',

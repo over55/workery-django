@@ -34,12 +34,31 @@ logger = logging.getLogger(__name__)
 
 
 class OngoingWorkOrderCreateSerializer(serializers.ModelSerializer):
+    associate_name = serializers.SerializerMethodField()
+    associate_first_name = serializers.ReadOnlyField(source='associate.owner.first_name')
+    associate_last_name = serializers.ReadOnlyField(source='associate.owner.last_name')
+    customer_name = serializers.SerializerMethodField()
+    customer_first_name = serializers.ReadOnlyField(source='customer.owner.first_name')
+    customer_last_name = serializers.ReadOnlyField(source='customer.owner.last_name')
+    state = serializers.ReadOnlyField()
+    pretty_state = serializers.ReadOnlyField(source='get_pretty_status')
+    type_of = serializers.SerializerMethodField()
+
     class Meta:
         model = OngoingWorkOrder
         fields = (
             # Read only fields.
             'id',
-
+            'associate_name',
+            'associate_first_name',
+            'associate_last_name',
+            'customer_name',
+            'customer_first_name',
+            'customer_last_name',
+            'state',
+            'pretty_state',
+            'type_of',
+            
             # Read / write fields.
             'associate',
             'customer',
@@ -57,6 +76,29 @@ class OngoingWorkOrderCreateSerializer(serializers.ModelSerializer):
             'work_orders'
         )
         return queryset
+
+    def get_associate_name(self, obj):
+        try:
+            return str(obj.associate)
+        except Exception as e:
+            return None
+
+    def get_customer_name(self, obj):
+        try:
+            return str(obj.customer)
+        except Exception as e:
+            return None
+
+    def get_type_of(self, obj):
+        try:
+            job_type_of = UNASSIGNED_JOB_TYPE_OF_ID
+            if obj.customer.type_of == RESIDENTIAL_CUSTOMER_TYPE_OF_ID:
+                return RESIDENTIAL_JOB_TYPE_OF_ID
+            if obj.customer.type_of == COMMERCIAL_CUSTOMER_TYPE_OF_ID:
+                return COMMERCIAL_JOB_TYPE_OF_ID
+            return job_type_of
+        except Exception as e:
+            return None
 
     @transaction.atomic
     def create(self, validated_data):

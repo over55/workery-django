@@ -166,3 +166,15 @@ class OngoingWorkOrder(models.Model):
 
     def __str__(self):
         return str(self.pk)
+
+    def get_pretty_status(self):
+        """
+        Function returns the ongoing job status in a more user-friendly format.
+        """
+        if self.state == ONGOING_WORK_ORDER_STATE.IDLE:
+            return 'Idle'
+        if self.state == ONGOING_WORK_ORDER_STATE.RUNNING:
+            return 'Running'
+        if self.state == ONGOING_WORK_ORDER_STATE.TERMINATED:
+            return 'Terminated'
+        return None
