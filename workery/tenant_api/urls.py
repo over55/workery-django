@@ -62,7 +62,8 @@ from tenant_api.views.task_operation import (
     CloseTaskOperationAPIView,
     FollowUpTaskOperationV2APIView,
     FollowUpPendingTaskOperationV2APIView,
-    OrderCompletionTaskOperationAPIView
+    OrderCompletionTaskOperationAPIView,
+    SurveyTaskOperationAPIView
 )
 from tenant_api.views.vehicle_type import VehicleTypeListCreateAPIView, VehicleTypeRetrieveUpdateDestroyAPIView
 from tenant_api.views.order_crud import (
@@ -209,6 +210,7 @@ urlpatterns = [
     url(r'^api/v2/task/operation/follow-up$', FollowUpTaskOperationV2APIView.as_view(), name='workery_task_operation_follow_up_create_v2_api_endpoint'),
     url(r'^api/v2/task/operation/follow-up-pending$', FollowUpPendingTaskOperationV2APIView.as_view(), name='workery_order_task_operation_follow_up_pending_v2_api_endpoint'),
     url(r'^api/task/operation/order-completion$', OrderCompletionTaskOperationAPIView.as_view(), name='workery_task_operation_order_completion_api_endpoint'),
+    url(r'^api/task/operation/survey$', SurveyTaskOperationAPIView.as_view(), name='workery_task_operation_survey_api_endpoint'),
 
     # ActivitySheetItem
     url(r'^api/activity-sheets$', ActivitySheetItemListCreateAPIView.as_view(), name='workery_activity_sheet_list_create_api_endpoint'),

@@ -251,6 +251,22 @@ class WorkOrder(models.Model):
         default=False,
         blank=True
     )
+    no_survey_conducted_reason = models.PositiveSmallIntegerField(
+        _("No Survey Conducted Reason"),
+        help_text=_('The reason no survey was conducted.'),
+        blank=True,
+        null=True,
+        # 1 = Other
+        # 2 = Unable to reach client
+        # 3 = Client did not want to complete survey
+    )
+    no_survey_conducted_reason_other = models.CharField(
+        _("No Survey Conducted Reason (Other)"),
+        help_text=_('The specific reason this job order had no survey conducted.'),
+        max_length=1024,
+        blank=True,
+        null=True,
+    )
     was_job_satisfactory = models.BooleanField(
         _("Was job satisfactory?"),
         help_text=_('Customer Survey Q1: Was the quality of the work satisfactory?'),
