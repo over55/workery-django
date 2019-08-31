@@ -14,9 +14,9 @@ from django.utils.text import Truncator
 from django.utils.translation import ugettext_lazy as _
 from djmoney.models.fields import MoneyField
 from djmoney.money import Money
-from shared_foundation.constants import WORKERY_APP_DEFAULT_MONEY_CURRENCY
+from shared_foundation.constants import *
 from shared_foundation.models import SharedUser
-from tenant_foundation.constants import UNASSIGNED_JOB_TYPE_OF_ID, JOB_TYPE_OF_CHOICES
+from tenant_foundation.constants import *
 from tenant_foundation.utils import *
 
 
@@ -177,4 +177,11 @@ class OngoingWorkOrder(models.Model):
             return 'Running'
         if self.state == ONGOING_WORK_ORDER_STATE.TERMINATED:
             return 'Terminated'
+        return None
+
+    def get_pretty_type_of(self):
+        if self.customer.type_of == RESIDENTIAL_CUSTOMER_TYPE_OF_ID:
+            return "Residential"
+        elif self.customer.type_of == COMMERCIAL_CUSTOMER_TYPE_OF_ID:
+            return "Commercial"
         return None

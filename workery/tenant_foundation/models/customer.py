@@ -412,6 +412,9 @@ class Customer(AbstractPerson):
             return difference_in_years
         return None
 
+    def get_pretty_type_of(self):
+        return dict(CUSTOMER_TYPE_OF_CHOICES).get(self.type_of)
+
     """
     Override the `save` function to support save cached searchable terms.
     """
