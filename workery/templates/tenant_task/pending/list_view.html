@@ -186,7 +186,11 @@
                         {% endif %}
                     </td>
                     <td>
-                        <a href="{% url 'workery_tenant_pending_task_retrieve' task_item.id %}?page={{ page_obj.number }}">{% trans 'View' %}&nbsp;<i class="fas fa-chevron-right"></i></a>
+                        {% if task_item.type_of == 6 or task_item.type_of == 7 %}
+                            <i class="fas fa-lock"></i>&nbsp;Locked
+                        {% else %}
+                            <a href="{% url 'workery_tenant_pending_task_retrieve' task_item.id %}?page={{ page_obj.number }}">{% trans 'View' %}&nbsp;<i class="fas fa-chevron-right"></i></a>
+                        {% endif %}
                     </td>
                 </tr>
                 {% empty %}
