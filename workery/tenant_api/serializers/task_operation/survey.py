@@ -57,11 +57,9 @@ def cannot_be_negative(value):
 
 class SurveyTaskOperationSerializer(serializers.Serializer):
     task_item = serializers.PrimaryKeyRelatedField(many=False, queryset=TaskItem.objects.all(), required=True)
-    reason = serializers.IntegerField(required=False, validators=[cannot_be_zero_or_negative,])
-    reason_other = serializers.CharField(required=False, allow_blank=True)
     comment = serializers.CharField(required=False, allow_blank=True)
     was_survey_conducted = serializers.BooleanField(required=True)
-    no_survey_conducted_reason = serializers.BooleanField(required=False)
+    no_survey_conducted_reason = serializers.IntegerField(required=False)
     no_survey_conducted_reason_other = serializers.CharField(required=False, allow_blank=True)
     was_job_satisfactory = serializers.BooleanField(required=False)
     was_job_finished_on_time_and_on_budget = serializers.BooleanField(required=False)
@@ -74,8 +72,6 @@ class SurveyTaskOperationSerializer(serializers.Serializer):
     class Meta:
         fields = (
             'task_item',
-            'reason',
-            'reason_other',
             'comment',
             'was_survey_conducted',
             'no_survey_conducted_reason',
@@ -96,14 +92,10 @@ class SurveyTaskOperationSerializer(serializers.Serializer):
         2. If 'reason' == 4 then make sure the Customer survey fields where inputted.
         """
         # CASE 1 - Other reason
-        if data['reason'] == 1:
-            reason_other = data['reason_other']
+        if data.get('no_survey_conducted_reason') == 1:
+            reason_other = data.get("no_survey_conducted_reason_other")
             if reason_other == "":
                 raise serializers.ValidationError(_("Please provide a reason as to why you chose the \"Other\" option."))
-
-        # CASE 2 - Job done by associate
-        elif data['reason'] == 4:
-            pass #TODO: IMPLEMENT.
 
         # Return our data.
         return data
@@ -114,8 +106,89 @@ class SurveyTaskOperationSerializer(serializers.Serializer):
         Override the `create` function to add extra functinality.
         """
 
-        #--------------------#
-        # Updated the output #
-        #--------------------#
-        # validated_data['id'] = obj.id
+        # ------------------
+        # --- GET INPUTS ---
+        # ------------------
+
+        task_item = validated_data.get('task_item', None)
+        comment_text = validated_data.get('comment', None)
+        was_survey_conducted = validated_data.get('was_survey_conducted', None)
+        no_survey_conducted_reason = validated_data.get('no_survey_conducted_reason', None)
+        no_survey_conducted_reason_other = validated_data.get('no_survey_conducted_reason_other', None)
+        was_job_satisfactory = validated_data.get('was_job_satisfactory', None)
+        was_job_finished_on_time_and_on_budget = validated_data.get('was_job_finished_on_time_and_on_budget', None)
+        was_associate_punctual = validated_data.get('was_associate_punctual', None)
+        was_associate_professional = validated_data.get('was_associate_professional', None)
+        would_customer_refer_our_organization = validated_data.get('would_customer_refer_our_organization', None)
+
+        # --------------------------
+        # --- WORK ORDER DETAILS ---
+        # --------------------------
+
+        if was_survey_conducted:
+            task_item.job.was_job_satisfactory = was_job_satisfactory
+            task_item.job.was_job_finished_on_time_and_on_budget = was_job_finished_on_time_and_on_budget
+            task_item.job.was_associate_punctual = was_associate_punctual
+            task_item.job.was_associate_professional = was_associate_professional
+            task_item.job.would_customer_refer_our_organization = would_customer_refer_our_organization
+        else:
+            task_item.job.no_survey_conducted_reason = no_survey_conducted_reason
+            task_item.job.no_survey_conducted_reason_other = no_survey_conducted_reason_other
+        task_item.job.was_survey_conducted = was_survey_conducted
+        task_item.job.last_modified_by = self.context['user']
+        task_item.job.last_modified_from = self.context['from']
+        task_item.job.last_modified_from_is_public = self.context['from_is_public']
+        task_item.job.save()
+
+        # For debugging purposes only.
+        logger.info("Job was updated.")
+
+        # Step 4 of 4
+        comment_obj = Comment.objects.create(
+            created_by=self.context['user'],
+            last_modified_by=self.context['user'],
+            text=comment_text,
+            created_from = self.context['from'],
+            created_from_is_public = self.context['from_is_public']
+        )
+        WorkOrderComment.objects.create(
+            about=task_item.job,
+            comment=comment_obj,
+        )
+
+        # For debugging purposes only.
+        logger.info("Job comment created.")
+
+        # ------------------------------
+        # --- UPDATE ASSOCIATE SCORE ---
+        # ------------------------------
+        if was_survey_conducted:
+            # Compute the score.
+            task_item.job.score = 0
+            task_item.job.score += int(was_job_satisfactory)
+            task_item.job.score += int(was_job_finished_on_time_and_on_budget)
+            task_item.job.score += int(was_associate_punctual)
+            task_item.job.score += int(was_associate_professional)
+            task_item.job.score += int(would_customer_refer_our_organization)
+            task_item.job.save()
+
+            # Update the associate score by re-computing the average
+            # score and saving it with the profile.
+            jobs_count = WorkOrder.objects.filter(
+                Q(associate = task_item.job.associate) &
+                Q(was_survey_conducted=True)
+            ).count()
+            summation_results = WorkOrder.objects.filter(
+                Q(associate = task_item.job.associate) &
+                Q(was_survey_conducted=True)
+            ).aggregate(Sum('score'))
+
+            score_sum = summation_results['score__sum']
+            total_score = score_sum / jobs_count
+
+            # For debugging purposes only.
+            logger.info("Assocate score calculated is: %(total_score)s" % {
+                'total_score': str(total_score)
+            })
+
         return validated_data
