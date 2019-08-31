@@ -134,6 +134,7 @@ class SurveyTaskOperationSerializer(serializers.Serializer):
         else:
             task_item.job.no_survey_conducted_reason = no_survey_conducted_reason
             task_item.job.no_survey_conducted_reason_other = no_survey_conducted_reason_other
+        task_item.job.latest_pending_task = None
         task_item.job.was_survey_conducted = was_survey_conducted
         task_item.job.last_modified_by = self.context['user']
         task_item.job.last_modified_from = self.context['from']

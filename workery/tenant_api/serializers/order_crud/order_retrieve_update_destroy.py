@@ -89,6 +89,15 @@ class WorkOrderRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
     created_by = serializers.SerializerMethodField()
     last_modified_at = serializers.DateTimeField(read_only=True, source="last_modified")
     last_modified_by = serializers.SerializerMethodField()
+    was_survey_conducted = serializers.BooleanField(read_only=True)
+    no_survey_conducted_reason = serializers.IntegerField(read_only=True)
+    no_survey_conducted_reason_other =serializers.CharField(read_only=True)
+    score = serializers.FloatField(read_only=True)
+    was_job_satisfactory = serializers.BooleanField(read_only=True)
+    was_job_finished_on_time_and_on_budget = serializers.BooleanField(read_only=True)
+    was_associate_punctual = serializers.BooleanField(read_only=True)
+    was_associate_professional = serializers.BooleanField(read_only=True)
+    would_customer_refer_our_organization = serializers.BooleanField(read_only=True)
 
     class Meta:
         model = WorkOrder
@@ -163,6 +172,15 @@ class WorkOrderRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
             'created_by',
             'last_modified_at',
             'last_modified_by',
+            'was_survey_conducted',
+            'no_survey_conducted_reason',
+            'no_survey_conducted_reason_other',
+            'score',
+            'was_job_satisfactory',
+            'was_job_finished_on_time_and_on_budget',
+            'was_associate_punctual',
+            'was_associate_professional',
+            'would_customer_refer_our_organization',
         )
 
     def setup_eager_loading(cls, queryset):

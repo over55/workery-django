@@ -178,13 +178,6 @@ class OrderCompletionTaskOperationSerializer(serializers.Serializer):
         task_item.job.invoice_total_amount = Money(invoice_total_amount, WORKERY_APP_DEFAULT_MONEY_CURRENCY)
         task_item.job.invoice_service_fee_amount = Money(invoice_service_fee_amount, WORKERY_APP_DEFAULT_MONEY_CURRENCY)
 
-        # ----------------------------------
-        # --- ONGOING WORK ORDER DETAILS ---
-        # ----------------------------------
-        if task_item.job.ongoing_work_order:
-            task_item.job.ongoing_work_order.save()
-            task_item.job.ongoing_work_order.closed_orders.add(task_item.job)
-
         # Misc.
         task_item.job.last_modified_by = self.context['user']
         task_item.job.last_modified_from = self.context['from']
