@@ -229,7 +229,7 @@ class OrderCompletionTaskOperationSerializer(serializers.Serializer):
         # --- SURVEY TASK ITEM ---
         # ------------------------
         # Generate our task title.
-        title = _('Survey (v2)')
+        title = _('Survey')
 
         # Rational: We want to ask the customer after 7 days AFTER the completion date.
         meeting_date = get_todays_date_plus_days(7)
