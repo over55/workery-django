@@ -141,7 +141,7 @@ class SurveyTaskOperationSerializer(serializers.Serializer):
         task_item.job.save()
 
         # For debugging purposes only.
-        logger.info("Job was updated.")
+        logger.info("Job #%(id)s was updated." % { 'id': str(task_item.job.id) })
 
         # Step 4 of 4
         comment_obj = Comment.objects.create(
@@ -151,13 +151,13 @@ class SurveyTaskOperationSerializer(serializers.Serializer):
             created_from = self.context['from'],
             created_from_is_public = self.context['from_is_public']
         )
-        WorkOrderComment.objects.create(
+        oc = WorkOrderComment.objects.create(
             about=task_item.job,
             comment=comment_obj,
         )
 
         # For debugging purposes only.
-        logger.info("Job comment created.")
+        logger.info("Job comment #%(id)s created." % { 'id': str(oc.id) })
 
         # ------------------------------
         # --- UPDATE ASSOCIATE SCORE ---
@@ -171,6 +171,12 @@ class SurveyTaskOperationSerializer(serializers.Serializer):
             task_item.job.score += int(was_associate_professional)
             task_item.job.score += int(would_customer_refer_our_organization)
             task_item.job.save()
+
+            # For debugging purposes only.
+            logger.info("Order #%(id)s score is calculated as: %(score)s" % {
+                'id': str(task_item.job.id),
+                'score': str(task_item.job.score)
+            })
 
             # Update the associate score by re-computing the average
             # score and saving it with the profile.
@@ -187,8 +193,15 @@ class SurveyTaskOperationSerializer(serializers.Serializer):
             total_score = score_sum / jobs_count
 
             # For debugging purposes only.
-            logger.info("Assocate score calculated is: %(total_score)s" % {
+            logger.info("Assocate #%(id)s score calculated is: %(total_score)s" % {
+                'id': str(task_item.job.associate.id),
                 'total_score': str(total_score)
             })
+
+            task_item.job.associate.score = total_score
+            task_item.job.associate.last_modified_by = self.context['user']
+            task_item.job.associate.last_modified_from = self.context['from']
+            task_item.job.associate.last_modified_from_is_public = self.context['from_is_public']
+            task_item.job.associate.save()
 
         return validated_data

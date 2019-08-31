@@ -17,6 +17,7 @@ class AssociateFilter(django_filters.FilterSet):
             ('telephone', 'telephone'),
             ('email', 'email'),
             ('join_date', 'join_date'),
+            ('score', 'score'),
         ),
 
         # # labels do not need to retain order

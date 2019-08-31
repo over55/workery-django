@@ -62,6 +62,8 @@ class WorkOrderListCreateSerializer(serializers.ModelSerializer):
 
     assigned_skill_sets = SkillSetListCreateSerializer(many=True, read_only=True)
     start_date = serializers.DateField(allow_null=True,)
+    was_survey_conducted = serializers.BooleanField(read_only=True)
+    score = serializers.FloatField(read_only=True)
 
     class Meta:
         model = WorkOrder
@@ -99,6 +101,8 @@ class WorkOrderListCreateSerializer(serializers.ModelSerializer):
             'description',
             'start_date',
             'visits',
+            'was_survey_conducted',
+            'score',
 
             # Payment
             'invoice_service_fee_payment_date',

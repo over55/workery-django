@@ -186,6 +186,7 @@ class AssociateListCreateSerializer(serializers.ModelSerializer):
     e164_telephone = serializers.SerializerMethodField()
     # pretty_skill_sets = serializers.SerializerMethodField()
     # pretty_tags = serializers.SerializerMethodField()
+    score = serializers.FloatField(read_only=True)
 
     # Meta Information.
     class Meta:
@@ -241,6 +242,7 @@ class AssociateListCreateSerializer(serializers.ModelSerializer):
             'e164_telephone',
             # 'pretty_skill_sets',
             # 'pretty_tags',
+            'score',
 
             # # Misc (Write Only)
             'extra_comment',
@@ -695,6 +697,7 @@ class AssociateRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
     balance_owing_amount = serializers.SerializerMethodField()
     created_by = serializers.SerializerMethodField()
     last_modified_by = serializers.SerializerMethodField()
+    score = serializers.FloatField(read_only=True)
 
     class Meta:
         model = Associate
@@ -756,6 +759,7 @@ class AssociateRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
             'pretty_vehicle_types',
             'latest_completed_and_paid_order',
             'balance_owing_amount',
+            'score',
 
             # # Misc (Write Only)
             # 'extra_comment',

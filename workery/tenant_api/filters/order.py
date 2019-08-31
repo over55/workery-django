@@ -20,6 +20,7 @@ class WorkOrderFilter(django_filters.FilterSet):
             ('completion_date', 'completion_date'),
             ('state', 'state'),
             ('invoice_service_fee_payment_date', 'invoice_service_fee_payment_date'),
+            ('score', 'score'),
         ),
 
         # # labels do not need to retain order
