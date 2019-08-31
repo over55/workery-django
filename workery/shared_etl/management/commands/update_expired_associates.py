@@ -172,7 +172,7 @@ class Command(BaseCommand): #TODO: UNIT TEST
         # Fetch the franchise management staff and send a notification
         # email informing them that an associate has expired commercial
         # insurance.
-        management_staffs = Staff.objects.filter_by_management_group()
+        management_staffs = Staff.objects.filter_by_active_management_group()
         for staff in management_staffs.iterator():
             self.send_staff_an_email(staff, "police-check-expiry", associate, now_dt, now_d)
 
@@ -215,7 +215,7 @@ class Command(BaseCommand): #TODO: UNIT TEST
         # Fetch the franchise management staff and send a notification
         # email informing them that an associate has expired commercial
         # insurance.
-        management_staffs = Staff.objects.filter_by_management_group()
+        management_staffs = Staff.objects.filter_by_active_management_group()
         for staff in management_staffs.iterator():
             self.send_staff_an_email(staff, "commercial-insurance-expiry", associate, now_dt, now_d)
 

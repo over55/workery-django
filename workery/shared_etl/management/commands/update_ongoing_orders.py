@@ -171,7 +171,7 @@ class Command(BaseCommand): #TODO: UNIT TEST
         # STEP 4: Email the management staff that the following ongoing jobs
         #         were automatically modified by this ETL.
         if len(processed_job_ids_arr) > 0:
-            management_staffs = Staff.objects.filter_by_management_group()
+            management_staffs = Staff.objects.filter_by_active_management_group()
             for management_staff in management_staffs.all():
                 self.send_staff_an_email(management_staff, processed_job_ids_arr, now_d)
 
@@ -248,6 +248,6 @@ class Command(BaseCommand): #TODO: UNIT TEST
         # STEP 5: Email the management staff that the following ongoing jobs
         #         were automatically modified by this ETL.
         if len(processed_job_ids_arr) > 0:
-            management_staffs = Staff.objects.filter_by_management_group()
+            management_staffs = Staff.objects.filter_by_active_management_group()
             for management_staff in management_staffs.all():
                 self.send_staff_an_email(management_staff, processed_job_ids_arr, now_d)

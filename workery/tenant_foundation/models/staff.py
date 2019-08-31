@@ -67,14 +67,14 @@ class StaffManager(models.Manager):
         # https://docs.djangoproject.com/en/2.0/ref/contrib/postgres/search/
         return Staff.objects.annotate(search=SearchVector('indexed_text'),).filter(search=keyword)
 
-    def filter_by_executive_group(self):
-        return Staff.objects.filter(owner__groups__id=EXECUTIVE_GROUP_ID)
+    def filter_by_active_executive_group(self):
+        return Staff.objects.filter(owner__groups__id=EXECUTIVE_GROUP_ID, owner__is_active=True)
 
-    def filter_by_management_group(self):
-        return Staff.objects.filter(owner__groups__id=MANAGEMENT_GROUP_ID)
+    def filter_by_active_management_group(self):
+        return Staff.objects.filter(owner__groups__id=MANAGEMENT_GROUP_ID, owner__is_active=True)
 
-    def filter_by_staff_group(self):
-        return Staff.objects.filter(owner__groups__id=FRONTLINE_GROUP_ID)
+    def filter_by_active_staff_group(self):
+        return Staff.objects.filter(owner__groups__id=FRONTLINE_GROUP_ID, owner__is_active=True)
 
 @transaction.atomic
 def increment_staff_id_number():

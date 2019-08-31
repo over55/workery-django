@@ -84,7 +84,7 @@ class Command(BaseCommand): #TODO: UNIT TEST
         Function will iterate through all the `running` away logs and
         perform the necessary operations.
         """
-        management_staffs = Staff.objects.filter_by_management_group()
+        management_staffs = Staff.objects.filter_by_active_management_group()
         tenant_todays_date = franchise.get_todays_date_plus_days()
         away_logs = AwayLog.objects.filter(
            until_date__lte=tenant_todays_date,
