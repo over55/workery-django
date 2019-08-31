@@ -9,6 +9,7 @@ from rest_framework import authentication, viewsets, permissions, status
 from rest_framework.response import Response
 
 from shared_foundation.custom.drf.permissions import IsAuthenticatedAndIsActivePermission
+from tenant_api.filters.ongoing_order import OngoingWorkOrderFilter
 from tenant_api.pagination import TinyResultsSetPagination
 from tenant_api.permissions.order import (
    CanListCreateWorkOrderPermission,
@@ -32,9 +33,16 @@ class OngoingWorkOrderListCreateAPIView(generics.ListCreateAPIView):
         """
         List
         """
-        queryset = WorkOrder.objects.all().order_by('-created')
+        # Fetch all the queries.
+        queryset = OngoingWorkOrder.objects.all().order_by('-created')
         s = self.get_serializer_class()
         queryset = s.setup_eager_loading(self, queryset)
+
+        # The following code will use the 'django-filter'
+        filter = OngoingWorkOrderFilter(self.request.GET, queryset=queryset)
+        queryset = filter.qs
+
+        # Return our filtered list.
         return queryset
 
     def post(self, request, format=None):
