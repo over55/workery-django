@@ -69,7 +69,9 @@ from tenant_api.views.vehicle_type import VehicleTypeListCreateAPIView, VehicleT
 from tenant_api.views.order_crud import (
     OngoingWorkOrderListCreateAPIView,
     OngoingWorkOrderRetrieveUpdateDestroyAPIView,
-    OngoingWorkOrderCommentListCreateAPIView
+    OngoingWorkOrderCommentListCreateAPIView,
+    OngoingWorkOrderListCreateV2APIView,
+    OngoingWorkOrderRetrieveUpdateDestroyV2APIView
 )
 from tenant_api.views.bulletin_board_item import BulletinBoardItemListCreateAPIView, BulletinBoardItemRetrieveUpdateDestroyAPIView
 from tenant_api.views.account.profile import ProfileAPIView
@@ -191,6 +193,8 @@ urlpatterns = [
     url(r'^api/ongoing-orders$', OngoingWorkOrderListCreateAPIView.as_view(), name='workery_ongoing_order_list_create_api_endpoint'),
     url(r'^api/ongoing-order/(?P<pk>[^/.]+)/$', OngoingWorkOrderRetrieveUpdateDestroyAPIView.as_view(), name='workery_ongoing_order_retrieve_update_destroy_api_endpoint'),
     url(r'^api/ongoing-order-comments$', OngoingWorkOrderCommentListCreateAPIView.as_view(), name='workery_ongoing_job_comment_list_create_api_endpoint'),
+    url(r'^api/v2/ongoing-orders$', OngoingWorkOrderListCreateV2APIView.as_view(), name='workery_ongoing_order_list_create_v2_api_endpoint'),
+    url(r'^api/v2/ongoing-order/(?P<pk>[^/.]+)/$', OngoingWorkOrderRetrieveUpdateDestroyV2APIView.as_view(), name='workery_ongoing_order_retrieve_update_destroy_v2_api_endpoint'),
 
     # Bulletin Board Items
     url(r'^api/bulletin_board_items$', BulletinBoardItemListCreateAPIView.as_view(), name='workery_bulletin_board_item_list_create_api_endpoint'),

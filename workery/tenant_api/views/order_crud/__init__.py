@@ -11,3 +11,7 @@ from tenant_api.views.order_crud.ongoing_order import (
 from tenant_api.views.order_crud.ongoing_order_comment import OngoingWorkOrderCommentListCreateAPIView
 from tenant_api.views.order_crud.order_lite_update import WorkOrderLiteUpdateAPIView
 from tenant_api.views.order_crud.order_financial_update import WorkOrderFinancialUpdateAPIView
+from tenant_api.views.order_crud.v2_ongoing_order import (
+   OngoingWorkOrderListCreateV2APIView,
+   OngoingWorkOrderRetrieveUpdateDestroyV2APIView
+)
