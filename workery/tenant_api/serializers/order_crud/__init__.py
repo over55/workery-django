@@ -1,5 +1,7 @@
 from tenant_api.serializers.order_crud.order_lite_update import WorkOrderLiteUpdateSerializer
 from tenant_api.serializers.order_crud.order_financial_update import WorkOrderFinancialUpdateSerializer
 
+from tenant_api.serializers.order_crud.ongoing_order_comment import OngoingWorkOrderCommentListCreateSerializer
+
 from tenant_api.serializers.order_crud.v2_ongoing_order_retrieve import OngoingWorkOrderRetrieveSerializer
 from tenant_api.serializers.order_crud.v2_ongoing_order_update import OngoingWorkOrderUpdateSerializer

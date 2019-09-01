@@ -26,11 +26,13 @@ from tenant_foundation.models import (
 )
 
 
-class OngoingWorkOrderListCreateSerializer(serializers.ModelSerializer):
+class OngoingWorkOrderCommentListCreateSerializer(serializers.ModelSerializer):
     # about = serializers.PrimaryKeyRelatedField(many=False, read_only=True)
     # comment = serializers.PrimaryKeyRelatedField(many=False, read_only=True)
-    extra_text = serializers.CharField(write_only=True, allow_null=False)
-    text = serializers.CharField(read_only=True)
+    extra_text = serializers.CharField(write_only=True, allow_null=True)
+    text = serializers.CharField(write_only=True)
+    text = serializers.CharField(read_only=True, source="comment.text")
+    created_by = serializers.SerializerMethodField(allow_null=False)
 
     # Meta Information.
     class Meta:
@@ -38,15 +40,22 @@ class OngoingWorkOrderListCreateSerializer(serializers.ModelSerializer):
         fields = (
             'id',
             'created_at',
+            'created_by',
             'about',
             'text',
             'extra_text'
         )
 
+    def get_created_by(self, obj):
+        try:
+            return str(obj.comment.created_by)
+        except Exception as e:
+            return None
+
     def setup_eager_loading(cls, queryset):
         """ Perform necessary eager loading of data. """
         queryset = queryset.prefetch_related(
-            'about', 'comment'
+            'about', 'about', 'comment'
         )
         return queryset
 
@@ -55,17 +64,20 @@ class OngoingWorkOrderListCreateSerializer(serializers.ModelSerializer):
         """
         Override the `create` function to add extra functinality.
         """
+
         #-----------------------------
         # Create our `Comment` object.
         #-----------------------------
         about = validated_data.get('about', None)
         text = validated_data.get('extra_text', None)
         comment = Comment.objects.create(
-            created_by=self.context['created_by'],
-            last_modified_by=self.context['created_by'],
-            text=text,
-            created_from = self.context['from'],
-            created_from_is_public = self.context['from_is_public']
+            created_by = self.context['created_by'],
+            created_from = self.context['created_from'],
+            created_from_is_public = self.context['created_from_is_public'],
+            last_modified_by = self.context['created_by'],
+            last_modified_from = self.context['created_from'],
+            last_modified_from_is_public = self.context['created_from_is_public'],
+            text=text
         )
         OngoingWorkOrderComment.objects.create(
             about=about,
