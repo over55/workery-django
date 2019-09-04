@@ -22,7 +22,6 @@ class ProfileAPIView(APIView):
     permission_classes = (
         permissions.IsAuthenticated,
         IsAuthenticatedAndIsActivePermission,
-        CanListCreateStaffPermission
     )
 
     def get(self, request, format=None):
