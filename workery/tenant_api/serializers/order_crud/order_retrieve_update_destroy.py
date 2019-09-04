@@ -82,6 +82,7 @@ class WorkOrderRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
     pretty_type_of = serializers.CharField(read_only=True, source="get_pretty_type_of")
     pretty_skill_sets = serializers.SerializerMethodField()
     pretty_tags = serializers.SerializerMethodField()
+    pretty_invoice_service_fee = serializers.SerializerMethodField()
     latest_pending_task = serializers.ReadOnlyField(source="latest_pending_task.id")
     latest_pending_task_type_of = serializers.ReadOnlyField(source="latest_pending_task.type_of")
     pretty_latest_pending_task = serializers.ReadOnlyField(source="latest_pending_task.title")
@@ -165,6 +166,7 @@ class WorkOrderRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
             'pretty_type_of',
             'pretty_skill_sets',
             'pretty_tags',
+            'pretty_invoice_service_fee',
             'pretty_latest_pending_task',
             'latest_pending_task',
             'latest_pending_task_type_of',
@@ -256,6 +258,12 @@ class WorkOrderRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         try:
             s = TagListCreateSerializer(obj.tags.all(), many=True)
             return s.data
+        except Exception as e:
+            return None
+
+    def get_pretty_invoice_service_fee(self, obj):
+        try:
+            return obj.invoice_service_fee.title
         except Exception as e:
             return None
 
