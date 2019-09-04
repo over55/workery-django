@@ -87,6 +87,7 @@ from tenant_api.views.activity_sheet_item import (
     ActivitySheetItemRetrieveUpdateDestroyAPIView
 )
 
+
 urlpatterns = [
     # Dashboard
     url(r'^api/dashboard$', DashboardAPIView.as_view(), name='workery_dashboard_api_endpoint'),
@@ -219,7 +220,6 @@ urlpatterns = [
     # ActivitySheetItem
     url(r'^api/activity-sheets$', ActivitySheetItemListCreateAPIView.as_view(), name='workery_activity_sheet_list_create_api_endpoint'),
     url(r'^api/activity-sheet/(?P<pk>[^/.]+)/$', ActivitySheetItemRetrieveUpdateDestroyAPIView.as_view(), name='workery_activity_sheet_retrieve_update_destroy_api_endpoint'),
-
 ]
 
 

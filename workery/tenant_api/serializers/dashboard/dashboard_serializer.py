@@ -34,7 +34,7 @@ from tenant_foundation.models import (
 from tenant_api.serializers.awaylog import AwayLogListCreateSerializer
 from tenant_api.serializers.bulletin_board_item import BulletinBoardItemListCreateSerializer
 from tenant_api.serializers.order_crud.order_list_create import WorkOrderListCreateSerializer
-from tenant_api.serializers.order_comment import WorkOrderCommentListCreateSerializer
+from tenant_api.serializers.order_crud.order_comment import WorkOrderCommentListCreateSerializer
 
 
 logger = logging.getLogger(__name__)

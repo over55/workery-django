@@ -15,7 +15,7 @@ from tenant_api.permissions.order import (
    CanListCreateWorkOrderPermission,
    CanRetrieveUpdateDestroyWorkOrderPermission
 )
-from tenant_api.serializers.order_comment import (
+from tenant_api.serializers.order_crud.order_comment import (
     WorkOrderCommentListCreateSerializer,
 )
 from tenant_foundation.models import WorkOrder, WorkOrderComment
