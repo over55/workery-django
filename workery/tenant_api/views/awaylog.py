@@ -72,7 +72,6 @@ class AwayLogListCreateAPIView(generics.ListCreateAPIView):
 
 
 class AwayLogRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
-    serializer_class = AwayLogRetrieveUpdateDestroySerializer
     permission_classes = (
         permissions.IsAuthenticated,
         IsAuthenticatedAndIsActivePermission,

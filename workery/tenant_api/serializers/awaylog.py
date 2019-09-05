@@ -186,7 +186,6 @@ class AwayLogListCreateSerializer(serializers.ModelSerializer):
 class AwayLogRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
 
     until_further_notice = serializers.BooleanField(
-        write_only=True,
         required=True,
         error_messages={
             "invalid": "Please pick either 'Yes' or 'No' choice."
