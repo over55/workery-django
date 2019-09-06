@@ -15,6 +15,7 @@ from tenant_foundation.models import HowHearAboutUsItem
 
 
 class HowHearAboutUsItemListCreateSerializer(serializers.ModelSerializer):
+    is_archived = serializers.BooleanField(read_only=True)
     text = serializers.CharField(
         required=True,
         allow_blank=False,
@@ -30,12 +31,13 @@ class HowHearAboutUsItemListCreateSerializer(serializers.ModelSerializer):
             'is_for_associate',
             'is_for_customer',
             'is_for_staff',
-            'is_for_partner'
+            'is_for_partner',
+            'is_archived',
         )
 
 
-
 class HowHearAboutUsItemRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
+    is_archived = serializers.BooleanField(read_only=True)
     text = serializers.CharField(
         required=True,
         allow_blank=False,
@@ -51,5 +53,6 @@ class HowHearAboutUsItemRetrieveUpdateDestroySerializer(serializers.ModelSeriali
             'is_for_associate',
             'is_for_customer',
             'is_for_staff',
-            'is_for_partner'
+            'is_for_partner',
+            'is_archived',
         )

@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import django_filters
+from ipware import get_client_ip
 from django_filters.rest_framework import DjangoFilterBackend
 from django.conf.urls import url, include
 from django.shortcuts import get_list_or_404, get_object_or_404
@@ -69,9 +70,9 @@ class HowHearAboutUsItemRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDest
         """
         Retrieve
         """
-        tag = get_object_or_404(HowHearAboutUsItem, pk=pk)
-        self.check_object_permissions(request, tag)  # Validate permissions.
-        serializer = HowHearAboutUsItemRetrieveUpdateDestroySerializer(tag, many=False)
+        hhi = get_object_or_404(HowHearAboutUsItem, pk=pk)
+        self.check_object_permissions(request, hhi)  # Validate permissions.
+        serializer = HowHearAboutUsItemRetrieveUpdateDestroySerializer(hhi, many=False)
         return Response(
             data=serializer.data,
             status=status.HTTP_200_OK
@@ -81,9 +82,9 @@ class HowHearAboutUsItemRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDest
         """
         Update
         """
-        tag = get_object_or_404(HowHearAboutUsItem, pk=pk)
-        self.check_object_permissions(request, tag)  # Validate permissions.
-        serializer = HowHearAboutUsItemRetrieveUpdateDestroySerializer(tag, data=request.data)
+        hhi = get_object_or_404(HowHearAboutUsItem, pk=pk)
+        self.check_object_permissions(request, hhi)  # Validate permissions.
+        serializer = HowHearAboutUsItemRetrieveUpdateDestroySerializer(hhi, data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data, status=status.HTTP_200_OK)
@@ -92,7 +93,12 @@ class HowHearAboutUsItemRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDest
         """
         Delete
         """
-        tag = get_object_or_404(HowHearAboutUsItem, pk=pk)
-        self.check_object_permissions(request, tag)  # Validate permissions.
-        tag.delete()
+        client_ip, is_routable = get_client_ip(self.request)
+        hhi = get_object_or_404(HowHearAboutUsItem, pk=pk)
+        self.check_object_permissions(request, hhi)  # Validate permissions.
+        hhi.is_archived = True
+        hhi.last_modified_by = request.user
+        hhi.last_modified_from = client_ip
+        hhi.last_modified_from_is_public = is_routable
+        hhi.save()
         return Response(data=[], status=status.HTTP_200_OK)

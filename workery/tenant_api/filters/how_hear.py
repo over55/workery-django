@@ -15,6 +15,7 @@ class HowHearAboutUsItemFilter(django_filters.FilterSet):
             ('is_for_customer', 'is_for_customer'),
             ('is_for_staff', 'is_for_staff'),
             ('is_for_partner', 'is_for_partner'),
+            ('is_archived', 'is_archived'),
         ),
 
         # # labels do not need to retain order
@@ -30,4 +31,5 @@ class HowHearAboutUsItemFilter(django_filters.FilterSet):
             # 'title',
             # 'is_closed',
             # 'type_of',
+            'is_archived',
         ]
