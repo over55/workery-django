@@ -89,6 +89,13 @@ class WorkOrderServiceFee(models.Model):
         blank=True,
         default=0
     )
+    is_archived = models.BooleanField(
+        _("Is Archived"),
+        help_text=_('Indicates whether service fee was archived.'),
+        default=False,
+        blank=True,
+        db_index=True
+    )
 
     #  SYSTEM FIELDS
     #

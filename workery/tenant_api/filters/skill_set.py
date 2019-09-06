@@ -12,6 +12,7 @@ class SkillSetFilter(django_filters.FilterSet):
             ('id', 'id'),
             ('category', 'category'),
             ('sub_category', 'sub_category'),
+            ('is_archived', 'is_archived'),
         ),
 
         # # labels do not need to retain order
@@ -44,4 +45,5 @@ class SkillSetFilter(django_filters.FilterSet):
             'id',
             'category',
             'sub_category',
+            'is_archived',
         ]

@@ -105,5 +105,4 @@ class BulletinBoardItemRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestr
         item.last_modified_from = client_ip
         item.last_modified_from_is_public = is_routable
         item.save()
-        # item.delete()
         return Response(data=[], status=status.HTTP_200_OK)

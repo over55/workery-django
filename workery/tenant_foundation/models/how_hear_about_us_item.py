@@ -98,6 +98,13 @@ class HowHearAboutUsItem(models.Model):
         default=True,
         blank=True
     )
+    is_archived = models.BooleanField(
+        _("Is Archived"),
+        help_text=_('Indicates whether how hear item was archived.'),
+        default=False,
+        blank=True,
+        db_index=True
+    )
 
     #
     #  FUNCTIONS

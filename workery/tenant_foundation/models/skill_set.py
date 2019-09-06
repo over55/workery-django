@@ -85,6 +85,13 @@ class SkillSet(models.Model):
         blank=True,
         related_name="%(app_label)s_%(class)s_insurance_requirements_related"
     )
+    is_archived = models.BooleanField(
+        _("Is Archived"),
+        help_text=_('Indicates whether skill set was archived.'),
+        default=False,
+        blank=True,
+        db_index=True
+    )
 
     #
     #  FUNCTIONS

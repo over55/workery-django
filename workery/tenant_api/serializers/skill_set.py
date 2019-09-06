@@ -36,6 +36,7 @@ class SkillSetListCreateSerializer(serializers.ModelSerializer):
         queryset=InsuranceRequirement.objects.all(),
         allow_null=True,
     )
+    is_archived = serializers.BooleanField(read_only=True)
 
     class Meta:
         model = SkillSet
@@ -44,7 +45,8 @@ class SkillSetListCreateSerializer(serializers.ModelSerializer):
             'category',
             'sub_category',
             'description',
-            'insurance_requirements'
+            'insurance_requirements',
+            'is_archived'
         )
 
     def validate_insurance_requirements(self, value):
@@ -80,6 +82,7 @@ class SkillSetRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         queryset=InsuranceRequirement.objects.all(),
         allow_null=True,
     )
+    is_archived = serializers.BooleanField(read_only=True)
 
     class Meta:
         model = SkillSet
@@ -87,7 +90,8 @@ class SkillSetRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
             'category',
             'sub_category',
             'description',
-            'insurance_requirements'
+            'insurance_requirements',
+            'is_archived'
         )
 
     def validate_insurance_requirements(self, value):
