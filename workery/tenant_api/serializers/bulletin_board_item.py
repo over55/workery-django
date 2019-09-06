@@ -29,6 +29,7 @@ from tenant_foundation.models import (
 class BulletinBoardItemListCreateSerializer(serializers.ModelSerializer):
     extra_text = serializers.CharField(write_only=True, allow_null=True)
     text = serializers.CharField(read_only=True)
+    is_archived = serializers.BooleanField(read_only=True)
 
     # Meta Information.
     class Meta:
@@ -37,7 +38,8 @@ class BulletinBoardItemListCreateSerializer(serializers.ModelSerializer):
             'id',
             'created_at',
             'text',
-            'extra_text'
+            'extra_text',
+            'is_archived',
         )
 
     def setup_eager_loading(cls, queryset):
@@ -73,10 +75,11 @@ class BulletinBoardItemListCreateSerializer(serializers.ModelSerializer):
 
 
 class BulletinBoardItemRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
-
+    is_archived = serializers.BooleanField(read_only=True)
     class Meta:
         model = BulletinBoardItem
         fields = (
             'id',
             'text',
+            'is_archived',
         )
