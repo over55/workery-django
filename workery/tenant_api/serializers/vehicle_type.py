@@ -15,23 +15,7 @@ from tenant_foundation.models import VehicleType
 
 
 class VehicleTypeListCreateSerializer(serializers.ModelSerializer):
-    text = serializers.CharField(
-        required=True,
-        allow_blank=False,
-        allow_null=False,
-        validators=[]
-    )
-    class Meta:
-        model = VehicleType
-        fields = (
-            'id',
-            'text',
-            'description'
-        )
-
-
-
-class VehicleTypeRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
+    is_archived = serializers.BooleanField(read_only=True)
     text = serializers.CharField(
         required=True,
         allow_blank=False,
@@ -44,4 +28,24 @@ class VehicleTypeRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
             'id',
             'text',
             'description',
+            'is_archived',
+        )
+
+
+
+class VehicleTypeRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
+    is_archived = serializers.BooleanField(read_only=True)
+    text = serializers.CharField(
+        required=True,
+        allow_blank=False,
+        allow_null=False,
+        validators=[]
+    )
+    class Meta:
+        model = VehicleType
+        fields = (
+            'id',
+            'text',
+            'description',
+            'is_archived',
         )

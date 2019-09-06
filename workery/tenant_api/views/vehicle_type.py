@@ -59,9 +59,9 @@ class VehicleTypeRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIV
         """
         Retrieve
         """
-        tag = get_object_or_404(VehicleType, pk=pk)
-        self.check_object_permissions(request, tag)  # Validate permissions.
-        serializer = VehicleTypeRetrieveUpdateDestroySerializer(tag, many=False)
+        vt = get_object_or_404(VehicleType, pk=pk)
+        self.check_object_permissions(request, vt)  # Validate permissions.
+        serializer = VehicleTypeRetrieveUpdateDestroySerializer(vt, many=False)
         return Response(
             data=serializer.data,
             status=status.HTTP_200_OK
@@ -71,9 +71,9 @@ class VehicleTypeRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIV
         """
         Update
         """
-        tag = get_object_or_404(VehicleType, pk=pk)
-        self.check_object_permissions(request, tag)  # Validate permissions.
-        serializer = VehicleTypeRetrieveUpdateDestroySerializer(tag, data=request.data)
+        vt = get_object_or_404(VehicleType, pk=pk)
+        self.check_object_permissions(request, vt)  # Validate permissions.
+        serializer = VehicleTypeRetrieveUpdateDestroySerializer(vt, data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data, status=status.HTTP_200_OK)
@@ -82,7 +82,12 @@ class VehicleTypeRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIV
         """
         Delete
         """
-        tag = get_object_or_404(VehicleType, pk=pk)
-        self.check_object_permissions(request, tag)  # Validate permissions.
-        tag.delete()
+        client_ip, is_routable = get_client_ip(self.request)
+        vt = get_object_or_404(VehicleType, pk=pk)
+        self.check_object_permissions(request, vt)  # Validate permissions.
+        vt.is_archived = True
+        vt.last_modified_by = request.user
+        vt.last_modified_from = client_ip
+        vt.last_modified_from_is_public = is_routable
+        vt.save()
         return Response(data=[], status=status.HTTP_200_OK)
