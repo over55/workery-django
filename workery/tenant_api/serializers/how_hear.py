@@ -10,6 +10,7 @@ from django.utils import timezone
 from django.utils.http import urlquote
 from rest_framework import exceptions, serializers
 from rest_framework.response import Response
+from rest_framework.validators import UniqueValidator
 
 from tenant_foundation.models import HowHearAboutUsItem
 
@@ -20,7 +21,11 @@ class HowHearAboutUsItemListCreateSerializer(serializers.ModelSerializer):
         required=True,
         allow_blank=False,
         allow_null=False,
-        validators=[]
+        validators=[
+            UniqueValidator(
+                queryset=HowHearAboutUsItem.objects.all(),
+            )
+        ],
     )
     class Meta:
         model = HowHearAboutUsItem
@@ -42,7 +47,11 @@ class HowHearAboutUsItemRetrieveUpdateDestroySerializer(serializers.ModelSeriali
         required=True,
         allow_blank=False,
         allow_null=False,
-        validators=[]
+        validators=[
+            UniqueValidator(
+                queryset=HowHearAboutUsItem.objects.all(),
+            )
+        ],
     )
     class Meta:
         model = HowHearAboutUsItem
