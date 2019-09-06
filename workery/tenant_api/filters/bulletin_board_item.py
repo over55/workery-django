@@ -14,6 +14,7 @@ class BulletinBoardItemFilter(django_filters.FilterSet):
             ('id', 'id'),
             ('text', 'text'),
             ('created_at', 'created_at'),
+            ('is_archived', 'is_archived'),
         ),
 
         # # labels do not need to retain order
@@ -36,5 +37,6 @@ class BulletinBoardItemFilter(django_filters.FilterSet):
             'last_modified_by_id',
             'last_modified_from',
             'last_modified_from_is_public',
-            'text'
+            'text',
+            'is_archived',
         ]

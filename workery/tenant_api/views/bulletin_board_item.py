@@ -97,7 +97,13 @@ class BulletinBoardItemRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestr
         """
         Delete
         """
-        tag = get_object_or_404(BulletinBoardItem, pk=pk)
-        self.check_object_permissions(request, tag)  # Validate permissions.
-        tag.delete()
+        client_ip, is_routable = get_client_ip(self.request)
+        item = get_object_or_404(BulletinBoardItem, pk=pk)
+        self.check_object_permissions(request, item)  # Validate permissions.
+        item.is_archived = True
+        item.last_modified_by = request.user
+        item.last_modified_from = client_ip
+        item.last_modified_from_is_public = is_routable
+        item.save()
+        # item.delete()
         return Response(data=[], status=status.HTTP_200_OK)
