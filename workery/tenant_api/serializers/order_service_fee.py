@@ -15,24 +15,7 @@ from tenant_foundation.models import WorkOrderServiceFee
 
 
 class WorkOrderServiceFeeListCreateSerializer(serializers.ModelSerializer):
-    title = serializers.CharField(
-        required=True,
-        allow_blank=False,
-        allow_null=False,
-        validators=[]
-    )
-    class Meta:
-        model = WorkOrderServiceFee
-        fields = (
-            'id',
-            'title',
-            'percentage',
-            'description'
-        )
-
-
-
-class WorkOrderServiceFeeRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
+    is_archived = serializers.BooleanField(read_only=True)
     title = serializers.CharField(
         required=True,
         allow_blank=False,
@@ -46,4 +29,25 @@ class WorkOrderServiceFeeRetrieveUpdateDestroySerializer(serializers.ModelSerial
             'title',
             'percentage',
             'description',
+            'is_archived'
+        )
+
+
+
+class WorkOrderServiceFeeRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
+    is_archived = serializers.BooleanField(read_only=True)
+    title = serializers.CharField(
+        required=True,
+        allow_blank=False,
+        allow_null=False,
+        validators=[]
+    )
+    class Meta:
+        model = WorkOrderServiceFee
+        fields = (
+            'id',
+            'title',
+            'percentage',
+            'description',
+            'is_archived'
         )

@@ -15,6 +15,7 @@ class WorkOrderServiceFeeFilter(django_filters.FilterSet):
             ('title', 'title'),
             ('description', 'description'),
             ('percentage', 'percentage'),
+            ('is_archived', 'is_archived'),
         ),
 
         # # labels do not need to retain order
@@ -36,5 +37,6 @@ class WorkOrderServiceFeeFilter(django_filters.FilterSet):
             'last_modified_by_id',
             'percentage',
             'title',
-            'work_orders'
+            'work_orders',
+            'is_archived',
         ]

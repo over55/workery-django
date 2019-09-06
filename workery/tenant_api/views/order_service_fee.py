@@ -95,7 +95,12 @@ class WorkOrderServiceFeeRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDes
         """
         Delete
         """
+        client_ip, is_routable = get_client_ip(self.request)
         order_service_fee = get_object_or_404(WorkOrderServiceFee, pk=pk)
         self.check_object_permissions(request, order_service_fee)  # Validate permissions.
-        order_service_fee.delete()
+        order_service_fee.is_archived = True
+        order_service_fee.last_modified_by = request.user
+        order_service_fee.last_modified_from = client_ip
+        order_service_fee.last_modified_from_is_public = is_routable
+        order_service_fee.save()
         return Response(data=[], status=status.HTTP_200_OK)
