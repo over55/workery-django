@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import django_filters
+from ipware import get_client_ip
 from django_filters.rest_framework import DjangoFilterBackend
 from django.conf.urls import url, include
 from django.shortcuts import get_list_or_404, get_object_or_404
@@ -91,7 +92,12 @@ class InsuranceRequirementRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDe
         """
         Delete
         """
+        client_ip, is_routable = get_client_ip(self.request)
         insurance_requirement = get_object_or_404(InsuranceRequirement, pk=pk)
         self.check_object_permissions(request, insurance_requirement)  # Validate permissions.
-        insurance_requirement.delete()
+        insurance_requirement.is_archived = True
+        insurance_requirement.last_modified_by = request.user
+        insurance_requirement.last_modified_from = client_ip
+        insurance_requirement.last_modified_from_is_public = is_routable
+        insurance_requirement.save()
         return Response(data=[], status=status.HTTP_200_OK)

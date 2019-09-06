@@ -16,7 +16,7 @@ from tenant_foundation.models import InsuranceRequirement
 
 
 class InsuranceRequirementListCreateSerializer(serializers.ModelSerializer):
-
+    is_archived = serializers.BooleanField(read_only=True)
     text = serializers.CharField(
         required=True,
         allow_blank=False,
@@ -29,13 +29,14 @@ class InsuranceRequirementListCreateSerializer(serializers.ModelSerializer):
         fields = (
             'id',
             'text',
-            'description'
+            'description',
+            'is_archived',
         )
 
 
 
 class InsuranceRequirementRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
-
+    is_archived = serializers.BooleanField(read_only=True)
     text = serializers.CharField(
         required=True,
         allow_blank=False,
@@ -49,4 +50,5 @@ class InsuranceRequirementRetrieveUpdateDestroySerializer(serializers.ModelSeria
             'id',
             'text',
             'description',
+            'is_archived',
         )
