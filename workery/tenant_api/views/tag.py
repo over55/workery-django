@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from ipware import get_client_ip
 import django_filters
 from django_filters.rest_framework import DjangoFilterBackend
 from django.conf.urls import url, include
@@ -92,7 +93,12 @@ class TagRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
         """
         Delete
         """
+        client_ip, is_routable = get_client_ip(self.request)
         tag = get_object_or_404(Tag, pk=pk)
         self.check_object_permissions(request, tag)  # Validate permissions.
-        tag.delete()
+        tag.is_archived = True
+        tag.last_modified_by = request.user
+        tag.last_modified_from = client_ip
+        tag.last_modified_from_is_public = is_routable
+        tag.save()
         return Response(data=[], status=status.HTTP_200_OK)

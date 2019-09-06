@@ -21,12 +21,14 @@ class TagListCreateSerializer(serializers.ModelSerializer):
         allow_null=False,
         validators=[]
     )
+    is_archived = serializers.BooleanField(read_only=True)
     class Meta:
         model = Tag
         fields = (
             'id',
             'text',
-            'description'
+            'description',
+            'is_archived',
         )
 
 
@@ -38,10 +40,12 @@ class TagRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         allow_null=False,
         validators=[]
     )
+    is_archived = serializers.BooleanField(read_only=True)
     class Meta:
         model = Tag
         fields = (
             'id',
             'text',
             'description',
+            'is_archived',
         )

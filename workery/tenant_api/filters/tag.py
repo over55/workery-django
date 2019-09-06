@@ -14,6 +14,7 @@ class TagFilter(django_filters.FilterSet):
             ('id', 'id'),
             ('text', 'text'),
             ('description', 'description'),
+            ('is_archived', 'is_archived'),
         ),
 
         # # labels do not need to retain order
@@ -25,7 +26,7 @@ class TagFilter(django_filters.FilterSet):
     class Meta:
         model = Tag
         fields = [
-            # 'id',
+            'is_archived',
             # 'title',
             # 'is_closed',
             # 'type_of',
