@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import django_filters
+from ipware import get_client_ip
 from django_filters import rest_framework as filters
 from django.conf.urls import url, include
 from django.shortcuts import get_list_or_404, get_object_or_404
@@ -8,6 +9,7 @@ from rest_framework import authentication, viewsets, permissions, status
 from rest_framework.response import Response
 
 from shared_foundation.custom.drf.permissions import IsAuthenticatedAndIsActivePermission
+from tenant_api.filters.vehicle_type import VehicleTypeFilter
 from tenant_api.pagination import TinyResultsSetPagination
 from tenant_api.permissions.tag import (
    CanListCreateTagPermission,
@@ -33,7 +35,14 @@ class VehicleTypeListCreateAPIView(generics.ListCreateAPIView):
         """
         List
         """
+        # Fetch all the queries.
         queryset = VehicleType.objects.all().order_by('text')
+
+        # The following code will use the 'django-filter'
+        filter = VehicleTypeFilter(self.request.GET, queryset=queryset)
+        queryset = filter.qs
+
+        # Return our filtered list.
         return queryset
 
     def post(self, request, format=None):
