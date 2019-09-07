@@ -76,10 +76,28 @@ class BulletinBoardItemListCreateSerializer(serializers.ModelSerializer):
 
 class BulletinBoardItemRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
     is_archived = serializers.BooleanField(read_only=True)
+    created_by = serializers.SerializerMethodField()
+    last_modified_by = serializers.SerializerMethodField()
     class Meta:
         model = BulletinBoardItem
         fields = (
             'id',
             'text',
             'is_archived',
+            'created_at',
+            'created_by',
+            'last_modified_at',
+            'last_modified_by',
         )
+
+    def get_created_by(self, obj):
+        try:
+            return str(obj.created_by)
+        except Exception as e:
+            return None
+
+    def get_last_modified_by(self, obj):
+        try:
+            return str(obj.last_modified_by)
+        except Exception as e:
+            return None
