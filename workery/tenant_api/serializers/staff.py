@@ -158,6 +158,7 @@ class StaffListCreateSerializer(serializers.ModelSerializer):
     full_address = serializers.SerializerMethodField()
     e164_telephone = serializers.SerializerMethodField()
     # pretty_tags = serializers.SerializerMethodField()
+    is_archived = serializers.BooleanField(read_only=True)
 
     # Meta Information.
     class Meta:
@@ -192,7 +193,7 @@ class StaffListCreateSerializer(serializers.ModelSerializer):
             # 'pretty_tags',
 
             # # Misc (Read Only)
-            # 'comments',
+            'is_archived',
 
             # Misc (Write Only)
             'extra_comment',
@@ -609,6 +610,7 @@ class StaffRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
     group_id = serializers.ReadOnlyField(allow_null=True)
     group_description = serializers.ReadOnlyField(allow_null=True)
     state = serializers.IntegerField(read_only=True,source="owner.is_active")
+    is_archived = serializers.BooleanField(read_only=True)
 
     # Meta Information.
     class Meta:
@@ -638,10 +640,10 @@ class StaffRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
             # # 'job_info_read',
             'how_hear',
             'how_hear_other',
-            #
-            # # Misc (Read Only)
-            # 'comments',
-            #
+
+            # Misc (Read Only)
+            'is_archived',
+
             # # Misc (Write Only)
             'password',
             'password_repeat',
