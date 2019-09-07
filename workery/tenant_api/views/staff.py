@@ -111,9 +111,16 @@ class StaffRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
         """
         Delete
         """
+        client_ip, is_routable = get_client_ip(self.request)
         staff = get_object_or_404(Staff, pk=pk)
         self.check_object_permissions(request, staff)  # Validate permissions.
-        staff.delete()
+        staff.owner.is_active = False
+        staff.owner.save()
+        staff.is_archived = False
+        staff.last_modified_by = request.user
+        staff.last_modified_from = client_ip
+        staff.last_modified_from_is_public = is_routable
+        staff.save()
         return Response(data=[], status=status.HTTP_200_OK)
 
 
