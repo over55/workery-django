@@ -39,9 +39,9 @@ class StaffArchiveAPIView(generics.DestroyAPIView):
         client_ip, is_routable = get_client_ip(self.request)
         staff = get_object_or_404(Staff, pk=pk)
         self.check_object_permissions(request, staff)  # Validate permissions.
-        staff.owner.is_active = False
+        staff.owner.is_active = not staff.owner.is_active
         staff.owner.save()
-        staff.is_archived = True
+        staff.is_archived = not staff.is_archived 
         staff.last_modified_by = request.user
         staff.last_modified_from = client_ip
         staff.last_modified_from_is_public = is_routable
