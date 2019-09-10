@@ -268,8 +268,8 @@ class WorkOrderListCreateSerializer(serializers.ModelSerializer):
             is_closed = False,
             job = order,
             ongoing_job = None,
-            title = _('Assign an Associate'),
-            description = _('Please assign an associate to this job.')
+            title = 'Assign an Associate',
+            description = 'Please assign an associate to this job.'
         )
         logger.info("Created first task.")
 
