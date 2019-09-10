@@ -39,12 +39,14 @@ class CustomerListCreateSerializer(serializers.ModelSerializer):
     organization_name = serializers.CharField(
         required=False,
         allow_blank=True,
+        allow_null=True,
         validators=[
             UniqueValidator(queryset=Customer.objects.all()),
         ],
     )
     organization_type_of = serializers.IntegerField(
         required=False,
+        allow_null=True,
     )
     given_name = serializers.CharField(
         required=True,
@@ -102,7 +104,7 @@ class CustomerListCreateSerializer(serializers.ModelSerializer):
     # This is a field used in the `create` function if the user enters a
     # comment. This field is *ONLY* to be used during the POST creation and
     # will be blank during GET.
-    extra_comment = serializers.CharField(write_only=True, allow_null=True)
+    extra_comment = serializers.CharField(write_only=True, allow_blank=True, allow_null=True, required=False)
 
     # Custom formatting of our telephone fields.
     fax_number = PhoneNumberField(allow_null=True, required=False)
