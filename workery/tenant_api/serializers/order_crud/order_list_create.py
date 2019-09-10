@@ -54,7 +54,7 @@ class WorkOrderListCreateSerializer(serializers.ModelSerializer):
     # This is a field used in the `create` function if the user enters a
     # comment. This field is *ONLY* to be used during the POST creation and
     # will be blank during GET.
-    extra_comment = serializers.CharField(write_only=True, allow_null=True)
+    extra_comment = serializers.CharField(write_only=True, allow_null=True, allow_blank=True, required=False,)
 
     # The skill_sets that this associate belongs to. We will return primary
     # keys only. This field is read/write accessible.
