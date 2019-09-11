@@ -287,5 +287,8 @@ class WorkOrderListCreateSerializer(serializers.ModelSerializer):
         validated_data['assigned_skill_sets'] = order.skill_sets.all()
         validated_data['latest_pending_task'] = first_task.id
 
+        # print(order.ongoing_work_order)
+        # raise serializers.ValidationError("----")
+
         # Return our validated data.
         return order

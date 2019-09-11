@@ -137,6 +137,12 @@ class WorkOrderUnassignCreateSerializer(serializers.Serializer):
         job.associate = None
         job.latest_pending_task = task_item
         job.state = WORK_ORDER_STATE.DECLINED
+        if job.ongoing_work_order:
+            job.ongoing_work_order.associate = None;
+            job.ongoing_work_order.last_modified_by = self.context['user']
+            job.ongoing_work_order.last_modified_from = self.context['from']
+            job.ongoing_work_order.last_modified_from_is_public = self.context['from_is_public']
+            job.ongoing_work_order.save()
 
         # (b) System details.
         job.last_modified_by = self.context['user']
