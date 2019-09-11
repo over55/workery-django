@@ -151,6 +151,7 @@ class CustomerRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
     last_modified_by = serializers.SerializerMethodField()
     how_hear_pretty = serializers.SerializerMethodField()
     pretty_tags = serializers.SerializerMethodField()
+    state = serializers.CharField(read_only=True)
 
     class Meta:
         model = Customer
@@ -192,6 +193,7 @@ class CustomerRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
             'e164_telephone',
             'how_hear_pretty',
             'pretty_tags',
+            'state',
 
             # Misc (Write Only)
             'password',
