@@ -7,7 +7,6 @@ from djmoney.money import Money
 from django.conf import settings
 from django.contrib.auth.models import Group
 from django.contrib.auth import authenticate
-from django.db import transaction
 from django.db.models import Q, Prefetch, Sum
 from django.utils.translation import ugettext_lazy as _
 from django.utils import timezone
@@ -91,6 +90,14 @@ class SurveyTaskOperationSerializer(serializers.Serializer):
         1. If 'reason' == 1 then make sure 'reason_other' was inputted.
         2. If 'reason' == 4 then make sure the Customer survey fields where inputted.
         """
+        task_item = data.get('task_item', None)
+        if task_item is None:
+            raise serializers.ValidationError(_("Task no longer exists, please go back to the list page."))
+        if task_item.is_closed:
+            raise serializers.ValidationError(_("Task has been previously processed by %(name)s and cannot be edited." % {
+                'name': str(task_item.last_modified_by)
+            }))
+
         # CASE 1 - Other reason
         if data.get('no_survey_conducted_reason') == 1:
             reason_other = data.get("no_survey_conducted_reason_other")
@@ -100,7 +107,6 @@ class SurveyTaskOperationSerializer(serializers.Serializer):
         # Return our data.
         return data
 
-    @transaction.atomic
     def create(self, validated_data):
         """
         Override the `create` function to add extra functinality.

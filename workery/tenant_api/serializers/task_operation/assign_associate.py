@@ -6,7 +6,6 @@ from dateutil import tz
 from django.conf import settings
 from django.contrib.auth.models import Group
 from django.contrib.auth import authenticate
-from django.db import transaction
 from django.db.models import Q, Prefetch
 from django.utils.translation import ugettext_lazy as _
 from django.utils import timezone
@@ -77,12 +76,15 @@ class AssignAssociateTaskOperationSerializer(serializers.Serializer):
         validation error will be populated in the "non_field_errors" field.
         """
         # Confirm that we have an assignment task open.
-        task_item = data['task_item']
+        task_item = data.get('task_item', None)
         if task_item is None:
             raise serializers.ValidationError(_("Task no longer exists, please go back to the list page."))
+        if task_item.is_closed:
+            raise serializers.ValidationError(_("Task has been previously processed by %(name)s and cannot be edited." % {
+                'name': str(task_item.last_modified_by)
+            }))
         return data
 
-    @transaction.atomic
     def create(self, validated_data):
         """
         Override the `create` function to add extra functinality.

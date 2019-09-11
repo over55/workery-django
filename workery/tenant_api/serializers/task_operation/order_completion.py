@@ -7,7 +7,6 @@ from djmoney.money import Money
 from django.conf import settings
 from django.contrib.auth.models import Group
 from django.contrib.auth import authenticate
-from django.db import transaction
 from django.db.models import Q, Prefetch, Sum
 from django.utils.translation import ugettext_lazy as _
 from django.utils import timezone
@@ -120,10 +119,15 @@ class OrderCompletionTaskOperationSerializer(serializers.Serializer):
         elif data['reason'] == 4:
             pass #TODO: IMPLEMENT.
 
+        task_item = data.get('task_item', None)
+        if task_item.is_closed:
+            raise serializers.ValidationError(_("Task has been previously processed by %(name)s and cannot be edited." % {
+                'name': str(task_item.last_modified_by)
+            }))
+
         # Return our data.
         return data
 
-    @transaction.atomic
     def create(self, validated_data):
         """
         Override the `create` function to add extra functinality.
