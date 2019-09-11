@@ -194,10 +194,26 @@ class AssignAssociateTaskOperationSerializer(serializers.Serializer):
             # Save our new task and job state updated.
             task_item.job.save()
 
+            # STEP 6: Assign associate job.
+            if task_item.job.is_ongoing and task_item.job.ongoing_work_order:
+                task_item.job.ongoing_work_order.associate = associate
+                task_item.job.ongoing_work_order.last_modified_by = self.context['created_by']
+                task_item.job.ongoing_work_order.last_modified_from = self.context['created_from']
+                task_item.job.ongoing_work_order.last_modified_from_is_public = self.context['created_from_is_public']
+                task_item.job.ongoing_work_order.save()
+
         else:
             task_item.job.associate = None
             task_item.job.state = WORK_ORDER_STATE.DECLINED
             task_item.job.save()
+
+            # Unassign associate job.
+            if task_item.job.is_ongoing and task_item.job.ongoing_work_order:
+                task_item.job.ongoing_work_order.associate = None
+                task_item.job.ongoing_work_order.last_modified_by = self.context['created_by']
+                task_item.job.ongoing_work_order.last_modified_from = self.context['created_from']
+                task_item.job.ongoing_work_order.last_modified_from_is_public = self.context['created_from_is_public']
+                task_item.job.ongoing_work_order.save()
 
         comment_obj = Comment.objects.create(
             created_by=self.context['created_by'],

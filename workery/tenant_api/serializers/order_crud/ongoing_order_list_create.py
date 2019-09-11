@@ -58,7 +58,7 @@ class OngoingWorkOrderCreateSerializer(serializers.ModelSerializer):
             'state',
             'pretty_state',
             'type_of',
-            
+
             # Read / write fields.
             'associate',
             'customer',
