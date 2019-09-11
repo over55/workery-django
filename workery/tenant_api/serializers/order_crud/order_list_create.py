@@ -61,7 +61,7 @@ class WorkOrderListCreateSerializer(serializers.ModelSerializer):
     skill_sets = serializers.PrimaryKeyRelatedField(many=True, queryset=SkillSet.objects.all(), allow_null=True)
 
     assigned_skill_sets = SkillSetListCreateSerializer(many=True, read_only=True)
-    start_date = serializers.DateField(allow_null=True,)
+    start_date = serializers.DateField(allow_null=True, required=False)
     was_survey_conducted = serializers.BooleanField(read_only=True)
     score = serializers.FloatField(read_only=True)
 
@@ -155,7 +155,7 @@ class WorkOrderListCreateSerializer(serializers.ModelSerializer):
         is_home_support_service = validated_data.get('is_home_support_service', False)
         created_by = self.context['created_by']
         description = validated_data.get('description', None)
-        start_date = validated_data.get('start_date', timezone.now())
+        start_date = validated_data.get('start_date', None)
         if start_date is None or start_date == None:
             start_date = timezone.now().date()
         state = validated_data.get('state', WORK_ORDER_STATE.NEW)
