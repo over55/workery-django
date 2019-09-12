@@ -47,7 +47,13 @@ from tenant_api.views.staff_crud import (
     StaffAddressUpdateAPIView,
     StaffAccountUpdateAPIView,
     StaffMetricsUpdateAPIView,
-    StaffArchiveAPIView
+    StaffArchiveAPIView,
+    StaffListCreateV2APIView,
+    StaffRetrieveAPIView,
+)
+from tenant_api.views.staff_operations import (
+    StaffChangePasswordOperationAPIView,
+    StaffChangeRoleOperationAPIView
 )
 from tenant_api.views.tag import TagListCreateAPIView, TagRetrieveUpdateDestroyAPIView
 from tenant_api.views.how_hear import HowHearAboutUsItemListCreateAPIView, HowHearAboutUsItemRetrieveUpdateDestroyAPIView
@@ -179,8 +185,14 @@ urlpatterns = [
     url(r'^api/staff/(?P<pk>[^/.]+)/address$', StaffAddressUpdateAPIView.as_view(), name='workery_staff_address_update_api_endpoint'),
     url(r'^api/staff/(?P<pk>[^/.]+)/account$', StaffAccountUpdateAPIView.as_view(), name='workery_staff_account_update_api_endpoint'),
     url(r'^api/staff/(?P<pk>[^/.]+)/metrics$', StaffMetricsUpdateAPIView.as_view(), name='workery_staff_metrics_update_api_endpoint'),
-    url(r'^api/staff/(?P<pk>[^/.]+)/archive$', StaffArchiveAPIView.as_view(), name='workery_staff_archive_api_endpoint'),
     url(r'^api/staff-comments$', StaffCommentListCreateAPIView.as_view(), name='workery_staff_comment_list_create_api_endpoint'),
+    url(r'^api/v2/staves$', StaffListCreateV2APIView.as_view(), name='workery_v2_staff_list_create_api_endpoint'),
+    url(r'^api/v2/staff/(?P<pk>[^/.]+)/$', StaffRetrieveAPIView.as_view(), name='workery_v2_staff_retrieve_api_endpoint'),
+
+    # Staff Operations
+    url(r'^api/staff/(?P<pk>[^/.]+)/archive$', StaffArchiveAPIView.as_view(), name='workery_staff_archive_api_endpoint'),
+    url(r'^api/staff/(?P<pk>[^/.]+)/change-role$', StaffChangeRoleOperationAPIView.as_view(), name='workery_staff_change_role_operation_api_endpoint'),
+    url(r'^api/staff/(?P<pk>[^/.]+)/change-password$', StaffChangePasswordOperationAPIView.as_view(), name='workery_staff_change_password_operation_api_endpoint'),
 
     # Tags
     url(r'^api/tags$', TagListCreateAPIView.as_view(), name='workery_tag_list_create_api_endpoint'),

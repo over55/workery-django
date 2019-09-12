@@ -17,13 +17,13 @@ from tenant_api.permissions.staff import (
    CanListCreateStaffPermission,
    CanRetrieveUpdateDestroyStaffPermission
 )
-from tenant_api.serializers.staff_crud import StaffAccountUpdateSerializer
+from tenant_api.serializers.staff_operations import StaffChangePasswordOperationSerializer
 from tenant_api.serializers.staff_crud import StaffRetrieveSerializer
 from tenant_foundation.models import Staff
 
 
-class StaffAccountUpdateAPIView(generics.UpdateAPIView):
-    serializer_class = StaffAccountUpdateSerializer
+class StaffChangePasswordOperationAPIView(generics.UpdateAPIView):
+    serializer_class = StaffChangePasswordOperationSerializer
     pagination_class = TinyResultsSetPagination
     permission_classes = (
         permissions.IsAuthenticated,
@@ -39,7 +39,7 @@ class StaffAccountUpdateAPIView(generics.UpdateAPIView):
         client_ip, is_routable = get_client_ip(self.request)
         staff = get_object_or_404(Staff, pk=pk)
         self.check_object_permissions(request, staff)  # Validate permissions.
-        write_serializer = StaffAccountUpdateSerializer(staff, data=request.data, context={
+        write_serializer = StaffChangePasswordOperationSerializer(staff, data=request.data, context={
             'last_modified_by': request.user,
             'last_modified_from': client_ip,
             'last_modified_from_is_public': is_routable,

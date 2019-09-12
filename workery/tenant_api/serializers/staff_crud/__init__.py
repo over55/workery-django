@@ -3,3 +3,5 @@ from tenant_api.serializers.staff_crud.staff_contact_update import StaffContactU
 from tenant_api.serializers.staff_crud.staff_address_update import StaffAddressUpdateSerializer
 from tenant_api.serializers.staff_crud.staff_account_update import StaffAccountUpdateSerializer
 from tenant_api.serializers.staff_crud.staff_metrics_update import StaffMetricsUpdateSerializer
+from tenant_api.serializers.staff_crud.staff_create_list import StaffListCreateV2Serializer
+from tenant_api.serializers.staff_crud.staff_retrieve import StaffRetrieveSerializer

@@ -17,40 +17,26 @@ from tenant_api.permissions.staff import (
    CanListCreateStaffPermission,
    CanRetrieveUpdateDestroyStaffPermission
 )
-from tenant_api.serializers.staff_crud import StaffAccountUpdateSerializer
 from tenant_api.serializers.staff_crud import StaffRetrieveSerializer
 from tenant_foundation.models import Staff
 
 
-class StaffAccountUpdateAPIView(generics.UpdateAPIView):
-    serializer_class = StaffAccountUpdateSerializer
-    pagination_class = TinyResultsSetPagination
+class StaffRetrieveAPIView(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = StaffRetrieveSerializer
     permission_classes = (
         permissions.IsAuthenticated,
         IsAuthenticatedAndIsActivePermission,
         CanRetrieveUpdateDestroyStaffPermission
     )
 
-    @transaction.atomic
-    def put(self, request, pk=None):
+    def get(self, request, pk=None):
         """
-        Update
+        Retrieve
         """
-        client_ip, is_routable = get_client_ip(self.request)
         staff = get_object_or_404(Staff, pk=pk)
         self.check_object_permissions(request, staff)  # Validate permissions.
-        write_serializer = StaffAccountUpdateSerializer(staff, data=request.data, context={
-            'last_modified_by': request.user,
-            'last_modified_from': client_ip,
-            'last_modified_from_is_public': is_routable,
-            'franchise': request.tenant
-        })
-        write_serializer.is_valid(raise_exception=True)
-        staff = write_serializer.save()
-        read_serializer = StaffRetrieveSerializer(staff, many=False, context={
-            'last_modified_by': request.user,
-            'last_modified_from': client_ip,
-            'last_modified_from_is_public': is_routable,
-            'franchise': request.tenant
-        })
-        return Response(read_serializer.data, status=status.HTTP_200_OK)
+        serializer = StaffRetrieveSerializer(staff, many=False)
+        return Response(
+            data=serializer.data,
+            status=status.HTTP_200_OK
+        )
