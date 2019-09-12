@@ -35,28 +35,6 @@ logger = logging.getLogger(__name__)
 
 
 class StaffAccountUpdateSerializer(serializers.ModelSerializer):
-    # Add password adding.
-    password = serializers.CharField(
-        write_only=True,
-        required=False,
-        allow_blank=True,
-        max_length=63,
-        style={'input_type': 'password'},
-        validators = [
-            MatchingDuelFieldsValidator(
-                another_field='password_repeat',
-                message=_("Inputted passwords fields do not match.")
-            ),
-            EnhancedPasswordStrengthFieldValidator()
-        ]
-    )
-    password_repeat = serializers.CharField(
-        write_only=True,
-        required=False,
-        allow_blank=True,
-        max_length=63,
-        style={'input_type': 'password'}
-    )
     is_active = serializers.BooleanField(
         write_only=True,
         required=True,
@@ -84,8 +62,6 @@ class StaffAccountUpdateSerializer(serializers.ModelSerializer):
 
             'tags',
             'is_active',
-            'password',
-            'password_repeat',
 
             # Emergency Contact
             'emergency_contact_name',
@@ -152,12 +128,6 @@ class StaffAccountUpdateSerializer(serializers.ModelSerializer):
         #---------------------------
         # Update `SharedUser` object.
         #---------------------------
-        # Update the password if required.
-        password = validated_data.get('password', None)
-        if password:
-            instance.owner.set_password(password)
-            logger.info("Updated the password.")
-
         # Update the account.
         if instance.email:
             instance.owner.email = instance.email
