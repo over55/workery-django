@@ -36,7 +36,7 @@ from tenant_foundation.models import (
 logger = logging.getLogger(__name__)
 
 
-class CustomerDeactivateOperationCreateSerializer(serializers.Serializer):
+class CustomerArchiveOperationCreateSerializer(serializers.Serializer):
     customer = serializers.PrimaryKeyRelatedField(many=False, queryset=Customer.objects.all(), required=True)
     state = serializers.CharField(required=True, allow_blank=False)
     deactivation_reason = serializers.CharField(required=True, allow_blank=False)

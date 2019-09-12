@@ -14,13 +14,13 @@ from tenant_api.permissions.order import (
    CanListCreateWorkOrderPermission,
    CanRetrieveUpdateDestroyWorkOrderPermission
 )
-from tenant_api.serializers.customer_operation.deactivate_customer import CustomerDeactivateOperationCreateSerializer
+from tenant_api.serializers.customer_operation.archive_customer import CustomerArchiveOperationCreateSerializer
 from tenant_api.serializers.customer_operation.residential_customer_upgrade import ResidentialCustomerUpgradeOperationCreateSerializer
 from tenant_foundation.models import ActivitySheetItem
 
 
-class CustomerDeactivateOperationCreateAPIView(generics.CreateAPIView):
-    serializer_class = CustomerDeactivateOperationCreateSerializer
+class CustomerArchiveOperationCreateAPIView(generics.CreateAPIView):
+    serializer_class = CustomerArchiveOperationCreateSerializer
     permission_classes = (
         permissions.IsAuthenticated,
         IsAuthenticatedAndIsActivePermission,
@@ -29,7 +29,7 @@ class CustomerDeactivateOperationCreateAPIView(generics.CreateAPIView):
 
     def post(self, request, format=None):
         client_ip, is_routable = get_client_ip(self.request)
-        serializer = CustomerDeactivateOperationCreateSerializer(data=request.data, context={
+        serializer = CustomerArchiveOperationCreateSerializer(data=request.data, context={
             'user': request.user,
             'from': client_ip,
             'from_is_public': is_routable,
