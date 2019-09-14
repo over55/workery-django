@@ -9,6 +9,7 @@ from shared_api.views.auth_send_reset_password_email_views import SendResetPassw
 from shared_api.views.auth_reset_password_views import ResetPasswordAPIView
 from shared_api.views.franchise_views import (
     SharedFranchiseListCreateAPIView,
+    SharedFranchiseRetrieveDeleteDestroyAPIView,
     SharedFranchiseCreateValidationAPIView
 )
 from shared_api.views.country_and_province_views import get_countries
@@ -27,6 +28,7 @@ urlpatterns = [
 
     # Application.
     url(r'^api/franchises$', SharedFranchiseListCreateAPIView.as_view(), name='workery_franchise_list_create_api_endpoint'),
+    url(r'^api/franchise/(?P<pk>[^/.]+)/$', SharedFranchiseRetrieveDeleteDestroyAPIView.as_view(), name='workery_franchise_retrieve_update_delete_api_endpoint'),
     url(r'^api/franchises/validate$', SharedFranchiseCreateValidationAPIView.as_view(), name='workery_franchise_pre_create_validation_api_endpoint'),
 
     # JWT
