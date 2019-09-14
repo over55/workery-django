@@ -52,6 +52,7 @@ class SharedFranchiseListCreateSerializer(serializers.ModelSerializer):
         model = SharedFranchise
         fields = (
             # Thing
+            'id',
             'created',
             'last_modified',
             'alternate_name',
