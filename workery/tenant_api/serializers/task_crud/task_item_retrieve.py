@@ -28,6 +28,7 @@ from tenant_foundation.models import (
 )
 from tenant_api.serializers.skill_set import SkillSetListCreateSerializer
 from tenant_api.serializers.tag import TagListCreateSerializer
+from tenant_api.serializers.awaylog import AwayLogRetrieveUpdateDestroySerializer
 
 
 logger = logging.getLogger(__name__)
@@ -68,7 +69,7 @@ class TaskItemRetrieveSerializer(serializers.ModelSerializer):
     # associate_other_telephone = PhoneNumberField(read_only=True, source="associate.other_telephone")
     # associate_other_telephone_type_of = serializers.IntegerField(read_only=True, source="associate.other_telephone_type_of")
     # associate_pretty_other_telephone_type_of = serializers.CharField(read_only=True, source="associate.get_pretty_other_telephone_type_of")
-    #
+    associate_away_log = serializers.SerializerMethodField()
 
     # Meta Information.
     class Meta:
@@ -118,6 +119,7 @@ class TaskItemRetrieveSerializer(serializers.ModelSerializer):
             'job_associate_e164_telephone',
             'job_associate_location',
             'job_associate_location_google_url',
+            'associate_away_log',
         )
 
     def get_job_customer_full_name(self, obj):
@@ -181,3 +183,17 @@ class TaskItemRetrieveSerializer(serializers.ModelSerializer):
                 return "-"
         except Exception as e:
             return None
+
+    def get_associate_away_log(self, obj):
+        """
+        Include validation so no existing AWayLog objects exist which where
+        not deleted.
+        """
+        try:
+            if obj.job.associate and obj.job.associate.away_log:
+                away_log = obj.job.associate.away_log
+                s = AwayLogRetrieveUpdateDestroySerializer(away_log, many=False)
+                return s.data
+        except Exception as e:
+            print(e)
+        return None

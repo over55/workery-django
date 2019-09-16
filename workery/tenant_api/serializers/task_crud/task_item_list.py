@@ -23,7 +23,7 @@ from shared_foundation.utils import get_unique_username_from_email
 # from tenant_api.serializers.customer_comment import TaskItemCommentSerializer
 from tenant_foundation.constants import *
 from tenant_foundation.models import ( TaskItem )
-
+from tenant_api.serializers.awaylog import AwayLogListCreateSerializer
 
 logger = logging.getLogger(__name__)
 
@@ -32,6 +32,7 @@ class TaskItemListSerializer(serializers.ModelSerializer):
     customer_name = serializers.CharField(source="job.customer")
     associate_name = serializers.CharField(source="job.associate")
     order_type_of = serializers.IntegerField(source="job.type_of")
+    associate_away_log = serializers.SerializerMethodField()
 
     # Meta Information.
     class Meta:
@@ -45,7 +46,8 @@ class TaskItemListSerializer(serializers.ModelSerializer):
             'is_closed',
             'type_of',
             'was_postponed',
-            'order_type_of'
+            'order_type_of',
+            'associate_away_log',
 
             # AVAILABLE CHOISES BELOW...
             # closing_reason,
@@ -72,3 +74,17 @@ class TaskItemListSerializer(serializers.ModelSerializer):
             # was_postponed,
             # work_orders
         )
+
+    def get_associate_away_log(self, obj):
+        """
+        Include validation so no existing AWayLog objects exist which where
+        not deleted.
+        """
+        try:
+            if obj.job.associate and obj.job.associate.away_log:
+                away_log = obj.job.associate.away_log
+                s = AwayLogListCreateSerializer(away_log, many=False)
+                return s.data
+        except Exception as e:
+            print(e)
+        return None

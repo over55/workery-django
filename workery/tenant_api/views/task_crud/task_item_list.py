@@ -35,6 +35,7 @@ class TaskItemListPIView(generics.ListAPIView):
         queryset = TaskItem.objects.all().order_by('-created_at').prefetch_related(
             'job',
             'job__associate',
+            'job__associate__away_log',
             'job__customer',
             'ongoing_job',
             'created_by',
