@@ -46,66 +46,8 @@
     //
     function click_submit_button() {
         // Adjust the state based on the current `state` position.
-        {% if customer.state == CUSTOMER_STATE.INACTIVE %}
-            var state = '{{ CUSTOMER_STATE.ACTIVE }}';
-        {% else %}
-            var state = '{{ CUSTOMER_STATE.INACTIVE }}';
-        {% endif %}
+        alert("WARNING: This function has been deprecated. Please use the newer react code.")
 
-        // Get our input based on context of the customer `state`.
-        {% if customer.state == CUSTOMER_STATE.INACTIVE %}
-            var deactivation_reason = {{ DEACTIVATION_REASON.NOT_SPECIFIED }};
-        {% else %}
-            var deactivation_reason = $('#id_reason').val();
-        {% endif %}
-        var deactivation_reason_other = $('#id_reason_other').val();
-        var comment = $('#id_comment').val();
-
-        disable_btn(); // Disable the submit button.
-
-        // Submit to our API web-service.
-        deactivate_customer_operation_api(
-            {
-                'customer': {{ customer.id }},
-                'state': state,
-                'deactivation_reason': deactivation_reason,
-                'deactivation_reason_other': deactivation_reason_other,
-                'comment': comment,
-            },
-            function(result_dict) { // Success
-                // FOR DEBUGGING PURPOSES ONLY.
-                console.log(result_dict);
-
-                // REDIRECT TO SUCCESS PAGE.
-                window.location = "{% url 'workery_tenant_customer_full_retrieve' template customer.pk %}?was_modified=True";
-            },
-            function(xhr,status,error) { // Error
-                enable_btn(); // Enable the GUI button.
-
-                // STEP 1: Convert to JSON.
-                var err = JSON.parse(xhr.responseText);
-
-                // For debugging purposes only.
-                console.log(err);
-
-                // STEP 2: CLEAR EXISTING TEXT.
-                $('#all_error_result').html("");
-
-                // STEP 3: PRINT OUR ERROR.
-                for(var prop in err) {
-                    if(err.hasOwnProperty(prop)) {
-                        var val = err[prop];
-                        console.log(val);
-                        $('#all_error_result').append("<p><b>"+prop+"</b> "+val+"</p><br />");
-                    }
-                }
-
-                // STEP 4: FOCUS TO WHERE THE ERROR IS OCCURING.
-                $('html, body').animate({ scrollTop: $('#id_page_title').offset().top }, 'slow');
-            },
-            function() { // Finally
-                // Do nothing.
-            }
         );
     }
 
