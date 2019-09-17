@@ -95,6 +95,8 @@ class CustomerListCreateSerializer(serializers.ModelSerializer):
             UniqueValidator(queryset=SharedUser.objects.all()),
         ],
         required=False,
+        allow_null=True,
+        allow_blank=True,
     )
 
     # All comments are created by our `create` function and not by

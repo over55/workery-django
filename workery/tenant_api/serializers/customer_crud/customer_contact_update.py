@@ -60,7 +60,9 @@ class CustomerContactUpdateSerializer(serializers.ModelSerializer):
         validators=[
             UniqueValidator(queryset=Customer.objects.all()),
         ],
-        required=False
+        required=False,
+        allow_null=True,
+        allow_blank=True,
     )
 
     # Custom formatting of our telephone fields.
