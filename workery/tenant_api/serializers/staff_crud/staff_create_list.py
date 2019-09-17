@@ -234,7 +234,10 @@ class StaffListCreateV2Serializer(serializers.ModelSerializer):
             'emergency_contact_name',
             'emergency_contact_relationship',
             'emergency_contact_telephone',
-            'emergency_contact_alternative_telephone'
+            'emergency_contact_alternative_telephone',
+
+            # Misc
+            'police_check',
         )
 
     def validate_telephone(self, value):
@@ -427,6 +430,9 @@ class StaffListCreateV2Serializer(serializers.ModelSerializer):
             emergency_contact_relationship=validated_data.get('emergency_contact_relationship', None),
             emergency_contact_telephone=validated_data.get('emergency_contact_telephone', None),
             emergency_contact_alternative_telephone=validated_data.get('emergency_contact_alternative_telephone', None),
+
+            # Misc
+            police_check=validated_data.get('police_check', None),
         )
         logger.info("Created staff member.")
 

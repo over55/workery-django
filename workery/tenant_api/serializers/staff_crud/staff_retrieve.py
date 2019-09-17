@@ -202,7 +202,10 @@ class StaffRetrieveSerializer(serializers.ModelSerializer):
             'emergency_contact_name',
             'emergency_contact_relationship',
             'emergency_contact_telephone',
-            'emergency_contact_alternative_telephone'
+            'emergency_contact_alternative_telephone',
+
+            # Misc
+            'police_check',
         )
 
     def setup_eager_loading(cls, queryset):

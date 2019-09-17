@@ -245,6 +245,12 @@ class Staff(AbstractPerson):
         blank=True,
         null=True,
     )
+    police_check = models.DateField(
+        _("Police Check"),
+        help_text=_('The date the staff took a police check.'),
+        null=True,
+        blank=True,
+    )
 
     #
     #  FUNCTIONS

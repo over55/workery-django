@@ -62,6 +62,7 @@ class StaffAccountUpdateSerializer(serializers.ModelSerializer):
 
             'tags',
             'is_active',
+            'police_check',
 
             # Emergency Contact
             'emergency_contact_name',
@@ -135,6 +136,7 @@ class StaffAccountUpdateSerializer(serializers.ModelSerializer):
         instance.owner.first_name = validated_data.get('given_name', instance.owner.first_name)
         instance.owner.last_name = validated_data.get('last_name', instance.owner.last_name)
         instance.owner.is_active = validated_data.get('is_active', instance.owner.is_active)
+        instance.police_check = validated_data.get('police_check', instance.police_check)
         instance.owner.save()
         logger.info("Updated the shared user.")
 
