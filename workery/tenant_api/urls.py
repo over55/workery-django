@@ -88,6 +88,7 @@ from tenant_api.views.order_crud import (
 from tenant_api.views.bulletin_board_item import BulletinBoardItemListCreateAPIView, BulletinBoardItemRetrieveUpdateDestroyAPIView
 from tenant_api.views.account.profile import ProfileAPIView
 from tenant_api.views.dashboard.dashboard import DashboardAPIView
+from tenant_api.views.dashboard.navigation import NavigationAPIView
 from tenant_api.views.task_crud import (
     TaskItemListPIView,
     TaskItemRetrieveAPIView,
@@ -101,8 +102,9 @@ from tenant_api.views.activity_sheet_item import (
 
 
 urlpatterns = [
-    # Dashboard
+    # Dashboard / Navigation
     url(r'^api/dashboard$', DashboardAPIView.as_view(), name='workery_dashboard_api_endpoint'),
+    url(r'^api/navigation$', NavigationAPIView.as_view(), name='workery_navigation_api_endpoint'),
 
     # Profile.
     url(r'^api/profile$', ProfileAPIView.as_view(), name='workery_profile_api_endpoint'),
