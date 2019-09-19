@@ -19,34 +19,30 @@ from shared_foundation.models import SharedUser
 # from tenant_api.serializers.customer_comment import CustomerCommentSerializer
 from tenant_foundation.constants import *
 from tenant_foundation.models import (
-    Comment,
-    CustomerComment,
     Customer,
-    Organization
+    CustomerFileUpload
 )
 
 
 class CustomerFileUploadListCreateSerializer(serializers.ModelSerializer):
-    # about = serializers.PrimaryKeyRelatedField(many=False, read_only=True)
+    customer = serializers.PrimaryKeyRelatedField(many=False, queryset=Customer.objects.all(),)
     # comment = serializers.PrimaryKeyRelatedField(many=False, read_only=True)
-    extra_text = serializers.CharField(write_only=True, allow_null=True)
-    text = serializers.CharField(read_only=True)
+    # extra_text = serializers.CharField(write_only=True, allow_null=True)
+    # text = serializers.CharField(read_only=True)
 
     # Meta Information.
     class Meta:
-        model = CustomerComment
+        model = CustomerFileUpload
         fields = (
             'id',
-            'created_at',
-            'about',
-            'text',
-            'extra_text'
+            'customer',
+            'file',
         )
 
     def setup_eager_loading(cls, queryset):
         """ Perform necessary eager loading of data. """
         queryset = queryset.prefetch_related(
-            'about', 'comment'
+            'customer',
         )
         return queryset
 
@@ -56,87 +52,24 @@ class CustomerFileUploadListCreateSerializer(serializers.ModelSerializer):
         Override the `create` function to add extra functinality.
         """
 
-        #-----------------------------
-        # Create our `Comment` object.
-        #-----------------------------
-        about = validated_data.get('about', None)
-        text = validated_data.get('extra_text', None)
-        comment = Comment.objects.create(
-            created_by = self.context['created_by'],
-            created_from = self.context['created_from'],
-            created_from_is_public = self.context['created_from_is_public'],
-            last_modified_by = self.context['created_by'],
-            last_modified_from = self.context['created_from'],
-            last_modified_from_is_public = self.context['created_from_is_public'],
-            text=text
-        )
-        CustomerComment.objects.create(
-            about=about,
-            comment=comment,
-        )
-
-        # Return our validated data.
-        return validated_data
-
-
-
-class CustomerCommentListCreateSerializer(serializers.ModelSerializer):
-    # about = serializers.PrimaryKeyRelatedField(many=False, read_only=True)
-    # comment = serializers.PrimaryKeyRelatedField(many=False, read_only=True)
-    extra_text = serializers.CharField(write_only=True, allow_null=True)
-    text = serializers.CharField(write_only=True)
-    text = serializers.CharField(read_only=True, source="comment.text")
-    created_by = serializers.SerializerMethodField(allow_null=False)
-
-    # Meta Information.
-    class Meta:
-        model = CustomerComment
-        fields = (
-            'id',
-            'created_at',
-            'created_by',
-            'about',
-            'text',
-            'extra_text'
-        )
-
-    def get_created_by(self, obj):
-        try:
-            return str(obj.comment.created_by)
-        except Exception as e:
-            return None
-
-    def setup_eager_loading(cls, queryset):
-        """ Perform necessary eager loading of data. """
-        queryset = queryset.prefetch_related(
-            'about', 'about', 'comment'
-        )
-        return queryset
-
-    @transaction.atomic
-    def create(self, validated_data):
-        """
-        Override the `create` function to add extra functinality.
-        """
-
-        #-----------------------------
-        # Create our `Comment` object.
-        #-----------------------------
-        about = validated_data.get('about', None)
-        text = validated_data.get('extra_text', None)
-        comment = Comment.objects.create(
-            created_by = self.context['created_by'],
-            created_from = self.context['created_from'],
-            created_from_is_public = self.context['created_from_is_public'],
-            last_modified_by = self.context['created_by'],
-            last_modified_from = self.context['created_from'],
-            last_modified_from_is_public = self.context['created_from_is_public'],
-            text=text
-        )
-        CustomerComment.objects.create(
-            about=about,
-            comment=comment,
-        )
+        # #-----------------------------
+        # # Create our `Comment` object.
+        # #-----------------------------
+        # about = validated_data.get('about', None)
+        # text = validated_data.get('extra_text', None)
+        # comment = Comment.objects.create(
+        #     created_by = self.context['created_by'],
+        #     created_from = self.context['created_from'],
+        #     created_from_is_public = self.context['created_from_is_public'],
+        #     last_modified_by = self.context['created_by'],
+        #     last_modified_from = self.context['created_from'],
+        #     last_modified_from_is_public = self.context['created_from_is_public'],
+        #     text=text
+        # )
+        # CustomerComment.objects.create(
+        #     about=about,
+        #     comment=comment,
+        # )
 
         # Return our validated data.
         return validated_data
