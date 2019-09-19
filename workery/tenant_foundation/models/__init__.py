@@ -61,3 +61,6 @@ from tenant_foundation.models.bulletin_board_item import BulletinBoardItem
 
 # How did you hear about us items
 from tenant_foundation.models.how_hear_about_us_item import HowHearAboutUsItem
+
+# Files
+from tenant_foundation.models.customer_file_upload import CustomerFileUpload
