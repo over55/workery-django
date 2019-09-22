@@ -14,6 +14,7 @@ class CustomerFileUploadFilter(django_filters.FilterSet):
             ('id', 'id'),
             ('customer', 'customer'),
             ('created_at', 'created_at'),
+            ('is_archived', 'is_archived'),
         ),
 
         # # labels do not need to retain order
@@ -27,4 +28,5 @@ class CustomerFileUploadFilter(django_filters.FilterSet):
         fields = [
             'customer',
             'created_at',
+            'is_archived',
         ]
