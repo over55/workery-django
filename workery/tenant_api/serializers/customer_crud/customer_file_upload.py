@@ -81,7 +81,10 @@ class CustomerFileUploadListCreateSerializer(serializers.ModelSerializer):
         content_file = get_content_file_from_base64_string(content, filename) # REACT-DJANGO UPLOAD | STEP 3 OF 4: Convert to `ContentFile` type.
 
         # Create our file.
-        file = PrivateFileUpload.objects.create(
+        private_file = PrivateFileUpload.objects.create(
+            title = validated_data.get('title'),
+            description = validated_data.get('description'),
+            is_archived = validated_data.get('is_archived'),
             customer = validated_data.get('customer'),
             binary_file = content_file, # REACT-DJANGO UPLOAD | STEP 4 OF 4: When you attack a `ContentFile`, Django handles all file uploading.
             created_by = self.context['created_by'],
@@ -92,8 +95,13 @@ class CustomerFileUploadListCreateSerializer(serializers.ModelSerializer):
             last_modified_from_is_public = self.context['created_from_is_public'],
         )
 
+        tags = validated_data.get('tags', None)
+        if tags is not None:
+            if len(tags) > 0:
+                private_file.tags.set(tags)
+
         # For debugging purposes only.
-        print("Created private file #", file)
+        print("Created private file #", private_file)
 
         # Return our validated data.
-        return validated_data
+        return private_file
