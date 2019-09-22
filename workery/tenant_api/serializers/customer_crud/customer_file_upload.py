@@ -80,6 +80,8 @@ class CustomerFileUploadListCreateSerializer(serializers.ModelSerializer):
         # Extract our upload file data
         content = validated_data.get('upload_content')
         filename = validated_data.get('upload_filename')
+        if settings.DEBUG:
+            filename = "QA_"+filename # NOTE: Attach `QA_` prefix if server running in QA mode.
         content_file = get_content_file_from_base64_string(content, filename) # REACT-DJANGO UPLOAD | STEP 3 OF 4: Convert to `ContentFile` type.
 
         # Create our file.
