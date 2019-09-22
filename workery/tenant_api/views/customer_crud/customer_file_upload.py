@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from ipware import get_client_ip
+from django.db import transaction
 from django_filters.rest_framework import DjangoFilterBackend
 from django.conf.urls import url, include
 from django.shortcuts import get_list_or_404, get_object_or_404
@@ -44,6 +45,7 @@ class CustomerFileUploadListCreateAPIView(generics.ListCreateAPIView):
         # Return our filtered list.
         return queryset
 
+    @transaction.atomic
     def post(self, request, format=None):
         """
         Create
@@ -58,3 +60,25 @@ class CustomerFileUploadListCreateAPIView(generics.ListCreateAPIView):
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(data={}, status=status.HTTP_201_CREATED)
+
+
+class CustomerFileUploadArchiveAPIView(generics.DestroyAPIView):
+    permission_classes = (
+        permissions.IsAuthenticated,
+        IsAuthenticatedAndIsActivePermission,
+        CanRetrieveUpdateDestroyCustomerPermission
+    )
+
+    @transaction.atomic
+    def delete(self, request, pk=None):
+        """
+        Update
+        """
+        client_ip, is_routable = get_client_ip(self.request)
+        customer = get_object_or_404(PrivateFileUpload, pk=pk)
+        customer.is_archived = not customer.is_archived
+        customer.last_modified_by = request.user
+        customer.last_modified_from = client_ip
+        customer.last_modified_from_is_public = is_routable
+        customer.save()
+        return Response(data={}, status=status.HTTP_200_OK)

@@ -17,6 +17,7 @@ from tenant_api.views.customer import CustomerListCreateAPIView, CustomerRetriev
 from tenant_api.views.customer_crud import (
     CustomerListCreateV2APIView,
     CustomerFileUploadListCreateAPIView,
+    CustomerFileUploadArchiveAPIView,
     CustomerRetrieveUpdateDestroyV2APIView,
     CustomerContactUpdateAPIView,
     CustomerAddressUpdateAPIView,
@@ -129,6 +130,7 @@ urlpatterns = [
     url(r'^api/v2/customers$', CustomerListCreateV2APIView.as_view(), name='workery_customer_list_create_v2_api_endpoint'),
     url(r'^api/customers/validate$', CustomerCreateValidationAPIView.as_view(), name='workery_customer_create_validate_api_endpoint'),
     url(r'^api/customer-files$', CustomerFileUploadListCreateAPIView.as_view(), name='workery_customer_file_upload_api_endpoint'),
+    url(r'^api/customer-file/(?P<pk>[^/.]+)/$', CustomerFileUploadArchiveAPIView.as_view(), name='workery_customer_file_upload_archive_api_endpoint'),
     url(r'^api/customer/(?P<pk>[^/.]+)/$', CustomerRetrieveUpdateDestroyAPIView.as_view(), name='workery_customer_retrieve_update_destroy_api_endpoint'),
     url(r'^api/v2/customer/(?P<pk>[^/.]+)/$', CustomerRetrieveUpdateDestroyV2APIView.as_view(), name='workery_customer_retrieve_update_destroy_v2_api_endpoint'),
     url(r'^api/customer/(?P<pk>[^/.]+)/contact$', CustomerContactUpdateAPIView.as_view(), name='workery_customer_contact_update_api_endpoint'),
