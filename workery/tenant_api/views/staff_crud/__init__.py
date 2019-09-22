@@ -6,3 +6,7 @@ from tenant_api.views.staff_crud.staff_metrics_update import StaffMetricsUpdateA
 from tenant_api.views.staff_crud.staff_archive import StaffArchiveAPIView
 from tenant_api.views.staff_crud.staff_list_create import StaffListCreateV2APIView
 from tenant_api.views.staff_crud.staff_retrieve import StaffRetrieveAPIView
+from tenant_api.views.staff_crud.staff_file_upload import (
+    StaffFileUploadListCreateAPIView,
+    StaffFileUploadArchiveAPIView
+)

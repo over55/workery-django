@@ -57,6 +57,8 @@ from tenant_api.views.staff_crud import (
     StaffArchiveAPIView,
     StaffListCreateV2APIView,
     StaffRetrieveAPIView,
+    StaffFileUploadListCreateAPIView,
+    StaffFileUploadArchiveAPIView
 )
 from tenant_api.views.staff_operations import (
     StaffChangePasswordOperationAPIView,
@@ -201,6 +203,8 @@ urlpatterns = [
     url(r'^api/staff/(?P<pk>[^/.]+)/account$', StaffAccountUpdateAPIView.as_view(), name='workery_staff_account_update_api_endpoint'),
     url(r'^api/staff/(?P<pk>[^/.]+)/metrics$', StaffMetricsUpdateAPIView.as_view(), name='workery_staff_metrics_update_api_endpoint'),
     url(r'^api/staff-comments$', StaffCommentListCreateAPIView.as_view(), name='workery_staff_comment_list_create_api_endpoint'),
+    url(r'^api/staff-files$', StaffFileUploadListCreateAPIView.as_view(), name='workery_staff_file_upload_api_endpoint'),
+    url(r'^api/staff-file/(?P<pk>[^/.]+)/$', StaffFileUploadArchiveAPIView.as_view(), name='workery_staff_file_upload_archive_api_endpoint'),
     url(r'^api/v2/staves$', StaffListCreateV2APIView.as_view(), name='workery_v2_staff_list_create_api_endpoint'),
     url(r'^api/v2/staff/(?P<pk>[^/.]+)/$', StaffRetrieveAPIView.as_view(), name='workery_v2_staff_retrieve_api_endpoint'),
 
