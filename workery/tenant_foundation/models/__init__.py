@@ -14,7 +14,6 @@ from tenant_foundation.models.organization import Organization
 from tenant_foundation.models.comment import Comment
 from tenant_foundation.models.vehicle_type import VehicleType
 from tenant_foundation.models.work_order_service_fee import WorkOrderServiceFee
-from tenant_foundation.models.public_image_upload import PublicImageUpload
 
 # Customer Models
 from tenant_foundation.models.customer import Customer
@@ -63,4 +62,6 @@ from tenant_foundation.models.bulletin_board_item import BulletinBoardItem
 from tenant_foundation.models.how_hear_about_us_item import HowHearAboutUsItem
 
 # Files
+from tenant_foundation.models.public_image_upload import PublicImageUpload
 from tenant_foundation.models.private_file_upload import PrivateFileUpload
+from tenant_foundation.models.private_image_upload import PrivateImageUpload

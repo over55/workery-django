@@ -280,7 +280,7 @@ class Customer(AbstractPerson):
         null=False
     )
     avatar_image = models.ForeignKey(
-        "PublicImageUpload",
+        "PrivateImageUpload",
         help_text=_('The avatar image of this customer.'),
         related_name="customers",
         on_delete=models.SET_NULL,

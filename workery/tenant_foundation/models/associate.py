@@ -336,7 +336,7 @@ class Associate(AbstractPerson):
         db_index=True
     )
     avatar_image = models.ForeignKey(
-        "PublicImageUpload",
+        "PrivateImageUpload",
         help_text=_('The avatar image of this associate.'),
         related_name="associates",
         on_delete=models.SET_NULL,

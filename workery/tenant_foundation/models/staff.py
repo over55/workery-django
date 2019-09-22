@@ -203,7 +203,7 @@ class Staff(AbstractPerson):
         db_index=True
     )
     avatar_image = models.ForeignKey(
-        "PublicImageUpload",
+        "PrivateImageUpload",
         help_text=_('The avatar image of this staff.'),
         related_name="staves",
         on_delete=models.SET_NULL,

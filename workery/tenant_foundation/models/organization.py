@@ -92,7 +92,7 @@ class Organization(AbstractThing, AbstractContactPoint, AbstractPostalAddress, A
         unique=True
     )
     avatar_image = models.ForeignKey(
-        "PublicImageUpload",
+        "PrivateImageUpload",
         help_text=_('The avatar image of this organization.'),
         related_name="organizations",
         on_delete=models.SET_NULL,
