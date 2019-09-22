@@ -63,4 +63,4 @@ from tenant_foundation.models.bulletin_board_item import BulletinBoardItem
 from tenant_foundation.models.how_hear_about_us_item import HowHearAboutUsItem
 
 # Files
-from tenant_foundation.models.customer_file_upload import CustomerFileUpload
+from tenant_foundation.models.private_file_upload import PrivateFileUpload

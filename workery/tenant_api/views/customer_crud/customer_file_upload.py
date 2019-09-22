@@ -16,7 +16,7 @@ from tenant_api.permissions.customer import (
    CanRetrieveUpdateDestroyCustomerPermission
 )
 from tenant_api.serializers.customer_crud.customer_file_upload import CustomerFileUploadListCreateSerializer
-from tenant_foundation.models import CustomerFileUpload
+from tenant_foundation.models import PrivateFileUpload
 
 
 class CustomerFileUploadListCreateAPIView(generics.ListCreateAPIView):
@@ -33,7 +33,7 @@ class CustomerFileUploadListCreateAPIView(generics.ListCreateAPIView):
         """
         List
         """
-        queryset = CustomerFileUpload.objects.all().order_by('-created_at').prefetch_related(
+        queryset = PrivateFileUpload.objects.all().order_by('-created_at').prefetch_related(
             'customer', 'created_by',
         )
 
@@ -57,4 +57,4 @@ class CustomerFileUploadListCreateAPIView(generics.ListCreateAPIView):
         })
         serializer.is_valid(raise_exception=True)
         serializer.save()
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(data={}, status=status.HTTP_201_CREATED)

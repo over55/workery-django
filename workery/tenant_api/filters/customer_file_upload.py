@@ -3,7 +3,7 @@ import django_filters   #TODO: UNIT TEST
 # -*- coding: utf-8 -*-
 import django_filters
 from phonenumber_field.modelfields import PhoneNumberField
-from tenant_foundation.models import CustomerFileUpload
+from tenant_foundation.models import PrivateFileUpload
 from django.db import models
 
 
@@ -23,7 +23,7 @@ class CustomerFileUploadFilter(django_filters.FilterSet):
     )
 
     class Meta:
-        model = CustomerFileUpload
+        model = PrivateFileUpload
         fields = [
             'customer',
             'created_at',

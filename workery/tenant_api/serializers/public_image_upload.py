@@ -13,7 +13,7 @@ from django.utils.http import urlquote
 from rest_framework import exceptions, serializers
 from rest_framework.response import Response
 
-from shared_foundation.custom.drf.fields import Base64ImageField
+from shared_foundation.custom.drf.fields import GenericFileBase64File
 from shared_foundation.utils import int_or_none
 from tenant_foundation.models import (
     Associate,
@@ -29,7 +29,7 @@ logger = logging.getLogger(__name__)
 
 class PublicImageUploadListCreateSerializer(serializers.ModelSerializer):
 
-    image_file = Base64ImageField(
+    image_file = GenericFileBase64File(
         max_length=None,
         use_url=True,
         write_only=True,

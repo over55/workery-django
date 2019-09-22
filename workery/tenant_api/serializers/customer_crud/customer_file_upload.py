@@ -13,30 +13,44 @@ from django.utils.http import urlquote
 from rest_framework import exceptions, serializers
 from rest_framework.response import Response
 from rest_framework.validators import UniqueValidator
-from shared_foundation.custom.drf.fields import PhoneNumberField
+
+from shared_foundation.custom.drf.fields import PhoneNumberField, GenericFileBase64File
 from shared_foundation.constants import CUSTOMER_GROUP_ID
 from shared_foundation.models import SharedUser
+from shared_foundation.utils import get_content_file_from_base64_string
 # from tenant_api.serializers.customer_comment import CustomerCommentSerializer
 from tenant_foundation.constants import *
 from tenant_foundation.models import (
     Customer,
-    CustomerFileUpload
+    PrivateFileUpload
 )
 
 
+
 class CustomerFileUploadListCreateSerializer(serializers.ModelSerializer):
-    customer = serializers.PrimaryKeyRelatedField(many=False, queryset=Customer.objects.all(),)
-    # comment = serializers.PrimaryKeyRelatedField(many=False, read_only=True)
-    # extra_text = serializers.CharField(write_only=True, allow_null=True)
-    # text = serializers.CharField(read_only=True)
+    customer = serializers.PrimaryKeyRelatedField(many=False, queryset=Customer.objects.all(), required=True,)
+    binary_file = GenericFileBase64File(
+        read_only=True,
+        max_length=None,
+        use_url=True,
+    )
+
+    # REACT-DJANGO UPLOAD | STEP 1 OF 4: We define two string fields required (write-only)
+    # for accepting our file uploads.
+    upload_content = serializers.CharField(write_only=True, allow_null=False,)
+    upload_filename = serializers.CharField(write_only=True, allow_null=False,)
 
     # Meta Information.
     class Meta:
-        model = CustomerFileUpload
+        model = PrivateFileUpload
         fields = (
             'id',
             'customer',
-            'file',
+            'binary_file',
+
+            # REACT-DJANGO UPLOAD | STEP 2 OF 4: Define required fields.
+            'upload_content',
+            'upload_filename',
         )
 
     def setup_eager_loading(cls, queryset):
@@ -52,24 +66,25 @@ class CustomerFileUploadListCreateSerializer(serializers.ModelSerializer):
         Override the `create` function to add extra functinality.
         """
 
-        # #-----------------------------
-        # # Create our `Comment` object.
-        # #-----------------------------
-        # about = validated_data.get('about', None)
-        # text = validated_data.get('extra_text', None)
-        # comment = Comment.objects.create(
-        #     created_by = self.context['created_by'],
-        #     created_from = self.context['created_from'],
-        #     created_from_is_public = self.context['created_from_is_public'],
-        #     last_modified_by = self.context['created_by'],
-        #     last_modified_from = self.context['created_from'],
-        #     last_modified_from_is_public = self.context['created_from_is_public'],
-        #     text=text
-        # )
-        # CustomerComment.objects.create(
-        #     about=about,
-        #     comment=comment,
-        # )
+        # Extract our upload file data
+        content = validated_data.get('upload_content')
+        filename = validated_data.get('upload_filename')
+        content_file = get_content_file_from_base64_string(content, filename) # REACT-DJANGO UPLOAD | STEP 3 OF 4: Convert to `ContentFile` type.
+
+        # Create our file.
+        file = PrivateFileUpload.objects.create(
+            customer = validated_data.get('customer'),
+            binary_file = content_file, # REACT-DJANGO UPLOAD | STEP 4 OF 4: When you attack a `ContentFile`, Django handles all file uploading.
+            created_by = self.context['created_by'],
+            created_from = self.context['created_from'],
+            created_from_is_public = self.context['created_from_is_public'],
+            last_modified_by = self.context['created_by'],
+            last_modified_from = self.context['created_from'],
+            last_modified_from_is_public = self.context['created_from_is_public'],
+        )
+
+        # For debugging purposes only.
+        print("Created private file #", file)
 
         # Return our validated data.
         return validated_data
