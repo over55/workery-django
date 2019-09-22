@@ -33,7 +33,7 @@ class CustomerFileUploadListCreateSerializer(serializers.ModelSerializer):
         read_only=True,
         max_length=None,
         use_url=True,
-        source="binary_file"
+        source="data_file"
     )
     title = serializers.CharField(required=True, allow_null=False,)
     description = serializers.CharField(required=True, allow_null=False,)
@@ -90,7 +90,7 @@ class CustomerFileUploadListCreateSerializer(serializers.ModelSerializer):
             description = validated_data.get('description'),
             is_archived = validated_data.get('is_archived'),
             customer = validated_data.get('customer'),
-            binary_file = content_file, # REACT-DJANGO UPLOAD | STEP 4 OF 4: When you attack a `ContentFile`, Django handles all file uploading.
+            data_file = content_file, # REACT-DJANGO UPLOAD | STEP 4 OF 4: When you attack a `ContentFile`, Django handles all file uploading.
             created_by = self.context['created_by'],
             created_from = self.context['created_from'],
             created_from_is_public = self.context['created_from_is_public'],

@@ -106,7 +106,7 @@ class PrivateFileUpload(models.Model):
         blank=True,
         null=True
     )
-    binary_file = models.FileField(
+    data_file = models.FileField(
         upload_to = 'uploads/%Y/%m/%d/',
         help_text=_('The upload binary file.'),
         storage=PrivateMediaStorage()
@@ -136,6 +136,15 @@ class PrivateFileUpload(models.Model):
         default=False,
         blank=True,
         db_index=True
+    )
+    indexed_text = models.CharField(
+        _("Indexed Text"),
+        max_length=511,
+        help_text=_('The searchable content text used by the keyword searcher function.'),
+        blank=True,
+        null=True,
+        db_index=True,
+        unique=True
     )
 
 
@@ -200,6 +209,16 @@ class PrivateFileUpload(models.Model):
             is missing this functionality as it's our responsibility to handle
             the local files.
         """
-        if self.binary_file:
-            self.binary_file.delete()
+        if self.data_file:
+            self.data_file.delete()
+
+        search_text = str(self.id)
+        if self.title:
+            search_text += " " + self.title
+        if self.description:
+            search_text += " " + self.middle_name
+        if self.data_file:
+            search_text += " " + str(self.data_file)
+        self.indexed_text = Truncator(search_text).chars(511)
+
         super(PrivateFileUpload, self).delete(*args, **kwargs) # Call the "real" delete() method
