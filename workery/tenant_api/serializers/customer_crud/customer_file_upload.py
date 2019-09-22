@@ -39,6 +39,7 @@ class CustomerFileUploadListCreateSerializer(serializers.ModelSerializer):
     description = serializers.CharField(required=True, allow_null=False,)
     tags = serializers.PrimaryKeyRelatedField(many=True, queryset=Tag.objects.all(), allow_null=True)
     is_archived = serializers.BooleanField(required=True,)
+    created_at = serializers.DateTimeField(read_only=True, allow_null=False,)
 
     # REACT-DJANGO UPLOAD | STEP 1 OF 4: We define two string fields required (write-only)
     # for accepting our file uploads.
@@ -56,6 +57,7 @@ class CustomerFileUploadListCreateSerializer(serializers.ModelSerializer):
             'description',
             'tags',
             'is_archived',
+            'created_at',
 
             # REACT-DJANGO UPLOAD | STEP 2 OF 4: Define required fields.
             'upload_content',
