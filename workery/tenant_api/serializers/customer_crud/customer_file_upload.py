@@ -22,18 +22,23 @@ from shared_foundation.utils import get_content_file_from_base64_string
 from tenant_foundation.constants import *
 from tenant_foundation.models import (
     Customer,
-    PrivateFileUpload
+    PrivateFileUpload,
+    Tag
 )
-
 
 
 class CustomerFileUploadListCreateSerializer(serializers.ModelSerializer):
     customer = serializers.PrimaryKeyRelatedField(many=False, queryset=Customer.objects.all(), required=True,)
-    binary_file = GenericFileBase64File(
+    file_url = serializers.FileField(
         read_only=True,
         max_length=None,
         use_url=True,
+        source="binary_file"
     )
+    title = serializers.CharField(required=True, allow_null=False,)
+    description = serializers.CharField(required=True, allow_null=False,)
+    tags = serializers.PrimaryKeyRelatedField(many=True, queryset=Tag.objects.all(), allow_null=True)
+    is_archived = serializers.BooleanField(required=True,)
 
     # REACT-DJANGO UPLOAD | STEP 1 OF 4: We define two string fields required (write-only)
     # for accepting our file uploads.
@@ -46,7 +51,11 @@ class CustomerFileUploadListCreateSerializer(serializers.ModelSerializer):
         fields = (
             'id',
             'customer',
-            'binary_file',
+            'file_url',
+            'title',
+            'description',
+            'tags',
+            'is_archived',
 
             # REACT-DJANGO UPLOAD | STEP 2 OF 4: Define required fields.
             'upload_content',
