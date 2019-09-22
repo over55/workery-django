@@ -34,7 +34,9 @@ from tenant_api.views.order_crud import (
    WorkOrderRetrieveUpdateDestroyAPIView,
    WorkOrderCommentListCreateAPIView,
    WorkOrderLiteUpdateAPIView,
-   WorkOrderFinancialUpdateAPIView
+   WorkOrderFinancialUpdateAPIView,
+   WorkOrderFileUploadListCreateAPIView,
+   WorkOrderFileUploadArchiveAPIView
 )
 from tenant_api.views.partner import PartnerListCreateAPIView, PartnerRetrieveUpdateDestroyAPIView, PartnerCreateValidationAPIView
 from tenant_api.views.partner_crud import (
@@ -161,6 +163,8 @@ urlpatterns = [
     url(r'^api/order/(?P<pk>[^/.]+)/lite$', WorkOrderLiteUpdateAPIView.as_view(), name='workery_order_lite_update_api_endpoint'),
     url(r'^api/order/(?P<pk>[^/.]+)/financial$', WorkOrderFinancialUpdateAPIView.as_view(), name='workery_order_financial_update_api_endpoint'),
     url(r'^api/order-comments$', WorkOrderCommentListCreateAPIView.as_view(), name='workery_job_comment_list_create_api_endpoint'),
+    url(r'^api/order-files$', WorkOrderFileUploadListCreateAPIView.as_view(), name='workery_work_order_file_upload_api_endpoint'),
+    url(r'^api/order-file/(?P<pk>[^/.]+)/$', WorkOrderFileUploadArchiveAPIView.as_view(), name='workery_work_order_file_upload_archive_api_endpoint'),
 
     # WorkOrder - Operations
     url(r'^api/orders/operation/unassign$', WorkOrderUnassignOperationCreateAPIView.as_view(), name='workery_order_unassign_operation_api_endpoint'),

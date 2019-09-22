@@ -5,3 +5,5 @@ from tenant_api.serializers.order_crud.ongoing_order_comment import OngoingWorkO
 
 from tenant_api.serializers.order_crud.v2_ongoing_order_retrieve import OngoingWorkOrderRetrieveSerializer
 from tenant_api.serializers.order_crud.v2_ongoing_order_update import OngoingWorkOrderUpdateSerializer
+
+from tenant_api.serializers.order_crud.order_file_upload import WorkOrderFileUploadListCreateSerializer

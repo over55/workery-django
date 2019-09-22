@@ -15,3 +15,7 @@ from tenant_api.views.order_crud.v2_ongoing_order import (
    OngoingWorkOrderListCreateV2APIView,
    OngoingWorkOrderRetrieveUpdateDestroyV2APIView
 )
+from tenant_api.views.order_crud.order_file_upload import (
+    WorkOrderFileUploadListCreateAPIView,
+    WorkOrderFileUploadArchiveAPIView
+)
