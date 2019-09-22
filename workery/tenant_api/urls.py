@@ -42,7 +42,9 @@ from tenant_api.views.partner import PartnerListCreateAPIView, PartnerRetrieveUp
 from tenant_api.views.partner_crud import (
     PartnerContactUpdateAPIView,
     PartnerAddressUpdateAPIView,
-    PartnerMetricsUpdateAPIView
+    PartnerMetricsUpdateAPIView,
+    PartnerFileUploadListCreateAPIView,
+    PartnerFileUploadArchiveAPIView
 )
 from tenant_api.views.partner_crud import PartnerListCreateV2APIView, PartnerRetrieveUpdateDestroyV2APIView
 from tenant_api.views.partner_comment import PartnerCommentListCreateAPIView
@@ -189,6 +191,8 @@ urlpatterns = [
     url(r'^api/partner/(?P<pk>[^/.]+)/address$', PartnerAddressUpdateAPIView.as_view(), name='workery_partner_address_update_api_endpoint'),
     url(r'^api/partner/(?P<pk>[^/.]+)/metrics$', PartnerMetricsUpdateAPIView.as_view(), name='workery_partner_metrics_update_api_endpoint'),
     url(r'^api/partner-comments$', PartnerCommentListCreateAPIView.as_view(), name='workery_partner_comment_list_create_api_endpoint'),
+    url(r'^api/partner-files$', PartnerFileUploadListCreateAPIView.as_view(), name='workery_partner_file_upload_api_endpoint'),
+    url(r'^api/partner-file/(?P<pk>[^/.]+)/$', PartnerFileUploadArchiveAPIView.as_view(), name='workery_partner_file_upload_archive_api_endpoint'),
 
     # Skill Sets
     url(r'^api/skill_sets$', SkillSetListCreateAPIView.as_view(), name='workery_skill_set_list_create_api_endpoint'),
