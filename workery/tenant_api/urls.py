@@ -4,11 +4,14 @@ from rest_framework import serializers, viewsets, routers
 from rest_framework.urlpatterns import format_suffix_patterns
 
 from tenant_api.views.associate import AssociateListCreateAPIView, AssociateRetrieveUpdateDestroyAPIView, AssociateCreateValidationAPIView
+
 from tenant_api.views.associate_crud import (
     AssociateContactUpdateAPIView,
     AssociateAddressUpdateAPIView,
     AssociateAccountUpdateAPIView,
-    AssociateMetricsUpdateAPIView
+    AssociateMetricsUpdateAPIView,
+    AssociateFileUploadListCreateAPIView,
+    AssociateFileUploadArchiveAPIView,
 )
 from tenant_api.views.associate_comment import AssociateCommentListCreateAPIView
 from tenant_api.views.awaylog import AwayLogListCreateAPIView, AwayLogRetrieveUpdateDestroyAPIView
@@ -118,6 +121,8 @@ urlpatterns = [
     # Associates
     url(r'^api/associates$', AssociateListCreateAPIView.as_view(), name='workery_associate_list_create_api_endpoint'),
     url(r'^api/associates/validate$', AssociateCreateValidationAPIView.as_view(), name='workery_associate_create_validate_api_endpoint'),
+    url(r'^api/associate-files$', AssociateFileUploadListCreateAPIView.as_view(), name='workery_associate_file_upload_api_endpoint'),
+    url(r'^api/associate-file/(?P<pk>[^/.]+)/$', AssociateFileUploadArchiveAPIView.as_view(), name='workery_associate_file_upload_archive_api_endpoint'),
     url(r'^api/associate/(?P<pk>[^/.]+)/contact$', AssociateContactUpdateAPIView.as_view(), name='workery_associate_contact_update_api_endpoint'),
     url(r'^api/associate/(?P<pk>[^/.]+)/address$', AssociateAddressUpdateAPIView.as_view(), name='workery_associate_address_update_api_endpoint'),
     url(r'^api/associate/(?P<pk>[^/.]+)/account$', AssociateAccountUpdateAPIView.as_view(), name='workery_associate_account_update_api_endpoint'),
