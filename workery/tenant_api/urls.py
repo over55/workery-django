@@ -27,7 +27,11 @@ from tenant_api.views.customer_crud import (
     CustomerMetricsUpdateAPIView
 )
 from tenant_api.views.customer_comment import CustomerCommentListCreateAPIView
-from tenant_api.views.customer_operation import CustomerArchiveOperationCreateAPIView, ResidentialCustomerUpgradeOperationCreateAPIView
+from tenant_api.views.customer_operation import (
+    CustomerArchiveOperationCreateAPIView,
+    ResidentialCustomerUpgradeOperationCreateAPIView,
+    CustomerAvatarCreateOrUpdateOperationCreateAPIView
+)
 from tenant_api.views.insurance_requirement import InsuranceRequirementListCreateAPIView, InsuranceRequirementRetrieveUpdateDestroyAPIView
 from tenant_api.views.order_crud import (
    WorkOrderListCreateAPIView,
@@ -153,6 +157,7 @@ urlpatterns = [
     # Customers - Operations
     url(r'^api/customers/operation/archive$', CustomerArchiveOperationCreateAPIView.as_view(), name='workery_archive_customer_operation_create_api_endpoint'),
     url(r'^api/customers/operation/upgrade-residential$', ResidentialCustomerUpgradeOperationCreateAPIView.as_view(), name='workery_residential_customer_upgrade_operation_api_endpoint'),
+    url(r'^api/customers/operation/avatar$', CustomerAvatarCreateOrUpdateOperationCreateAPIView.as_view(), name='workery_avatar_customer_operation_create_or_update_api_endpoint'),
 
     # Insurance Requirements
     url(r'^api/insurance_requirements$', InsuranceRequirementListCreateAPIView.as_view(), name='workery_insurance_requirement_list_create_api_endpoint'),

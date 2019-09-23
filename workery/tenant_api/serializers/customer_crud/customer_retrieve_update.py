@@ -152,6 +152,7 @@ class CustomerRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
     how_hear_pretty = serializers.SerializerMethodField()
     pretty_tags = serializers.SerializerMethodField()
     state = serializers.CharField(read_only=True)
+    avatar_url = serializers.SerializerMethodField()
 
     class Meta:
         model = Customer
@@ -194,6 +195,7 @@ class CustomerRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
             'how_hear_pretty',
             'pretty_tags',
             'state',
+            'avatar_url',
 
             # Misc (Write Only)
             'password',
@@ -320,6 +322,12 @@ class CustomerRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         try:
             s = TagListCreateSerializer(obj.tags.all(), many=True)
             return s.data
+        except Exception as e:
+            return None
+
+    def get_avatar_url(self, obj):
+        try:
+            return obj.avatar_image.image_file.url
         except Exception as e:
             return None
 

@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from ipware import get_client_ip
+from django.db import transaction
 from django_filters.rest_framework import DjangoFilterBackend
 from django.conf.urls import url, include
 from django.shortcuts import get_list_or_404, get_object_or_404
@@ -16,6 +17,7 @@ from tenant_api.permissions.order import (
 )
 from tenant_api.serializers.customer_operation.archive_customer import CustomerArchiveOperationCreateSerializer
 from tenant_api.serializers.customer_operation.residential_customer_upgrade import ResidentialCustomerUpgradeOperationCreateSerializer
+from tenant_api.serializers.customer_operation.customer_avatar_create_or_update import CustomerAvatarCreateOrUpdateSerializer
 from tenant_foundation.models import ActivitySheetItem
 
 
@@ -27,6 +29,7 @@ class CustomerArchiveOperationCreateAPIView(generics.CreateAPIView):
         CanListCreateWorkOrderPermission
     )
 
+    @transaction.atomic
     def post(self, request, format=None):
         client_ip, is_routable = get_client_ip(self.request)
         serializer = CustomerArchiveOperationCreateSerializer(data=request.data, context={
@@ -48,12 +51,35 @@ class ResidentialCustomerUpgradeOperationCreateAPIView(generics.CreateAPIView):
         CanListCreateWorkOrderPermission
     )
 
+    @transaction.atomic
     def post(self, request, format=None):
         client_ip, is_routable = get_client_ip(self.request)
         serializer = ResidentialCustomerUpgradeOperationCreateSerializer(data=request.data, context={
             'user': request.user,
             'from': client_ip,
             'from_is_public': is_routable,
+            'franchise': request.tenant
+        })
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+
+class CustomerAvatarCreateOrUpdateOperationCreateAPIView(generics.CreateAPIView):
+    serializer_class = ResidentialCustomerUpgradeOperationCreateSerializer
+    permission_classes = (
+        permissions.IsAuthenticated,
+        IsAuthenticatedAndIsActivePermission,
+        CanListCreateWorkOrderPermission
+    )
+
+    @transaction.atomic
+    def post(self, request, format=None):
+        client_ip, is_routable = get_client_ip(self.request)
+        serializer = CustomerAvatarCreateOrUpdateSerializer(data=request.data, context={
+            'created_by': request.user,
+            'created_from': client_ip,
+            'created_from_is_public': is_routable,
             'franchise': request.tenant
         })
         serializer.is_valid(raise_exception=True)
