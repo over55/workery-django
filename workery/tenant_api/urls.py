@@ -69,7 +69,8 @@ from tenant_api.views.staff_crud import (
 )
 from tenant_api.views.staff_operations import (
     StaffChangePasswordOperationAPIView,
-    StaffChangeRoleOperationAPIView
+    StaffChangeRoleOperationAPIView,
+    StaffAvatarOperationCreateAPIView
 )
 from tenant_api.views.tag import TagListCreateAPIView, TagRetrieveUpdateDestroyAPIView
 from tenant_api.views.how_hear import HowHearAboutUsItemListCreateAPIView, HowHearAboutUsItemRetrieveUpdateDestroyAPIView
@@ -223,6 +224,7 @@ urlpatterns = [
     url(r'^api/staff/(?P<pk>[^/.]+)/archive$', StaffArchiveAPIView.as_view(), name='workery_staff_archive_api_endpoint'),
     url(r'^api/staff/(?P<pk>[^/.]+)/change-role$', StaffChangeRoleOperationAPIView.as_view(), name='workery_staff_change_role_operation_api_endpoint'),
     url(r'^api/staff/(?P<pk>[^/.]+)/change-password$', StaffChangePasswordOperationAPIView.as_view(), name='workery_staff_change_password_operation_api_endpoint'),
+    url(r'^api/staff/operation/avatar$', StaffAvatarOperationCreateAPIView.as_view(), name='workery_staff_avatar_operation_api_endpoint'),
 
     # Tags
     url(r'^api/tags$', TagListCreateAPIView.as_view(), name='workery_tag_list_create_api_endpoint'),

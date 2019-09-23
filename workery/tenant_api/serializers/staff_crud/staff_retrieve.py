@@ -122,6 +122,7 @@ class StaffRetrieveSerializer(serializers.ModelSerializer):
     group_description = serializers.ReadOnlyField(allow_null=True)
     state = serializers.IntegerField(read_only=True,source="owner.is_active")
     is_archived = serializers.BooleanField(read_only=True)
+    avatar_url = serializers.SerializerMethodField()
 
     # Meta Information.
     class Meta:
@@ -152,6 +153,7 @@ class StaffRetrieveSerializer(serializers.ModelSerializer):
 
             # Misc (Read Only)
             'is_archived',
+            'avatar_url',
 
             # # Misc (Write Only)
             # 'extra_comment',
@@ -302,5 +304,11 @@ class StaffRetrieveSerializer(serializers.ModelSerializer):
                 return phonenumbers.format_number(obj.telephone, phonenumbers.PhoneNumberFormat.E164)
             else:
                 return "-"
+        except Exception as e:
+            return None
+
+    def get_avatar_url(self, obj):
+        try:
+            return obj.avatar_image.image_file.url
         except Exception as e:
             return None
