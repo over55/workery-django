@@ -698,6 +698,7 @@ class AssociateRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
     created_by = serializers.SerializerMethodField()
     last_modified_by = serializers.SerializerMethodField()
     score = serializers.FloatField(read_only=True)
+    avatar_url = serializers.SerializerMethodField()
 
     class Meta:
         model = Associate
@@ -760,6 +761,7 @@ class AssociateRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
             'latest_completed_and_paid_order',
             'balance_owing_amount',
             'score',
+            'avatar_url',
 
             # # Misc (Write Only)
             # 'extra_comment',
@@ -926,6 +928,12 @@ class AssociateRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
     def get_last_modified_by(self, obj):
         try:
             return str(obj.last_modified_by)
+        except Exception as e:
+            return None
+
+    def get_avatar_url(self, obj):
+        try:
+            return obj.avatar_image.image_file.url
         except Exception as e:
             return None
 

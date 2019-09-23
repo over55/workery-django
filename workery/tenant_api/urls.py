@@ -13,6 +13,7 @@ from tenant_api.views.associate_crud import (
     AssociateFileUploadListCreateAPIView,
     AssociateFileUploadArchiveAPIView,
 )
+from tenant_api.views.associate_operations import AssociateAvatarCreateOrUpdateOperationCreateAPIView
 from tenant_api.views.associate_comment import AssociateCommentListCreateAPIView
 from tenant_api.views.awaylog import AwayLogListCreateAPIView, AwayLogRetrieveUpdateDestroyAPIView
 # from tenant_api.views.comment import CommentListCreateAPIView, CommentRetrieveUpdateDestroyAPIView
@@ -139,6 +140,7 @@ urlpatterns = [
     url(r'^api/associate/(?P<pk>[^/.]+)/metrics$', AssociateMetricsUpdateAPIView.as_view(), name='workery_associate_metrics_update_api_endpoint'),
     url(r'^api/associate/(?P<pk>[^/.]+)/$', AssociateRetrieveUpdateDestroyAPIView.as_view(), name='workery_associate_retrieve_update_destroy_api_endpoint'),
     url(r'^api/associate-comments$', AssociateCommentListCreateAPIView.as_view(), name='workery_associate_comment_list_create_api_endpoint'),
+    url(r'^api/associates/operation/avatar$', AssociateAvatarCreateOrUpdateOperationCreateAPIView.as_view(), name='workery_avatar_associate_operation_create_or_update_api_endpoint'),
 
     # Customers
     url(r'^api/customers$', CustomerListCreateAPIView.as_view(), name='workery_customer_list_create_api_endpoint'),
