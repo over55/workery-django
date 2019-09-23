@@ -53,6 +53,7 @@ from tenant_api.views.partner_crud import (
 )
 from tenant_api.views.partner_crud import PartnerListCreateV2APIView, PartnerRetrieveUpdateDestroyV2APIView
 from tenant_api.views.partner_comment import PartnerCommentListCreateAPIView
+from tenant_api.views.partner_operations import PartnerAvatarOperationAPIView
 from tenant_api.views.skill_set import SkillSetListCreateAPIView, SkillSetRetrieveUpdateDestroyAPIView
 from tenant_api.views.staff import StaffListCreateAPIView, StaffRetrieveUpdateDestroyAPIView, StaffCreateValidationAPIView
 from tenant_api.views.staff_comment import StaffCommentListCreateAPIView
@@ -201,6 +202,7 @@ urlpatterns = [
     url(r'^api/partner-comments$', PartnerCommentListCreateAPIView.as_view(), name='workery_partner_comment_list_create_api_endpoint'),
     url(r'^api/partner-files$', PartnerFileUploadListCreateAPIView.as_view(), name='workery_partner_file_upload_api_endpoint'),
     url(r'^api/partner-file/(?P<pk>[^/.]+)/$', PartnerFileUploadArchiveAPIView.as_view(), name='workery_partner_file_upload_archive_api_endpoint'),
+    url(r'^api/partners/operation/avatar$', PartnerAvatarOperationAPIView.as_view(), name='workery_partner_avatar_operation_api_endpoint'),
 
     # Skill Sets
     url(r'^api/skill_sets$', SkillSetListCreateAPIView.as_view(), name='workery_skill_set_list_create_api_endpoint'),

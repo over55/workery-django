@@ -84,6 +84,7 @@ class PartnerRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
     created_by = serializers.SerializerMethodField()
     last_modified_by = serializers.SerializerMethodField()
     how_hear_pretty = serializers.SerializerMethodField()
+    avatar_url = serializers.SerializerMethodField()
 
     class Meta:
         model = Partner
@@ -128,6 +129,7 @@ class PartnerRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
             'created_by',
             'last_modified_by',
             'how_hear_pretty',
+            'avatar_url',
 
             # Misc (Write Only)
             # 'extra_comment',
@@ -224,6 +226,12 @@ class PartnerRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
     def get_how_hear_pretty(self, obj):
         try:
             return str(obj.how_hear)
+        except Exception as e:
+            return None
+
+    def get_avatar_url(self, obj):
+        try:
+            return obj.avatar_image.image_file.url
         except Exception as e:
             return None
 
