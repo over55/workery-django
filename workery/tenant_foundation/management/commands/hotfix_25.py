@@ -22,6 +22,7 @@ from tenant_foundation.models import (
     ResourceCategory,
     ResourceItem,
     ResourceItemSortOrder,
+    Partner,
     SkillSet,
     Staff,
     Tag,
@@ -73,7 +74,7 @@ class Command(BaseCommand):
                 with freeze_time(associate.last_modified):
                     associate.save()
                     self.stdout.write(
-                        self.style.SUCCESS(_('Updated associate.'))
+                        self.style.SUCCESS(_('Updated associate %s.') % str(associate.id))
                     )
             except Exception as e:
                 print(e)
@@ -86,7 +87,7 @@ class Command(BaseCommand):
                 with freeze_time(client.last_modified):
                     client.save()
                     self.stdout.write(
-                        self.style.SUCCESS(_('Updated client.'))
+                        self.style.SUCCESS(_('Updated client %s.') % str(client.id))
                     )
             except Exception as e:
                 print(e)
@@ -99,7 +100,7 @@ class Command(BaseCommand):
                 with freeze_time(partner.last_modified):
                     partner.save()
                     self.stdout.write(
-                        self.style.SUCCESS(_('Updated partner.'))
+                        self.style.SUCCESS(_('Updated partner %s.') % str(partner.id))
                     )
             except Exception as e:
                 print(e)
@@ -112,7 +113,7 @@ class Command(BaseCommand):
                 with freeze_time(staff.last_modified):
                     staff.save()
                     self.stdout.write(
-                        self.style.SUCCESS(_('Updated staff.'))
+                        self.style.SUCCESS(_('Updated staff %s.') % str(staff.id))
                     )
             except Exception as e:
                 print(e)
@@ -125,7 +126,7 @@ class Command(BaseCommand):
                 with freeze_time(order.last_modified):
                     order.save()
                     self.stdout.write(
-                        self.style.SUCCESS(_('Updated order.'))
+                        self.style.SUCCESS(_('Updated order %s.') % str(order.id))
                     )
             except Exception as e:
                 print(e)
