@@ -8,6 +8,7 @@ from django_fsm import FSMField, transition
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.contrib.postgres.search import SearchVector, SearchVectorField
+from django.contrib.humanize.templatetags.humanize import intcomma
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.db.models.signals import pre_save, post_save
@@ -423,7 +424,8 @@ class Customer(AbstractPerson):
         The following code will populate our indexed_custom search text with
         the latest model data before we save.
         '''
-        search_text = ""
+        search_text = str(self.id)
+        search_text += " " + intcomma(self.id)
         if self.last_name:
             search_text += " " + self.last_name
         if self.middle_name:

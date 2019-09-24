@@ -7,6 +7,7 @@ from django.conf import settings
 from django.contrib.auth.models import User
 from django.contrib.postgres.search import SearchVector, SearchVectorField
 from django.contrib.postgres.aggregates import StringAgg
+from django.contrib.humanize.templatetags.humanize import intcomma
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.db import transaction
@@ -229,6 +230,7 @@ class Partner(AbstractPerson):
         the latest model data before we save.
         '''
         search_text = str(self.id)
+        search_text += " " + intcomma(self.id)
         if self.given_name:
             search_text += " " + self.given_name
         if self.middle_name:

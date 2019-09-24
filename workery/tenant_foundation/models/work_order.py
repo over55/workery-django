@@ -4,6 +4,7 @@ import phonenumbers
 import pytz
 from djmoney.money import Money
 from datetime import date, datetime, timedelta
+from django.contrib.humanize.templatetags.humanize import intcomma
 from django_fsm import FSMField, transition
 from django.conf import settings
 from django.core.validators import MaxValueValidator, MinValueValidator
@@ -643,6 +644,7 @@ class WorkOrder(models.Model):
         the latest model data before we save.
         '''
         search_text = str(self.id)
+        search_text += " " + intcomma(self.id)
 
         if self.description:
             search_text += " " + self.description
