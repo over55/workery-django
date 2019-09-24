@@ -29,6 +29,7 @@ class WorkOrderFinancialListSerializer(serializers.ModelSerializer):
     type_of = serializers.SerializerMethodField()
     completion_date = serializers.DateField(read_only=True)
     pretty_state = serializers.ReadOnlyField(source='get_pretty_status')
+    invoice_service_fee = serializers.SerializerMethodField()
 
     # Meta Information.
     class Meta:
@@ -69,6 +70,12 @@ class WorkOrderFinancialListSerializer(serializers.ModelSerializer):
         except Exception as e:
             return None
 
+    def get_invoice_service_fee(self, obj):
+        try:
+            return str(obj.invoice_service_fee.title)
+        except Exception as e:
+            return None
+
 
 class AssociateBalanceOperationSerializer(serializers.Serializer):
     count = serializers.SerializerMethodField()
@@ -84,7 +91,9 @@ class AssociateBalanceOperationSerializer(serializers.Serializer):
 
     def get_results(self, associate):
         try:
-            orders = associate.work_orders.filter(state=WORK_ORDER_STATE.COMPLETED_AND_PAID).order_by('-completion_date')
+            orders = associate.work_orders.filter(state=WORK_ORDER_STATE.COMPLETED_AND_PAID).order_by('-invoice_service_fee_payment_date').prefetch_related(
+                'invoice_service_fee',
+            )
             # print("--->>>", orders)
             s = WorkOrderFinancialListSerializer(orders, many=True)
             return s.data
