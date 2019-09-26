@@ -19,3 +19,4 @@ from tenant_api.views.order_crud.order_file_upload import (
     WorkOrderFileUploadListCreateAPIView,
     WorkOrderFileUploadArchiveAPIView
 )
+from tenant_api.views.order_crud.my_order_list import MyWorkOrderListAPIView

@@ -3,7 +3,6 @@ import logging
 import phonenumbers
 from datetime import datetime, timedelta
 from dateutil import tz
-from django.core.cache import cache
 from django.conf import settings
 from django.contrib.auth.models import Group
 from django.contrib.auth import authenticate
@@ -32,7 +31,6 @@ logger = logging.getLogger(__name__)
 class SharedUserRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
     # Fields
     group_id = serializers.SerializerMethodField()
-    associate_id = serializers.SerializerMethodField()
 
     # Meta Information.
     class Meta:
@@ -46,8 +44,7 @@ class SharedUserRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
             'avatar',
             'last_modified',
             'franchise',
-            'group_id',
-            'associate_id'
+            'group_id'
         )
 
     def get_group_id(self, obj):
@@ -55,19 +52,4 @@ class SharedUserRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
             return obj.groups.first().id
         except Exception as e:
             print("SharedUserRetrieveUpdateDestroySerializer | get_group_id |", e)
-            return None
-
-    def get_associate_id(self, obj):
-        try:
-            cache_key  = 'associate_id_for_user_id_' + str(obj.id)
-            associate_id = cache.get(cache_key)
-            if associate_id:
-                print("Returning cached associate id", associate_id)
-                return associate_id
-
-            associate = Associate.objects.filter(owner=obj).first()
-            cache.set(cache_key, associate.id, None)
-            return associate_id
-        except Exception as e:
-            print("SharedUserRetrieveUpdateDestroySerializer | associate_id |", e)
             return None

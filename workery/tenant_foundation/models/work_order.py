@@ -4,6 +4,7 @@ import phonenumbers
 import pytz
 from djmoney.money import Money
 from datetime import date, datetime, timedelta
+from django.core.cache import cache
 from django.contrib.humanize.templatetags.humanize import intcomma
 from django_fsm import FSMField, transition
 from django.conf import settings
@@ -60,6 +61,18 @@ class WorkOrderManager(models.Manager):
         return WorkOrder.objects.annotate(search=SearchVector(
             'indexed_text',
         ),).filter(search=keyword)
+
+    def get_by_associate_with_user_id(self, user_id):
+        cache_key  = 'associate_id_for_user_id_' + str(user_id)
+        associate_id = cache.get(cache_key)
+        if associate_id:
+            print("Returning cached associate id", associate_id)
+            return WorkOrder.objects.filter(associate__id=associate_id)
+
+        associate = Associate.objects.filter(owner=obj).first()
+        cache.set(cache_key, associate.id, None)
+        print("Returning fetched associate id", associate_id)
+        return WorkOrder.objects.filter(associate__id=associate_id)
 
 
 @transaction.atomic
