@@ -28,7 +28,7 @@ from tenant_foundation.models import Associate
 logger = logging.getLogger(__name__)
 
 
-class SharedUserRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
+class StaffProfileSerializer(serializers.ModelSerializer):
     # Fields
     group_id = serializers.SerializerMethodField()
 

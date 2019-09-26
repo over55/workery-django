@@ -188,3 +188,10 @@ class SharedUser(AbstractBaseUser, PermissionsMixin):
         belongs to the management group or executive staff.
         """
         return self.is_executive() or self.is_management_staff()
+
+    def is_associate(self):
+        """
+        Function will return True or False depending on whether this user
+        belongs to the associate group.
+        """
+        return self.groups.filter(id=constants.ASSOCIATE_GROUP_ID).exists()  #TODO: UNIT TEST
