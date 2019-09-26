@@ -20,7 +20,7 @@ from tenant_api.permissions.order import (
 )
 from tenant_api.serializers.order_crud.order_list_create import WorkOrderListCreateSerializer
 from tenant_api.serializers.order_crud.order_retrieve_update_destroy import WorkOrderRetrieveUpdateDestroySerializer
-from tenant_foundation.models import WorkOrder
+from tenant_foundation.models import Associate, WorkOrder
 
 
 class MyWorkOrderListAPIView(generics.ListAPIView):
@@ -68,50 +68,58 @@ class MyWorkOrderListAPIView(generics.ListAPIView):
     #         status=status.HTTP_201_CREATED
     #     )
 
-# class AssocateWorkOrderRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
-#     serializer_class = WorkOrderRetrieveUpdateDestroySerializer
-#     pagination_class = TinyResultsSetPagination
-#     permission_classes = (
-#         permissions.IsAuthenticated,
-#         IsAuthenticatedAndIsActivePermission,
-#     )
-#
-#     def get(self, request, pk=None):
-#         """
-#         Retrieve
-#         """
-#         order = get_object_or_404(WorkOrder, pk=pk)
-#         self.check_object_permissions(request, order)  # Validate permissions.
-#         serializer = WorkOrderRetrieveUpdateDestroySerializer(order, many=False)
-#         # queryset = serializer.setup_eager_loading(self, queryset)
-#         return Response(
-#             data=serializer.data,
-#             status=status.HTTP_200_OK
-#         )
-#
-#     def put(self, request, pk=None):
-#         """
-#         Update
-#         """
-#         client_ip, is_routable = get_client_ip(self.request)
-#         order = get_object_or_404(WorkOrder, pk=pk)
-#         self.check_object_permissions(request, order)  # Validate permissions.
-#         serializer = WorkOrderRetrieveUpdateDestroySerializer(order, data=request.data, context={
-#             'last_modified_by': request.user,
-#             'last_modified_from': client_ip,
-#             'last_modified_from_is_public': is_routable,
-#             'franchise': request.tenant,
-#             'state': request.data.get("state", None)
-#         })
-#         serializer.is_valid(raise_exception=True)
-#         serializer.save()
-#         return Response(serializer.data, status=status.HTTP_200_OK)
-#
-#     def delete(self, request, pk=None):
-#         """
-#         Delete
-#         """
-#         order = get_object_or_404(WorkOrder, pk=pk)
-#         self.check_object_permissions(request, order)  # Validate permissions.
-#         order.delete()
-#         return Response(data=[], status=status.HTTP_200_OK)
+class MyWorkOrderRetrieveAPIView(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = WorkOrderRetrieveUpdateDestroySerializer
+    pagination_class = TinyResultsSetPagination
+    permission_classes = (
+        permissions.IsAuthenticated,
+        IsAuthenticatedAndIsActivePermission,
+    )
+
+    def get(self, request, pk=None):
+        """
+        Retrieve
+        """
+        order = get_object_or_404(WorkOrder, pk=pk)
+        self.check_object_permissions(request, order)  # Validate permissions.
+        associate = Associate.objects.get_associate_with_user_id(request.user.id)
+        if order.associate != associate:
+            print("BAD")
+            return Response(
+                data={"details": "You do not have permission to view this job."},
+                status=status.HTTP_403_FORBIDDEN
+            )
+
+        serializer = WorkOrderRetrieveUpdateDestroySerializer(order, many=False)
+        # queryset = serializer.setup_eager_loading(self, queryset)
+        return Response(
+            data=serializer.data,
+            status=status.HTTP_200_OK
+        )
+
+    # def put(self, request, pk=None):
+    #     """
+    #     Update
+    #     """
+    #     client_ip, is_routable = get_client_ip(self.request)
+    #     order = get_object_or_404(WorkOrder, pk=pk)
+    #     self.check_object_permissions(request, order)  # Validate permissions.
+    #     serializer = WorkOrderRetrieveUpdateDestroySerializer(order, data=request.data, context={
+    #         'last_modified_by': request.user,
+    #         'last_modified_from': client_ip,
+    #         'last_modified_from_is_public': is_routable,
+    #         'franchise': request.tenant,
+    #         'state': request.data.get("state", None)
+    #     })
+    #     serializer.is_valid(raise_exception=True)
+    #     serializer.save()
+    #     return Response(serializer.data, status=status.HTTP_200_OK)
+    #
+    # def delete(self, request, pk=None):
+    #     """
+    #     Delete
+    #     """
+    #     order = get_object_or_404(WorkOrder, pk=pk)
+    #     self.check_object_permissions(request, order)  # Validate permissions.
+    #     order.delete()
+    #     return Response(data=[], status=status.HTTP_200_OK)

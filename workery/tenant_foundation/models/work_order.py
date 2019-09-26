@@ -66,12 +66,10 @@ class WorkOrderManager(models.Manager):
         cache_key  = 'associate_id_for_user_id_' + str(user_id)
         associate_id = cache.get(cache_key)
         if associate_id:
-            print("Returning cached associate id", associate_id)
             return WorkOrder.objects.filter(associate__id=associate_id)
 
         associate = Associate.objects.filter(owner=obj).first()
         cache.set(cache_key, associate.id, None)
-        print("Returning fetched associate id", associate_id)
         return WorkOrder.objects.filter(associate__id=associate_id)
 
 

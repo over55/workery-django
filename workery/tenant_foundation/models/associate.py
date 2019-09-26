@@ -7,6 +7,7 @@ from dateutil.relativedelta import relativedelta
 from datetime import date, datetime, timedelta
 from djmoney.money import Money
 from djmoney.models.fields import MoneyField
+from django.core.cache import cache
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.contrib.postgres.search import SearchVector, SearchVectorField
@@ -54,6 +55,16 @@ class AssociateManager(models.Manager):
         # For more details please read:
         # https://docs.djangoproject.com/en/2.0/ref/contrib/postgres/search/
         return Associate.objects.annotate(search=SearchVector('indexed_text'),).filter(search=keyword)
+
+    def get_associate_with_user_id(self, user_id):
+        cache_key  = 'associate_id_for_user_id_' + str(user_id)
+        associate_id = cache.get(cache_key)
+        if associate_id:
+            return Associate.objects.filter(id=associate_id).first()
+
+        associate = Associate.objects.filter(owner__id=user_id).first()
+        cache.set(cache_key, associate.id, None)
+        return associate
 
 
 @transaction.atomic
