@@ -99,6 +99,7 @@ class WorkOrderRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
     was_associate_punctual = serializers.BooleanField(read_only=True)
     was_associate_professional = serializers.BooleanField(read_only=True)
     would_customer_refer_our_organization = serializers.BooleanField(read_only=True)
+    cloned_from = serializers.IntegerField(read_only=True, allow_null=False, source="cloned_from.id")
 
     class Meta:
         model = WorkOrder
@@ -145,6 +146,7 @@ class WorkOrderRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
             'state',
             'invoice_balance_owing_amount',
             'visits',
+            'cloned_from',
 
 
             # Read Only fields.

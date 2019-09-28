@@ -464,6 +464,14 @@ class WorkOrder(models.Model):
             MaxValueValidator(100)
         ],
     )
+    cloned_from = models.ForeignKey(
+        "self",
+        help_text=_('The original work order this order was cloned'),
+        related_name="cloned_work_orders",
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True
+    )
 
     #
     #  ONGOING WORK ORDER
