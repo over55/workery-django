@@ -71,6 +71,9 @@ class WorkOrderRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
     associate_other_telephone = PhoneNumberField(read_only=True, source="associate.other_telephone")
     associate_other_telephone_type_of = serializers.IntegerField(read_only=True, source="associate.other_telephone_type_of")
     associate_pretty_other_telephone_type_of = serializers.CharField(read_only=True, source="associate.get_pretty_other_telephone_type_of")
+    associate_tax_id = serializers.ReadOnlyField(source='associate.tax_id')
+    customer_address = serializers.SerializerMethodField()
+    customer_email = serializers.EmailField(read_only=True, source="associate.email")
     customer_full_name = serializers.SerializerMethodField()
     customer_telephone = PhoneNumberField(read_only=True, source="customer.telephone")
     customer_telephone_type_of = serializers.IntegerField(read_only=True, source="customer.telephone_type_of")
@@ -100,6 +103,7 @@ class WorkOrderRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
     was_associate_professional = serializers.BooleanField(read_only=True)
     would_customer_refer_our_organization = serializers.BooleanField(read_only=True)
     cloned_from = serializers.IntegerField(read_only=True, allow_null=False, source="cloned_from.id")
+    invoice_id = serializers.IntegerField(read_only=True, allow_null=False, source="invoice.id")
 
     class Meta:
         model = WorkOrder
@@ -147,7 +151,7 @@ class WorkOrderRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
             'invoice_balance_owing_amount',
             'visits',
             'cloned_from',
-
+            'invoice_id',
 
             # Read Only fields.
             'associate_full_name',
@@ -157,6 +161,9 @@ class WorkOrderRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
             'associate_other_telephone',
             'associate_other_telephone_type_of',
             'associate_pretty_other_telephone_type_of',
+            'associate_tax_id',
+            'customer_address',
+            'customer_email',
             'customer_full_name',
             'customer_telephone',
             'customer_telephone_type_of',
@@ -216,6 +223,12 @@ class WorkOrderRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         except Exception as e:
             pass
         return None
+
+    def get_customer_address(self, obj):
+        try:
+            return obj.customer.get_postal_address()
+        except Exception as e:
+            return None
 
     def get_pretty_skill_sets(self, obj):
         try:
