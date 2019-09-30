@@ -103,7 +103,7 @@ class WorkOrderRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
     was_associate_professional = serializers.BooleanField(read_only=True)
     would_customer_refer_our_organization = serializers.BooleanField(read_only=True)
     cloned_from = serializers.IntegerField(read_only=True, allow_null=False, source="cloned_from.id")
-    invoice_id = serializers.IntegerField(read_only=True, allow_null=False, source="invoice.id")
+    invoice_id = serializers.IntegerField(read_only=True, allow_null=False, source="invoice.order.id")
 
     class Meta:
         model = WorkOrder

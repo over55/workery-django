@@ -90,7 +90,8 @@ from tenant_api.views.order_operation import (
     WorkOrderPostponeOperationCreateAPIView,
     WorkOrderReopenOperationCreateAPIView,
     TransferWorkerOrderOperationAPIView,
-    WorkOrderCloneOperationCreateAPIView
+    WorkOrderCloneOperationCreateAPIView,
+    WorkOrderInvoiceCreateOrUpdateOperationAPIView
 )
 from tenant_api.views.task_operation import (
     AssignAssociateTaskOperationAPIView,
@@ -197,6 +198,7 @@ urlpatterns = [
     url(r'^api/orders/operation/postpone$', WorkOrderPostponeOperationCreateAPIView.as_view(), name='workery_order_postpone_operation_api_endpoint'),
     url(r'^api/orders/operation/reopen$', WorkOrderReopenOperationCreateAPIView.as_view(), name='workery_order_reopen_operation_api_endpoint'),                           #TODO: DELETE
     url(r'^api/orders/operation/transfer$', TransferWorkerOrderOperationAPIView.as_view(), name='workery_transfer_order_operation_api_endpoint'),                           #TODO: DELETE
+    url(r'^api/orders/operation/invoice$', WorkOrderInvoiceCreateOrUpdateOperationAPIView.as_view(), name='workery_order_invoice_create_or_update_operation_api_endpoint'),                           #TODO: DELETE
 
 
     # Work Order Service Fees

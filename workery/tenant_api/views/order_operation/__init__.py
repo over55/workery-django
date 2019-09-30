@@ -5,3 +5,4 @@ from tenant_api.views.order_operation.order_unassign import WorkOrderUnassignOpe
 from tenant_api.views.order_operation.order_postpone import WorkOrderPostponeOperationCreateAPIView
 from tenant_api.views.order_operation.order_reopen import WorkOrderReopenOperationCreateAPIView
 from tenant_api.views.order_operation.transfer_work import TransferWorkerOrderOperationAPIView
+from tenant_api.views.order_operation.order_invoice import WorkOrderInvoiceCreateOrUpdateOperationAPIView
