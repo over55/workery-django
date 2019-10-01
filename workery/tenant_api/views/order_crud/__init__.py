@@ -23,3 +23,4 @@ from tenant_api.views.order_crud.my_order_list_retrieve import (
     MyWorkOrderListAPIView,
     MyWorkOrderRetrieveAPIView
 )
+from tenant_api.views.order_crud.invoice_retrieve import WorkOrderInvoiceRetrieveAPIView

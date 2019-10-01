@@ -47,7 +47,8 @@ from tenant_api.views.order_crud import (
    WorkOrderFileUploadListCreateAPIView,
    WorkOrderFileUploadArchiveAPIView,
    MyWorkOrderListAPIView,
-   MyWorkOrderRetrieveAPIView
+   MyWorkOrderRetrieveAPIView,
+   WorkOrderInvoiceRetrieveAPIView
 )
 from tenant_api.views.partner import PartnerListCreateAPIView, PartnerRetrieveUpdateDestroyAPIView, PartnerCreateValidationAPIView
 from tenant_api.views.partner_crud import (
@@ -185,6 +186,7 @@ urlpatterns = [
     url(r'^api/order/(?P<pk>[^/.]+)/$', WorkOrderRetrieveUpdateDestroyAPIView.as_view(), name='workery_order_retrieve_update_destroy_api_endpoint'),
     url(r'^api/order/(?P<pk>[^/.]+)/lite$', WorkOrderLiteUpdateAPIView.as_view(), name='workery_order_lite_update_api_endpoint'),
     url(r'^api/order/(?P<pk>[^/.]+)/financial$', WorkOrderFinancialUpdateAPIView.as_view(), name='workery_order_financial_update_api_endpoint'),
+    url(r'^api/order/(?P<pk>[^/.]+)/invoice$', WorkOrderInvoiceRetrieveAPIView.as_view(), name='workery_order_invoice_retrieve_api_endpoint'),
     url(r'^api/order-comments$', WorkOrderCommentListCreateAPIView.as_view(), name='workery_job_comment_list_create_api_endpoint'),
     url(r'^api/order-files$', WorkOrderFileUploadListCreateAPIView.as_view(), name='workery_work_order_file_upload_api_endpoint'),
     url(r'^api/order-file/(?P<pk>[^/.]+)/$', WorkOrderFileUploadArchiveAPIView.as_view(), name='workery_work_order_file_upload_archive_api_endpoint'),
