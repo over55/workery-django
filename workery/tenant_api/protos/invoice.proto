@@ -1,0 +1,107 @@
+syntax = "proto3";
+
+// The invoice builder service definition.
+service InvoiceBuilder {
+    // Generate standard workery invoice templated PDF file.
+    rpc GeneratePDF (GeneratePDFRequest) returns (stream Chunk) {}
+}
+
+// The request message containing the user's name.
+message GeneratePDFRequest {
+    string invoiceId = 1;
+    string invoiceDate = 2;
+    string associateName = 3;
+    string associateTelephone = 4;
+    string clientName = 5;
+    string clientAddress = 6;
+    string clientTelephone = 7;
+    string clientEmail = 8;
+    string line01Quantity = 9;
+    string line01Description = 10;
+    string line01Price = 11;
+    string line01Amount = 12;
+    string line02Quantity = 13;
+    string line02Description = 14;
+    string line02Price = 15;
+    string line02Amount = 16;
+    string line03Quantity = 17;
+    string line03Description = 18;
+    string line03Price = 19;
+    string line03Amount = 20;
+    string line04Quantity = 21;
+    string line04Description = 22;
+    string line04Price = 23;
+    string line04Amount = 24;
+    string line05Quantity = 25;
+    string line05Description = 26;
+    string line05Price = 27;
+    string line05Amount = 28;
+    string line06Quantity = 29;
+    string line06Description = 30;
+    string line06Price = 31;
+    string line06Amount = 32;
+    string line07Quantity = 33;
+    string line07Description = 34;
+    string line07Price = 35;
+    string line07Amount = 36;
+    string line08Quantity = 37;
+    string line08Description = 38;
+    string line08Price = 39;
+    string line08Amount = 40;
+    string line09Quantity = 41;
+    string line09Description = 42;
+    string line09Price = 43;
+    string line09Amount = 44;
+    string line10Quantity = 45;
+    string line10Description = 46;
+    string line10Price = 47;
+    string line10Amount = 48;
+    string line11Quantity = 49;
+    string line11Description = 50;
+    string line11Price = 51;
+    string line11Amount = 52;
+    string line12Quantity = 53;
+    string line12Description = 54;
+    string line12Price = 55;
+    string line12Amount = 56;
+    string line13Quantity = 57;
+    string line13Description = 58;
+    string line13Price = 59;
+    string line13Amount = 60;
+    string line14Quantity = 61;
+    string line14Description = 62;
+    string line14Price = 63;
+    string line14Amount = 64;
+    string line15Quantity = 65;
+    string line15Description = 66;
+    string line15Price = 67;
+    string line15Amount = 68;
+    string invoiceQuoteDays = 69;
+    string invoiceAssociateTax = 70;
+    string invoiceQuoteDate = 71;
+    string invoiceCustomersApproval = 72;
+    string line01Notes = 73;
+    string line02Notes = 74;
+    string totalLabour = 75;
+    string totalMaterials = 76;
+    string wasteRemoval = 77;
+    string subTotal = 78;
+    string tax = 79;
+    string total = 80;
+    string grandTotal = 81;
+    string paymentAmount = 82;
+    string paymentDate = 83;
+    string cash = 84;
+    string cheque = 85;
+    string debit = 86;
+    string credit = 87;
+    string other = 88;
+    string clientSignature = 89;
+    string associateSignDate = 90;
+    string associateSignature = 91;
+    string workOrderId = 92;
+}
+
+message Chunk {
+  bytes buffer = 1;
+}

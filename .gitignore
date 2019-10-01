@@ -194,3 +194,6 @@ private_notes.txt
 # Do not share collected static files.
 workery/workery/static
 workery/staticfiles
+
+# Do not share compiled PDF invoices from our `invoicebuilder` microservice.
+workery/media/*.pdf
