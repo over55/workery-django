@@ -122,6 +122,13 @@ class WorkOrderInvoice(models.Model):
         blank=True,
         null=True,
     )
+    client_address = models.CharField(
+        _("Client Address"),
+        help_text=_('The address of the client on this invoice document.'),
+        max_length=63,
+        blank=True,
+        null=True,
+    )
     client_telephone = PhoneNumberField(
         _("Client Telephone"),
         help_text=_('The client\'s telephone number on this invoice document.'),

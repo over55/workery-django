@@ -164,6 +164,12 @@ class WorkOrderInvoiceCreateOrUpdateOperationSerializer(serializers.Serializer):
                 'order': order,
                 'invoice_id': validated_data.get('invoice_id', None),
                 'invoice_date': validated_data.get('invoice_date', None),
+                'associate_name': order.associate.owner.get_full_name(),
+                'associate_telephone': order.associate.telephone,
+                'client_name': order.customer.owner.get_full_name(),
+                'client_address': order.customer.get_postal_address(),
+                'client_telephone': order.customer.telephone,
+                'client_email': order.customer.owner.email,
                 'line_01_qty': validated_data.get('line01_qty', None),
                 'line_01_desc': validated_data.get('line01_desc', None),
                 'line_01_price': validated_data.get('line01_price', 0),
@@ -226,9 +232,17 @@ class WorkOrderInvoiceCreateOrUpdateOperationSerializer(serializers.Serializer):
                 'line_15_amount': validated_data.get('line15_amount', 0),
                 'invoice_quote_days': validated_data.get('invoice_quote_days', None),
                 'invoice_quote_date': validated_data.get('invoice_quote_date', None),
+                'invoice_associate_tax': order.associate.tax_id,
                 'invoice_customers_approval': validated_data.get('invoice_customers_approval', None),
                 'line_01_notes': validated_data.get('line01_notes', None),
                 'line_02_notes': validated_data.get('line02_notes', None),
+                'total_labour': order.invoice_labour_amount,
+                'total_materials': order.invoice_material_amount,
+                # 'waste_removal': //TODO: IMPLEMENT
+                'sub_total': order.invoice_total_amount - order.invoice_tax_amount,
+                'tax': order.invoice_tax_amount,
+                'total':  order.invoice_total_amount,
+                'grand_total': order.invoice_total_amount,
                 'payment_amount': validated_data.get('payment_amount', 0),
                 'payment_date': validated_data.get('payment_date', None),
                 'is_cash': validated_data.get('cash', None),
@@ -251,6 +265,8 @@ class WorkOrderInvoiceCreateOrUpdateOperationSerializer(serializers.Serializer):
 
         order.invoice = invoice
         order.save()
+
+        # raise serializers.ValidationError("ccc") # For debuggingp purposes only.
 
         #--------------------#
         # Updated the output #
