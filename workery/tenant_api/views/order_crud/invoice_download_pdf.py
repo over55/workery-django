@@ -9,6 +9,7 @@ Special thanks to the following resources:
 """
 import grpc
 import django_filters
+import datetime
 from ipware import get_client_ip
 # from django_filters import rest_framework as filters
 from django.conf import settings
@@ -75,7 +76,7 @@ class WorkOrderInvoiceDownloadPDFAPIView(generics.RetrieveAPIView):
             stub = invoice_pb2_grpc.InvoiceBuilderStub(channel)
             response = stub.GeneratePDF(invoice_pb2.GeneratePDFRequest(
                 invoiceId=str(invoice.invoice_id),
-                invoiceDate=str(invoice.invoice_date),
+                invoiceDate=invoice.invoice_date.strftime('%B %d, %Y'),
                 associateName=str(invoice.associate_name),
                 associateTelephone = str(invoice.associate_telephone),
                 clientName = str(invoice.client_name),
@@ -144,7 +145,7 @@ class WorkOrderInvoiceDownloadPDFAPIView(generics.RetrieveAPIView):
                 line15Amount = str(invoice.line_15_amount) if invoice.line_15_qty else "",
                 invoiceQuoteDays = str(invoice.invoice_quote_days),
                 invoiceAssociateTax = str(invoice.invoice_associate_tax),
-                invoiceQuoteDate = str(invoice.invoice_quote_date),
+                invoiceQuoteDate = invoice.invoice_quote_date.strftime('%B %d, %Y'),
                 invoiceCustomersApproval = str(invoice.invoice_customers_approval),
                 line01Notes = str(invoice.line_01_notes),
                 line02Notes = str(invoice.line_02_notes) if invoice.line_02_notes else "",
@@ -156,14 +157,14 @@ class WorkOrderInvoiceDownloadPDFAPIView(generics.RetrieveAPIView):
                 total = str(invoice.total),
                 grandTotal = str(invoice.grand_total),
                 paymentAmount = str(invoice.payment_amount),
-                paymentDate = str(invoice.payment_date),
+                paymentDate = invoice.payment_date.strftime('%B %d, %Y'),
                 cash = "X" if invoice.is_cash else "",
                 cheque = "X" if invoice.is_cheque else "",
                 debit = "X" if invoice.is_debit else "",
                 credit = "X" if invoice.is_credit else "",
                 other = "X" if invoice.is_other else "",
                 clientSignature = str(invoice.client_signature),
-                associateSignDate = str(invoice.associate_sign_date),
+                associateSignDate = invoice.associate_sign_date.strftime('%B %d, %Y'),
                 associateSignature = str(invoice.associate_signature),
                 workOrderId = str(invoice.work_order_id),
             ))
