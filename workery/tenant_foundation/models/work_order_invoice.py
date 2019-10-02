@@ -85,6 +85,13 @@ class WorkOrderInvoice(models.Model):
         blank=True,
         db_index=True
     )
+    revision_version = models.PositiveSmallIntegerField(
+        _("Revision Version"),
+        help_text=_('The revision identifier to keep track what version this invoice is with our edit. Every edit submission results in this value being incremented by 1.'),
+        blank=True,
+        null=True,
+        default=0
+    )
 
     #
     # REQUIRED PDF FIELDS
