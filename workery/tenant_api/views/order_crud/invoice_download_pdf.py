@@ -11,6 +11,7 @@ import grpc
 import django_filters
 from ipware import get_client_ip
 # from django_filters import rest_framework as filters
+from django.conf import settings
 from django.db import transaction
 from django_filters.rest_framework import DjangoFilterBackend
 from django.conf.urls import url, include
@@ -66,10 +67,11 @@ class WorkOrderInvoiceDownloadPDFAPIView(generics.RetrieveAPIView):
         Retrieve
         """
         invoice = get_object_or_404(WorkOrderInvoice, order=pk)
-        #TODO: Update our invoice with our latest data before we build it.
         self.check_object_permissions(request, invoice.order)  # Validate permissions.
 
-        with grpc.insecure_channel('localhost:50051') as channel: #TODO: MAKE INTO CONSTANT
+        #TODO: Update our invoice with our latest data before we build it.
+
+        with grpc.insecure_channel(settings.WORKERY_INVOICEBUILDER_MICROSERVICE_ADDRESS_AND_PORT) as channel:
             stub = invoice_pb2_grpc.InvoiceBuilderStub(channel)
             response = stub.GeneratePDF(invoice_pb2.GeneratePDFRequest(
                 invoiceId=str(invoice.invoice_id),
