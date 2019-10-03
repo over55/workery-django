@@ -38,6 +38,9 @@ logger = logging.getLogger(__name__)
 
 
 class WorkOrderInvoiceRetrieveSerializer(serializers.ModelSerializer):
+    created_by = serializers.ReadOnlyField(source='created_by.get_full_name')
+    last_modified_by = serializers.ReadOnlyField(source='last_modified_by.get_full_name')
+
     # Meta Information.
     class Meta:
         model = WorkOrderInvoice
