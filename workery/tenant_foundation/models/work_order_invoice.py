@@ -655,7 +655,7 @@ class WorkOrderInvoice(models.Model):
     invoice_associate_tax = models.CharField(
         _("Invoice Associate Tax #"),
         help_text=_('The associate tax number for this invoice document.'),
-        max_length=15,
+        max_length=18,
         blank=True,
         null=True,
     )
