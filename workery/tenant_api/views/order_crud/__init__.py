@@ -25,3 +25,6 @@ from tenant_api.views.order_crud.my_order_list_retrieve import (
 )
 from tenant_api.views.order_crud.invoice_download_pdf import WorkOrderInvoiceDownloadPDFAPIView
 from tenant_api.views.order_crud.invoice_retrieve import WorkOrderInvoiceRetrieveAPIView
+from tenant_api.views.order_crud.invoice_first_section_update import WorkOrderInvoiceFirstSectionUpdateAPIView
+from tenant_api.views.order_crud.invoice_second_section_update import WorkOrderInvoiceSecondSectionUpdateAPIView
+from tenant_api.views.order_crud.invoice_third_section_update import WorkOrderInvoiceThirdSectionUpdateAPIView

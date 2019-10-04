@@ -49,7 +49,10 @@ from tenant_api.views.order_crud import (
    MyWorkOrderListAPIView,
    MyWorkOrderRetrieveAPIView,
    WorkOrderInvoiceRetrieveAPIView,
-   WorkOrderInvoiceDownloadPDFAPIView
+   WorkOrderInvoiceDownloadPDFAPIView,
+   WorkOrderInvoiceFirstSectionUpdateAPIView,
+   WorkOrderInvoiceSecondSectionUpdateAPIView,
+   WorkOrderInvoiceThirdSectionUpdateAPIView
 )
 from tenant_api.views.partner import PartnerListCreateAPIView, PartnerRetrieveUpdateDestroyAPIView, PartnerCreateValidationAPIView
 from tenant_api.views.partner_crud import (
@@ -188,6 +191,9 @@ urlpatterns = [
     url(r'^api/order/(?P<pk>[^/.]+)/lite$', WorkOrderLiteUpdateAPIView.as_view(), name='workery_order_lite_update_api_endpoint'),
     url(r'^api/order/(?P<pk>[^/.]+)/financial$', WorkOrderFinancialUpdateAPIView.as_view(), name='workery_order_financial_update_api_endpoint'),
     url(r'^api/order/(?P<pk>[^/.]+)/invoice$', WorkOrderInvoiceRetrieveAPIView.as_view(), name='workery_order_invoice_retrieve_api_endpoint'),
+    url(r'^api/order/(?P<pk>[^/.]+)/invoice/first-section$', WorkOrderInvoiceFirstSectionUpdateAPIView.as_view(), name='workery_order_invoice_first_section_update_api_endpoint'),
+    url(r'^api/order/(?P<pk>[^/.]+)/invoice/second-section$', WorkOrderInvoiceSecondSectionUpdateAPIView.as_view(), name='workery_order_invoice_second_section_update_api_endpoint'),
+    url(r'^api/order/(?P<pk>[^/.]+)/invoice/third-section$', WorkOrderInvoiceThirdSectionUpdateAPIView.as_view(), name='workery_order_invoice_third_section_update_api_endpoint'),
     url(r'^api/order/(?P<pk>[^/.]+)/download-invoice-pdf$', WorkOrderInvoiceDownloadPDFAPIView.as_view(), name='workery_order_invoice_pdf_download_api_endpoint'),
     url(r'^api/order-comments$', WorkOrderCommentListCreateAPIView.as_view(), name='workery_job_comment_list_create_api_endpoint'),
     url(r'^api/order-files$', WorkOrderFileUploadListCreateAPIView.as_view(), name='workery_work_order_file_upload_api_endpoint'),
