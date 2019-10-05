@@ -18,7 +18,7 @@ from tenant_api.permissions.order import (
 )
 from tenant_api.serializers.order_crud import WorkOrderInvoiceThirdSectionUpdateSerializer
 from tenant_api.serializers.order_crud import WorkOrderInvoiceRetrieveSerializer
-from tenant_foundation.models import WorkOrder
+from tenant_foundation.models import WorkOrderInvoice
 
 
 class WorkOrderInvoiceThirdSectionUpdateAPIView(generics.UpdateAPIView):
@@ -33,17 +33,17 @@ class WorkOrderInvoiceThirdSectionUpdateAPIView(generics.UpdateAPIView):
         Update
         """
         client_ip, is_routable = get_client_ip(self.request)
-        order = get_object_or_404(WorkOrder, pk=pk)
-        self.check_object_permissions(request, order)  # Validate permissions.
-        write_serializer = WorkOrderInvoiceThirdSectionUpdateSerializer(order, data=request.data, context={
+        invoice = get_object_or_404(WorkOrderInvoice, order=pk)
+        self.check_object_permissions(request, invoice.order)  # Validate permissions.
+        write_serializer = WorkOrderInvoiceThirdSectionUpdateSerializer(invoice, data=request.data, context={
             'last_modified_by': request.user,
             'last_modified_from': client_ip,
             'last_modified_from_is_public': is_routable,
             'franchise': request.tenant,
         })
         write_serializer.is_valid(raise_exception=True)
-        order = write_serializer.save()
-        read_serializer = WorkOrderInvoiceRetrieveSerializer(order, many=False, context={
+        invoice = write_serializer.save()
+        read_serializer = WorkOrderInvoiceRetrieveSerializer(invoice, many=False, context={
             'last_modified_by': request.user,
             'last_modified_from': client_ip,
             'last_modified_from_is_public': is_routable,
