@@ -740,9 +740,9 @@ class WorkOrderInvoice(models.Model):
         default=Money(0,WORKERY_APP_DEFAULT_MONEY_CURRENCY),
         blank=True,
     )
-    grand_total = MoneyField(
-        _("Grand Total"),
-        help_text=_('Grand Total'),
+    deposit = MoneyField(
+        _("Deposit"),
+        help_text=_('Deposit'),
         max_digits=10,
         decimal_places=2,
         default_currency=WORKERY_APP_DEFAULT_MONEY_CURRENCY,

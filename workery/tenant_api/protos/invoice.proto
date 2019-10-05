@@ -88,7 +88,7 @@ message GeneratePDFRequest {
     string subTotal = 78;
     string tax = 79;
     string total = 80;
-    string grandTotal = 81;
+    string deposit = 81;
     string paymentAmount = 82;
     string paymentDate = 83;
     string cash = 84;

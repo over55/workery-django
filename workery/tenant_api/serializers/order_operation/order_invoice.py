@@ -245,7 +245,7 @@ class WorkOrderInvoiceCreateOrUpdateOperationSerializer(serializers.Serializer):
                 'sub_total': order.invoice_total_amount - order.invoice_tax_amount,
                 'tax': order.invoice_tax_amount,
                 'total':  order.invoice_total_amount,
-                'grand_total': order.invoice_total_amount,
+                'deposit': order.invoice_deposit_amount,
                 'payment_amount': validated_data.get('payment_amount', 0),
                 'payment_date': validated_data.get('payment_date', None),
                 'is_cash': validated_data.get('cash', None),

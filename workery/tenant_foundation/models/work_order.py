@@ -412,6 +412,15 @@ class WorkOrder(models.Model):
         default=Money(0,WORKERY_APP_DEFAULT_MONEY_CURRENCY),
         blank=True,
     )
+    invoice_deposit_amount = MoneyField(
+        _("Invoice Deposit Amount"),
+        help_text=_('The amount deposited.'),
+        max_digits=10,
+        decimal_places=2,
+        default_currency=WORKERY_APP_DEFAULT_MONEY_CURRENCY,
+        default=Money(0,WORKERY_APP_DEFAULT_MONEY_CURRENCY),
+        blank=True,
+    )
     invoice_service_fee_amount = MoneyField(
         _("Invoice Service Fee Amount"),
         help_text=_('The invoice service fee amount that associate needs to pay.'),

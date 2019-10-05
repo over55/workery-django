@@ -155,7 +155,7 @@ class WorkOrderInvoiceDownloadPDFAPIView(generics.RetrieveAPIView):
                 subTotal = str(invoice.sub_total),
                 tax = str(invoice.tax),
                 total = str(invoice.total),
-                grandTotal = str(invoice.grand_total),
+                deposit = str(invoice.deposit),
                 paymentAmount = str(invoice.payment_amount),
                 paymentDate = invoice.payment_date.strftime('%B %d, %Y'),
                 cash = "X" if invoice.is_cash else "",
