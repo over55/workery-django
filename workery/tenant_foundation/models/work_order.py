@@ -367,6 +367,15 @@ class WorkOrder(models.Model):
         default=Money(0,WORKERY_APP_DEFAULT_MONEY_CURRENCY),
         blank=True,
     )
+    invoice_waste_removal_amount = MoneyField(
+        _("Wate Removal Costs Amount"),
+        help_text=_('The amount charged for waste removal by the associate for this job.'),
+        max_digits=10,
+        decimal_places=2,
+        default_currency=WORKERY_APP_DEFAULT_MONEY_CURRENCY,
+        default=Money(0,WORKERY_APP_DEFAULT_MONEY_CURRENCY),
+        blank=True,
+    )
     invoice_quoted_material_amount = MoneyField(
         _("Invoice Quoted Material Costs Amount"),
         help_text=_('The quoted amount to charge for material costs by the associate for this job.'),
@@ -379,6 +388,15 @@ class WorkOrder(models.Model):
     invoice_quoted_labour_amount = MoneyField(
         _("Invoice Quoted Labour Costs Amount"),
         help_text=_('The quoted amount to charge for labour by the associate for this job.'),
+        max_digits=10,
+        decimal_places=2,
+        default_currency=WORKERY_APP_DEFAULT_MONEY_CURRENCY,
+        default=Money(0,WORKERY_APP_DEFAULT_MONEY_CURRENCY),
+        blank=True,
+    )
+    invoice_quoted_waste_removal_amount = MoneyField(
+        _("Waste Removal Costs Amount"),
+        help_text=_('The quoted waste removal amount to charge by the associate for this job.'),
         max_digits=10,
         decimal_places=2,
         default_currency=WORKERY_APP_DEFAULT_MONEY_CURRENCY,
