@@ -60,12 +60,12 @@ class OrderCompletionTaskOperationSerializer(serializers.Serializer):
     # Step 2 of 4
     was_completed = serializers.BooleanField(required=True)
     reason = serializers.IntegerField(required=False, validators=[cannot_be_zero_or_negative,])
-    reason_other = serializers.CharField(required=False, allow_blank=True)
+    reason_other = serializers.CharField(required=False, allow_blank=True, allow_null=True,)
     completion_date = serializers.DateField(required=True)
 
     # Step 3 of 4
     invoice_date = serializers.DateField(required=False)
-    invoice_ids = serializers.CharField(required=False)
+    invoice_ids = serializers.CharField(required=False, allow_blank=True, allow_null=True,)
     invoice_quote_amount = serializers.FloatField(required=False, validators=[cannot_be_negative,])
     invoice_labour_amount = serializers.FloatField(required=False, validators=[cannot_be_negative,])
     invoice_material_amount = serializers.FloatField(required=False, validators=[cannot_be_negative,])
