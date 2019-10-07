@@ -37,7 +37,8 @@ class FollowUpTaskOperationV2APIView(generics.CreateAPIView):
             'user': request.user,
             'from': client_ip,
             'from_is_public': is_routable,
-            'franchise': request.tenant
+            'franchise': request.tenant,
+            'has_agreed_to_meet': request.data.get("has_agreed_to_meet", None),
         })
         serializer.is_valid(raise_exception=True)
         serializer.save()
