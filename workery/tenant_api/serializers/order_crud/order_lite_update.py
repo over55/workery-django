@@ -50,6 +50,9 @@ class WorkOrderLiteUpdateSerializer(serializers.ModelSerializer):
             'tags',
             'skill_sets',
             'description',
+            'assignment_date',
+            'completion_date',
+            'is_home_support_service'
         )
 
     def update(self, instance, validated_data):
@@ -57,6 +60,9 @@ class WorkOrderLiteUpdateSerializer(serializers.ModelSerializer):
         Override this function to include extra functionality.
         """
         instance.description = validated_data.get('description', instance.description)
+        instance.assignment_date = validated_data.get('assignment_date', instance.assignment_date)
+        instance.completion_date = validated_data.get('completion_date', instance.completion_date)
+        instance.is_home_support_service = validated_data.get('is_home_support_service', instance.is_home_support_service)
         instance.save()
         logger.info("Updated order object.")
 
