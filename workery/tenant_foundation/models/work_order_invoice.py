@@ -97,9 +97,10 @@ class WorkOrderInvoice(models.Model):
     # REQUIRED PDF FIELDS
     #
 
-    invoice_id = models.BigIntegerField(
+    invoice_id = models.CharField(
         _("Invoice ID"),
         help_text=_('Indicates what invoice ID is referenced on the document.'),
+        max_length=127,
         blank=True,
         null=True,
     )
