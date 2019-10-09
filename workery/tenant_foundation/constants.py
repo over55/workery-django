@@ -104,3 +104,17 @@ TASK_ITEM_TYPE_OF_CHOICES = (
     (FOLLOW_UP_DID_ASSOCIATE_COMPLETE_JOB_TASK_ITEM_TYPE_OF_ID, _('Follow up did associate complete job')),
     (FOLLOW_UP_DID_CUSTOMER_REVIEW_ASSOCIATE_AFTER_JOB_TASK_ITEM_TYPE_OF_ID, _('Follow up did customer review associate after job')),
 )
+
+
+# The following constants are used by the "Work Order" model.
+#
+
+class WORK_ORDER_PAID_TO:
+    ASSOCIATE = 1
+    ORGANIZATION = 2
+
+
+WORK_ORDER_PAID_TO_CHOICES = (
+    (WORK_ORDER_PAID_TO.ASSOCIATE, _('Paid to associate')),
+    (WORK_ORDER_PAID_TO.ORGANIZATION, _('Paid to organization.')),
+)

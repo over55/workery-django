@@ -104,6 +104,7 @@ class WorkOrderRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
     would_customer_refer_our_organization = serializers.BooleanField(read_only=True)
     cloned_from = serializers.IntegerField(read_only=True, allow_null=False, source="cloned_from.id")
     invoice_id = serializers.IntegerField(read_only=True, allow_null=False, source="invoice.order.id")
+    invoice_paid_to = serializers.IntegerField(read_only=True,)
 
     class Meta:
         model = WorkOrder
@@ -194,6 +195,7 @@ class WorkOrderRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
             'was_associate_punctual',
             'was_associate_professional',
             'would_customer_refer_our_organization',
+            'invoice_paid_to',
         )
 
     def setup_eager_loading(cls, queryset):

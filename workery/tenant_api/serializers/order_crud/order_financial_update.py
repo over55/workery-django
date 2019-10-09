@@ -40,6 +40,7 @@ class WorkOrderFinancialUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = WorkOrder
         fields = (
+            'invoice_paid_to',
             'invoice_service_fee',
             'invoice_ids',
             'invoice_service_fee_payment_date',
@@ -65,6 +66,7 @@ class WorkOrderFinancialUpdateSerializer(serializers.ModelSerializer):
         """
         Override this function to include extra functionality.
         """
+        instance.invoice_paid_to = validated_data.get('invoice_paid_to', instance.invoice_paid_to)
         instance.invoice_service_fee = validated_data.get('invoice_service_fee', instance.invoice_service_fee)
         instance.invoice_ids = validated_data.get('invoice_ids', instance.invoice_ids)
         instance.invoice_service_fee_payment_date = validated_data.get('invoice_service_fee_payment_date', instance.invoice_service_fee_payment_date)

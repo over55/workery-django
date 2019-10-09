@@ -20,7 +20,7 @@ from djmoney.models.fields import MoneyField
 from djmoney.money import Money
 from shared_foundation.constants import WORKERY_APP_DEFAULT_MONEY_CURRENCY
 from shared_foundation.models import SharedUser
-from tenant_foundation.constants import UNASSIGNED_JOB_TYPE_OF_ID, JOB_TYPE_OF_CHOICES
+from tenant_foundation.constants import UNASSIGNED_JOB_TYPE_OF_ID, JOB_TYPE_OF_CHOICES, WORK_ORDER_PAID_TO_CHOICES
 from tenant_foundation.utils import *
 
 
@@ -325,6 +325,13 @@ class WorkOrder(models.Model):
         help_text=_('Track whether financials where inputted.'),
         default=True,
         blank=True
+    )
+    invoice_paid_to = models.PositiveSmallIntegerField(
+        _("Invoice Paid to"),
+        help_text=_('Whom was paid by the client for this invoice.'),
+        choices=WORK_ORDER_PAID_TO_CHOICES,
+        blank=True,
+        null=True,
     )
     invoice_date = models.DateField(
         _('Invoice Date'),
@@ -680,6 +687,9 @@ class WorkOrder(models.Model):
             return "Client billing issue"
         else:
             return "Other: "+str(self.closing_reason_other)
+
+    def get_pretty_invoice_paid_to(self):
+        return dict(WORK_ORDER_PAID_TO_CHOICES).get(self.invoice_paid_to)
 
     """
     Override the `save` function to support save cached searchable terms.

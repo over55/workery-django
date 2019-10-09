@@ -45,6 +45,7 @@ class WorkOrderListCreateSerializer(serializers.ModelSerializer):
     state = serializers.ReadOnlyField()
     pretty_state = serializers.ReadOnlyField(source='get_pretty_status')
     type_of = serializers.SerializerMethodField()
+    invoice_paid_to = serializers.IntegerField(read_only=True,)
 
     # created_by = serializers.ReadOnlyField()
     # last_modified_by = serializers.ReadOnlyField()
@@ -81,6 +82,7 @@ class WorkOrderListCreateSerializer(serializers.ModelSerializer):
             'state',
             'pretty_state',
             'type_of',
+            'invoice_paid_to',
 
             # Write only fields.
             'extra_comment',
