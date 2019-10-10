@@ -39,7 +39,7 @@ logger = logging.getLogger(__name__)
 
 
 class WorkOrderInvoiceCreateOrUpdateOperationSerializer(serializers.Serializer):
-    invoice_id = serializers.IntegerField(required=True, write_only=True,)
+    invoice_id = serializers.CharField(required=True, write_only=True, allow_null=False, allow_blank=False,)
     invoice_date = serializers.DateField(required=True, write_only=True,)
 
     line01_qty = serializers.IntegerField(required=True, write_only=True,)
