@@ -54,12 +54,14 @@ class WorkOrderDepositListCreateAPIView(generics.ListCreateAPIView):
         return queryset
 
     @transaction.atomic
-    def post(self, request, format=None):
+    def post(self, request, pk=None):
         """
         Create
         """
+        order_id = utils.int_or_none(pk)
         client_ip, is_routable = get_client_ip(self.request)
         write_serializer = WorkOrderDepositListCreateSerializer(data=request.data, context={
+            'order_id': order_id,
             'created_by': request.user,
             'created_from': client_ip,
             'created_from_is_public': is_routable,
@@ -67,7 +69,7 @@ class WorkOrderDepositListCreateAPIView(generics.ListCreateAPIView):
         })
         write_serializer.is_valid(raise_exception=True)
         order_obj = write_serializer.save()
-        read_serializer = WorkOrderDepositRetrieveUpdateDestroySerializer(order_obj, many=False)
+        read_serializer = WorkOrderDepositRetrieveSerializer(order_obj, many=False)
         return Response(
             data=read_serializer.data,
             status=status.HTTP_201_CREATED

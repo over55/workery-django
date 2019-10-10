@@ -90,7 +90,7 @@ class WorkOrderDeposit(models.Model):
     )
 
     DEPOSIT_FOR_CHOICES = (
-        (DEPOSIT_FOR.LABOUR, _('Labout')),
+        (DEPOSIT_FOR.LABOUR, _('Labour')),
         (DEPOSIT_FOR.MATERIALS, _('Materials')),
         (DEPOSIT_FOR.WASTE_REMOVAL, _('Waste Removal')),
     )
@@ -175,6 +175,18 @@ class WorkOrderDeposit(models.Model):
         blank=True,
         null=True
     )
+    created_from = models.GenericIPAddressField(
+        _("Created from"),
+        help_text=_('The IP address of the creator.'),
+        blank=True,
+        null=True
+    )
+    created_from_is_public = models.BooleanField(
+        _("Is the IP "),
+        help_text=_('Is creator a public IP and is routable.'),
+        default=False,
+        blank=True
+    )
     last_modified_at = models.DateTimeField(auto_now=True)
     last_modified_by = models.ForeignKey(
         SharedUser,
@@ -184,6 +196,18 @@ class WorkOrderDeposit(models.Model):
         blank=True,
         null=True
     )
+    last_modified_from = models.GenericIPAddressField(
+        _("Last modified from"),
+        help_text=_('The IP address of the modifier.'),
+        blank=True,
+        null=True
+    )
+    last_modified_from_is_public = models.BooleanField(
+        _("Is the IP "),
+        help_text=_('Is modifier a public IP and is routable.'),
+        default=False,
+        blank=True
+    )
 
     #
     #  FUNCTIONS
@@ -191,3 +215,12 @@ class WorkOrderDeposit(models.Model):
 
     def __str__(self):
         return str(self.id)
+
+    def get_pretty_deposit_method(self):
+        return str(dict(self.DEPOSIT_METHOD_CHOICES).get(self.deposit_method))
+
+    def get_pretty_paid_to(self):
+        return str(dict(WORK_ORDER_PAID_TO_CHOICES).get(self.paid_to))
+
+    def get_pretty_paid_for(self):
+        return str(dict(self.DEPOSIT_FOR_CHOICES).get(self.paid_for))

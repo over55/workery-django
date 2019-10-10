@@ -36,168 +36,92 @@ logger = logging.getLogger(__name__)
 
 
 class WorkOrderDepositListCreateSerializer(serializers.ModelSerializer):
-    associate_name = serializers.SerializerMethodField()
-    associate_first_name = serializers.ReadOnlyField(source='associate.owner.first_name')
-    associate_last_name = serializers.ReadOnlyField(source='associate.owner.last_name')
-    customer_name = serializers.SerializerMethodField()
-    customer_first_name = serializers.ReadOnlyField(source='customer.owner.first_name')
-    customer_last_name = serializers.ReadOnlyField(source='customer.owner.last_name')
-    latest_pending_task = serializers.ReadOnlyField(source="latest_pending_task.id")
-    state = serializers.ReadOnlyField()
-    pretty_state = serializers.ReadOnlyField(source='get_pretty_status')
-    type_of = serializers.SerializerMethodField()
-    invoice_paid_to = serializers.IntegerField(read_only=True,)
-
-    # created_by = serializers.ReadOnlyField()
-    # last_modified_by = serializers.ReadOnlyField()
-    last_modified = serializers.DateTimeField(read_only=True)
-    tags = serializers.PrimaryKeyRelatedField(many=True, queryset=Tag.objects.all(), allow_null=True)
-
-    # This is a field used in the `create` function if the user enters a
-    # comment. This field is *ONLY* to be used during the POST creation and
-    # will be blank during GET.
-    extra_comment = serializers.CharField(write_only=True, allow_null=True, allow_blank=True, required=False,)
-
-    # The skill_sets that this associate belongs to. We will return primary
-    # keys only. This field is read/write accessible.
-    skill_sets = serializers.PrimaryKeyRelatedField(many=True, queryset=SkillSet.objects.all(), allow_null=True)
-
-    assigned_skill_sets = SkillSetListCreateSerializer(many=True, read_only=True)
-    start_date = serializers.DateField(allow_null=True, required=False)
-    was_survey_conducted = serializers.BooleanField(read_only=True)
-    score = serializers.FloatField(read_only=True)
+    order = serializers.PrimaryKeyRelatedField(many=False, queryset=WorkOrder.objects.all(), allow_null=True)
+    paid_at = serializers.DateField()
+    deposit_method = serializers.IntegerField()
+    deposit_method_label = serializers.ReadOnlyField(source='get_pretty_deposit_method')
+    paid_to = serializers.IntegerField()
+    paid_to_label = serializers.ReadOnlyField(source='get_pretty_paid_to')
+    paid_for = serializers.IntegerField()
+    paid_for_label = serializers.ReadOnlyField(source='get_pretty_paid_for')
+    created_at = serializers.ReadOnlyField()
+    created_by = serializers.ReadOnlyField(source='created_by.get_full_name')
+    last_modified_at = serializers.ReadOnlyField()
+    last_modified_by = serializers.ReadOnlyField(source='last_modified_by.get_full_name')
 
     class Meta:
         model = WorkOrderDeposit
         fields = (
-            # Read only fields.
             'id',
-            'assigned_skill_sets',
-            'associate_name',
-            'associate_first_name',
-            'associate_last_name',
-            'customer_name',
-            'customer_first_name',
-            'customer_last_name',
-            'latest_pending_task',
-            'state',
-            'pretty_state',
-            'type_of',
-            'invoice_paid_to',
-
-            # Write only fields.
-            'extra_comment',
-
-            # Read / write fields.
-            'assignment_date',
-            'associate',
-            'tags',
-            'completion_date',
-            'customer',
-            'hours',
-            'is_ongoing',
-            'is_home_support_service',
-            # 'created_by',
-            # 'last_modified_by',
-            'last_modified',
-            'skill_sets',
-            'description',
-            'start_date',
-            'visits',
-            'was_survey_conducted',
-            'score',
-
-            # Payment
-            'invoice_service_fee_payment_date',
+            'order',
+            'paid_at',
+            'deposit_method',
+            'deposit_method_label',
+            'paid_to',
+            'paid_to_label',
+            'paid_for',
+            'paid_for_label',
+            'amount',
+            'created_at',
+            'created_by',
+            'last_modified_at',
+            'last_modified_by'
         )
 
     def setup_eager_loading(cls, queryset):
         """ Perform necessary eager loading of data. """
         queryset = queryset.prefetch_related(
-            'associate',
-            'tags',
+            'order',
             'created_by',
-            'customer',
-            'comments',
             'last_modified_by',
-            'skill_sets',
-            'latest_pending_task',
         )
         return queryset
 
-    def get_associate_name(self, obj):
-        try:
-            return str(obj.associate)
-        except Exception as e:
-            return None
-
-    def get_customer_name(self, obj):
-        try:
-            return str(obj.customer)
-        except Exception as e:
-            return None
-
-    def get_type_of(self, obj):
-        try:
-            job_type_of = UNASSIGNED_JOB_TYPE_OF_ID
-            if obj.customer.type_of == RESIDENTIAL_CUSTOMER_TYPE_OF_ID:
-                return RESIDENTIAL_JOB_TYPE_OF_ID
-            if obj.customer.type_of == COMMERCIAL_CUSTOMER_TYPE_OF_ID:
-                return COMMERCIAL_JOB_TYPE_OF_ID
-            return job_type_of
-        except Exception as e:
-            return None
-
     def create(self, validated_data):
-        # assignment_date = validated_data.get('assignment_date', None)
-        # associate = validated_data.get('associate', None)
-        # completion_date = validated_data.get('completion_date', None)
-        # customer = validated_data['customer']
-        # hours = validated_data.get('hours', 0)
-        # is_ongoing = validated_data.get('is_ongoing', False)
-        # is_home_support_service = validated_data.get('is_home_support_service', False)
-        # created_by = self.context['created_by']
-        # description = validated_data.get('description', None)
-        # start_date = validated_data.get('start_date', None)
-        # if start_date is None or start_date == None:
-        #     start_date = timezone.now().date()
-        # state = validated_data.get('state', WORK_ORDER_STATE.NEW)
-        # visits = validated_data.get('visits', 1)
-        #
-        # #-------------------------------
-        # # Create our `WorkOrderDeposit` object.
-        # #-------------------------------
-        #
-        # # Assign the job type based off of the customers type.
-        # job_type_of = UNASSIGNED_JOB_TYPE_OF_ID
-        # if customer.type_of == RESIDENTIAL_CUSTOMER_TYPE_OF_ID:
-        #     job_type_of = RESIDENTIAL_JOB_TYPE_OF_ID
-        # if customer.type_of == COMMERCIAL_CUSTOMER_TYPE_OF_ID:
-        #     job_type_of = COMMERCIAL_JOB_TYPE_OF_ID
-        #
-        # # Create our object.
-        # order = WorkOrderDeposit.objects.create(
-        #     customer=customer,
-        #     associate=associate,
-        #     type_of=job_type_of,
-        #     assignment_date=assignment_date,
-        #     is_ongoing=is_ongoing,
-        #     is_home_support_service=is_home_support_service,
-        #     completion_date=completion_date,
-        #     hours=hours,
-        #     created_by=created_by,
-        #     created_from = self.context['created_from'],
-        #     created_from_is_public = self.context['created_from_is_public'],
-        #     last_modified_by=created_by,
-        #     last_modified_from = self.context['created_from'],
-        #     last_modified_from_is_public = self.context['created_from_is_public'],
-        #     description=description,
-        #     start_date=start_date,
-        #     state = state,
-        #     visits = visits,
-        # )
-        logger.info("Created order object.")
+        #---------------------------------------
+        # Get the user inputs from the request.
+        #---------------------------------------
+
+        order = validated_data.get('order', None)
+        paid_at = validated_data.get('paid_at', None)
+        deposit_method = validated_data.get('deposit_method', None)
+        paid_to = validated_data.get('paid_to', None)
+        paid_for = validated_data.get('paid_for', None)
+        amount = validated_data.get('amount', None)
+
+        #---------------------------------------
+        # Create our `OngoingWorkOrder` objects.
+        #---------------------------------------
+
+        deposit = WorkOrderDeposit.objects.create(
+            order=order,
+            paid_at=paid_at,
+            deposit_method=deposit_method,
+            paid_to=paid_to,
+            paid_for=paid_for,
+            amount=amount,
+            created_by = self.context['created_by'],
+            created_from = self.context['created_from'],
+            created_from_is_public = self.context['created_from_is_public'],
+            last_modified_by = self.context['created_by'],
+            last_modified_from = self.context['created_from'],
+            last_modified_from_is_public = self.context['created_from_is_public'],
+        )
+
+        #---------------------------------------
+        # Calculate the new deposit amount.
+        #---------------------------------------
+
+        deposits = WorkOrderDeposit.objects.filter(order=order)
+        amount = 0
+        for deposit in deposits.all():
+            amount += deposit.amount.amount
+
+        order.invoice_deposit_amount = Money(amount, constants.WORKERY_APP_DEFAULT_MONEY_CURRENCY)
+        order.last_modified_by = self.context['created_by']
+        order.last_modified_from = self.context['created_from']
+        order.last_modified_from_is_public = self.context['created_from_is_public']
+        order.save()
 
         # Return our validated data.
-        return None
-        # return order
+        return deposit
