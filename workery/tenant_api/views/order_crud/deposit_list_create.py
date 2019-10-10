@@ -12,6 +12,7 @@ from rest_framework import authentication, viewsets, permissions, status
 from rest_framework.response import Response
 
 from shared_foundation.custom.drf.permissions import IsAuthenticatedAndIsActivePermission
+from shared_foundation import utils
 from tenant_api.filters.order_deposit import WorkOrderDepositFilter
 from tenant_api.pagination import TinyResultsSetPagination
 from tenant_api.permissions.order import (
@@ -37,8 +38,11 @@ class WorkOrderDepositListCreateAPIView(generics.ListCreateAPIView):
         """
         List
         """
+        # Extract the order id.
+        order_id = utils.int_or_none(self.kwargs.get("pk"))
+
         # Fetch all the queries.
-        queryset = WorkOrderDeposit.objects.all().order_by('-created')
+        queryset = WorkOrderDeposit.objects.filter(order=order_id).order_by('-created_at')
         s = self.get_serializer_class()
         queryset = s.setup_eager_loading(self, queryset)
 
