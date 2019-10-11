@@ -51,9 +51,6 @@ def cannot_be_negative(value):
     return value
 
 
-#TODO: INTEGRATE
-
-
 class OrderCompletionTaskOperationSerializer(serializers.Serializer):
     task_item = serializers.PrimaryKeyRelatedField(many=False, queryset=TaskItem.objects.all(), required=True)
 
@@ -64,7 +61,7 @@ class OrderCompletionTaskOperationSerializer(serializers.Serializer):
     completion_date = serializers.DateField(required=True)
 
     # Step 3 of 4
-    invoice_date = serializers.DateField(required=False)
+    invoice_date = serializers.DateField(required=False,allow_null=True,)
     invoice_ids = serializers.CharField(required=False, allow_blank=True, allow_null=True,)
     invoice_quote_amount = serializers.FloatField(required=False, validators=[cannot_be_negative,])
     invoice_labour_amount = serializers.FloatField(required=False, validators=[cannot_be_negative,])
@@ -74,7 +71,7 @@ class OrderCompletionTaskOperationSerializer(serializers.Serializer):
     invoice_service_fee_amount = serializers.FloatField(required=False, validators=[cannot_be_negative,])
 
     # Step 4 of 4
-    comment = serializers.CharField(required=True, allow_blank=False)
+    comment = serializers.CharField(required=False, allow_blank=True)
 
     # Meta Information.
     class Meta:
@@ -194,20 +191,21 @@ class OrderCompletionTaskOperationSerializer(serializers.Serializer):
         logger.info("Job financials where updated.")
 
         # Step 4 of 4
-        comment_obj = Comment.objects.create(
-            created_by=self.context['user'],
-            last_modified_by=self.context['user'],
-            text=comment_text,
-            created_from = self.context['from'],
-            created_from_is_public = self.context['from_is_public']
-        )
-        WorkOrderComment.objects.create(
-            about=task_item.job,
-            comment=comment_obj,
-        )
+        if comment_text != None and comment_text != "":
+            comment_obj = Comment.objects.create(
+                created_by=self.context['user'],
+                last_modified_by=self.context['user'],
+                text=comment_text,
+                created_from = self.context['from'],
+                created_from_is_public = self.context['from_is_public']
+            )
+            WorkOrderComment.objects.create(
+                about=task_item.job,
+                comment=comment_obj,
+            )
 
-        # For debugging purposes only.
-        logger.info("Job comment created.")
+            # For debugging purposes only.
+            logger.info("Job comment created.")
 
         #----------------------------------------#
         # Lookup our Task(s) and close them all. #
