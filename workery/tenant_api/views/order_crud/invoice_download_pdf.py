@@ -152,7 +152,7 @@ class WorkOrderInvoiceDownloadPDFAPIView(generics.RetrieveAPIView):
                 totalLabour = str(invoice.total_labour),
                 totalMaterials = str(invoice.total_materials),
                 wasteRemoval = str(invoice.waste_removal),
-                subTotal = str(invoice.sub_total),
+                amountDue = str(invoice.amount_due),
                 tax = str(invoice.tax),
                 total = str(invoice.total),
                 deposit = str(invoice.deposit),
