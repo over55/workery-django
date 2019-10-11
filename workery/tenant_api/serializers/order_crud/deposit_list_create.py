@@ -118,6 +118,7 @@ class WorkOrderDepositListCreateSerializer(serializers.ModelSerializer):
             amount += deposit.amount.amount
 
         order.invoice_deposit_amount = Money(amount, constants.WORKERY_APP_DEFAULT_MONEY_CURRENCY)
+        order.invoice_amount_due = order.invoice_total_amount - order.invoice_deposit_amount
         order.last_modified_by = self.context['created_by']
         order.last_modified_from = self.context['created_from']
         order.last_modified_from_is_public = self.context['created_from_is_public']
