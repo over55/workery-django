@@ -46,6 +46,7 @@ class WorkOrderListCreateSerializer(serializers.ModelSerializer):
     pretty_state = serializers.ReadOnlyField(source='get_pretty_status')
     type_of = serializers.SerializerMethodField()
     invoice_paid_to = serializers.IntegerField(read_only=True,)
+    invoice = serializers.PrimaryKeyRelatedField(many=False, allow_null=True, read_only=True,)
 
     # created_by = serializers.ReadOnlyField()
     # last_modified_by = serializers.ReadOnlyField()
@@ -83,6 +84,7 @@ class WorkOrderListCreateSerializer(serializers.ModelSerializer):
             'pretty_state',
             'type_of',
             'invoice_paid_to',
+            'invoice',
 
             # Write only fields.
             'extra_comment',
@@ -121,6 +123,7 @@ class WorkOrderListCreateSerializer(serializers.ModelSerializer):
             'last_modified_by',
             'skill_sets',
             'latest_pending_task',
+            'invoice',
         )
         return queryset
 

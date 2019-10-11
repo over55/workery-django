@@ -242,7 +242,7 @@ class WorkOrderInvoiceCreateOrUpdateOperationSerializer(serializers.Serializer):
                 'total_labour': order.invoice_labour_amount,
                 'total_materials': order.invoice_material_amount,
                 # 'waste_removal': //TODO: IMPLEMENT
-                'amount_due': order.amount_due,
+                'amount_due': order.invoice_amount_due,
                 'tax': order.invoice_tax_amount,
                 'total':  order.invoice_total_amount,
                 'deposit': order.invoice_deposit_amount,
