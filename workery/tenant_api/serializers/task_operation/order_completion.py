@@ -58,7 +58,7 @@ class OrderCompletionTaskOperationSerializer(serializers.Serializer):
     was_completed = serializers.BooleanField(required=True)
     reason = serializers.IntegerField(required=False, validators=[cannot_be_zero_or_negative,])
     reason_other = serializers.CharField(required=False, allow_blank=True, allow_null=True,)
-    completion_date = serializers.DateField(required=True)
+    completion_date = serializers.DateField(required=False, allow_null=True,)
 
     # Step 3 of 4
     invoice_date = serializers.DateField(required=False,allow_null=True,)
@@ -71,7 +71,7 @@ class OrderCompletionTaskOperationSerializer(serializers.Serializer):
     invoice_service_fee_amount = serializers.FloatField(required=False, validators=[cannot_be_negative,])
 
     # Step 4 of 4
-    comment = serializers.CharField(required=False, allow_blank=True)
+    comment = serializers.CharField(required=False, allow_blank=True, allow_null=True,)
 
     # Meta Information.
     class Meta:
@@ -122,6 +122,12 @@ class OrderCompletionTaskOperationSerializer(serializers.Serializer):
                 'name': str(task_item.last_modified_by)
             }))
 
+        was_completed = data.get('was_completed', None)
+        if was_completed:
+            completion_date = data.get('completion_date', None)
+            if completion_date != None and completion_date != "":
+                raise serializers.ValidationError(_("Please provide a completion date if you completed the task."))
+
         # Return our data.
         return data
 
@@ -159,13 +165,13 @@ class OrderCompletionTaskOperationSerializer(serializers.Serializer):
         # Step 2 of 4
         if was_completed:
             task_item.job.state = WORK_ORDER_STATE.COMPLETED_BUT_UNPAID
+            task_item.job.completion_date = completion_date
             logger.info("Job was completed put unpaid.")  # For debugging purposes only.
         else:
             task_item.job.closing_reason = reason
             task_item.job.closing_reason_other = reason_other
             task_item.job.state = WORK_ORDER_STATE.CANCELLED
             logger.info("Job was cancelled.")  # For debugging purposes only.
-        task_item.job.completion_date = completion_date
         task_item.job.last_modified_by = self.context['user']
         task_item.job.latest_pending_task = None
 
