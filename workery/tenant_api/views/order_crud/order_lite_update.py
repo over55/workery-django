@@ -28,6 +28,7 @@ class WorkOrderLiteUpdateAPIView(generics.UpdateAPIView):
         CanRetrieveUpdateDestroyWorkOrderPermission
     )
 
+    @transaction.atomic
     def put(self, request, pk=None):
         """
         Update

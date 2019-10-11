@@ -63,6 +63,7 @@ class WorkOrderInvoiceDownloadPDFAPIView(generics.RetrieveAPIView):
 
     renderer_classes=(BinaryFileRenderer,)
 
+    @transaction.atomic
     def get(self, request, pk=None):
         """
         Retrieve
