@@ -37,6 +37,7 @@ class AssociateContactUpdateAPIView(generics.RetrieveUpdateDestroyAPIView):
         associate = get_object_or_404(Associate, pk=pk)
         self.check_object_permissions(request, associate)  # Validate permissions.
         write_serializer = AssociateContactUpdateSerializer(associate, data=request.data, context={
+            'associate': associate,
             'last_modified_by': request.user,
             'last_modified_from': client_ip,
             'last_modified_from_is_public': is_routable,

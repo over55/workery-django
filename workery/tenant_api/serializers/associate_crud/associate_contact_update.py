@@ -20,6 +20,7 @@ from shared_foundation.constants import *
 from shared_foundation.custom.drf.validation import MatchingDuelFieldsValidator, EnhancedPasswordStrengthFieldValidator
 from shared_foundation.models import SharedUser
 # from tenant_api.serializers.associate_comment import AssociateCommentSerializer
+from tenant_foundation.constants import COMMERCIAL_ASSOCIATE_TYPE_OF_ID, UNASSIGNED_ASSOCIATE_TYPE_OF_ID
 from tenant_api.serializers.skill_set import SkillSetListCreateSerializer
 from tenant_api.serializers.tag import TagListCreateSerializer
 from tenant_api.serializers.insurance_requirement import InsuranceRequirementListCreateSerializer
@@ -43,7 +44,9 @@ class AssociateContactUpdateSerializer(serializers.ModelSerializer):
     # OVERRIDE THE MODEL FIELDS AND ENFORCE THE FOLLOWING CUSTOM VALIDATION RULES.
     organization_name = serializers.CharField(
         required=False,
-        validators=[]
+        validators=[],
+        allow_null=True,
+        allow_blank=True,
     )
     organization_type_of = serializers.IntegerField(
         required=False,
@@ -115,6 +118,16 @@ class AssociateContactUpdateSerializer(serializers.ModelSerializer):
         """
         if value is None:
             raise serializers.ValidationError("This field may not be blank.")
+        return value
+
+    def validate_organization_name(self, value):
+        """
+        Include validation on no-blanks
+        """
+        associate = self.context['associate']
+        if associate.type_of == COMMERCIAL_ASSOCIATE_TYPE_OF_ID or associate.type_of == UNASSIGNED_ASSOCIATE_TYPE_OF_ID:
+            if value is None:
+                raise serializers.ValidationError("This field may not be blank.")
         return value
 
     @transaction.atomic
