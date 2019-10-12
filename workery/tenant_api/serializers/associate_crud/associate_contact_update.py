@@ -130,6 +130,13 @@ class AssociateContactUpdateSerializer(serializers.ModelSerializer):
                 raise serializers.ValidationError("This field may not be blank.")
         return value
 
+    def validate_organization_type_of(self, value):
+        associate = self.context['associate']
+        if associate.type_of == COMMERCIAL_ASSOCIATE_TYPE_OF_ID or associate.type_of == UNASSIGNED_ASSOCIATE_TYPE_OF_ID:
+            if value is None or value == 1:
+                raise serializers.ValidationError("This field may not be blank.")
+        return value
+
     @transaction.atomic
     def update(self, instance, validated_data):
         """
