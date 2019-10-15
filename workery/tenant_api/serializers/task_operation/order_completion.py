@@ -125,7 +125,7 @@ class OrderCompletionTaskOperationSerializer(serializers.Serializer):
         was_completed = data.get('was_completed', None)
         if was_completed:
             completion_date = data.get('completion_date', None)
-            if completion_date != None and completion_date != "":
+            if completion_date == None or completion_date == "":
                 raise serializers.ValidationError(_("Please provide a completion date if you completed the task."))
 
         # Return our data.
