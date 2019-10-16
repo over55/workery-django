@@ -82,6 +82,8 @@ class WorkOrderInvoiceDownloadPDFAPIView(generics.RetrieveAPIView):
             invoice.client_address = order.customer.get_postal_address()
             invoice.client_telephone = str(order.customer.telephone)
             invoice.client_email = order.customer.email
+            invoice.invoice_id = order.invoice_ids
+            invoice.invoice_date = order.invoice_date
             invoice.invoice_associate_tax = order.associate.tax_id
             invoice.total_labour = order.invoice_labour_amount
             invoice.total_materials = order.invoice_material_amount
