@@ -10,6 +10,7 @@ Special thanks to the following resources:
 import grpc
 import django_filters
 import datetime
+import phonenumbers
 from ipware import get_client_ip
 from freezegun import freeze_time
 # from django_filters import rest_framework as filters
@@ -100,10 +101,10 @@ class WorkOrderInvoiceDownloadPDFAPIView(generics.RetrieveAPIView):
                 invoiceId=str(invoice.invoice_id),
                 invoiceDate=invoice.invoice_date.strftime('%B %d, %Y'),
                 associateName=str(invoice.associate_name),
-                associateTelephone = str(invoice.associate_telephone),
+                associateTelephone = order.associate.telephone.format_as(phonenumbers.PhoneNumberFormat.NATIONAL),
                 clientName = str(invoice.client_name),
                 clientAddress = str(invoice.client_address),
-                clientTelephone = str(invoice.client_telephone),
+                clientTelephone = invoice.client_telephone.format_as(phonenumbers.PhoneNumberFormat.NATIONAL),
                 clientEmail = str(invoice.client_email),
                 line01Quantity = str(invoice.line_01_qty),
                 line01Description = str(invoice.line_01_desc),
