@@ -156,8 +156,6 @@ class WorkOrderInvoiceCreateOrUpdateOperationSerializer(serializers.Serializer):
         work_order_id = validated_data.get('work_order_id', None)
         order = WorkOrder.objects.get(id=work_order_id)
 
-        print(">>", order.associate.tax_id);
-
         #------------------#
         # Process the data #
         #------------------#
@@ -267,6 +265,9 @@ class WorkOrderInvoiceCreateOrUpdateOperationSerializer(serializers.Serializer):
         )
 
         order.invoice = invoice
+        order.last_modified_by = self.context['user']
+        order.last_modified_from = self.context['from']
+        order.last_modified_from_is_public = self.context['from_is_public']
         order.save()
 
         # raise serializers.ValidationError("ccc") # For debuggingp purposes only.
