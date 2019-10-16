@@ -204,7 +204,7 @@ class WorkOrderInvoiceCreateOrUpdateOperationSerializer(serializers.Serializer):
                 'line_08_price': validated_data.get('line08_price', 0),
                 'line_08_amount': validated_data.get('line08_amount', 0),
                 'line_09_qty': validated_data.get('line09_qty', None),
-                'line_09_desc': Truncator(validated_data.get('line9_desc', None)).chars(45),
+                'line_09_desc': Truncator(validated_data.get('line09_desc', None)).chars(45),
                 'line_09_price': validated_data.get('line09_price', 0),
                 'line_09_amount': validated_data.get('line09_amount', 0),
                 'line_10_qty': validated_data.get('line10_qty', None),
