@@ -11,6 +11,7 @@ import grpc
 import django_filters
 import datetime
 from ipware import get_client_ip
+from freezegun import freeze_time
 # from django_filters import rest_framework as filters
 from django.conf import settings
 from django.db import transaction
@@ -72,101 +73,24 @@ class WorkOrderInvoiceDownloadPDFAPIView(generics.RetrieveAPIView):
         order = invoice.order
         self.check_object_permissions(request, invoice.order)  # Validate permissions.
 
-        # The following code will update the invoice with the latest date from
+        # The following code will update the invoice with the latest data from
         # the work order.
-        invoice.associate_name = str(order.associate)
-        invoice.associate_telephone = str(order.associate.telephone)
-        invoice.client_name = str(order.customer)
-        invoice.clien_telephone = str(order.customer.telephone)
-        #TODO: IMPLEMENT...
-        invoice.save()
-        # invoice.clientAddress = str(invoice.client_address),
-        # invoice.clientTelephone = str(invoice.client_telephone),
-        # invoice.clientEmail = str(invoice.client_email),
-        # invoice.line01Quantity = str(invoice.line_01_qty),
-        # invoice.line01Description = str(invoice.line_01_desc),
-        # invoice.line01Price = str(invoice.line_01_price),
-        # invoice.line01Amount = str(invoice.line_01_amount),
-        # invoice.line02Quantity =  str(invoice.line_02_qty) if invoice.line_02_qty else "",
-        # invoice.line02Description = str(invoice.line_02_desc) if invoice.line_02_qty else "",
-        # invoice.line02Price = str(invoice.line_02_price) if invoice.line_02_qty else "",
-        # invoice.line02Amount = str(invoice.line_02_amount) if invoice.line_02_qty else "",
-        # invoice.line03Quantity = str(invoice.line_03_qty) if invoice.line_03_qty else "",
-        # invoice.line03Description = str(invoice.line_03_desc) if invoice.line_03_qty else "",
-        # invoice.line03Price = str(invoice.line_03_price) if invoice.line_03_qty else "",
-        # invoice.line03Amount = str(invoice.line_03_amount) if invoice.line_03_qty else "",
-        # invoice.line04Quantity = str(invoice.line_04_qty) if invoice.line_04_qty else "",
-        # invoice.line04Description = str(invoice.line_04_desc) if invoice.line_04_qty else "",
-        # invoice.line04Price = str(invoice.line_04_price) if invoice.line_04_qty else "",
-        # invoice.line04Amount = str(invoice.line_04_amount) if invoice.line_04_qty else "",
-        # invoice.line05Quantity = str(invoice.line_05_qty) if invoice.line_05_qty else "",
-        # invoice.line05Description = str(invoice.line_05_desc) if invoice.line_05_qty else "",
-        # invoice.line05Price = str(invoice.line_05_price) if invoice.line_05_qty else "",
-        # invoice.line05Amount = str(invoice.line_05_amount) if invoice.line_05_qty else "",
-        # invoice.line06Quantity = str(invoice.line_06_qty) if invoice.line_06_qty else "",
-        # invoice.line06Description = str(invoice.line_06_desc) if invoice.line_06_qty else "",
-        # invoice.line06Price = str(invoice.line_06_price) if invoice.line_06_qty else "",
-        # invoice.line06Amount = str(invoice.line_06_amount) if invoice.line_06_qty else "",
-        # invoice.line07Quantity = str(invoice.line_07_qty) if invoice.line_07_qty else "",
-        # invoice.line07Description = str(invoice.line_07_desc) if invoice.line_07_qty else "",
-        # invoice.line07Price = str(invoice.line_07_price) if invoice.line_07_qty else "",
-        # invoice.line07Amount = str(invoice.line_07_amount) if invoice.line_07_qty else "",
-        # invoice.line08Quantity = str(invoice.line_08_qty) if invoice.line_08_qty else "",
-        # invoice.line08Description = str(invoice.line_08_desc) if invoice.line_08_qty else "",
-        # invoice.line08Price = str(invoice.line_08_price) if invoice.line_08_qty else "",
-        # invoice.line08Amount = str(invoice.line_08_amount) if invoice.line_08_qty else "",
-        # invoice.line09Quantity = str(invoice.line_09_qty) if invoice.line_09_qty else "",
-        # invoice.line09Description = str(invoice.line_09_desc) if invoice.line_09_qty else "",
-        # invoice.line09Price = str(invoice.line_09_price) if invoice.line_09_qty else "",
-        # invoice.line09Amount = str(invoice.line_09_amount) if invoice.line_09_qty else "",
-        # invoice.line10Quantity = str(invoice.line_10_qty) if invoice.line_10_qty else "",
-        # invoice.line10Description = str(invoice.line_10_desc) if invoice.line_10_qty else "",
-        # invoice.line10Price = str(invoice.line_10_price) if invoice.line_10_qty else "",
-        # invoice.line10Amount = str(invoice.line_10_amount) if invoice.line_10_qty else "",
-        # invoice.line11Quantity = str(invoice.line_11_qty) if invoice.line_11_qty else "",
-        # invoice.line11Description = str(invoice.line_11_desc) if invoice.line_11_qty else "",
-        # invoice.line11Price = str(invoice.line_11_price) if invoice.line_11_qty else "",
-        # invoice.line11Amount = str(invoice.line_11_amount) if invoice.line_11_qty else "",
-        # invoice.line12Quantity = str(invoice.line_12_qty) if invoice.line_12_qty else "",
-        # invoice. = str(invoice.line_12_desc) if invoice.line_12_qty else "",
-        # invoice.line12Price = str(invoice.line_12_price) if invoice.line_12_qty else "",
-        # invoice.line12Amount = str(invoice.line_12_amount) if invoice.line_12_qty else "",
-        # invoice.line13Quantity = str(invoice.line_13_qty) if invoice.line_13_qty else "",
-        # invoice.line13Description = str(invoice.line_13_desc) if invoice.line_13_qty else "",
-        # invoice.line13Price = str(invoice.line_13_price) if invoice.line_13_qty else "",
-        # invoice.line13Amount = str(invoice.line_13_amount) if invoice.line_13_qty else "",
-        # line14Quantity = str(invoice.line_14_qty) if invoice.line_14_qty else "",
-        # line14Description = str(invoice.line_14_desc) if invoice.line_14_qty else "",
-        # line14Price = str(invoice.line_14_price) if invoice.line_14_qty else "",
-        # line14Amount = str(invoice.line_14_amount) if invoice.line_14_qty else "",
-        # line15Quantity = str(invoice.line_15_qty) if invoice.line_15_qty else "",
-        # line15Description = str(invoice.line_15_desc) if invoice.line_15_qty else "",
-        # line15Price = str(invoice.line_15_price) if invoice.line_15_qty else "",
-        # line15Amount = str(invoice.line_15_amount) if invoice.line_15_qty else "",
-        # invoiceQuoteDays = str(invoice.invoice_quote_days),
-        # invoiceAssociateTax = str(invoice.invoice_associate_tax),
-        # invoiceQuoteDate = invoice.invoice_quote_date.strftime('%B %d, %Y'),
-        # invoiceCustomersApproval = str(invoice.invoice_customers_approval),
-        # line01Notes = str(invoice.line_01_notes),
-        # line02Notes = str(invoice.line_02_notes) if invoice.line_02_notes else "",
-        # totalLabour = str(invoice.total_labour),
-        # totalMaterials = str(invoice.total_materials),
-        # wasteRemoval = str(invoice.waste_removal),
-        # amountDue = str(invoice.amount_due),
-        # tax = str(invoice.tax),
-        # total = str(invoice.total),
-        # deposit = str(invoice.deposit),
-        # paymentAmount = str(invoice.payment_amount),
-        # paymentDate = invoice.payment_date.strftime('%B %d, %Y'),
-        # cash = "X" if invoice.is_cash else "",
-        # cheque = "X" if invoice.is_cheque else "",
-        # debit = "X" if invoice.is_debit else "",
-        # credit = "X" if invoice.is_credit else "",
-        # other = "X" if invoice.is_other else "",
-        # clientSignature = str(invoice.client_signature),
-        # associateSignDate = invoice.associate_sign_date.strftime('%B %d, %Y'),
-        # associateSignature = str(invoice.associate_signature),
-        # workOrderId = str(invoice.work_order_id),
+        with freeze_time(order.last_modified):
+            invoice.associate_name = str(order.associate)
+            invoice.associate_telephone = str(order.associate.telephone)
+            invoice.client_name = str(order.customer)
+            invoice.client_address = order.customer.get_postal_address()
+            invoice.client_telephone = str(order.customer.telephone)
+            invoice.client_email = order.customer.email
+            invoice.invoice_associate_tax = order.associate.tax_id
+            invoice.total_labour = order.invoice_labour_amount
+            invoice.total_materials = order.invoice_material_amount
+            invoice.waste_removal = order.invoice_waste_removal_amount
+            invoice.amount_due = order.invoice_amount_due
+            invoice.tax = order.invoice_tax_amount
+            invoice.total = order.invoice_total_amount
+            invoice.deposit = order.invoice_deposit_amount
+            invoice.save()
 
         with grpc.insecure_channel(settings.WORKERY_INVOICEBUILDER_MICROSERVICE_ADDRESS_AND_PORT) as channel:
             stub = invoice_pb2_grpc.InvoiceBuilderStub(channel)
