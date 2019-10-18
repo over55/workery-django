@@ -89,10 +89,11 @@ class WorkOrderInvoiceDownloadPDFAPIView(generics.RetrieveAPIView):
             invoice.total_labour = order.invoice_labour_amount
             invoice.total_materials = order.invoice_material_amount
             invoice.waste_removal = order.invoice_waste_removal_amount
-            invoice.amount_due = order.invoice_amount_due
+            invoice.sub_total = order.invoice_sub_total_amount
             invoice.tax = order.invoice_tax_amount
             invoice.total = order.invoice_total_amount
             invoice.deposit = order.invoice_deposit_amount
+            invoice.amount_due = order.invoice_amount_due
             invoice.save()
 
         with grpc.insecure_channel(settings.WORKERY_INVOICEBUILDER_MICROSERVICE_ADDRESS_AND_PORT) as channel:
@@ -190,6 +191,7 @@ class WorkOrderInvoiceDownloadPDFAPIView(generics.RetrieveAPIView):
                 associateSignDate = invoice.associate_sign_date.strftime('%B %d, %Y'),
                 associateSignature = str(invoice.associate_signature),
                 workOrderId = str(invoice.work_order_id),
+                subTotal = str(invoice.sub_total),
             ))
 
             # Generate the filename.

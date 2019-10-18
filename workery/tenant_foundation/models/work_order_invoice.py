@@ -714,6 +714,15 @@ class WorkOrderInvoice(models.Model):
         default=Money(0,WORKERY_APP_DEFAULT_MONEY_CURRENCY),
         blank=True,
     )
+    sub_total = MoneyField(
+        _("Sub-Total"),
+        help_text=_('Sub-Total'),
+        max_digits=10,
+        decimal_places=2,
+        default_currency=WORKERY_APP_DEFAULT_MONEY_CURRENCY,
+        default=Money(0,WORKERY_APP_DEFAULT_MONEY_CURRENCY),
+        blank=True,
+    )
     tax = MoneyField(
         _("Tax"),
         help_text=_('Tax'),
