@@ -106,6 +106,7 @@ class WorkOrderRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
     invoice_id = serializers.IntegerField(read_only=True, allow_null=False, source="invoice.order.id")
     invoice_paid_to = serializers.IntegerField(read_only=True,)
     invoice_deposit_amount = serializers.CharField(read_only=True, source="invoice_deposit_amount.amount")
+    invoice_sub_total_amount = serializers.CharField(read_only=True, source="invoice_sub_total_amount.amount")
 
     class Meta:
         model = WorkOrder
@@ -147,6 +148,7 @@ class WorkOrderRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
             'invoice_quoted_material_amount',
             'invoice_quoted_waste_removal_amount',
             'invoice_total_quote_amount',
+            'invoice_sub_total_amount',
             'invoice_tax_amount',
             'invoice_deposit_amount',
             'invoice_total_amount',

@@ -419,6 +419,15 @@ class WorkOrder(models.Model):
         default=Money(0,WORKERY_APP_DEFAULT_MONEY_CURRENCY),
         blank=True,
     )
+    invoice_sub_total_amount = MoneyField(
+        _("Invoice Sub-Total Amount"),
+        help_text=_('The sub-total amount charged by the associate for this job. Essentially this is the sub-total without taxes.'),
+        max_digits=10,
+        decimal_places=2,
+        default_currency=WORKERY_APP_DEFAULT_MONEY_CURRENCY,
+        default=Money(0,WORKERY_APP_DEFAULT_MONEY_CURRENCY),
+        blank=True,
+    )
     invoice_tax_amount = MoneyField(
         _("Invoice Tax Amount"),
         help_text=_('The amount charged for taxes by the associate for this job.'),
@@ -430,7 +439,7 @@ class WorkOrder(models.Model):
     )
     invoice_total_amount = MoneyField(
         _("Invoice Total Amount"),
-        help_text=_('The total amount charged by the associate for this job.'),
+        help_text=_('The total amount charged by the associate for this job. Essentially this is the sub-total with taxes'),
         max_digits=10,
         decimal_places=2,
         default_currency=WORKERY_APP_DEFAULT_MONEY_CURRENCY,
