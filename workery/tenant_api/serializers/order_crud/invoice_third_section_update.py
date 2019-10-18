@@ -42,7 +42,6 @@ class WorkOrderInvoiceThirdSectionUpdateSerializer(serializers.ModelSerializer):
     invoice_customers_approval = serializers.CharField(required=True, write_only=True,)
     line01_notes = serializers.CharField(required=True, write_only=True,)
     line02_notes = serializers.CharField(required=False, write_only=True, allow_null=True,)
-    payment_amount = serializers.IntegerField(required=True, write_only=True,)
     payment_date = serializers.DateField(required=True, write_only=True,)
     is_cash = serializers.BooleanField(required=False, write_only=True,)
     is_cheque = serializers.BooleanField(required=False, write_only=True,)
@@ -61,7 +60,6 @@ class WorkOrderInvoiceThirdSectionUpdateSerializer(serializers.ModelSerializer):
             'invoice_customers_approval',
             'line01_notes',
             'line02_notes',
-            'payment_amount',
             'payment_date',
             'is_cash',
             'is_cheque',
@@ -82,7 +80,6 @@ class WorkOrderInvoiceThirdSectionUpdateSerializer(serializers.ModelSerializer):
         instance.invoice_customers_approval = validated_data.get('invoice_customers_approval', instance.invoice_customers_approval)
         instance.line_01_notes = validated_data.get('line01_notes', instance.line_01_notes)
         instance.line_02_notes = validated_data.get('line02_notes', instance.line_02_notes)
-        instance.payment_amount = validated_data.get('payment_amount', instance.payment_amount)
         instance.payment_date = validated_data.get('payment_date', instance.payment_date)
         instance.is_cash = validated_data.get('is_cash', instance.is_cash)
         instance.is_cheque = validated_data.get('is_cheque', instance.is_cheque)

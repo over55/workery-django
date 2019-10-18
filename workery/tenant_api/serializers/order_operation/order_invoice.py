@@ -107,7 +107,6 @@ class WorkOrderInvoiceCreateOrUpdateOperationSerializer(serializers.Serializer):
     invoice_customers_approval = serializers.CharField(required=True, write_only=True,)
     line01_notes = serializers.CharField(required=True, write_only=True,)
     line02_notes = serializers.CharField(required=False, write_only=True, allow_null=True, allow_blank=True,)
-    payment_amount = serializers.FloatField(required=False, write_only=True,)
     payment_date = serializers.DateField(required=True, write_only=True,)
     cash = serializers.BooleanField(required=False, write_only=True,)
     cheque = serializers.BooleanField(required=False, write_only=True,)
@@ -140,7 +139,7 @@ class WorkOrderInvoiceCreateOrUpdateOperationSerializer(serializers.Serializer):
             'line14_qty', ' line14_desc', 'line14_price', 'line14_amount',
             'line15_qty', ' line15_desc', 'line15_price', 'line15_amount',
             'invoice_quote_days', 'invoice_quote_date', 'invoice_customers_approval',
-            'line01_notes', 'line02_notes', 'payment_amount', 'payment_date',
+            'line01_notes', 'line02_notes', 'payment_date',
             'cash', 'cheque', 'debit', 'credit', 'other', 'client_signature',
             'associate_sign_date', 'associate_signature', 'work_order_id',
         )
@@ -245,7 +244,6 @@ class WorkOrderInvoiceCreateOrUpdateOperationSerializer(serializers.Serializer):
                 'tax': order.invoice_tax_amount,
                 'total':  order.invoice_total_amount,
                 'deposit': order.invoice_deposit_amount,
-                'payment_amount': validated_data.get('payment_amount', 0),
                 'payment_date': validated_data.get('payment_date', None),
                 'is_cash': validated_data.get('cash', None),
                 'is_cheque': validated_data.get('cheque', None),

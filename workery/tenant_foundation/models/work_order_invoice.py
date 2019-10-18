@@ -759,7 +759,7 @@ class WorkOrderInvoice(models.Model):
         default=Money(0,WORKERY_APP_DEFAULT_MONEY_CURRENCY),
         blank=True,
     )
-    payment_amount = MoneyField(
+    payment_amount = MoneyField( # THIS FIELD IS DEPRECATED - DO NOT USE IT AS IT WILL BE DELETED IN THE FUTURE.
         _("Payment Amount"),
         help_text=_('Payment Amount'),
         max_digits=10,
