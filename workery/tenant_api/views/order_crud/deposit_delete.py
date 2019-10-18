@@ -16,7 +16,7 @@ from tenant_api.permissions.order import (
    CanListCreateWorkOrderPermission,
    CanRetrieveUpdateDestroyWorkOrderPermission
 )
-from tenant_api.serializers.order_crud import WorkOrderDepositRetrieveSerializer
+from tenant_api.serializers.order_crud import WorkOrderDepositRetrieveDeleteSerializer
 from tenant_foundation.models import WorkOrderDeposit
 
 
@@ -35,7 +35,13 @@ class WorkOrderDepositDeleteAPIView(generics.UpdateAPIView):
         client_ip, is_routable = get_client_ip(self.request)
         deposit = get_object_or_404(WorkOrderDeposit, pk=payment_pk)
         self.check_object_permissions(request, deposit.order)  # Validate permissions.
-        read_serializer = WorkOrderDepositRetrieveSerializer(deposit, many=False)
+        read_serializer = WorkOrderDepositRetrieveDeleteSerializer(deposit, many=False, context={
+            'deposit': deposit,
+            'created_by': request.user,
+            'created_from': client_ip,
+            'created_from_is_public': is_routable,
+            'franchise': request.tenant
+        })
         read_serializer.delete()
         return Response(
             data=read_serializer.data,

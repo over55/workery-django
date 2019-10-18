@@ -20,7 +20,7 @@ from tenant_api.permissions.order import (
    CanRetrieveUpdateDestroyWorkOrderPermission
 )
 from tenant_api.serializers.order_crud import WorkOrderDepositListCreateSerializer
-from tenant_api.serializers.order_crud import WorkOrderDepositRetrieveSerializer
+from tenant_api.serializers.order_crud import WorkOrderDepositRetrieveDeleteSerializer
 from tenant_foundation.models import WorkOrderDeposit
 
 
@@ -69,7 +69,7 @@ class WorkOrderDepositListCreateAPIView(generics.ListCreateAPIView):
         })
         write_serializer.is_valid(raise_exception=True)
         order_obj = write_serializer.save()
-        read_serializer = WorkOrderDepositRetrieveSerializer(order_obj, many=False)
+        read_serializer = WorkOrderDepositRetrieveDeleteSerializer(order_obj, many=False)
         return Response(
             data=read_serializer.data,
             status=status.HTTP_201_CREATED
