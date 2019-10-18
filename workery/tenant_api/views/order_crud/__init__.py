@@ -29,3 +29,4 @@ from tenant_api.views.order_crud.invoice_first_section_update import WorkOrderIn
 from tenant_api.views.order_crud.invoice_second_section_update import WorkOrderInvoiceSecondSectionUpdateAPIView
 from tenant_api.views.order_crud.invoice_third_section_update import WorkOrderInvoiceThirdSectionUpdateAPIView
 from tenant_api.views.order_crud.deposit_list_create import WorkOrderDepositListCreateAPIView
+from tenant_api.views.order_crud.deposit_delete import WorkOrderDepositDeleteAPIView

@@ -145,3 +145,6 @@ class WorkOrderDepositListCreateSerializer(serializers.ModelSerializer):
 
         # Return our validated data.
         return deposit
+
+    def delete(self, validated_data):
+        return validated_data

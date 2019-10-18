@@ -55,3 +55,46 @@ class WorkOrderDepositRetrieveSerializer(serializers.ModelSerializer):
             'last_modified_at',
             'last_modified_by'
         )
+
+    
+    #     #---------------------------------------
+    #     # Calculate the new deposit amount.
+    #     #---------------------------------------
+    #
+    #     deposits = WorkOrderDeposit.objects.filter(order=order)
+    #     amount = 0
+    #     for deposit in deposits.all():
+    #         amount += deposit.amount.amount
+    #
+    #     order.invoice_deposit_amount = Money(amount, constants.WORKERY_APP_DEFAULT_MONEY_CURRENCY)
+    #     order.invoice_amount_due = order.invoice_total_amount - order.invoice_deposit_amount
+    #     order.last_modified_by = self.context['created_by']
+    #     order.last_modified_from = self.context['created_from']
+    #     order.last_modified_from_is_public = self.context['created_from_is_public']
+    #     order.save()
+    #
+    #     #---------------------------------------
+    #     # Create a comment with special text.
+    #     #---------------------------------------
+    #     comment_text = str(self.context['created_by'])+" recorded a payment of $" + str(amount) + " on " + str(self.context['franchise'].get_todays_date_plus_days())
+    #     comment = Comment.objects.create(
+    #         created_by=self.context['created_by'],
+    #         created_from = self.context['created_from'],
+    #         created_from_is_public = self.context['created_from_is_public'],
+    #         last_modified_by=self.context['created_by'],
+    #         last_modified_from = self.context['created_from'],
+    #         last_modified_from_is_public = self.context['created_from_is_public'],
+    #         text=comment_text,
+    #     )
+    #     WorkOrderComment.objects.create(
+    #         about=order,
+    #         comment=comment,
+    #     )
+    #     logger.info("Created and attached comment to order.")
+    #
+    #     # Return our validated data.
+    #     return deposit
+
+    def delete(self):
+        print("Created and attached comment to order.")
+        return None
