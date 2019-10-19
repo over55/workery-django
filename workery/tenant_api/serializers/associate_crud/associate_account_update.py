@@ -33,7 +33,8 @@ from tenant_foundation.models import (
     Organization,
     VehicleType,
     HowHearAboutUsItem,
-    TaskItem
+    TaskItem,
+    WorkOrderServiceFee
 )
 
 
@@ -45,6 +46,7 @@ class AssociateAccountUpdateSerializer(serializers.ModelSerializer):
     insurance_requirements = serializers.PrimaryKeyRelatedField(many=True, queryset=InsuranceRequirement.objects.all(), allow_null=True)
     emergency_contact_telephone = PhoneNumberField(allow_null=True, required=False)
     emergency_contact_alternative_telephone = PhoneNumberField(allow_null=True, required=False)
+    service_fee = serializers.PrimaryKeyRelatedField(many=False, required=True, allow_null=False, queryset=WorkOrderServiceFee.objects.all())
 
     class Meta:
         model = Associate
@@ -62,6 +64,7 @@ class AssociateAccountUpdateSerializer(serializers.ModelSerializer):
             'vehicle_types',         # many-to-many
             'skill_sets',            # many-to-many
             'insurance_requirements', # many-to-many
+            'service_fee',
 
             # Emergency Contact
             'emergency_contact_name',
@@ -110,6 +113,7 @@ class AssociateAccountUpdateSerializer(serializers.ModelSerializer):
         instance.emergency_contact_relationship=validated_data.get('emergency_contact_relationship', instance.emergency_contact_relationship)
         instance.emergency_contact_telephone=validated_data.get('emergency_contact_telephone', instance.emergency_contact_telephone)
         instance.emergency_contact_alternative_telephone=validated_data.get('emergency_contact_alternative_telephone', instance.emergency_contact_alternative_telephone)
+        instance.service_fee = validated_data.get('service_fee', instance.service_fee) 
         instance.save()
         logger.info("Updated the associate.")
 

@@ -34,7 +34,8 @@ from tenant_foundation.models import (
     Organization,
     VehicleType,
     HowHearAboutUsItem,
-    TaskItem
+    TaskItem,
+    WorkOrderServiceFee
 )
 
 
@@ -188,6 +189,14 @@ class AssociateListCreateSerializer(serializers.ModelSerializer):
     # pretty_tags = serializers.SerializerMethodField()
     score = serializers.FloatField(read_only=True)
 
+    # Attach with our foreign keys.
+    service_fee = serializers.PrimaryKeyRelatedField(
+        many=False,
+        required=True,
+        allow_null=False,
+        queryset=WorkOrderServiceFee.objects.all()
+    )
+
     # Meta Information.
     class Meta:
         model = Associate
@@ -229,6 +238,7 @@ class AssociateListCreateSerializer(serializers.ModelSerializer):
             'skill_sets',             # many-to-many
             'tags',                   # many-to-many
             'insurance_requirements', # many-to-many
+            'service_fee',
 
             # Misc (Read Only)
             # 'comments',
@@ -465,7 +475,7 @@ class AssociateListCreateSerializer(serializers.ModelSerializer):
             how_hear_other=validated_data.get('how_hear_other', None),
             created_from = self.context['created_from'],
             created_from_is_public = self.context['created_from_is_public'],
-            # 'organizations', #TODO: IMPLEMENT.
+            service_fee = validated_data.get('service_fee', None),
 
             # Contact Point
             area_served=validated_data.get('area_served', None),
@@ -700,6 +710,15 @@ class AssociateRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
     score = serializers.FloatField(read_only=True)
     avatar_url = serializers.SerializerMethodField()
 
+    # Attach with our foreign keys.
+    service_fee = serializers.PrimaryKeyRelatedField(
+        many=False,
+        required=True,
+        allow_null=False,
+        queryset=WorkOrderServiceFee.objects.all()
+    )
+    service_fee_label = serializers.CharField(read_only=True, source="service_fee.title", allow_null=True, allow_blank=True,)
+
     class Meta:
         model = Associate
         fields = (
@@ -744,6 +763,8 @@ class AssociateRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
             'skill_sets',            # many-to-many
             'tags',                  # many-to-many
             'insurance_requirements', # many-to-many
+            'service_fee',
+            'service_fee_label',
 
             # Misc (Read Only)
             # 'comments',
@@ -1020,7 +1041,7 @@ class AssociateRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         instance.last_modified_from = self.context['last_modified_from']
         instance.last_modified_from_is_public = self.context['last_modified_from_is_public']
         instance.last_modified_by = self.context['last_modified_by']
-        # 'organizations', #TODO: IMPLEMENT.
+        instance.service_fee=validated_data.get('service_fee', instance.service_fee)
 
         # Contact Point
         instance.area_served=validated_data.get('area_served', instance.area_served)
@@ -1118,6 +1139,9 @@ class AssociateRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         validated_data['last_modified_by'] = self.context['last_modified_by']
         # validated_data['extra_comment'] = None
         # validated_data['assigned_skill_sets'] = instance.skill_sets.all()
+
+        # This is for debugging purposes only.
+        # raise serializers.ValidationError("This is a temporary stop point set by the programmer.")
 
         # Return our validated data.
         return validated_data

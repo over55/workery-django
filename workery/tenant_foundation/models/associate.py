@@ -390,6 +390,14 @@ class Associate(AbstractPerson):
         blank=True,
         null=True,
     )
+    service_fee = models.ForeignKey(
+        "WorkOrderServiceFee",
+        help_text=_('The service fee assigned for this associate.'),
+        related_name="associates",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+    )
 
     #
     #  FUNCTIONS
