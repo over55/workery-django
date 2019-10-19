@@ -77,6 +77,7 @@ class WorkOrderDeposit(models.Model):
         LABOUR = 1
         MATERIALS = 2
         WASTE_REMOVAL = 3
+        AMOUNT_DUE = 4
 
     '''
     CHOICES
@@ -93,6 +94,7 @@ class WorkOrderDeposit(models.Model):
         (DEPOSIT_FOR.LABOUR, _('Labour')),
         (DEPOSIT_FOR.MATERIALS, _('Materials')),
         (DEPOSIT_FOR.WASTE_REMOVAL, _('Waste Removal')),
+        (DEPOSIT_FOR.AMOUNT_DUE, _('Amount Due')),
     )
 
     '''
