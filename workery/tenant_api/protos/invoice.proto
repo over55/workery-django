@@ -85,11 +85,11 @@ message GeneratePDFRequest {
     string totalLabour = 75;
     string totalMaterials = 76;
     string wasteRemoval = 77;
-    string subTotal = 78;
+    string amountDue = 78;
     string tax = 79;
     string total = 80;
     string deposit = 81;
-    string paymentAmount = 82;
+    string paymentAmount = 82; // DEPRECATED - Please do not use this anymore.
     string paymentDate = 83;
     string cash = 84;
     string cheque = 85;
@@ -100,6 +100,7 @@ message GeneratePDFRequest {
     string associateSignDate = 90;
     string associateSignature = 91;
     string workOrderId = 92;
+    string subTotal = 93;
 }
 
 message Chunk {
