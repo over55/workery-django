@@ -28,11 +28,7 @@ from rest_framework.response import Response
 from shared_foundation.custom.drf.permissions import IsAuthenticatedAndIsActivePermission
 from tenant_api.protos import invoice_pb2
 from tenant_api.protos import invoice_pb2_grpc
-from tenant_api.permissions.order import (
-   CanListCreateWorkOrderPermission,
-   CanRetrieveUpdateDestroyWorkOrderPermission
-)
-from tenant_api.serializers.order_crud import WorkOrderInvoiceRetrieveSerializer
+from tenant_api.permissions.invoice import CanRetrieveUpdateDestroyWorkOrderInvoicePermission
 from tenant_foundation.models import WorkOrderInvoice
 
 
@@ -60,7 +56,7 @@ class WorkOrderInvoiceDownloadPDFAPIView(generics.RetrieveAPIView):
     permission_classes = (
         permissions.IsAuthenticated,
         IsAuthenticatedAndIsActivePermission,
-        CanRetrieveUpdateDestroyWorkOrderPermission
+        CanRetrieveUpdateDestroyWorkOrderInvoicePermission
     )
 
     renderer_classes=(BinaryFileRenderer,)
@@ -72,7 +68,7 @@ class WorkOrderInvoiceDownloadPDFAPIView(generics.RetrieveAPIView):
         """
         invoice = get_object_or_404(WorkOrderInvoice, order=pk)
         order = invoice.order
-        self.check_object_permissions(request, invoice.order)  # Validate permissions.
+        self.check_object_permissions(request, invoice)  # Validate permissions.
 
         # The following code will update the invoice with the latest data from
         # the work order.
