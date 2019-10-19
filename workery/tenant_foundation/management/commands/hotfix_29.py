@@ -74,9 +74,6 @@ class Command(BaseCommand):
 
         # Find the default service fee.
         service_fee = WorkOrderServiceFee.objects.get(id=3)
-        self.stdout.write(
-            self.style.SUCCESS(_('Found the 15% service fee with ID #%s.') % str(service_fee.id))
-        )
 
         for associate in Associate.objects.all().iterator(chunk_size=250):
             try:
