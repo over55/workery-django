@@ -72,6 +72,8 @@ class WorkOrderRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
     associate_other_telephone_type_of = serializers.IntegerField(read_only=True, source="associate.other_telephone_type_of")
     associate_pretty_other_telephone_type_of = serializers.CharField(read_only=True, source="associate.get_pretty_other_telephone_type_of")
     associate_tax_id = serializers.ReadOnlyField(source='associate.tax_id')
+    associate_service_fee = serializers.IntegerField(source='associate.service_fee.id', read_only=True,)
+    associate_service_fee_label = serializers.CharField(source='associate.service_fee.title', read_only=True,)
     customer_address = serializers.SerializerMethodField()
     customer_email = serializers.EmailField(read_only=True, source="associate.email")
     customer_full_name = serializers.SerializerMethodField()
@@ -170,7 +172,9 @@ class WorkOrderRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
             'associate_other_telephone_type_of',
             'associate_pretty_other_telephone_type_of',
             'associate_tax_id',
+            'associate_service_fee_label',
             'customer_address',
+            'associate_service_fee',
             'customer_email',
             'customer_full_name',
             'customer_telephone',
