@@ -22,7 +22,6 @@ class TaskItemListPIView(generics.ListAPIView):
     permission_classes = (
         permissions.IsAuthenticated,
         IsAuthenticatedAndIsActivePermission,
-        CanListCreateWorkOrderPermission
     )
     filter_backends = (filters.SearchFilter, DjangoFilterBackend)
     # search_fields = ('@given_name', '@middle_name', '@last_name', '@email', 'telephone',)
@@ -41,6 +40,16 @@ class TaskItemListPIView(generics.ListAPIView):
             'created_by',
             'last_modified_by'
         )
+
+        # The following code will filter out the tasks based on user role. It's
+        # important to note this code is used to handle permission handling
+        # based on roles.
+        if self.request.user.is_staff():
+            pass
+        elif self.request.user.is_associate():
+            queryset = queryset.filter(job__associate__owner=self.request.user)
+        else:
+            queryset = TaskItem.objects.none()
 
         # The following code will use the 'django-filter'
         filter = TaskItemFilter(self.request.GET, queryset=queryset)

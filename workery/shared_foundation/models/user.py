@@ -189,6 +189,16 @@ class SharedUser(AbstractBaseUser, PermissionsMixin):
         """
         return self.is_executive() or self.is_management_staff()
 
+    def is_staff(self):
+        """
+        Function will return True or False depending on whether this user
+        belongs to the staff group.
+        """
+        is_staff = self.groups.filter(id=constants.FRONTLINE_GROUP_ID).exists()
+        is_staff |= self.groups.filter(id=constants.MANAGEMENT_GROUP_ID).exists()
+        is_staff |= self.groups.filter(id=constants.EXECUTIVE_GROUP_ID).exists()
+        return is_staff
+
     def is_associate(self):
         """
         Function will return True or False depending on whether this user
