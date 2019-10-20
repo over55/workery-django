@@ -47,9 +47,14 @@ def get_todays_date_minus_days(days=0):
 
 class NavigationSerializer(serializers.Serializer):
     def to_representation(self, user):
-        tasks_count = TaskItem.objects.filter(
-            is_closed=False
-        ).count()
+        tasks_count = 0
+        if user.is_associate():
+            tasks_count = TaskItem.objects.filter(
+                is_closed=False,
+                job__associate__owner=user,
+            ).count()
+        else:
+            tasks_count = TaskItem.objects.filter(is_closed=False).count()
         return {
             "tasks_count": tasks_count,
         }
