@@ -46,7 +46,7 @@ def get_todays_date_minus_days(days=0):
 
 
 class DashboardSerializer(serializers.Serializer):
-    def to_representation(self, user):
+    def to_staff_representation(self, user):
         # --- COUNTING ---
         customer_count = Customer.objects.filter(
             state=Customer.CUSTOMER_STATE.ACTIVE
@@ -128,3 +128,15 @@ class DashboardSerializer(serializers.Serializer):
             "last_modified_jobs_by_team": lmjbt_s.data,
             "past_few_day_comments": c_s.data,
         }
+
+    def to_associate_representation(self, user):
+        associate = Associate.objects.get(owner=user)
+        return {
+            'balance_owing_amount': str(associate.balance_owing_amount.amount),
+        }
+
+    def to_representation(self, user):
+        if user.is_associate():
+            return self.to_associate_representation(user)
+        else:
+            return self.to_staff_representation(user)
