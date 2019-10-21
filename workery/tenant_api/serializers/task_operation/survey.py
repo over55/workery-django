@@ -169,6 +169,15 @@ class SurveyTaskOperationSerializer(serializers.Serializer):
         # ------------------------------
         # --- UPDATE ASSOCIATE SCORE ---
         # ------------------------------
+        task_item.is_closed = True
+        task_item.last_modified_by = self.context['user']
+        task_item.last_modified_from = self.context['from']
+        task_item.last_modified_from_is_public = self.context['from_is_public']
+        task_item.job.save()
+
+        # ------------------------------
+        # --- UPDATE ASSOCIATE SCORE ---
+        # ------------------------------
         if was_survey_conducted:
             # Compute the score.
             task_item.job.score = 0
