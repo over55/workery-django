@@ -242,7 +242,7 @@ class WorkOrderListCreateSerializer(serializers.ModelSerializer):
         # Create our `Comment` object.
         #-----------------------------
         extra_comment = validated_data.get('extra_comment', None)
-        if extra_comment is not None:
+        if extra_comment is not None and extra_comment is not "":
             comment = Comment.objects.create(
                 created_by=self.context['created_by'],
                 created_from = self.context['created_from'],
@@ -292,8 +292,7 @@ class WorkOrderListCreateSerializer(serializers.ModelSerializer):
         validated_data['assigned_skill_sets'] = order.skill_sets.all()
         validated_data['latest_pending_task'] = first_task.id
 
-        # print(order.ongoing_work_order)
-        # raise serializers.ValidationError("----")
+        # raise serializers.ValidationError("Paused for debugging purposes only.")
 
         # Return our validated data.
         return order
