@@ -319,7 +319,7 @@ class OrderCompletionTaskOperationSerializer(serializers.Serializer):
         task_item.job.last_modified_from_is_public = self.context['from_is_public']
         task_item.job.save()
 
-        raise serializers.ValidationError(_("---")) # FOR DEBUGGING PURPOSES ONLY.
+        # raise serializers.ValidationError(_("---")) # FOR DEBUGGING PURPOSES ONLY.
 
         #--------------------#
         # Updated the output #
