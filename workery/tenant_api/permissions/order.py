@@ -29,18 +29,20 @@ class CanRetrieveUpdateDestroyWorkOrderPermission(permissions.BasePermission):
 
         # --- RETRIEVE ---
         if "GET" in request.method:
-            # # OWNERSHIP BASED
-            # if request.user == obj.owner:
-            #     return True
+            # OWNERSHIP BASED
+            if obj.associate:
+                if request.user == obj.associate.owner:
+                    return True
 
             # PERMISSION BASED
             return has_permission('can_get_order', request.user, request.user.groups.all())
 
         # ---UPDATE ---
         if "PUT" in request.method:
-            # # OWNERSHIP BASED
-            # if request.user == obj.owner:
-            #     return True
+            # OWNERSHIP BASED
+            if obj.associate:
+                if request.user == obj.associate.owner:
+                    return True
 
             # PERMISSION BASED
             return has_permission('can_put_order', request.user, request.user.groups.all())
