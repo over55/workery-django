@@ -29,7 +29,7 @@ class WorkOrderListCreateAPIView(generics.ListCreateAPIView):
     permission_classes = (
         permissions.IsAuthenticated,
         IsAuthenticatedAndIsActivePermission,
-        CanListCreateWorkOrderPermission
+        # CanListCreateWorkOrderPermission # No need for this permission handling.
     )
     filter_backends = (filters.SearchFilter, DjangoFilterBackend)
 
@@ -37,8 +37,14 @@ class WorkOrderListCreateAPIView(generics.ListCreateAPIView):
         """
         List
         """
-        # Fetch all the queries.
-        queryset = WorkOrder.objects.all().order_by('-created')
+        # Fetch queries based by user account.
+        queryset = WorkOrder.objects.none()
+        if self.request.user.is_staff():
+            queryset = WorkOrder.objects.all().order_by('-created')
+        if self.request.user.is_associate():
+            queryset = WorkOrder.objects.filter(associate__owner=self.request.user).order_by('-created')
+
+        # Apply our optimization.
         s = self.get_serializer_class()
         queryset = s.setup_eager_loading(self, queryset)
 
