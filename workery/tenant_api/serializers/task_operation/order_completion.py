@@ -69,7 +69,6 @@ class OrderCompletionTaskOperationSerializer(serializers.Serializer):
     invoice_tax_amount = serializers.FloatField(required=False, validators=[cannot_be_negative,])
     invoice_total_amount = serializers.FloatField(required=False, validators=[cannot_be_negative,])
     invoice_service_fee_amount = serializers.FloatField(required=False, validators=[cannot_be_negative,])
-
     # Step 4 of 4
     comment = serializers.CharField(required=False, allow_blank=True, allow_null=True,)
 
@@ -85,14 +84,27 @@ class OrderCompletionTaskOperationSerializer(serializers.Serializer):
             'completion_date',
 
             # Step 3 of 4
-            'invoice_date',
+            'invoice_paid_to',
+            'invoice_service_fee',
             'invoice_ids',
+            'invoice_service_fee_payment_date',
+            'invoice_date',
             'invoice_quote_amount',
             'invoice_labour_amount',
             'invoice_material_amount',
+            'invoice_waste_removal_amount',
+            'invoice_quoted_labour_amount',
+            'invoice_quoted_material_amount',
+            'invoice_quoted_waste_removal_amount',
+            'invoice_total_quote_amount',
             'invoice_tax_amount',
             'invoice_total_amount',
-            'invoice_service_fee_amount'
+            'invoice_deposit_amount',
+            'invoice_amount_due',
+            'invoice_service_fee_amount',
+            'invoice_actual_service_fee_amount_paid',
+            'state',
+            'invoice_balance_owing_amount',
 
             # Step 4 of 4
             'comment',
@@ -147,14 +159,28 @@ class OrderCompletionTaskOperationSerializer(serializers.Serializer):
         completion_date = validated_data.get('completion_date', None)
 
         # Step 3 of 4
-        invoice_date = validated_data.get('invoice_date', None)
-        invoice_ids = validated_data.get('invoice_ids',  0)
-        invoice_quote_amount = validated_data.get('invoice_quote_amount',  0)
+        invoice_paid_to = validated_data.get('invoice_paid_to')
+        invoice_service_fee = validated_data.get('invoice_service_fee')
+        invoice_ids = validated_data.get('invoice_ids')
+        invoice_service_fee_payment_date = validated_data.get('invoice_service_fee_payment_date')
+        invoice_date = validated_data.get('invoice_date')
+        invoice_quote_amount = validated_data.get('invoice_quote_amount', 0)
         invoice_labour_amount = validated_data.get('invoice_labour_amount',  0)
         invoice_material_amount = validated_data.get('invoice_material_amount',  0)
-        invoice_tax_amount = validated_data.get('invoice_tax_amount',  0)
+        invoice_waste_removal_amount = validated_data.get('invoice_waste_removal_amount',  0)
+        invoice_quoted_labour_amount = validated_data.get('invoice_quoted_labour_amount',  0)
+        invoice_quoted_material_amount = validated_data.get('invoice_quoted_material_amount',  0)
+        invoice_quoted_waste_removal_amount = validated_data.get('invoice_quoted_waste_removal_amount',  0)
+        invoice_total_quote_amount = validated_data.get('invoice_total_quote_amount',  0)
+        invoice_sub_total_amount = validated_data.get('invoice_labour_amount',  0)
+        invoice_tax_amount = validated_data.get('invoice_tax_amount', 0)
         invoice_total_amount = validated_data.get('invoice_total_amount',  0)
+        invoice_deposit_amount = validated_data.get('invoice_deposit_amount',  0)
+        invoice_amount_due = validated_data.get('invoice_amount_due',  0)
         invoice_service_fee_amount = validated_data.get('invoice_service_fee_amount',  0)
+        invoice_actual_service_fee_amount_paid = validated_data.get('invoice_actual_service_fee_amount_paid',  0)
+        state = validated_data.get('state',  0)
+        invoice_balance_owing_amount = validated_data.get('invoice_balance_owing_amount',  0)
 
         # Step 4 of 4
         comment_text = validated_data.get('comment', None)
@@ -178,12 +204,29 @@ class OrderCompletionTaskOperationSerializer(serializers.Serializer):
         # Step 3 of 4
         task_item.job.invoice_date = invoice_date
         task_item.job.invoice_ids = invoice_ids
+        task_item.job.invoice_paid_to = invoice_paid_to
+        task_item.job.invoice_service_fee = invoice_service_fee
         task_item.job.invoice_quote_amount = Money(invoice_quote_amount, WORKERY_APP_DEFAULT_MONEY_CURRENCY)
         task_item.job.invoice_labour_amount = Money(invoice_labour_amount, WORKERY_APP_DEFAULT_MONEY_CURRENCY)
         task_item.job.invoice_material_amount = Money(invoice_material_amount, WORKERY_APP_DEFAULT_MONEY_CURRENCY)
         task_item.job.invoice_tax_amount = Money(invoice_tax_amount, WORKERY_APP_DEFAULT_MONEY_CURRENCY)
         task_item.job.invoice_total_amount = Money(invoice_total_amount, WORKERY_APP_DEFAULT_MONEY_CURRENCY)
         task_item.job.invoice_service_fee_amount = Money(invoice_service_fee_amount, WORKERY_APP_DEFAULT_MONEY_CURRENCY)
+        task_item.job.invoice_service_fee_payment_date = invoice_service_fee_payment_date
+        task_item.job.invoice_waste_removal_amount = Money(invoice_waste_removal_amount, WORKERY_APP_DEFAULT_MONEY_CURRENCY)
+        task_item.job.invoice_quoted_labour_amount = Money(invoice_quoted_labour_amount, WORKERY_APP_DEFAULT_MONEY_CURRENCY)
+        task_item.job.invoice_quoted_material_amount = Money(invoice_quoted_material_amount, WORKERY_APP_DEFAULT_MONEY_CURRENCY)
+        task_item.job.invoice_quoted_waste_removal_amount = Money(invoice_quoted_waste_removal_amount, WORKERY_APP_DEFAULT_MONEY_CURRENCY)
+        task_item.job.invoice_total_quote_amount = Money(invoice_total_quote_amount, WORKERY_APP_DEFAULT_MONEY_CURRENCY)
+        task_item.job.invoice_sub_total_amount = Money(invoice_sub_total_amount, WORKERY_APP_DEFAULT_MONEY_CURRENCY)
+        task_item.job.invoice_tax_amount = Money(invoice_tax_amount, WORKERY_APP_DEFAULT_MONEY_CURRENCY)
+        task_item.job.invoice_total_amount = Money(invoice_total_amount, WORKERY_APP_DEFAULT_MONEY_CURRENCY)
+        task_item.job.invoice_deposit_amount = Money(invoice_deposit_amount, WORKERY_APP_DEFAULT_MONEY_CURRENCY)
+        task_item.job.invoice_amount_due = Money(invoice_amount_due, WORKERY_APP_DEFAULT_MONEY_CURRENCY)
+        task_item.job.invoice_service_fee_amount = Money(invoice_service_fee_amount, WORKERY_APP_DEFAULT_MONEY_CURRENCY)
+        task_item.job.invoice_actual_service_fee_amount_paid = Money(invoice_actual_service_fee_amount_paid, WORKERY_APP_DEFAULT_MONEY_CURRENCY)
+        task_item.job.state = state
+        task_item.job.invoice_balance_owing_amount = Money(invoice_balance_owing_amount, WORKERY_APP_DEFAULT_MONEY_CURRENCY)
 
         # Misc.
         task_item.job.last_modified_by = self.context['user']
@@ -269,6 +312,8 @@ class OrderCompletionTaskOperationSerializer(serializers.Serializer):
         task_item.job.last_modified_from = self.context['from']
         task_item.job.last_modified_from_is_public = self.context['from_is_public']
         task_item.job.save()
+
+        raise serializers.ValidationError(_("---"))
 
         #--------------------#
         # Updated the output #
