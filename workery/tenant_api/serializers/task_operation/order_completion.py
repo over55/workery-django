@@ -63,6 +63,7 @@ class OrderCompletionTaskOperationSerializer(serializers.Serializer):
     # Step 3 of 4
     invoice_date = serializers.DateField(required=False,allow_null=True,)
     invoice_ids = serializers.CharField(required=False, allow_blank=True, allow_null=True,)
+    payment_status = serializers.CharField(required=False, allow_blank=True, allow_null=True,)
     invoice_quote_amount = serializers.FloatField(required=False, validators=[cannot_be_negative,])
     invoice_labour_amount = serializers.FloatField(required=False, validators=[cannot_be_negative,])
     invoice_material_amount = serializers.FloatField(required=False, validators=[cannot_be_negative,])
@@ -87,6 +88,7 @@ class OrderCompletionTaskOperationSerializer(serializers.Serializer):
             'invoice_paid_to',
             'invoice_service_fee',
             'invoice_ids',
+            'payment_status',
             'invoice_service_fee_payment_date',
             'invoice_date',
             'invoice_quote_amount',
@@ -162,6 +164,7 @@ class OrderCompletionTaskOperationSerializer(serializers.Serializer):
         invoice_paid_to = validated_data.get('invoice_paid_to')
         invoice_service_fee = validated_data.get('invoice_service_fee')
         invoice_ids = validated_data.get('invoice_ids')
+        payment_status = validated_data.get('payment_status', None)
         invoice_service_fee_payment_date = validated_data.get('invoice_service_fee_payment_date')
         invoice_date = validated_data.get('invoice_date')
         invoice_quote_amount = validated_data.get('invoice_quote_amount', 0)
@@ -225,8 +228,11 @@ class OrderCompletionTaskOperationSerializer(serializers.Serializer):
         task_item.job.invoice_amount_due = Money(invoice_amount_due, WORKERY_APP_DEFAULT_MONEY_CURRENCY)
         task_item.job.invoice_service_fee_amount = Money(invoice_service_fee_amount, WORKERY_APP_DEFAULT_MONEY_CURRENCY)
         task_item.job.invoice_actual_service_fee_amount_paid = Money(invoice_actual_service_fee_amount_paid, WORKERY_APP_DEFAULT_MONEY_CURRENCY)
-        task_item.job.state = state
         task_item.job.invoice_balance_owing_amount = Money(invoice_balance_owing_amount, WORKERY_APP_DEFAULT_MONEY_CURRENCY)
+
+        # Update the status of the job.
+        if payment_status != None:
+            task_item.job.state = payment_status
 
         # Misc.
         task_item.job.last_modified_by = self.context['user']
@@ -313,7 +319,7 @@ class OrderCompletionTaskOperationSerializer(serializers.Serializer):
         task_item.job.last_modified_from_is_public = self.context['from_is_public']
         task_item.job.save()
 
-        # raise serializers.ValidationError(_("---")) # FOR DEBUGGING PURPOSES ONLY.
+        raise serializers.ValidationError(_("---")) # FOR DEBUGGING PURPOSES ONLY.
 
         #--------------------#
         # Updated the output #
