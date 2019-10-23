@@ -12,10 +12,7 @@ from rest_framework import authentication, viewsets, permissions, status
 from rest_framework.response import Response
 
 from shared_foundation.custom.drf.permissions import IsAuthenticatedAndIsActivePermission
-from tenant_api.permissions.order import (
-   CanListCreateWorkOrderPermission,
-   CanRetrieveUpdateDestroyWorkOrderPermission
-)
+from tenant_api.permissions.invoice import CanRetrieveUpdateDestroyWorkOrderInvoicePermission
 from tenant_api.serializers.order_crud import WorkOrderInvoiceThirdSectionUpdateSerializer
 from tenant_api.serializers.order_crud import WorkOrderInvoiceRetrieveSerializer
 from tenant_foundation.models import WorkOrderInvoice
@@ -25,7 +22,7 @@ class WorkOrderInvoiceThirdSectionUpdateAPIView(generics.UpdateAPIView):
     permission_classes = (
         permissions.IsAuthenticated,
         IsAuthenticatedAndIsActivePermission,
-        CanRetrieveUpdateDestroyWorkOrderPermission
+        CanRetrieveUpdateDestroyWorkOrderInvoicePermission
     )
 
     @transaction.atomic
@@ -35,7 +32,7 @@ class WorkOrderInvoiceThirdSectionUpdateAPIView(generics.UpdateAPIView):
         """
         client_ip, is_routable = get_client_ip(self.request)
         invoice = get_object_or_404(WorkOrderInvoice, order=pk)
-        self.check_object_permissions(request, invoice.order)  # Validate permissions.
+        self.check_object_permissions(request, invoice)  # Validate permissions.
         write_serializer = WorkOrderInvoiceThirdSectionUpdateSerializer(invoice, data=request.data, context={
             'last_modified_by': request.user,
             'last_modified_from': client_ip,

@@ -12,10 +12,7 @@ from rest_framework import authentication, viewsets, permissions, status
 from rest_framework.response import Response
 
 from shared_foundation.custom.drf.permissions import IsAuthenticatedAndIsActivePermission
-from tenant_api.permissions.order import (
-   CanListCreateWorkOrderPermission,
-   CanRetrieveUpdateDestroyWorkOrderPermission
-)
+from tenant_api.permissions.invoice import CanRetrieveUpdateDestroyWorkOrderInvoicePermission
 from tenant_api.serializers.order_crud import WorkOrderInvoiceSecondSectionUpdateSerializer
 from tenant_api.serializers.order_crud import WorkOrderInvoiceRetrieveSerializer
 from tenant_foundation.models import WorkOrderInvoice
@@ -25,7 +22,7 @@ class WorkOrderInvoiceSecondSectionUpdateAPIView(generics.UpdateAPIView):
     permission_classes = (
         permissions.IsAuthenticated,
         IsAuthenticatedAndIsActivePermission,
-        CanRetrieveUpdateDestroyWorkOrderPermission
+        CanRetrieveUpdateDestroyWorkOrderInvoicePermission
     )
 
     @transaction.atomic
