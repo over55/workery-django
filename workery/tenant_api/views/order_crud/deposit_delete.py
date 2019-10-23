@@ -24,7 +24,7 @@ class WorkOrderDepositDeleteAPIView(generics.UpdateAPIView):
     permission_classes = (
         permissions.IsAuthenticated,
         IsAuthenticatedAndIsActivePermission,
-        CanRetrieveUpdateDestroyWorkOrderPermission
+        # CanRetrieveUpdateDestroyWorkOrderPermission
     )
 
     @transaction.atomic
@@ -33,8 +33,18 @@ class WorkOrderDepositDeleteAPIView(generics.UpdateAPIView):
         Delete
         """
         client_ip, is_routable = get_client_ip(self.request)
-        deposit = get_object_or_404(WorkOrderDeposit, pk=payment_pk)
-        self.check_object_permissions(request, deposit.order)  # Validate permissions.
+
+        # Fetch queries based by user account.
+        deposit = WorkOrderDeposit.objects.none()
+        if self.request.user.is_staff() or self.request.user.is_associate():
+            deposit = get_object_or_404(WorkOrderDeposit, pk=payment_pk)
+        else:
+            return Response(
+                data={'detail':'Does not have permission'},
+                status=status.HTTP_403_UNAUTHORIZED
+            )
+
+        # self.check_object_permissions(request, deposit.order)  # Validate permissions.
         read_serializer = WorkOrderDepositRetrieveDeleteSerializer(deposit, many=False, context={
             'deposit': deposit,
             'created_by': request.user,

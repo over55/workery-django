@@ -30,7 +30,7 @@ class WorkOrderDepositListCreateAPIView(generics.ListCreateAPIView):
     permission_classes = (
         permissions.IsAuthenticated,
         IsAuthenticatedAndIsActivePermission,
-        CanListCreateWorkOrderPermission
+        # CanListCreateWorkOrderPermission
     )
     filter_backends = (filters.SearchFilter, DjangoFilterBackend)
 
@@ -41,8 +41,19 @@ class WorkOrderDepositListCreateAPIView(generics.ListCreateAPIView):
         # Extract the order id.
         order_id = utils.int_or_none(self.kwargs.get("pk"))
 
+        # Fetch queries based by user account.
+        queryset = WorkOrderDeposit.objects.none()
+        if self.request.user.is_staff():
+            queryset = WorkOrderDeposit.objects.filter(
+                order=order_id
+            ).order_by('-created_at')
+        if self.request.user.is_associate():
+            queryset = WorkOrderDeposit.objects.filter(
+                order=order_id,
+                order__associate__owner=self.request.user
+            ).order_by('-created_at')
+
         # Fetch all the queries.
-        queryset = WorkOrderDeposit.objects.filter(order=order_id).order_by('-created_at')
         s = self.get_serializer_class()
         queryset = s.setup_eager_loading(self, queryset)
 

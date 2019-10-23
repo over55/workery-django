@@ -11,9 +11,9 @@ from rest_framework.response import Response
 
 from shared_foundation.custom.drf.permissions import IsAuthenticatedAndIsActivePermission
 from tenant_api.pagination import TinyResultsSetPagination
-from tenant_api.permissions.order import (
-   CanListCreateWorkOrderPermission,
-   CanRetrieveUpdateDestroyWorkOrderPermission
+from tenant_api.permissions.task_item import (
+   CanListCreateTaskItemPermission,
+   CanRetrieveUpdateDestroyTaskItemPermission
 )
 from tenant_api.serializers.task_operation.order_completion import OrderCompletionTaskOperationSerializer
 from tenant_foundation.models import ActivitySheetItem
@@ -27,7 +27,7 @@ class OrderCompletionTaskOperationAPIView(generics.CreateAPIView):
     permission_classes = (
         permissions.IsAuthenticated,
         IsAuthenticatedAndIsActivePermission,
-        CanListCreateWorkOrderPermission
+        CanListCreateTaskItemPermission
     )
 
     @transaction.atomic

@@ -11,7 +11,7 @@ from rest_framework.response import Response
 from shared_foundation.custom.drf.permissions import IsAuthenticatedAndIsActivePermission
 from tenant_api.pagination import TinyResultsSetPagination
 from tenant_api.filters.task_item import TaskItemFilter
-from tenant_api.permissions.order import CanListCreateWorkOrderPermission
+from tenant_api.permissions.task_item import CanListCreateTaskItemPermission
 from tenant_api.serializers.task_crud import TaskItemListSerializer
 from tenant_foundation.models import TaskItem
 
