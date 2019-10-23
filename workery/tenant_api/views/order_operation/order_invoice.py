@@ -24,7 +24,7 @@ class WorkOrderInvoiceCreateOrUpdateOperationAPIView(generics.CreateAPIView):
     permission_classes = (
         permissions.IsAuthenticated,
         IsAuthenticatedAndIsActivePermission,
-        CanListCreateWorkOrderPermission
+        # CanListCreateWorkOrderPermission
     )
 
     @transaction.atomic
@@ -32,6 +32,12 @@ class WorkOrderInvoiceCreateOrUpdateOperationAPIView(generics.CreateAPIView):
         """
         Create
         """
+        if not self.request.user.is_staff() and not self.request.user.is_associate():
+            return Response(
+                data={'detail':'You do not have permission.'},
+                status=status.HTTP_403_FORBIDDEN
+            )
+
         client_ip, is_routable = get_client_ip(self.request)
         serializer = WorkOrderInvoiceCreateOrUpdateOperationSerializer(data=request.data, context={
             'user': request.user,

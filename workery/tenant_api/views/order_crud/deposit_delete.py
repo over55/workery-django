@@ -40,8 +40,8 @@ class WorkOrderDepositDeleteAPIView(generics.UpdateAPIView):
             deposit = get_object_or_404(WorkOrderDeposit, pk=payment_pk)
         else:
             return Response(
-                data={'detail':'Does not have permission'},
-                status=status.HTTP_403_UNAUTHORIZED
+                data={'detail':'You do not have permission.'},
+                status=status.HTTP_403_FORBIDDEN
             )
 
         # self.check_object_permissions(request, deposit.order)  # Validate permissions.
