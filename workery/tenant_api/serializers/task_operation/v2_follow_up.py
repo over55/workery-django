@@ -57,7 +57,7 @@ class FollowUpTaskOperationV2Serializer(serializers.Serializer):
         Override the final validation to include additional extras. Any
         validation error will be populated in the "non_field_errors" field.
         """
-        if self.context['has_agreed_to_meet']:
+        if data.get('has_agreed_to_meet', None) == True:
             if data.get('meeting_date', None) == None:
                 raise serializers.ValidationError({'meeting_date': ['Please enter the meeting date.']})
 
