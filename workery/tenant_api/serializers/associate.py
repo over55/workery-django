@@ -709,6 +709,7 @@ class AssociateRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
     last_modified_by = serializers.SerializerMethodField()
     score = serializers.FloatField(read_only=True)
     avatar_url = serializers.SerializerMethodField()
+    state = serializers.IntegerField(read_only=True,source="owner.is_active")
 
     # Attach with our foreign keys.
     service_fee = serializers.PrimaryKeyRelatedField(
@@ -783,6 +784,7 @@ class AssociateRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
             'balance_owing_amount',
             'score',
             'avatar_url',
+            'state',
 
             # # Misc (Write Only)
             # 'extra_comment',
