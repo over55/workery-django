@@ -16,6 +16,7 @@ from tenant_api.permissions.order import (
    CanRetrieveUpdateDestroyWorkOrderPermission
 )
 from tenant_api.serializers.associate_operations import AssociateUpgradeOperationSerializer
+from tenant_api.serializers.associate import AssociateRetrieveUpdateDestroySerializer
 
 
 class AssociateUprageOperationAPIView(generics.CreateAPIView):
@@ -29,12 +30,18 @@ class AssociateUprageOperationAPIView(generics.CreateAPIView):
     @transaction.atomic
     def post(self, request, format=None):
         client_ip, is_routable = get_client_ip(self.request)
-        serializer = AssociateUpgradeOperationSerializer(data=request.data, context={
+        write_serializer = AssociateUpgradeOperationSerializer(data=request.data, context={
             'created_by': request.user,
             'created_from': client_ip,
             'created_from_is_public': is_routable,
             'franchise': request.tenant
         })
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
+        write_serializer.is_valid(raise_exception=True)
+        associate = write_serializer.save()
+        read_serializer = AssociateRetrieveUpdateDestroySerializer(associate, many=False, context={
+            'last_modified_by': request.user,
+            'last_modified_from': client_ip,
+            'last_modified_from_is_public': is_routable,
+            'franchise': request.tenant
+        })
+        return Response(read_serializer.data, status=status.HTTP_200_OK)

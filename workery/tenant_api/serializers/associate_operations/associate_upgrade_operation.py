@@ -70,4 +70,4 @@ class AssociateUpgradeOperationSerializer(serializers.ModelSerializer):
         associate.last_modified_from_is_public = self.context['created_from_is_public']
         associate.save()
 
-        return validated_data
+        return associate
