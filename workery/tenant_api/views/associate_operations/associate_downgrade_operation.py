@@ -18,7 +18,7 @@ from tenant_api.permissions.order import (
 from tenant_api.serializers.associate_operations import AssociateUpgradeOperationSerializer
 
 
-class AssociateUprageOperationAPIView(generics.CreateAPIView):
+class AssociateDowngradeOperationAPIView(generics.CreateAPIView):
     serializer_class = AssociateUpgradeOperationSerializer
     permission_classes = (
         permissions.IsAuthenticated,

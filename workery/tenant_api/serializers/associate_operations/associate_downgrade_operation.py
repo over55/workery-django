@@ -26,21 +26,8 @@ from tenant_foundation.models import (
 )
 
 
-class AssociateUpgradeOperationSerializer(serializers.ModelSerializer):
+class AssociateDowngradeOperationSerializer(serializers.ModelSerializer):
     associate = serializers.PrimaryKeyRelatedField(many=False, queryset=Associate.objects.all(), required=True,)
-
-    organization_name = serializers.CharField(
-        required=True,
-        write_only=True,
-        validators=[],
-        allow_null=True,
-        allow_blank=True,
-    )
-    organization_type_of = serializers.IntegerField(
-        required=True,
-        write_only=True,
-        validators=[]
-    )
 
     # Meta Information.
     class Meta:
@@ -48,8 +35,6 @@ class AssociateUpgradeOperationSerializer(serializers.ModelSerializer):
         fields = (
             'id',
             'associate',
-            'organization_name',
-            'organization_type_of',
         )
 
     def create(self, validated_data):
@@ -58,13 +43,9 @@ class AssociateUpgradeOperationSerializer(serializers.ModelSerializer):
         """
         # Get the data.
         associate = validated_data.get('associate')
-        organization_name = validated_data.get('organization_name')
-        organization_type_of = validated_data.get('organization_type_of')
 
         # Update the associate.
-        associate.organization_name = organization_name
-        associate.organization_type_of = organization_type_of
-        associate.type_of = COMMERCIAL_ASSOCIATE_TYPE_OF_ID
+        associate.type_of = RESIDENTIAL_ASSOCIATE_TYPE_OF_ID
         associate.last_modified_by = self.context['created_by']
         associate.last_modified_from = self.context['created_from']
         associate.last_modified_from_is_public = self.context['created_from_is_public']
