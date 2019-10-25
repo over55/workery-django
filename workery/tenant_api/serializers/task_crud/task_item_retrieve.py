@@ -71,6 +71,9 @@ class TaskItemRetrieveSerializer(serializers.ModelSerializer):
     # associate_pretty_other_telephone_type_of = serializers.CharField(read_only=True, source="associate.get_pretty_other_telephone_type_of")
     associate_away_log = serializers.SerializerMethodField()
 
+    # STAFF RELATED
+    created_by_label = serializers.SerializerMethodField()
+
     # Meta Information.
     class Meta:
         model = TaskItem
@@ -88,6 +91,7 @@ class TaskItemRetrieveSerializer(serializers.ModelSerializer):
             'ongoing_job',
             'created_at',
             'created_by',
+            'created_by_label',
             'created_from',
             'created_from_is_public',
             'last_modified_at',
@@ -194,6 +198,16 @@ class TaskItemRetrieveSerializer(serializers.ModelSerializer):
                 away_log = obj.job.associate.away_log
                 s = AwayLogRetrieveUpdateDestroySerializer(away_log, many=False)
                 return s.data
+        except Exception as e:
+            print(e)
+        return None
+
+    def get_created_by_label(self, obj):
+        try:
+            if self.context['user'].is_staff():
+                return str(obj.created_by)
+            else:
+                return "[HIDDEN]"
         except Exception as e:
             print(e)
         return None

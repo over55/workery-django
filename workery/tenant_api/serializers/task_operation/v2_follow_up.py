@@ -41,7 +41,7 @@ class FollowUpTaskOperationV2Serializer(serializers.Serializer):
     task_item = serializers.PrimaryKeyRelatedField(many=False, queryset=TaskItem.objects.all(), required=True)
     comment = serializers.CharField(required=False)
     has_agreed_to_meet = serializers.BooleanField(required=True)
-    meeting_date = serializers.DateField(required=False)
+    meeting_date = serializers.DateField(required=False, allow_null=True,)
 
     # Meta Information.
     class Meta:

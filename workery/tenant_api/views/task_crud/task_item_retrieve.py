@@ -36,7 +36,9 @@ class TaskItemRetrieveAPIView(generics.RetrieveUpdateDestroyAPIView):
         """
         task_item = get_object_or_404(TaskItem, pk=pk)
         self.check_object_permissions(request, task_item)  # Validate permissions.
-        serializer = TaskItemRetrieveSerializer(task_item, many=False)
+        serializer = TaskItemRetrieveSerializer(task_item, many=False, context={
+            'user': request.user,
+        })
         return Response(
             data=serializer.data,
             status=status.HTTP_200_OK
