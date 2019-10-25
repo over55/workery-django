@@ -93,7 +93,8 @@ class AssociateArchiveOperationCreateSerializer(serializers.Serializer):
         #-------------------------#
         # Update associate object. #
         #-------------------------#
-        associate.state = state
+        associate.owner.is_active = state
+        associate.owner.save()
         associate.deactivation_reason = deactivation_reason
         associate.deactivation_reason_other = deactivation_reason_other
         associate.last_modified_by = user
