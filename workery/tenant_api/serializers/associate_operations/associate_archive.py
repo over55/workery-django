@@ -25,6 +25,7 @@ from tenant_foundation.models import (
     CustomerComment,
     ActivitySheetItem,
     Associate,
+    AssociateComment,
     WorkOrder,
     WORK_ORDER_STATE,
     WorkOrderComment,
@@ -67,7 +68,7 @@ class AssociateArchiveOperationCreateSerializer(serializers.Serializer):
         deactivation_reason_other = validated_data.get('deactivation_reason_other', None)
         comment_text = validated_data.get('comment')
         user = self.context['user']
-        from_ip = self.context['from']
+        from_ip = self.context['from_ip']
         from_is_public = self.context['from_is_public']
 
         #------------------------------------------#
@@ -104,4 +105,4 @@ class AssociateArchiveOperationCreateSerializer(serializers.Serializer):
         logger.info("Associate updated state.")
 
         # Return the validated results.
-        return validated_data
+        return associate

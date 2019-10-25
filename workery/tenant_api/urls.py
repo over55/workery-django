@@ -18,7 +18,8 @@ from tenant_api.views.associate_operations import (
     AssociateBalanceOperationAPIView,
     AssociateChangePasswordOperationAPIView,
     AssociateUprageOperationAPIView,
-    AssociateDowngradeOperationAPIView
+    AssociateDowngradeOperationAPIView,
+    AssociateArchiveOperationCreateAPIView
 )
 from tenant_api.views.associate_comment import AssociateCommentListCreateAPIView
 from tenant_api.views.awaylog import AwayLogListCreateAPIView, AwayLogRetrieveUpdateDestroyAPIView
@@ -164,6 +165,7 @@ urlpatterns = [
     url(r'^api/associates/operation/password$', AssociateChangePasswordOperationAPIView.as_view(), name='workery_associate_password_operation_api_endpoint'),
     url(r'^api/associates/operation/upgrade$', AssociateUprageOperationAPIView.as_view(), name='workery_associate_upgrade_operation_api_endpoint'),
     url(r'^api/associates/operation/downgrade$', AssociateDowngradeOperationAPIView.as_view(), name='workery_associate_downgrade_operation_api_endpoint'),
+    url(r'^api/associates/operation/archive$', AssociateArchiveOperationCreateAPIView.as_view(), name='workery_associate_archive_operation_create_api_endpoint'),
 
     # Customers
     url(r'^api/customers$', CustomerListCreateAPIView.as_view(), name='workery_customer_list_create_api_endpoint'),
