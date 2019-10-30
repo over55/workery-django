@@ -31,6 +31,7 @@ class WorkOrderCommentListCreateSerializer(serializers.ModelSerializer):
     # comment = serializers.PrimaryKeyRelatedField(many=False, read_only=True)
     extra_text = serializers.CharField(write_only=True, allow_null=False)
     text = serializers.CharField(read_only=True, source="comment.text")
+    created_by = serializers.CharField(read_only=True, source="comment.created_by")
 
     # Meta Information.
     class Meta:
@@ -40,13 +41,14 @@ class WorkOrderCommentListCreateSerializer(serializers.ModelSerializer):
             'created_at',
             'about',
             'text',
-            'extra_text'
+            'extra_text',
+            'created_by',
         )
 
     def setup_eager_loading(cls, queryset):
         """ Perform necessary eager loading of data. """
         queryset = queryset.prefetch_related(
-            'about', 'comment'
+            'about', 'comment', 'comment__created_by',
         )
         return queryset
 
