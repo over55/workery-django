@@ -48,6 +48,7 @@ class TaskItemListSerializer(serializers.ModelSerializer):
             'was_postponed',
             'order_type_of',
             'associate_away_log',
+            'job',
 
             # AVAILABLE CHOISES BELOW...
             # closing_reason,

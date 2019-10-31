@@ -30,6 +30,21 @@ class TaskItemFilter(django_filters.FilterSet):
         # }
     )
 
+    def keyword_filtering(self, queryset, name, value):
+        return TaskItem.objects.full_text_search(value)
+
+    search = django_filters.CharFilter(method='keyword_filtering')
+
+    def is_closed_filtering(self, queryset, name, value):
+        if value == 3:
+            return queryset.filter(is_closed=False)
+        elif value == 2:
+            return queryset.filter(is_closed=True)
+        else:
+            return queryset
+
+    is_closed = django_filters.NumberFilter(method='is_closed_filtering')
+
     class Meta:
         model = TaskItem
         fields = [
@@ -38,4 +53,5 @@ class TaskItemFilter(django_filters.FilterSet):
             'is_closed',
             'type_of',
             'job',
+            'search',
         ]
