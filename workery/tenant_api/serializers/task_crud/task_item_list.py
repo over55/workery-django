@@ -29,7 +29,9 @@ logger = logging.getLogger(__name__)
 
 
 class TaskItemListSerializer(serializers.ModelSerializer):
+    customer = serializers.CharField(source="job.customer.id")
     customer_name = serializers.CharField(source="job.customer")
+    associate = serializers.CharField(source="job.associate.id")
     associate_name = serializers.CharField(source="job.associate")
     order_type_of = serializers.IntegerField(source="job.type_of")
     associate_away_log = serializers.SerializerMethodField()
@@ -41,7 +43,9 @@ class TaskItemListSerializer(serializers.ModelSerializer):
             'id',
             'due_date',
             'title',
+            'customer',
             'customer_name',
+            'associate',
             'associate_name',
             'is_closed',
             'type_of',
