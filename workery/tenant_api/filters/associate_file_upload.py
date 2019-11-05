@@ -27,6 +27,10 @@ class AssociateFileUploadFilter(django_filters.FilterSet):
         model = PrivateFileUpload
         fields = [
             'associate',
+            'customer',
+            'work_order',
+            'partner',
+            'staff',
             'created_at',
             'is_archived',
         ]

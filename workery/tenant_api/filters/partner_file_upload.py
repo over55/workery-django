@@ -13,6 +13,7 @@ class PartnerFileUploadFilter(django_filters.FilterSet):
         fields=(
             ('id', 'id'),
             ('partner', 'partner'),
+            ('work_order', 'work_order'),
             ('created_at', 'created_at'),
             ('is_archived', 'is_archived'),
         ),
@@ -27,6 +28,7 @@ class PartnerFileUploadFilter(django_filters.FilterSet):
         model = PrivateFileUpload
         fields = [
             'partner',
+            'work_order',
             'created_at',
             'is_archived',
         ]

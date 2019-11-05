@@ -26,6 +26,10 @@ class StaffFileUploadFilter(django_filters.FilterSet):
     class Meta:
         model = PrivateFileUpload
         fields = [
+            'associate',
+            'customer',
+            'work_order',
+            'partner',
             'staff',
             'created_at',
             'is_archived',

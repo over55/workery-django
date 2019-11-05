@@ -12,7 +12,11 @@ class WorkOrderFileUploadFilter(django_filters.FilterSet):
         # tuple-mapping retains order
         fields=(
             ('id', 'id'),
+            ('associate', 'associate'),
             ('customer', 'customer'),
+            ('work_order', 'work_order'),
+            ('partner', 'partner'),
+            ('staff', 'staff'),
             ('created_at', 'created_at'),
             ('is_archived', 'is_archived'),
         ),
@@ -26,7 +30,11 @@ class WorkOrderFileUploadFilter(django_filters.FilterSet):
     class Meta:
         model = PrivateFileUpload
         fields = [
+            'associate',
             'customer',
+            'work_order',
+            'partner',
+            'staff',
             'created_at',
             'is_archived',
         ]
