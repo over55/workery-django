@@ -98,22 +98,26 @@ class TaskItemListSerializer(serializers.ModelSerializer):
         try:
             return obj.job.customer.id
         except Exception as e:
+            # print("get_customer", str(e))
             return None
 
     def get_customer_name(self, obj):
         try:
             return str(obj.job.customer)
         except Exception as e:
+            # print("get_customer_name", str(e))
             return None
 
     def get_associate(self, obj):
         try:
             return obj.job.associate.id
         except Exception as e:
+            # print("get_associate", str(e))
             return None
 
     def get_associate_name(self, obj):
         try:
-            return str(obj.job.associat)
+            return str(obj.job.associate)
         except Exception as e:
+            # print("get_associate_name", str(e))
             return None
