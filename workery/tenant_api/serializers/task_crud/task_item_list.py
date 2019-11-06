@@ -29,10 +29,10 @@ logger = logging.getLogger(__name__)
 
 
 class TaskItemListSerializer(serializers.ModelSerializer):
-    customer = serializers.CharField(source="job.customer.id")
-    customer_name = serializers.CharField(source="job.customer")
-    associate = serializers.CharField(source="job.associate.id")
-    associate_name = serializers.CharField(source="job.associate")
+    customer = serializers.SerializerMethodField()
+    customer_name = serializers.SerializerMethodField()
+    associate = serializers.SerializerMethodField()
+    associate_name = serializers.SerializerMethodField()
     order_type_of = serializers.IntegerField(source="job.type_of")
     associate_away_log = serializers.SerializerMethodField()
 
@@ -93,3 +93,27 @@ class TaskItemListSerializer(serializers.ModelSerializer):
         except Exception as e:
             print(e)
         return None
+
+    def get_customer(self, obj):
+        try:
+            return obj.job.customer.id
+        except Exception as e:
+            return None
+
+    def get_customer_name(self, obj):
+        try:
+            return str(obj.job.customer)
+        except Exception as e:
+            return None
+
+    def get_associate(self, obj):
+        try:
+            return obj.job.associate.id
+        except Exception as e:
+            return None
+
+    def get_associate_name(self, obj):
+        try:
+            return str(obj.job.associat)
+        except Exception as e:
+            return None
