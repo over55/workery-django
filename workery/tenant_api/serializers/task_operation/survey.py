@@ -166,14 +166,14 @@ class SurveyTaskOperationSerializer(serializers.Serializer):
         # For debugging purposes only.
         logger.info("Job comment #%(id)s created." % { 'id': str(oc.id) })
 
-        # ------------------------------
-        # --- UPDATE ASSOCIATE SCORE ---
-        # ------------------------------
+        # --------------------------
+        # --- UPDATE TASK STATUS ---
+        # --------------------------
         task_item.is_closed = True
         task_item.last_modified_by = self.context['user']
         task_item.last_modified_from = self.context['from']
         task_item.last_modified_from_is_public = self.context['from_is_public']
-        task_item.job.save()
+        task_item.save()
 
         # ------------------------------
         # --- UPDATE ASSOCIATE SCORE ---
