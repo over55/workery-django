@@ -215,7 +215,7 @@ class TaskItem(models.Model):
     #
 
     def __str__(self):
-        return str(self.get_pretty_type_of())
+        return str(self.title)
 
     def get_pretty_type_of(self):
         return dict(TASK_ITEM_TYPE_OF_CHOICES).get(self.type_of)
