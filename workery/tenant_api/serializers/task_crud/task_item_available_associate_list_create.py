@@ -44,6 +44,7 @@ class TaskItemAvailableAssociateListCreateSerializer(serializers.ModelSerializer
     full_name = serializers.SerializerMethodField()
     telephone = PhoneNumberField()
     e164_telephone = serializers.SerializerMethodField()
+    pretty_tags = serializers.SerializerMethodField()
 
     # Meta Information.
     class Meta:
@@ -59,6 +60,8 @@ class TaskItemAvailableAssociateListCreateSerializer(serializers.ModelSerializer
             'wsib_number',
             'hourly_salary_desired',
             'score',
+            'tags',
+            'pretty_tags',
         )
         extra_kwargs = {
             # "is_ok_to_email": {
@@ -109,6 +112,13 @@ class TaskItemAvailableAssociateListCreateSerializer(serializers.ModelSerializer
                 return phonenumbers.format_number(obj.telephone, phonenumbers.PhoneNumberFormat.E164)
             else:
                 return "-"
+        except Exception as e:
+            return None
+
+    def get_pretty_tags(self, obj):
+        try:
+            s = TagListCreateSerializer(obj.tags.all(), many=True)
+            return s.data
         except Exception as e:
             return None
 
