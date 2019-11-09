@@ -94,10 +94,10 @@ class OrderCompletionTaskOperationSerializer(serializers.Serializer):
             'invoice_quote_amount',
             'invoice_labour_amount',
             'invoice_material_amount',
-            'invoice_waste_removal_amount',
+            'invoice_other_costs_amount',
             'invoice_quoted_labour_amount',
             'invoice_quoted_material_amount',
-            'invoice_quoted_waste_removal_amount',
+            'invoice_quoted_other_costs_amount',
             'invoice_total_quote_amount',
             'invoice_tax_amount',
             'invoice_total_amount',
@@ -170,10 +170,10 @@ class OrderCompletionTaskOperationSerializer(serializers.Serializer):
         invoice_quote_amount = validated_data.get('invoice_quote_amount', 0)
         invoice_labour_amount = validated_data.get('invoice_labour_amount',  0)
         invoice_material_amount = validated_data.get('invoice_material_amount',  0)
-        invoice_waste_removal_amount = validated_data.get('invoice_waste_removal_amount',  0)
+        invoice_other_costs_amount = validated_data.get('invoice_other_costs_amount',  0)
         invoice_quoted_labour_amount = validated_data.get('invoice_quoted_labour_amount',  0)
         invoice_quoted_material_amount = validated_data.get('invoice_quoted_material_amount',  0)
-        invoice_quoted_waste_removal_amount = validated_data.get('invoice_quoted_waste_removal_amount',  0)
+        invoice_quoted_other_costs_amount = validated_data.get('invoice_quoted_other_costs_amount',  0)
         invoice_total_quote_amount = validated_data.get('invoice_total_quote_amount',  0)
         invoice_sub_total_amount = validated_data.get('invoice_labour_amount',  0)
         invoice_tax_amount = validated_data.get('invoice_tax_amount', 0)
@@ -216,10 +216,10 @@ class OrderCompletionTaskOperationSerializer(serializers.Serializer):
         task_item.job.invoice_total_amount = Money(invoice_total_amount, WORKERY_APP_DEFAULT_MONEY_CURRENCY)
         task_item.job.invoice_service_fee_amount = Money(invoice_service_fee_amount, WORKERY_APP_DEFAULT_MONEY_CURRENCY)
         task_item.job.invoice_service_fee_payment_date = invoice_service_fee_payment_date
-        task_item.job.invoice_waste_removal_amount = Money(invoice_waste_removal_amount, WORKERY_APP_DEFAULT_MONEY_CURRENCY)
+        task_item.job.invoice_other_costs_amount = Money(invoice_other_costs_amount, WORKERY_APP_DEFAULT_MONEY_CURRENCY)
         task_item.job.invoice_quoted_labour_amount = Money(invoice_quoted_labour_amount, WORKERY_APP_DEFAULT_MONEY_CURRENCY)
         task_item.job.invoice_quoted_material_amount = Money(invoice_quoted_material_amount, WORKERY_APP_DEFAULT_MONEY_CURRENCY)
-        task_item.job.invoice_quoted_waste_removal_amount = Money(invoice_quoted_waste_removal_amount, WORKERY_APP_DEFAULT_MONEY_CURRENCY)
+        task_item.job.invoice_quoted_other_costs_amount = Money(invoice_quoted_other_costs_amount, WORKERY_APP_DEFAULT_MONEY_CURRENCY)
         task_item.job.invoice_total_quote_amount = Money(invoice_total_quote_amount, WORKERY_APP_DEFAULT_MONEY_CURRENCY)
         task_item.job.invoice_sub_total_amount = Money(invoice_sub_total_amount, WORKERY_APP_DEFAULT_MONEY_CURRENCY)
         task_item.job.invoice_tax_amount = Money(invoice_tax_amount, WORKERY_APP_DEFAULT_MONEY_CURRENCY)

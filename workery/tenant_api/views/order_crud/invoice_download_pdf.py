@@ -84,7 +84,7 @@ class WorkOrderInvoiceDownloadPDFAPIView(generics.RetrieveAPIView):
             invoice.invoice_associate_tax = order.associate.tax_id
             invoice.total_labour = order.invoice_labour_amount
             invoice.total_materials = order.invoice_material_amount
-            invoice.waste_removal = order.invoice_waste_removal_amount
+            invoice.other_costs = order.invoice_other_costs_amount
             invoice.sub_total = order.invoice_sub_total_amount
             invoice.tax = order.invoice_tax_amount
             invoice.total = order.invoice_total_amount
@@ -171,7 +171,7 @@ class WorkOrderInvoiceDownloadPDFAPIView(generics.RetrieveAPIView):
                 line02Notes = str(invoice.line_02_notes) if invoice.line_02_notes else "",
                 totalLabour = str(invoice.total_labour),
                 totalMaterials = str(invoice.total_materials),
-                wasteRemoval = str(invoice.waste_removal),
+                otherCosts = str(invoice.other_costs),
                 amountDue = str(invoice.amount_due),
                 tax = str(invoice.tax),
                 total = str(invoice.total),

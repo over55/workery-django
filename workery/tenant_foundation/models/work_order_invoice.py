@@ -705,7 +705,7 @@ class WorkOrderInvoice(models.Model):
         default=Money(0,WORKERY_APP_DEFAULT_MONEY_CURRENCY),
         blank=True,
     )
-    waste_removal = MoneyField(
+    other_costs = MoneyField(
         _("Waste Removal"),
         help_text=_('Waste Removal'),
         max_digits=10,

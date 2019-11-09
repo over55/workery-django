@@ -238,7 +238,7 @@ class WorkOrderInvoiceCreateOrUpdateOperationSerializer(serializers.Serializer):
                 'line_02_notes': validated_data.get('line02_notes', None),
                 'total_labour': order.invoice_labour_amount,
                 'total_materials': order.invoice_material_amount,
-                # 'waste_removal': //TODO: IMPLEMENT
+                # 'other_costs': //TODO: IMPLEMENT
                 'amount_due': order.invoice_amount_due,
                 'sub_total': order.invoice_sub_total_amount,
                 'tax': order.invoice_tax_amount,

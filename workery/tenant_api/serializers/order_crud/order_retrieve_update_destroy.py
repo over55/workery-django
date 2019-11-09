@@ -145,10 +145,10 @@ class WorkOrderRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
             'invoice_quote_amount',
             'invoice_labour_amount',
             'invoice_material_amount',
-            'invoice_waste_removal_amount',
+            'invoice_other_costs_amount',
             'invoice_quoted_labour_amount',
             'invoice_quoted_material_amount',
-            'invoice_quoted_waste_removal_amount',
+            'invoice_quoted_other_costs_amount',
             'invoice_total_quote_amount',
             'invoice_sub_total_amount',
             'invoice_tax_amount',
@@ -328,10 +328,10 @@ class WorkOrderRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         instance.invoice_quote_amount = validated_data.get('invoice_quote_amount', instance.invoice_quote_amount)
         instance.invoice_labour_amount = validated_data.get('invoice_labour_amount', instance.invoice_labour_amount)
         instance.invoice_material_amount = validated_data.get('invoice_material_amount', instance.invoice_material_amount)
-        instance.invoice_waste_removal_amount = validated_data.get('invoice_waste_removal_amount', instance.invoice_waste_removal_amount)
+        instance.invoice_other_costs_amount = validated_data.get('invoice_other_costs_amount', instance.invoice_other_costs_amount)
         instance.invoice_quoted_material_amount = validated_data.get('invoice_quoted_material_amount', instance.invoice_quoted_material_amount)
         instance.invoice_quoted_labour_amount = validated_data.get('invoice_quoted_labour_amount', instance.invoice_quoted_labour_amount)
-        instance.invoice_quoted_waste_removal_amount = validated_data.get('invoice_quoted_waste_removal_amount', instance.invoice_quoted_waste_removal_amount)
+        instance.invoice_quoted_other_costs_amount = validated_data.get('invoice_quoted_other_costs_amount', instance.invoice_quoted_other_costs_amount)
         instance.invoice_total_quote_amount = validated_data.get('invoice_total_quote_amount', instance.invoice_total_quote_amount)
         instance.invoice_tax_amount = validated_data.get('invoice_tax_amount', instance.invoice_tax_amount)
         instance.invoice_total_amount = validated_data.get('invoice_total_amount', instance.invoice_total_amount)

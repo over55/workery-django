@@ -75,8 +75,8 @@ class Command(BaseCommand):
                 with freeze_time(order.last_modified):
                     # print(order.invoice_labour_amount)
                     # print(order.invoice_material_amount)
-                    # print(order.invoice_waste_removal_amount)
-                    order.invoice_sub_total_amount = order.invoice_labour_amount + order.invoice_material_amount + order.invoice_waste_removal_amount;
+                    # print(order.invoice_other_costs_amount)
+                    order.invoice_sub_total_amount = order.invoice_labour_amount + order.invoice_material_amount + order.invoice_other_costs_amount;
                     # print(order.invoice_sub_total_amount,"\n")
                     order.save()
                     self.stdout.write(

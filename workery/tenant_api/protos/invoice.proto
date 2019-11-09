@@ -84,7 +84,7 @@ message GeneratePDFRequest {
     string line02Notes = 74;
     string totalLabour = 75;
     string totalMaterials = 76;
-    string wasteRemoval = 77;
+    string otherCosts = 77;
     string amountDue = 78;
     string tax = 79;
     string total = 80;
