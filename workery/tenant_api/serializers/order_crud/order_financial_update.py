@@ -62,6 +62,7 @@ class WorkOrderFinancialUpdateSerializer(serializers.ModelSerializer):
             'state',
             'invoice_balance_owing_amount',
             'visits',
+            'completion_date',
         )
 
     def update(self, instance, validated_data):
@@ -91,6 +92,7 @@ class WorkOrderFinancialUpdateSerializer(serializers.ModelSerializer):
         instance.state = validated_data.get('state', instance.state)
         instance.invoice_balance_owing_amount = validated_data.get('invoice_balance_owing_amount', instance.invoice_balance_owing_amount)
         instance.visits = validated_data.get('visits', instance.visits)
+        instance.completion_date = validated_data.get('completion_date', instance.completion_date)
         instance.save()
         logger.info("Updated order object.")
         return instance
