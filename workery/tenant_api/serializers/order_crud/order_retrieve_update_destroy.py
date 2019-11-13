@@ -89,7 +89,8 @@ class WorkOrderRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
     pretty_tags = serializers.SerializerMethodField()
     pretty_invoice_service_fee = serializers.SerializerMethodField()
     latest_pending_task = serializers.ReadOnlyField(source="latest_pending_task.id")
-    latest_pending_task_type_of = serializers.ReadOnlyField(source="latest_pending_task.type_of")
+    latest_pending_task_type_of = serializers.SerializerMethodField()
+    # ReadOnlyField(source="latest_pending_task.type_of")
     pretty_latest_pending_task = serializers.SerializerMethodField()
     created_at = serializers.DateTimeField(read_only=True, source="created")
     created_by = serializers.SerializerMethodField()
@@ -259,6 +260,15 @@ class WorkOrderRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
     def get_last_modified_by(self, obj):
         try:
             return str(obj.last_modified_by)
+        except Exception as e:
+            return None
+
+    def get_latest_pending_task_type_of(self, obj):
+        try:
+            if obj.latest_pending_task.type_of == FOLLOW_UP_CUSTOMER_SURVEY_TASK_ITEM_TYPE_OF_ID:
+                return FOLLOW_UP_DID_CUSTOMER_REVIEW_ASSOCIATE_AFTER_JOB_TASK_ITEM_TYPE_OF_ID
+
+            return obj.latest_pending_task.type_of
         except Exception as e:
             return None
 
