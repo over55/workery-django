@@ -449,6 +449,7 @@ class Customer(AbstractPerson):
             search_text += " " + phonenumbers.format_number(self.other_telephone, phonenumbers.PhoneNumberFormat.E164)
         if self.description:
             search_text += " " + self.description
+        search_text += " " + self.get_postal_address()
         self.indexed_text = Truncator(search_text).chars(511)
 
         '''

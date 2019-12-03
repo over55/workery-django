@@ -742,8 +742,9 @@ class WorkOrder(models.Model):
                 search_text += " " + phonenumbers.format_number(self.customer.other_telephone, phonenumbers.PhoneNumberFormat.NATIONAL)
                 search_text += " " + phonenumbers.format_number(self.customer.other_telephone, phonenumbers.PhoneNumberFormat.INTERNATIONAL)
                 search_text += " " + phonenumbers.format_number(self.customer.other_telephone, phonenumbers.PhoneNumberFormat.E164)
-            if self.description:
-                search_text += " " + self.description
+            if self.customer.description:
+                search_text += " " + self.customer.description
+            search_text += " " + self.customer.get_postal_address()
 
         if self.associate:
             if self.associate.given_name:
@@ -762,8 +763,9 @@ class WorkOrder(models.Model):
                 search_text += " " + phonenumbers.format_number(self.associate.other_telephone, phonenumbers.PhoneNumberFormat.NATIONAL)
                 search_text += " " + phonenumbers.format_number(self.associate.other_telephone, phonenumbers.PhoneNumberFormat.INTERNATIONAL)
                 search_text += " " + phonenumbers.format_number(self.associate.other_telephone, phonenumbers.PhoneNumberFormat.E164)
-            if self.description:
-                search_text += " " + self.description
+            if self.associate.description:
+                search_text += " " + self.associate.description
+            search_text += " " + self.associate.get_postal_address()
 
         if self.invoice_ids:
             search_text += " " + str(self.invoice_ids)
