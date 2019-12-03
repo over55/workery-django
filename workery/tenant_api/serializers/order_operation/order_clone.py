@@ -28,7 +28,8 @@ from tenant_foundation.models import (
     WorkOrder,
     WorkOrderComment,
     Organization,
-    TaskItem
+    TaskItem,
+    WorkOrderDeposit
 )
 
 
@@ -68,6 +69,7 @@ class WorkOrderCloneCreateSerializer(serializers.Serializer):
         old_skill_sets = original_order.skill_sets.all()
         old_comments = original_order.comments.all()
         old_activity_sheets = ActivitySheetItem.objects.filter(job=original_order)
+        old_deposits = WorkOrderDeposit.objects.filter(order=original_order)
 
         # DEVELOPERS NOTE:
         # The following code will take a full clone of our original instance.
@@ -119,6 +121,27 @@ class WorkOrderCloneCreateSerializer(serializers.Serializer):
                     created_from = old_activity_sheet.created_from,
                     created_from_is_public = old_activity_sheet.created_from_is_public,
                 )
+
+        for old_deposit in old_deposits:
+            with freeze_time(old_deposit.created_at):
+                copy_old_deposit = WorkOrderDeposit.objects.create(
+                    order=cloned_order,
+                    paid_at=old_deposit.paid_at,
+                    deposit_method=old_deposit.deposit_method,
+                    paid_to=old_deposit.paid_to,
+                    paid_for=old_deposit.paid_for,
+                    amount=old_deposit.amount,
+                    created_by = old_deposit.created_by,
+                    created_from = old_deposit.created_from,
+                    created_from_is_public = old_deposit.created_from_is_public,
+                    last_modified_by = old_deposit.last_modified_by,
+                    last_modified_from = old_deposit.last_modified_from,
+                    last_modified_from_is_public = old_deposit.last_modified_from_is_public,
+                )
+
+        # raise serializers.ValidationError({ # For debugging purposes only
+        #     'error': 'Stopped by the programmer, please investigate.',
+        # })
 
         #--------------------#
         # Updated the output #

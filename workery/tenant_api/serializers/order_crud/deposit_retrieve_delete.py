@@ -65,23 +65,7 @@ class WorkOrderDepositRetrieveDeleteSerializer(serializers.ModelSerializer):
         # Lookup the deposit.
         #---------------------------------------
         the_deposit = self.context['deposit']
-
-        #---------------------------------------
-        # Calculate the new deposit amount.
-        #---------------------------------------
-        deposits = WorkOrderDeposit.objects.filter(order=the_deposit.order)
-        amount = 0
-        for deposit in deposits.all():
-            if deposit is not the_deposit:
-                amount += deposit.amount.amount
-
-        the_deposit.invoice_deposit_amount = Money(amount, WORKERY_APP_DEFAULT_MONEY_CURRENCY)
-        the_deposit.order.invoice_amount_due = the_deposit.order.invoice_total_amount - the_deposit.amount
-        the_deposit.last_modified_by = self.context['created_by']
-        the_deposit.last_modified_from = self.context['created_from']
-        the_deposit.last_modified_from_is_public = self.context['created_from_is_public']
-        the_deposit.save()
-        logger.info("Re-calculated the amount due.")
+        order = the_deposit.order
 
         #---------------------------------------
         # Create a comment with special text.
@@ -104,9 +88,35 @@ class WorkOrderDepositRetrieveDeleteSerializer(serializers.ModelSerializer):
         logger.info("Attached comment to order.")
 
         #---------------------------------------
-        # Lookup the deposit.
+        # Delete the deposit.
         #---------------------------------------
         the_deposit.delete()
         logger.info("Deleted payment")
+
+        #---------------------------------------
+        # Calculate the new deposit amount.
+        #---------------------------------------
+        deposits = WorkOrderDeposit.objects.filter(order=the_deposit.order)
+        amount = 0
+        for deposit in deposits.all():
+            if deposit is not the_deposit:
+                amount += deposit.amount.amount
+
+        order.invoice_deposit_amount = Money(amount, WORKERY_APP_DEFAULT_MONEY_CURRENCY)
+        order.invoice_amount_due = the_deposit.order.invoice_total_amount - amount
+        order.last_modified_by = self.context['created_by']
+        order.last_modified_from = self.context['created_from']
+        order.last_modified_from_is_public = self.context['created_from_is_public']
+        order.save()
+        logger.info("Re-calculated the amount due.")
+
+        # # For debugging purposes only.
+        # print("invoice_total_amount", the_deposit.order.invoice_total_amount)
+        # print("invoice_amount_due", the_deposit.order.invoice_amount_due)
+        # print("invoice_deposit_amount", the_deposit.order.invoice_deposit_amount)
+
+        # raise serializers.ValidationError({
+        #     'error': 'Breakpoint set by the programmer'
+        # })
 
         return self
