@@ -23,7 +23,9 @@ from tenant_foundation.constants import *
 from tenant_foundation.models import (
     Staff,
     PrivateFileUpload,
-    Tag
+    Tag,
+    Comment,
+    StaffComment
 )
 
 
@@ -76,6 +78,11 @@ class StaffFileUploadListCreateSerializer(serializers.ModelSerializer):
         """
         Override the `create` function to add extra functinality.
         """
+        staff = validated_data.get('staff')
+
+        #-----------------------------
+        # Create our file.
+        #-----------------------------
 
         # Extract our upload file data
         content = validated_data.get('upload_content')
@@ -89,7 +96,7 @@ class StaffFileUploadListCreateSerializer(serializers.ModelSerializer):
             title = validated_data.get('title'),
             description = validated_data.get('description'),
             is_archived = validated_data.get('is_archived'),
-            staff = validated_data.get('staff'),
+            staff = staff,
             data_file = content_file, # REACT-DJANGO UPLOAD | STEP 4 OF 4: When you attack a `ContentFile`, Django handles all file uploading.
             created_by = self.context['created_by'],
             created_from = self.context['created_from'],
@@ -106,6 +113,30 @@ class StaffFileUploadListCreateSerializer(serializers.ModelSerializer):
 
         # For debugging purposes only.
         print("Created private file #", private_file)
+
+        #-----------------------------
+        # Create our `Comment` object.
+        #-----------------------------
+        text = _("A file named \"%(filename)s\" has been uploaded to this staff's record by %(name)s.") % {
+            'filename': str(filename),
+            'name': str(self.context['created_by']),
+        }
+        comment = Comment.objects.create(
+            created_by = self.context['created_by'],
+            created_from = self.context['created_from'],
+            created_from_is_public = self.context['created_from_is_public'],
+            last_modified_by = self.context['created_by'],
+            last_modified_from = self.context['created_from'],
+            last_modified_from_is_public = self.context['created_from_is_public'],
+            text=text
+        )
+        StaffComment.objects.create(
+            about=staff,
+            comment=comment,
+        )
+
+        # For debugging purposes only.
+        print("Created comment #", comment)
 
         # Return our validated data.
         return private_file

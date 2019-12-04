@@ -23,7 +23,9 @@ from tenant_foundation.constants import *
 from tenant_foundation.models import (
     Customer,
     PrivateFileUpload,
-    Tag
+    Tag,
+    CustomerComment,
+    Comment
 )
 
 
@@ -76,6 +78,7 @@ class CustomerFileUploadListCreateSerializer(serializers.ModelSerializer):
         """
         Override the `create` function to add extra functinality.
         """
+        customer = validated_data.get('customer')
 
         # Extract our upload file data
         content = validated_data.get('upload_content')
@@ -84,12 +87,14 @@ class CustomerFileUploadListCreateSerializer(serializers.ModelSerializer):
             filename = "QA_"+filename # NOTE: Attach `QA_` prefix if server running in QA mode.
         content_file = get_content_file_from_base64_string(content, filename) # REACT-DJANGO UPLOAD | STEP 3 OF 4: Convert to `ContentFile` type.
 
+        #---------------------------
         # Create our file.
+        #---------------------------
         private_file = PrivateFileUpload.objects.create(
             title = validated_data.get('title'),
             description = validated_data.get('description'),
             is_archived = validated_data.get('is_archived'),
-            customer = validated_data.get('customer'),
+            customer = customer,
             data_file = content_file, # REACT-DJANGO UPLOAD | STEP 4 OF 4: When you attack a `ContentFile`, Django handles all file uploading.
             created_by = self.context['created_by'],
             created_from = self.context['created_from'],
@@ -106,6 +111,27 @@ class CustomerFileUploadListCreateSerializer(serializers.ModelSerializer):
 
         # For debugging purposes only.
         print("Created private file #", private_file)
+
+        #---------------------------
+        # Attach our comment.
+        #---------------------------
+        text = _("A file named \"%(filename)s\" has been uploaded to this customer's record by %(name)s.") % {
+            'filename': str(filename),
+            'name': str(self.context['created_by']),
+        }
+        comment = Comment.objects.create(
+            created_by=self.context['created_by'],
+            last_modified_by=self.context['created_by'],
+            text=text,
+            created_from = self.context['created_from'],
+            created_from_is_public = self.context['created_from_is_public']
+        )
+        CustomerComment.objects.create(
+            about=customer,
+            comment=comment,
+        )
+        print("Created comment #", comment)
+
 
         # Return our validated data.
         return private_file

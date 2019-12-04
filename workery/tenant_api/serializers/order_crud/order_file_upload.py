@@ -23,7 +23,9 @@ from tenant_foundation.constants import *
 from tenant_foundation.models import (
     WorkOrder,
     PrivateFileUpload,
-    Tag
+    Tag,
+    Comment,
+    WorkOrderComment,
 )
 
 
@@ -76,6 +78,11 @@ class WorkOrderFileUploadListCreateSerializer(serializers.ModelSerializer):
         """
         Override the `create` function to add extra functinality.
         """
+        work_order = validated_data.get('work_order')
+
+        #-----------------------------
+        # Create our file.
+        #-----------------------------
 
         # Extract our upload file data
         content = validated_data.get('upload_content')
@@ -89,7 +96,7 @@ class WorkOrderFileUploadListCreateSerializer(serializers.ModelSerializer):
             title = validated_data.get('title'),
             description = validated_data.get('description'),
             is_archived = validated_data.get('is_archived'),
-            work_order = validated_data.get('work_order'),
+            work_order = work_order,
             data_file = content_file, # REACT-DJANGO UPLOAD | STEP 4 OF 4: When you attack a `ContentFile`, Django handles all file uploading.
             created_by = self.context['created_by'],
             created_from = self.context['created_from'],
@@ -103,6 +110,28 @@ class WorkOrderFileUploadListCreateSerializer(serializers.ModelSerializer):
         if tags is not None:
             if len(tags) > 0:
                 private_file.tags.set(tags)
+
+        # For debugging purposes only.
+        print("Created private file #", private_file)
+
+        #-----------------------------
+        # Create our `Comment` object.
+        #-----------------------------
+        text = _("A file named \"%(filename)s\" has been uploaded to this order by %(name)s.") % {
+            'filename': str(filename),
+            'name': str(self.context['created_by']),
+        }
+        comment = Comment.objects.create(
+            created_by=self.context['created_by'],
+            last_modified_by=self.context['created_by'],
+            text=text,
+            created_from = self.context['created_from'],
+            created_from_is_public = self.context['created_from_is_public']
+        )
+        WorkOrderComment.objects.create(
+            about=work_order,
+            comment=comment,
+        )
 
         # For debugging purposes only.
         print("Created private file #", private_file)
