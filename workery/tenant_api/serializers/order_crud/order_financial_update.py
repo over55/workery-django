@@ -37,6 +37,8 @@ logger = logging.getLogger(__name__)
 
 class WorkOrderFinancialUpdateSerializer(serializers.ModelSerializer):
 
+    invoice_service_fee_payment_date = serializers.DateField(required=False, allow_null=True,)
+
     class Meta:
         model = WorkOrder
         fields = (
@@ -64,6 +66,21 @@ class WorkOrderFinancialUpdateSerializer(serializers.ModelSerializer):
             'visits',
             'completion_date',
         )
+
+    def validate_invoice_service_fee_payment_date(self, value):
+        """
+        Custom validation to deal with instance where:
+        (1) If state is "completed_and_paid" and this field is `None` then error
+        (2) Else if state is anything besides "completed_and_paid" then accept
+            `None` is accepted in this field.
+        """
+        request = self.context.get('request')
+        state = request.data.get('state', None)
+        if state:
+            if state == WORK_ORDER_STATE.COMPLETED_AND_PAID:
+                if value == None:
+                    raise serializers.ValidationError("This field may not be blank.")
+        return value
 
     def update(self, instance, validated_data):
         """

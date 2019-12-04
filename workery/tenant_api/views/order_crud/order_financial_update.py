@@ -37,6 +37,7 @@ class WorkOrderFinancialUpdateAPIView(generics.UpdateAPIView):
         order = get_object_or_404(WorkOrder, pk=pk)
         self.check_object_permissions(request, order)  # Validate permissions.
         write_serializer = WorkOrderFinancialUpdateSerializer(order, data=request.data, context={
+            'request': request,
             'last_modified_by': request.user,
             'last_modified_from': client_ip,
             'last_modified_from_is_public': is_routable,
