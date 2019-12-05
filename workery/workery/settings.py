@@ -149,6 +149,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.locale.LocaleMiddleware',              # Extra Django App
     'debug_toolbar.middleware.DebugToolbarMiddleware',        # Third Party App
+    'shared_foundation.middleware.ip_middleware.IPMiddleware',# Custom App
     'htmlmin.middleware.HtmlMinifyMiddleware',                # Third Party
     'htmlmin.middleware.MarkRequestMiddleware',               # Third Party
 ]

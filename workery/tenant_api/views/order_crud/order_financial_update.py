@@ -33,22 +33,10 @@ class WorkOrderFinancialUpdateAPIView(generics.UpdateAPIView):
         """
         Update
         """
-        client_ip, is_routable = get_client_ip(self.request)
         order = get_object_or_404(WorkOrder, pk=pk)
         self.check_object_permissions(request, order)  # Validate permissions.
-        write_serializer = WorkOrderFinancialUpdateSerializer(order, data=request.data, context={
-            'request': request,
-            'last_modified_by': request.user,
-            'last_modified_from': client_ip,
-            'last_modified_from_is_public': is_routable,
-            'franchise': request.tenant,
-        })
+        write_serializer = WorkOrderFinancialUpdateSerializer(order, data=request.data, context={'request': request,})
         write_serializer.is_valid(raise_exception=True)
         order = write_serializer.save()
-        read_serializer = WorkOrderRetrieveUpdateDestroySerializer(order, many=False, context={
-            'last_modified_by': request.user,
-            'last_modified_from': client_ip,
-            'last_modified_from_is_public': is_routable,
-            'franchise': request.tenant,
-        })
+        read_serializer = WorkOrderRetrieveUpdateDestroySerializer(order, many=False, context={'request': request,})
         return Response(read_serializer.data, status=status.HTTP_200_OK)

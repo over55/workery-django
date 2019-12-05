@@ -7,6 +7,7 @@ from djmoney.money import Money
 from django.conf import settings
 from django.contrib.auth.models import Group
 from django.contrib.auth import authenticate
+from django.core.management import call_command
 from django.db.models import Q, Prefetch
 from django.utils.translation import ugettext_lazy as _
 from django.utils import timezone
@@ -102,6 +103,11 @@ class WorkOrderFinancialUpdateSerializer(serializers.ModelSerializer):
         """
         Override this function to include extra functionality.
         """
+        request = self.context.get('request')
+        tenant = request.tenant
+        user_id = request.user.id
+        from_ip = request.client_ip
+        from_ip_is_public = request.client_ip_is_routable
         instance.invoice_paid_to = validated_data.get('invoice_paid_to', instance.invoice_paid_to)
         instance.invoice_service_fee = validated_data.get('invoice_service_fee', instance.invoice_service_fee)
         instance.invoice_ids = validated_data.get('invoice_ids', instance.invoice_ids)
@@ -126,6 +132,15 @@ class WorkOrderFinancialUpdateSerializer(serializers.ModelSerializer):
         instance.invoice_balance_owing_amount = validated_data.get('invoice_balance_owing_amount', instance.invoice_balance_owing_amount)
         instance.visits = validated_data.get('visits', instance.visits)
         instance.completion_date = validated_data.get('completion_date', instance.completion_date)
+        instance.last_modified_by_id = user_id
+        instance.last_modified_from = from_ip
+        instance.last_modified_from_is_public = from_ip_is_public
         instance.save()
         logger.info("Updated order object.")
+
+        # Run the command which will process more advanced fields pertaining to
+        # the process.
+        from_ip_is_public = 1 if from_ip_is_public == True else 0
+        call_command('process_paid_order', tenant.schema_name, instance.id, user_id, from_ip, from_ip_is_public, verbosity=0)
+
         return instance
