@@ -7,6 +7,7 @@ from djmoney.money import Money
 from django.conf import settings
 from django.contrib.auth.models import Group
 from django.contrib.auth import authenticate
+from django.core.management import call_command
 from django.db import transaction
 from django.db.models import Q, Prefetch, Sum
 from django.utils.translation import ugettext_lazy as _
@@ -55,47 +56,19 @@ def cannot_be_negative(value):
 
 class WorkOrderCloseCreateSerializer(serializers.Serializer):
     job = serializers.PrimaryKeyRelatedField(many=False, queryset=WorkOrder.objects.all(), required=True)
+    was_successfully_finished = serializers.BooleanField(required=True,)
+    completion_date = serializers.DateField(required=False, allow_null=True,)
     reason = serializers.IntegerField(required=False, validators=[cannot_be_zero_or_negative,])
     reason_other = serializers.CharField(required=False, allow_blank=True)
-    additional_comment = serializers.CharField(required=False, allow_blank=True)
-    was_survey_conducted = serializers.BooleanField(required=False)
-    was_there_financials_inputted = serializers.BooleanField(required=False)
-    was_job_satisfactory = serializers.BooleanField(required=False)
-    was_job_finished_on_time_and_on_budget = serializers.BooleanField(required=False)
-    was_associate_punctual = serializers.BooleanField(required=False)
-    was_associate_professional = serializers.BooleanField(required=False)
-    would_customer_refer_our_organization = serializers.BooleanField(required=False)
-    invoice_date = serializers.DateField(required=False)
-    invoice_ids = serializers.CharField(required=False, allow_blank=True)
-    invoice_quote_amount = serializers.FloatField(required=False, validators=[cannot_be_negative,])
-    invoice_labour_amount = serializers.FloatField(required=False, validators=[cannot_be_negative,])
-    invoice_material_amount = serializers.FloatField(required=False, validators=[cannot_be_negative,])
-    invoice_tax_amount = serializers.FloatField(required=False, validators=[cannot_be_negative,])
-    invoice_total_amount = serializers.FloatField(required=False, validators=[cannot_be_negative,])
-    invoice_service_fee_amount = serializers.FloatField(required=False, validators=[cannot_be_negative,])
 
     # Meta Information.
     class Meta:
         fields = (
             'job',
+            'was_successfully_finished',
+            'completion_date',
             'reason',
             'reason_other',
-            'additional_comment',
-            'was_survey_conducted',
-            'was_there_financials_inputted',
-            'was_job_satisfactory',
-            'was_job_finished_on_time_and_on_budget',
-            'was_associate_punctual',
-            'was_associate_professional',
-            'would_customer_refer_our_organization',
-            'invoice_date',
-            'invoice_ids',
-            'invoice_quote_amount',
-            'invoice_labour_amount',
-            'invoice_material_amount',
-            'invoice_tax_amount',
-            'invoice_total_amount',
-            'invoice_service_fee_amount'
         )
 
     def validate(self, data):
@@ -124,116 +97,74 @@ class WorkOrderCloseCreateSerializer(serializers.Serializer):
         """
         Override the `create` function to add extra functinality.
         """
+        request = self.context['request']
+        tenant = request.tenant
+        user_id = request.user.id
+        from_ip = request.client_ip
+        from_ip_is_public = request.client_ip_is_routable
+
         #--------------------------#
         # Get validated POST data. #
         #--------------------------#
         job = validated_data.get('job', None)
+        was_successfully_finished = validated_data.get('was_successfully_finished', None)
+        completion_date = validated_data.get('completion_date', None)
         reason = validated_data.get('reason', None)
         reason_other = validated_data.get('reason_other', None)
-        additional_comment_text = validated_data.get('additional_comment', None)
-        was_survey_conducted = validated_data.get('was_survey_conducted', False)
-        was_there_financials = validated_data.get('was_there_financials', False)
-        was_job_satisfactory = validated_data.get('was_job_satisfactory', False)
-        was_job_finished_on_time_and_on_budget = validated_data.get('was_job_finished_on_time_and_on_budget', False)
-        was_associate_punctual = validated_data.get('was_associate_punctual', False)
-        was_associate_professional = validated_data.get('was_associate_professional', False)
-        would_customer_refer_our_organization = validated_data.get('would_customer_refer_our_organization', False)
-        invoice_date = validated_data.get('invoice_date', None)
-        invoice_ids = validated_data.get('invoice_ids',  0)
-        invoice_quote_amount = validated_data.get('invoice_quote_amount',  0)
-        invoice_labour_amount = validated_data.get('invoice_labour_amount',  0)
-        invoice_material_amount = validated_data.get('invoice_material_amount',  0)
-        invoice_tax_amount = validated_data.get('invoice_tax_amount',  0)
-        invoice_total_amount = validated_data.get('invoice_total_amount',  0)
-        invoice_service_fee_amount = validated_data.get('invoice_service_fee_amount',  0)
 
         # -------------------------
-        # --- FINANCIAL DETAILS ---
+        # ---      DETAILS      ---
         # -------------------------
         # (a) Object details.
-        if job.closing_reason == 4:
+        if was_successfully_finished:
             job.state = WORK_ORDER_STATE.COMPLETED_BUT_UNPAID
         else:
             job.state = WORK_ORDER_STATE.CANCELLED
-        job.invoice_date = invoice_date
-
-        # Attach financials.
-        if job.was_there_financials_inputted:
-            job.invoice_ids = invoice_ids
-            job.invoice_quote_amount = Money(invoice_quote_amount, WORKERY_APP_DEFAULT_MONEY_CURRENCY)
-            job.invoice_labour_amount = Money(invoice_labour_amount, WORKERY_APP_DEFAULT_MONEY_CURRENCY)
-            job.invoice_material_amount = Money(invoice_material_amount, WORKERY_APP_DEFAULT_MONEY_CURRENCY)
-            job.invoice_tax_amount = Money(invoice_tax_amount, WORKERY_APP_DEFAULT_MONEY_CURRENCY)
-            job.invoice_total_amount = Money(invoice_total_amount, WORKERY_APP_DEFAULT_MONEY_CURRENCY)
-            job.invoice_service_fee_amount = Money(invoice_service_fee_amount, WORKERY_APP_DEFAULT_MONEY_CURRENCY)
+        job.completion_date = completion_date
 
         # (b) System details.
-        job.last_modified_by = self.context['user']
-        job.last_modified_from = self.context['from']
-        job.last_modified_from_is_public = self.context['from_is_public']
-
+        job.last_modified_by_id = user_id
+        job.last_modified_from = from_ip
+        job.last_modified_from_is_public = from_ip_is_public
         job.save()
 
         # For debugging purposes only.
-        logger.info("Job financials where updated.")
+        logger.info("Job was updated.")
 
-        #------------------------------------------#
-        # Create any additional optional comments. #
-        #------------------------------------------#
-        if additional_comment_text:
-            comment_obj = Comment.objects.create(
-                created_by = self.context['user'],
-                created_from = self.context['from'],
-                created_from_is_public = self.context['from_is_public'],
-                last_modified_by = self.context['user'],
-                last_modified_from = self.context['from'],
-                last_modified_from_is_public = self.context['from_is_public'],
-                text=additional_comment_text,
-            )
-            WorkOrderComment.objects.create(
-                about=job,
-                comment=comment_obj,
-            )
+        # ---------------------
+        # --- JOB IS CLOSED ---
+        # ---------------------
+        if was_successfully_finished:
+            #---------------#
+            # Close the job #
+            #---------------#
+            # STEP 1 - Close the job.
+            job.closing_reason = reason
+            job.closing_reason_other = reason_other
+            job.last_modified_by_id = user_id
+            job.state = WORK_ORDER_STATE.COMPLETED_BUT_UNPAID
+            job.completion_date = get_todays_date_plus_days(0)
+            job.latest_pending_task = None
+
+            # STEP 4 - Save all our changes.
+            job.save()
 
             # For debugging purposes only.
-            logger.info("Job comment created.")
+            logger.info("Job was completed.")
 
-        #----------------------------------------#
-        # Lookup our Task(s) and close them all. #
-        #----------------------------------------#
-        task_items = TaskItem.objects.filter(
-            job=job,
-            is_closed=False
-        )
-        for task_item in task_items.all():
-            logger.info("Found task # #%(id)s ." % {
-                'id': str(task_item.id)
-            })
-
-            # (a) Object details.
-            task_item.reason = reason
-            task_item.reason_other = reason_other
-            task_item.is_closed = True
-
-            # (b) System details.
-            task_item.last_modified_by = self.context['user']
-            task_item.last_modified_from = self.context['from']
-            task_item.last_modified_from_is_public = self.context['from_is_public']
-
-            task_item.save()
-
-            logger.info("Task #%(id)s was closed." % {
-                'id': str(task_item.id)
-            })
+            # Run the command which will process more advanced fields pertaining to
+            # the process.
+            from_ip_is_public = 1 if from_ip_is_public == True else 0
+            call_command('process_paid_order', tenant.schema_name, job.id, user_id, from_ip, from_ip_is_public, verbosity=0)
 
         # ------------------------
         # --- JOB IS CANCELLED ---
         # ------------------------
-        if reason != 4:
+        else:
             # Close the job.
             job.closing_reason = reason
             job.closing_reason_other = reason_other
-            job.last_modified_by = self.context['user']
+            job.last_modified_by_id = user_id
             job.state = WORK_ORDER_STATE.CANCELLED
             job.completion_date = get_todays_date_plus_days(0)
             job.latest_pending_task = None
@@ -242,72 +173,17 @@ class WorkOrderCloseCreateSerializer(serializers.Serializer):
             # For debugging purposes only.
             logger.info("Job was cancelled.")
 
-        # ---------------------
-        # --- JOB IS CLOSED ---
-        # ---------------------
-        else:
-            #---------------#
-            # Close the job #
-            #---------------#
-            # STEP 1 - Close the job.
-            job.closing_reason = reason
-            job.closing_reason_other = reason_other
-            job.last_modified_by = self.context['user']
-            job.state = WORK_ORDER_STATE.COMPLETED_BUT_UNPAID
-            job.completion_date = get_todays_date_plus_days(0)
-            job.latest_pending_task = None
+            tasks = TaskItem.objects.filter(Q(job=job) & Q(is_closed=False))
+            for task in tasks:
+                task.is_closed=True
+                task.last_modified_by_id = user_id
+                task.last_modified_from = from_ip
+                task.last_modified_from_is_public = from_ip_is_public
+                task.save()
 
-            # STEP 2 - Save the results.
-            if was_survey_conducted:
-                job.was_survey_conducted = was_survey_conducted
-                job.was_job_satisfactory = was_job_satisfactory
-                job.was_job_finished_on_time_and_on_budget = was_job_finished_on_time_and_on_budget
-                job.was_associate_punctual = was_associate_punctual
-                job.was_associate_professional = was_associate_professional
-                job.would_customer_refer_our_organization = would_customer_refer_our_organization
+        raise serializers.ValidationError({ # For debugging purposes only. Do not delete, just uncomment.
+            'error': 'Stop caused by programmer.',
+        })
 
-                #-------------------------#
-                # Compute associate score #
-                #-------------------------#
-                # STEP 3 - Compute the score.
-                job.score = 0
-                job.score += int(was_job_satisfactory)
-                job.score += int(was_job_finished_on_time_and_on_budget)
-                job.score += int(was_associate_punctual)
-                job.score += int(was_associate_professional)
-                job.score += int(would_customer_refer_our_organization)
-
-            # STEP 4 - Save all our changes.
-            job.save()
-
-            # For debugging purposes only.
-            logger.info("Job was completed.")
-
-            # STEP 4 - Update the associate score by re-computing the average
-            #          score and saving it with the profile.
-            jobs_count = WorkOrder.objects.filter(
-                Q(associate = job.associate) &
-                Q(closing_reason = 4) &
-                ~Q(state=WORK_ORDER_STATE.CANCELLED) &
-                ~Q(state=WORK_ORDER_STATE.ARCHIVED)
-            ).count()
-            summation_results = WorkOrder.objects.filter(
-                Q(associate = job.associate) &
-                Q(closing_reason = 4) &
-                ~Q(state=WORK_ORDER_STATE.CANCELLED) &
-                ~Q(state=WORK_ORDER_STATE.ARCHIVED)
-            ).aggregate(Sum('score'))
-
-            score_sum = summation_results['score__sum']
-            total_score = score_sum / jobs_count
-
-            # For debugging purposes only.
-            logger.info("Assocate is calculated as: %(total_score)s" % {
-                'total_score': str(total_score)
-            })
-
-        #--------------------#
-        # Updated the output #
-        #--------------------#
         # validated_data['id'] = obj.id
         return validated_data
