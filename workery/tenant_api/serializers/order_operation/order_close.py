@@ -58,7 +58,7 @@ class WorkOrderCloseCreateSerializer(serializers.Serializer):
     job = serializers.PrimaryKeyRelatedField(many=False, queryset=WorkOrder.objects.all(), required=True)
     was_successfully_finished = serializers.BooleanField(required=True,)
     completion_date = serializers.DateField(required=False, allow_null=True,)
-    reason = serializers.IntegerField(required=False, validators=[cannot_be_zero_or_negative,])
+    reason = serializers.IntegerField(required=False, validators=[cannot_be_zero_or_negative,], allow_null=True,)
     reason_other = serializers.CharField(required=False, allow_blank=True)
 
     # Meta Information.
@@ -70,27 +70,6 @@ class WorkOrderCloseCreateSerializer(serializers.Serializer):
             'reason',
             'reason_other',
         )
-
-    def validate(self, data):
-        """
-        Override the validator to provide additional custom validation based
-        on our custom logic.
-
-        1. If 'reason' == 1 then make sure 'reason_other' was inputted.
-        2. If 'reason' == 4 then make sure the Customer survey fields where inputted.
-        """
-        # CASE 1 - Other reason
-        if data['reason'] == 1:
-            reason_other = data['reason_other']
-            if reason_other == "":
-                raise serializers.ValidationError(_("Please provide a reason as to why you chose the \"Other\" option."))
-
-        # CASE 2 - Job done by associate
-        elif data['reason'] == 4:
-            pass #TODO: IMPLEMENT.
-
-        # Return our data.
-        return data
 
     @transaction.atomic
     def create(self, validated_data):
@@ -181,9 +160,9 @@ class WorkOrderCloseCreateSerializer(serializers.Serializer):
                 task.last_modified_from_is_public = from_ip_is_public
                 task.save()
 
-        raise serializers.ValidationError({ # For debugging purposes only. Do not delete, just uncomment.
-            'error': 'Stop caused by programmer.',
-        })
+        # raise serializers.ValidationError({ # For debugging purposes only. Do not delete, just uncomment.
+        #     'error': 'Stop caused by programmer.',
+        # })
 
         # validated_data['id'] = obj.id
         return validated_data
