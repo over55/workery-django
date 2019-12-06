@@ -51,6 +51,7 @@ class TaskItemRetrieveSerializer(serializers.ModelSerializer):
     job_customer_e164_telephone = serializers.SerializerMethodField()
     job_customer_location = serializers.CharField(read_only=True, source="job.customer.get_postal_address_without_postal_code")
     job_customer_location_google_url = serializers.URLField(read_only=True, source="job.customer.get_google_maps_url")
+    job_customer_pretty_tags = serializers.SerializerMethodField()
     # job_customer_telephone_type_of = serializers.IntegerField(read_only=True, source="customer.telephone_type_of")
     # job_customer_pretty_telephone_type_of = serializers.CharField(read_only=True, source="customer.get_pretty_telephone_type_of")
     # job_customer_other_telephone = PhoneNumberField(read_only=True, source="customer.other_telephone")
@@ -64,6 +65,7 @@ class TaskItemRetrieveSerializer(serializers.ModelSerializer):
     job_associate_e164_telephone = serializers.SerializerMethodField()
     job_associate_location = serializers.CharField(read_only=True, source="job.associate.get_postal_address_without_postal_code")
     job_associate_location_google_url = serializers.URLField(read_only=True, source="job.associate.get_google_maps_url")
+    job_associate_pretty_tags = serializers.SerializerMethodField()
     # associate_telephone_type_of = serializers.IntegerField(read_only=True, source="associate.telephone_type_of")
     # associate_pretty_telephone_type_of = serializers.CharField(read_only=True, source="associate.get_pretty_telephone_type_of")
     # associate_other_telephone = PhoneNumberField(read_only=True, source="associate.other_telephone")
@@ -115,6 +117,7 @@ class TaskItemRetrieveSerializer(serializers.ModelSerializer):
             'job_customer_e164_telephone',
             'job_customer_location',
             'job_customer_location_google_url',
+            'job_customer_pretty_tags',
 
             # ASSOCIATE RELATED
             'job_associate',
@@ -123,6 +126,7 @@ class TaskItemRetrieveSerializer(serializers.ModelSerializer):
             'job_associate_e164_telephone',
             'job_associate_location',
             'job_associate_location_google_url',
+            'job_associate_pretty_tags',
             'associate_away_log',
         )
 
@@ -147,6 +151,14 @@ class TaskItemRetrieveSerializer(serializers.ModelSerializer):
         except Exception as e:
             return None
 
+    def get_job_customer_pretty_tags(self, obj):
+        try:
+            s = TagListCreateSerializer(obj.job.customer.tags.all(), many=True)
+            return s.data
+        except Exception as e:
+            #print("get_job_customer_pretty_tags", str(e))
+            return None
+
     def get_job_associate_full_name(self, obj):
         try:
             if obj.job.associate:
@@ -165,6 +177,13 @@ class TaskItemRetrieveSerializer(serializers.ModelSerializer):
     def get_job_pretty_tags(self, obj):
         try:
             s = TagListCreateSerializer(obj.job.tags.all(), many=True)
+            return s.data
+        except Exception as e:
+            return None
+
+    def get_job_associate_pretty_tags(self, obj):
+        try:
+            s = TagListCreateSerializer(obj.job.associate.tags.all(), many=True)
             return s.data
         except Exception as e:
             return None
