@@ -19,6 +19,7 @@ class AssociateFilter(django_filters.FilterSet):
             ('join_date', 'join_date'),
             ('score', 'score'),
             ('owner__is_active', 'state'),
+            ('join_date', 'join_date'),
         ),
 
         # # labels do not need to retain order

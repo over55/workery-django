@@ -15,6 +15,7 @@ class CustomerFilter(django_filters.FilterSet):
             ('last_name', 'last_name'),
             ('telephone', 'telephone'),
             ('email', 'email'),
+            ('join_date', 'join_date'),
         ),
 
         # # labels do not need to retain order
