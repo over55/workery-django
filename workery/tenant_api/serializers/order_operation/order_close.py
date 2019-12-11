@@ -110,6 +110,17 @@ class WorkOrderCloseCreateSerializer(serializers.Serializer):
         # For debugging purposes only.
         logger.info("Job was updated.")
 
+        tasks = TaskItem.objects.filter(Q(job=job) & Q(is_closed=False))
+        for task in tasks:
+            task.is_closed=True
+            task.last_modified_by_id = user_id
+            task.last_modified_from = from_ip
+            task.last_modified_from_is_public = from_ip_is_public
+            task.save()
+
+            # For debugging purposes only.
+            logger.info("Task was closed.")
+
         # ---------------------
         # --- JOB IS CLOSED ---
         # ---------------------
@@ -136,6 +147,43 @@ class WorkOrderCloseCreateSerializer(serializers.Serializer):
             from_ip_is_public = 1 if from_ip_is_public == True else 0
             call_command('process_paid_order', tenant.schema_name, job.id, user_id, from_ip, from_ip_is_public, verbosity=0)
 
+            # ------------------------
+            # --- SURVEY TASK ITEM ---
+            # ------------------------
+            # Generate our task title.
+            title = _('Survey')
+
+            # Rational: We want to ask the customer after 7 days AFTER the completion date.
+            meeting_date = get_todays_date_plus_days(7)
+
+            # STEP 5 - Create our new task for survey.
+            next_task_item = TaskItem.objects.create(
+                type_of = FOLLOW_UP_DID_CUSTOMER_REVIEW_ASSOCIATE_AFTER_JOB_TASK_ITEM_TYPE_OF_ID,
+                title = title,
+                description = _('Please call client and review the associate.'),
+                due_date = meeting_date,
+                is_closed = False,
+                job = job,
+                created_by_id = user_id,
+                created_from = from_ip,
+                created_from_is_public = from_ip_is_public,
+                last_modified_by_id = user_id,
+                last_modified_from = from_ip,
+                last_modified_from_is_public = from_ip_is_public,
+            )
+
+            # For debugging purposes only.
+            logger.info("Survey Task #%(id)s was created" % {
+                'id': str(next_task_item.id)
+            })
+
+            # The following code will add our new item to the job.
+            job.latest_pending_task = next_task_item
+            job.last_modified_by_id = user_id
+            job.last_modified_from = from_ip
+            job.last_modified_from_is_public = from_ip_is_public
+            job.save()
+
         # ------------------------
         # --- JOB IS CANCELLED ---
         # ------------------------
@@ -151,14 +199,6 @@ class WorkOrderCloseCreateSerializer(serializers.Serializer):
 
             # For debugging purposes only.
             logger.info("Job was cancelled.")
-
-            tasks = TaskItem.objects.filter(Q(job=job) & Q(is_closed=False))
-            for task in tasks:
-                task.is_closed=True
-                task.last_modified_by_id = user_id
-                task.last_modified_from = from_ip
-                task.last_modified_from_is_public = from_ip_is_public
-                task.save()
 
         # raise serializers.ValidationError({ # For debugging purposes only. Do not delete, just uncomment.
         #     'error': 'Stop caused by programmer.',

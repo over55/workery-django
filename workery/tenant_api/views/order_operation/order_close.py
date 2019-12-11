@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from django_filters.rest_framework import DjangoFilterBackend
 from django.conf.urls import url, include
+from django.db import transaction
 from django.shortcuts import get_list_or_404, get_object_or_404
 from rest_framework import filters
 from rest_framework import generics
@@ -25,6 +26,7 @@ class WorkOrderCloseOperationCreateAPIView(generics.CreateAPIView):
         CanListCreateWorkOrderPermission
     )
 
+    @transaction.atomic
     def post(self, request, format=None):
         """
         Create
