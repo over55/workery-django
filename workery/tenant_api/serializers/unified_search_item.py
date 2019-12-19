@@ -25,6 +25,7 @@ class UnifiedSearchItemListSerializer(serializers.ModelSerializer):
             'tags',
             'description',
             'type_of',
+            'last_modified_at',
         )
 
     def get_id(self, obj):

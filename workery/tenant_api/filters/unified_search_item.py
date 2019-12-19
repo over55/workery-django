@@ -16,6 +16,7 @@ class UnifiedSearchItemFilter(django_filters.FilterSet):
             ('description', 'description'),
             ('tags', 'tags'),
             ('type_of', 'type_of'),
+            ('last_modified_at', 'last_modified_at'),
         ),
 
         # # labels do not need to retain order
@@ -23,6 +24,11 @@ class UnifiedSearchItemFilter(django_filters.FilterSet):
         #     'username': 'User account',
         # }
     )
+
+    def keyword_filtering(self, queryset, name, value):
+        return UnifiedSearchItem.objects.partial_text_search(value)
+
+    keyword = django_filters.CharFilter(method='keyword_filtering')
 
     def tags_filtering(self, queryset, name, value):
         queryset = queryset.filter(tags__in=value.split(','))
@@ -33,7 +39,9 @@ class UnifiedSearchItemFilter(django_filters.FilterSet):
     class Meta:
         model = UnifiedSearchItem
         fields = [
+            'keyword',
             'tags',
             'description',
             'type_of',
+            'last_modified_at',
         ]

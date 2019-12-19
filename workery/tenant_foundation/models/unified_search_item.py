@@ -4,8 +4,10 @@ import pytz
 from datetime import date, datetime, timedelta
 from django.conf import settings
 from django.contrib.auth.models import User
+from django.contrib.postgres.search import SearchVector, SearchVectorField
 from django.db import models
 from django.db import transaction
+from django.db.models import Q
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 
@@ -19,6 +21,24 @@ class UnifiedSearchItemManager(models.Manager):
         items = UnifiedSearchItem.objects.all()
         for item in items.all():
             item.delete()
+
+    def partial_text_search(self, keyword):
+        """Function performs partial text search of various textfields."""
+        return UnifiedSearchItem.objects.filter(
+            Q(text__icontains=keyword) |
+            Q(text__istartswith=keyword) |
+            Q(text__iendswith=keyword) |
+            Q(text__exact=keyword) |
+            Q(text__icontains=keyword)
+        )
+
+    def full_text_search(self, keyword):
+        """Function performs full text search of various textfields."""
+        # The following code will use the native 'PostgreSQL' library
+        # which comes with Django to utilize the 'full text search' feature.
+        # For more details please read:
+        # https://docs.djangoproject.com/en/2.0/ref/contrib/postgres/search/
+        return UnifiedSearchItem.objects.annotate(search=SearchVector('indexed_text'),).filter(search=keyword)
 
     def update_or_create_associate(self, associate):
         try:
