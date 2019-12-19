@@ -15,6 +15,7 @@ from tenant_foundation.models.comment import Comment
 from tenant_foundation.models.vehicle_type import VehicleType
 from tenant_foundation.models.work_order_service_fee import WorkOrderServiceFee
 from tenant_foundation.models.work_order_invoice import WorkOrderInvoice
+from tenant_foundation.models.unified_search_item import UnifiedSearchItem
 
 # Customer Models
 from tenant_foundation.models.customer import Customer
