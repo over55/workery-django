@@ -24,22 +24,30 @@ class UnifiedSearchItemManager(models.Manager):
         try:
             was_created = False
             item = UnifiedSearchItem.objects.get(associate=associate)
+            item.type_of=UnifiedSearchItem.UNIFIED_SEARCH_ITEM_TYPE_OF.ASSOCIATE
+            item.description=str(associate)
             item.associate=associate
             item.text=associate.indexed_text
+            item.created_at=associate.created
             item.created_by=associate.created_by
             item.created_from=associate.created_from
             item.created_from_is_public=associate.created_from_is_public
+            item.last_modified_at=associate.last_modified
             item.last_modified_by=associate.last_modified_by
             item.last_modified_from=associate.last_modified_from
             item.last_modified_from_is_public=associate.last_modified_from_is_public
             item.save()
         except UnifiedSearchItem.DoesNotExist:
             item = UnifiedSearchItem.objects.create(
+                type_of=UnifiedSearchItem.UNIFIED_SEARCH_ITEM_TYPE_OF.ASSOCIATE,
                 associate=associate,
+                description=str(associate),
                 text=associate.indexed_text,
+                created_at=associate.created,
                 created_by=associate.created_by,
                 created_from=associate.created_from,
                 created_from_is_public=associate.created_from_is_public,
+                last_modified_at=associate.last_modified,
                 last_modified_by=associate.last_modified_by,
                 last_modified_from=associate.last_modified_from,
                 last_modified_from_is_public=associate.last_modified_from_is_public,
@@ -52,22 +60,30 @@ class UnifiedSearchItemManager(models.Manager):
         try:
             was_created = False
             item = UnifiedSearchItem.objects.get(customer=customer)
+            item.type_of=UnifiedSearchItem.UNIFIED_SEARCH_ITEM_TYPE_OF.CUSTOMER
             item.customer=customer
+            item.description=str(customer)
             item.text=customer.indexed_text
+            item.created_at=customer.created
             item.created_by=customer.created_by
             item.created_from=customer.created_from
             item.created_from_is_public=customer.created_from_is_public
+            item.last_modified_at=customer.last_modified
             item.last_modified_by=customer.last_modified_by
             item.last_modified_from=customer.last_modified_from
             item.last_modified_from_is_public=customer.last_modified_from_is_public
             item.save()
         except UnifiedSearchItem.DoesNotExist:
             item = UnifiedSearchItem.objects.create(
+                type_of=UnifiedSearchItem.UNIFIED_SEARCH_ITEM_TYPE_OF.CUSTOMER,
                 customer=customer,
+                description=str(customer),
                 text=customer.indexed_text,
+                created_at=customer.created,
                 created_by=customer.created_by,
                 created_from=customer.created_from,
                 created_from_is_public=customer.created_from_is_public,
+                last_modified_at=customer.last_modified,
                 last_modified_by=customer.last_modified_by,
                 last_modified_from=customer.last_modified_from,
                 last_modified_from_is_public=customer.last_modified_from_is_public,
@@ -80,22 +96,30 @@ class UnifiedSearchItemManager(models.Manager):
         try:
             was_created = False
             item = UnifiedSearchItem.objects.get(staff=staff)
+            item.type_of=UnifiedSearchItem.UNIFIED_SEARCH_ITEM_TYPE_OF.STAFF
             item.staff=staff
+            item.description=str(staff)
             item.text=staff.indexed_text
+            item.created_at=staff.created
             item.created_by=staff.created_by
             item.created_from=staff.created_from
             item.created_from_is_public=staff.created_from_is_public
+            item.last_modified_at=staff.last_modified
             item.last_modified_by=staff.last_modified_by
             item.last_modified_from=staff.last_modified_from
             item.last_modified_from_is_public=staff.last_modified_from_is_public
             item.save()
         except UnifiedSearchItem.DoesNotExist:
             item = UnifiedSearchItem.objects.create(
+                type_of=UnifiedSearchItem.UNIFIED_SEARCH_ITEM_TYPE_OF.STAFF,
                 staff=staff,
+                description=str(staff),
                 text=staff.indexed_text,
+                created_at=staff.created,
                 created_by=staff.created_by,
                 created_from=staff.created_from,
                 created_from_is_public=staff.created_from_is_public,
+                last_modified_at=staff.last_modified,
                 last_modified_by=staff.last_modified_by,
                 last_modified_from=staff.last_modified_from,
                 last_modified_from_is_public=staff.last_modified_from_is_public,
@@ -108,22 +132,30 @@ class UnifiedSearchItemManager(models.Manager):
         try:
             was_created = False
             item = UnifiedSearchItem.objects.get(job=job)
+            item.type_of=UnifiedSearchItem.UNIFIED_SEARCH_ITEM_TYPE_OF.JOB
             item.job=job
+            item.description="Work Order #"+str(job.id)
             item.text=job.indexed_text
+            item.created_at=job.created
             item.created_by=job.created_by
             item.created_from=job.created_from
             item.created_from_is_public=job.created_from_is_public
+            item.last_modified_at=job.last_modified
             item.last_modified_by=job.last_modified_by
             item.last_modified_from=job.last_modified_from
             item.last_modified_from_is_public=job.last_modified_from_is_public
             item.save()
         except UnifiedSearchItem.DoesNotExist:
             item = UnifiedSearchItem.objects.create(
+                type_of=UnifiedSearchItem.UNIFIED_SEARCH_ITEM_TYPE_OF.JOB,
                 job=job,
+                description="Work Order #"+str(job.id),
                 text=job.indexed_text,
+                created_at=job.created,
                 created_by=job.created_by,
                 created_from=job.created_from,
                 created_from_is_public=job.created_from_is_public,
+                last_modified_at=job.last_modified,
                 last_modified_by=job.last_modified_by,
                 last_modified_from=job.last_modified_from,
                 last_modified_from_is_public=job.last_modified_from_is_public,
@@ -136,22 +168,30 @@ class UnifiedSearchItemManager(models.Manager):
         try:
             was_created = False
             item = UnifiedSearchItem.objects.get(partner=partner)
+            item.type_of=UnifiedSearchItem.UNIFIED_SEARCH_ITEM_TYPE_OF.PARTNER
             item.partner=partner
+            item.description=str(partner)
             item.text=partner.indexed_text
+            item.created_at=partner.created
             item.created_by=partner.created_by
             item.created_from=partner.created_from
             item.created_from_is_public=partner.created_from_is_public
+            item.last_modified_at=partner.last_modified
             item.last_modified_by=partner.last_modified_by
             item.last_modified_from=partner.last_modified_from
             item.last_modified_from_is_public=partner.last_modified_from_is_public
             item.save()
         except UnifiedSearchItem.DoesNotExist:
             item = UnifiedSearchItem.objects.create(
+                type_of=UnifiedSearchItem.UNIFIED_SEARCH_ITEM_TYPE_OF.PARTNER,
                 partner=partner,
+                description=str(partner),
                 text=partner.indexed_text,
+                created_at=partner.created,
                 created_by=partner.created_by,
                 created_from=partner.created_from,
                 created_from_is_public=partner.created_from_is_public,
+                last_modified_at=partner.last_modified,
                 last_modified_by=partner.last_modified_by,
                 last_modified_from=partner.last_modified_from,
                 last_modified_from_is_public=partner.last_modified_from_is_public,
@@ -163,11 +203,15 @@ class UnifiedSearchItemManager(models.Manager):
     def update_or_create_file(self, file):
         try:
             item = UnifiedSearchItem.objects.get(file=file)
+            item.type_of=UnifiedSearchItem.UNIFIED_SEARCH_ITEM_TYPE_OF.FILE
             item.file=file
+            item.description=str(file)
             item.text=file.indexed_text
+            item.created_at=file.created_at
             item.created_by=file.created_by
             item.created_from=file.created_from
             item.created_from_is_public=file.created_from_is_public
+            item.last_modified_at=file.last_modified_at
             item.last_modified_by=file.last_modified_by
             item.last_modified_from=file.last_modified_from
             item.last_modified_from_is_public=file.last_modified_from_is_public
@@ -175,11 +219,15 @@ class UnifiedSearchItemManager(models.Manager):
             was_created = False
         except UnifiedSearchItem.DoesNotExist:
             item = UnifiedSearchItem.objects.create(
+                type_of=UnifiedSearchItem.UNIFIED_SEARCH_ITEM_TYPE_OF.FILE,
                 file=file,
+                description=str(file),
                 text=file.indexed_text,
+                created_at=file.created_at,
                 created_by=file.created_by,
                 created_from=file.created_from,
                 created_from_is_public=file.created_from_is_public,
+                last_modified_at=file.last_modified_at,
                 last_modified_by=file.last_modified_by,
                 last_modified_from=file.last_modified_from,
                 last_modified_from_is_public=file.last_modified_from_is_public,
@@ -203,6 +251,31 @@ class UnifiedSearchItem(models.Model):
         default_permissions = ()
         permissions = ()
 
+    '''
+    CONSTANTS
+    '''
+
+    class UNIFIED_SEARCH_ITEM_TYPE_OF:
+        CUSTOMER = 1
+        ASSOCIATE = 2
+        STAFF = 3
+        JOB = 4
+        PARTNER = 5
+        FILE = 6
+
+    '''
+    CHOICES
+    '''
+
+    UNIFIED_SEARCH_ITEM_TYPE_OF_CHOICES = (
+        (UNIFIED_SEARCH_ITEM_TYPE_OF.CUSTOMER, _('Customer')),
+        (UNIFIED_SEARCH_ITEM_TYPE_OF.ASSOCIATE, _('Associate')),
+        (UNIFIED_SEARCH_ITEM_TYPE_OF.STAFF, _('Staff')),
+        (UNIFIED_SEARCH_ITEM_TYPE_OF.JOB, _('Job')),
+        (UNIFIED_SEARCH_ITEM_TYPE_OF.PARTNER, _('Partner')),
+        (UNIFIED_SEARCH_ITEM_TYPE_OF.FILE, _('File')),
+    )
+
     """
     OBJECT MANAGER
     """
@@ -217,7 +290,7 @@ class UnifiedSearchItem(models.Model):
 
     text = models.CharField(
         _("Text"),
-        max_length=511,
+        max_length=1023,
         help_text=_('The searchable content text used by the keyword searcher function.'),
         blank=True,
         null=True,
@@ -233,6 +306,19 @@ class UnifiedSearchItem(models.Model):
 
     # THE FOLLOWING FIELDS ARE USED TO MAP OUR SEARCHABLE ITEM TO AN OBJECT.
 
+    type_of = models.PositiveSmallIntegerField(
+        _("Type of"),
+        help_text=_('The type of item this is.'),
+        choices=UNIFIED_SEARCH_ITEM_TYPE_OF_CHOICES,
+        db_index=True,
+    )
+    description = models.CharField(
+        _("Description"),
+        max_length=255,
+        help_text=_('The title of the object to display.'),
+        blank=True,
+        null=True,
+    )
     customer = models.OneToOneField(
         "Customer",
         help_text=_('The customer of this search item.'),
@@ -284,6 +370,12 @@ class UnifiedSearchItem(models.Model):
 
     # THE FOLLOWING FIELDS ARE USED FOR SYSTEM PURPOSES.
 
+    created_at = models.DateTimeField(
+        _("Created At"),
+        help_text=_('When the object was created.'),
+        blank=True,
+        null=True
+    )
     created_by = models.ForeignKey(
         SharedUser,
         help_text=_('The user whom created this object.'),
@@ -303,6 +395,12 @@ class UnifiedSearchItem(models.Model):
         help_text=_('Is creator a public IP and is routable.'),
         default=False,
         blank=True
+    )
+    last_modified_at = models.DateTimeField(
+        _("Last Modified At"),
+        help_text=_('When the object was last modified.'),
+        blank=True,
+        null=True
     )
     last_modified_by = models.ForeignKey(
         SharedUser,
@@ -330,4 +428,4 @@ class UnifiedSearchItem(models.Model):
     """
 
     def __str__(self):
-        return str(self.text)
+        return str(self.description)

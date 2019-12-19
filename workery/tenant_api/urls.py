@@ -135,6 +135,7 @@ from tenant_api.views.activity_sheet_item import (
     ActivitySheetItemListCreateAPIView,
     ActivitySheetItemRetrieveUpdateDestroyAPIView
 )
+from tenant_api.views.unified_search_item import UnifiedSearchItemListAPIView
 
 
 urlpatterns = [
@@ -308,6 +309,9 @@ urlpatterns = [
     # ActivitySheetItem
     url(r'^api/activity-sheets$', ActivitySheetItemListCreateAPIView.as_view(), name='workery_activity_sheet_list_create_api_endpoint'),
     url(r'^api/activity-sheet/(?P<pk>[^/.]+)/$', ActivitySheetItemRetrieveUpdateDestroyAPIView.as_view(), name='workery_activity_sheet_retrieve_update_destroy_api_endpoint'),
+
+    # Search
+    url(r'^api/v1/search$', UnifiedSearchItemListAPIView.as_view(), name='workery_unified_search_list_api_endpoint'),
 ]
 
 
