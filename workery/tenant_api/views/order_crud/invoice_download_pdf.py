@@ -73,9 +73,9 @@ class WorkOrderInvoiceDownloadPDFAPIView(generics.RetrieveAPIView):
         # The following code will update the invoice with the latest data from
         # the work order.
         with freeze_time(order.last_modified):
-            invoice.associate_name = str(order.associate)
+            invoice.associate_name = order.associate.get_pretty_name()
             invoice.associate_telephone = str(order.associate.telephone)
-            invoice.client_name = str(order.customer)
+            invoice.client_name = order.customer.get_pretty_name()
             invoice.client_address = order.customer.get_postal_address()
             invoice.client_telephone = str(order.customer.telephone)
             invoice.client_email = order.customer.email

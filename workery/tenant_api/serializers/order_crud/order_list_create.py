@@ -129,13 +129,13 @@ class WorkOrderListCreateSerializer(serializers.ModelSerializer):
 
     def get_associate_name(self, obj):
         try:
-            return str(obj.associate)
+            return obj.associate.get_pretty_name()
         except Exception as e:
             return None
 
     def get_customer_name(self, obj):
         try:
-            return str(obj.customer)
+            return obj.customer.get_pretty_name()
         except Exception as e:
             return None
 

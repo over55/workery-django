@@ -358,8 +358,10 @@ class Customer(AbstractPerson):
         Function will format the name output to add the organization name if
         there is one.
         """
-        if self.organization:
-            return self.organization.name + " - " + str(self)
+        if self.organization_name:
+            return self.organization_name
+        elif self.organization:
+            return self.organization.name
         else:
             return str(self)
 

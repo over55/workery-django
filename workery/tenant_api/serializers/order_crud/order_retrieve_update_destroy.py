@@ -225,7 +225,7 @@ class WorkOrderRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
     def get_associate_full_name(self, obj):
         try:
             if obj.associate:
-                return str(obj.associate)
+                return obj.associate.get_pretty_name()
         except Exception as e:
             pass
         return None
@@ -233,7 +233,7 @@ class WorkOrderRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
     def get_customer_full_name(self, obj):
         try:
             if obj.customer:
-                return str(obj.customer)
+                return obj.customer.get_pretty_name()
         except Exception as e:
             pass
         return None

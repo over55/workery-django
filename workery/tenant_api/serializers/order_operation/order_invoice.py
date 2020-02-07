@@ -155,6 +155,12 @@ class WorkOrderInvoiceCreateOrUpdateOperationSerializer(serializers.Serializer):
         work_order_id = validated_data.get('work_order_id', None)
         order = WorkOrder.objects.get(id=work_order_id)
 
+        #----------------------#
+        # Pre-process the data #
+        #----------------------#
+        associate_name = order.associate.get_pretty_name()
+        client_name = order.customer.get_pretty_name()
+
         #------------------#
         # Process the data #
         #------------------#
@@ -164,9 +170,9 @@ class WorkOrderInvoiceCreateOrUpdateOperationSerializer(serializers.Serializer):
                 'order': order,
                 'invoice_id': validated_data.get('invoice_id', None),
                 'invoice_date': validated_data.get('invoice_date', None),
-                'associate_name': order.associate.owner.get_full_name(),
+                'associate_name': associate_name,
                 'associate_telephone': order.associate.telephone,
-                'client_name': order.customer.get_pretty_name(),
+                'client_name': client_name,
                 'client_address': order.customer.get_postal_address(),
                 'client_telephone': order.customer.telephone,
                 'client_email': order.customer.email,
