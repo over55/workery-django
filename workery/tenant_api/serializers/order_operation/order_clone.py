@@ -81,6 +81,7 @@ class WorkOrderCloneCreateSerializer(serializers.Serializer):
 
         # Remember where we cloned our object from.
         cloned_order.cloned_from = WorkOrder.objects.get(id=order_id)
+        cloned_order.latest_pending_task = None # Tasks will not be included, reason why is: https://github.com/over55/workery-front/issues/366
         cloned_order.save()
 
         # Re-assign our many-to-many.
