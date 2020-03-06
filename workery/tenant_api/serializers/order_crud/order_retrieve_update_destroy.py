@@ -111,12 +111,20 @@ class WorkOrderRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
     invoice_deposit_amount = serializers.CharField(read_only=True, source="invoice_deposit_amount.amount")
     invoice_sub_total_amount = serializers.CharField(read_only=True, source="invoice_sub_total_amount.amount")
 
+    closing_reason = serializers.IntegerField(read_only=True,)
+    closing_reason_other = serializers.CharField(read_only=True, allow_blank=False, allow_null=False,)
+    closing_reason_comment = serializers.CharField(read_only=True, allow_blank=False, allow_null=False,)
+
     class Meta:
         model = WorkOrder
         fields = (
             # Read only field.
             'id',
             # 'comments',
+            'closing_reason',
+            'closing_reason_comment',
+            'closing_reason_other',
+
             'assigned_skill_sets',
             'associate_first_name',
             'associate_last_name',

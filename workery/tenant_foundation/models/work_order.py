@@ -225,6 +225,14 @@ class WorkOrder(models.Model):
         null=True,
         default='',
     )
+    closing_reason_comment = models.CharField(
+        _("Closing Reason comment"),
+        help_text=_('Details as to why the job was closed.'),
+        max_length=1024,
+        blank=True,
+        null=True,
+        default='',
+    )
     latest_pending_task = models.ForeignKey(
         "TaskItem",
         help_text=_('The latest pending task of our job order.'),

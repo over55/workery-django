@@ -58,6 +58,7 @@ class OrderCompletionTaskOperationSerializer(serializers.Serializer):
     was_completed = serializers.BooleanField(required=True)
     reason = serializers.IntegerField(required=False, validators=[cannot_be_zero_or_negative,])
     reason_other = serializers.CharField(required=False, allow_blank=True, allow_null=True,)
+    reason_comment = serializers.CharField(required=True, allow_blank=False, allow_null=False,)
     completion_date = serializers.DateField(required=False, allow_null=True,)
 
     # Step 3 of 4
@@ -82,6 +83,7 @@ class OrderCompletionTaskOperationSerializer(serializers.Serializer):
             'was_completed',
             'reason',
             'reason_other',
+            'reason_comment',
             'completion_date',
 
             # Step 3 of 4
@@ -158,6 +160,7 @@ class OrderCompletionTaskOperationSerializer(serializers.Serializer):
         was_completed = validated_data.get('was_completed', None)
         reason = validated_data.get('reason', None)
         reason_other = validated_data.get('reason_other', None)
+        reason_comment = validated_data.get('reason_comment', None)
         completion_date = validated_data.get('completion_date', None)
 
         # Step 3 of 4
@@ -201,6 +204,7 @@ class OrderCompletionTaskOperationSerializer(serializers.Serializer):
             task_item.job.closing_reason_other = reason_other
             task_item.job.state = WORK_ORDER_STATE.CANCELLED
             logger.info("Job was cancelled.")  # For debugging purposes only.
+        task_item.job.closing_reason_comment = reason_comment
         task_item.job.last_modified_by = self.context['user']
         task_item.job.latest_pending_task = None
 
