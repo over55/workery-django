@@ -196,7 +196,7 @@ class WorkOrder(models.Model):
     )
     indexed_text = models.CharField(
         _("Indexed Text"),
-        max_length=1024,
+        max_length=2047,
         help_text=_('The searchable content text used by the keyword searcher function.'),
         blank=True,
         null=True,
@@ -778,7 +778,7 @@ class WorkOrder(models.Model):
         if self.invoice_ids:
             search_text += " " + str(self.invoice_ids)
 
-        self.indexed_text = Truncator(search_text).chars(1024)
+        self.indexed_text = Truncator(search_text).chars(2047)
 
         '''
         Run our `save` function.

@@ -10,6 +10,7 @@ from django.db import transaction
 from django.db.models import Q
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
+from django.utils.text import Truncator
 
 from shared_foundation.constants import *
 from shared_foundation.models import SharedUser
@@ -310,7 +311,7 @@ class UnifiedSearchItem(models.Model):
 
     text = models.CharField(
         _("Text"),
-        max_length=1023,
+        max_length=2047,
         help_text=_('The searchable content text used by the keyword searcher function.'),
         blank=True,
         null=True,
@@ -449,3 +450,20 @@ class UnifiedSearchItem(models.Model):
 
     def __str__(self):
         return str(self.description)
+
+    def save(self, *args, **kwargs):
+        '''
+        Override our save functionality to add the following additional
+        functionality:
+        '''
+
+        # DEVELOPERS NOTE:
+        # Why are we doing this? We want to handle the situation that our
+        # application inputs an indexted text which is too large; therefore,
+        # we will automatically truncate it so this issue will not occur.
+        self.text = Truncator(self.text).chars(2047)
+
+        '''
+        Run our `save` function.
+        '''
+        super(UnifiedSearchItem, self).save(*args, **kwargs)
