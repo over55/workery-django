@@ -18,6 +18,7 @@ from django_tenants.utils import tenant_context
 
 from shared_foundation.models.franchise import SharedFranchise
 from shared_foundation.models.franchise import SharedFranchiseDomain
+from shared_foundation.models import SharedUser
 from shared_foundation.utils import get_end_of_date_for_this_dt, get_first_date_for_this_dt
 from tenant_foundation import constants
 from tenant_foundation.models import ACTIVITY_SHEET_ITEM_STATE
@@ -67,7 +68,7 @@ class Command(BaseCommand): #TODO: UNIT TEST
             self.style.SUCCESS(_('Successfully updated all ongoing job orders.'))
         )
 
-    def send_staff_an_email(self, staff, type_of, associate, now_dt, now_d):
+    def send_staff_an_email(self, type_of, associate, now_dt, now_d):
         subject = None
         param = None
         reason = None
@@ -92,7 +93,7 @@ class Command(BaseCommand): #TODO: UNIT TEST
 
         # Generate our address.
         from_email = settings.DEFAULT_FROM_EMAIL
-        to = [staff.email,]
+        to = SharedUser.get_management_staff_emails()
 
         # Send the email.
         msg = EmailMultiAlternatives(subject, text_content, from_email, to)
@@ -172,9 +173,7 @@ class Command(BaseCommand): #TODO: UNIT TEST
         # Fetch the franchise management staff and send a notification
         # email informing them that an associate has expired commercial
         # insurance.
-        management_staffs = Staff.objects.filter_by_active_management_group()
-        for staff in management_staffs.iterator():
-            self.send_staff_an_email(staff, "police-check-expiry", associate, now_dt, now_d)
+        self.send_staff_an_email("police-check-expiry", associate, now_dt, now_d)
 
     def process_associate_for_commercial_insurance_expiry(self, associate, now_dt, now_d, commercial_insurance_expiry_d):
         """
@@ -215,9 +214,7 @@ class Command(BaseCommand): #TODO: UNIT TEST
         # Fetch the franchise management staff and send a notification
         # email informing them that an associate has expired commercial
         # insurance.
-        management_staffs = Staff.objects.filter_by_active_management_group()
-        for staff in management_staffs.iterator():
-            self.send_staff_an_email(staff, "commercial-insurance-expiry", associate, now_dt, now_d)
+        self.send_staff_an_email("commercial-insurance-expiry", associate, now_dt, now_d)
 
     def run_update_expired_associate(self, associate, now_dt, now_d):
         # Insurance expired.

@@ -15,6 +15,7 @@ from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 from django.template.loader import render_to_string    # EMAILER: HTML to TXT
 
+from shared_foundation.models import SharedUser
 from shared_foundation.models.franchise import SharedFranchise
 from shared_foundation.models.franchise import SharedFranchiseDomain
 from tenant_foundation import constants
@@ -49,13 +50,13 @@ class Command(BaseCommand): #TODO: UNIT TEST
             self.style.SUCCESS(_('Successfully updated all away logs.'))
         )
 
-    def send_staff_an_email(self, franchise, staff, away_log, now_d):
+    def send_staff_an_email(self, franchise, away_log, now_d):
+        staff_emails_arr = SharedUser.get_management_staff_emails()
         subject = "WORKERY: Updated Away Log"
         param = {
             'franchise': franchise,
             'tenant_todays_date': now_d,
             'away_log_object': away_log,
-            'staff': staff,
             'constants': constants
         }
 
@@ -65,7 +66,7 @@ class Command(BaseCommand): #TODO: UNIT TEST
 
         # Generate our address.
         from_email = settings.DEFAULT_FROM_EMAIL
-        to = [staff.email]
+        to = staff_emails_arr
 
         # Send the email.
         msg = EmailMultiAlternatives(subject, text_content, from_email, to)
@@ -84,7 +85,6 @@ class Command(BaseCommand): #TODO: UNIT TEST
         Function will iterate through all the `running` away logs and
         perform the necessary operations.
         """
-        management_staffs = Staff.objects.filter_by_active_management_group()
         tenant_todays_date = franchise.get_todays_date_plus_days()
         away_logs = AwayLog.objects.filter(
            until_date__lte=tenant_todays_date,
@@ -101,8 +101,7 @@ class Command(BaseCommand): #TODO: UNIT TEST
 
             # Email the management staff that the following ongoing jobs
             # were automatically modified by this ETL.
-            for management_staff in management_staffs.all():
-                self.send_staff_an_email(franchise, management_staff, away_log, tenant_todays_date)
+            self.send_staff_an_email(franchise, away_log, tenant_todays_date)
 
             # Delete the user.
             away_log.delete()

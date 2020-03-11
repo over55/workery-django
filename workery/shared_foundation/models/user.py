@@ -218,3 +218,14 @@ class SharedUser(AbstractBaseUser, PermissionsMixin):
         for staff_email in staff_emails:
             staff_emails_arr.append(staff_email)
         return staff_emails_arr
+
+    @staticmethod
+    def get_management_staff_emails():
+        staff_emails = SharedUser.objects.filter(
+            Q(groups__id=constants.MANAGEMENT_GROUP_ID)|
+            Q(groups__id=constants.EXECUTIVE_GROUP_ID)
+        ).values_list("email", flat=True)
+        staff_emails_arr = []
+        for staff_email in staff_emails:
+            staff_emails_arr.append(staff_email)
+        return staff_emails_arr

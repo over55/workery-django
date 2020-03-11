@@ -231,11 +231,9 @@ class Command(BaseCommand): #TODO: UNIT TEST
         text_content = render_to_string('shared_etl/email/update_ongoing_job_view.txt', param)
         # html_content = render_to_string('shared_auth/email/update_ongoing_job_view.html', param)
 
-        staff_emails_arr = SharedUser.get_staff_emails()
-
         # Generate our address.
         from_email = settings.DEFAULT_FROM_EMAIL
-        to = staff_emails_arr
+        to = SharedUser.get_management_staff_emails()
 
         # Send the email.
         msg = EmailMultiAlternatives(subject, text_content, from_email, to)
