@@ -2,6 +2,7 @@
 import csv
 import phonenumbers
 import pytz
+from freezegun import freeze_time
 from djmoney.money import Money
 from datetime import date, datetime, timedelta
 from django.core.cache import cache
@@ -784,3 +785,89 @@ class WorkOrder(models.Model):
         Run our `save` function.
         '''
         super(WorkOrder, self).save(*args, **kwargs)
+
+    def clone(self):
+        from tenant_foundation.models.activity_sheet_item import ActivitySheetItem
+        from tenant_foundation.models.comment import Comment
+        from tenant_foundation.models.work_order_comment import WorkOrderComment
+        from tenant_foundation.models.work_order_deposit import WorkOrderDeposit
+
+        # This process doesn’t copy relations that aren’t part of the model’s
+        # database table. For example, WorkOrder has a ManyToManyField to
+        # SkillSet. After duplicating an entry, we must set the many-to-many
+        # relations for the new entry:
+        old_tags = self.tags.all()
+        old_skill_sets = self.skill_sets.all()
+        old_comments = self.comments.all()
+        old_activity_sheets = ActivitySheetItem.objects.filter(job=self)
+        old_deposits = WorkOrderDeposit.objects.filter(order=self)
+
+        # DEVELOPERS NOTE:
+        # The following code will take a full clone of our original instance.
+        # Special thanks to: https://docs.djangoproject.com/en/2.2/topics/db/queries/#copying-model-instances
+        cloned_order = self
+        cloned_order.pk = None
+        cloned_order.id = None
+        cloned_order.save()
+
+        # Remember where we cloned our object from.
+        cloned_order.cloned_from = WorkOrder.objects.get(id=self.id)
+        cloned_order.latest_pending_task = None # Tasks will not be included, reason why is: https://github.com/over55/workery-front/issues/366
+        cloned_order.save()
+
+        # Re-assign our many-to-many.
+        cloned_order.tags.set(old_tags)
+        cloned_order.skill_sets.set(old_skill_sets)
+
+        # Cannot set values on a ManyToManyField which specifies an
+        # intermediary model, as a result we'll have to create them here.
+        # Start with handling comments and then activity sheets.
+        for old_comment in old_comments:
+            with freeze_time(old_comment.created_at):
+                copy_comment = Comment.objects.create(
+                    created_at=old_comment.created_at,
+                    created_by=old_comment.created_by,
+                    created_from = old_comment.created_from,
+                    created_from_is_public = old_comment.created_from_is_public,
+                    last_modified_at=old_comment.last_modified_at,
+                    last_modified_by=old_comment.last_modified_by,
+                    last_modified_from=old_comment.last_modified_from,
+                    last_modified_from_is_public=old_comment.last_modified_from_is_public,
+                    text=old_comment.text,
+
+                )
+                WorkOrderComment.objects.create(
+                    about=cloned_order,
+                    comment=copy_comment,
+                )
+
+        for old_activity_sheet in old_activity_sheets:
+            with freeze_time(old_activity_sheet.created_at):
+                copy_activity_sheet = ActivitySheetItem.objects.create(
+                    job = cloned_order,
+                    associate = old_activity_sheet.associate,
+                    comment = old_activity_sheet.comment,
+                    state = old_activity_sheet.state,
+                    created_at=old_activity_sheet.created_at,
+                    created_by=old_activity_sheet.created_by,
+                    created_from = old_activity_sheet.created_from,
+                    created_from_is_public = old_activity_sheet.created_from_is_public,
+                )
+
+        for old_deposit in old_deposits:
+            with freeze_time(old_deposit.created_at):
+                copy_old_deposit = WorkOrderDeposit.objects.create(
+                    order=cloned_order,
+                    paid_at=old_deposit.paid_at,
+                    deposit_method=old_deposit.deposit_method,
+                    paid_to=old_deposit.paid_to,
+                    paid_for=old_deposit.paid_for,
+                    amount=old_deposit.amount,
+                    created_by = old_deposit.created_by,
+                    created_from = old_deposit.created_from,
+                    created_from_is_public = old_deposit.created_from_is_public,
+                    last_modified_by = old_deposit.last_modified_by,
+                    last_modified_from = old_deposit.last_modified_from,
+                    last_modified_from_is_public = old_deposit.last_modified_from_is_public,
+                )
+        return cloned_order

@@ -1,11 +1,18 @@
 Attention staff,
 
-The following ongoing jobs were updated automatically as of {{ tenant_todays_date }}.
+As of {{ tenant_todays_date }}, the background system ETL on Workery.ca has
+successfully processed the ongoing jobs. The following ongoing jobs were
+closed/created automatically:
 
-{% for ongoing_job in ongoing_jobs.all %}
-    Job ID #: {{ ongoing_job.id }}
-    Status: {{ ongoing_job.get_pretty_status }}
-{% endfor %}
+################
+Closed Job IDs:
+################
+{{ closed_job_ids_arr }}
+
+################
+Created Job IDs:
+################
+{{ created_job_ids_arr }}
 
 Thank you,
 Workery.ca

@@ -41,7 +41,7 @@ class SharedEtlConfig(AppConfig):
 
         # Variable used to track the maximum number of minutes the ETL can
         # run before it's considered an error and needs to stop the ETL.
-        timeout = timedelta(minutes=666)
+        timeout = timedelta(minutes=999)
 
         scheduler.cron(
             "0 0 1 * *",                             # A cron string - Run every 12:00AM on the FIRST day of every month
