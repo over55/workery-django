@@ -21,7 +21,6 @@ from tenant_foundation.utils import *
 
 
 class ONGOING_WORK_ORDER_STATE:
-    IDLE = 'idle'
     RUNNING = 'running'
     TERMINATED = 'terminated'
 
@@ -108,7 +107,7 @@ class OngoingWorkOrder(models.Model):
     state = FSMField(
         _('State'),
         help_text=_('The state of this ongoing work order.'),
-        default=ONGOING_WORK_ORDER_STATE.IDLE,
+        default=ONGOING_WORK_ORDER_STATE.RUNNING,
         blank=True,
         db_index=True,
     )
@@ -171,8 +170,6 @@ class OngoingWorkOrder(models.Model):
         """
         Function returns the ongoing job status in a more user-friendly format.
         """
-        if self.state == ONGOING_WORK_ORDER_STATE.IDLE:
-            return 'Idle'
         if self.state == ONGOING_WORK_ORDER_STATE.RUNNING:
             return 'Running'
         if self.state == ONGOING_WORK_ORDER_STATE.TERMINATED:

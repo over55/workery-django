@@ -149,7 +149,6 @@
                     <label for="state">Status&nbsp;<sup>*</sup></label>
                     <select class="custom-select form-control-lg border-primary" id="state" name="state" required>
                         <option value="">Status...</option>
-                        <option value="{{ ONGOING_WORK_ORDER_STATE.IDLE }}" {% if ongoing_job.state == ONGOING_WORK_ORDER_STATE.IDLE %}selected="true"{% endif %}>{% trans 'Idle' %}</option>
                         <option value="{{ ONGOING_WORK_ORDER_STATE.RUNNING }}" {% if ongoing_job.state == ONGOING_WORK_ORDER_STATE.RUNNING %}selected="true"{% endif %}>{% trans 'Running' %}</option>
                         <option value="{{ ONGOING_WORK_ORDER_STATE.TERMINATED }}" {% if ongoing_job.state == ONGOING_WORK_ORDER_STATE.TERMINATED %}selected="true"{% endif %}>{% trans 'Terminate' %}</option>
                     </select>

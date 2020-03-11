@@ -148,9 +148,7 @@
                 <tr>
                     <th scope="row" class="bg-light">Status</th>
                     <td id="selected_status">
-                        {% if ongoing_job.state == ONGOING_WORK_ORDER_STATE.IDLE %}
-                            {% trans 'Idle' %}
-                        {% elif ongoing_job.state == ONGOING_WORK_ORDER_STATE.RUNNING %}
+                        {% if ongoing_job.state == ONGOING_WORK_ORDER_STATE.RUNNING %}
                             {% trans 'Running' %}
                         {% elif ongoing_job.state == ONGOING_WORK_ORDER_STATE.TERMINATED %}
                             {% trans 'Terminated' %}

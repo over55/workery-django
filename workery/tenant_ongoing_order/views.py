@@ -29,8 +29,7 @@ from tenant_foundation.models import (
 class RunningOrInactiveOngoingJobListView(LoginRequiredMixin, GroupRequiredMixin, WorkeryListView):
     context_object_name = 'ongoing_job_list'
     queryset = OngoingWorkOrder.objects.filter(
-        Q(state=ONGOING_WORK_ORDER_STATE.RUNNING) |
-        Q(state=ONGOING_WORK_ORDER_STATE.IDLE)
+        state=ONGOING_WORK_ORDER_STATE.RUNNING
     ).order_by('-id').prefetch_related(
         'work_orders',
         'customer',
@@ -50,8 +49,7 @@ class RunningOrInactiveOngoingJobListView(LoginRequiredMixin, GroupRequiredMixin
         modified_context = super().get_context_data(**kwargs)
 
         modified_context['running_or_inactivate_jobs_count'] = OngoingWorkOrder.objects.filter(
-            Q(state=ONGOING_WORK_ORDER_STATE.RUNNING) |
-            Q(state=ONGOING_WORK_ORDER_STATE.IDLE)
+            state=ONGOING_WORK_ORDER_STATE.RUNNING
         ).count()
         modified_context['terminated_jobs_count'] = OngoingWorkOrder.objects.filter(
             state=ONGOING_WORK_ORDER_STATE.TERMINATED
@@ -83,8 +81,7 @@ class TerminatedOngoingJobListView(LoginRequiredMixin, GroupRequiredMixin, Worke
         modified_context = super().get_context_data(**kwargs)
 
         modified_context['running_or_inactivate_jobs_count'] = OngoingWorkOrder.objects.filter(
-            Q(state=ONGOING_WORK_ORDER_STATE.RUNNING) |
-            Q(state=ONGOING_WORK_ORDER_STATE.IDLE)
+            state=ONGOING_WORK_ORDER_STATE.RUNNING
         ).count()
         modified_context['terminated_jobs_count'] = OngoingWorkOrder.objects.filter(
             state=ONGOING_WORK_ORDER_STATE.TERMINATED
