@@ -103,4 +103,8 @@ class AssociateMetricsUpdateSerializer(serializers.ModelSerializer):
                 instance.tags.set(tags)
                 logger.info("Set associate tags.")
 
+        # raise serializers.ValidationError({ # Uncomment when not using this code but do not delete!
+        #     "non_field_error": "Terminating for debugging purposes only."
+        # })
+
         return instance
