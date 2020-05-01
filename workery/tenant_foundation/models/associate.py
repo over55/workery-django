@@ -525,6 +525,9 @@ class Associate(AbstractPerson):
         choice = dict(ORGANIZATION_TYPE_OF_CHOICES).get(self.organization_type_of)
         return str(choice)
 
+    def invalidate_all(self):
+        self.invalidate("latest_completed_and_paid_order")
+
 # def validate_model(sender, **kwargs):
 #     if 'raw' in kwargs and not kwargs['raw']:
 #         kwargs['instance'].full_clean()

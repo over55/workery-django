@@ -40,6 +40,10 @@ class CustomerMetricsUpdateSerializer(serializers.ModelSerializer):
         allow_blank=False,
         allow_null=False,
     )
+    birthdate = serializers.DateField(
+        required=False,
+        allow_null=True,
+    )
 
     class Meta:
         model = Customer

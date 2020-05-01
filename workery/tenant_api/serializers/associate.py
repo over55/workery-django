@@ -24,6 +24,7 @@ from tenant_api.serializers.skill_set import SkillSetListCreateSerializer
 from tenant_api.serializers.tag import TagListCreateSerializer
 from tenant_api.serializers.insurance_requirement import InsuranceRequirementListCreateSerializer
 from tenant_api.serializers.vehicle_type import VehicleTypeListCreateSerializer
+from tenant_api.serializers.awaylog import AwayLogRetrieveUpdateDestroySerializer
 from tenant_foundation.constants import *
 from tenant_foundation.models import (
     AssociateComment,
@@ -719,6 +720,7 @@ class AssociateRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
         queryset=WorkOrderServiceFee.objects.all()
     )
     service_fee_label = serializers.CharField(read_only=True, source="service_fee.title", allow_null=True, allow_blank=True,)
+    away_log = AwayLogRetrieveUpdateDestroySerializer(many=False, allow_null=True,)
 
     class Meta:
         model = Associate
@@ -785,6 +787,7 @@ class AssociateRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
             'score',
             'avatar_url',
             'state',
+            'away_log',
 
             # # Misc (Write Only)
             # 'extra_comment',

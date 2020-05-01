@@ -11,3 +11,6 @@ def save_associate(sender, instance, **kwargs):
     we have a unified searchable record for all our data.
     """
     UnifiedSearchItem.objects.update_or_create_associate(instance)
+
+    # Clear all cached properties.
+    instance.invalidate_all()

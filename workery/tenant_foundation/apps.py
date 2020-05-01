@@ -7,6 +7,7 @@ class TenantFoundationConfig(AppConfig):
     verbose_name = _('Tenant Foundation')
 
     def ready(self):
+        import tenant_foundation.signals.away_log
         import tenant_foundation.signals.associate  # noqa
         import tenant_foundation.signals.customer
         import tenant_foundation.signals.staff
