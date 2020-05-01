@@ -80,6 +80,8 @@ def report_09_streaming_csv_view(request):
         'Other Telephone',
         'Other Telephone Type',
         'Other Telephone Extension',
+        "Birth Date",
+        "Age",
         'How heard'
     ],)
 
@@ -87,8 +89,10 @@ def report_09_streaming_csv_view(request):
 
     tele_type_of_choices = dict(TELEPHONE_CONTACT_POINT_TYPE_OF_CHOICES)
 
+    now = datetime.now()
+
     # Generate hte CSV data.
-    for customer in customers.all():
+    for customer in customers.all().iterator(chunk_size=250):
 
         customer_type_of = type_of_choices[customer.type_of]
         telephone_type_of = tele_type_of_choices[customer.telephone_type_of]
@@ -124,6 +128,8 @@ def report_09_streaming_csv_view(request):
             customer.other_telephone,
             other_telephone_type_of,
             customer.other_telephone_extension,
+            str(customer.birthdate),
+            str(now.year),
             customer.get_pretty_how_hear()
         ],)
 
