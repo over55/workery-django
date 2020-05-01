@@ -615,6 +615,20 @@ class WorkOrder(models.Model):
                 pass # Skip last
         return skill_set_string
 
+    def get_tags_string(self):
+        # Attach all the tags that are associated with each job.
+        tag_count = self.tags.count() - 1
+        tag_string = ""
+        for i, tag in enumerate(self.tags.all()):
+
+            tag_string += str(tag.id)
+
+            if i != tag_count:
+                tag_string += "|"
+            else:
+                pass # Skip last
+        return tag_string
+
     # def get_pretty_state(self):
     #     return dict(self.WORK_ORDER_STATE).get(self.state)
 
