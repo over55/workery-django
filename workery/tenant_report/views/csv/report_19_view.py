@@ -102,7 +102,7 @@ def report_19_streaming_csv_view(request):
         return response
 
     # Generate our new header.
-    rows = (["Leads by Skill Report","","","","","","","","","",],)
+    rows = (["Job Tags Report","","","","","","","","","",],)
     rows += (["Report Date:", pretty_dt_string(today),"","","","","","","","",],)
     rows += (["From Assignment Date:", pretty_dt_string(from_d),"","","","","","","","",],)
     rows += (["To Assignment Date:", pretty_dt_string(to_d),"","","","","","","","",],)
@@ -111,24 +111,18 @@ def report_19_streaming_csv_view(request):
     rows += (["","","","","","","","","","",],)
     rows += (["","","","","","","","","","",],)
 
-
-    # Address	City	Phone	E-Mail	Associate	Associate Phone	Associate Email
-
     # Generate the CSV header row.
     rows += ([
-        "Job No.",
+        # "Job No.",
         "Assignment Date",
-        "Job Status",
+        "Associate No.",
+        "Associate Name",
         "Job Completion Date",
+        "Job #",
+        "Job Status",
         "Client No.",
         "Client Name",
-        "Client Address",
-        "Client Phone",
-        "Client E-Mail",
-        "Job Skill Set(s)",
-        "Associate Name",
-        "Associate Phone",
-        "Associate E-Mail"
+        "Tags",
     ],)
 
     # Generate hte CSV data.
@@ -146,19 +140,21 @@ def report_19_streaming_csv_view(request):
 
         # Generate the row.
         rows += ([
-            job.id,
             pretty_dt_string(job.assignment_date),
-            job.get_pretty_status(),
-            pretty_dt_string(job.completion_date),
-            job.customer.id,
-            str(job.customer),
-            job.customer.get_postal_address_without_postal_code(),
-            str(customer_telephone),
-            str(customer_email),
-            tag_string,
+            str(job.associate.id),
             str(job.associate),
-            str(customer_telephone),
-            str(associate_email),
+            pretty_dt_string(job.completion_date),
+            str(job.id),
+            job.get_pretty_status(),
+            str(job.customer.id),
+            str(job.customer),
+            tag_string,
+            # job.customer.get_postal_address_without_postal_code(),
+            # str(customer_telephone),
+            # str(customer_email),
+            # tag_string,
+            # str(customer_telephone),
+            # str(associate_email),
         ],)
 
     pseudo_buffer = Echo()

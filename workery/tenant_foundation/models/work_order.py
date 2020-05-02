@@ -621,7 +621,7 @@ class WorkOrder(models.Model):
         tag_string = ""
         for i, tag in enumerate(self.tags.all()):
 
-            tag_string += str(tag.id)
+            tag_string += str(tag.text)
 
             if i != tag_count:
                 tag_string += "|"
