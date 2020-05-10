@@ -22,7 +22,8 @@ from tenant_foundation.models import (
     WORK_ORDER_STATE,
     WorkOrder,
     TaskItem,
-    SkillSet
+    SkillSet,
+    WorkOrderComment
 )
 
 """
@@ -89,6 +90,7 @@ def report_01_streaming_csv_view(request):
         ).prefetch_related(
             'customer',
             'associate',
+            'work_order_comments',
             'skill_sets'
         )
 
@@ -121,6 +123,8 @@ def report_01_streaming_csv_view(request):
         "Client Gender",
         "Client DOB",
         "Client Age",
+        "Latest Comment Text",
+        "Latest Comment Date",
         "Skill Set(s)"],)
 
     # Generate hte CSV data.
@@ -150,6 +154,15 @@ def report_01_streaming_csv_view(request):
         associate_gender = str(job.associate.gender) if job.associate.gender is not None else ""
         customer_gender = str(job.customer.gender) if job.customer.gender is not None else ""
 
+        # Extract the latest comment.
+        try:
+            latest_comment = job.work_order_comments.latest("created_at")
+            latest_comment_created_at = pretty_dt_string(latest_comment.created_at)
+            latest_comment = latest_comment.comment.text
+        except WorkOrderComment.DoesNotExist:
+            latest_comment = "-"
+            latest_comment_created_at = "-"
+
         # Generate the row.
         rows += ([
             job.associate.id,
@@ -171,6 +184,8 @@ def report_01_streaming_csv_view(request):
             customer_gender,
             customer_dob,
             job.customer.get_current_age(),
+            latest_comment,
+            latest_comment_created_at,
             skill_set_string
         ],)
 

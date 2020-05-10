@@ -83,6 +83,7 @@ def report_02_streaming_csv_view(request):
         ).prefetch_related(
             'customer',
             'associate',
+            'work_order_comments',
             'skill_sets'
         )
     else:
@@ -95,6 +96,7 @@ def report_02_streaming_csv_view(request):
         ).prefetch_related(
             'customer',
             'associate',
+            'work_order_comments',
             'skill_sets'
         )
 
@@ -129,7 +131,9 @@ def report_02_streaming_csv_view(request):
         "Was associate punctual",
         "Was associate professional",
         "Would customer refer our organization",
-        "Score"
+        "Score",
+        "Latest Comment Text",
+        "Latest Comment Date",
     ],)
 
     # Generate hte CSV data.
@@ -172,6 +176,15 @@ def report_02_streaming_csv_view(request):
                 would_customer_refer_our_organization = 1 if job.would_customer_refer_our_organization else 0
                 score = job.score
 
+        # Extract the latest comment.
+        try:
+            latest_comment = job.work_order_comments.latest("created_at")
+            latest_comment_created_at = pretty_dt_string(latest_comment.created_at)
+            latest_comment = latest_comment.comment.text
+        except WorkOrderComment.DoesNotExist:
+            latest_comment = "-"
+            latest_comment_created_at = "-"
+
         # Generate the row.
         rows += ([
             job.id,
@@ -193,7 +206,9 @@ def report_02_streaming_csv_view(request):
             was_associate_punctual,
             was_associate_professional,
             would_customer_refer_our_organization,
-            score
+            score,
+            latest_comment,
+            latest_comment_created_at
         ],)
 
     pseudo_buffer = Echo()
