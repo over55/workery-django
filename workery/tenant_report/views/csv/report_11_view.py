@@ -88,10 +88,12 @@ def report_11_streaming_csv_view(request):
         "Assignment",
         "Completion",
         "Associate No.",
+        "Associate Company",
         "Associate",
         "Associate DOB",
         "Associate Age",
         "Client No.",
+        "Client Company",
         "Client",
         "Client Birthdate",
         "Client Age",
@@ -128,6 +130,10 @@ def report_11_streaming_csv_view(request):
         invoice_labour_amount = str(job.invoice_labour_amount)
         invoice_labour_amount = invoice_labour_amount.replace('C', '')
 
+        # Get the organization name.
+        associate_company = job.associate.organization_name if job.associate.organization_name else "-"
+        client_company = job.customer.organization_name if job.customer.organization_name else "-"
+
         # Generate the reason.
         rows += ([
             str(job.id),
@@ -135,10 +141,12 @@ def report_11_streaming_csv_view(request):
             pretty_dt_string(job.assignment_date),
             pretty_dt_string(job.completion_date),
             str(associate_id),
+            associate_company,
             str(job.associate),
             associate_dob,
             associate_age,
             str(job.customer.id),
+            client_company,
             str(job.customer),
             str(customer_dob),
             job.customer.get_current_age(),
