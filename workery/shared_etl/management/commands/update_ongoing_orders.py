@@ -205,7 +205,13 @@ class Command(BaseCommand): #TODO: UNIT TEST
         # STEP 11: Email the management staff that the following ongoing jobs
         #          were automatically modified by this ETL.
         if len(created_job_ids_arr) > 0:
-            self.send_staff_an_email(closed_job_ids_arr, created_job_ids_arr, now_dt)
+            try:
+                self.send_staff_an_email(
+                    closed_job_ids_arr,
+                    created_job_ids_arr, now_dt
+                )
+            except Exception as e:
+                print("process_running_ongoing_jobs | e:",e)
 
         # DEVELOPERS NOTE:
         # PLEASE DO NOT DELETE THIS COMMENT. IF YOU WANT TO RUN MANUAL TESTS
