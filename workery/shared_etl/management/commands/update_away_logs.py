@@ -101,7 +101,10 @@ class Command(BaseCommand): #TODO: UNIT TEST
 
             # Email the management staff that the following ongoing jobs
             # were automatically modified by this ETL.
-            self.send_staff_an_email(franchise, away_log, tenant_todays_date)
+            try:
+                self.send_staff_an_email(franchise, away_log, tenant_todays_date)
+            except Exception as e:
+                print("update_away_logs |", str(e))
 
             # Delete the user.
             away_log.delete()

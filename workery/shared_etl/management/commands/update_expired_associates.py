@@ -173,7 +173,10 @@ class Command(BaseCommand): #TODO: UNIT TEST
         # Fetch the franchise management staff and send a notification
         # email informing them that an associate has expired commercial
         # insurance.
-        self.send_staff_an_email("police-check-expiry", associate, now_dt, now_d)
+        try:
+            self.send_staff_an_email("police-check-expiry", associate, now_dt, now_d)
+        except Exception as e:
+            print("update_expired_associates |", str(e))
 
     def process_associate_for_commercial_insurance_expiry(self, associate, now_dt, now_d, commercial_insurance_expiry_d):
         """
@@ -214,7 +217,10 @@ class Command(BaseCommand): #TODO: UNIT TEST
         # Fetch the franchise management staff and send a notification
         # email informing them that an associate has expired commercial
         # insurance.
-        self.send_staff_an_email("commercial-insurance-expiry", associate, now_dt, now_d)
+        try:
+            self.send_staff_an_email("commercial-insurance-expiry", associate, now_dt, now_d)
+        except Exception as e:
+            print(e)
 
     def run_update_expired_associate(self, associate, now_dt, now_d):
         # Insurance expired.
