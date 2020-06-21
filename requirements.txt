@@ -9,12 +9,13 @@ chardet==3.0.4
 click==6.7
 coverage==4.4.2
 croniter==0.3.20
-Django==2.2.13
+Django==2.0.13
 django-anymail==5.0
 django-cors-headers==2.2.0
 django-debug-toolbar==1.9.1
 django-environ==0.4.4
 django-filter==1.1.0
+django-filters==0.2.1
 django-fsm==2.6.0
 django-htmlmin==0.10.0
 django-ipware==2.0.1
