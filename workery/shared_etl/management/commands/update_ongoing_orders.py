@@ -249,6 +249,6 @@ class Command(BaseCommand): #TODO: UNIT TEST
         # For debugging purposes only.
         self.stdout.write(
             self.style.SUCCESS(_('Sent emails to: %(emails)s.')%{
-                'emails': str(staff_emails_arr)
+                'emails': str(to)
             })
         )
