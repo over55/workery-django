@@ -66,6 +66,7 @@ class Command(BaseCommand): #TODO: UNIT TEST
         Function will iterate through all the `running` ongoing work orders and
         perform the necessary operations.
         """
+        now_d = now_dt.date()
         self.process_running_ongoing_jobs(now_dt)
 
     @transaction.atomic
