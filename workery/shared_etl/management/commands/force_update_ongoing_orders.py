@@ -66,7 +66,13 @@ class Command(BaseCommand): #TODO: UNIT TEST
         Function will iterate through all the `running` ongoing work orders and
         perform the necessary operations.
         """
+        # Generate the following dates based on today's date.
+        now_dt = franchise.get_todays_date_plus_days()
         now_d = now_dt.date()
+        first_day_d = get_first_date_for_this_dt(now_d)
+        last_day_d = get_end_of_date_for_this_dt(now_d)
+
+        # Run command.
         self.process_running_ongoing_jobs(now_dt)
 
     @transaction.atomic
