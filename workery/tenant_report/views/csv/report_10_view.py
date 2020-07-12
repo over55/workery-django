@@ -92,7 +92,8 @@ def report_10_streaming_csv_view(request):
         "Client Birthdate",
         "Client Age",
         "Skill Sets",
-        "Job Status"
+        "Job Status",
+        "Score",
     ],)
 
     # Generate hte CSV data.
@@ -124,7 +125,8 @@ def report_10_streaming_csv_view(request):
             str(customer_dob),
             job.customer.get_current_age(),
             skill_set_text,
-            job.get_pretty_status()
+            job.get_pretty_status(),
+            str(job.score)
         ],)
 
     # Create the virtual CSV file and stream all the data in real time to the
