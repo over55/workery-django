@@ -118,6 +118,37 @@ def report_20_streaming_csv_view(request):
             associate_age = job.associate.get_current_age()
         customer_dob = pretty_dt_string(job.customer.birthdate) if job.customer.birthdate is not None else ""
 
+        invoice_labour_amount = str(job.invoice_labour_amount)
+        invoice_labour_amount = invoice_labour_amount.replace('C', '')
+
+        invoice_material_amount = str(job.invoice_material_amount)
+        invoice_material_amount = invoice_material_amount.replace('C', '')
+
+        invoice_other_costs_amount = str(job.invoice_other_costs_amount)
+        invoice_other_costs_amount = invoice_other_costs_amount.replace('C', '')
+
+        invoice_sub_total_amount = str(job.invoice_sub_total_amount)
+        invoice_sub_total_amount = invoice_sub_total_amount.replace('C', '')
+
+        invoice_tax_amount = str(job.invoice_tax_amount)
+        invoice_tax_amount = invoice_tax_amount.replace('C', '')
+
+        invoice_total_amount = str(job.invoice_total_amount)
+        invoice_total_amount = invoice_total_amount.replace('C', '')
+
+        invoice_deposit_amount = str(job.invoice_deposit_amount)
+        invoice_deposit_amount = invoice_deposit_amount.replace('C', '')
+
+        invoice_amount_due = str(job.invoice_amount_due)
+        invoice_amount_due = invoice_amount_due.replace('C', '')
+
+
+        invoice_service_fee_amount = str(job.invoice_service_fee_amount)
+        invoice_service_fee_amount = invoice_service_fee_amount.replace('C', '')
+
+        invoice_actual_service_fee_amount_paid = str(job.invoice_actual_service_fee_amount_paid)
+        invoice_actual_service_fee_amount_paid = invoice_actual_service_fee_amount_paid.replace('C', '')
+
         # Generate the reason.
         rows += ([
             str(associate_id),
@@ -131,16 +162,16 @@ def report_20_streaming_csv_view(request):
             str(customer_dob),
             job.customer.get_current_age(),
             str(job.score),
-            str(job.invoice_labour_amount),
-            str(job.invoice_material_amount),
-            str(job.invoice_other_costs_amount),
-            str(job.invoice_sub_total_amount),
-            str(job.invoice_tax_amount),
-            str(job.invoice_total_amount),
-            str(job.invoice_deposit_amount),
-            str(job.invoice_amount_due),
-            str(job.invoice_service_fee_amount),
-            str(job.invoice_actual_service_fee_amount_paid),
+            str(invoice_labour_amount),
+            str(invoice_material_amount),
+            str(invoice_other_costs_amount),
+            str(invoice_sub_total_amount),
+            str(invoice_tax_amount),
+            str(invoice_total_amount),
+            str(invoice_deposit_amount),
+            str(invoice_amount_due),
+            str(invoice_service_fee_amount),
+            str(invoice_actual_service_fee_amount_paid),
             str(job.invoice_service_fee.title)
         ],)
 
