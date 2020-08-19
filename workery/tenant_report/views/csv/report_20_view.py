@@ -101,6 +101,7 @@ def report_20_streaming_csv_view(request):
         "Deposit",
         "Amount Due",
         "Service Fee Due",
+        "Service Fee Payment Date",
         "Service Fee Paid",
         "Service Fee",
     ],)
@@ -146,8 +147,13 @@ def report_20_streaming_csv_view(request):
         invoice_service_fee_amount = str(job.invoice_service_fee_amount)
         invoice_service_fee_amount = invoice_service_fee_amount.replace('C', '')
 
-        invoice_actual_service_fee_amount_paid = str(job.invoice_actual_service_fee_amount_paid)
-        invoice_actual_service_fee_amount_paid = invoice_actual_service_fee_amount_paid.replace('C', '')
+        try:
+            invoice_service_fee_payment_date = str(job.invoice_service_fee_payment_date)
+            invoice_service_fee_payment_date = invoice_service_fee_payment_date.replace('C', '')
+        except Exception as e:
+            pass
+
+        invoice_actual_service_fee_amount_paid = job.invoice_actual_service_fee_amount_paid
 
         # Generate the reason.
         rows += ([
@@ -171,6 +177,7 @@ def report_20_streaming_csv_view(request):
             str(invoice_deposit_amount),
             str(invoice_amount_due),
             str(invoice_service_fee_amount),
+            str(invoice_service_fee_payment_date),
             str(invoice_actual_service_fee_amount_paid),
             str(job.invoice_service_fee.title)
         ],)
