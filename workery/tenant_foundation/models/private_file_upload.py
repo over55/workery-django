@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-import csv
+import uuid
 import phonenumbers
 import pytz
 from djmoney.money import Money
@@ -198,6 +198,23 @@ class PrivateFileUpload(models.Model):
     #
     #  FUNCTIONS
     #
+
+    """
+    Override the `save` function to support save cached searchable terms.
+    """
+    def save(self, *args, **kwargs):
+        '''
+        The following code will populate our indexed_custom search text with
+        the latest model data before we save.
+        '''
+
+        if self.indexed_text == None or self.indexed_text == "":
+            self.indexed_text = str(uuid.uuid4())
+
+        '''
+        Run our `save` function.
+        '''
+        super(PrivateFileUpload, self).save(*args, **kwargs)
 
     def __str__(self):
         return str(self.pk)
