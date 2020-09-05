@@ -28,6 +28,8 @@ from tenant_foundation.models import (
     WORK_ORDER_STATE,
     WorkOrder,
     WorkOrderComment,
+    OngoingWorkOrder,
+    ONGOING_WORK_ORDER_STATE,
     Organization,
     TaskItem
 )
@@ -99,6 +101,12 @@ class WorkOrderCloseCreateSerializer(serializers.Serializer):
             job.state = WORK_ORDER_STATE.COMPLETED_BUT_UNPAID
         else:
             job.state = WORK_ORDER_STATE.CANCELLED
+
+            # If the job is an ongoing job then terminate as per
+            # https://github.com/over55/workery-front/issues/390
+            if job.is_ongoing:
+                job.ongoing_work_order.state = ONGOING_WORK_ORDER_STATE.TERMINATED
+                job.ongoing_work_order.save()
         job.completion_date = completion_date
 
         # (b) System details.
