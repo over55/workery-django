@@ -43,18 +43,19 @@ class SharedEtlConfig(AppConfig):
         # run before it's considered an error and needs to stop the ETL.
         timeout = timedelta(minutes=999)
 
-        scheduler.cron(
-            "0 0 1 * *",                             # A cron string - Run every 12:00AM on the FIRST day of every month
-            func=run_update_ongoing_orders_func,     # Function to be queued
-            repeat=None,                             # Repeat this number of times (None means repeat forever)
-            timeout=timeout.seconds                  # Automatically terminate process if exceeds this time.
-        )
-        scheduler.cron(
-            "0 0 L * *",                             # A cron string - Run every 12:00AM on the LAST day of every month
-            func=run_update_ongoing_orders_func,     # Function to be queued
-            repeat=None,                             # Repeat this number of times (None means repeat forever)
-            timeout=timeout.seconds                  # Automatically terminate process if exceeds this time.
-        )
+        # DEPRECATED
+        # scheduler.cron(
+        #     "0 0 1 * *",                             # A cron string - Run every 12:00AM on the FIRST day of every month
+        #     func=run_update_ongoing_orders_func,     # Function to be queued
+        #     repeat=None,                             # Repeat this number of times (None means repeat forever)
+        #     timeout=timeout.seconds                  # Automatically terminate process if exceeds this time.
+        # )
+        # scheduler.cron(
+        #     "0 0 L * *",                             # A cron string - Run every 12:00AM on the LAST day of every month
+        #     func=run_update_ongoing_orders_func,     # Function to be queued
+        #     repeat=None,                             # Repeat this number of times (None means repeat forever)
+        #     timeout=timeout.seconds                  # Automatically terminate process if exceeds this time.
+        # )
         scheduler.cron(
             "1 0 * * *",                             # A cron string - Run every 12:00AM every day.
             func=run_update_away_logs_func,          # Function to be queued

@@ -49,7 +49,7 @@ class Command(BaseCommand): #TODO: UNIT TEST
     Example:
     python manage.py update_ongoing_orders
     """
-    help = _('ETL will iterate through all ongoing jobs in all tenants to create an associated pending task to review by staff.')
+    help = _('DEPRECATED ETL will iterate through all ongoing jobs in all tenants to create an associated pending task to review by staff.')
 
     def handle(self, *args, **options):
         franchises = SharedFranchise.objects.filter(

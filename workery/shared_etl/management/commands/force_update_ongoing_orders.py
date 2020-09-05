@@ -142,10 +142,7 @@ class Command(BaseCommand): #TODO: UNIT TEST
             #         to our ongoing job.
             previous_job = ongoing_job.work_orders.filter(
                 Q(is_ongoing=True)&
-                Q(
-                    Q(state=WORK_ORDER_STATE.COMPLETED_BUT_UNPAID)|
-                    Q(state=WORK_ORDER_STATE.COMPLETED_AND_PAID)
-                )&
+                Q(state=WORK_ORDER_STATE.COMPLETED_AND_PAID)& # https://github.com/over55/workery-front/issues/390
                 ~Q(associate=None) &
                 ~Q(state=None)
             ).order_by('-completion_date').first()
@@ -165,6 +162,7 @@ class Command(BaseCommand): #TODO: UNIT TEST
                 # STEP 9: Changed the specific dates.
                 job.assignment_date = new_start_dt
                 job.completion_date = new_start_dt
+                job.state=WORK_ORDER_STATE.COMPLETED_BUT_UNPAID # https://github.com/over55/workery-front/issues/390
                 job.save()
 
                 # STEP 11: Save the job ID of the job we modified to keep track
