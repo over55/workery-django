@@ -153,7 +153,8 @@ def report_20_streaming_csv_view(request):
         except Exception as e:
             pass
 
-        invoice_actual_service_fee_amount_paid = job.invoice_actual_service_fee_amount_paid
+        invoice_actual_service_fee_amount_paid = str(job.invoice_actual_service_fee_amount_paid)
+        invoice_actual_service_fee_amount_paid = invoice_actual_service_fee_amount_paid.replace('C', '')
 
         # Generate the reason.
         rows += ([
