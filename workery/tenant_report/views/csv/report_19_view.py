@@ -72,7 +72,7 @@ def report_19_streaming_csv_view(request):
             Q(tags__in=tag_ids_arr) &
             Q(assignment_date__range=(from_dt,to_dt))
         ).order_by(
-            '-assignment_date'
+            '-completion_date'
         ).prefetch_related(
             'customer',
             'associate',
@@ -84,7 +84,7 @@ def report_19_streaming_csv_view(request):
             Q(state=state) &
             Q(assignment_date__range=(from_dt,to_dt))
         ).order_by(
-            '-assignment_date'
+            '-completion_date'
         ).prefetch_related(
             'customer',
             'associate',
