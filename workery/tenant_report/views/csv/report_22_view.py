@@ -42,7 +42,7 @@ class Echo:
         return value
 
 
-def report_19_streaming_csv_view(request):
+def report_22_streaming_csv_view(request):
     # Get our user parameters.
     naive_from_dt = request.GET.get('from_dt', None)
     naive_to_dt = request.GET.get('to_dt', None)
@@ -70,9 +70,9 @@ def report_19_streaming_csv_view(request):
     if state == 'all':
         queryset = WorkOrder.objects.filter(
             Q(tags__in=tag_ids_arr) &
-            Q(assignment_date__range=(from_dt,to_dt))
+            Q(completion_date__range=(from_dt,to_dt))
         ).order_by(
-            '-assignment_date'
+            '-completion_date'
         ).prefetch_related(
             'customer',
             'associate',
@@ -82,9 +82,9 @@ def report_19_streaming_csv_view(request):
         queryset = WorkOrder.objects.filter(
             Q(tags__in=tag_ids_arr) &
             Q(state=state) &
-            Q(assignment_date__range=(from_dt,to_dt))
+            Q(completion_date__range=(from_dt,to_dt))
         ).order_by(
-            '-assignment_date'
+            '-completion_date'
         ).prefetch_related(
             'customer',
             'associate',
@@ -104,8 +104,8 @@ def report_19_streaming_csv_view(request):
     # Generate our new header.
     rows = (["Job Tags Report","","","","","","","","","",],)
     rows += (["Report Date:", pretty_dt_string(today),"","","","","","","","",],)
-    rows += (["From Assignment Date:", pretty_dt_string(from_d),"","","","","","","","",],)
-    rows += (["To Assignment Date:", pretty_dt_string(to_d),"","","","","","","","",],)
+    rows += (["From Completion Date:", pretty_dt_string(from_d),"","","","","","","","",],)
+    rows += (["To Completion Date:", pretty_dt_string(to_d),"","","","","","","","",],)
     rows += (["Job Status:", str(state),"","","","","","","","",],)
     # rows += (["Skill Set(s):", str(state),"","","","","","","","",],)
     rows += (["","","","","","","","","","",],)
