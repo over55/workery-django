@@ -154,7 +154,8 @@ class Command(BaseCommand): #TODO: UNIT TEST
                 # DEVELOPERS NOTE:
                 # We will need to create a new start date which will essentially
                 # be the starting date of next month.
-                new_start_dt = now_dt + timedelta(days=1)
+                # new_start_dt = now_dt + timedelta(days=1)
+                new_start_dt = now_dt # New via https://github.com/over55/workery-front/issues/390
 
                 # STEP 8: Clone our new work order. Please note function will
                 #         include cloning related fields like `ManyToMany`
