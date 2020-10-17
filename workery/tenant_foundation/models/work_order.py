@@ -802,8 +802,8 @@ class WorkOrder(models.Model):
 
     def clone(self):
         from tenant_foundation.models.activity_sheet_item import ActivitySheetItem
-        from tenant_foundation.models.comment import Comment
-        from tenant_foundation.models.work_order_comment import WorkOrderComment
+        # from tenant_foundation.models.comment import Comment
+        # from tenant_foundation.models.work_order_comment import WorkOrderComment
         from tenant_foundation.models.work_order_deposit import WorkOrderDeposit
 
         # This process doesn’t copy relations that aren’t part of the model’s
@@ -812,7 +812,7 @@ class WorkOrder(models.Model):
         # relations for the new entry:
         old_tags = self.tags.all()
         old_skill_sets = self.skill_sets.all()
-        old_comments = self.comments.all()
+        # old_comments = self.comments.all()
         old_activity_sheets = ActivitySheetItem.objects.filter(job=self)
         old_deposits = WorkOrderDeposit.objects.filter(order=self)
 
@@ -833,27 +833,28 @@ class WorkOrder(models.Model):
         cloned_order.tags.set(old_tags)
         cloned_order.skill_sets.set(old_skill_sets)
 
-        # Cannot set values on a ManyToManyField which specifies an
-        # intermediary model, as a result we'll have to create them here.
-        # Start with handling comments and then activity sheets.
-        for old_comment in old_comments:
-            with freeze_time(old_comment.created_at):
-                copy_comment = Comment.objects.create(
-                    created_at=old_comment.created_at,
-                    created_by=old_comment.created_by,
-                    created_from = old_comment.created_from,
-                    created_from_is_public = old_comment.created_from_is_public,
-                    last_modified_at=old_comment.last_modified_at,
-                    last_modified_by=old_comment.last_modified_by,
-                    last_modified_from=old_comment.last_modified_from,
-                    last_modified_from_is_public=old_comment.last_modified_from_is_public,
-                    text=old_comment.text,
-
-                )
-                WorkOrderComment.objects.create(
-                    about=cloned_order,
-                    comment=copy_comment,
-                )
+        # DEVELOPER NOTE: Commented out because https://github.com/over55/workery-front/issues/390
+        # # Cannot set values on a ManyToManyField which specifies an
+        # # intermediary model, as a result we'll have to create them here.
+        # # Start with handling comments and then activity sheets.
+        # for old_comment in old_comments:
+        #     with freeze_time(old_comment.created_at):
+        #         copy_comment = Comment.objects.create(
+        #             created_at=old_comment.created_at,
+        #             created_by=old_comment.created_by,
+        #             created_from = old_comment.created_from,
+        #             created_from_is_public = old_comment.created_from_is_public,
+        #             last_modified_at=old_comment.last_modified_at,
+        #             last_modified_by=old_comment.last_modified_by,
+        #             last_modified_from=old_comment.last_modified_from,
+        #             last_modified_from_is_public=old_comment.last_modified_from_is_public,
+        #             text=old_comment.text,
+        #
+        #         )
+        #         WorkOrderComment.objects.create(
+        #             about=cloned_order,
+        #             comment=copy_comment,
+        #         )
 
         for old_activity_sheet in old_activity_sheets:
             with freeze_time(old_activity_sheet.created_at):
