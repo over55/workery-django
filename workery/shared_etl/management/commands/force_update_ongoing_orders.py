@@ -17,7 +17,9 @@ from django.utils.translation import ugettext_lazy as _
 from django.template.loader import render_to_string    # EMAILER: HTML to TXT
 from django.utils.text import Truncator
 from django_tenants.utils import tenant_context
+from djmoney.money import Money
 
+from shared_foundation.constants import WORKERY_APP_DEFAULT_MONEY_CURRENCY
 from shared_foundation.models.franchise import SharedFranchise
 from shared_foundation.models.franchise import SharedFranchiseDomain
 from shared_foundation.models import SharedUser
@@ -158,6 +160,9 @@ class Command(BaseCommand): #TODO: UNIT TEST
                 #         include cloning related fields like `ManyToMany`
                 #         fields.
                 job = previous_job.clone()
+
+                # (NEW STEP): Do not include material cost via https://github.com/over55/workery-front/issues/390
+                job.invoice_material_amount = Money(0,WORKERY_APP_DEFAULT_MONEY_CURRENCY)
 
                 # STEP 9: Changed the specific dates.
                 job.assignment_date = new_start_dt
