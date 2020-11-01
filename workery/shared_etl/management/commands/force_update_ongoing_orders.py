@@ -144,7 +144,10 @@ class Command(BaseCommand): #TODO: UNIT TEST
             #         to our ongoing job.
             previous_job = ongoing_job.work_orders.filter(
                 Q(is_ongoing=True)&
-                Q(state=WORK_ORDER_STATE.COMPLETED_AND_PAID)& # https://github.com/over55/workery-front/issues/390
+                Q( # NOTE: (1) https://github.com/over55/workery-front/issues/390 | (2) https://github.com/over55/workery-front/issues/394
+                    Q(state=WORK_ORDER_STATE.COMPLETED_AND_PAID)|
+                    Q(state=WORK_ORDER_STATE.COMPLETED_BUT_UNPAID)
+                )&
                 ~Q(associate=None) &
                 ~Q(state=None)
             ).order_by('-completion_date').first()
