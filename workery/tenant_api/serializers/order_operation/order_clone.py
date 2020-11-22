@@ -60,7 +60,12 @@ class WorkOrderCloneCreateSerializer(serializers.Serializer):
         # Process the data #
         #------------------#
         original_order = WorkOrder.objects.get(id=order_id)
-        cloned_order = original_order.clone()        
+        cloned_order = original_order.clone()
+
+        # Cloned Jobs Should Clone With Updated Job Completion Date (https://github.com/over55/workery-front/issues/395)
+        if cloned_order.completion_date != None:
+            cloned_order.completion_date = timezone.now()
+            cloned_order.save()
 
         # raise serializers.ValidationError({ # For debugging purposes only
         #     'error': 'Stopped by the programmer, please investigate.',
