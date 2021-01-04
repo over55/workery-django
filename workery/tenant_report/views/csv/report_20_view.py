@@ -102,7 +102,7 @@ def report_20_streaming_csv_view(request):
         "Amount Due",
         "Service Fee Due",
         "Service Fee Payment Date",
-        "Service Fee Paid",
+        "Actual Service Fee Paid",
         "Service Fee",
     ],)
 
