@@ -22,7 +22,8 @@ from tenant_foundation.models import (
     WORK_ORDER_STATE,
     WorkOrder,
     TaskItem,
-    SkillSet
+    SkillSet,
+    WorkOrderComment
 )
 
 """
