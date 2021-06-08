@@ -41,7 +41,7 @@ jmespath==0.9.3
 msgpack-python==0.5.6
 olefile==0.44
 phonenumberslite==8.9.2
-Pillow==6.2.0
+Pillow==8.2.0
 protobuf==3.9.2
 psycopg2==2.7.3.2
 psycopg2-binary==2.7.4
