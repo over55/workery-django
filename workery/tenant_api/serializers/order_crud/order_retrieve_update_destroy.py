@@ -75,7 +75,7 @@ class WorkOrderRetrieveUpdateDestroySerializer(serializers.ModelSerializer):
     associate_service_fee = serializers.IntegerField(source='associate.service_fee.id', read_only=True,)
     associate_service_fee_label = serializers.CharField(source='associate.service_fee.title', read_only=True,)
     customer_address = serializers.SerializerMethodField()
-    customer_email = serializers.EmailField(read_only=True, source="associate.email")
+    customer_email = serializers.EmailField(read_only=True, source="customer.email")
     customer_full_name = serializers.SerializerMethodField()
     customer_telephone = PhoneNumberField(read_only=True, source="customer.telephone")
     customer_telephone_type_of = serializers.IntegerField(read_only=True, source="customer.telephone_type_of")
