@@ -47,7 +47,7 @@ psycopg2==2.7.3.2
 psycopg2-binary==2.7.4
 py-moneyed==0.7.0
 pycparser==2.18
-PyJWT==1.6.1
+PyJWT==2.4.0
 python-dateutil==2.7.1
 pytz==2019.1
 q==2.6
