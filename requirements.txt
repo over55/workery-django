@@ -27,7 +27,7 @@ django-rq==1.0.1
 django-starterkit==1.0.4
 django-storages==1.7.1
 django-tenants==2.0.0
-djangorestframework==3.9.1
+djangorestframework==3.11.2
 djangorestframework-jwt==1.11.0
 djangorestframework-msgpack==1.0.2
 docutils==0.14
